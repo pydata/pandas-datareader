@@ -1,10 +1,10 @@
 language: python
 
 env:
-  - PYTHON=2.6 PANDAS=v0.13.1
-  - PYTHON=2.7 PANDAS=v0.15.1
-  - PYTHON=3.3 PANDAS=v0.14.1
-  - PYTHON=3.4 PANDAS=v0.15.1
+  - PYTHON=2.6 PANDAS=0.13.1
+  - PYTHON=2.7 PANDAS=0.15.1
+  - PYTHON=3.3 PANDAS=0.14.1
+  - PYTHON=3.4 PANDAS=0.15.1
 
 install:
   - sudo apt-get update
@@ -26,12 +26,12 @@ install:
   - conda info -a
 
   # Replace dep1 dep2 ... with your dependencies
-  - conda create -q -n test-environment python=$PYTHON pandas=$PANDAS
+  - conda create -q -n test-environment python=$PYTHON pandas=$PANDAS nose coverage
   - source activate test-environment
   - python setup.py install
 
 script:
-  - py.test --cov pandas_data_readers -v --cov-report term-missing
+  - nosetests --with-coverage --cover-package=pandas_data_readers
 
 after_success:
   - coveralls
