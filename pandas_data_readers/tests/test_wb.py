@@ -1,13 +1,23 @@
 import nose
 
 import pandas
-from pandas.compat import u
 from pandas.util.testing import network
 from pandas.util.testing import assert_frame_equal
 from numpy.testing.decorators import slow
 import pandas.util.testing as tm
 
 from pandas_data_readers.wb import search, download, get_countries
+
+try:
+    from pandas.compat import u
+except ImportError:
+    try:
+        unicode # python 2
+        def u(s):
+            return unicode(s, "unicode_escape")
+    except NameError:
+        def u(s):
+            return s
 
 
 class TestWB(tm.TestCase):

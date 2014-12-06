@@ -9,8 +9,13 @@ import os
 import numpy as np
 import pandas as pd
 from pandas import DataFrame, Timestamp
-from pandas.util.testing import (assert_series_equal, assert_produces_warning,
-                                 network, assert_frame_equal)
+from pandas.util.testing import (assert_frame_equal, assert_series_equal,
+                                 network)
+try:
+    from pandas.util.testing import assert_produces_warning
+except ImportError:
+    assert_produces_warning = None
+
 import pandas.util.testing as tm
 from numpy.testing import assert_array_equal
 
@@ -401,6 +406,9 @@ class TestOptionsWarnings(tm.TestCase):
 
     @network
     def test_options_source_warning(self):
+        if not assert_produces_warning:
+            raise SkipTest("old version of pandas without "
+                           "compat.assert_produces_warning")
         with assert_produces_warning():
             aapl = web.Options('aapl')
 
