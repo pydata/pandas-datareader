@@ -1,0 +1,38 @@
+language: python
+
+env:
+  - PYTHON=2.6 PANDAS=v0.13.1
+  - PYTHON=2.7 PANDAS=v0.15.1
+  - PYTHON=3.3 PANDAS=v0.14.1
+  - PYTHON=3.4 PANDAS=v0.15.1
+
+install:
+  - sudo apt-get update
+  # You may want to periodically update this, although the conda update
+  # conda line below will keep everything up-to-date.  We do this
+  # conditionally because it saves us some downloading if the version is
+  # the same.
+  - if [[ "$PYTHON" == "2.7" ]]; then
+      wget http://repo.continuum.io/miniconda/Miniconda-3.4.2-Linux-x86_64.sh -O miniconda.sh;
+    else
+      wget http://repo.continuum.io/miniconda/Miniconda3-3.4.2-Linux-x86_64.sh -O miniconda.sh;
+    fi
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  # Useful for debugging any issues with conda
+  - conda info -a
+
+  # Replace dep1 dep2 ... with your dependencies
+  - conda create -q -n test-environment python=$PYTHON pandas=$PANDAS
+  - source activate test-environment
+  - python setup.py install
+
+script:
+  - py.test --cov pandas_data_readers -v --cov-report term-missing
+
+after_success:
+  - coveralls
+
