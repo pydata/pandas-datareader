@@ -29,7 +29,7 @@ install:
   - conda info -a
 
   # Replace dep1 dep2 ... with your dependencies
-  - conda create -q -n test-environment python=$PYTHON pandas=$PANDAS nose coverage
+  - conda create -q -n test-environment python=$PYTHON pandas=$PANDAS nose coverage setuptools
   - source activate test-environment
   - conda list
   - python setup.py install
