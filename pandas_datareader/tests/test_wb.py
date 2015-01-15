@@ -6,7 +6,7 @@ from pandas.util.testing import assert_frame_equal
 from numpy.testing.decorators import slow
 import pandas.util.testing as tm
 
-from pandas_data_readers.wb import search, download, get_countries
+from pandas_datareader.wb import search, download, get_countries
 
 try:
     from pandas.compat import u

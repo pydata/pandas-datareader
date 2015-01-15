@@ -24,8 +24,8 @@ try:
 except ImportError:
     from urllib2 import HTTPError
 
-import pandas_data_readers.data as web
-from pandas_data_readers.data import (
+import pandas_datareader.data as web
+from pandas_datareader.data import (
     DataReader, SymbolWarning, RemoteDataError, _yahoo_codes)
 
 def _skip_if_no_lxml():
