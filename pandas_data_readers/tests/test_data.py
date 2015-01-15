@@ -19,9 +19,9 @@ except ImportError:
 import pandas.util.testing as tm
 from numpy.testing import assert_array_equal
 
-if compat.PY3:
+try:
     from urllib.error import HTTPError
-else:
+except ImportError:
     from urllib2 import HTTPError
 
 import pandas_data_readers.data as web
