@@ -9,18 +9,23 @@ import os
 import numpy as np
 import pandas as pd
 from pandas import DataFrame, Timestamp
-from pandas.util.testing import (assert_series_equal, assert_produces_warning,
-                                 network, assert_frame_equal)
+from pandas.util.testing import (assert_frame_equal, assert_series_equal,
+                                 network)
+try:
+    from pandas.util.testing import assert_produces_warning
+except ImportError:
+    assert_produces_warning = None
+
 import pandas.util.testing as tm
 from numpy.testing import assert_array_equal
 
-if compat.PY3:
+try:
     from urllib.error import HTTPError
-else:
+except ImportError:
     from urllib2 import HTTPError
 
-import pandas_data_readers.data as web
-from pandas_data_readers.data import (
+import pandas_datareader.data as web
+from pandas_datareader.data import (
     DataReader, SymbolWarning, RemoteDataError, _yahoo_codes)
 
 def _skip_if_no_lxml():
@@ -119,8 +124,8 @@ class TestGoogle(tm.TestCase):
                 assert_n_failed_equals_n_null_columns(w, result)
 
     def test_dtypes(self):
-        #GH3995
-        data = web.get_data_google('MSFT', 'JAN-01-12', 'JAN-31-12')
+        #GH399, #GH8980
+        data = web.get_data_google('F', start='JAN-01-10', end='JAN-27-13')
         assert np.issubdtype(data.Open.dtype, np.number)
         assert np.issubdtype(data.Close.dtype, np.number)
         assert np.issubdtype(data.Low.dtype, np.number)
@@ -401,6 +406,9 @@ class TestOptionsWarnings(tm.TestCase):
 
     @network
     def test_options_source_warning(self):
+        if not assert_produces_warning:
+            raise SkipTest("old version of pandas without "
+                           "compat.assert_produces_warning")
         with assert_produces_warning():
             aapl = web.Options('aapl')
 
