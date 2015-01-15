@@ -1,6 +1,6 @@
 include README.md
 include LICENSE.md
-include pandas_data_readers/*.py
+include pandas_datareader/*.py
 
-include pandas_data_readers/tests/*.py
-include pandas_data_readers/tests/data/*
+include pandas_datareader/tests/*.py
+include pandas_datareader/tests/data/*
