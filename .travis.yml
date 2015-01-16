@@ -42,7 +42,7 @@ install:
   - python setup.py install
 
 script:
-  - nosetests --with-coverage --cover-package=pandas_datareader
+    - nosetests -v --with-coverage --cover-package=pandas_datareader
 
 after_success:
   - coveralls
