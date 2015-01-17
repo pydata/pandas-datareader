@@ -6,13 +6,13 @@ import os
 from setuptools import setup
 
 
-NAME = 'pandas_datareader'
+NAME = 'pandas-datareader'
 
 
 def version():
     """Return version string."""
     with open(os.path.join(os.path.abspath(os.path.dirname(__file__)),
-                           'pandas_datareader',
+                           'pandas-datareader',
                            '__init__.py')) as input_file:
         for line in input_file:
             if line.startswith('__version__'):
@@ -36,7 +36,7 @@ setup(
     license='MIT License',
     author='Andy Hayden',
     author_email='andyhayden1@gmail.com',
-    url='https://github.com/pydata/pandas_datareader',
+    url='https://github.com/pydata/pandas-datareader',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Operating System :: OS Independent',
@@ -51,7 +51,7 @@ setup(
     ],
     keywords='data',
     install_requires=INSTALL_REQUIRES,
-    packages=['pandas_datareader'],
+    packages=['pandas-datareader'],
     test_suite='tests',
     zip_safe=False,
 )
