@@ -9,8 +9,7 @@ import os
 import numpy as np
 import pandas as pd
 from pandas import DataFrame, Timestamp
-from pandas.util.testing import (assert_frame_equal, assert_series_equal,
-                                 network)
+from pandas.util.testing import assert_frame_equal, assert_series_equal
 try:
     from pandas.util.testing import assert_produces_warning
 except ImportError:
@@ -59,7 +58,6 @@ class TestGoogle(tm.TestCase):
         super(TestGoogle, cls).tearDownClass()
         del cls.locales
 
-    @network
     def test_google(self):
         # asserts that google is minimally working and that it throws
         # an exception when DataReader can't get a 200 response from
@@ -75,19 +73,16 @@ class TestGoogle(tm.TestCase):
         self.assertRaises(Exception, web.DataReader, "NON EXISTENT TICKER",
                           'google', start, end)
 
-    @network
     def test_get_quote_fails(self):
         self.assertRaises(NotImplementedError, web.get_quote_google,
                           pd.Series(['GOOG', 'AAPL', 'GOOG']))
 
-    @network
     def test_get_goog_volume(self):
         for locale in self.locales:
             with tm.set_locale(locale):
                 df = web.get_data_google('GOOG').sort_index()
             self.assertEqual(df.Volume.ix['OCT-08-2010'], 2863473)
 
-    @network
     def test_get_multi1(self):
         for locale in self.locales:
             sl = ['AAPL', 'AMZN', 'GOOG']
@@ -100,13 +95,11 @@ class TestGoogle(tm.TestCase):
             else:
                 self.assertRaises(AttributeError, lambda: pan.Close)
 
-    @network
     def test_get_multi_invalid(self):
         sl = ['AAPL', 'AMZN', 'INVALID']
         pan = web.get_data_google(sl, '2012')
         self.assertIn('INVALID', pan.minor_axis)
 
-    @network
     def test_get_multi2(self):
         with warnings.catch_warnings(record=True) as w:
             for locale in self.locales:
@@ -138,7 +131,6 @@ class TestYahoo(tm.TestCase):
         super(TestYahoo, cls).setUpClass()
         _skip_if_no_lxml()
 
-    @network
     def test_yahoo(self):
         # asserts that yahoo is minimally working and that it throws
         # an exception when DataReader can't get a 200 response from
@@ -149,34 +141,28 @@ class TestYahoo(tm.TestCase):
         self.assertEqual(web.DataReader("F", 'yahoo', start, end)['Close'][-1],
                          13.68)
 
-    @network
     def test_yahoo_fails(self):
         start = datetime(2010, 1, 1)
         end = datetime(2013, 1, 27)
         self.assertRaises(Exception, web.DataReader, "NON EXISTENT TICKER",
                           'yahoo', start, end)
 
-    @network
     def test_get_quote_series(self):
         df = web.get_quote_yahoo(pd.Series(['GOOG', 'AAPL', 'GOOG']))
         assert_series_equal(df.ix[0], df.ix[2])
 
-    @network
     def test_get_quote_string(self):
         df = web.get_quote_yahoo('GOOG')
 
-    @network
     def test_get_quote_string(self):
         _yahoo_codes.update({'MarketCap': 'j1'})
         df = web.get_quote_yahoo('GOOG')
         self.assertFalse(pd.isnull(df['MarketCap'][0]))
 
-    @network
     def test_get_quote_stringlist(self):
         df = web.get_quote_yahoo(['GOOG', 'AAPL', 'GOOG'])
         assert_series_equal(df.ix[0], df.ix[2])
 
-    @network
     def test_get_components_dow_jones(self):
         raise nose.SkipTest('unreliable test, receive partial components back for dow_jones')
 
@@ -184,7 +170,6 @@ class TestYahoo(tm.TestCase):
         assert isinstance(df, pd.DataFrame)
         self.assertEqual(len(df), 30)
 
-    @network
     def test_get_components_dax(self):
         raise nose.SkipTest('unreliable test, receive partial components back for dax')
 
@@ -194,7 +179,6 @@ class TestYahoo(tm.TestCase):
         self.assertEqual(df[df.name.str.contains('adidas', case=False)].index,
                          'ADS.DE')
 
-    @network
     def test_get_components_nasdaq_100(self):
         # as of 7/12/13 the conditional will test false because the link is invalid
         raise nose.SkipTest('unreliable test, receive partial components back for nasdaq_100')
@@ -212,20 +196,17 @@ class TestYahoo(tm.TestCase):
                                  index=['@^NDX'])
             assert_frame_equal(df, expected)
 
-    @network
     def test_get_data_single_symbol(self):
         #single symbol
         #http://finance.yahoo.com/q/hp?s=GOOG&a=09&b=08&c=2010&d=09&e=10&f=2010&g=d
         # just test that we succeed
         web.get_data_yahoo('GOOG')
 
-    @network
     def test_get_data_multiple_symbols(self):
         # just test that we succeed
         sl = ['AAPL', 'AMZN', 'GOOG']
         web.get_data_yahoo(sl, '2012')
 
-    @network
     def test_get_data_multiple_symbols_two_dates(self):
         pan = web.get_data_yahoo(['GE', 'MSFT', 'INTC'], 'JAN-01-12',
                                  'JAN-31-12')
@@ -242,7 +223,6 @@ class TestYahoo(tm.TestCase):
         result = pan.Open.ix['Jan-15-12':'Jan-20-12']
         self.assertEqual(expected.shape, result.shape)
 
-    @network
     def test_get_date_ret_index(self):
         pan = web.get_data_yahoo(['GE', 'INTC', 'IBM'], '1977', '1987',
                                  ret_index=True)
@@ -281,7 +261,6 @@ class TestYahooOptions(tm.TestCase):
         super(TestYahooOptions, cls).tearDownClass()
         del cls.aapl, cls.expiry
 
-    @network
     def test_get_options_data(self):
         # regression test GH6105
         self.assertRaises(ValueError, self.aapl.get_options_data, month=3)
@@ -293,7 +272,6 @@ class TestYahooOptions(tm.TestCase):
             raise nose.SkipTest(e)
         self.assertTrue(len(options) > 1)
 
-    @network
     def test_get_near_stock_price(self):
         try:
             options = self.aapl.get_near_stock_price(call=True, put=True,
@@ -302,7 +280,6 @@ class TestYahooOptions(tm.TestCase):
             raise nose.SkipTest(e)
         self.assertTrue(len(options) > 1)
 
-    @network
     def test_get_call_data(self):
         try:
             calls = self.aapl.get_call_data(expiry=self.expiry)
@@ -310,7 +287,6 @@ class TestYahooOptions(tm.TestCase):
             raise nose.SkipTest(e)
         self.assertTrue(len(calls) > 1)
 
-    @network
     def test_get_put_data(self):
         try:
             puts = self.aapl.get_put_data(expiry=self.expiry)
@@ -318,7 +294,6 @@ class TestYahooOptions(tm.TestCase):
             raise nose.SkipTest(e)
         self.assertTrue(len(puts) > 1)
 
-    @network
     def test_get_expiry_dates(self):
         try:
             dates, _ = self.aapl._get_expiry_dates_and_links()
@@ -326,7 +301,6 @@ class TestYahooOptions(tm.TestCase):
             raise nose.SkipTest(e)
         self.assertTrue(len(dates) > 1)
 
-    @network
     def test_get_all_data(self):
         try:
             data = self.aapl.get_all_data(put=True)
@@ -334,7 +308,6 @@ class TestYahooOptions(tm.TestCase):
             raise nose.SkipTest(e)
         self.assertTrue(len(data) > 1)
 
-    @network
     def test_get_data_with_list(self):
         try:
             data = self.aapl.get_call_data(expiry=self.aapl.expiry_dates)
@@ -342,7 +315,6 @@ class TestYahooOptions(tm.TestCase):
             raise nose.SkipTest(e)
         self.assertTrue(len(data) > 1)
 
-    @network
     def test_get_all_data_calls_only(self):
         try:
             data = self.aapl.get_all_data(call=True, put=False)
@@ -350,7 +322,6 @@ class TestYahooOptions(tm.TestCase):
             raise nose.SkipTest(e)
         self.assertTrue(len(data) > 1)
 
-    @network
     def test_sample_page_price_quote_time1(self):
         #Tests the weekend quote time format
         price, quote_time = self.aapl._get_underlying_price(self.html1)
@@ -371,8 +342,6 @@ class TestYahooOptions(tm.TestCase):
         self.assertIsInstance(chopped, DataFrame)
         self.assertTrue(len(chopped) > 1)
 
-
-    @network
     def test_sample_page_price_quote_time2(self):
         #Tests the EDT page format
         #regression test for #8741
@@ -380,12 +349,10 @@ class TestYahooOptions(tm.TestCase):
         self.assertIsInstance(price, (int, float, complex))
         self.assertIsInstance(quote_time, (datetime, Timestamp))
 
-    @network
     def test_sample_page_chg_float(self):
         #Tests that numeric columns with comma's are appropriately dealt with
         self.assertEqual(self.data1['Chg'].dtype, 'float64')
 
-    @network
     def test_month_year(self):
         try:
             data = self.aapl.get_call_data(month=self.month, year=self.year)
@@ -404,7 +371,6 @@ class TestOptionsWarnings(tm.TestCase):
     def tearDownClass(cls):
         super(TestOptionsWarnings, cls).tearDownClass()
 
-    @network
     def test_options_source_warning(self):
         if not assert_produces_warning:
             raise SkipTest("old version of pandas without "
@@ -418,22 +384,18 @@ class TestDataReader(tm.TestCase):
         from pandas.io.common import _is_s3_url
         self.assertTrue(_is_s3_url("s3://pandas/somethingelse.com"))
 
-    @network
     def test_read_yahoo(self):
         gs = DataReader("GS", "yahoo")
         assert isinstance(gs, DataFrame)
 
-    @network
     def test_read_google(self):
         gs = DataReader("GS", "google")
         assert isinstance(gs, DataFrame)
 
-    @network
     def test_read_fred(self):
         vix = DataReader("VIXCLS", "fred")
         assert isinstance(vix, DataFrame)
 
-    @network
     def test_read_famafrench(self):
         for name in ("F-F_Research_Data_Factors",
                      "F-F_Research_Data_Factors_weekly", "6_Portfolios_2x3",
@@ -444,7 +406,6 @@ class TestDataReader(tm.TestCase):
 
 
 class TestFred(tm.TestCase):
-    @network
     def test_fred(self):
 
         # Throws an exception when DataReader can't get a 200 response from
@@ -462,14 +423,12 @@ class TestFred(tm.TestCase):
         self.assertRaises(Exception, web.DataReader, "NON EXISTENT SERIES",
                           'fred', start, end)
 
-    @network
     def test_fred_nan(self):
         start = datetime(2010, 1, 1)
         end = datetime(2013, 1, 27)
         df = web.DataReader("DFII5", "fred", start, end)
         assert pd.isnull(df.ix['2010-01-01'][0])
 
-    @network
     def test_fred_parts(self):
         raise nose.SkipTest('buggy as of 2/18/14; maybe a data revision?')
 
@@ -482,7 +441,6 @@ class TestFred(tm.TestCase):
         assert np.issubdtype(t.dtype, np.floating)
         self.assertEqual(t.shape, (37,))
 
-    @network
     def test_fred_part2(self):
         expected = [[576.7],
                     [962.9],
@@ -492,12 +450,10 @@ class TestFred(tm.TestCase):
         result = web.get_data_fred("A09024USA144NNBR", start="1915").ix[:5]
         assert_array_equal(result.values, np.array(expected))
 
-    @network
     def test_invalid_series(self):
         name = "NOT A REAL SERIES"
         self.assertRaises(Exception, web.get_data_fred, name)
 
-    @network
     def test_fred_multi(self):
         raise nose.SkipTest('buggy as of 2/18/14; maybe a data revision?')
 
@@ -511,7 +467,6 @@ class TestFred(tm.TestCase):
         expected.index.rename('DATE', inplace=True)
         assert_frame_equal(received, expected, check_less_precise=True)
 
-    @network
     def test_fred_multi_bad_series(self):
 
         names = ['NOTAREALSERIES', 'CPIAUCSL', "ALSO FAKE"]

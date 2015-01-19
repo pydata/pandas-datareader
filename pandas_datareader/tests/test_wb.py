@@ -1,9 +1,7 @@
 import nose
 
 import pandas
-from pandas.util.testing import network
 from pandas.util.testing import assert_frame_equal
-from numpy.testing.decorators import slow
 import pandas.util.testing as tm
 
 from pandas_datareader.wb import search, download, get_countries
@@ -22,8 +20,6 @@ except ImportError:
 
 class TestWB(tm.TestCase):
 
-    @slow
-    @network
     def test_wdi_search(self):
 
         # Test that a name column exists, and that some results were returned
@@ -33,8 +29,6 @@ class TestWB(tm.TestCase):
         result = search('gdp.*capita.*constant')
         self.assertTrue(result.name.str.contains('GDP').any())
 
-    @slow
-    @network
     def test_wdi_download(self):
 
         # Test a bad indicator with double (US), triple (USA),
@@ -62,8 +56,6 @@ class TestWB(tm.TestCase):
         expected.index = result.index
         assert_frame_equal(result, pandas.DataFrame(expected))
 
-    @slow
-    @network
     def test_wdi_download_w_retired_indicator(self):
 
         cntry_codes = ['CA', 'MX', 'US']
@@ -92,8 +84,6 @@ class TestWB(tm.TestCase):
         if len(result) > 0:
             raise nose.SkipTest("Invalid results")
 
-    @slow
-    @network
     def test_wdi_download_w_crash_inducing_countrycode(self):
 
         cntry_codes = ['CA', 'MX', 'US', 'XXX']
@@ -110,8 +100,6 @@ class TestWB(tm.TestCase):
         if len(result) > 0:
             raise nose.SkipTest("Invalid results")
 
-    @slow
-    @network
     def test_wdi_get_countries(self):
         result = get_countries()
         self.assertTrue('Zimbabwe' in list(result['name']))
