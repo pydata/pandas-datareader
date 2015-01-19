@@ -6,7 +6,7 @@ import os
 from setuptools import setup
 
 
-NAME = 'pandas_datareader'
+NAME = 'pandas-datareader'
 
 
 def version():
@@ -33,13 +33,16 @@ setup(
     description="Data readers extracted from the pandas codebase,"
                 "should be compatible with recent pandas versions",
     long_description=readme(),
-    license='MIT License',
-    author='Andy Hayden',
-    author_email='andyhayden1@gmail.com',
-    url='https://github.com/pydata/pandas_datareader',
+    license='BSD License',
+    author='The PyData Development Team',
+    author_email='pydata@googlegroups.com',
+    url='https://github.com/pydata/pandas-datareader',
     classifiers=[
         'Development Status :: 4 - Beta',
+        'Environment :: Console',
+        'Intended Audience :: Science/Research',
         'Operating System :: OS Independent',
+        'Programming Language :: Cython',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.6',
@@ -48,6 +51,7 @@ setup(
         'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Topic :: Scientific/Engineering',
     ],
     keywords='data',
     install_requires=INSTALL_REQUIRES,
