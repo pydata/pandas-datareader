@@ -325,29 +325,29 @@ class TestYahooOptions(tm.TestCase):
     def test_sample_page_price_quote_time1(self):
         #Tests the weekend quote time format
         price, quote_time = self.aapl._get_underlying_price(self.html1)
-        self.assertIsInstance(price, (int, float, complex))
-        self.assertIsInstance(quote_time, (datetime, Timestamp))
+        self.assert_(isinstance(price, (int, float, complex)))
+        self.assert_(isinstance(quote_time, (datetime, Timestamp)))
 
     def test_chop(self):
         #regression test for #7625
         self.aapl.chop_data(self.data1, above_below=2, underlying_price=np.nan)
         chopped = self.aapl.chop_data(self.data1, above_below=2, underlying_price=100)
-        self.assertIsInstance(chopped, DataFrame)
+        self.assert_(isinstance(chopped, DataFrame))
         self.assertTrue(len(chopped) > 1)
 
     def test_chop_out_of_strike_range(self):
         #regression test for #7625
         self.aapl.chop_data(self.data1, above_below=2, underlying_price=np.nan)
         chopped = self.aapl.chop_data(self.data1, above_below=2, underlying_price=100000)
-        self.assertIsInstance(chopped, DataFrame)
+        self.assert_(isinstance(chopped, DataFrame))
         self.assertTrue(len(chopped) > 1)
 
     def test_sample_page_price_quote_time2(self):
         #Tests the EDT page format
         #regression test for #8741
         price, quote_time = self.aapl._get_underlying_price(self.html2)
-        self.assertIsInstance(price, (int, float, complex))
-        self.assertIsInstance(quote_time, (datetime, Timestamp))
+        self.assert_(isinstance(price, (int, float, complex)))
+        self.assert_(isinstance(quote_time, (datetime, Timestamp)))
 
     def test_sample_page_chg_float(self):
         #Tests that numeric columns with comma's are appropriately dealt with
