@@ -7,7 +7,7 @@ Up to date remote data access for pandas, works for multiple versions of pandas.
 .. image:: https://travis-ci.org/pydata/pandas-datareader.svg?branch=master
     :target: https://travis-ci.org/pydata/pandas-datareader
 
-.. image:: https://coveralls.io/repos/pydata/pandas-datareader/badge.svg
+.. image:: https://coveralls.io/repos/pydata/pandas-datareader/badge.svg?branch=master
     :target: https://coveralls.io/r/pydata/pandas-datareader
 
 Installation
