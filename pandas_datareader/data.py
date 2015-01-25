@@ -689,7 +689,7 @@ class Options(object):
 
         if not hasattr(self, 'underlying_price'):
             try:
-                self.underlying_price, self.quote_time = self._get_underlying_price(url)
+                self.underlying_price, self.quote_time = self._underlying_price_and_time_from_url(url)
             except IndexError:
                 self.underlying_price, self.quote_time = np.nan, np.nan
 
@@ -704,34 +704,38 @@ class Options(object):
 
         return {'calls': calls, 'puts': puts}
 
-    def _get_underlying_price(self, url):
+    def _underlying_price_and_time_from_url(self, url):
         root = self._parse_url(url)
+        underlying_price = self._underlying_price_from_root(root)
+        quote_time = self._quote_time_from_root(root)
+        return underlying_price, quote_time
+
+    @staticmethod
+    def _underlying_price_from_root(root):
         underlying_price = root.xpath('.//*[@class="time_rtq_ticker Fz-30 Fw-b"]')[0]\
             .getchildren()[0].text
-
-        try:
-            underlying_price = float(underlying_price)
-        except ValueError:
-            # check for comma
-            underlying_price = underlying_price.replace(',', '')
+        underlying_price = underlying_price.replace(',', '') #GH11
 
         try:
             underlying_price = float(underlying_price)
         except ValueError:
             underlying_price = np.nan
 
+        return underlying_price
+
+    @staticmethod
+    def _quote_time_from_root(root):
         #Gets the time of the quote, note this is actually the time of the underlying price.
         try:
             quote_time_text = root.xpath('.//*[@class="time_rtq Fz-m"]')[0].getchildren()[1].getchildren()[0].text
             ##TODO: Enable timezone matching when strptime can match EST with %Z
             quote_time_text = quote_time_text.split(' ')[0]
             quote_time = dt.datetime.strptime(quote_time_text, "%I:%M%p")
-
             quote_time = quote_time.replace(year=CUR_YEAR, month=CUR_MONTH, day=CUR_DAY)
         except ValueError:
             quote_time = np.nan
 
-        return underlying_price, quote_time
+        return quote_time
 
     def _get_option_data(self, expiry, name):
         frame_name = '_frames' + self._expiry_to_string(expiry)
