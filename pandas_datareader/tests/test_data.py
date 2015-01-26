@@ -332,16 +332,16 @@ class TestYahooOptions(tm.TestCase):
         #GH7
         try:
             options_object = web.Options('^spxpm', 'yahoo')
-            expiry_dates, urls = options_object._get_expiry_dates_and_links()
-            url = options_object._FINANCE_BASE_URL + urls[expiry_dates[0]]
-            quote_price, quote_time = options_object._get_underlying_price(url)
+            url = options_object._yahoo_url_from_expiry(options_object.expiry_dates[0])
+            root = options_object._parse_url(url)
+            quote_price = options_object._underlying_price_from_root(root)
         except RemoteDataError as e:
             raise nose.SkipTest(e)
         self.assert_(isinstance(quote_price, float))
 
     def test_sample_page_price_quote_time1(self):
         #Tests the weekend quote time format
-        price, quote_time = self.aapl._get_underlying_price(self.html1)
+        price, quote_time = self.aapl._underlying_price_and_time_from_url(self.html1)
         self.assert_(isinstance(price, (int, float, complex)))
         self.assert_(isinstance(quote_time, (datetime, Timestamp)))
 
@@ -362,7 +362,7 @@ class TestYahooOptions(tm.TestCase):
     def test_sample_page_price_quote_time2(self):
         #Tests the EDT page format
         #regression test for #8741
-        price, quote_time = self.aapl._get_underlying_price(self.html2)
+        price, quote_time = self.aapl._underlying_price_and_time_from_url(self.html2)
         self.assert_(isinstance(price, (int, float, complex)))
         self.assert_(isinstance(quote_time, (datetime, Timestamp)))
 
