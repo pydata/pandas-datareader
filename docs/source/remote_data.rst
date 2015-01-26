@@ -1,25 +1,17 @@
 .. _remote_data:
 
-.. currentmodule:: pandas
+.. currentmodule:: pandas_datareader
 
 .. ipython:: python
    :suppress:
 
-   import os
-   import csv
    import pandas as pd
 
    import numpy as np
-   np.random.seed(123456)
-   randn = np.random.randn
    np.set_printoptions(precision=4, suppress=True)
 
-   import matplotlib.pyplot as plt
-   plt.close('all')
+   pd.options.display.max_rows=15
 
-   from pandas import *
-   options.display.max_rows=15
-   import pandas.util.testing as tm
 
 ******************
 Remote Data Access
@@ -27,29 +19,30 @@ Remote Data Access
 
 .. _remote_data.data_reader:
 
-Functions from :mod:`pandas.io.data` and :mod:`pandas.io.ga` extract data from various Internet sources into a DataFrame. Currently the following sources are supported:
+Functions from :mod:`pandas_datareader.data` and :mod:`pandas_datareader.wb`
+extract data from various Internet sources into a pandas DataFrame.
+Currently the following sources are supported:
 
     - :ref:`Yahoo! Finance<remote_data.yahoo>`
     - :ref:`Google Finance<remote_data.google>`
     - :ref:`St.Louis FED (FRED)<remote_data.fred>`
     - :ref:`Kenneth French's data library<remote_data.ff>`
     - :ref:`World Bank<remote_data.wb>`
-    - :ref:`Google Analytics<remote_data.ga>`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
 
 .. _remote_data.yahoo:
 
 Yahoo! Finance
---------------
+==============
 
 .. ipython:: python
 
-    import pandas.io.data as web
+    import pandas_datareader.data as web
     import datetime
     start = datetime.datetime(2010, 1, 1)
     end = datetime.datetime(2013, 1, 27)
-    f=web.DataReader("F", 'yahoo', start, end)
+    f = web.DataReader("F", 'yahoo', start, end)
     f.ix['2010-01-04']
 
 .. _remote_data.yahoo_options:
@@ -66,7 +59,7 @@ to the specific option you want.
 
 .. ipython:: python
 
-      from pandas.io.data import Options
+      from pandas_datareader.data import Options
       aapl = Options('aapl', 'yahoo')
       data = aapl.get_all_data()
       data.iloc[0:5, 0:5]
@@ -113,69 +106,71 @@ The ``month`` and ``year`` parameters can be used to get all options data for a 
 .. _remote_data.google:
 
 Google Finance
---------------
+==============
 
 .. ipython:: python
 
-    import pandas.io.data as web
+    import pandas_datareader.data as web
     import datetime
     start = datetime.datetime(2010, 1, 1)
     end = datetime.datetime(2013, 1, 27)
-    f=web.DataReader("F", 'google', start, end)
+    f = web.DataReader("F", 'google', start, end)
     f.ix['2010-01-04']
 
 .. _remote_data.fred:
 
 FRED
-----
+====
 
 .. ipython:: python
 
-    import pandas.io.data as web
+    import pandas_datareader.data as web
     import datetime
     start = datetime.datetime(2010, 1, 1)
     end = datetime.datetime(2013, 1, 27)
-    gdp=web.DataReader("GDP", "fred", start, end)
+    gdp = web.DataReader("GDP", "fred", start, end)
     gdp.ix['2013-01-01']
 
     # Multiple series:
     inflation = web.DataReader(["CPIAUCSL", "CPILFESL"], "fred", start, end)
     inflation.head()
+
+
 .. _remote_data.ff:
 
 Fama/French
------------
+===========
 
 Dataset names are listed at `Fama/French Data Library
 <http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html>`__.
 
 .. ipython:: python
 
-    import pandas.io.data as web
-    ip=web.DataReader("5_Industry_Portfolios", "famafrench")
+    import pandas_datareader.data as web
+    ip = web.DataReader("5_Industry_Portfolios", "famafrench")
     ip[4].ix[192607]
 
 .. _remote_data.wb:
 
 World Bank
-----------
+==========
 
 ``pandas`` users can easily access thousands of panel data series from the
 `World Bank's World Development Indicators <http://data.worldbank.org>`__
 by using the ``wb`` I/O functions.
 
 Indicators
-~~~~~~~~~~
+----------
 
 Either from exploring the World Bank site, or using the search function included,
-every world bank indicator is accessible.  
+every world bank indicator is accessible.
 
 For example, if you wanted to compare the Gross Domestic Products per capita in
 constant dollars in North America, you would use the ``search`` function:
 
 .. code-block:: python
 
-    In [1]: from pandas.io import wb
+    In [1]: from pandas_datareader import wb
 
     In [2]: wb.search('gdp.*capita.*const').iloc[:,:2]
     Out[2]:
@@ -283,25 +278,23 @@ populations in rich countries tend to use cellphones at a higher rate:
     ==============================================================================
 
 Country Codes
-~~~~~~~~~~~~~
+-------------
 
-.. versionadded:: 0.15.1
-
-The ``country`` argument accepts a string or list of mixed 
+The ``country`` argument accepts a string or list of mixed
 `two <http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`__ or `three <http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3>`__ character
 ISO country codes, as well as dynamic `World Bank exceptions <http://data.worldbank.org/node/18>`__ to the ISO standards.
 
-For a list of the the hard-coded country codes (used solely for error handling logic) see ``pandas.io.wb.country_codes``.
+For a list of the the hard-coded country codes (used solely for error handling logic) see ``pandas_datareader.wb.country_codes``.
 
 Problematic Country Codes & Indicators
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------------------
 
 .. note::
 
-   The World Bank's country list and indicators are dynamic. As of 0.15.1, 
+   The World Bank's country list and indicators are dynamic. As of 0.15.1,
    :func:`wb.download()` is more flexible.  To achieve this, the warning
    and exception logic changed.
-   
+
 The world bank converts some country codes,
 in their response, which makes error checking by pandas difficult.
 Retired indicators still persist in the search.
@@ -321,71 +314,11 @@ There are at least 4 kinds of country codes:
 There are at least 3 kinds of indicators:
 
 1. Current - Returns data.
-2. Retired - Appears in search results, yet won't return data. 
+2. Retired - Appears in search results, yet won't return data.
 3. Bad - Will not return data.
 
 Use the ``errors`` argument to control warnings and exceptions.  Setting
 errors to ignore or warn, won't stop failed responses.  (ie, 100% bad
-indicators, or a single "bad" (#4 above) country code).  
+indicators, or a single "bad" (#4 above) country code).
 
 See docstrings for more info.
-
-.. _remote_data.ga:
-
-Google Analytics
-----------------
-
-The :mod:`~pandas.io.ga` module provides a wrapper for
-`Google Analytics API <https://developers.google.com/analytics/devguides>`__
-to simplify retrieving traffic data.
-Result sets are parsed into a pandas DataFrame with a shape and data types
-derived from the source table.
-
-Configuring Access to Google Analytics
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The first thing you need to do is to setup accesses to Google Analytics API. Follow the steps below:
-
-#. In the `Google Developers Console <https://console.developers.google.com>`__
-    #. enable the Analytics API
-    #. create a new project
-    #. create a new Client ID for an "Installed Application" (in the "APIs & auth / Credentials section" of the newly created project)
-    #. download it (JSON file)
-#. On your machine
-    #. rename it to ``client_secrets.json``
-    #. move it to the ``pandas/io`` module directory
-
-The first time you use the :func:`read_ga` funtion, a browser window will open to ask you to authentify to the Google API. Do proceed.
-
-Using the Google Analytics API
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The following will fetch users and pageviews (metrics) data per day of the week, for the first semester of 2014, from a particular property.
-
-.. code-block:: python
-
-    import pandas.io.ga as ga
-    ga.read_ga(
-        account_id  = "2360420",
-        profile_id  = "19462946",
-        property_id = "UA-2360420-5",
-        metrics     = ['users', 'pageviews'],
-        dimensions  = ['dayOfWeek'],
-        start_date  = "2014-01-01",
-        end_date    = "2014-08-01",
-        index_col   = 0,
-        filters     = "pagePath=~aboutus;ga:country==France",
-    )
-
-The only mandatory arguments are ``metrics,`` ``dimensions`` and ``start_date``. We can only strongly recommend you to always specify the ``account_id``, ``profile_id`` and ``property_id`` to avoid accessing the wrong data bucket in Google Analytics.
-
-The ``index_col`` argument indicates which dimension(s) has to be taken as index.
-
-The ``filters`` argument indicates the filtering to apply to the query. In the above example, the page has URL has to contain ``aboutus`` AND the visitors country has to be France.
-
-Detailed informations in the followings:
-
-* `pandas & google analytics, by yhat <http://blog.yhathq.com/posts/pandas-google-analytics.html>`__
-* `Google Analytics integration in pandas, by Chang She <http://quantabee.wordpress.com/2012/12/17/google-analytics-pandas/>`__
-* `Google Analytics Dimensions and Metrics Reference <https://developers.google.com/analytics/devguides/reporting/core/dimsmets>`_
-
