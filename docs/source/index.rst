@@ -11,6 +11,8 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   remote_data.rst
+
 
 
 Indices and tables
