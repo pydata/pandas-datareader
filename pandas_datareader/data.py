@@ -701,9 +701,6 @@ class Options(object):
         calls = frames[self._TABLE_LOC['calls']]
         puts = frames[self._TABLE_LOC['puts']]
 
-        if len(calls) == 0 or len(puts) == 0:
-            raise RemoteDataError('Received no data from Yahoo at url: %s' % url)
-
         calls = self._process_data(calls, 'call')
         puts = self._process_data(puts, 'put')
 
