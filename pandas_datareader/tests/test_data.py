@@ -400,6 +400,21 @@ class TestYahooOptions(tm.TestCase):
 
         self.assertTrue(len(data) > 1)
 
+    def test_expiry_localization(self):
+        #Check that various expiry localizations work
+        try:
+            data_no_tz = self.aapl.get_call_data(expiry=self.aapl.expiry_dates[0].date())
+            data_eastern_tz = self.aapl.get_call_data(
+                expiry=pd.to_datetime(self.aapl.expiry_dates[0].date()).tz_localize('US/Eastern'))
+            data_berlin_tz = self.aapl.get_call_data(
+                expiry=pd.to_datetime(self.aapl.expiry_dates[0].date()).tz_localize('Europe/Berlin'))
+
+        except RemoteDataError as e:
+            raise nose.SkipTest(e)
+        self.assertTrue(len(data_no_tz) > 1)
+        self.assertTrue(len(data_eastern_tz) > 1)
+        self.assertTrue(len(data_berlin_tz) > 1)
+
     def test_empty_table(self):
         #GH22
         empty = self.aapl._option_frames_from_url(self.html3)['puts']

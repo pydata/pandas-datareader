@@ -998,14 +998,14 @@ class Options(object):
 
         expiry_dates = self.expiry_dates
         expiry = to_datetime(expiry)
-        if hasattr(expiry, 'date'):
-            expiry = expiry.date()
+        if expiry.tz is None:
+            expiry = expiry.tz_localize('US/Eastern')
 
         if expiry in expiry_dates:
             return expiry
         else:
             index = DatetimeIndex(expiry_dates).order()
-            return index[index.date >= expiry][0].date()
+            return index[index >= expiry][0]
 
     def get_forward_data(self, months, call=True, put=False, near=False,
                          above_below=2):
@@ -1161,7 +1161,7 @@ class Options(object):
         except IndexError:
             raise RemoteDataError('Expiry dates not available')
 
-        expiry_dates = [dt.datetime.strptime(element.text, "%B %d, %Y").date() for element in links]
+        expiry_dates = [to_datetime(dt.datetime.strptime(element.text, "%B %d, %Y")).tz_localize('US/Eastern') for element in links]
         links = [element.attrib['data-selectbox-link'] for element in links]
 
         if len(expiry_dates) == 0:
@@ -1203,7 +1203,7 @@ class Options(object):
         frame.columns = ['Strike', 'Symbol', 'Last', 'Bid', 'Ask', 'Chg', 'PctChg', 'Vol', 'Open_Int', 'IV']
         frame["Rootexp"] = frame.Symbol.str[0:-9]
         frame["Root"] = frame.Rootexp.str[0:-6]
-        frame["Expiry"] = to_datetime(frame.Rootexp.str[-6:])
+        frame["Expiry"] = frame.Rootexp.apply(lambda x: to_datetime(x[-6:]).tz_localize('US/Eastern'))
         #Removes dashes in equity ticker to map to option ticker.
         #Ex: BRK-B to BRKB140517C00100000
         frame["IsNonstandard"] = frame['Root'] != self.symbol.replace('-', '')
