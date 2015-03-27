@@ -1,6 +1,6 @@
-===== 
+=================
 pandas-datareader
-===== 
+=================
 
 Up to date remote data access for pandas, works for multiple versions of pandas.
 
@@ -20,7 +20,7 @@ Install via pip
    $ pip install pandas-datareader
 
 Usage 
---------
+-----
 
 Rather than import from ``pandas.io`` you should import from ``pandas-datareader``:
 
