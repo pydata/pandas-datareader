@@ -730,10 +730,10 @@ class Options(object):
         #Gets the time of the quote, note this is actually the time of the underlying price.
         try:
             quote_time_text = root.xpath('.//*[@class="time_rtq Fz-m"]')[0].getchildren()[1].getchildren()[0].text
-            ##TODO: Enable timezone matching when strptime can match EST with %Z
             quote_time_text = quote_time_text.split(' ')[0]
             quote_time = dt.datetime.strptime(quote_time_text, "%I:%M%p")
             quote_time = quote_time.replace(year=CUR_YEAR, month=CUR_MONTH, day=CUR_DAY)
+            quote_time = to_datetime(quote_time).tz_localize('US/Eastern') #localize to US/Eastern
         except ValueError:
             quote_time = np.nan
 

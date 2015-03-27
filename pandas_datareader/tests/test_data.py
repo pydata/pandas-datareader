@@ -386,6 +386,7 @@ class TestYahooOptions(tm.TestCase):
         price, quote_time = self.aapl._underlying_price_and_time_from_url(self.html2)
         self.assert_(isinstance(price, (int, float, complex)))
         self.assert_(isinstance(quote_time, (datetime, Timestamp)))
+        self.assertEqual(quote_time.tzinfo.zone, 'US/Eastern') #GH28
 
     def test_sample_page_chg_float(self):
         #Tests that numeric columns with comma's are appropriately dealt with
