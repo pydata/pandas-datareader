@@ -1,2 +1,5 @@
 pandas
+mistune
+jsonschema
 ipython
+lxml

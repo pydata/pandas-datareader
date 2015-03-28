@@ -1,4 +1,3 @@
-=================
 pandas-datareader
 =================
 
@@ -19,7 +18,7 @@ Install via pip
 
    $ pip install pandas-datareader
 
-Usage 
+Usage
 -----
 
 Rather than import from ``pandas.io`` you should import from ``pandas-datareader``:
