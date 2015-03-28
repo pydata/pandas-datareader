@@ -6,6 +6,9 @@
 Welcome to pandas-datareader's documentation!
 =============================================
 
+.. include:: ../../README.rst
+
+
 Contents:
 
 .. toctree::
