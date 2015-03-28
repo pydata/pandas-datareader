@@ -25,5 +25,5 @@ Rather than import from ``pandas.io`` you should import from ``pandas-datareader
 
 .. code-block:: python
 
-   from pandas.io import data, wb  # becomes
+   from pandas.io import data, wb # becomes
    from pandas_datareader import data, wb
