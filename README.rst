@@ -21,9 +21,15 @@ Install via pip
 Usage
 -----
 
-Rather than import from ``pandas.io`` you should import from ``pandas-datareader``:
+*In future pandas releases (0.17+) pandas-datareader will become a dependancy and using* ``pandas.io.data``
+*will be equivalent to using* ``pandas_datareader.data``.
+
+For now, you must replace your imports from ``pandas.io`` with ``pandas_datareader``:
 
 .. code-block:: python
 
    from pandas.io import data, wb # becomes
    from pandas_datareader import data, wb
+
+
+See the `pandas-datareader documentation <http://pandas-datareader.readthedocs.org/>`_ for more details.
