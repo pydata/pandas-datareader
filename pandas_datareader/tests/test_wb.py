@@ -104,6 +104,8 @@ class TestWB(tm.TestCase):
         result = get_countries()
         self.assertTrue('Zimbabwe' in list(result['name']))
         self.assertTrue(len(result) > 100)
+        self.assertTrue(pandas.notnull(result.latitude.mean()))
+        self.assertTrue(pandas.notnull(result.longitude.mean()))
 
 if __name__ == '__main__':
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
