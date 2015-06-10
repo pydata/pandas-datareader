@@ -213,6 +213,9 @@ def _get_data(indicator="NY.GNS.ICTR.GN.ZS", country='US',
 
 def get_countries():
     '''Query information about countries
+    
+    Provides information such as: 
+        country code, region, income level, capital city, latitude and longitude
     '''
     url = 'http://api.worldbank.org/countries/?per_page=1000&format=json'
     with urlopen(url) as response:
@@ -223,6 +226,8 @@ def get_countries():
     data.incomeLevel = [x['value'] for x in data.incomeLevel]
     data.lendingType = [x['value'] for x in data.lendingType]
     data.region = [x['value'] for x in data.region]
+    data.latitude = [float(x) if x != "" else np.nan for x in data.latitude]
+    data.longitude = [float(x) if x != "" else np.nan for x in data.longitude]
     data = data.rename(columns={'id': 'iso3c', 'iso2Code': 'iso2c'})
     return data
 
