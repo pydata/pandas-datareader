@@ -1,10 +1,12 @@
+sudo: false
+
 language: python
 
 env:
   - PYTHON=2.6 PANDAS=0.13.1
   - PYTHON=2.7 PANDAS=0.15.1
   - PYTHON=3.3 PANDAS=0.14.1
-  - PYTHON=3.4 PANDAS=0.15.1
+  - PYTHON=3.4 PANDAS=0.16.2
   - PYTHON=2.7 PANDAS=0.12.0
   - PYTHON=2.7 PANDAS=0.11.0
   - PYTHON=2.7 PANDAS=0.10.1
@@ -16,7 +18,6 @@ matrix:
         - env: PYTHON=2.7 PANDAS=0.10.1
 
 install:
-  - sudo apt-get update
   # You may want to periodically update this, although the conda update
   # conda line below will keep everything up-to-date.  We do this
   # conditionally because it saves us some downloading if the version is
