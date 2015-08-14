@@ -155,14 +155,18 @@ FRED
 Fama/French
 ===========
 
-Dataset names are listed at `Fama/French Data Library
+Access datasets from the `Fama/French Data Library
 <http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html>`__.
+The ``get_available_datasets`` function returns a list of all available datasets.
 
 .. ipython:: python
 
+    from pandas_datareader.famafrench import get_available_datasets
     import pandas_datareader.data as web
-    ip = web.DataReader("5_Industry_Portfolios", "famafrench")
-    ip[4].ix[192607]
+    len(get_available_datasets())
+    ds = web.DataReader("5_Industry_Portfolios", "famafrench")
+    print(ds['DESCR'])
+    ds[4].ix['1926-07']
 
 .. _remote_data.wb:
 
