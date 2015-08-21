@@ -1,8 +1,7 @@
 from pandas_datareader.shared import _get_data_from
 
 def get_data_google(symbols=None, start=None, end=None, retry_count=3,
-                    pause=0.001, adjust_price=False, ret_index=False,
-                    chunksize=25):
+                    pause=0.001, chunksize=25):
     """
     Returns DataFrame/Panel of historical stock prices from symbols, over date
     range, start to end. To avoid being penalized by Google Finance servers,

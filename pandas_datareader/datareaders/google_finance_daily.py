@@ -1,5 +1,6 @@
 from pandas.io.common import urlencode
-from pandas_datareader.data import _sanitize_dates, _retry_read_url
+from pandas_datareader.url_request import _retry_read_url
+from pandas_datareader.date_chunks import _sanitize_dates
 
 _HISTORICAL_GOOGLE_URL = 'http://www.google.com/finance/historical?'
 

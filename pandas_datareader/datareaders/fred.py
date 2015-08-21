@@ -3,7 +3,7 @@ from pandas.core.common import is_list_like
 from pandas.io.common import urlopen
 from pandas import concat, read_csv
 
-from pandas_datareader.data import _sanitize_dates
+from pandas_datareader.date_chunks import _sanitize_dates
 
 _FRED_URL = "http://research.stlouisfed.org/fred2/series/"
 

@@ -40,7 +40,7 @@ def get_components_yahoo(idx_sym):
     # LOOP across component index structure,
     # break when no new components are found
     while True in mask:
-        url_str = url.format(idx_mod, stats,  comp_idx)
+        url_str = url.format(idx_mod, stats, comp_idx)
         with urlopen(url_str) as resp:
             raw = resp.read()
         lines = raw.decode('utf-8').strip().strip('"').split('"\r\n"')
