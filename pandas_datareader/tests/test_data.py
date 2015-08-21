@@ -25,7 +25,8 @@ except ImportError:
 
 import pandas_datareader.data as web
 from pandas_datareader.data import (
-    DataReader, SymbolWarning, RemoteDataError, _yahoo_codes)
+    DataReader, SymbolWarning, RemoteDataError)
+from pandas_datareader.datareaders.yahoo_finance_quotes import _yahoo_codes
 
 def _skip_if_no_lxml():
     try:
