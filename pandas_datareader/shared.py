@@ -64,4 +64,3 @@ def _dl_mult_symbols(symbols, start, end, interval, chunksize, retry_count, paus
         # cannot construct a panel with just 1D nans indicating no data
         raise RemoteDataError("No data fetched using "
                               "{0!r}".format(method.__name__))
-
