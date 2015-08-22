@@ -8,7 +8,7 @@ from pandas_datareader.wb import search, download, get_countries
 
 try:
     from pandas.compat import u
-except ImportError:
+except ImportError: # pragma: no cover
     try:
         unicode # python 2
         def u(s):
@@ -81,7 +81,7 @@ class TestWB(tm.TestCase):
         # if it ever gets here, it means WB unretired the indicator.
         # even if they dropped it completely, it would still get caught above
         # or the WB API changed somehow in a really unexpected way.
-        if len(result) > 0:
+        if len(result) > 0: # pragma: no cover
             raise nose.SkipTest("Invalid results")
 
     def test_wdi_download_w_crash_inducing_countrycode(self):
@@ -97,7 +97,7 @@ class TestWB(tm.TestCase):
 
         # if it ever gets here, it means the country code XXX got used by WB
         # or the WB API changed somehow in a really unexpected way.
-        if len(result) > 0:
+        if len(result) > 0: # pragma: no cover
             raise nose.SkipTest("Invalid results")
 
     def test_wdi_get_countries(self):
@@ -109,4 +109,4 @@ class TestWB(tm.TestCase):
 
 if __name__ == '__main__':
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
-                   exit=False)
+                   exit=False) # pragma: no cover
