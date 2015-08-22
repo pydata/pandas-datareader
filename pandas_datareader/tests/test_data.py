@@ -471,6 +471,9 @@ class TestDataReader(tm.TestCase):
             assert ff
             assert isinstance(ff, dict)
 
+    def test_not_implemented(self):
+        self.assertRaises(NotImplementedError, DataReader, "NA", "NA")
+
 
 class TestFred(tm.TestCase):
     def test_fred(self):
