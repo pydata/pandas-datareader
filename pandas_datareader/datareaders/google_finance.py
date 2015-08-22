@@ -1,0 +1,33 @@
+from pandas_datareader.shared import _get_data_from
+
+def get_data_google(symbols=None, start=None, end=None, retry_count=3,
+                    pause=0.001, chunksize=25):
+    """
+    Returns DataFrame/Panel of historical stock prices from symbols, over date
+    range, start to end. To avoid being penalized by Google Finance servers,
+    pauses between downloading 'chunks' of symbols can be specified.
+
+    Parameters
+    ----------
+    symbols : string, array-like object (list, tuple, Series), or DataFrame
+        Single stock symbol (ticker), array-like object of symbols or
+        DataFrame with index containing stock symbols.
+    start : string, (defaults to '1/1/2010')
+        Starting date, timestamp. Parses many different kind of date
+        representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
+    end : string, (defaults to today)
+        Ending date, timestamp. Same format as starting date.
+    retry_count : int, default 3
+        Number of times to retry query request.
+    pause : int, default 0
+        Time, in seconds, to pause between consecutive queries of chunks. If
+        single value given for symbol, represents the pause between retries.
+    chunksize : int, default 25
+        Number of symbols to download consecutively before intiating pause.
+
+    Returns
+    -------
+    hist_data : DataFrame (str) or Panel (array-like object, DataFrame)
+    """
+    return _get_data_from(symbols, start, end, None, retry_count, pause,
+                          chunksize, 'google')
