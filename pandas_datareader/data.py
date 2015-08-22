@@ -6,13 +6,13 @@ Module contains tools for collecting data from various remote sources
 
 from pandas_datareader.date_chunks import _sanitize_dates
 from .datareaders.google_finance import get_data_google
-from .datareaders.google_finance_quotes import get_quote_google
+from .datareaders.google_finance.quotes import get_quote_google
 
 from .datareaders.yahoo_finance import get_data_yahoo
-from .datareaders.yahoo_finance_quotes import get_quote_yahoo
-from .datareaders.yahoo_finance_options import Options
-from .datareaders.yahoo_finance_actions import get_data_yahoo_actions
-from .datareaders.yahoo_finance_components import get_components_yahoo
+from .datareaders.yahoo_finance.quotes import get_quote_yahoo
+from .datareaders.yahoo_finance.options import Options
+from .datareaders.yahoo_finance.actions import get_data_yahoo_actions
+from .datareaders.yahoo_finance.components import get_components_yahoo
 
 from .datareaders.fred import get_data_fred
 from .datareaders.famafrench import get_data_famafrench

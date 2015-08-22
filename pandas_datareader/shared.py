@@ -4,10 +4,10 @@ import pandas.compat as compat
 from pandas.core.common import PandasError
 from pandas import Panel, DataFrame
 
-from .date_chunks import _in_chunks
+from .shared.date_chunks import _in_chunks
 
-from .datareaders.google_finance_daily import _get_hist_google
-from .datareaders.yahoo_finance_daily import _get_hist_yahoo
+from .shared.datareaders.google_finance.daily import _get_hist_google
+from .shared.datareaders.yahoo_finance.daily import _get_hist_yahoo
 
 
 class SymbolWarning(UserWarning):
