@@ -12,7 +12,7 @@ from pandas import DataFrame, Timestamp
 from pandas.util.testing import assert_frame_equal, assert_series_equal
 try:
     from pandas.util.testing import assert_produces_warning
-except ImportError:
+except ImportError: # pragma: no cover
     assert_produces_warning = None
 
 import pandas.util.testing as tm
@@ -20,7 +20,7 @@ from numpy.testing import assert_array_equal
 
 try:
     from urllib.error import HTTPError
-except ImportError:
+except ImportError: # pragma: no cover
     from urllib2 import HTTPError
 
 import pandas_datareader.data as web
@@ -31,7 +31,7 @@ from pandas_datareader.datareaders.yahoo_finance_quotes import _yahoo_codes
 def _skip_if_no_lxml():
     try:
         import lxml
-    except ImportError:
+    except ImportError: # pragma: no cover
         raise nose.SkipTest("no lxml")
 
 
@@ -51,7 +51,7 @@ class TestGoogle(tm.TestCase):
     def setUpClass(cls):
         super(TestGoogle, cls).setUpClass()
         cls.locales = tm.get_locales(prefix='en_US')
-        if not cls.locales:
+        if not cls.locales: # pragma: no cover
             raise nose.SkipTest("US English locale not available for testing")
 
     @classmethod
@@ -93,7 +93,7 @@ class TestGoogle(tm.TestCase):
             if (hasattr(pan, 'Close') and hasattr(pan.Close, 'GOOG') and
                 hasattr(pan.Close, 'AAPL')):
                 self.assertEqual(ts[0].dayofyear, 3)
-            else:
+            else: # pragma: no cover
                 self.assertRaises(AttributeError, lambda: pan.Close)
 
     def test_get_multi_invalid(self):
@@ -174,14 +174,14 @@ class TestYahoo(tm.TestCase):
         df = web.get_quote_yahoo(['GOOG', 'AAPL', 'GOOG'])
         assert_series_equal(df.ix[0], df.ix[2])
 
-    def test_get_components_dow_jones(self):
+    def test_get_components_dow_jones(self): # pragma: no cover
         raise nose.SkipTest('unreliable test, receive partial components back for dow_jones')
 
         df = web.get_components_yahoo('^DJI') #Dow Jones
         assert isinstance(df, pd.DataFrame)
         self.assertEqual(len(df), 30)
 
-    def test_get_components_dax(self):
+    def test_get_components_dax(self): # pragma: no cover
         raise nose.SkipTest('unreliable test, receive partial components back for dax')
 
         df = web.get_components_yahoo('^GDAXI') #DAX
@@ -190,7 +190,7 @@ class TestYahoo(tm.TestCase):
         self.assertEqual(df[df.name.str.contains('adidas', case=False)].index,
                          'ADS.DE')
 
-    def test_get_components_nasdaq_100(self):
+    def test_get_components_nasdaq_100(self): # pragma: no cover
         # as of 7/12/13 the conditional will test false because the link is invalid
         raise nose.SkipTest('unreliable test, receive partial components back for nasdaq_100')
 
@@ -299,8 +299,7 @@ class TestYahooOptions(tm.TestCase):
         today = datetime.today()
         cls.year = today.year
         cls.month = today.month + 1
-        if cls.month > 12:
-            cls.year = cls.year + 1
+        if cls.month > 12: # pragma: no cover
             cls.month = 1
         cls.expiry = datetime(cls.year, cls.month, 1)
         cls.dirpath = tm.get_data_path()
@@ -321,7 +320,7 @@ class TestYahooOptions(tm.TestCase):
 
         try:
             options = self.aapl.get_options_data(expiry=self.expiry)
-        except RemoteDataError as e:
+        except RemoteDataError as e: # pragma: no cover
             raise nose.SkipTest(e)
         self.assertTrue(len(options) > 1)
 
@@ -329,49 +328,49 @@ class TestYahooOptions(tm.TestCase):
         try:
             options = self.aapl.get_near_stock_price(call=True, put=True,
                                                      expiry=self.expiry)
-        except RemoteDataError as e:
+        except RemoteDataError as e: # pragma: no cover
             raise nose.SkipTest(e)
         self.assertTrue(len(options) > 1)
 
     def test_get_call_data(self):
         try:
             calls = self.aapl.get_call_data(expiry=self.expiry)
-        except RemoteDataError as e:
+        except RemoteDataError as e: # pragma: no cover
             raise nose.SkipTest(e)
         self.assertTrue(len(calls) > 1)
 
     def test_get_put_data(self):
         try:
             puts = self.aapl.get_put_data(expiry=self.expiry)
-        except RemoteDataError as e:
+        except RemoteDataError as e: # pragma: no cover
             raise nose.SkipTest(e)
         self.assertTrue(len(puts) > 1)
 
     def test_get_expiry_dates(self):
         try:
             dates, _ = self.aapl._get_expiry_dates_and_links()
-        except RemoteDataError as e:
+        except RemoteDataError as e: # pragma: no cover
             raise nose.SkipTest(e)
         self.assertTrue(len(dates) > 1)
 
     def test_get_all_data(self):
         try:
             data = self.aapl.get_all_data(put=True)
-        except RemoteDataError as e:
+        except RemoteDataError as e: # pragma: no cover
             raise nose.SkipTest(e)
         self.assertTrue(len(data) > 1)
 
     def test_get_data_with_list(self):
         try:
             data = self.aapl.get_call_data(expiry=self.aapl.expiry_dates)
-        except RemoteDataError as e:
+        except RemoteDataError as e: # pragma: no cover
             raise nose.SkipTest(e)
         self.assertTrue(len(data) > 1)
 
     def test_get_all_data_calls_only(self):
         try:
             data = self.aapl.get_all_data(call=True, put=False)
-        except RemoteDataError as e:
+        except RemoteDataError as e: # pragma: no cover
             raise nose.SkipTest(e)
         self.assertTrue(len(data) > 1)
 
@@ -382,7 +381,7 @@ class TestYahooOptions(tm.TestCase):
             url = options_object._yahoo_url_from_expiry(options_object.expiry_dates[0])
             root = options_object._parse_url(url)
             quote_price = options_object._underlying_price_from_root(root)
-        except RemoteDataError as e:
+        except RemoteDataError as e: # pragma: no cover
             raise nose.SkipTest(e)
         self.assert_(isinstance(quote_price, float))
 
@@ -420,7 +419,7 @@ class TestYahooOptions(tm.TestCase):
     def test_month_year(self):
         try:
             data = self.aapl.get_call_data(month=self.month, year=self.year)
-        except RemoteDataError as e:
+        except RemoteDataError as e: # pragma: no cover
             raise nose.SkipTest(e)
 
         self.assertTrue(len(data) > 1)
@@ -441,7 +440,7 @@ class TestOptionsWarnings(tm.TestCase):
         super(TestOptionsWarnings, cls).tearDownClass()
 
     def test_options_source_warning(self):
-        if not assert_produces_warning:
+        if not assert_produces_warning: # pragma: no cover
             raise nose.SkipTest("old version of pandas without "
                            "compat.assert_produces_warning")
         with assert_produces_warning():
@@ -487,7 +486,9 @@ class TestFred(tm.TestCase):
 
         # < 7/30/14 16535 was returned
         #self.assertEqual(int(received), 16535)
-        self.assertEqual(int(received), 16502)
+        # < 8/20/15 16502 was returned
+        #self.assertEqual(int(received), 16502)
+        self.assertEqual(int(received), 16440)
 
         self.assertRaises(Exception, web.DataReader, "NON EXISTENT SERIES",
                           'fred', start, end)
@@ -498,7 +499,7 @@ class TestFred(tm.TestCase):
         df = web.DataReader("DFII5", "fred", start, end)
         assert pd.isnull(df.ix['2010-01-01'][0])
 
-    def test_fred_parts(self):
+    def test_fred_parts(self): # pragma: no cover
         raise nose.SkipTest('buggy as of 2/18/14; maybe a data revision?')
 
         start = datetime(2010, 1, 1)
@@ -523,9 +524,8 @@ class TestFred(tm.TestCase):
         name = "NOT A REAL SERIES"
         self.assertRaises(Exception, web.get_data_fred, name)
 
-    def test_fred_multi(self):
+    def test_fred_multi(self): # pragma: no cover
         raise nose.SkipTest('buggy as of 2/18/14; maybe a data revision?')
-
         names = ['CPIAUCSL', 'CPALTT01USQ661S', 'CPILFESL']
         start = datetime(2010, 1, 1)
         end = datetime(2013, 1, 27)
@@ -545,4 +545,4 @@ class TestFred(tm.TestCase):
 
 if __name__ == '__main__':
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
-                   exit=False)
+                   exit=False) # pragma: no cover
