@@ -486,7 +486,9 @@ class TestFred(tm.TestCase):
 
         # < 7/30/14 16535 was returned
         #self.assertEqual(int(received), 16535)
-        self.assertEqual(int(received), 16502)
+        # < 8/20/15 16502 was returned
+        #self.assertEqual(int(received), 16502)
+        self.assertEqual(int(received), 16440)
 
         self.assertRaises(Exception, web.DataReader, "NON EXISTENT SERIES",
                           'fred', start, end)
