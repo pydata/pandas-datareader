@@ -5,17 +5,17 @@ Module contains tools for collecting data from various remote sources
 """
 
 from pandas_datareader.date_chunks import _sanitize_dates
-from .datareaders.google_finance import get_data_google
-from .datareaders.google_finance.quotes import get_quote_google
+from pandas_datareader.datareaders.google import get_data_google
+from pandas_datareader.datareaders.google.quotes import get_quote_google
 
-from .datareaders.yahoo_finance import get_data_yahoo
-from .datareaders.yahoo_finance.quotes import get_quote_yahoo
-from .datareaders.yahoo_finance.options import Options
-from .datareaders.yahoo_finance.actions import get_data_yahoo_actions
-from .datareaders.yahoo_finance.components import get_components_yahoo
+from pandas_datareader.datareaders.yahoo import get_data_yahoo
+from pandas_datareader.datareaders.yahoo.quotes import get_quote_yahoo
+from pandas_datareader.datareaders.yahoo.options import Options
+from pandas_datareader.datareaders.yahoo.actions import get_data_yahoo_actions
+from pandas_datareader.datareaders.yahoo.components import get_components_yahoo
 
-from .datareaders.fred import get_data_fred
-from .datareaders.famafrench import get_data_famafrench
+from pandas_datareader.datareaders.fred import get_data_fred
+from pandas_datareader.datareaders.famafrench import get_data_famafrench
 
 def DataReader(name, data_source=None, start=None, end=None,
                retry_count=3, pause=0.001):
@@ -74,4 +74,6 @@ def DataReader(name, data_source=None, start=None, end=None,
         return get_data_fred(name, start, end)
     elif data_source == "famafrench":
         return get_data_famafrench(name)
-
+    else:
+        raise NotImplementedError(
+                "data_source=%r is not implemented" % data_source)

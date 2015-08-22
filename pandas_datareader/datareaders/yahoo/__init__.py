@@ -1,4 +1,5 @@
 from pandas_datareader.shared import _get_data_from
+from pandas_datareader.datareaders.yahoo.daily import _get_hist_yahoo
 
 def get_data_yahoo(symbols=None, start=None, end=None, retry_count=3,
                    pause=0.001, adjust_price=False, ret_index=False,
@@ -42,7 +43,7 @@ def get_data_yahoo(symbols=None, start=None, end=None, retry_count=3,
     if interval not in ['d', 'w', 'm', 'v']:
         raise ValueError("Invalid interval: valid values are 'd', 'w', 'm' and 'v'")
     hist_data = _get_data_from(symbols, start, end, interval, retry_count, pause, \
-                    chunksize, 'yahoo')
+                    chunksize, _get_hist_yahoo)
     if ret_index:
         hist_data['Ret_Index'] = _calc_return_index(hist_data['Adj Close'])
     if adjust_price:

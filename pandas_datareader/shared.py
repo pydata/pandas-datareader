@@ -4,11 +4,7 @@ import pandas.compat as compat
 from pandas.core.common import PandasError
 from pandas import Panel, DataFrame
 
-from .shared.date_chunks import _in_chunks
-
-from .shared.datareaders.google_finance.daily import _get_hist_google
-from .shared.datareaders.yahoo_finance.daily import _get_hist_yahoo
-
+from pandas_datareader.date_chunks import _in_chunks
 
 class SymbolWarning(UserWarning):
     pass
@@ -16,12 +12,8 @@ class SymbolWarning(UserWarning):
 class RemoteDataError(PandasError, IOError):
     pass
 
-_source_functions = {'google': _get_hist_google, 'yahoo': _get_hist_yahoo}
-
 def _get_data_from(symbols, start, end, interval, retry_count, pause,
-                   chunksize, source):
-
-    src_fn = _source_functions[source]
+                   chunksize, src_fn):
 
     # If a single symbol, (e.g., 'GOOG')
     if isinstance(symbols, (compat.string_types, int)):

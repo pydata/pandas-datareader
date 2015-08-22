@@ -1,4 +1,5 @@
 from pandas_datareader.shared import _get_data_from
+from pandas_datareader.datareaders.google.daily import _get_hist_google
 
 def get_data_google(symbols=None, start=None, end=None, retry_count=3,
                     pause=0.001, chunksize=25):
@@ -30,4 +31,4 @@ def get_data_google(symbols=None, start=None, end=None, retry_count=3,
     hist_data : DataFrame (str) or Panel (array-like object, DataFrame)
     """
     return _get_data_from(symbols, start, end, None, retry_count, pause,
-                          chunksize, 'google')
+                          chunksize, _get_hist_google)
