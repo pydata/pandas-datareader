@@ -6,7 +6,7 @@ Module contains tools for collecting data from various remote sources
 
 import warnings
 
-from pandas_datareader.commons.date_chunks import _sanitize_dates
+from pandas_datareader.commons import _sanitize_dates
 
 from pandas_datareader.google.daily import _get_data as get_data_google
 from pandas_datareader.google.quotes import _get_data as get_quote_google

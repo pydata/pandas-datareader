@@ -1,5 +1,5 @@
-from pandas_datareader.commons.url_request import _retry_read_url
-from pandas_datareader.commons.date_chunks import _sanitize_dates
+from pandas_datareader.commons import _retry_read_url
+from pandas_datareader.commons import _sanitize_dates
 from pandas_datareader.commons import _get_data_from
 
 _URL = 'http://ichart.finance.yahoo.com/table.csv?'
