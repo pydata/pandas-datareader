@@ -90,7 +90,9 @@ def DataReader(name, data_source=None, start=None, end=None,
         return get_data_fred(name, start, end)
     elif data_source == "famafrench":
         return get_data_famafrench(name)
-
+    else:
+        raise NotImplementedError(
+                "data_source=%r is not implemented" % data_source)
 
 def _sanitize_dates(start, end):
     from pandas.core.datetools import to_datetime
