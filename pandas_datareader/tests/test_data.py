@@ -163,9 +163,6 @@ class TestYahoo(tm.TestCase):
         assert_series_equal(df.ix[0], df.ix[2])
 
     def test_get_quote_string(self):
-        df = web.get_quote_yahoo('GOOG')
-
-    def test_get_quote_string(self):
         _yahoo_codes.update({'MarketCap': 'j1'})
         df = web.get_quote_yahoo('GOOG')
         self.assertFalse(pd.isnull(df['MarketCap'][0]))
