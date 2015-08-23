@@ -7,10 +7,10 @@ _yahoo_codes = {'symbol': 's', 'last': 'l1', 'change_pct': 'p2', 'PE': 'r',
                 'time': 't1', 'short_ratio': 's7'}
 
 
-_YAHOO_QUOTE_URL = 'http://finance.yahoo.com/d/quotes.csv?'
+_URL = 'http://finance.yahoo.com/d/quotes.csv?'
 
 
-def get_quote_yahoo(symbols):
+def _get_data(symbols):
     """
     Get current yahoo quote
 
@@ -27,7 +27,7 @@ def get_quote_yahoo(symbols):
 
     data = defaultdict(list)
 
-    url_str = _YAHOO_QUOTE_URL + 's=%s&f=%s' % (sym_list, request)
+    url_str = _URL + 's=%s&f=%s' % (sym_list, request)
 
     with urlopen(url_str) as url:
         lines = url.readlines()

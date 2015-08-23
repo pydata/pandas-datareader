@@ -4,12 +4,12 @@ from pandas.io.common import urlopen, ZipFile
 from pandas.compat import lmap
 from pandas import DataFrame
 
-_FAMAFRENCH_URL = 'http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp'
+_URL = 'http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp'
 
 
-def get_data_famafrench(name):
+def _get_data(name):
     # path of zip files
-    zip_file_path = '{0}/{1}_TXT.zip'.format(_FAMAFRENCH_URL, name)
+    zip_file_path = '{0}/{1}_TXT.zip'.format(_URL, name)
 
     with urlopen(zip_file_path) as url:
         raw = url.read()

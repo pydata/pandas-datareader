@@ -1,10 +1,10 @@
 from pandas import DataFrame
 from pandas.io.common import urlopen
 
-_YAHOO_COMPONENTS_URL = 'http://download.finance.yahoo.com/d/quotes.csv?'
+_URL = 'http://download.finance.yahoo.com/d/quotes.csv?'
 
 
-def get_components_yahoo(idx_sym):
+def _get_data(idx_sym):
     """
     Returns DataFrame containing list of component information for
     index represented in idx_sym from yahoo. Includes component symbol
@@ -28,7 +28,7 @@ def get_components_yahoo(idx_sym):
     stats = 'snx'
     # URL of form:
     # http://download.finance.yahoo.com/d/quotes.csv?s=@%5EIXIC&f=snxl1d1t1c1ohgv
-    url = _YAHOO_COMPONENTS_URL + 's={0}&f={1}&e=.csv&h={2}'
+    url = _URL + 's={0}&f={1}&e=.csv&h={2}'
 
     idx_mod = idx_sym.replace('^', '@%5E')
     url_str = url.format(idx_mod, stats, 1)

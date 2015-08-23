@@ -5,10 +5,10 @@ from pandas import concat, read_csv
 
 from pandas_datareader.commons.date_chunks import _sanitize_dates
 
-_FRED_URL = "http://research.stlouisfed.org/fred2/series/"
+_URL = "http://research.stlouisfed.org/fred2/series/"
 
 
-def get_data_fred(name, start=dt.datetime(2010, 1, 1),
+def _get_data(name, start=dt.datetime(2010, 1, 1),
                   end=dt.datetime.today()):
     """
     Get data for the given name from the St. Louis FED (FRED).
@@ -26,7 +26,7 @@ def get_data_fred(name, start=dt.datetime(2010, 1, 1),
     else:
         names = name
 
-    urls = [_FRED_URL + '%s' % n + '/downloaddata/%s' % n + '.csv' for
+    urls = [_URL + '%s' % n + '/downloaddata/%s' % n + '.csv' for
             n in names]
 
     def fetch_data(url, name):

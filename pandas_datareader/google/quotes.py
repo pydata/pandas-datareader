@@ -1,4 +1,4 @@
-def get_quote_google(symbols):
+def _get_data(symbols):
     """
     Get current yahoo quote
 

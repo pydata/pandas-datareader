@@ -6,10 +6,10 @@ from pandas.util.testing import _network_error_classes
 from pandas.compat import StringIO, bytes_to_str
 from pandas_datareader.commons.date_chunks import _sanitize_dates
 
-_HISTORICAL_YAHOO_ACTIONS_URL = 'http://ichart.finance.yahoo.com/x?'
+_URL = 'http://ichart.finance.yahoo.com/x?'
 
 
-def get_data_yahoo_actions(symbol, start=None, end=None, retry_count=3, pause=0.001):
+def _get_data(symbol, start=None, end=None, retry_count=3, pause=0.001):
     """
     Returns DataFrame of historical corporate actions (dividends and stock
     splits) from symbols, over date range, start to end. All dates in the
@@ -30,7 +30,7 @@ def get_data_yahoo_actions(symbol, start=None, end=None, retry_count=3, pause=0.
     """
 
     start, end = _sanitize_dates(start, end)
-    url = (_HISTORICAL_YAHOO_ACTIONS_URL + 's=%s' % symbol + \
+    url = (_URL + 's=%s' % symbol + \
                 '&a=%s' % (start.month - 1) + \
                 '&b=%s' % start.day + \
                 '&c=%s' % start.year + \

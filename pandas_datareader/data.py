@@ -8,17 +8,17 @@ import warnings
 
 from pandas_datareader.commons.date_chunks import _sanitize_dates
 
-from pandas_datareader.google import get_data_google
-from pandas_datareader.google.quotes import get_quote_google
+from pandas_datareader.google.daily import _get_data as get_data_google
+from pandas_datareader.google.quotes import _get_data as get_quote_google
 
-from pandas_datareader.yahoo import get_data_yahoo
-from pandas_datareader.yahoo.quotes import get_quote_yahoo
-from pandas_datareader.yahoo.actions import get_data_yahoo_actions
-from pandas_datareader.yahoo.components import get_components_yahoo
+from pandas_datareader.yahoo.daily import _get_data as get_data_yahoo
+from pandas_datareader.yahoo.quotes import _get_data as get_quote_yahoo
+from pandas_datareader.yahoo.actions import _get_data as get_data_yahoo_actions
+from pandas_datareader.yahoo.components import _get_data as get_components_yahoo
 from pandas_datareader.yahoo.options import Options as YahooOptions
 
-from pandas_datareader.fred import get_data_fred
-from pandas_datareader.famafrench import get_data_famafrench
+from pandas_datareader.fred import _get_data as get_data_fred
+from pandas_datareader.famafrench import _get_data as get_data_famafrench
 
 def DataReader(name, data_source=None, start=None, end=None,
                retry_count=3, pause=0.001):
