@@ -1195,11 +1195,7 @@ class Options(object):
 
         """
 
-        try:
-            expiry_dates = self.expiry_dates
-        except AttributeError:
-            expiry_dates, _ = self._get_expiry_dates_and_links()
-
+        expiry_dates = self.expiry_dates
         return self._get_data_in_date_range(dates=expiry_dates, call=call, put=put)
 
     def _get_data_in_date_range(self, dates, call=True, put=True):
