@@ -86,6 +86,7 @@ def Options(symbol, data_source=None):
         warnings.warn("Options(symbol) is deprecated, use Options(symbol,"
                       " data_source) instead", FutureWarning)
         data_source = "yahoo"
-    if data_source != "yahoo":
+    if data_source == "yahoo":
+        return YahooOptions(symbol)
+    else:
         raise NotImplementedError("currently only yahoo supported")
-    return YahooOptions(symbol)
