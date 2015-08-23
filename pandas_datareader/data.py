@@ -4,15 +4,18 @@ Module contains tools for collecting data from various remote sources
 
 """
 
+import warnings
+
 from pandas_datareader.commons.date_chunks import _sanitize_dates
+
 from pandas_datareader.google import get_data_google
 from pandas_datareader.google.quotes import get_quote_google
 
 from pandas_datareader.yahoo import get_data_yahoo
 from pandas_datareader.yahoo.quotes import get_quote_yahoo
-from pandas_datareader.yahoo.options import Options
 from pandas_datareader.yahoo.actions import get_data_yahoo_actions
 from pandas_datareader.yahoo.components import get_components_yahoo
+from pandas_datareader.yahoo.options import Options as YahooOptions
 
 from pandas_datareader.fred import get_data_fred
 from pandas_datareader.famafrench import get_data_famafrench
@@ -77,3 +80,12 @@ def DataReader(name, data_source=None, start=None, end=None,
     else:
         raise NotImplementedError(
                 "data_source=%r is not implemented" % data_source)
+
+def Options(symbol, data_source=None):
+    if data_source is None:
+        warnings.warn("Options(symbol) is deprecated, use Options(symbol,"
+                      " data_source) instead", FutureWarning)
+        data_source = "yahoo"
+    if data_source != "yahoo":
+        raise NotImplementedError("currently only yahoo supported")
+    return YahooOptions(symbol)

@@ -36,7 +36,7 @@ class Options(object):
     Examples
     --------
     # Instantiate object with ticker
-    >>> aapl = Options('aapl', 'yahoo')
+    >>> aapl = Options('aapl')
 
     # Fetch next expiry call data
     >>> calls = aapl.get_call_data()
@@ -64,15 +64,9 @@ class Options(object):
     _OPTIONS_BASE_URL = 'http://finance.yahoo.com/q/op?s={sym}'
     _FINANCE_BASE_URL = 'http://finance.yahoo.com'
 
-    def __init__(self, symbol, data_source=None):
+    def __init__(self, symbol):
         """ Instantiates options_data with a ticker saved as symbol """
         self.symbol = symbol.upper()
-        if data_source is None:
-            warnings.warn("Options(symbol) is deprecated, use Options(symbol,"
-                          " data_source) instead", FutureWarning)
-            data_source = "yahoo"
-        if data_source != "yahoo":
-            raise NotImplementedError("currently only yahoo supported")
 
     def get_options_data(self, month=None, year=None, expiry=None):
         """
