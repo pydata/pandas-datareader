@@ -10,7 +10,7 @@ Up to date remote data access for pandas, works for multiple versions of pandas.
     :target: https://coveralls.io/r/pydata/pandas-datareader
 
 .. image:: https://readthedocs.org/projects/pandas-datareader/badge/?version=latest
-    :target: https://readthedocs.org/projects/pandas-datareader/?badge=latest
+    :target: http://pandas-datareader.readthedocs.org/en/latest/
 
 Installation
 ------------
