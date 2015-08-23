@@ -6,7 +6,7 @@ from pandas import to_datetime
 from pandas import concat, DatetimeIndex, Series
 from pandas.tseries.offsets import MonthEnd
 from pandas.util.testing import _network_error_classes
-from pandas_datareader.shared import RemoteDataError
+from pandas_datareader.commons import RemoteDataError
 
 # Items needed for options class
 CUR_MONTH = dt.datetime.now().month

@@ -1,5 +1,5 @@
-from pandas_datareader.url_request import _retry_read_url
-from pandas_datareader.date_chunks import _sanitize_dates
+from pandas_datareader.commons.url_request import _retry_read_url
+from pandas_datareader.commons.date_chunks import _sanitize_dates
 
 _HISTORICAL_YAHOO_URL = 'http://ichart.finance.yahoo.com/table.csv?'
 

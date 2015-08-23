@@ -1,5 +1,5 @@
-from pandas_datareader.shared import _get_data_from
-from pandas_datareader.datareaders.yahoo.daily import _get_hist_yahoo
+from pandas_datareader.commons import _get_data_from
+from pandas_datareader.yahoo.daily import _get_hist_yahoo
 
 def get_data_yahoo(symbols=None, start=None, end=None, retry_count=3,
                    pause=0.001, adjust_price=False, ret_index=False,

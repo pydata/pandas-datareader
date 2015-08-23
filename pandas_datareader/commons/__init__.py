@@ -4,7 +4,7 @@ import pandas.compat as compat
 from pandas.core.common import PandasError
 from pandas import Panel, DataFrame
 
-from pandas_datareader.date_chunks import _in_chunks
+from pandas_datareader.commons.date_chunks import _in_chunks
 
 class SymbolWarning(UserWarning):
     pass

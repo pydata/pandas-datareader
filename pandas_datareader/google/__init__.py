@@ -1,5 +1,5 @@
-from pandas_datareader.shared import _get_data_from
-from pandas_datareader.datareaders.google.daily import _get_hist_google
+from pandas_datareader.commons import _get_data_from
+from pandas_datareader.google.daily import _get_hist_google
 
 def get_data_google(symbols=None, start=None, end=None, retry_count=3,
                     pause=0.001, chunksize=25):

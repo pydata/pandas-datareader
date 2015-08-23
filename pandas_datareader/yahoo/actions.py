@@ -4,7 +4,7 @@ from pandas import to_datetime, DataFrame
 from pandas.io.common import urlopen
 from pandas.util.testing import _network_error_classes
 from pandas.compat import StringIO, bytes_to_str
-from pandas_datareader.date_chunks import _sanitize_dates
+from pandas_datareader.commons.date_chunks import _sanitize_dates
 
 _HISTORICAL_YAHOO_ACTIONS_URL = 'http://ichart.finance.yahoo.com/x?'
 

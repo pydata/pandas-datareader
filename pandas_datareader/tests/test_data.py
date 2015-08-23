@@ -25,8 +25,8 @@ except ImportError: # pragma: no cover
 
 import pandas_datareader.data as web
 from pandas_datareader.data import DataReader
-from pandas_datareader.shared import SymbolWarning, RemoteDataError
-from pandas_datareader.datareaders.yahoo.quotes import _yahoo_codes
+from pandas_datareader.commons import SymbolWarning, RemoteDataError
+from pandas_datareader.yahoo.quotes import _yahoo_codes
 
 def _skip_if_no_lxml():
     try:
