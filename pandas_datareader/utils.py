@@ -7,11 +7,15 @@ from pandas import to_datetime
 import pandas.compat as compat
 from pandas.core.common import PandasError
 from pandas import Panel, DataFrame
-from pandas.io.common import urlopen, urlencode
+from pandas.io.common import urlopen
 from pandas import read_csv
 from pandas.compat import StringIO, bytes_to_str
 from pandas.util.testing import _network_error_classes
 
+if compat.PY3:
+    from urllib.parse import urlencode
+else:
+    from urllib import urlencode
 
 class SymbolWarning(UserWarning):
     pass
