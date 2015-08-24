@@ -90,7 +90,7 @@ def _encode_url(url, params):
     Return encoded url with parameters
     """
     s_params = urlencode(params)
-    if s_params!=0:
+    if len(s_params)!=0:
         return url + '?' + s_params
     else:
         return url
