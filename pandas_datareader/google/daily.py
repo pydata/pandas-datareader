@@ -1,9 +1,9 @@
 from pandas.io.common import urlencode
-from pandas_datareader.utils import _retry_read_url
+from pandas_datareader.utils import _retry_read_url, _encode_url
 from pandas_datareader.utils import _sanitize_dates
 from pandas_datareader.utils import _get_data_from
 
-_URL = 'http://www.google.com/finance/historical?'
+_URL = 'http://www.google.com/finance/historical'
 
 
 def _get_data(symbols=None, start=None, end=None, retry_count=3,
@@ -49,9 +49,11 @@ def _get_data_one(sym, start, end, interval, retry_count, pause):
     start, end = _sanitize_dates(start, end)
 
     # www.google.com/finance/historical?q=GOOG&startdate=Jun+9%2C+2011&enddate=Jun+8%2C+2013&output=csv
-    url = "%s%s" % (_URL,
-                    urlencode({"q": sym,
-                               "startdate": start.strftime('%b %d, ' '%Y'),
-                               "enddate": end.strftime('%b %d, %Y'),
-                               "output": "csv"}))
+    params = {
+        'q': sym,
+        'startdate': start.strftime('%b %d, %Y'),
+        'enddate': end.strftime('%b %d, %Y'),
+        'output': "csv"
+    }
+    url = _encode_url(_URL, params)
     return _retry_read_url(url, retry_count, pause, 'Google')

@@ -7,7 +7,7 @@ from pandas import to_datetime
 import pandas.compat as compat
 from pandas.core.common import PandasError
 from pandas import Panel, DataFrame
-from pandas.io.common import urlopen
+from pandas.io.common import urlopen, urlencode
 from pandas import read_csv
 from pandas.compat import StringIO, bytes_to_str
 from pandas.util.testing import _network_error_classes
@@ -84,6 +84,16 @@ def _in_chunks(seq, size):
     Return sequence in 'chunks' of size defined by size
     """
     return (seq[pos:pos + size] for pos in range(0, len(seq), size))
+
+def _encode_url(url, params):
+    """
+    Return encoded url with parameters
+    """
+    s_params = urlencode(params)
+    if s_params!=0:
+        return url + '?' + s_params
+    else:
+        return url
 
 def _retry_read_url(url, retry_count, pause, name):
     """
