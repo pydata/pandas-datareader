@@ -2,12 +2,13 @@ from collections import defaultdict
 import pandas.compat as compat
 from pandas.io.common import urlopen
 from pandas import DataFrame
+from pandas_datareader.utils import _encode_url
 
 _yahoo_codes = {'symbol': 's', 'last': 'l1', 'change_pct': 'p2', 'PE': 'r',
                 'time': 't1', 'short_ratio': 's7'}
 
 
-_URL = 'http://finance.yahoo.com/d/quotes.csv?'
+_URL = 'http://finance.yahoo.com/d/quotes.csv'
 
 
 def _get_data(symbols):
@@ -27,10 +28,14 @@ def _get_data(symbols):
 
     data = defaultdict(list)
 
-    url_str = _URL + 's=%s&f=%s' % (sym_list, request)
+    params = {
+        's': sym_list,
+        'f': request
+    }
+    url = _encode_url(_URL, params)
 
-    with urlopen(url_str) as url:
-        lines = url.readlines()
+    with urlopen(url) as response:
+        lines = response.readlines()
 
     for line in lines:
         fields = line.decode('utf-8').strip().split(',')

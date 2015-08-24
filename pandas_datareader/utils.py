@@ -12,6 +12,10 @@ from pandas import read_csv
 from pandas.compat import StringIO, bytes_to_str
 from pandas.util.testing import _network_error_classes
 
+if compat.PY3:
+    from urllib.parse import urlencode
+else:
+    from urllib import urlencode
 
 class SymbolWarning(UserWarning):
     pass
@@ -84,6 +88,16 @@ def _in_chunks(seq, size):
     Return sequence in 'chunks' of size defined by size
     """
     return (seq[pos:pos + size] for pos in range(0, len(seq), size))
+
+def _encode_url(url, params):
+    """
+    Return encoded url with parameters
+    """
+    s_params = urlencode(params)
+    if s_params:
+        return url + '?' + s_params
+    else:
+        return url
 
 def _retry_read_url(url, retry_count, pause, name):
     """
