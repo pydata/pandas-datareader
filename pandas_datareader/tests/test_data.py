@@ -329,6 +329,10 @@ class TestYahooOptions(tm.TestCase):
             raise nose.SkipTest(e)
         self.assertTrue(len(options) > 1)
 
+    def test_options_is_not_none(self):
+        option = web.Options('aapl')
+        self.assertTrue(option is not None)
+
     def test_get_call_data(self):
         try:
             calls = self.aapl.get_call_data(expiry=self.expiry)
