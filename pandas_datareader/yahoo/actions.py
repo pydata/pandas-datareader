@@ -5,9 +5,9 @@ from pandas.io.common import urlopen
 from pandas.util.testing import _network_error_classes
 from pandas.compat import StringIO, bytes_to_str
 
-from pandas_datareader.utils import _sanitize_dates
+from pandas_datareader.utils import _sanitize_dates, _encode_url
 
-_URL = 'http://ichart.finance.yahoo.com/x?'
+_URL = 'http://ichart.finance.yahoo.com/x'
 
 
 def _get_data(symbol, start=None, end=None, retry_count=3, pause=0.001):
@@ -31,14 +31,17 @@ def _get_data(symbol, start=None, end=None, retry_count=3, pause=0.001):
     """
 
     start, end = _sanitize_dates(start, end)
-    url = (_URL + 's=%s' % symbol + \
-                '&a=%s' % (start.month - 1) + \
-                '&b=%s' % start.day + \
-                '&c=%s' % start.year + \
-                '&d=%s' % (end.month - 1) + \
-                '&e=%s' % end.day + \
-                '&f=%s' % end.year + \
-                '&g=v')
+    params = {
+        's': symbol,
+        'a': start.month - 1,
+        'b': start.day,
+        'c': start.year,
+        'd': end.month - 1,
+        'e': end.day,
+        'f': end.year,
+        'g': 'v'
+    }
+    url = _encode_url(_URL, params)
 
     for _ in range(retry_count):
         time.sleep(pause)

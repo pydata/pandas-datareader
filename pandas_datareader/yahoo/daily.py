@@ -1,8 +1,8 @@
-from pandas_datareader.utils import _retry_read_url
+from pandas_datareader.utils import _retry_read_url, _encode_url
 from pandas_datareader.utils import _sanitize_dates
 from pandas_datareader.utils import _get_data_from
 
-_URL = 'http://ichart.finance.yahoo.com/table.csv?'
+_URL = 'http://ichart.finance.yahoo.com/table.csv'
 
 def _get_data(symbols=None, start=None, end=None, retry_count=3,
                    pause=0.001, adjust_price=False, ret_index=False,
@@ -96,13 +96,16 @@ def _get_data_one(sym, start, end, interval, retry_count, pause):
     Returns a DataFrame.
     """
     start, end = _sanitize_dates(start, end)
-    url = (_URL + 's=%s' % sym +
-           '&a=%s' % (start.month - 1) +
-           '&b=%s' % start.day +
-           '&c=%s' % start.year +
-           '&d=%s' % (end.month - 1) +
-           '&e=%s' % end.day +
-           '&f=%s' % end.year +
-           '&g=%s' % interval +
-           '&ignore=.csv')
+    params = {
+        's': sym,
+        'a': start.month - 1,
+        'b': start.day,
+        'c': start.year,
+        'd': end.month - 1,
+        'e': end.day,
+        'f': end.year,
+        'g': interval,
+        'ignore': '.csv'
+    }
+    url = _encode_url(_URL, params)
     return _retry_read_url(url, retry_count, pause, 'Yahoo!')
