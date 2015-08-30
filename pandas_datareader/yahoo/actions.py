@@ -44,7 +44,6 @@ def _get_data(symbol, start=None, end=None, retry_count=3, pause=0.001):
     url = _encode_url(_URL, params)
 
     for _ in range(retry_count):
-        time.sleep(pause)
 
         try:
             with urlopen(url) as resp:
@@ -81,6 +80,8 @@ def _get_data(symbol, start=None, end=None, retry_count=3, pause=0.001):
                     })
 
             return DataFrame(actions_entries, index=actions_index)
+
+        time.sleep(pause)
 
     raise IOError("after %d tries, Yahoo! did not " \
                                 "return a 200 for url %r" % (retry_count, url))

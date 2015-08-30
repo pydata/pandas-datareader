@@ -104,7 +104,6 @@ def _retry_read_url(url, retry_count, pause, name):
     Open url (and retry)
     """
     for _ in range(retry_count):
-        time.sleep(pause)
 
         # kludge to close the socket ASAP
         try:
@@ -128,6 +127,8 @@ def _retry_read_url(url, retry_count, pause, name):
                 rs.index.name = rs.index.name.encode('ascii', 'ignore').decode()
 
             return rs
+
+        time.sleep(pause)
 
     raise IOError("after %d tries, %s did not "
                   "return a 200 for url %r" % (retry_count, name, url))
