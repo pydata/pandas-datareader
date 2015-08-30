@@ -132,3 +132,48 @@ def _retry_read_url(url, retry_count, pause, name):
 
     raise IOError("after %d tries, %s did not "
                   "return a 200 for url %r" % (retry_count, name, url))
+
+def _adjust_prices(hist_data, price_list=None):
+    """
+    Return modifed DataFrame or Panel with adjusted prices based on
+    'Adj Close' price. Adds 'Adj_Ratio' column.
+    """
+    if price_list is None:
+        price_list = 'Open', 'High', 'Low', 'Close'
+    adj_ratio = hist_data['Adj Close'] / hist_data['Close']
+
+    data = hist_data.copy()
+    for item in price_list:
+        data[item] = hist_data[item] * adj_ratio
+    data['Adj_Ratio'] = adj_ratio
+
+    if 'Adj Open' in data:
+        del data['Adj Open']
+    if 'Adj High' in data:
+        del data['Adj High']
+    if 'Adj Low' in data:
+        del data['Adj Low']
+    if 'Adj Close' in data:
+        del data['Adj Close']
+    if 'Adj Volume' in data:
+        del data['Adj Volume']
+    return data
+
+def _calc_return_index(price_df):
+    """
+    Return a returns index from a input price df or series. Initial value
+    (typically NaN) is set to 1.
+    """
+    df = price_df.pct_change().add(1).cumprod()
+    mask = df.ix[1].notnull() & df.ix[0].isnull()
+    df.ix[0][mask] = 1
+
+    # Check for first stock listings after starting date of index in ret_index
+    # If True, find first_valid_index and set previous entry to 1.
+    if (~mask).any():
+        for sym in mask.index[~mask]:
+            tstamp = df[sym].first_valid_index()
+            t_idx = df.index.get_loc(tstamp) - 1
+            df[sym].ix[t_idx] = 1
+
+    return df

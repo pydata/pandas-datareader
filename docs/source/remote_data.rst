@@ -177,6 +177,36 @@ World Bank
 `World Bank's World Development Indicators <http://data.worldbank.org>`__
 by using the ``wb`` I/O functions.
 
+.. _remote_data.quandl:
+
+Quandl
+======
+
+Historical data from Quandl
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+    import datetime
+    start = datetime.datetime(2010, 1, 1) # the default start date
+    end = datetime.datetime.now() # the default end date
+    f = web.DataReader('F', 'quandl', start, end)
+    f.ix['2010-01-04']
+
+    # multiple symbols
+    panel = web.DataReader(['F', 'GM'], 'quandl', start, end)
+
+    # using a dataset other than the default WIKI dataset
+    f = web.DataReader('YAHOO/F', 'quandl')
+
+    # multiple symbols from other dataset
+    panel = web.DataReader(['YAHOO/F', 'YAHOO/GM'], 'quandl')
+
+    # Paid datasets: you must set your Quandl API key:
+    web.set_quandl_api_key('your_key_here')
+    # And include the dataset as part of the symbol like so:
+    f = web.DataReader('EOD/F', 'quandl')
+
 Indicators
 ----------
 

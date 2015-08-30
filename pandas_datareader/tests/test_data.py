@@ -330,7 +330,7 @@ class TestYahooOptions(tm.TestCase):
         self.assertTrue(len(options) > 1)
 
     def test_options_is_not_none(self):
-        option = web.Options('aapl')
+        option = web.Options('aapl', 'yahoo')
         self.assertTrue(option is not None)
 
     def test_get_call_data(self):
@@ -538,6 +538,165 @@ class TestFred(tm.TestCase):
         with tm.assertRaises(HTTPError):
             DataReader(names, data_source="fred")
 
+
+class TestQuandl(tm.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        super(TestQuandl, cls).setUpClass()
+
+    def test_quandl(self):
+        # asserts that quandl is minimally working and that it throws
+        # an exception when DataReader can't get a 200 response from
+        # quandl
+        start = datetime(2010, 1, 1)
+        end = datetime(2013, 1, 27)
+
+        self.assertEqual(web.DataReader('F', 'quandl', start, end)['Close'][-1],
+                         13.68)
+
+    def test_quandl_fails(self):
+        start = datetime(2010, 1, 1)
+        end = datetime(2013, 1, 27)
+        self.assertRaises(Exception, web.DataReader, "NON EXISTENT TICKER",
+                          'quandl', start, end)
+
+    def test_get_quote_fails(self):
+        self.assertRaises(NotImplementedError, web.get_quote_quandl,
+                          pd.Series(['GOOG', 'AAPL', 'GOOG']))
+
+    def test_get_data_single_symbol(self):
+        # single symbol just test that we succeed
+        web.get_data_quandl('GOOG')
+
+    def test_get_data_interval(self):
+        # daily interval data
+        pan = web.get_data_quandl('XOM', '2013-01-01', '2013-12-31', interval='daily')
+        self.assertEqual(len(pan), 252)
+
+        # weekly interval data
+        pan = web.get_data_quandl('XOM', '2013-01-01', '2013-12-31', interval='weekly')
+        self.assertEqual(len(pan), 53)
+
+        # monthly interval data
+        pan = web.get_data_quandl('XOM', '2013-01-01', '2013-12-31', interval='monthly')
+        self.assertEqual(len(pan), 12)
+
+        # quarterly interval data
+        pan = web.get_data_quandl('XOM', '2013-01-01', '2013-12-31', interval='quarterly')
+        self.assertEqual(len(pan), 4)
+
+        # yearly interval data
+        pan = web.get_data_quandl('XOM', '2013-01-01', '2013-12-31', interval='annual')
+        self.assertEqual(len(pan), 1)
+
+        # test fail on invalid interval
+        self.assertRaises(ValueError, web.get_data_quandl, 'XOM', interval='NOT VALID')
+
+    def test_get_data_multiple_symbols(self):
+        # just test that we succeed
+        sl = ['AAPL', 'AMZN', 'GOOG']
+        web.get_data_quandl(sl, '2012')
+
+    def test_get_data_multiple_symbols_two_dates(self):
+        pan = web.get_data_quandl(['GE', 'MSFT', 'INTC'], 'JAN-01-12',
+                                 'JAN-31-12')
+        result = pan.Close.ix['01-18-12']
+        self.assertEqual(len(result), 3)
+
+        # sanity checking
+        self.assertTrue(np.issubdtype(result.dtype, np.floating))
+
+        expected = np.array([[18.99,  28.4, 25.18],
+                             [18.58, 28.31, 25.13],
+                             [19.03, 28.16, 25.52],
+                             [18.81, 28.82, 25.87]])
+        result = pan.Open.ix['Jan-15-12':'Jan-20-12']
+        self.assertEqual(expected.shape, result.shape)
+
+    def test_get_date_ret_index(self):
+        pan = web.get_data_quandl(['GE', 'INTC', 'IBM'], '1977', '1987',
+                                 ret_index=True)
+        self.assertTrue(hasattr(pan, 'Ret_Index'))
+        if hasattr(pan, 'Ret_Index') and hasattr(pan.Ret_Index, 'INTC'):
+            tstamp = pan.Ret_Index.INTC.first_valid_index()
+            result = pan.Ret_Index.ix[tstamp]['INTC']
+            self.assertEqual(result, 1.0)
+
+        # sanity checking
+        self.assertTrue(np.issubdtype(pan.values.dtype, np.floating))
+
+    def test_column_renames(self):
+        df = web.get_data_quandl('AMD')
+        self.assertTrue('Adj Open' in df.columns)
+        self.assertTrue('Adj High' in df.columns)
+        self.assertTrue('Adj Low' in df.columns)
+        self.assertTrue('Adj Close' in df.columns)
+        self.assertTrue('Adj Volume' in df.columns)
+
+        panel = web.get_data_quandl(['AMD', 'INTC'])
+        self.assertTrue('Adj Open' in panel.items)
+        self.assertTrue('Adj High' in panel.items)
+        self.assertTrue('Adj Low' in panel.items)
+        self.assertTrue('Adj Close' in panel.items)
+        self.assertTrue('Adj Volume' in panel.items)
+
+    def test_adjust_dataframe_prices(self):
+        unadjusted = web.get_data_quandl('XOM', start='2010-01-04', end='2010-12-31', adjust_price=False)
+        adjusted = web.get_data_quandl('XOM', start='2010-01-04', end='2010-12-31', adjust_price=True)
+
+        self.assertAlmostEqual(unadjusted['Adj Open'][0], adjusted['Open'][0])
+        self.assertAlmostEqual(unadjusted['Adj High'][0], adjusted['High'][0])
+        self.assertAlmostEqual(unadjusted['Adj Low'][0], adjusted['Low'][0])
+        self.assertAlmostEqual(unadjusted['Adj Close'][0], adjusted['Close'][0])
+
+        self.assertAlmostEqual(unadjusted['Adj Open'][-1], adjusted['Open'][-1])
+        self.assertAlmostEqual(unadjusted['Adj High'][-1], adjusted['High'][-1])
+        self.assertAlmostEqual(unadjusted['Adj Low'][-1], adjusted['Low'][-1])
+        self.assertAlmostEqual(unadjusted['Adj Close'][-1], adjusted['Close'][-1])
+
+        self.assertTrue('Adj Open' not in adjusted.columns)
+        self.assertTrue('Adj High' not in adjusted.columns)
+        self.assertTrue('Adj Low' not in adjusted.columns)
+        self.assertTrue('Adj Close' not in adjusted.columns)
+        self.assertTrue('Adj Volume' not in adjusted.columns)
+
+    def test_adjust_panel_prices(self):
+        unadjusted = web.get_data_quandl(['XOM', 'GMCR'], start='2010-01-04', end='2010-12-31', adjust_price=False)
+        adjusted = web.get_data_quandl(['XOM', 'GMCR'], start='2010-01-04', end='2010-12-31', adjust_price=True)
+
+        self.assertAlmostEqual(unadjusted['Adj Open']['XOM'][0], adjusted['Open']['XOM'][0])
+        self.assertAlmostEqual(unadjusted['Adj High']['XOM'][0], adjusted['High']['XOM'][0])
+        self.assertAlmostEqual(unadjusted['Adj Low']['XOM'][0], adjusted['Low']['XOM'][0])
+        self.assertAlmostEqual(unadjusted['Adj Close']['XOM'][0], adjusted['Close']['XOM'][0])
+
+        self.assertAlmostEqual(unadjusted['Adj Open']['XOM'][-1], adjusted['Open']['XOM'][-1])
+        self.assertAlmostEqual(unadjusted['Adj High']['XOM'][-1], adjusted['High']['XOM'][-1])
+        self.assertAlmostEqual(unadjusted['Adj Low']['XOM'][-1], adjusted['Low']['XOM'][-1])
+        self.assertAlmostEqual(unadjusted['Adj Close']['XOM'][-1], adjusted['Close']['XOM'][-1])
+
+        self.assertAlmostEqual(unadjusted['Adj Open']['GMCR'][0], adjusted['Open']['GMCR'][0])
+        self.assertAlmostEqual(unadjusted['Adj High']['GMCR'][0], adjusted['High']['GMCR'][0])
+        self.assertAlmostEqual(unadjusted['Adj Low']['GMCR'][0], adjusted['Low']['GMCR'][0])
+        self.assertAlmostEqual(unadjusted['Adj Close']['GMCR'][0], adjusted['Close']['GMCR'][0])
+
+        self.assertAlmostEqual(unadjusted['Adj Open']['GMCR'][-1], adjusted['Open']['GMCR'][-1])
+        self.assertAlmostEqual(unadjusted['Adj High']['GMCR'][-1], adjusted['High']['GMCR'][-1])
+        self.assertAlmostEqual(unadjusted['Adj Low']['GMCR'][-1], adjusted['Low']['GMCR'][-1])
+        self.assertAlmostEqual(unadjusted['Adj Close']['GMCR'][-1], adjusted['Close']['GMCR'][-1])
+
+        adjusted = adjusted.swapaxes('minor', 'items')
+
+        self.assertTrue('Adj Open' not in adjusted['XOM'].columns)
+        self.assertTrue('Adj High' not in adjusted['XOM'].columns)
+        self.assertTrue('Adj Low' not in adjusted['XOM'].columns)
+        self.assertTrue('Adj Close' not in adjusted['XOM'].columns)
+        self.assertTrue('Adj Volume' not in adjusted['XOM'].columns)
+
+        self.assertTrue('Adj Open' not in adjusted['GMCR'].columns)
+        self.assertTrue('Adj High' not in adjusted['GMCR'].columns)
+        self.assertTrue('Adj Low' not in adjusted['GMCR'].columns)
+        self.assertTrue('Adj Close' not in adjusted['GMCR'].columns)
+        self.assertTrue('Adj Volume' not in adjusted['GMCR'].columns)
 
 if __name__ == '__main__':
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
