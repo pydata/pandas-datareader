@@ -24,15 +24,20 @@ Install via pip
 Usage
 -----
 
-*In future pandas releases (0.17+) pandas-datareader will become a dependancy and using* ``pandas.io.data``
+*In future pandas releases (0.17+) pandas-datareader will become a dependency and using* ``pandas.io.data``
 *will be equivalent to using* ``pandas_datareader.data``.
 
-For now, you must replace your imports from ``pandas.io`` with ``pandas_datareader``:
+For now, you must replace your imports from ``pandas.io`` with ``pandas_datareader``.
 
 .. code-block:: python
 
-   from pandas.io import data, wb # becomes
-   from pandas_datareader import data, wb
+   from pandas.io import data, web
+
+becomes:
+
+.. code-block:: python
+
+   from pandas_datareader import data, web
 
 
 See the `pandas-datareader documentation <http://pandas-datareader.readthedocs.org/>`_ for more details.
