@@ -171,6 +171,12 @@ class TestYahoo(tm.TestCase):
         df = web.get_quote_yahoo(['GOOG', 'AAPL', 'GOOG'])
         assert_series_equal(df.ix[0], df.ix[2])
 
+    def test_get_quote_comma_name(self):
+        _yahoo_codes.update({'name': 'n'})
+        df = web.get_quote_yahoo(['RGLD'])
+        del _yahoo_codes['name']
+        self.assertEqual(df['name'][0], 'Royal Gold, Inc.')
+
     def test_get_components_dow_jones(self): # pragma: no cover
         raise nose.SkipTest('unreliable test, receive partial components back for dow_jones')
 
