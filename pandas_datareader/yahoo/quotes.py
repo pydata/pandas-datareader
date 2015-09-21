@@ -1,4 +1,6 @@
 from collections import defaultdict
+import csv
+
 import pandas.compat as compat
 from pandas.io.common import urlopen
 from pandas import DataFrame
@@ -37,9 +39,12 @@ def _get_data(symbols):
     with urlopen(url) as response:
         lines = response.readlines()
 
-    for line in lines:
-        fields = line.decode('utf-8').strip().split(',')
-        for i, field in enumerate(fields):
+    def line_gen(lines):
+        for line in lines:
+            yield line.decode('utf-8').strip()
+
+    for line in csv.reader(line_gen(lines)):
+        for i, field in enumerate(line):
             if field[-2:] == '%"':
                 v = float(field.strip('"%'))
             elif field[0] == '"':
