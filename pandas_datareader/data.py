@@ -33,12 +33,17 @@ def DataReader(name, data_source=None, start=None, end=None,
     name : str or list of strs
         the name of the dataset. Some data sources (yahoo, google, fred) will
         accept a list of names.
-    data_source: str
+    data_source: {str, None}
         the data source ("yahoo", "yahoo-actions", "google", "fred", or "ff")
     start : {datetime, None}
         left boundary for range (defaults to 1/1/2010)
     end : {datetime, None}
         right boundary for range (defaults to today)
+    retry_count : {int, 3}
+        Number of times to retry query request.
+    pause : {numeric, 0.001}
+        Time, in seconds, to pause between consecutive queries of chunks. If
+        single value given for symbol, represents the pause between retries.
 
     Examples
     ----------
