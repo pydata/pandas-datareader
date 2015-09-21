@@ -7,6 +7,7 @@ env:
   - PYTHON=2.7 PANDAS=0.15.1
   - PYTHON=3.3 PANDAS=0.14.1
   - PYTHON=3.4 PANDAS=0.16.2
+  - PYTHON=3.4 PANDAS=0.17.0rc1
   - PYTHON=2.7 PANDAS=0.12.0
   - PYTHON=2.7 PANDAS=0.11.0
   - PYTHON=2.7 PANDAS=0.10.1
@@ -36,8 +37,9 @@ install:
   - conda info -a
 
   # Replace dep1 dep2 ... with your dependencies
-  - conda create -q -n test-environment python=$PYTHON pandas=$PANDAS nose coverage setuptools html5lib lxml beautiful-soup
+  - conda create -q -n test-environment python=$PYTHON nose coverage setuptools html5lib lxml beautiful-soup
   - source activate test-environment
+  - conda install pandas==$PANDAS -c pandas --yes
   - pip install coveralls --quiet
   - conda list
   - python setup.py install
