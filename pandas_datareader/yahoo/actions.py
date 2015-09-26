@@ -5,7 +5,7 @@ from pandas.io.common import urlopen
 from pandas.util.testing import _network_error_classes
 from pandas.compat import StringIO, bytes_to_str
 
-from pandas_datareader.utils import _sanitize_dates, _encode_url
+from pandas_datareader._utils import _sanitize_dates, _encode_url
 
 _URL = 'http://ichart.finance.yahoo.com/x'
 

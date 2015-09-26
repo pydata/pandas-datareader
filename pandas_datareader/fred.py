@@ -3,7 +3,7 @@ from pandas.core.common import is_list_like
 from pandas.io.common import urlopen
 from pandas import concat, read_csv
 
-from pandas_datareader.utils import _sanitize_dates
+from pandas_datareader._utils import _sanitize_dates
 
 _URL = "http://research.stlouisfed.org/fred2/series/"
 
