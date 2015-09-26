@@ -150,7 +150,7 @@ class Options(object):
         try:
             expiry_links = self._expiry_links
 
-        except AttributeError:
+        except AttributeError: # pragma: no cover
             _, expiry_links = self._get_expiry_dates_and_links()
 
         return self._FINANCE_BASE_URL + expiry_links[expiry]
@@ -478,7 +478,7 @@ class Options(object):
             return index[index.date >= expiry][0].date()
 
     def get_forward_data(self, months, call=True, put=False, near=False,
-                         above_below=2):
+            above_below=2): # pragma: no cover
         """
         ***Experimental***
         Gets either call, put, or both data for months starting in the current
@@ -624,14 +624,14 @@ class Options(object):
 
         try:
             links = root.xpath('//*[@id="options_menu"]/form/select/option')
-        except IndexError:
+        except IndexError: # pragma: no cover
             raise RemoteDataError('Expiry dates not available')
 
         expiry_dates = [dt.datetime.strptime(element.text, "%B %d, %Y").date() for element in links]
         links = [element.attrib['data-selectbox-link'] for element in links]
 
         if len(expiry_dates) == 0:
-            raise RemoteDataError('Data not available')
+            raise RemoteDataError('Data not available') # pragma: no cover
 
         expiry_links = dict(zip(expiry_dates, links))
         self._expiry_links = expiry_links
@@ -645,17 +645,17 @@ class Options(object):
         """
         try:
             from lxml.html import parse
-        except ImportError:
+        except ImportError: # pragma: no cover
             raise ImportError("Please install lxml if you want to use the "
                               "{0!r} class".format(self.__class__.__name__))
         try:
             doc = parse(url)
-        except _network_error_classes:
+        except _network_error_classes: # pragma: no cover
             raise RemoteDataError("Unable to parse URL "
                                   "{0!r}".format(url))
         else:
             root = doc.getroot()
-            if root is None:
+            if root is None: # pragma: no cover
                 raise RemoteDataError("Parsed URL {0!r} has no root"
                                       "element".format(url))
         return root
@@ -678,7 +678,7 @@ class Options(object):
         try:
             frame['Underlying_Price'] = self.underlying_price
             frame["Quote_Time"] = self.quote_time
-        except AttributeError:
+        except AttributeError: # pragma: no cover
             frame['Underlying_Price'] = np.nan
             frame["Quote_Time"] = np.nan
         frame.rename(columns={'Open Int': 'Open_Int'}, inplace=True)

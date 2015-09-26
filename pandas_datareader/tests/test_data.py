@@ -216,6 +216,12 @@ class TestYahoo(tm.TestCase):
         # just test that we succeed
         web.get_data_yahoo('GOOG')
 
+    def test_get_data_adjust_price(self):
+        goog = web.get_data_yahoo('GOOG')
+        goog_adj = web.get_data_yahoo('GOOG', adjust_price=True)
+        self.assertTrue('Adj Close' not in goog_adj.columns)
+        self.assertTrue((goog['Open']*goog_adj['Adj_Ratio']).equals(goog_adj['Open']))
+
     def test_get_data_interval(self):
         # daily interval data
         pan = web.get_data_yahoo('XOM', '2013-01-01', '2013-12-31', interval='d')
@@ -404,6 +410,9 @@ class TestYahooOptions(tm.TestCase):
         chopped = self.aapl.chop_data(self.data1, above_below=2, underlying_price=100)
         self.assert_(isinstance(chopped, DataFrame))
         self.assertTrue(len(chopped) > 1)
+        chopped2 = self.aapl.chop_data(self.data1, above_below=2, underlying_price=None)
+        self.assert_(isinstance(chopped2, DataFrame))
+        self.assertTrue(len(chopped2) > 1)
 
     def test_chop_out_of_strike_range(self):
         #regression test for #7625
