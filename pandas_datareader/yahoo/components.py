@@ -4,7 +4,7 @@ from pandas.io.common import urlopen
 _URL = 'http://download.finance.yahoo.com/d/quotes.csv?'
 
 
-def _get_data(idx_sym):
+def _get_data(idx_sym): # pragma: no cover
     """
     Returns DataFrame containing list of component information for
     index represented in idx_sym from yahoo. Includes component symbol

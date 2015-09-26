@@ -36,7 +36,7 @@ def _get_data(name, start=dt.datetime(2010, 1, 1),
                             na_values='.')
         try:
             return data.truncate(start, end)
-        except KeyError:
+        except KeyError: # pragma: no cover
             if data.ix[3].name[7:12] == 'Error':
                 raise IOError("Failed to get the data. Check that {0!r} is "
                               "a valid FRED series.".format(name))
