@@ -1,0 +1,39 @@
+.. _whatsnew_020:
+
+v0.2.0 (September [x], 2015)
+----------------------------
+
+This is a major release from 0.1.1 and includes new features and a number of bug fixes.
+
+
+Highlights include:
+
+
+.. contents:: What's new in v0.2.0
+    :local:
+    :backlinks: none
+
+.. _whatsnew_020.enhancements:
+
+New features
+~~~~~~~~~~~~
+- Added latitude and longitude to output of wb.get_countries (:issue:`47`).
+- Extended DataReader to fetch dividends and stock splits from Yahoo (:issue:`45`).
+- Added get_available_datasets to famafrench (:issue:`56`).
+
+.. _whatsnew_0170.api:
+
+Backwards incompatible API changes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. _whatsnew_020.api_breaking:
+- Fama French indexes are not Pandas.PeriodIndex for annual and montly data, and
+  pandas.DatetimeIndex otherwise (:issue:`56`).
+
+.. _whatsnew_020.bug_fixes:
+
+Bug Fixes
+~~~~~~~~~
+
+- Update Fama-French URL (:issue:`53`)
+- Fixed bug where get_quote_yahoo would fail if a company name had a comma (:issue:`85`)
