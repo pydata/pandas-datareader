@@ -55,7 +55,9 @@ setup(
     ],
     keywords='data',
     install_requires=INSTALL_REQUIRES,
-    packages=['pandas_datareader'],
+    packages=['pandas_datareader',
+        'pandas_datareader.google', 'pandas_datareader.yahoo'
+    ],
     test_suite='tests',
     zip_safe=False,
 )
