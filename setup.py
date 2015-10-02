@@ -3,7 +3,7 @@
 
 from ast import parse
 import os
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 NAME = 'pandas-datareader'
@@ -55,9 +55,7 @@ setup(
     ],
     keywords='data',
     install_requires=INSTALL_REQUIRES,
-    packages=['pandas_datareader',
-        'pandas_datareader.google', 'pandas_datareader.yahoo'
-    ],
+    packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     test_suite='tests',
     zip_safe=False,
 )
