@@ -19,6 +19,8 @@ from pandas_datareader.yahoo.options import Options as YahooOptions
 
 from pandas_datareader.fred import _get_data as get_data_fred
 from pandas_datareader.famafrench import _get_data as get_data_famafrench
+from pandas_datareader.oecd import _get_data as get_data_oecd
+
 
 def DataReader(name, data_source=None, start=None, end=None,
                retry_count=3, pause=0.001):
@@ -82,6 +84,8 @@ def DataReader(name, data_source=None, start=None, end=None,
         return get_data_fred(name, start, end)
     elif data_source == "famafrench":
         return get_data_famafrench(name)
+    elif data_source == "oecd":
+        return get_data_oecd(name, start, end)
     else:
         raise NotImplementedError(
                 "data_source=%r is not implemented" % data_source)

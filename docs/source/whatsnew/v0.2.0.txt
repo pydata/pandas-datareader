@@ -20,6 +20,7 @@ New features
 - Added latitude and longitude to output of wb.get_countries (:issue:`47`).
 - Extended DataReader to fetch dividends and stock splits from Yahoo (:issue:`45`).
 - Added get_available_datasets to famafrench (:issue:`56`).
+- ``DataReader`` now supports OECD data sources, see :ref:`here<remote_data.oecd>` (:issue:`101`).
 
 .. _whatsnew_0170.api:
 
