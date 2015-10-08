@@ -14,7 +14,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   whatsnew
+   whatsnew.rst
    remote_data.rst
 
 
