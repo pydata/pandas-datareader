@@ -2,7 +2,6 @@
 
 from __future__ import print_function
 
-from distutils.version import LooseVersion
 import warnings
 
 from pandas.compat import reduce, lrange
@@ -11,7 +10,6 @@ from pandas.io import json
 import pandas
 import numpy as np
 
-PD017 = LooseVersion(pandas.__version__) > LooseVersion('0.16.2')
 # This list of country codes was pulled from wikipedia during October 2014.
 # While some exceptions do exist, it is the best proxy for countries supported
 # by World Bank.  It is an aggregation of the 2-digit ISO 3166-1 alpha-2, and 
@@ -158,12 +156,7 @@ def download(country=['MX', 'CA', 'US'], indicator=['NY.GDP.MKTP.CD', 'NY.GNS.IC
         out = reduce(lambda x, y: x.merge(y, how='outer'), data)
         out = out.drop('iso_code', axis=1)
         out = out.set_index(['country', 'year'])
-        if PD017:
-            kwargs = dict((kw, True)
-                          for kw in ('datetime', 'numeric', 'timedelta'))
-        else:
-            kwargs = {'convert_numeric': True}
-        out = out.convert_objects(**kwargs)
+        out = out.convert_objects(convert_numeric=True)
         return out
     else:
         msg = "No indicators returned data."
