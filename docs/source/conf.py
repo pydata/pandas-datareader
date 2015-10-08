@@ -33,6 +33,7 @@ import IPython
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
+    'sphinx.ext.extlinks',
     'IPython.sphinxext.ipython_directive',
     'IPython.sphinxext.ipython_console_highlighting'
 ]
@@ -267,3 +268,9 @@ texinfo_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'http://docs.python.org/': None}
+
+
+extlinks = {'issue': ('https://github.com/pydata/pandas-datareader/issues/%s',
+                      'GH'),
+            'wiki': ('https://github.com/pydata/pandas-datareader/wiki/%s',
+                     'wiki ')}
