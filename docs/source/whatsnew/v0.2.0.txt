@@ -1,6 +1,6 @@
 .. _whatsnew_020:
 
-v0.2.0 (September [x], 2015)
+v0.2.0 (October 9, 2015)
 ----------------------------
 
 This is a major release from 0.1.1 and includes new features and a number of bug fixes.
