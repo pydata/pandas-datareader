@@ -1,10 +1,11 @@
-from __future__ import print_function
 from pandas import compat
 import warnings
 import nose
 from nose.tools import assert_equal
 from datetime import datetime
 import os
+
+import requests
 
 import numpy as np
 import pandas as pd
@@ -18,15 +19,13 @@ except ImportError: # pragma: no cover
 import pandas.util.testing as tm
 from numpy.testing import assert_array_equal
 
-try:
-    from urllib.error import HTTPError
-except ImportError: # pragma: no cover
-    from urllib2 import HTTPError
-
 import pandas_datareader.data as web
-from pandas_datareader.data import DataReader
+from pandas_datareader.data import (DataReader, GoogleDailyReader, YahooDailyReader,
+                                    YahooQuotesReader, YahooActionReader,
+                                    FredReader, OECDReader)
 from pandas_datareader._utils import SymbolWarning, RemoteDataError
 from pandas_datareader.yahoo.quotes import _yahoo_codes
+
 
 def _skip_if_no_lxml():
     try:
@@ -47,6 +46,7 @@ def assert_n_failed_equals_n_null_columns(wngs, obj, cls=SymbolWarning):
 
 
 class TestGoogle(tm.TestCase):
+
     @classmethod
     def setUpClass(cls):
         super(TestGoogle, cls).setUpClass()
@@ -133,7 +133,21 @@ class TestGoogle(tm.TestCase):
     def test_unicode_date(self):
         #GH8967
         data = web.get_data_google('F', start='JAN-01-10', end='JAN-27-13')
-        self.assertEquals(data.index.name, 'Date')
+        self.assertEqual(data.index.name, 'Date')
+
+    def test_google_reader_class(self):
+        r = GoogleDailyReader('GOOG')
+        df = r.read()
+        self.assertEqual(df.Volume.ix['JAN-02-2015'], 1446662)
+
+        session = requests.Session()
+        r = GoogleDailyReader('GOOG', session=session)
+        self.assertTrue(r.session is session)
+
+    def test_bad_retry_count(self):
+
+        with tm.assertRaises(ValueError):
+            web.get_data_google('F', retry_count = -1)
 
 
 class TestYahoo(tm.TestCase):
@@ -296,6 +310,15 @@ class TestYahoo(tm.TestCase):
 
         self.assertRaises(IOError, web.get_data_yahoo_actions, 'UNKNOWN TICKER', start, end)
 
+    def test_yahoo_reader_class(self):
+        r = YahooDailyReader('GOOG')
+        df = r.read()
+        self.assertEqual(df.Volume.loc['JAN-02-2015'], 1447600)
+
+        session = requests.Session()
+        r = YahooDailyReader('GOOG', session=session)
+        self.assertTrue(r.session is session)
+
 
 class TestYahooOptions(tm.TestCase):
     @classmethod
@@ -396,37 +419,37 @@ class TestYahooOptions(tm.TestCase):
             quote_price = options_object._underlying_price_from_root(root)
         except RemoteDataError as e: # pragma: no cover
             raise nose.SkipTest(e)
-        self.assert_(isinstance(quote_price, float))
+        self.assertTrue(isinstance(quote_price, float))
 
     def test_sample_page_price_quote_time1(self):
         #Tests the weekend quote time format
         price, quote_time = self.aapl._underlying_price_and_time_from_url(self.html1)
-        self.assert_(isinstance(price, (int, float, complex)))
-        self.assert_(isinstance(quote_time, (datetime, Timestamp)))
+        self.assertTrue(isinstance(price, (int, float, complex)))
+        self.assertTrue(isinstance(quote_time, (datetime, Timestamp)))
 
     def test_chop(self):
         #regression test for #7625
         self.aapl.chop_data(self.data1, above_below=2, underlying_price=np.nan)
         chopped = self.aapl.chop_data(self.data1, above_below=2, underlying_price=100)
-        self.assert_(isinstance(chopped, DataFrame))
+        self.assertTrue(isinstance(chopped, DataFrame))
         self.assertTrue(len(chopped) > 1)
         chopped2 = self.aapl.chop_data(self.data1, above_below=2, underlying_price=None)
-        self.assert_(isinstance(chopped2, DataFrame))
+        self.assertTrue(isinstance(chopped2, DataFrame))
         self.assertTrue(len(chopped2) > 1)
 
     def test_chop_out_of_strike_range(self):
         #regression test for #7625
         self.aapl.chop_data(self.data1, above_below=2, underlying_price=np.nan)
         chopped = self.aapl.chop_data(self.data1, above_below=2, underlying_price=100000)
-        self.assert_(isinstance(chopped, DataFrame))
+        self.assertTrue(isinstance(chopped, DataFrame))
         self.assertTrue(len(chopped) > 1)
 
     def test_sample_page_price_quote_time2(self):
         #Tests the EDT page format
         #regression test for #8741
         price, quote_time = self.aapl._underlying_price_and_time_from_url(self.html2)
-        self.assert_(isinstance(price, (int, float, complex)))
-        self.assert_(isinstance(quote_time, (datetime, Timestamp)))
+        self.assertTrue(isinstance(price, (int, float, complex)))
+        self.assertTrue(isinstance(quote_time, (datetime, Timestamp)))
 
     def test_sample_page_chg_float(self):
         #Tests that numeric columns with comma's are appropriately dealt with
@@ -501,8 +524,8 @@ class TestFred(tm.TestCase):
         #self.assertEqual(int(received), 16502)
         self.assertEqual(int(received), 16440)
 
-        self.assertRaises(Exception, web.DataReader, "NON EXISTENT SERIES",
-                          'fred', start, end)
+        with tm.assertRaises(RemoteDataError):
+            web.DataReader("NON EXISTENT SERIES", 'fred', start, end)
 
     def test_fred_nan(self):
         start = datetime(2010, 1, 1)
@@ -550,7 +573,7 @@ class TestFred(tm.TestCase):
     def test_fred_multi_bad_series(self):
 
         names = ['NOTAREALSERIES', 'CPIAUCSL', "ALSO FAKE"]
-        with tm.assertRaises(HTTPError):
+        with tm.assertRaises(RemoteDataError):
             DataReader(names, data_source="fred")
 
 
