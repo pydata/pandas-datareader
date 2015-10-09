@@ -28,6 +28,7 @@ Currently the following sources are supported:
     - :ref:`St.Louis FED (FRED)<remote_data.fred>`
     - :ref:`Kenneth French's data library<remote_data.ff>`
     - :ref:`World Bank<remote_data.wb>`
+    - :ref:`OECD<remote_data.oecd>`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
 
@@ -340,3 +341,27 @@ errors to ignore or warn, won't stop failed responses.  (ie, 100% bad
 indicators, or a single "bad" (#4 above) country code).
 
 See docstrings for more info.
+
+.. _remote_data.oecd:
+
+OECD
+====
+
+`OECD Statistics <http://stats.oecd.org/>`__ are avaliable via ``DataReader``.
+You have to specify OECD's data set code.
+
+To confirm data set code, access to ``each data -> Export -> SDMX Query``. Following
+example is to download "Trade Union Density" data which set code is "UN_DEN".
+
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+    import datetime
+
+    df = web.DataReader('UN_DEN', 'oecd', end=datetime.datetime(2012, 1, 1))
+
+    df.columns
+
+    df[['Japan', 'United States']]
+
