@@ -1,29 +1,42 @@
 """
 Module contains tools for collecting data from various remote sources
-
-
 """
 
 import warnings
 
-from pandas_datareader._utils import _sanitize_dates
-
-from pandas_datareader.google.daily import _get_data as get_data_google
+from pandas_datareader.google.daily import GoogleDailyReader
 from pandas_datareader.google.quotes import _get_data as get_quote_google
 
-from pandas_datareader.yahoo.daily import _get_data as get_data_yahoo
-from pandas_datareader.yahoo.quotes import _get_data as get_quote_yahoo
-from pandas_datareader.yahoo.actions import _get_data as get_data_yahoo_actions
+from pandas_datareader.yahoo.daily import YahooDailyReader
+from pandas_datareader.yahoo.quotes import YahooQuotesReader
+from pandas_datareader.yahoo.actions import YahooActionReader
 from pandas_datareader.yahoo.components import _get_data as get_components_yahoo
 from pandas_datareader.yahoo.options import Options as YahooOptions
 
-from pandas_datareader.fred import _get_data as get_data_fred
+from pandas_datareader.fred import FredReader
 from pandas_datareader.famafrench import _get_data as get_data_famafrench
-from pandas_datareader.oecd import _get_data as get_data_oecd
+from pandas_datareader.oecd import OECDReader
+
+
+# ToDo: deprecate
+def get_data_fred(*args, **kwargs):
+    return FredReader(*args, **kwargs).read()
+
+def get_data_google(*args, **kwargs):
+    return GoogleDailyReader(*args, **kwargs).read()
+
+def get_data_yahoo(*args, **kwargs):
+    return YahooDailyReader(*args, **kwargs).read()
+
+def get_data_yahoo_actions(*args, **kwargs):
+    return YahooActionReader(*args, **kwargs).read()
+
+def get_quote_yahoo(*args, **kwargs):
+    return YahooQuotesReader(*args, **kwargs).read()
 
 
 def DataReader(name, data_source=None, start=None, end=None,
-               retry_count=3, pause=0.001):
+               retry_count=3, pause=0.001, session=None):
     """
     Imports data from a number of online sources.
 
@@ -46,6 +59,8 @@ def DataReader(name, data_source=None, start=None, end=None,
     pause : {numeric, 0.001}
         Time, in seconds, to pause between consecutive queries of chunks. If
         single value given for symbol, represents the pause between retries.
+    session : Session, default None
+            requests.sessions.Session instance to be used
 
     Examples
     ----------
@@ -68,24 +83,30 @@ def DataReader(name, data_source=None, start=None, end=None,
     ff = DataReader("6_Portfolios_2x3", "famafrench")
     ff = DataReader("F-F_ST_Reversal_Factor", "famafrench")
     """
-    start, end = _sanitize_dates(start, end)
-
     if data_source == "yahoo":
-        return get_data_yahoo(symbols=name, start=start, end=end,
-                              adjust_price=False, chunksize=25,
-                              retry_count=retry_count, pause=pause)
+        return YahooDailyReader(symbols=name, start=start, end=end,
+                                adjust_price=False, chunksize=25,
+                                retry_count=retry_count, pause=pause,
+                                session=session).read()
     elif data_source == "yahoo-actions":
-        return get_data_yahoo_actions(symbol=name, start=start, end=end,
-                                      retry_count=retry_count, pause=pause)
+        return YahooActionReader(symbol=name, start=start, end=end,
+                                 retry_count=retry_count, pause=pause,
+                                 session=session).read()
     elif data_source == "google":
-        return get_data_google(symbols=name, start=start, end=end,
-                               chunksize=25, retry_count=retry_count, pause=pause)
+        return GoogleDailyReader(symbols=name, start=start, end=end,
+                                 chunksize=25,
+                                 retry_count=retry_count, pause=pause,
+                                 session=session).read()
     elif data_source == "fred":
-        return get_data_fred(name, start, end)
+        return FredReader(symbols=name, start=start, end=end,
+                          retry_count=retry_count, pause=pause,
+                          session=session).read()
     elif data_source == "famafrench":
         return get_data_famafrench(name)
     elif data_source == "oecd":
-        return get_data_oecd(name, start, end)
+        return OECDReader(symbols=name, start=start, end=end,
+                          retry_count=retry_count, pause=pause,
+                          session=session).read()
     else:
         raise NotImplementedError(
                 "data_source=%r is not implemented" % data_source)
@@ -95,7 +116,7 @@ def DataReader(name, data_source=None, start=None, end=None,
 def Options(symbol, data_source=None):
     if data_source is None:
         warnings.warn("Options(symbol) is deprecated, use Options(symbol,"
-                        " data_source) instead", FutureWarning, stacklevel=2)
+                      " data_source) instead", FutureWarning, stacklevel=2)
         data_source = "yahoo"
     if data_source == "yahoo":
         return YahooOptions(symbol)

@@ -3,45 +3,37 @@ import datetime as dt
 import pandas as pd
 from pandas.core.common import is_list_like
 import pandas.compat as compat
-from pandas.io.common import _urlopen
 from pandas import concat, read_csv
 
-from pandas_datareader._utils import _sanitize_dates
 from pandas_datareader.io import read_jsdmx
 
 
-_URL = 'http://stats.oecd.org/SDMX-JSON/data'
+from pandas_datareader.base import _BaseReader
 
 
-def _get_data(name, start=dt.datetime(2010, 1, 1),
-              end=dt.datetime.today()):
-    """
-    Get data for the given name from OECD.
-    Date format is datetime
+class OECDReader(_BaseReader):
 
-    Returns a DataFrame.
-    """
-    start, end = _sanitize_dates(start, end)
+    """Get data for the given name from OECD."""
 
-    if not isinstance(name, compat.string_types):
-        raise ValueError('data name must be string')
+    @property
+    def url(self):
+        url = 'http://stats.oecd.org/SDMX-JSON/data'
+        if not isinstance(self.symbols, compat.string_types):
+            raise ValueError('data name must be string')
 
-    # API: https://data.oecd.org/api/sdmx-json-documentation/
-    url = '{0}/{1}/all/all?'.format(_URL, name)
-    def fetch_data(url, name):
-        resp = _urlopen(url)
-        resp = resp.read()
-        resp = resp.decode('utf-8')
-        data = read_jsdmx(resp)
+        # API: https://data.oecd.org/api/sdmx-json-documentation/
+        return '{0}/{1}/all/all?'.format(url, self.symbols)
+
+    def _read_one_data(self, url, params):
+        """ read one data from specified URL """
+        resp = self._get_response(url)
+        df = read_jsdmx(resp.json())
         try:
-            idx_name = data.index.name # hack for pandas 0.16.2
-            data.index = pd.to_datetime(data.index)
-            data = data.sort_index()
-            data = data.truncate(start, end)
-            data.index.name = idx_name
+            idx_name = df.index.name # hack for pandas 0.16.2
+            df.index = pd.to_datetime(df.index)
+            df = df.sort_index()
+            df = df.truncate(self.start, self.end)
+            df.index.name = idx_name
         except ValueError:
             pass
-        return data
-    df = fetch_data(url, name)
-    return df
-
+        return df

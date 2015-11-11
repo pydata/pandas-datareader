@@ -4,6 +4,7 @@ import pandas as pd
 from pandas.compat import range
 import pandas.util.testing as tm
 import pandas_datareader.data as web
+from pandas_datareader._utils import SymbolWarning, RemoteDataError
 
 
 class TestOECD(tm.TestCase):
@@ -62,6 +63,12 @@ class TestOECD(tm.TestCase):
             expected = pd.Series(values, index=index, name='Total international arrivals')
             tm.assert_series_equal(df[label]['Total international arrivals'], expected)
 
+    def test_oecd_invalid_symbol(self):
+      with tm.assertRaises(RemoteDataError):
+          web.DataReader('INVALID_KEY', 'oecd')
+
+      with tm.assertRaises(ValueError):
+          web.DataReader(1234, 'oecd')
 
 if __name__ == '__main__':
     import nose

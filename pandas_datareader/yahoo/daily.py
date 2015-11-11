@@ -1,12 +1,8 @@
-from pandas_datareader._utils import (
-    _retry_read_url, _encode_url, _sanitize_dates, _get_data_from
-)
+from pandas_datareader.base import _DailyBaseReader
 
-_URL = 'http://ichart.finance.yahoo.com/table.csv'
 
-def _get_data(symbols=None, start=None, end=None, retry_count=3,
-                   pause=0.001, adjust_price=False, ret_index=False,
-                   chunksize=25, interval='d'):
+class YahooDailyReader(_DailyBaseReader):
+
     """
     Returns DataFrame/Panel of historical stock prices from symbols, over date
     range, start to end. To avoid being penalized by Yahoo! Finance servers,
@@ -27,6 +23,8 @@ def _get_data(symbols=None, start=None, end=None, retry_count=3,
     pause : int, default 0
         Time, in seconds, to pause between consecutive queries of chunks. If
         single value given for symbol, represents the pause between retries.
+    session : Session, default None
+        requests.sessions.Session instance to be used
     adjust_price : bool, default False
         If True, adjusts all prices in hist_data ('Open', 'High', 'Low',
         'Close') based on 'Adj Close' price. Adds 'Adj_Ratio' column and drops
@@ -38,20 +36,51 @@ def _get_data(symbols=None, start=None, end=None, retry_count=3,
     interval : string, default 'd'
         Time interval code, valid values are 'd' for daily, 'w' for weekly,
         'm' for monthly and 'v' for dividend.
-
-    Returns
-    -------
-    hist_data : DataFrame (str) or Panel (array-like object, DataFrame)
     """
-    if interval not in ['d', 'w', 'm', 'v']:
-        raise ValueError("Invalid interval: valid values are 'd', 'w', 'm' and 'v'")
-    hist_data = _get_data_from(symbols, start, end, interval, retry_count, pause, \
-                    chunksize, _get_data_one)
-    if ret_index:
-        hist_data['Ret_Index'] = _calc_return_index(hist_data['Adj Close'])
-    if adjust_price:
-        hist_data = _adjust_prices(hist_data)
-    return hist_data
+
+    def __init__(self, symbols=None, start=None, end=None, retry_count=3,
+                 pause=0.001, session=None, adjust_price=False, ret_index=False,
+                 chunksize=25, interval='d'):
+        super(YahooDailyReader, self).__init__(symbols=symbols,
+                                               start=start, end=end,
+                                               retry_count=retry_count,
+                                               pause=pause, session=session,
+                                               chunksize=chunksize)
+        self.adjust_price = adjust_price
+        self.ret_index = ret_index
+
+        if interval not in ['d', 'w', 'm', 'v']:
+            raise ValueError("Invalid interval: valid values are 'd', 'w', 'm' and 'v'")
+        self.interval = interval
+
+    @property
+    def url(self):
+        return 'http://ichart.finance.yahoo.com/table.csv'
+
+    def _get_params(self, symbol):
+        params = {
+            's': symbol,
+            'a': self.start.month - 1,
+            'b': self.start.day,
+            'c': self.start.year,
+            'd': self.end.month - 1,
+            'e': self.end.day,
+            'f': self.end.year,
+            'g': self.interval,
+            'ignore': '.csv'
+        }
+        return params
+
+
+    def read(self):
+        """ read one data from specified URL """
+        df = super(YahooDailyReader, self).read()
+        if self.ret_index:
+            df['Ret_Index'] = _calc_return_index(df['Adj Close'])
+        if self.adjust_price:
+            df = _adjust_prices(df)
+        return df
+
 
 def _adjust_prices(hist_data, price_list=None):
     """
@@ -88,24 +117,3 @@ def _calc_return_index(price_df):
 
     return df
 
-def _get_data_one(sym, start, end, interval, retry_count, pause):
-    """
-    Get historical data for the given name from yahoo.
-    Date format is datetime
-
-    Returns a DataFrame.
-    """
-    start, end = _sanitize_dates(start, end)
-    params = {
-        's': sym,
-        'a': start.month - 1,
-        'b': start.day,
-        'c': start.year,
-        'd': end.month - 1,
-        'e': end.day,
-        'f': end.year,
-        'g': interval,
-        'ignore': '.csv'
-    }
-    url = _encode_url(_URL, params)
-    return _retry_read_url(url, retry_count, pause, 'Yahoo!')

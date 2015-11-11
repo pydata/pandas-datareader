@@ -1,13 +1,8 @@
-from pandas.io.common import urlencode
-from pandas_datareader._utils import (
-    _retry_read_url, _encode_url, _sanitize_dates, _get_data_from
-)
-
-_URL = 'http://www.google.com/finance/historical'
+from pandas_datareader.base import _DailyBaseReader
 
 
-def _get_data(symbols=None, start=None, end=None, retry_count=3,
-                    pause=0.001, chunksize=25):
+class GoogleDailyReader(_DailyBaseReader):
+
     """
     Returns DataFrame/Panel of historical stock prices from symbols, over date
     range, start to end. To avoid being penalized by Google Finance servers,
@@ -30,30 +25,19 @@ def _get_data(symbols=None, start=None, end=None, retry_count=3,
         single value given for symbol, represents the pause between retries.
     chunksize : int, default 25
         Number of symbols to download consecutively before intiating pause.
-
-    Returns
-    -------
-    hist_data : DataFrame (str) or Panel (array-like object, DataFrame)
+    session : Session, default None
+        requests.sessions.Session instance to be used
     """
-    return _get_data_from(symbols, start, end, None, retry_count, pause,
-                          chunksize, _get_data_one)
 
+    @property
+    def url(self):
+        return 'http://www.google.com/finance/historical'
 
-def _get_data_one(sym, start, end, interval, retry_count, pause):
-    """
-    Get historical data for the given name from google.
-    Date format is datetime
-
-    Returns a DataFrame.
-    """
-    start, end = _sanitize_dates(start, end)
-
-    # www.google.com/finance/historical?q=GOOG&startdate=Jun+9%2C+2011&enddate=Jun+8%2C+2013&output=csv
-    params = {
-        'q': sym,
-        'startdate': start.strftime('%b %d, %Y'),
-        'enddate': end.strftime('%b %d, %Y'),
-        'output': "csv"
-    }
-    url = _encode_url(_URL, params)
-    return _retry_read_url(url, retry_count, pause, 'Google')
+    def _get_params(self, symbol):
+        params = {
+            'q': symbol,
+            'startdate': self.start.strftime('%b %d, %Y'),
+            'enddate': self.end.strftime('%b %d, %Y'),
+            'output': "csv"
+        }
+        return params
