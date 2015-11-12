@@ -89,7 +89,7 @@ def DataReader(name, data_source=None, start=None, end=None,
                                 retry_count=retry_count, pause=pause,
                                 session=session).read()
     elif data_source == "yahoo-actions":
-        return YahooActionReader(symbol=name, start=start, end=end,
+        return YahooActionReader(symbols=name, start=start, end=end,
                                  retry_count=retry_count, pause=pause,
                                  session=session).read()
     elif data_source == "google":
