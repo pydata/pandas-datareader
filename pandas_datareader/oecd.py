@@ -6,8 +6,6 @@ import pandas.compat as compat
 from pandas import concat, read_csv
 
 from pandas_datareader.io import read_jsdmx
-
-
 from pandas_datareader.base import _BaseReader
 
 
@@ -18,6 +16,7 @@ class OECDReader(_BaseReader):
     @property
     def url(self):
         url = 'http://stats.oecd.org/SDMX-JSON/data'
+
         if not isinstance(self.symbols, compat.string_types):
             raise ValueError('data name must be string')
 

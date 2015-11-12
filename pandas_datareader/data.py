@@ -14,13 +14,16 @@ from pandas_datareader.yahoo.components import _get_data as get_components_yahoo
 from pandas_datareader.yahoo.options import Options as YahooOptions
 
 from pandas_datareader.fred import FredReader
-from pandas_datareader.famafrench import _get_data as get_data_famafrench
+from pandas_datareader.famafrench import FamaFrenchReader
 from pandas_datareader.oecd import OECDReader
 
 
 # ToDo: deprecate
 def get_data_fred(*args, **kwargs):
     return FredReader(*args, **kwargs).read()
+
+def get_data_famafrench(*args, **kwargs):
+    return FamaFrenchReader(*args, **kwargs).read()
 
 def get_data_google(*args, **kwargs):
     return GoogleDailyReader(*args, **kwargs).read()
@@ -88,21 +91,28 @@ def DataReader(name, data_source=None, start=None, end=None,
                                 adjust_price=False, chunksize=25,
                                 retry_count=retry_count, pause=pause,
                                 session=session).read()
+
     elif data_source == "yahoo-actions":
         return YahooActionReader(symbol=name, start=start, end=end,
                                  retry_count=retry_count, pause=pause,
                                  session=session).read()
+
     elif data_source == "google":
         return GoogleDailyReader(symbols=name, start=start, end=end,
                                  chunksize=25,
                                  retry_count=retry_count, pause=pause,
                                  session=session).read()
+
     elif data_source == "fred":
         return FredReader(symbols=name, start=start, end=end,
                           retry_count=retry_count, pause=pause,
                           session=session).read()
+
     elif data_source == "famafrench":
-        return get_data_famafrench(name)
+        return FamaFrenchReader(symbols=name, start=start, end=end,
+                                retry_count=retry_count, pause=pause,
+                                session=session).read()
+
     elif data_source == "oecd":
         return OECDReader(symbols=name, start=start, end=end,
                           retry_count=retry_count, pause=pause,
