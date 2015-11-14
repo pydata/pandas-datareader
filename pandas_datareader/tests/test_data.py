@@ -319,6 +319,22 @@ class TestYahoo(tm.TestCase):
         r = YahooDailyReader('GOOG', session=session)
         self.assertTrue(r.session is session)
 
+    def test_yahoo_DataReader(self):
+        start = datetime(2010, 1, 1)
+        end = datetime(2015, 5, 9)
+        result = web.DataReader('AAPL', 'yahoo-actions', start, end)
+
+        exp_idx = pd.DatetimeIndex(['2015-05-07', '2015-02-05', '2014-11-06', '2014-08-07',
+                                    '2014-06-09', '2014-05-08', '2014-02-06', '2013-11-06',
+                                    '2013-08-08', '2013-05-09', '2013-02-07', '2012-11-07',
+                                    '2012-08-09'])
+        exp = pd.DataFrame({'action': ['DIVIDEND', 'DIVIDEND', 'DIVIDEND', 'DIVIDEND',
+                                       'SPLIT', 'DIVIDEND', 'DIVIDEND', 'DIVIDEND',
+                                       'DIVIDEND', 'DIVIDEND', 'DIVIDEND', 'DIVIDEND', 'DIVIDEND'],
+                            'value': [ 0.52, 0.47, 0.47, 0.47, 0.14285714, 0.47, 0.43571, 0.43571,
+                                       0.43571, 0.43571, 0.37857, 0.37857, 0.37857]}, index=exp_idx)
+        tm.assert_frame_equal(result, exp)
+
 
 class TestYahooOptions(tm.TestCase):
     @classmethod
