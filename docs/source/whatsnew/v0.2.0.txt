@@ -22,12 +22,12 @@ New features
 - Added get_available_datasets to famafrench (:issue:`56`).
 - ``DataReader`` now supports OECD data sources, see :ref:`here<remote_data.oecd>` (:issue:`101`).
 
-.. _whatsnew_0170.api:
+.. _whatsnew_020.api_breaking:
 
 Backwards incompatible API changes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. _whatsnew_020.api_breaking:
+
 - Fama French indexes are not Pandas.PeriodIndex for annual and montly data, and
   pandas.DatetimeIndex otherwise (:issue:`56`).
 

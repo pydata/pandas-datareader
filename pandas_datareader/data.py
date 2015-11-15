@@ -13,6 +13,7 @@ from pandas_datareader.yahoo.actions import YahooActionReader
 from pandas_datareader.yahoo.components import _get_data as get_components_yahoo
 from pandas_datareader.yahoo.options import Options as YahooOptions
 
+from pandas_datareader.eurostat import EurostatReader
 from pandas_datareader.fred import FredReader
 from pandas_datareader.famafrench import FamaFrenchReader
 from pandas_datareader.oecd import OECDReader
@@ -117,6 +118,10 @@ def DataReader(name, data_source=None, start=None, end=None,
         return OECDReader(symbols=name, start=start, end=end,
                           retry_count=retry_count, pause=pause,
                           session=session).read()
+    elif data_source == "eurostat":
+        return EurostatReader(symbols=name, start=start, end=end,
+                              retry_count=retry_count, pause=pause,
+                              session=session).read()
     else:
         raise NotImplementedError(
                 "data_source=%r is not implemented" % data_source)

@@ -29,6 +29,7 @@ Currently the following sources are supported:
     - :ref:`Kenneth French's data library<remote_data.ff>`
     - :ref:`World Bank<remote_data.wb>`
     - :ref:`OECD<remote_data.oecd>`
+    - :ref:`Eurostat<remote_data.eurostat>`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
 
@@ -365,3 +366,22 @@ example is to download "Trade Union Density" data which set code is "UN_DEN".
 
     df[['Japan', 'United States']]
 
+.. _remote_data.eurostat:
+
+Eurostat
+========
+
+`Eurostat <http://ec.europa.eu/eurostat/>`__ are avaliable via ``DataReader``.
+
+Get ` Rail accidents by type of accident (ERA data) <http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=tran_sf_railac&lang=en>`_ data. The result will be a ``DataFrame`` which has ``DatetimeIndex`` as index and ``MultiIndex`` of attributes or countries as column. The target URL is:
+
+* http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=tran_sf_railac&lang=en
+
+You can specify dataset ID "tran_sf_railac" to get corresponding data via ``DataReader``.
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+
+    df = web.DataReader("tran_sf_railac", 'eurostat')
+    df
