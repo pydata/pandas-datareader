@@ -1,21 +1,14 @@
 import nose
+import time
 
-import pandas
-from pandas.util.testing import assert_frame_equal
+import numpy as np
+import pandas as pd
 import pandas.util.testing as tm
+import requests
 
-from pandas_datareader.wb import search, download, get_countries
-
-try:
-    from pandas.compat import u
-except ImportError: # pragma: no cover
-    try:
-        unicode # python 2
-        def u(s):
-            return unicode(s, "unicode_escape")
-    except NameError:
-        def u(s):
-            return s
+from pandas_datareader.wb import (search, download, get_countries,
+                                  get_indicators, WorldBankReader)
+from pandas_datareader._utils import PANDAS_0170, PANDAS_0160, PANDAS_0140
 
 
 class TestWB(tm.TestCase):
@@ -28,6 +21,19 @@ class TestWB(tm.TestCase):
 
         result = search('gdp.*capita.*constant')
         self.assertTrue(result.name.str.contains('GDP').any())
+
+        # check cache returns the results within 0.5 sec
+        current_time = time.time()
+        result = search('gdp.*capita.*constant')
+        self.assertTrue(result.name.str.contains('GDP').any())
+        self.assertTrue(time.time() - current_time < 0.5)
+
+        result2 = WorldBankReader().search('gdp.*capita.*constant')
+        session = requests.Session()
+        result3 = search('gdp.*capita.*constant', session=session)
+        result4 = WorldBankReader(session=session).search('gdp.*capita.*constant')
+        for result in [result2, result3, result4]:
+            self.assertTrue(result.name.str.contains('GDP').any())
 
     def test_wdi_download(self):
 
@@ -43,18 +49,120 @@ class TestWB(tm.TestCase):
         cntry_codes = ['CA', 'MX', 'USA', 'US', 'US', 'KSV', 'BLA']
         inds = ['NY.GDP.PCAP.CD','BAD.INDICATOR']
 
-        expected = {'NY.GDP.PCAP.CD': {('Canada', '2003'): 28026.006013044702, ('Mexico', '2003'): 6601.0420648056606, ('Canada', '2004'): 31829.522562759001, ('Kosovo', '2003'): 1969.56271307405, ('Mexico', '2004'): 7042.0247834044303, ('United States', '2004'): 41928.886136479705, ('United States', '2003'): 39682.472247320402, ('Kosovo', '2004'): 2135.3328465238301}}
-        expected = pandas.DataFrame(expected)
+        expected = {'NY.GDP.PCAP.CD': {('Canada', '2004'): 31829.522562759001, ('Canada', '2003'): 28026.006013044702,
+                                       ('Kosovo', '2004'): 2135.3328465238301, ('Kosovo', '2003'): 1969.56271307405,
+                                       ('Mexico', '2004'): 7042.0247834044303, ('Mexico', '2003'): 6601.0420648056606,
+                                       ('United States', '2004'): 41928.886136479705, ('United States', '2003'): 39682.472247320402}}
+        expected = pd.DataFrame(expected)
         # Round, to ignore revisions to data.
-        expected = pandas.np.round(expected,decimals=-3)
-        expected.sort(inplace=True)
+        expected = np.round(expected,decimals=-3)
+        if PANDAS_0170:
+            expected = expected.sort_index()
+        else:
+            expected = expected.sort()
+
         result = download(country=cntry_codes, indicator=inds,
                           start=2003, end=2004, errors='ignore')
-        result.sort(inplace=True)
+        if PANDAS_0170:
+            result = result.sort_index()
+        else:
+            result = result.sort()
         # Round, to ignore revisions to data.
-        result = pandas.np.round(result,decimals=-3)
-        expected.index = result.index
-        assert_frame_equal(result, pandas.DataFrame(expected))
+        result = np.round(result, decimals=-3)
+
+
+        if PANDAS_0140:
+            expected.index.names=['country', 'year']
+        else:
+            # prior versions doesn't allow to set multiple names to MultiIndex
+            # Thus overwrite it with the result
+            expected.index = result.index
+        tm.assert_frame_equal(result, expected)
+
+        # pass start and end as string
+        result = download(country=cntry_codes, indicator=inds,
+                          start='2003', end='2004', errors='ignore')
+        if PANDAS_0170:
+            result = result.sort_index()
+        else:
+            result = result.sort()
+        # Round, to ignore revisions to data.
+        result = np.round(result, decimals=-3)
+        tm.assert_frame_equal(result, expected)
+
+    def test_wdi_download_str(self):
+
+        expected = {'NY.GDP.PCAP.CD': {('Japan', '2004'): 36441.50449394,
+                                       ('Japan', '2003'): 33690.93772972,
+                                       ('Japan', '2002'): 31235.58818439,
+                                       ('Japan', '2001'): 32716.41867489,
+                                       ('Japan', '2000'): 37299.64412913}}
+        expected = pd.DataFrame(expected)
+        # Round, to ignore revisions to data.
+        expected = np.round(expected, decimals=-3)
+        if PANDAS_0170:
+            expected = expected.sort_index()
+        else:
+            expected = expected.sort()
+
+        cntry_codes = 'JP'
+        inds = 'NY.GDP.PCAP.CD'
+        result = download(country=cntry_codes, indicator=inds,
+                          start=2000, end=2004, errors='ignore')
+        if PANDAS_0170:
+            result = result.sort_index()
+        else:
+            result = result.sort()
+        result = np.round(result, decimals=-3)
+
+        if PANDAS_0140:
+            expected.index.names=['country', 'year']
+        else:
+            # prior versions doesn't allow to set multiple names to MultiIndex
+            # Thus overwrite it with the result
+            expected.index = result.index
+
+        tm.assert_frame_equal(result, expected)
+
+        result = WorldBankReader(inds, countries=cntry_codes,
+                                 start=2000, end=2004, errors='ignore').read()
+        if PANDAS_0170:
+            result = result.sort_index()
+        else:
+            result = result.sort()
+        result = np.round(result, decimals=-3)
+        tm.assert_frame_equal(result, expected)
+
+    def test_wdi_download_error_handling(self):
+        cntry_codes = ['USA', 'XX']
+        inds = 'NY.GDP.PCAP.CD'
+
+        with tm.assertRaisesRegexp(ValueError, "Invalid Country Code\\(s\\): XX"):
+            result = download(country=cntry_codes, indicator=inds,
+                              start=2003, end=2004, errors='raise')
+
+        if PANDAS_0160:
+            # assert_produces_warning doesn't exists in prior versions
+            with self.assert_produces_warning():
+                result = download(country=cntry_codes, indicator=inds,
+                                  start=2003, end=2004, errors='warn')
+                self.assertTrue(isinstance(result, pd.DataFrame))
+                self.assertEqual(len(result), 2)
+
+        cntry_codes = ['USA']
+        inds = ['NY.GDP.PCAP.CD', 'BAD_INDICATOR']
+
+        with tm.assertRaisesRegexp(ValueError, "The provided parameter value is not valid\\. Indicator: BAD_INDICATOR"):
+            result = download(country=cntry_codes, indicator=inds,
+                              start=2003, end=2004, errors='raise')
+
+        if PANDAS_0160:
+            with self.assert_produces_warning():
+                result = download(country=cntry_codes, indicator=inds,
+                                  start=2003, end=2004, errors='warn')
+                self.assertTrue(isinstance(result, pd.DataFrame))
+                self.assertEqual(len(result), 2)
+
 
     def test_wdi_download_w_retired_indicator(self):
 
@@ -101,11 +209,32 @@ class TestWB(tm.TestCase):
             raise nose.SkipTest("Invalid results")
 
     def test_wdi_get_countries(self):
-        result = get_countries()
-        self.assertTrue('Zimbabwe' in list(result['name']))
-        self.assertTrue(len(result) > 100)
-        self.assertTrue(pandas.notnull(result.latitude.mean()))
-        self.assertTrue(pandas.notnull(result.longitude.mean()))
+        result1 = get_countries()
+        result2 = WorldBankReader().get_countries()
+
+        session = requests.Session()
+        result3 = get_countries(session=session)
+        result4 = WorldBankReader(session=session).get_countries()
+
+        for result in [result1, result2, result3, result4]:
+            self.assertTrue('Zimbabwe' in list(result['name']))
+            self.assertTrue(len(result) > 100)
+            self.assertTrue(pd.notnull(result.latitude.mean()))
+            self.assertTrue(pd.notnull(result.longitude.mean()))
+
+    def test_wdi_get_indicators(self):
+        result1 = get_indicators()
+        result2 = WorldBankReader().get_indicators()
+
+        session = requests.Session()
+        result3 = get_indicators(session=session)
+        result4 = WorldBankReader(session=session).get_indicators()
+
+        for result in [result1, result2, result3, result4]:
+            exp_col = pd.Index(['id', 'name', 'source', 'sourceNote', 'sourceOrganization', 'topics'])
+            # assert_index_equal doesn't exists
+            self.assertTrue(result.columns.equals(exp_col))
+            self.assertTrue(len(result) > 10000)
 
 
 if __name__ == '__main__':

@@ -7,7 +7,7 @@ import requests
 
 from pandas import to_datetime
 import pandas.compat as compat
-from pandas.core.common import PandasError
+from pandas.core.common import PandasError, is_number
 from pandas import Panel, DataFrame
 from pandas import read_csv
 from pandas.compat import StringIO, bytes_to_str
@@ -37,6 +37,7 @@ class _BaseReader(object):
     """
 
     _chunk_size = 1024 * 1024
+    _format = 'string'
 
     def __init__(self, symbols, start=None, end=None,
                  retry_count=3, pause=0.001, session=None):
@@ -73,7 +74,12 @@ class _BaseReader(object):
 
     def _read_one_data(self, url, params):
         """ read one data from specified URL """
-        out = self._read_url_as_StringIO(self.url, params=params)
+        if self._format == 'string':
+            out = self._read_url_as_StringIO(url, params=params)
+        elif self._format == 'json':
+            out = self._get_response(url, params=params).json()
+        else:
+            raise NotImplementedError(self._format)
         return self._read_lines(out)
 
     def _read_url_as_StringIO(self, url, params=None):
@@ -128,8 +134,15 @@ class _BaseReader(object):
         if start is None - default is 2010/01/01
         if end is None - default is today
         """
+        if is_number(start):
+            # regard int as year
+            start = dt.datetime(start, 1, 1)
         start = to_datetime(start)
+
+        if is_number(end):
+            end = dt.datetime(end, 1, 1)
         end = to_datetime(end)
+
         if start is None:
             start = dt.datetime(2010, 1, 1)
         if end is None:

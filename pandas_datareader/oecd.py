@@ -9,6 +9,8 @@ class OECDReader(_BaseReader):
 
     """Get data for the given name from OECD."""
 
+    _format = 'json'
+
     @property
     def url(self):
         url = 'http://stats.oecd.org/SDMX-JSON/data'
@@ -19,10 +21,9 @@ class OECDReader(_BaseReader):
         # API: https://data.oecd.org/api/sdmx-json-documentation/
         return '{0}/{1}/all/all?'.format(url, self.symbols)
 
-    def _read_one_data(self, url, params):
+    def _read_lines(self, out):
         """ read one data from specified URL """
-        resp = self._get_response(url)
-        df = read_jsdmx(resp.json())
+        df = read_jsdmx(out)
         try:
             idx_name = df.index.name # hack for pandas 0.16.2
             df.index = pd.to_datetime(df.index)
