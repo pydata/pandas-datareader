@@ -38,5 +38,11 @@ For now, you must replace your imports from ``pandas.io`` with ``pandas_dataread
    from pandas.io import data, wb # becomes
    from pandas_datareader import data, wb
 
+Many functions from the data module have been included in the top level API.
+
+.. code-block:: python
+
+   import pandas_datareader as pdr
+   pdr.get_data_yahoo('AAPL')
 
 See the `pandas-datareader documentation <http://pandas-datareader.readthedocs.org/>`_ for more details.
