@@ -4,6 +4,7 @@ import numpy as np
 import datetime as dt
 
 import requests
+from requests_file import FileAdapter
 
 from pandas import to_datetime
 import pandas.compat as compat
@@ -55,6 +56,7 @@ class _BaseReader(object):
     def _init_session(self, session, retry_count):
         if session is None:
             session = requests.Session()
+            session.mount('file://', FileAdapter())
             # do not set requests max_retries here to support arbitrary pause
         return session
 

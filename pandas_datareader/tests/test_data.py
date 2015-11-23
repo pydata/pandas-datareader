@@ -351,9 +351,9 @@ class TestYahooOptions(tm.TestCase):
             cls.month = 1
         cls.expiry = datetime(cls.year, cls.month, 1)
         cls.dirpath = tm.get_data_path()
-        cls.html1 = os.path.join(cls.dirpath, 'yahoo_options1.html')
-        cls.html2 = os.path.join(cls.dirpath, 'yahoo_options2.html')
-        cls.html3 = os.path.join(cls.dirpath, 'yahoo_options3.html') #Empty table GH#22
+        cls.html1 = 'file://' + os.path.join(cls.dirpath, 'yahoo_options1.html')
+        cls.html2 = 'file://' + os.path.join(cls.dirpath, 'yahoo_options2.html')
+        cls.html3 = 'file://' + os.path.join(cls.dirpath, 'yahoo_options3.html') #Empty table GH#22
         cls.data1 = cls.aapl._option_frames_from_url(cls.html1)['puts']
 
     @classmethod
@@ -381,7 +381,7 @@ class TestYahooOptions(tm.TestCase):
         self.assertTrue(len(options) > 1)
 
     def test_options_is_not_none(self):
-        option = web.Options('aapl')
+        option = web.Options('aapl', 'yahoo')
         self.assertTrue(option is not None)
 
     def test_get_call_data(self):
