@@ -128,12 +128,12 @@ def DataReader(name, data_source=None, start=None, end=None,
 
 
 
-def Options(symbol, data_source=None):
+def Options(symbol, data_source=None, session=None):
     if data_source is None:
         warnings.warn("Options(symbol) is deprecated, use Options(symbol,"
                       " data_source) instead", FutureWarning, stacklevel=2)
         data_source = "yahoo"
     if data_source == "yahoo":
-        return YahooOptions(symbol)
+        return YahooOptions(symbol, session=session)
     else:
         raise NotImplementedError("currently only yahoo supported")

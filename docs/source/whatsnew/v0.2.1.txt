@@ -19,11 +19,14 @@ New features
 ~~~~~~~~~~~~
 
 - ``DataReader`` now supports Eurostat data sources, see :ref:`here<remote_data.eurostat>` (:issue:`101`).
+- ``Options`` downloading is approximately 4x faster as a result of a rewrite of the parsing function. (:issue: `122`)
 
 .. _whatsnew_021.api_breaking:
 
 Backwards incompatible API changes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- ``Options`` columns ``PctChg`` and ``IV`` (Implied Volatility) are now type float
+  rather than string. (:issue: `122`)
 
 .. _whatsnew_021.bug_fixes:
 

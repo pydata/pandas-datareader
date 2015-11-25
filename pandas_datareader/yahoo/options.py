@@ -7,20 +7,34 @@ from pandas import to_datetime
 from pandas import concat, DatetimeIndex, Series
 from pandas.tseries.offsets import MonthEnd
 from pandas.util.testing import _network_error_classes
+from pandas.io.parsers import TextParser
+from pandas import DataFrame
 
 from pandas_datareader._utils import RemoteDataError
+from pandas_datareader.base import _BaseReader
 
 # Items needed for options class
 CUR_MONTH = dt.datetime.now().month
 CUR_YEAR = dt.datetime.now().year
 CUR_DAY = dt.datetime.now().day
 
-
 def _two_char(s):
     return '{0:0>2}'.format(s)
 
+def _unpack(row, kind='td'):
+    return [val.text_content().strip() for val in row.findall(kind)]
 
-class Options(object):
+def _parse_options_data(table):
+    header = table.findall('thead/tr')
+    header = _unpack(header[0], kind='th')
+    rows = table.findall('tbody/tr')
+    data = [_unpack(r) for r in rows]
+    if len(data) > 0:
+        return TextParser(data, names=header).get_chunk()
+    else: #Empty table
+        return DataFrame(columns=header)
+
+class Options(_BaseReader):
     """
     ***Experimental***
     This class fetches call/put data for a given stock/expiry month.
@@ -62,13 +76,13 @@ class Options(object):
     >>> all_data = aapl.get_all_data()
     """
 
-    _TABLE_LOC = {'calls': 1, 'puts': 2}
     _OPTIONS_BASE_URL = 'http://finance.yahoo.com/q/op?s={sym}'
     _FINANCE_BASE_URL = 'http://finance.yahoo.com'
 
-    def __init__(self, symbol):
+    def __init__(self, symbol, session=None):
         """ Instantiates options_data with a ticker saved as symbol """
         self.symbol = symbol.upper()
+        super(Options, self).__init__(symbols=symbol, session=session)
 
     def get_options_data(self, month=None, year=None, expiry=None):
         """
@@ -156,11 +170,10 @@ class Options(object):
         return self._FINANCE_BASE_URL + expiry_links[expiry]
 
     def _option_frames_from_url(self, url):
-        frames = read_html(url)
-        nframes = len(frames)
-        frames_req = max(self._TABLE_LOC.values())
-        if nframes < frames_req:
-            raise RemoteDataError("%s options tables found (%s expected)" % (nframes, frames_req))
+
+        root = self._parse_url(url)
+        calls = root.xpath('//*[@id="optionsCallsTable"]/div[2]/div/table')[0]
+        puts = root.xpath('//*[@id="optionsPutsTable"]/div[2]/div/table')[0]
 
         if not hasattr(self, 'underlying_price'):
             try:
@@ -168,8 +181,8 @@ class Options(object):
             except IndexError:
                 self.underlying_price, self.quote_time = np.nan, np.nan
 
-        calls = frames[self._TABLE_LOC['calls']]
-        puts = frames[self._TABLE_LOC['puts']]
+        calls = _parse_options_data(calls)
+        puts = _parse_options_data(puts)
 
         calls = self._process_data(calls, 'call')
         puts = self._process_data(puts, 'put')
@@ -648,15 +661,10 @@ class Options(object):
         except ImportError: # pragma: no cover
             raise ImportError("Please install lxml if you want to use the "
                               "{0!r} class".format(self.__class__.__name__))
-        try:
-            doc = parse(url)
-        except _network_error_classes: # pragma: no cover
-            raise RemoteDataError("Unable to parse URL "
-                                  "{0!r}".format(url))
-        else:
-            root = doc.getroot()
-            if root is None: # pragma: no cover
-                raise RemoteDataError("Parsed URL {0!r} has no root"
+        doc = parse(self._read_url_as_StringIO(url))
+        root = doc.getroot()
+        if root is None: # pragma: no cover
+            raise RemoteDataError("Parsed URL {0!r} has no root"
                                       "element".format(url))
         return root
 
@@ -682,6 +690,8 @@ class Options(object):
             frame['Underlying_Price'] = np.nan
             frame["Quote_Time"] = np.nan
         frame.rename(columns={'Open Int': 'Open_Int'}, inplace=True)
+        frame['IV'] = frame['IV'].str.replace(',','').str.strip('%').astype(float)/100
+        frame['PctChg'] = frame['PctChg'].str.replace(',','').str.strip('%').astype(float)/100
         frame['Type'] = type
         frame.set_index(['Strike', 'Expiry', 'Type', 'Symbol'], inplace=True)
 
