@@ -12,6 +12,10 @@ Up to date remote data access for pandas, works for multiple versions of pandas.
 .. image:: https://readthedocs.org/projects/pandas-datareader/badge/?version=latest
     :target: http://pandas-datareader.readthedocs.org/en/latest/
 
+.. image:: https://landscape.io/github/pydata/pandas-datareader/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/pydata/pandas-datareader/master
+   :alt: Code Health
+
 Installation
 ------------
 
