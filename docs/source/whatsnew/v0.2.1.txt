@@ -1,6 +1,6 @@
 .. _whatsnew_021:
 
-v0.2.1 (XXX)
+v0.2.1 (November 26, 2015)
 ----------------------------
 
 This is a minor release from 0.2.0 and includes new features and bug fixes.
