@@ -349,6 +349,7 @@ class TestYahooOptions(tm.TestCase):
         cls.month = today.month + 1
         if cls.month > 12: # pragma: no cover
             cls.month = 1
+            cls.year = cls.year + 1
         cls.expiry = datetime(cls.year, cls.month, 1)
         cls.dirpath = tm.get_data_path()
         cls.html1 = 'file://' + os.path.join(cls.dirpath, 'yahoo_options1.html')

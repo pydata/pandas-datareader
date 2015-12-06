@@ -5,6 +5,8 @@ import pandas.util.testing as tm
 import pandas_datareader.data as web
 from pandas_datareader.famafrench import get_available_datasets
 
+from pandas_datareader.tests.test_data import _skip_if_no_lxml
+
 
 class TestFamaFrench(tm.TestCase):
     def test_get_data(self):
@@ -19,7 +21,7 @@ class TestFamaFrench(tm.TestCase):
             assert len(ff) > 1
 
     def test_get_available_datasets(self):
-        # _skip_if_no_lxml()
+        _skip_if_no_lxml()
         l = get_available_datasets()
         assert len(l) > 100
 
