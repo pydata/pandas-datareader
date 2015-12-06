@@ -172,8 +172,11 @@ class Options(_BaseReader):
     def _option_frames_from_url(self, url):
 
         root = self._parse_url(url)
-        calls = root.xpath('//*[@id="optionsCallsTable"]/div[2]/div/table')[0]
-        puts = root.xpath('//*[@id="optionsPutsTable"]/div[2]/div/table')[0]
+        try:
+            calls = root.xpath('//*[@id="optionsCallsTable"]/div[2]/div/table')[0]
+            puts = root.xpath('//*[@id="optionsPutsTable"]/div[2]/div/table')[0]
+        except IndexError:
+            raise RemoteDataError('Option Table not available for url: %s' % url)
 
         if not hasattr(self, 'underlying_price'):
             try:
