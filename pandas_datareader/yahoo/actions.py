@@ -1,9 +1,11 @@
 import csv
-from pandas import to_datetime, DataFrame
-from pandas.compat import StringIO, bytes_to_str
+import warnings
+
+from pandas import to_datetime, DataFrame, Panel
+from pandas.compat import StringIO, bytes_to_str, string_types, OrderedDict
 
 from pandas_datareader.base import _BaseReader
-
+from pandas_datareader._utils import RemoteDataError
 
 class YahooActionReader(_BaseReader):
 
@@ -17,10 +19,11 @@ class YahooActionReader(_BaseReader):
     def url(self):
         return 'http://ichart.finance.yahoo.com/x'
 
-    @property
-    def params(self):
+    def params(self, symbols=None):
+        if symbols is None:
+            symbols = self.symbols
         params = {
-            's': self.symbols,
+            's': symbols,
             'a': self.start.month - 1,
             'b': self.start.day,
             'c': self.start.year,
@@ -30,6 +33,13 @@ class YahooActionReader(_BaseReader):
             'g': 'v'
         }
         return params
+
+    def read(self):
+        """ read data """
+        if isinstance(self.symbols, string_types):
+            return self._read_one_data(self.url, self.params())
+        else:
+            return self._read_several_data()
 
     def _read_lines(self, out):
         actions_index = []
@@ -61,3 +71,19 @@ class YahooActionReader(_BaseReader):
                 })
 
         return DataFrame(actions_entries, index=actions_index)
+
+    def _read_several_data(self):
+        passed = OrderedDict()
+        failed = []
+        for symbol in self.symbols:
+            try:
+                passed[symbol] = self._read_one_data(self.url, self.params(symbol))
+            except IOError:
+                msg = 'Failed to read symbol: {0!r}, replacing with NaN.'
+                warnings.warn(msg.format(sym), SymbolWarning)
+                failed.append(sym)
+        if len(passed) == 0:
+            msg = "No data fetched using {0!r}"
+            raise RemoteDataError(msg.format(self.__class__.__name__))
+        panel = Panel(passed).swapaxes('items', 'minor')
+        return panel
