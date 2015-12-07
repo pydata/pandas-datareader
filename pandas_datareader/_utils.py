@@ -27,8 +27,3 @@ if PANDAS_VERSION >= LooseVersion('0.14.0'):
     PANDAS_0140 = True
 else:
     PANDAS_0140 = False
-
-def _init_session(session):
-    if session is None:
-        session = requests.Session()
-    return session

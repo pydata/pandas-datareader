@@ -6,35 +6,21 @@ from pandas.compat import lmap, StringIO
 from pandas import read_csv, to_datetime
 
 from pandas_datareader.base import _BaseReader
-from pandas_datareader._utils import _init_session
 
 _URL = 'http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/'
 _URL_PREFIX = 'ftp/'
 _URL_SUFFIX = '_CSV.zip'
 
 
-def get_available_datasets(session=None):
+def get_available_datasets(**kwargs):
     """
     Get the list of datasets available from the Fama/French data library.
     Returns
     -------
     A list of valid inputs for get_data_famafrench.
     """
-    session = _init_session(session)
-    try:
-        from lxml.html import document_fromstring
-    except ImportError:
-        raise ImportError("Please install lxml if you want to use the "
-                          "get_datasets_famafrench function")
-
-    response = session.get(_URL + 'data_library.html')
-    root = document_fromstring(response.content)
-
-    l = filter(lambda x: x.startswith(_URL_PREFIX) and x.endswith(_URL_SUFFIX),
-               [e.attrib['href'] for e in root.findall('.//a') if 'href' in e.attrib])
-
-    return lmap(lambda x: x[len(_URL_PREFIX):-len(_URL_SUFFIX)], l)
-
+    symbols = kwargs.pop('symbols', '')
+    return FamaFrenchReader(symbols=symbols, **kwargs).get_available_datasets()
 
 def _parse_date_famafrench(x):
     x = x.strip()
@@ -130,3 +116,25 @@ class FamaFrenchReader(_BaseReader):
         datasets['DESCR'] = descr + '\n'.join(table_descr)
 
         return datasets
+
+    def get_available_datasets(self):
+        """
+        Get the list of datasets available from the Fama/French data library.
+        Returns
+        -------
+        A list of valid inputs for get_data_famafrench.
+        """
+        try:
+            from lxml.html import document_fromstring
+        except ImportError:
+            raise ImportError("Please install lxml if you want to use the "
+                              "get_datasets_famafrench function")
+
+        response = self.session.get(_URL + 'data_library.html')
+        root = document_fromstring(response.content)
+
+        l = filter(lambda x: x.startswith(_URL_PREFIX) and x.endswith(_URL_SUFFIX),
+                   [e.attrib['href'] for e in root.findall('.//a') if 'href' in e.attrib])
+
+        return lmap(lambda x: x[len(_URL_PREFIX):-len(_URL_SUFFIX)], l)
+
