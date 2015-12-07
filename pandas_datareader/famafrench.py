@@ -27,7 +27,7 @@ def get_available_datasets(session=None):
         raise ImportError("Please install lxml if you want to use the "
                           "get_datasets_famafrench function")
 
-    response = requests.get(_URL + 'data_library.html')
+    response = session.get(_URL + 'data_library.html')
     root = document_fromstring(response.content)
 
     l = filter(lambda x: x.startswith(_URL_PREFIX) and x.endswith(_URL_SUFFIX),
