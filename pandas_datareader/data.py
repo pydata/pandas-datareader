@@ -52,7 +52,8 @@ def DataReader(name, data_source=None, start=None, end=None,
         the name of the dataset. Some data sources (yahoo, google, fred) will
         accept a list of names.
     data_source: {str, None}
-        the data source ("yahoo", "yahoo-actions", "google", "fred", or "ff")
+        the data source ("yahoo", "yahoo-actions", "yahoo-dividends",
+        "google", "fred", or "ff")
     start : {datetime, None}
         left boundary for range (defaults to 1/1/2010)
     end : {datetime, None}
@@ -96,6 +97,11 @@ def DataReader(name, data_source=None, start=None, end=None,
         return YahooActionReader(symbols=name, start=start, end=end,
                                  retry_count=retry_count, pause=pause,
                                  session=session).read()
+    elif data_source == "yahoo-dividends":
+        return YahooDailyReader(symbols=name, start=start, end=end,
+                                adjust_price=False, chunksize=25,
+                                retry_count=retry_count, pause=pause,
+                                session=session, interval='v').read()
 
     elif data_source == "google":
         return GoogleDailyReader(symbols=name, start=start, end=end,

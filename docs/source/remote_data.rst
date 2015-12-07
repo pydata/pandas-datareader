@@ -61,6 +61,17 @@ Historical corporate actions (Dividends and Stock Splits) with ex-dates from Yah
 
   web.DataReader('AAPL', 'yahoo-actions', start, end)
 
+Historical dividends from Yahoo! Finance.
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+    import datetime
+    start = datetime.datetime(2010, 1, 1)
+    end = datetime.datetime(2013, 1, 27)
+    f = web.DataReader("F", 'yahoo-dividends', start, end)
+    f
+
 .. _remote_data.yahoo_options:
 
 Yahoo! Finance Options
