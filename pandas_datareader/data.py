@@ -19,7 +19,6 @@ from pandas_datareader.famafrench import FamaFrenchReader
 from pandas_datareader.oecd import OECDReader
 
 
-# ToDo: deprecate
 def get_data_fred(*args, **kwargs):
     return FredReader(*args, **kwargs).read()
 
