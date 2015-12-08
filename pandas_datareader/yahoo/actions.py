@@ -5,7 +5,7 @@ from pandas import to_datetime, DataFrame, Panel
 from pandas.compat import StringIO, string_types, OrderedDict
 
 from pandas_datareader.base import _BaseReader
-from pandas_datareader._utils import RemoteDataError
+from pandas_datareader._utils import RemoteDataError, SymbolWarning
 
 class YahooActionReader(_BaseReader):
 
