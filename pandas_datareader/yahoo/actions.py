@@ -2,7 +2,7 @@ import csv
 import warnings
 
 from pandas import to_datetime, DataFrame, Panel
-from pandas.compat import StringIO, bytes_to_str, string_types, OrderedDict
+from pandas.compat import StringIO, string_types, OrderedDict
 
 from pandas_datareader.base import _BaseReader
 from pandas_datareader._utils import RemoteDataError
@@ -19,7 +19,7 @@ class YahooActionReader(_BaseReader):
     def url(self):
         return 'http://ichart.finance.yahoo.com/x'
 
-    def params(self, symbols=None):
+    def _params(self, symbols=None):
         if symbols is None:
             symbols = self.symbols
         params = {
@@ -37,7 +37,7 @@ class YahooActionReader(_BaseReader):
     def read(self):
         """ read data """
         if isinstance(self.symbols, string_types):
-            return self._read_one_data(self.url, self.params())
+            return self._read_one_data(self.url, self._params())
         else:
             return self._read_several_data()
 
@@ -77,11 +77,11 @@ class YahooActionReader(_BaseReader):
         failed = []
         for symbol in self.symbols:
             try:
-                passed[symbol] = self._read_one_data(self.url, self.params(symbol))
+                passed[symbol] = self._read_one_data(self.url, self._params(symbol))
             except IOError:
                 msg = 'Failed to read symbol: {0!r}, replacing with NaN.'
-                warnings.warn(msg.format(sym), SymbolWarning)
-                failed.append(sym)
+                warnings.warn(msg.format(symbol), SymbolWarning)
+                failed.append(symbol)
         if len(passed) == 0:
             msg = "No data fetched using {0!r}"
             raise RemoteDataError(msg.format(self.__class__.__name__))
