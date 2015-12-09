@@ -15,12 +15,15 @@ _URL_SUFFIX = '_CSV.zip'
 def get_available_datasets(**kwargs):
     """
     Get the list of datasets available from the Fama/French data library.
+    Parameters
+    ----------
+    session : Session, default None
+            requests.sessions.Session instance to be used
     Returns
     -------
     A list of valid inputs for get_data_famafrench.
     """
-    symbols = kwargs.pop('symbols', '')
-    return FamaFrenchReader(symbols=symbols, **kwargs).get_available_datasets()
+    return FamaFrenchReader(symbols='', **kwargs).get_available_datasets()
 
 def _parse_date_famafrench(x):
     x = x.strip()
