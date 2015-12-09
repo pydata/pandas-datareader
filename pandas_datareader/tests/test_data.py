@@ -512,6 +512,10 @@ class TestDataReader(tm.TestCase):
         gs = DataReader("GS", "yahoo")
         assert isinstance(gs, DataFrame)
 
+    def test_read_yahoo_dividends(self):
+        gs = DataReader("GS", "yahoo-dividends")
+        assert isinstance(gs, DataFrame)
+
     def test_read_google(self):
         gs = DataReader("GS", "google")
         assert isinstance(gs, DataFrame)
