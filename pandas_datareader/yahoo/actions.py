@@ -4,10 +4,10 @@ import warnings
 from pandas import to_datetime, DataFrame, Panel
 from pandas.compat import StringIO, string_types, OrderedDict
 
-from pandas_datareader.base import _BaseReader
+from pandas_datareader.base import _DailyBaseReader
 from pandas_datareader._utils import RemoteDataError, SymbolWarning
 
-class YahooActionReader(_BaseReader):
+class YahooActionReader(_DailyBaseReader):
 
     """
     Returns DataFrame of historical corporate actions (dividends and stock
@@ -19,7 +19,7 @@ class YahooActionReader(_BaseReader):
     def url(self):
         return 'http://ichart.finance.yahoo.com/x'
 
-    def _params(self, symbols=None):
+    def _get_params(self, symbols=None):
         if symbols is None:
             symbols = self.symbols
         params = {
@@ -33,13 +33,6 @@ class YahooActionReader(_BaseReader):
             'g': 'v'
         }
         return params
-
-    def read(self):
-        """ read data """
-        if isinstance(self.symbols, string_types):
-            return self._read_one_data(self.url, self._params())
-        else:
-            return self._read_several_data()
 
     def _read_lines(self, out):
         actions_index = []
@@ -71,19 +64,3 @@ class YahooActionReader(_BaseReader):
                 })
 
         return DataFrame(actions_entries, index=actions_index)
-
-    def _read_several_data(self):
-        passed = OrderedDict()
-        failed = []
-        for symbol in self.symbols:
-            try:
-                passed[symbol] = self._read_one_data(self.url, self._params(symbol))
-            except IOError:
-                msg = 'Failed to read symbol: {0!r}, replacing with NaN.'
-                warnings.warn(msg.format(symbol), SymbolWarning)
-                failed.append(symbol)
-        if len(passed) == 0:
-            msg = "No data fetched using {0!r}"
-            raise RemoteDataError(msg.format(self.__class__.__name__))
-        panel = Panel(passed).swapaxes('items', 'minor')
-        return panel
