@@ -1,11 +1,10 @@
 import csv
 from pandas import to_datetime, DataFrame
-from pandas.compat import StringIO, bytes_to_str
 
-from pandas_datareader.base import _BaseReader
+from pandas_datareader.base import _DailyBaseReader
 
 
-class YahooActionReader(_BaseReader):
+class YahooActionReader(_DailyBaseReader):
 
     """
     Returns DataFrame of historical corporate actions (dividends and stock
@@ -17,8 +16,7 @@ class YahooActionReader(_BaseReader):
     def url(self):
         return 'http://ichart.finance.yahoo.com/x'
 
-    @property
-    def params(self):
+    def _get_params(self, symbols=None):
         params = {
             's': self.symbols,
             'a': self.start.month - 1,
