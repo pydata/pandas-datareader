@@ -12,27 +12,18 @@ _URL_PREFIX = 'ftp/'
 _URL_SUFFIX = '_CSV.zip'
 
 
-def get_available_datasets():
+def get_available_datasets(**kwargs):
     """
     Get the list of datasets available from the Fama/French data library.
-
+    Parameters
+    ----------
+    session : Session, default None
+            requests.sessions.Session instance to be used
     Returns
     -------
     A list of valid inputs for get_data_famafrench.
     """
-    try:
-        from lxml.html import parse
-    except ImportError:
-        raise ImportError("Please install lxml if you want to use the "
-                          "get_datasets_famafrench function")
-
-    root = parse(_URL + 'data_library.html')
-
-    l = filter(lambda x: x.startswith(_URL_PREFIX) and x.endswith(_URL_SUFFIX),
-               [e.attrib['href'] for e in root.findall('.//a') if 'href' in e.attrib])
-
-    return lmap(lambda x: x[len(_URL_PREFIX):-len(_URL_SUFFIX)], l)
-
+    return FamaFrenchReader(symbols='', **kwargs).get_available_datasets()
 
 def _parse_date_famafrench(x):
     x = x.strip()
@@ -128,3 +119,25 @@ class FamaFrenchReader(_BaseReader):
         datasets['DESCR'] = descr + '\n'.join(table_descr)
 
         return datasets
+
+    def get_available_datasets(self):
+        """
+        Get the list of datasets available from the Fama/French data library.
+        Returns
+        -------
+        A list of valid inputs for get_data_famafrench.
+        """
+        try:
+            from lxml.html import document_fromstring
+        except ImportError:
+            raise ImportError("Please install lxml if you want to use the "
+                              "get_datasets_famafrench function")
+
+        response = self.session.get(_URL + 'data_library.html')
+        root = document_fromstring(response.content)
+
+        l = filter(lambda x: x.startswith(_URL_PREFIX) and x.endswith(_URL_SUFFIX),
+                   [e.attrib['href'] for e in root.findall('.//a') if 'href' in e.attrib])
+
+        return lmap(lambda x: x[len(_URL_PREFIX):-len(_URL_SUFFIX)], l)
+
