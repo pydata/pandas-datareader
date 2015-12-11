@@ -24,7 +24,7 @@ def readme():
         return f.read()
 
 INSTALL_REQUIRES = (
-    ['pandas', 'requests', 'requests-file']
+    ['pandas', 'requests', 'requests-file', 'requests-ftp']
 )
 
 setup(
