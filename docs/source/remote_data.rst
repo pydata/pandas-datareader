@@ -396,3 +396,16 @@ You can specify dataset ID "tran_sf_railac" to get corresponding data via ``Data
 
     df = web.DataReader("tran_sf_railac", 'eurostat')
     df
+
+.. _remote_data.edgar:
+
+EDGAR Index
+===========
+
+Company filing index from EDGAR (SEC).
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+    ed = web.DataReader('master', 'edgar-index')
+    ed[:5]

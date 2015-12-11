@@ -22,7 +22,7 @@ from numpy.testing import assert_array_equal
 import pandas_datareader.data as web
 from pandas_datareader.data import (DataReader, GoogleDailyReader, YahooDailyReader,
                                     YahooQuotesReader, YahooActionReader,
-                                    FredReader, OECDReader)
+                                    FredReader, OECDReader, EdgarIndexReader)
 from pandas_datareader._utils import SymbolWarning, RemoteDataError
 from pandas_datareader.yahoo.quotes import _yahoo_codes
 
@@ -523,6 +523,10 @@ class TestDataReader(tm.TestCase):
     def test_read_fred(self):
         vix = DataReader("VIXCLS", "fred")
         assert isinstance(vix, DataFrame)
+
+    def test_read_edgar_index(self):
+        ed = DataReader("master", "edgar-index")
+        assert isinstance(ed, DataFrame)
 
     def test_not_implemented(self):
         self.assertRaises(NotImplementedError, DataReader, "NA", "NA")

@@ -17,6 +17,7 @@ from pandas_datareader.eurostat import EurostatReader
 from pandas_datareader.fred import FredReader
 from pandas_datareader.famafrench import FamaFrenchReader
 from pandas_datareader.oecd import OECDReader
+from pandas_datareader.edgar import EdgarIndexReader
 
 
 def get_data_fred(*args, **kwargs):
@@ -43,8 +44,8 @@ def DataReader(name, data_source=None, start=None, end=None,
     """
     Imports data from a number of online sources.
 
-    Currently supports Yahoo! Finance, Google Finance, St. Louis FED (FRED)
-    and Kenneth French's data library.
+    Currently supports Yahoo! Finance, Google Finance, St. Louis FED (FRED),
+    Kenneth French's data library, and the SEC's EDGAR Index.
 
     Parameters
     ----------
@@ -53,7 +54,7 @@ def DataReader(name, data_source=None, start=None, end=None,
         accept a list of names.
     data_source: {str, None}
         the data source ("yahoo", "yahoo-actions", "yahoo-dividends",
-        "google", "fred", or "ff")
+        "google", "fred", "ff", or "edgar-index")
     start : {datetime, None}
         left boundary for range (defaults to 1/1/2010)
     end : {datetime, None}
@@ -86,6 +87,9 @@ def DataReader(name, data_source=None, start=None, end=None,
     ff = DataReader("F-F_Research_Data_Factors_weekly", "famafrench")
     ff = DataReader("6_Portfolios_2x3", "famafrench")
     ff = DataReader("F-F_ST_Reversal_Factor", "famafrench")
+
+    # Data from EDGAR index
+    ed = DataReader("master", "edgar-index")
     """
     if data_source == "yahoo":
         return YahooDailyReader(symbols=name, start=start, end=end,
@@ -127,6 +131,10 @@ def DataReader(name, data_source=None, start=None, end=None,
         return EurostatReader(symbols=name, start=start, end=end,
                               retry_count=retry_count, pause=pause,
                               session=session).read()
+    elif data_source == "edgar-index":
+        return EdgarIndexReader(symbols=name, start=start, end=end,
+                                retry_count=retry_count, pause=pause,
+                                session=session).read()
     else:
         raise NotImplementedError(
                 "data_source=%r is not implemented" % data_source)
