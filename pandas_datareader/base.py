@@ -16,6 +16,9 @@ from pandas.util.testing import _network_error_classes
 
 from pandas_datareader._utils import RemoteDataError, SymbolWarning
 
+import requests_ftp
+requests_ftp.monkeypatch_session()
+
 
 class _BaseReader(object):
 
