@@ -335,6 +335,12 @@ class TestYahoo(tm.TestCase):
                                        0.43571, 0.43571, 0.37857, 0.37857, 0.37857]}, index=exp_idx)
         tm.assert_frame_equal(result, exp)
 
+    def test_yahoo_DataReader_multi(self):
+        start = datetime(2010, 1, 1)
+        end = datetime(2015, 5, 9)
+        result = web.DataReader(['AAPL', 'F'], 'yahoo-actions', start, end)
+        assert isinstance(result, pd.Panel)
+
 
 class TestYahooOptions(tm.TestCase):
     @classmethod
