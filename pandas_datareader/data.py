@@ -18,6 +18,7 @@ from pandas_datareader.fred import FredReader
 from pandas_datareader.famafrench import FamaFrenchReader
 from pandas_datareader.oecd import OECDReader
 from pandas_datareader.edgar import EdgarIndexReader
+from pandas_datareader.truefx import TrueFXReader
 
 
 def get_data_fred(*args, **kwargs):
@@ -135,6 +136,9 @@ def DataReader(name, data_source=None, start=None, end=None,
         return EdgarIndexReader(symbols=name, start=start, end=end,
                                 retry_count=retry_count, pause=pause,
                                 session=session).read()
+    elif data_source == "truefx":
+        return TrueFXReader(retry_count=retry_count, pause=pause,
+                                session=session).read(symbols=name, start=start, end=end)
     else:
         raise NotImplementedError(
                 "data_source=%r is not implemented" % data_source)
