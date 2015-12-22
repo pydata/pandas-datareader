@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import pandas.util.testing as tm
 import pandas_datareader.data as web
@@ -5,13 +6,12 @@ from pandas_datareader.truefx import TrueFXReader
 
 class TestTrueFX(tm.TestCase):
     def setUp(self):
-        #session = None
-        
-        # Uncomment this for local tests without network
-        import requests_cache
-        from datetime import timedelta
-        session = requests_cache.CachedSession(cache_name='cache', expire_after=timedelta(days=30))
-        
+        if os.getenv('USE_REQUESTS_CACHE', '0') == '1':
+            import requests_cache
+            from datetime import timedelta
+            session = requests_cache.CachedSession(cache_name='cache', expire_after=timedelta(days=30))
+        else:
+            session = None
         self.dr = TrueFXReader(retry_count=3, pause=0.001, session=session)
 
     def test_url(self):
