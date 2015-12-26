@@ -9,10 +9,10 @@ class TestTrueFX(tm.TestCase):
         if os.getenv('USE_REQUESTS_CACHE', '0') == '1':
             import requests_cache
             from datetime import timedelta
-            session = requests_cache.CachedSession(cache_name='cache', expire_after=timedelta(days=30))
+            self.session = requests_cache.CachedSession(cache_name='cache', expire_after=timedelta(days=30))
         else:
-            session = None
-        self.dr = TrueFXReader(retry_count=3, pause=0.001, session=session)
+            self.session = None
+        self.dr = TrueFXReader(retry_count=3, pause=0.001, session=self.session)
 
     def test_url(self):
         expected = 'http://www.truefx.com/dev/data/2014/JANUARY-2014/AUDUSD-2014-01.zip'
