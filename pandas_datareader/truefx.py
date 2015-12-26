@@ -61,7 +61,7 @@ class TrueFXReader(_BaseReader):
         df[0] = df[0].str.replace('\n', '')
         df[0] = df[0].map(lambda s: s.split(','))
         df['Symbol'] = df[0].map(lambda t: t[0])
-        df['Date'] = df[0].map(lambda t: pd.to_datetime(t[1]))
+        df['Date'] = df[0].map(lambda t: pd.to_datetime(t[1], format='%Y%m%d %H:%M:%S.%f'))
         df['Bid'] = df[0].map(lambda t: t[2]).astype(float)
         df['Ask'] = df[0].map(lambda t: t[3]).astype(float)
         del df[0]
