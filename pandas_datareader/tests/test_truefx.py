@@ -22,15 +22,10 @@ class TestTrueFX(tm.TestCase):
         expected = 'AUDUSD-2014-01.csv'
         tm.assert_equal(self.dr._filename_csv('AUDUSD', 2014, 1), expected)
 
-    def test_get_truefx_read_one_month(self):
-        symbol = 'AUDUSD'
-        df = self.dr._read_one_month(symbol, 2014, 1)
-        tm.assert_equal(df['Ask']['2014-01-01 21:55:34.404'], 0.88922)
-
     def test_get_truefx_datareader(self):
-        df = web.DataReader('AUD/USD', 'truefx', '2014-01-01', '2014-02-28')
-        tm.assert_equal(df['Ask']['2014-01-01 21:55:34.404'], 0.88922)
-        tm.assert_equal(df['Ask']['2014-02-03 00:03:38.169'], 0.87524)
+        df = web.DataReader('AUD/USD', 'truefx', '2014-01-01', '2014-02-28', session=self.session)
+        tm.assert_almost_equal(df.loc['2014-01-01 21:55:34.404', 'Ask'], 0.88922)
+        tm.assert_almost_equal(df.loc['2014-02-03 00:03:38.169', 'Ask'], 0.87524)
 
 if __name__ == '__main__':
     import nose

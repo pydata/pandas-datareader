@@ -51,20 +51,9 @@ class TrueFXReader(_BaseReader):
 
         with ZipFile(zip_data, 'r') as zf:
             zfile = zf.open(self._filename_csv(symbol, year, month))
-            data = zfile.readlines()
+            df = pd.read_csv(zfile, names=['Symbol', 'Date', 'Bid', 'Ask'])
 
-        df = pd.DataFrame(data)
-
-        #df = df[:100]  # uncomment this - just for test
-        
-        df[0] = df[0].str.decode('utf8')
-        df[0] = df[0].str.replace('\n', '')
-        df[0] = df[0].map(lambda s: s.split(','))
-        df['Symbol'] = df[0].map(lambda t: t[0])
-        df['Date'] = df[0].map(lambda t: pd.to_datetime(t[1], format='%Y%m%d %H:%M:%S.%f'))
-        df['Bid'] = df[0].map(lambda t: t[2]).astype(float)
-        df['Ask'] = df[0].map(lambda t: t[3]).astype(float)
-        del df[0]
+        df['Date'] = pd.to_datetime(df['Date'], format='%Y%m%d %H:%M:%S.%f')
         df = df.set_index('Date')
         
         return df
