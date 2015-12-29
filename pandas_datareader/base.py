@@ -34,7 +34,7 @@ class _BaseReader(object):
                 Ending date, timestamp. Same format as starting date.
         retry_count : int, default 3
                 Number of times to retry query request.
-        pause : int, default 0.1
+        pause : float, default 0.1
                 Time, in seconds, of the pause between retries.
         session : Session, default None
                 requests.sessions.Session instance to be used
