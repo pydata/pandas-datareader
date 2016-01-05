@@ -30,6 +30,7 @@ Currently the following sources are supported:
     - :ref:`World Bank<remote_data.wb>`
     - :ref:`OECD<remote_data.oecd>`
     - :ref:`Eurostat<remote_data.eurostat>`
+    - :ref:`Thrift Savings Plan<remote_data.tsp>`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
 
@@ -422,3 +423,16 @@ reconnect after waiting a few minutes.
     import pandas_datareader.data as web
     ed = web.DataReader('daily', 'edgar-index', '1998-05-18', '1998-05-18')
     ed[:5]
+
+.. _remote_data.tsp:
+
+TSP Fund Data
+
+Download mutual fund index prices for the TSP.
+
+.. ipython:: python
+
+    import pandas_datareader.tsp as tsp
+    tspreader = tsp.TSPReader(start='2015-10-1', end='2015-12-31')
+    tspreader.read()
+
