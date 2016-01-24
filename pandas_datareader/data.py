@@ -89,7 +89,8 @@ def DataReader(name, data_source=None, start=None, end=None,
     ff = DataReader("F-F_ST_Reversal_Factor", "famafrench")
 
     # Data from EDGAR index
-    ed = DataReader("master", "edgar-index")
+    ed = DataReader("full", "edgar-index")
+    ed2 = DataReader("daily", "edgar-index")
     """
     if data_source == "yahoo":
         return YahooDailyReader(symbols=name, start=start, end=end,

@@ -530,10 +530,6 @@ class TestDataReader(tm.TestCase):
         vix = DataReader("VIXCLS", "fred")
         assert isinstance(vix, DataFrame)
 
-    def test_read_edgar_index(self):
-        ed = DataReader("full", "edgar-index")
-        assert isinstance(ed, DataFrame)
-
     def test_not_implemented(self):
         self.assertRaises(NotImplementedError, DataReader, "NA", "NA")
 
