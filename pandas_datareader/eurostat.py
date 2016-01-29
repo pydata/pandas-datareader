@@ -41,4 +41,3 @@ class EurostatReader(_BaseReader):
         except ValueError:
             pass
         return data
-

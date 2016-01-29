@@ -47,7 +47,7 @@ class TestWB(tm.TestCase):
         # ...but NOT a retired indicator (User should want it to error.)
 
         cntry_codes = ['CA', 'MX', 'USA', 'US', 'US', 'KSV', 'BLA']
-        inds = ['NY.GDP.PCAP.CD','BAD.INDICATOR']
+        inds = ['NY.GDP.PCAP.CD', 'BAD.INDICATOR']
 
         expected = {'NY.GDP.PCAP.CD': {('Canada', '2004'): 31829.522562759001, ('Canada', '2003'): 28026.006013044702,
                                        ('Kosovo', '2004'): 2135.3328465238301, ('Kosovo', '2003'): 1969.56271307405,
@@ -55,7 +55,7 @@ class TestWB(tm.TestCase):
                                        ('United States', '2004'): 41928.886136479705, ('United States', '2003'): 39682.472247320402}}
         expected = pd.DataFrame(expected)
         # Round, to ignore revisions to data.
-        expected = np.round(expected,decimals=-3)
+        expected = np.round(expected, decimals=-3)
         if PANDAS_0170:
             expected = expected.sort_index()
         else:
@@ -70,9 +70,8 @@ class TestWB(tm.TestCase):
         # Round, to ignore revisions to data.
         result = np.round(result, decimals=-3)
 
-
         if PANDAS_0140:
-            expected.index.names=['country', 'year']
+            expected.index.names = ['country', 'year']
         else:
             # prior versions doesn't allow to set multiple names to MultiIndex
             # Thus overwrite it with the result
@@ -116,7 +115,7 @@ class TestWB(tm.TestCase):
         result = np.round(result, decimals=-3)
 
         if PANDAS_0140:
-            expected.index.names=['country', 'year']
+            expected.index.names = ['country', 'year']
         else:
             # prior versions doesn't allow to set multiple names to MultiIndex
             # Thus overwrite it with the result
@@ -163,7 +162,6 @@ class TestWB(tm.TestCase):
                 self.assertTrue(isinstance(result, pd.DataFrame))
                 self.assertEqual(len(result), 2)
 
-
     def test_wdi_download_w_retired_indicator(self):
 
         cntry_codes = ['CA', 'MX', 'US']
@@ -189,7 +187,7 @@ class TestWB(tm.TestCase):
         # if it ever gets here, it means WB unretired the indicator.
         # even if they dropped it completely, it would still get caught above
         # or the WB API changed somehow in a really unexpected way.
-        if len(result) > 0: # pragma: no cover
+        if len(result) > 0:  # pragma: no cover
             raise nose.SkipTest("Invalid results")
 
     def test_wdi_download_w_crash_inducing_countrycode(self):
@@ -205,7 +203,7 @@ class TestWB(tm.TestCase):
 
         # if it ever gets here, it means the country code XXX got used by WB
         # or the WB API changed somehow in a really unexpected way.
-        if len(result) > 0: # pragma: no cover
+        if len(result) > 0:  # pragma: no cover
             raise nose.SkipTest("Invalid results")
 
     def test_wdi_get_countries(self):
@@ -239,4 +237,4 @@ class TestWB(tm.TestCase):
 
 if __name__ == '__main__':
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
-                   exit=False) # pragma: no cover
+                   exit=False)  # pragma: no cover

@@ -4,12 +4,10 @@ import csv
 import pandas.compat as compat
 from pandas import DataFrame
 
+from pandas_datareader.base import _BaseReader
 
 _yahoo_codes = {'symbol': 's', 'last': 'l1', 'change_pct': 'p2', 'PE': 'r',
                 'time': 't1', 'short_ratio': 's7'}
-
-
-from pandas_datareader.base import _BaseReader
 
 
 class YahooQuotesReader(_BaseReader):

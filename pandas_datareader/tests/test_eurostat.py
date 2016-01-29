@@ -14,7 +14,6 @@ class TestEurostat(tm.TestCase):
             import nose
             raise nose.SkipTest("Doesn't support Python 2.6 because of ElementTree incompat")
 
-
     def test_get_cdh_e_fos(self):
         # Employed doctorate holders in non managerial and non professional
         # occupations by fields of science (%)

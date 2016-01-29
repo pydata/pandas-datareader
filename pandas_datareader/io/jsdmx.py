@@ -3,7 +3,6 @@
 from __future__ import unicode_literals
 
 import itertools
-import os
 import sys
 
 import numpy as np
@@ -100,4 +99,3 @@ def _parse_dimensions(dimensions):
         names.append(key['name'])
     midx = pd.MultiIndex.from_product(arrays, names=names)
     return midx
-

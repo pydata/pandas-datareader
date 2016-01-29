@@ -71,7 +71,6 @@ class YahooDailyReader(_DailyBaseReader):
         }
         return params
 
-
     def read(self):
         """ read one data from specified URL """
         df = super(YahooDailyReader, self).read()
@@ -98,6 +97,7 @@ def _adjust_prices(hist_data, price_list=None):
     del data['Adj Close']
     return data
 
+
 def _calc_return_index(price_df):
     """
     Return a returns index from a input price df or series. Initial value
@@ -116,4 +116,3 @@ def _calc_return_index(price_df):
             df[sym].ix[t_idx] = 1
 
     return df
-

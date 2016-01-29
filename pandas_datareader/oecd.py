@@ -25,7 +25,7 @@ class OECDReader(_BaseReader):
         """ read one data from specified URL """
         df = read_jsdmx(out)
         try:
-            idx_name = df.index.name # hack for pandas 0.16.2
+            idx_name = df.index.name  # hack for pandas 0.16.2
             df.index = pd.to_datetime(df.index)
             df = df.sort_index()
             df = df.truncate(self.start, self.end)

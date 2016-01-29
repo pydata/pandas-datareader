@@ -2,11 +2,9 @@ import warnings
 import datetime as dt
 import numpy as np
 
-from pandas.io.html import read_html
 from pandas import to_datetime
 from pandas import concat, DatetimeIndex, Series
 from pandas.tseries.offsets import MonthEnd
-from pandas.util.testing import _network_error_classes
 from pandas.io.parsers import TextParser
 from pandas import DataFrame
 
@@ -18,11 +16,14 @@ CUR_MONTH = dt.datetime.now().month
 CUR_YEAR = dt.datetime.now().year
 CUR_DAY = dt.datetime.now().day
 
+
 def _two_char(s):
     return '{0:0>2}'.format(s)
 
+
 def _unpack(row, kind='td'):
     return [val.text_content().strip() for val in row.findall(kind)]
+
 
 def _parse_options_data(table):
     header = table.findall('thead/tr')
@@ -31,8 +32,9 @@ def _parse_options_data(table):
     data = [_unpack(r) for r in rows]
     if len(data) > 0:
         return TextParser(data, names=header).get_chunk()
-    else: #Empty table
+    else:  # Empty table
         return DataFrame(columns=header)
+
 
 class Options(_BaseReader):
     """
@@ -164,7 +166,7 @@ class Options(_BaseReader):
         try:
             expiry_links = self._expiry_links
 
-        except AttributeError: # pragma: no cover
+        except AttributeError:  # pragma: no cover
             _, expiry_links = self._get_expiry_dates_and_links()
 
         return self._FINANCE_BASE_URL + expiry_links[expiry]
@@ -202,7 +204,7 @@ class Options(_BaseReader):
     def _underlying_price_from_root(root):
         underlying_price = root.xpath('.//*[@class="time_rtq_ticker Fz-30 Fw-b"]')[0]\
             .getchildren()[0].text
-        underlying_price = underlying_price.replace(',', '') #GH11
+        underlying_price = underlying_price.replace(',', '')  # GH11
 
         try:
             underlying_price = float(underlying_price)
@@ -213,10 +215,10 @@ class Options(_BaseReader):
 
     @staticmethod
     def _quote_time_from_root(root):
-        #Gets the time of the quote, note this is actually the time of the underlying price.
+        # Gets the time of the quote, note this is actually the time of the underlying price.
         try:
             quote_time_text = root.xpath('.//*[@class="time_rtq Fz-m"]')[0].getchildren()[1].getchildren()[0].text
-            ##TODO: Enable timezone matching when strptime can match EST with %Z
+            # TODO: Enable timezone matching when strptime can match EST with %Z
             quote_time_text = quote_time_text.split(' ')[0]
             quote_time = dt.datetime.strptime(quote_time_text, "%I:%M%p")
             quote_time = quote_time.replace(year=CUR_YEAR, month=CUR_MONTH, day=CUR_DAY)
@@ -419,8 +421,8 @@ class Options(_BaseReader):
         min_strike = min(df.index.get_level_values('Strike'))
 
         if not np.isnan(underlying_price) and min_strike < underlying_price < max_strike:
-            start_index = np.where(df.index.get_level_values('Strike')
-                                   > underlying_price)[0][0]
+            start_index = np.where(df.index.get_level_values('Strike') >
+                                   underlying_price)[0][0]
 
             get_range = slice(start_index - above_below,
                               start_index + above_below + 1)
@@ -448,7 +450,7 @@ class Options(_BaseReader):
         list of expiry dates (datetime.date)
         """
 
-        #Checks if the user gave one of the month or the year but not both and did not provide an expiry:
+        # Checks if the user gave one of the month or the year but not both and did not provide an expiry:
         if (month is not None and year is None) or (month is None and year is not None) and expiry is None:
             msg = "You must specify either (`year` and `month`) or `expiry` " \
                   "or none of these options for the next expiry."
@@ -464,14 +466,14 @@ class Options(_BaseReader):
                 raise ValueError('No expiries available for given input.')
 
         elif year is None and month is None:
-            #No arguments passed, provide next expiry
+            # No arguments passed, provide next expiry
             year = CUR_YEAR
             month = CUR_MONTH
             expiry = dt.date(year, month, 1)
             expiry = [self._validate_expiry(expiry)]
 
         else:
-            #Year and month passed, provide all expiries in that month
+            # Year and month passed, provide all expiries in that month
             expiry = [expiry for expiry in self.expiry_dates if expiry.year == year and expiry.month == month]
             if len(expiry) == 0:
                 raise ValueError('No expiries available in %s-%s' % (year, month))
@@ -494,7 +496,7 @@ class Options(_BaseReader):
             return index[index.date >= expiry][0].date()
 
     def get_forward_data(self, months, call=True, put=False, near=False,
-            above_below=2): # pragma: no cover
+                         above_below=2):  # pragma: no cover
         """
         ***Experimental***
         Gets either call, put, or both data for months starting in the current
@@ -640,14 +642,14 @@ class Options(_BaseReader):
 
         try:
             links = root.xpath('//*[@id="options_menu"]/form/select/option')
-        except IndexError: # pragma: no cover
+        except IndexError:  # pragma: no cover
             raise RemoteDataError('Expiry dates not available')
 
         expiry_dates = [dt.datetime.strptime(element.text, "%B %d, %Y").date() for element in links]
         links = [element.attrib['data-selectbox-link'] for element in links]
 
         if len(expiry_dates) == 0:
-            raise RemoteDataError('Data not available') # pragma: no cover
+            raise RemoteDataError('Data not available')  # pragma: no cover
 
         expiry_links = dict(zip(expiry_dates, links))
         self._expiry_links = expiry_links
@@ -661,14 +663,14 @@ class Options(_BaseReader):
         """
         try:
             from lxml.html import parse
-        except ImportError: # pragma: no cover
+        except ImportError:  # pragma: no cover
             raise ImportError("Please install lxml if you want to use the "
                               "{0!r} class".format(self.__class__.__name__))
         doc = parse(self._read_url_as_StringIO(url))
         root = doc.getroot()
-        if root is None: # pragma: no cover
+        if root is None:  # pragma: no cover
             raise RemoteDataError("Parsed URL {0!r} has no root"
-                                      "element".format(url))
+                                  "element".format(url))
         return root
 
     def _process_data(self, frame, type):
@@ -681,20 +683,20 @@ class Options(_BaseReader):
         frame["Rootexp"] = frame.Symbol.str[0:-9]
         frame["Root"] = frame.Rootexp.str[0:-6]
         frame["Expiry"] = to_datetime(frame.Rootexp.str[-6:])
-        #Removes dashes in equity ticker to map to option ticker.
-        #Ex: BRK-B to BRKB140517C00100000
+        # Removes dashes in equity ticker to map to option ticker.
+        # Ex: BRK-B to BRKB140517C00100000
         frame["IsNonstandard"] = frame['Root'] != self.symbol.replace('-', '')
         del frame["Rootexp"]
         frame["Underlying"] = self.symbol
         try:
             frame['Underlying_Price'] = self.underlying_price
             frame["Quote_Time"] = self.quote_time
-        except AttributeError: # pragma: no cover
+        except AttributeError:  # pragma: no cover
             frame['Underlying_Price'] = np.nan
             frame["Quote_Time"] = np.nan
         frame.rename(columns={'Open Int': 'Open_Int'}, inplace=True)
-        frame['IV'] = frame['IV'].str.replace(',','').str.strip('%').astype(float)/100
-        frame['PctChg'] = frame['PctChg'].str.replace(',','').str.strip('%').astype(float)/100
+        frame['IV'] = frame['IV'].str.replace(',', '').str.strip('%').astype(float) / 100
+        frame['PctChg'] = frame['PctChg'].str.replace(',', '').str.strip('%').astype(float) / 100
         frame['Type'] = type
         frame.set_index(['Strike', 'Expiry', 'Type', 'Symbol'], inplace=True)
 

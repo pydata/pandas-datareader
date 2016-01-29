@@ -4,7 +4,6 @@ import os
 
 import numpy as np
 import pandas as pd
-from pandas.compat import range
 import pandas.util.testing as tm
 
 from pandas_datareader.io import read_jsdmx
@@ -13,7 +12,7 @@ from pandas_datareader.io import read_jsdmx
 class TestJSDMX(tm.TestCase):
 
     def setUp(self):
-      self.dirpath = tm.get_data_path()
+        self.dirpath = tm.get_data_path()
 
     def test_tourism(self):
         # OECD -> Industry and Services -> Inbound Tourism

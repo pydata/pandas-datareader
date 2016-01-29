@@ -8,11 +8,10 @@ from requests_file import FileAdapter
 
 from pandas import to_datetime
 import pandas.compat as compat
-from pandas.core.common import PandasError, is_number
+from pandas.core.common import is_number
 from pandas import Panel, DataFrame
 from pandas import read_csv
 from pandas.compat import StringIO, bytes_to_str
-from pandas.util.testing import _network_error_classes
 
 from pandas_datareader._utils import RemoteDataError, SymbolWarning
 
@@ -125,11 +124,11 @@ class _BaseReader(object):
         # return 2 rows for the most recent business day
         if len(rs) > 2 and rs.index[-1] == rs.index[-2]:  # pragma: no cover
             rs = rs[:-1]
-        #Get rid of unicode characters in index name.
+        # Get rid of unicode characters in index name.
         try:
             rs.index.name = rs.index.name.decode('unicode_escape').encode('ascii', 'ignore')
         except AttributeError:
-            #Python 3 string has no decode method.
+            # Python 3 string has no decode method.
             rs.index.name = rs.index.name.encode('ascii', 'ignore').decode()
         return rs
 
