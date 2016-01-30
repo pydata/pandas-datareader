@@ -5,7 +5,6 @@ from pandas_datareader.base import _BaseReader
 
 
 class FredReader(_BaseReader):
-
     """
     Get data for the given name from the St. Louis FED (FRED).
     Date format is datetime
@@ -36,7 +35,7 @@ class FredReader(_BaseReader):
                             na_values='.')
             try:
                 return data.truncate(self.start, self.end)
-            except KeyError: # pragma: no cover
+            except KeyError:  # pragma: no cover
                 if data.ix[3].name[7:12] == 'Error':
                     raise IOError("Failed to get the data. Check that {0!r} is "
                                   "a valid FRED series.".format(name))

@@ -2,7 +2,6 @@ from __future__ import unicode_literals
 
 import os
 
-import pandas as pd
 import pandas.compat as compat
 from pandas.io.common import get_filepath_or_buffer
 
@@ -15,7 +14,7 @@ def _read_content(path_or_buf):
     if isinstance(filepath_or_buffer, compat.string_types):
         try:
             exists = os.path.exists(filepath_or_buffer)
-        except (TypeError,ValueError):
+        except (TypeError, ValueError):
             exists = False
 
         if exists:

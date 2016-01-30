@@ -1,15 +1,14 @@
 import pandas as pd
 from pandas.core.common import PandasError
+from distutils.version import LooseVersion
 
 
 class SymbolWarning(UserWarning):
     pass
 
+
 class RemoteDataError(PandasError, IOError):
     pass
-
-
-from distutils.version import LooseVersion
 
 PANDAS_VERSION = LooseVersion(pd.__version__)
 
