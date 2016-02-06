@@ -20,6 +20,8 @@ _URL_DAILY = 'ftp://ftp.sec.gov/'
 _SEC_FTP = 'ftp.sec.gov'
 
 _COLUMNS = ['cik', 'company_name', 'form_type', 'date_filed', 'filename']
+_COLUMN_TYPES = {'cik': str, 'company_name': str, 'form_type': str,
+                 'date_filed': str, 'filename': str}
 _DIVIDER = re.compile('--------------')
 _EDGAR = 'edgar/'
 _EDGAR_DAILY = 'edgar/daily-index'
@@ -106,7 +108,7 @@ class EdgarIndexReader(_BaseReader):
         index_file = self._remove_header(index_file)
         index = read_csv(index_file, delimiter='|', header=None,
                          index_col=False, names=_COLUMNS,
-                         low_memory=False)
+                         low_memory=False, dtype=_COLUMN_TYPES)
         index['filename'] = index['filename'].map(self._fix_old_file_paths)
         return index
 
@@ -118,6 +120,9 @@ class EdgarIndexReader(_BaseReader):
                 daily_idx_path = (idx_entry['path'] + '/' + idx_entry['name'])
                 daily_idx = self._read_one_data(daily_idx_path, params)
                 doc_index = doc_index.append(daily_idx)
+        doc_index['date_filed'] = to_datetime(doc_index['date_filed'],
+                                              format='%Y%m%d')
+        doc_index.set_index(['date_filed', 'cik'], inplace=True)
         return doc_index
 
     def _check_idx(self, idx_entry):
@@ -160,7 +165,7 @@ class EdgarIndexReader(_BaseReader):
             elif self.symbols == 'daily':
                 return self._read_daily_data(self.url, self.params)
         finally:
-            self._sec_ftp_session.quit()
+            self._sec_ftp_session.close()
 
     def _sanitize_dates(self, start, end):
         if is_number(start):
