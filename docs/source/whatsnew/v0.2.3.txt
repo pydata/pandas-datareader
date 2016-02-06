@@ -1,0 +1,31 @@
+.. _whatsnew_023:
+
+v0.2.3 (XXX)
+----------------------------
+
+This is a minor release from 0.2.2 and includes new features.
+
+
+Highlights include:
+
+
+.. contents:: What's new in v0.2.3
+    :local:
+    :backlinks: none
+
+.. _whatsnew_023.enhancements:
+
+New features
+~~~~~~~~~~~~
+
+- ``DataReader`` now supports pulling data for the TSP.
+
+.. _whatsnew_023.api_breaking:
+
+Backwards incompatible API changes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. _whatsnew_023.bug_fixes:
+
+Bug Fixes
+~~~~~~~~~

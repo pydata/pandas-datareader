@@ -91,13 +91,21 @@ class _BaseReader(object):
         Open url (and retry)
         """
         response = self._get_response(url, params=params)
+        text = self._sanitize_response(response)
         out = StringIO()
-        if isinstance(response.content, compat.binary_type):
-            out.write(bytes_to_str(response.content))
+        if isinstance(text, compat.binary_type):
+            out.write(bytes_to_str(text))
         else:
-            out.write(response.content)
+            out.write(text)
         out.seek(0)
         return out
+
+    @staticmethod
+    def _sanitize_response(response):
+        """
+        Hook to allow subclasses to clean up response data
+        """
+        return response.content
 
     def _get_response(self, url, params=None):
         """ send raw HTTP request to get requests.Response from the specified url
