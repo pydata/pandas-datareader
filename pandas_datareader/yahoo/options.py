@@ -31,7 +31,7 @@ def _parse_options_data(table):
     rows = table.findall('tbody/tr')
     data = [_unpack(r) for r in rows]
     if len(data) > 0:
-        return TextParser(data, names=header).get_chunk()
+        return TextParser(data, names=header, thousands=',').get_chunk()
     else:  # Empty table
         return DataFrame(columns=header)
 
