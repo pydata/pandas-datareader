@@ -5,12 +5,12 @@ Module contains tools for collecting data from various remote sources
 import warnings
 
 from pandas_datareader.google.daily import GoogleDailyReader
-from pandas_datareader.google.quotes import _get_data as get_quote_google
+from pandas_datareader.google.quotes import _get_data as get_quote_google  # noqa
 
 from pandas_datareader.yahoo.daily import YahooDailyReader
 from pandas_datareader.yahoo.quotes import YahooQuotesReader
 from pandas_datareader.yahoo.actions import YahooActionReader
-from pandas_datareader.yahoo.components import _get_data as get_components_yahoo
+from pandas_datareader.yahoo.components import _get_data as get_components_yahoo  # noqa
 from pandas_datareader.yahoo.options import Options as YahooOptions
 
 from pandas_datareader.eurostat import EurostatReader
@@ -24,17 +24,22 @@ from pandas_datareader.truefx import TrueFXReader
 def get_data_fred(*args, **kwargs):
     return FredReader(*args, **kwargs).read()
 
+
 def get_data_famafrench(*args, **kwargs):
     return FamaFrenchReader(*args, **kwargs).read()
+
 
 def get_data_google(*args, **kwargs):
     return GoogleDailyReader(*args, **kwargs).read()
 
+
 def get_data_yahoo(*args, **kwargs):
     return YahooDailyReader(*args, **kwargs).read()
 
+
 def get_data_yahoo_actions(*args, **kwargs):
     return YahooActionReader(*args, **kwargs).read()
+
 
 def get_quote_yahoo(*args, **kwargs):
     return YahooQuotesReader(*args, **kwargs).read()
@@ -90,7 +95,8 @@ def DataReader(name, data_source=None, start=None, end=None,
     ff = DataReader("F-F_ST_Reversal_Factor", "famafrench")
 
     # Data from EDGAR index
-    ed = DataReader("master", "edgar-index")
+    ed = DataReader("full", "edgar-index")
+    ed2 = DataReader("daily", "edgar-index")
     """
     if data_source == "yahoo":
         return YahooDailyReader(symbols=name, start=start, end=end,
@@ -140,9 +146,8 @@ def DataReader(name, data_source=None, start=None, end=None,
         return TrueFXReader(retry_count=retry_count, pause=pause,
                                 session=session).read(symbols=name, start=start, end=end)
     else:
-        raise NotImplementedError(
-                "data_source=%r is not implemented" % data_source)
-
+        msg = "data_source=%r is not implemented" % data_source
+        raise NotImplementedError(msg)
 
 
 def Options(symbol, data_source=None, session=None):

@@ -1,11 +1,8 @@
 from __future__ import unicode_literals
 
 import collections
-import os
 
-import numpy as np
 import pandas as pd
-import pandas.compat as compat
 
 from pandas_datareader.io.util import _read_content
 
@@ -153,7 +150,6 @@ _NAME_EN = ".//{0}Name[@{1}lang='en']".format(_COMMON, _XML)
 def _get_english_name(element):
     name = element.find(_NAME_EN).text
     return name
-
 
 
 SDMXCode = collections.namedtuple('SDMXCode', ['codes', 'ts'])

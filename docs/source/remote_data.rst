@@ -30,6 +30,7 @@ Currently the following sources are supported:
     - :ref:`World Bank<remote_data.wb>`
     - :ref:`OECD<remote_data.oecd>`
     - :ref:`Eurostat<remote_data.eurostat>`
+    - :ref:`Thrift Savings Plan<remote_data.tsp>`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
 
@@ -404,8 +405,34 @@ EDGAR Index
 
 Company filing index from EDGAR (SEC).
 
+The daily indices get large quickly (i.e. the set of daily indices from 1994
+to 2015 is 1.5GB), and the FTP server will close the connection past some
+downloading threshold . In testing, pulling one year at a time works well.
+If the FTP server starts refusing your connections, you should be able to
+reconnect after waiting a few minutes.
+
+
 .. ipython:: python
 
     import pandas_datareader.data as web
     ed = web.DataReader('full', 'edgar-index')
     ed[:5]
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+    ed = web.DataReader('daily', 'edgar-index', '1998-05-18', '1998-05-18')
+    ed[:5]
+
+.. _remote_data.tsp:
+
+TSP Fund Data
+
+Download mutual fund index prices for the TSP.
+
+.. ipython:: python
+
+    import pandas_datareader.tsp as tsp
+    tspreader = tsp.TSPReader(start='2015-10-1', end='2015-12-31')
+    tspreader.read()
+

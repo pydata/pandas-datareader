@@ -103,7 +103,7 @@ class FamaFrenchReader(_BaseReader):
 
             df = read_csv(StringIO('Date' + src[start:]), **params)
             try:
-                idx_name = df.index.name # hack for pandas 0.16.2
+                idx_name = df.index.name  # hack for pandas 0.16.2
                 df = df.to_period(df.index.inferred_freq[:1])
                 df.index.name = idx_name
             except:

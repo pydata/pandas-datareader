@@ -1,10 +1,11 @@
+import nose
+
 from datetime import datetime
 import numpy as np
 import pandas as pd
-from pandas.compat import range
 import pandas.util.testing as tm
 import pandas_datareader.data as web
-from pandas_datareader._utils import SymbolWarning, RemoteDataError
+from pandas_datareader._utils import RemoteDataError
 
 
 class TestOECD(tm.TestCase):
@@ -47,30 +48,38 @@ class TestOECD(tm.TestCase):
               11.96023574, 11.48458378, 11.56435375, 11.91022276, 11.79401904,
               11.38345975, 11.32948829, 11.07884758]
 
-        index = pd.date_range('1960-01-01', '2012-01-01', freq='AS', name='Time')
-        for label, values in [('Australia', au), ('Japan', jp), ('United States', us)]:
+        index = pd.date_range('1960-01-01', '2012-01-01', freq='AS',
+                              name='Time')
+        for label, values in [('Australia', au), ('Japan', jp),
+                              ('United States', us)]:
             expected = pd.Series(values, index=index, name=label)
             tm.assert_series_equal(df[label], expected)
 
     def test_get_tourism(self):
-        df = web.DataReader('TOURISM_INBOUND', 'oecd', start=datetime(2005, 1, 1),
+        df = web.DataReader('TOURISM_INBOUND', 'oecd',
+                            start=datetime(2008, 1, 1),
                             end=datetime(2012, 1, 1))
 
-        jp = np.array([6728.0, 7334.0, 8347.0, 8351.0, 6790.0, 8611.0, 6219.0, 8368.0], dtype=float)
-        us = np.array([np.nan, 183178.0, 175142.0, 175632.0, 160359.0, 162269.0, 164672.0, 171630.0], dtype=float)
-        index = pd.date_range('2005-01-01', '2012-01-01', freq='AS', name='Year')
+        jp = np.array([8351000, 6790000, 8611000, 6219000,
+                      8368000], dtype=float)
+        us = np.array([175702309, 160507417, 164079732, 167600277,
+                       171320408], dtype=float)
+        index = pd.date_range('2008-01-01', '2012-01-01', freq='AS',
+                              name='Year')
         for label, values in [('Japan', jp), ('United States', us)]:
-            expected = pd.Series(values, index=index, name='Total international arrivals')
-            tm.assert_series_equal(df[label]['Total international arrivals'], expected)
+            expected = pd.Series(values, index=index,
+                                 name='Total international arrivals')
+            tm.assert_series_equal(df[label]['Total international arrivals'],
+                                   expected)
 
     def test_oecd_invalid_symbol(self):
-      with tm.assertRaises(RemoteDataError):
-          web.DataReader('INVALID_KEY', 'oecd')
+        with tm.assertRaises(RemoteDataError):
+            web.DataReader('INVALID_KEY', 'oecd')
 
-      with tm.assertRaises(ValueError):
-          web.DataReader(1234, 'oecd')
+        with tm.assertRaises(ValueError):
+            web.DataReader(1234, 'oecd')
 
 
 if __name__ == '__main__':
-    import nose
-    nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'], exit=False)
+    nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
+                   exit=False)

@@ -13,24 +13,22 @@ from pandas import DataFrame, Timestamp
 from pandas.util.testing import assert_frame_equal, assert_series_equal
 try:
     from pandas.util.testing import assert_produces_warning
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     assert_produces_warning = None
 
 import pandas.util.testing as tm
 from numpy.testing import assert_array_equal
 
 import pandas_datareader.data as web
-from pandas_datareader.data import (DataReader, GoogleDailyReader, YahooDailyReader,
-                                    YahooQuotesReader, YahooActionReader,
-                                    FredReader, OECDReader, EdgarIndexReader)
+from pandas_datareader.data import (DataReader, GoogleDailyReader, YahooDailyReader)
 from pandas_datareader._utils import SymbolWarning, RemoteDataError
 from pandas_datareader.yahoo.quotes import _yahoo_codes
 
 
 def _skip_if_no_lxml():
     try:
-        import lxml
-    except ImportError: # pragma: no cover
+        import lxml  # noqa
+    except ImportError:  # pragma: no cover
         raise nose.SkipTest("no lxml")
 
 
@@ -51,7 +49,7 @@ class TestGoogle(tm.TestCase):
     def setUpClass(cls):
         super(TestGoogle, cls).setUpClass()
         cls.locales = tm.get_locales(prefix='en_US')
-        if not cls.locales: # pragma: no cover
+        if not cls.locales:  # pragma: no cover
             raise nose.SkipTest("US English locale not available for testing")
 
     @classmethod
@@ -91,9 +89,9 @@ class TestGoogle(tm.TestCase):
                 pan = web.get_data_google(sl, '2012')
             ts = pan.Close.GOOG.index[pan.Close.AAPL < pan.Close.GOOG]
             if (hasattr(pan, 'Close') and hasattr(pan.Close, 'GOOG') and
-                hasattr(pan.Close, 'AAPL')):
+                    hasattr(pan.Close, 'AAPL')):
                 self.assertEqual(ts[0].dayofyear, 3)
-            else: # pragma: no cover
+            else:  # pragma: no cover
                 self.assertRaises(AttributeError, lambda: pan.Close)
 
     def test_get_multi_invalid(self):
@@ -122,7 +120,7 @@ class TestGoogle(tm.TestCase):
                 assert_n_failed_equals_n_null_columns(w, result)
 
     def test_dtypes(self):
-        #GH3995, #GH8980
+        # GH3995, #GH8980
         data = web.get_data_google('F', start='JAN-01-10', end='JAN-27-13')
         assert np.issubdtype(data.Open.dtype, np.number)
         assert np.issubdtype(data.Close.dtype, np.number)
@@ -131,7 +129,7 @@ class TestGoogle(tm.TestCase):
         assert np.issubdtype(data.Volume.dtype, np.number)
 
     def test_unicode_date(self):
-        #GH8967
+        # GH8967
         data = web.get_data_google('F', start='JAN-01-10', end='JAN-27-13')
         self.assertEqual(data.index.name, 'Date')
 
@@ -147,7 +145,7 @@ class TestGoogle(tm.TestCase):
     def test_bad_retry_count(self):
 
         with tm.assertRaises(ValueError):
-            web.get_data_google('F', retry_count = -1)
+            web.get_data_google('F', retry_count=-1)
 
 
 class TestYahoo(tm.TestCase):
@@ -191,27 +189,27 @@ class TestYahoo(tm.TestCase):
         del _yahoo_codes['name']
         self.assertEqual(df['name'][0], 'Royal Gold, Inc.')
 
-    def test_get_components_dow_jones(self): # pragma: no cover
+    def test_get_components_dow_jones(self):  # pragma: no cover
         raise nose.SkipTest('unreliable test, receive partial components back for dow_jones')
 
-        df = web.get_components_yahoo('^DJI') #Dow Jones
+        df = web.get_components_yahoo('^DJI')  # Dow Jones
         assert isinstance(df, pd.DataFrame)
         self.assertEqual(len(df), 30)
 
-    def test_get_components_dax(self): # pragma: no cover
+    def test_get_components_dax(self):  # pragma: no cover
         raise nose.SkipTest('unreliable test, receive partial components back for dax')
 
-        df = web.get_components_yahoo('^GDAXI') #DAX
+        df = web.get_components_yahoo('^GDAXI')  # DAX
         assert isinstance(df, pd.DataFrame)
         self.assertEqual(len(df), 30)
         self.assertEqual(df[df.name.str.contains('adidas', case=False)].index,
                          'ADS.DE')
 
-    def test_get_components_nasdaq_100(self): # pragma: no cover
+    def test_get_components_nasdaq_100(self):  # pragma: no cover
         # as of 7/12/13 the conditional will test false because the link is invalid
         raise nose.SkipTest('unreliable test, receive partial components back for nasdaq_100')
 
-        df = web.get_components_yahoo('^NDX') #NASDAQ-100
+        df = web.get_components_yahoo('^NDX')  # NASDAQ-100
         assert isinstance(df, pd.DataFrame)
 
         if len(df) > 1:
@@ -225,8 +223,8 @@ class TestYahoo(tm.TestCase):
             assert_frame_equal(df, expected)
 
     def test_get_data_single_symbol(self):
-        #single symbol
-        #http://finance.yahoo.com/q/hp?s=GOOG&a=09&b=08&c=2010&d=09&e=10&f=2010&g=d
+        # single symbol
+        # http://finance.yahoo.com/q/hp?s=GOOG&a=09&b=08&c=2010&d=09&e=10&f=2010&g=d
         # just test that we succeed
         web.get_data_yahoo('GOOG')
 
@@ -234,7 +232,7 @@ class TestYahoo(tm.TestCase):
         goog = web.get_data_yahoo('GOOG')
         goog_adj = web.get_data_yahoo('GOOG', adjust_price=True)
         self.assertTrue('Adj Close' not in goog_adj.columns)
-        self.assertTrue((goog['Open']*goog_adj['Adj_Ratio']).equals(goog_adj['Open']))
+        self.assertTrue((goog['Open'] * goog_adj['Adj_Ratio']).equals(goog_adj['Open']))
 
     def test_get_data_interval(self):
         # daily interval data
@@ -270,7 +268,7 @@ class TestYahoo(tm.TestCase):
         # sanity checking
         assert np.issubdtype(result.dtype, np.floating)
 
-        expected = np.array([[18.99,  28.4, 25.18],
+        expected = np.array([[18.99, 28.4, 25.18],
                              [18.58, 28.31, 25.13],
                              [19.03, 28.16, 25.52],
                              [18.81, 28.82, 25.87]])
@@ -299,7 +297,7 @@ class TestYahoo(tm.TestCase):
         self.assertEqual(sum(actions['action'] == 'SPLIT'), 1)
 
         self.assertEqual(actions.ix['1995-05-11']['action'][0], 'SPLIT')
-        self.assertEqual(actions.ix['1995-05-11']['value'][0], 1/1.1)
+        self.assertEqual(actions.ix['1995-05-11']['value'][0], 1 / 1.1)
 
         self.assertEqual(actions.ix['1993-05-10']['action'][0], 'DIVIDEND')
         self.assertEqual(actions.ix['1993-05-10']['value'][0], 0.3)
@@ -331,8 +329,8 @@ class TestYahoo(tm.TestCase):
         exp = pd.DataFrame({'action': ['DIVIDEND', 'DIVIDEND', 'DIVIDEND', 'DIVIDEND',
                                        'SPLIT', 'DIVIDEND', 'DIVIDEND', 'DIVIDEND',
                                        'DIVIDEND', 'DIVIDEND', 'DIVIDEND', 'DIVIDEND', 'DIVIDEND'],
-                            'value': [ 0.52, 0.47, 0.47, 0.47, 0.14285714, 0.47, 0.43571, 0.43571,
-                                       0.43571, 0.43571, 0.37857, 0.37857, 0.37857]}, index=exp_idx)
+                            'value': [0.52, 0.47, 0.47, 0.47, 0.14285714, 0.47, 0.43571, 0.43571,
+                                      0.43571, 0.43571, 0.37857, 0.37857, 0.37857]}, index=exp_idx)
         tm.assert_frame_equal(result, exp)
 
     def test_yahoo_DataReader_multi(self):
@@ -353,14 +351,14 @@ class TestYahooOptions(tm.TestCase):
         today = datetime.today()
         cls.year = today.year
         cls.month = today.month + 1
-        if cls.month > 12: # pragma: no cover
+        if cls.month > 12:  # pragma: no cover
             cls.month = 1
             cls.year = cls.year + 1
         cls.expiry = datetime(cls.year, cls.month, 1)
         cls.dirpath = tm.get_data_path()
         cls.html1 = 'file://' + os.path.join(cls.dirpath, 'yahoo_options1.html')
         cls.html2 = 'file://' + os.path.join(cls.dirpath, 'yahoo_options2.html')
-        cls.html3 = 'file://' + os.path.join(cls.dirpath, 'yahoo_options3.html') #Empty table GH#22
+        cls.html3 = 'file://' + os.path.join(cls.dirpath, 'yahoo_options3.html')  # Empty table GH#22
         cls.data1 = cls.aapl._option_frames_from_url(cls.html1)['puts']
 
     @classmethod
@@ -375,7 +373,7 @@ class TestYahooOptions(tm.TestCase):
 
         try:
             options = self.aapl.get_options_data(expiry=self.expiry)
-        except RemoteDataError as e: # pragma: no cover
+        except RemoteDataError as e:  # pragma: no cover
             raise nose.SkipTest(e)
         self.assertTrue(len(options) > 1)
 
@@ -383,7 +381,7 @@ class TestYahooOptions(tm.TestCase):
         try:
             options = self.aapl.get_near_stock_price(call=True, put=True,
                                                      expiry=self.expiry)
-        except RemoteDataError as e: # pragma: no cover
+        except RemoteDataError as e:  # pragma: no cover
             raise nose.SkipTest(e)
         self.assertTrue(len(options) > 1)
 
@@ -394,64 +392,64 @@ class TestYahooOptions(tm.TestCase):
     def test_get_call_data(self):
         try:
             calls = self.aapl.get_call_data(expiry=self.expiry)
-        except RemoteDataError as e: # pragma: no cover
+        except RemoteDataError as e:  # pragma: no cover
             raise nose.SkipTest(e)
         self.assertTrue(len(calls) > 1)
 
     def test_get_put_data(self):
         try:
             puts = self.aapl.get_put_data(expiry=self.expiry)
-        except RemoteDataError as e: # pragma: no cover
+        except RemoteDataError as e:  # pragma: no cover
             raise nose.SkipTest(e)
         self.assertTrue(len(puts) > 1)
 
     def test_get_expiry_dates(self):
         try:
             dates, _ = self.aapl._get_expiry_dates_and_links()
-        except RemoteDataError as e: # pragma: no cover
+        except RemoteDataError as e:  # pragma: no cover
             raise nose.SkipTest(e)
         self.assertTrue(len(dates) > 1)
 
     def test_get_all_data(self):
         try:
             data = self.aapl.get_all_data(put=True)
-        except RemoteDataError as e: # pragma: no cover
+        except RemoteDataError as e:  # pragma: no cover
             raise nose.SkipTest(e)
         self.assertTrue(len(data) > 1)
 
     def test_get_data_with_list(self):
         try:
             data = self.aapl.get_call_data(expiry=self.aapl.expiry_dates)
-        except RemoteDataError as e: # pragma: no cover
+        except RemoteDataError as e:  # pragma: no cover
             raise nose.SkipTest(e)
         self.assertTrue(len(data) > 1)
 
     def test_get_all_data_calls_only(self):
         try:
             data = self.aapl.get_all_data(call=True, put=False)
-        except RemoteDataError as e: # pragma: no cover
+        except RemoteDataError as e:  # pragma: no cover
             raise nose.SkipTest(e)
         self.assertTrue(len(data) > 1)
 
     def test_get_underlying_price(self):
-        #GH7
+        # GH7
         try:
             options_object = web.Options('^spxpm', 'yahoo')
             url = options_object._yahoo_url_from_expiry(options_object.expiry_dates[0])
             root = options_object._parse_url(url)
             quote_price = options_object._underlying_price_from_root(root)
-        except RemoteDataError as e: # pragma: no cover
+        except RemoteDataError as e:  # pragma: no cover
             raise nose.SkipTest(e)
         self.assertTrue(isinstance(quote_price, float))
 
     def test_sample_page_price_quote_time1(self):
-        #Tests the weekend quote time format
+        # Tests the weekend quote time format
         price, quote_time = self.aapl._underlying_price_and_time_from_url(self.html1)
         self.assertTrue(isinstance(price, (int, float, complex)))
         self.assertTrue(isinstance(quote_time, (datetime, Timestamp)))
 
     def test_chop(self):
-        #regression test for #7625
+        # regression test for #7625
         self.aapl.chop_data(self.data1, above_below=2, underlying_price=np.nan)
         chopped = self.aapl.chop_data(self.data1, above_below=2, underlying_price=100)
         self.assertTrue(isinstance(chopped, DataFrame))
@@ -461,33 +459,33 @@ class TestYahooOptions(tm.TestCase):
         self.assertTrue(len(chopped2) > 1)
 
     def test_chop_out_of_strike_range(self):
-        #regression test for #7625
+        # regression test for #7625
         self.aapl.chop_data(self.data1, above_below=2, underlying_price=np.nan)
         chopped = self.aapl.chop_data(self.data1, above_below=2, underlying_price=100000)
         self.assertTrue(isinstance(chopped, DataFrame))
         self.assertTrue(len(chopped) > 1)
 
     def test_sample_page_price_quote_time2(self):
-        #Tests the EDT page format
-        #regression test for #8741
+        # Tests the EDT page format
+        # regression test for #8741
         price, quote_time = self.aapl._underlying_price_and_time_from_url(self.html2)
         self.assertTrue(isinstance(price, (int, float, complex)))
         self.assertTrue(isinstance(quote_time, (datetime, Timestamp)))
 
     def test_sample_page_chg_float(self):
-        #Tests that numeric columns with comma's are appropriately dealt with
+        # Tests that numeric columns with comma's are appropriately dealt with
         self.assertEqual(self.data1['Chg'].dtype, 'float64')
 
     def test_month_year(self):
         try:
             data = self.aapl.get_call_data(month=self.month, year=self.year)
-        except RemoteDataError as e: # pragma: no cover
+        except RemoteDataError as e:  # pragma: no cover
             raise nose.SkipTest(e)
 
         self.assertTrue(len(data) > 1)
 
     def test_empty_table(self):
-        #GH22
+        # GH22
         empty = self.aapl._option_frames_from_url(self.html3)['puts']
         self.assertTrue(len(empty) == 0)
 
@@ -502,11 +500,11 @@ class TestOptionsWarnings(tm.TestCase):
         super(TestOptionsWarnings, cls).tearDownClass()
 
     def test_options_source_warning(self):
-        if not assert_produces_warning: # pragma: no cover
+        if not assert_produces_warning:  # pragma: no cover
             raise nose.SkipTest("old version of pandas without "
-                           "compat.assert_produces_warning")
+                                "compat.assert_produces_warning")
         with assert_produces_warning():
-            aapl = web.Options('aapl')
+            aapl = web.Options('aapl')  # noqa
 
 
 class TestDataReader(tm.TestCase):
@@ -530,10 +528,6 @@ class TestDataReader(tm.TestCase):
         vix = DataReader("VIXCLS", "fred")
         assert isinstance(vix, DataFrame)
 
-    def test_read_edgar_index(self):
-        ed = DataReader("full", "edgar-index")
-        assert isinstance(ed, DataFrame)
-
     def test_not_implemented(self):
         self.assertRaises(NotImplementedError, DataReader, "NA", "NA")
 
@@ -550,9 +544,9 @@ class TestFred(tm.TestCase):
         received = web.DataReader("GDP", "fred", start, end)['GDP'].tail(1)[0]
 
         # < 7/30/14 16535 was returned
-        #self.assertEqual(int(received), 16535)
+        # self.assertEqual(int(received), 16535)
         # < 8/20/15 16502 was returned
-        #self.assertEqual(int(received), 16502)
+        # self.assertEqual(int(received), 16502)
         self.assertEqual(int(received), 16440)
 
         with tm.assertRaises(RemoteDataError):
@@ -564,7 +558,7 @@ class TestFred(tm.TestCase):
         df = web.DataReader("DFII5", "fred", start, end)
         assert pd.isnull(df.ix['2010-01-01'][0])
 
-    def test_fred_parts(self): # pragma: no cover
+    def test_fred_parts(self):  # pragma: no cover
         raise nose.SkipTest('buggy as of 2/18/14; maybe a data revision?')
 
         start = datetime(2010, 1, 1)
@@ -589,7 +583,7 @@ class TestFred(tm.TestCase):
         name = "NOT A REAL SERIES"
         self.assertRaises(Exception, web.get_data_fred, name)
 
-    def test_fred_multi(self): # pragma: no cover
+    def test_fred_multi(self):  # pragma: no cover
         raise nose.SkipTest('buggy as of 2/18/14; maybe a data revision?')
         names = ['CPIAUCSL', 'CPALTT01USQ661S', 'CPILFESL']
         start = datetime(2010, 1, 1)
@@ -610,4 +604,4 @@ class TestFred(tm.TestCase):
 
 if __name__ == '__main__':
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
-                   exit=False) # pragma: no cover
+                   exit=False)  # pragma: no cover

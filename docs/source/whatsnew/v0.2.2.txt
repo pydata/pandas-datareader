@@ -20,6 +20,7 @@ New features
 
 - ``DataReader`` now supports dividend only pulls from Yahoo! Finance, see :ref:`here<remote_data.yahoo>` (:issue:`138`).
 - ``DataReader`` now supports SEC EDGAR full (current quarter) index retrieval, see :ref:`here<remote_data.edgar>` (:issue:`143`).
+- ``DataReader`` now supports SEC EDGAR daily (back to 7/1/1994) index retrieval, see :ref:`here<remote_data.edgar>` (:issue:`147`).
 
 .. _whatsnew_022.api_breaking:
 
