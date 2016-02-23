@@ -3,7 +3,6 @@ sudo: false
 language: python
 
 env:
-  - PYTHON=2.6 PANDAS=0.13.1
   - PYTHON=2.7 PANDAS=0.15.1
   - PYTHON=3.3 PANDAS=0.14.1
   - PYTHON=3.4 PANDAS=0.16.2
