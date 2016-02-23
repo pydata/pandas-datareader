@@ -3,21 +3,22 @@ sudo: false
 language: python
 
 env:
-  - PYTHON=2.6 PANDAS=0.13.1
   - PYTHON=2.7 PANDAS=0.15.1
-  - PYTHON=3.3 PANDAS=0.14.1
   - PYTHON=3.4 PANDAS=0.16.2
   - PYTHON=3.4 PANDAS=0.17.1
   - PYTHON=3.5 PANDAS=0.17.1
+  - PYTHON=3.5 PANDAS=0.18.0rc1
   - PYTHON=2.7 PANDAS=0.12.0
   - PYTHON=2.7 PANDAS=0.11.0
   - PYTHON=2.7 PANDAS=0.10.1
 
 matrix:
     allow_failures:
+        - env: PYTHON=2.6 PANDAS=0.13.1
         - env: PYTHON=2.7 PANDAS=0.12.0
         - env: PYTHON=2.7 PANDAS=0.11.0
         - env: PYTHON=2.7 PANDAS=0.10.1
+        - env: PYTHON=3.3 PANDAS=0.14.1
 
 install:
   - pip install -qq flake8
@@ -41,7 +42,7 @@ install:
   - conda create -q -n test-environment python=$PYTHON pandas=$PANDAS nose coverage setuptools html5lib lxml
   - source activate test-environment
   - pip install beautifulsoup4
-  - if [[ "$PYTHON" == "2.6" ]]; then  
+  - if [[ "$PYTHON" == "2.6" ]]; then
       pip install simplejson;
     fi
   - pip install coveralls --quiet
