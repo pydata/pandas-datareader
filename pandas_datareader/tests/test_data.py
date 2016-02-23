@@ -311,7 +311,7 @@ class TestYahoo(tm.TestCase):
     def test_yahoo_reader_class(self):
         r = YahooDailyReader('GOOG')
         df = r.read()
-        self.assertEqual(df.Volume.loc['JAN-02-2015'], 1447600)
+        self.assertEqual(df.Volume.loc['JAN-02-2015'], 1447500)
 
         session = requests.Session()
         r = YahooDailyReader('GOOG', session=session)
