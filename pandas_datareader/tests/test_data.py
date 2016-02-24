@@ -72,9 +72,9 @@ class TestGoogle(tm.TestCase):
         self.assertRaises(Exception, web.DataReader, "NON EXISTENT TICKER",
                           'google', start, end)
 
-    def test_get_quote_fails(self):
-        self.assertRaises(NotImplementedError, web.get_quote_google,
-                          pd.Series(['GOOG', 'AAPL', 'GOOG']))
+    def test_get_quote_stringlist(self):
+        df = web.get_quote_google(['GOOG', 'AMZN', 'GOOG'])
+        assert_series_equal(df.ix[0], df.ix[2])
 
     def test_get_goog_volume(self):
         for locale in self.locales:

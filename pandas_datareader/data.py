@@ -5,7 +5,7 @@ Module contains tools for collecting data from various remote sources
 import warnings
 
 from pandas_datareader.google.daily import GoogleDailyReader
-from pandas_datareader.google.quotes import _get_data as get_quote_google  # noqa
+from pandas_datareader.google.quotes import GoogleQuotesReader
 
 from pandas_datareader.yahoo.daily import YahooDailyReader
 from pandas_datareader.yahoo.quotes import YahooQuotesReader
@@ -42,6 +42,10 @@ def get_data_yahoo_actions(*args, **kwargs):
 
 def get_quote_yahoo(*args, **kwargs):
     return YahooQuotesReader(*args, **kwargs).read()
+
+
+def get_quote_google(*args, **kwargs):
+    return GoogleQuotesReader(*args, **kwargs).read()
 
 
 def DataReader(name, data_source=None, start=None, end=None,
