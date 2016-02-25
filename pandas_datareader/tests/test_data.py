@@ -17,6 +17,7 @@ except ImportError:  # pragma: no cover
     assert_produces_warning = None
 
 import pandas.util.testing as tm
+
 from numpy.testing import assert_array_equal
 
 import pandas_datareader.data as web
@@ -483,6 +484,7 @@ class TestYahooOptions(tm.TestCase):
             raise nose.SkipTest(e)
 
         self.assertTrue(len(data) > 1)
+        self.assertEqual(data.index.levels[0].dtype, 'float64')  # GH168
 
     def test_empty_table(self):
         # GH22
