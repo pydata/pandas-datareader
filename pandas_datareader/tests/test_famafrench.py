@@ -5,7 +5,7 @@ import pandas.util.testing as tm
 import pandas_datareader.data as web
 from pandas_datareader.famafrench import get_available_datasets
 
-from pandas_datareader.tests.test_data import _skip_if_no_lxml
+from pandas_datareader.tests._utils import _skip_if_no_lxml
 
 
 class TestFamaFrench(tm.TestCase):
@@ -79,7 +79,6 @@ class TestFamaFrench(tm.TestCase):
 
         exp_index = pd.period_range('2010-01-01', '2010-12-01', freq='M', name='Date')
         tm.assert_index_equal(results[0].index, exp_index)
-
 
 if __name__ == '__main__':
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
