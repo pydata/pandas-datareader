@@ -48,7 +48,7 @@ class TestEurostat(tm.TestCase):
         idx = pd.date_range('1992-01-01', '2013-01-01', freq='AS',
                             name='TIME_PERIOD')
         ne_name = ('Building permits - m2 of useful floor area',
-                   'Not seasonally adjusted data',
+                   'Unadjusted data (i.e. neither seasonally adjusted nor calendar adjusted data)',
                    'Non-residential buildings, except office buildings',
                    'Netherlands', 'Annual')
         ne_values = [np.nan, np.nan, np.nan, 144.53, 136.97, 180.02, 198.36,
@@ -58,7 +58,7 @@ class TestEurostat(tm.TestCase):
         ne = pd.Series(ne_values, name=ne_name, index=idx)
 
         uk_name = ('Building permits - m2 of useful floor area',
-                   'Not seasonally adjusted data',
+                   'Unadjusted data (i.e. neither seasonally adjusted nor calendar adjusted data)',
                    'Non-residential buildings, except office buildings',
                    'United Kingdom', 'Annual')
         uk_values = [np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, 120.37,
