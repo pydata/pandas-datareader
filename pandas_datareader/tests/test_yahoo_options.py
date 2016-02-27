@@ -122,18 +122,18 @@ class TestYahooOptions(tm.TestCase):
 
     def test_chop(self):
         # regression test for #7625
-        self.aapl.chop_data(self.data1, above_below=2, underlying_price=np.nan)
-        chopped = self.aapl.chop_data(self.data1, above_below=2, underlying_price=100)
+        self.aapl._chop_data(self.data1, above_below=2, underlying_price=np.nan)
+        chopped = self.aapl._chop_data(self.data1, above_below=2, underlying_price=100)
         self.assertTrue(isinstance(chopped, DataFrame))
         self.assertTrue(len(chopped) > 1)
-        chopped2 = self.aapl.chop_data(self.data1, above_below=2, underlying_price=None)
+        chopped2 = self.aapl._chop_data(self.data1, above_below=2, underlying_price=None)
         self.assertTrue(isinstance(chopped2, DataFrame))
         self.assertTrue(len(chopped2) > 1)
 
     def test_chop_out_of_strike_range(self):
         # regression test for #7625
-        self.aapl.chop_data(self.data1, above_below=2, underlying_price=np.nan)
-        chopped = self.aapl.chop_data(self.data1, above_below=2, underlying_price=100000)
+        self.aapl._chop_data(self.data1, above_below=2, underlying_price=np.nan)
+        chopped = self.aapl._chop_data(self.data1, above_below=2, underlying_price=100000)
         self.assertTrue(isinstance(chopped, DataFrame))
         self.assertTrue(len(chopped) > 1)
 
