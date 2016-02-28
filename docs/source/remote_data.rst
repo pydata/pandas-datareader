@@ -145,6 +145,27 @@ Google Finance
     f = web.DataReader("F", 'google', start, end)
     f.ix['2010-01-04']
 
+.. _remote_data.google_options:
+
+Google Finance Options
+----------------------
+***Experimental***
+
+The Options class allows the download of options data from Google Finance.
+
+The ``get_options_data`` method downloads options data for specified expiry date
+and provides a formatted ``DataFrame`` with a hierarchical index, so its easy to get
+to the specific option you want.
+
+Available expiry dates can be accessed from the ``expiry_dates`` property.
+
+.. ipython:: python
+
+      from pandas_datareader.data import Options
+      goog = Options('goog', 'google')
+      data = goog.get_options_data(expiry=goog.expiry_dates[0])
+      data.iloc[0:5, 0:5]
+
 .. _remote_data.fred:
 
 FRED
