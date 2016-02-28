@@ -25,5 +25,5 @@ class GoogleQuotesReader(_BaseReader):
         buffer = out.read()
         m = re.search('// ', buffer)
         result = json.loads(buffer[m.start() + len('// '):])
-        return pandas.DataFrame(map(lambda x: float(x['l']), result),
-                                index=map(lambda x: x['t'], result))
+        return pandas.DataFrame([float(x['l']) for x in result],
+                                index=[x['t'] for x in result])

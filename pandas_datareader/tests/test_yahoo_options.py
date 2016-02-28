@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+import sys
 
 import numpy as np
 from pandas import DataFrame, Timestamp
@@ -13,6 +14,7 @@ from pandas_datareader._utils import RemoteDataError
 
 
 class TestYahooOptions(tm.TestCase):
+
     @classmethod
     def setUpClass(cls):
         super(TestYahooOptions, cls).setUpClass()
@@ -155,6 +157,9 @@ class TestYahooOptions(tm.TestCase):
             raise nose.SkipTest(e)
 
         self.assertTrue(len(data) > 1)
+
+        if sys.version_info[0] == 2 and sys.version_info[1] == 6:
+            raise nose.SkipTest('skip dtype check in python 2.6')
         self.assertEqual(data.index.levels[0].dtype, 'float64')  # GH168
 
     def test_empty_table(self):
