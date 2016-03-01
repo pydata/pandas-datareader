@@ -73,6 +73,20 @@ Historical dividends from Yahoo! Finance.
     f = web.DataReader("F", 'yahoo-dividends', start, end)
     f
 
+.. _remote_data.yahoo_quotes:
+
+Yahoo! Finance Quotes
+----------------------
+***Experimental***
+
+The YahooQuotesReader class allows to get quotes data from Yahoo! Finance.
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+    amzn = web.get_quote_yahoo('AMZN')
+    amzn
+
 .. _remote_data.yahoo_options:
 
 Yahoo! Finance Options
@@ -144,6 +158,20 @@ Google Finance
     end = datetime.datetime(2013, 1, 27)
     f = web.DataReader("F", 'google', start, end)
     f.ix['2010-01-04']
+
+.. _remote_data.google_quotes:
+
+Google Finance Quotes
+----------------------
+***Experimental***
+
+The GoogleQuotesReader class allows to get quotes data from Google Finance.
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+    q = web.get_quote_google(['AMZN', 'GOOG'])
+    q
 
 .. _remote_data.google_options:
 
