@@ -3,6 +3,12 @@ pandas-datareader
 
 Up to date remote data access for pandas, works for multiple versions of pandas.
 
+.. image:: https://img.shields.io/pypi/v/pandas-datareader.svg
+    :target: https://pypi.python.org/pypi/pandas-datareader/
+    
+.. image:: https://img.shields.io/pypi/dm/pandas-datareader.svg
+    :target: https://pypi.python.org/pypi/pandas-datareader/
+
 .. image:: https://travis-ci.org/pydata/pandas-datareader.svg?branch=master
     :target: https://travis-ci.org/pydata/pandas-datareader
 
