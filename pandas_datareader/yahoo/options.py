@@ -406,9 +406,9 @@ class Options(_BaseReader):
         """
         expiry = self._try_parse_dates(year, month, expiry)
         data = self._get_data_in_date_range(expiry, call=call, put=put)
-        return self.chop_data(data, above_below, self.underlying_price)
+        return self._chop_data(data, above_below, self.underlying_price)
 
-    def chop_data(self, df, above_below=2, underlying_price=None):
+    def _chop_data(self, df, above_below=2, underlying_price=None):
         """Returns a data frame only options that are near the current stock price."""
 
         if not underlying_price:
@@ -552,7 +552,7 @@ class Options(_BaseReader):
         dates = (date for date in self.expiry_dates if date <= end_date.date())
         data = self._get_data_in_date_range(dates, call=call, put=put)
         if near:
-            data = self.chop_data(data, above_below=above_below)
+            data = self._chop_data(data, above_below=above_below)
         return data
 
     def get_all_data(self, call=True, put=True):
