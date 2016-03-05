@@ -12,6 +12,7 @@ from pandas_datareader.yahoo.quotes import YahooQuotesReader
 from pandas_datareader.yahoo.actions import YahooActionReader
 from pandas_datareader.yahoo.components import _get_data as get_components_yahoo  # noqa
 from pandas_datareader.yahoo.options import Options as YahooOptions
+from pandas_datareader.google.options import Options as GoogleOptions
 
 from pandas_datareader.eurostat import EurostatReader
 from pandas_datareader.fred import FredReader
@@ -157,5 +158,7 @@ def Options(symbol, data_source=None, session=None):
         data_source = "yahoo"
     if data_source == "yahoo":
         return YahooOptions(symbol, session=session)
+    elif data_source == "google":
+        return GoogleOptions(symbol, session=session)
     else:
-        raise NotImplementedError("currently only yahoo supported")
+        raise NotImplementedError("currently only yahoo and google supported")
