@@ -56,9 +56,30 @@ class TestGoogle(tm.TestCase):
         self.assertRaises(Exception, web.DataReader, "NON EXISTENT TICKER",
                           'google', start, end)
 
+    def assert_option_result(self, df):
+        """
+        Validate returned quote data has expected format.
+        """
+        self.assertTrue(isinstance(df, pd.DataFrame))
+        self.assertTrue(len(df) > 0)
+
+        exp_columns = pd.Index(['change_pct', 'last', 'time'])
+        tm.assert_index_equal(df.columns, exp_columns)
+
+        dtypes = [np.dtype(x) for x in ['float64', 'float64', 'datetime64[ns]']]
+        tm.assert_series_equal(df.dtypes, pd.Series(dtypes, index=exp_columns))
+
+    def test_get_quote_string(self):
+        df = web.get_quote_google('GOOG')
+        self.assertTrue(df.ix['GOOG']['last'] > 0.0)
+        tm.assert_index_equal(df.index, pd.Index(['GOOG']))
+        self.assert_option_result(df)
+
     def test_get_quote_stringlist(self):
         df = web.get_quote_google(['GOOG', 'AMZN', 'GOOG'])
         assert_series_equal(df.ix[0], df.ix[2])
+        tm.assert_index_equal(df.index, pd.Index(['GOOG', 'AMZN', 'GOOG']))
+        self.assert_option_result(df)
 
     def test_get_goog_volume(self):
         for locale in self.locales:
