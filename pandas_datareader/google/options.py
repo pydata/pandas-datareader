@@ -4,10 +4,10 @@ import json
 
 from pandas import DataFrame, MultiIndex
 
-from pandas_datareader.base import _BaseReader
+from pandas_datareader.base import _OptionBaseReader
 
 
-class Options(_BaseReader):
+class Options(_OptionBaseReader):
     """
     ***Experimental***
     This class fetches call/put data for a given stock/expiry month.
@@ -51,11 +51,6 @@ class Options(_BaseReader):
 
     _OPTIONS_BASE_URL = "http://www.google.com/finance/option_chain?q={sym}" \
                         "&expd={day}&expm={month}&expy={year}&output=json"
-
-    def __init__(self, symbol, session=None):
-        """ Instantiates options_data with a ticker saved as symbol """
-        self.symbol = symbol.upper()
-        super(Options, self).__init__(symbols=symbol, session=session)
 
     def get_options_data(self, month=None, year=None, expiry=None):
         """
@@ -117,13 +112,12 @@ class Options(_BaseReader):
         Returns a list of available expiry dates
         """
         try:
-            expiry_dates = self._expiry_dates
+            return self._expiry_dates
         except AttributeError:
             # has to be a non-valid date, to trigger returning 'expirations'
             d = self._load_data(dt.datetime(2016, 1, 3))
-            expiry_dates = [dt.date(x['y'], x['m'], x['d']) for x in d['expirations']]
-            self._expiry_dates = expiry_dates
-        return expiry_dates
+            self._expiry_dates = [dt.date(x['y'], x['m'], x['d']) for x in d['expirations']]
+        return self._expiry_dates
 
     def _load_data(self, expiry):
         url = self._OPTIONS_BASE_URL.format(sym=self.symbol, day=expiry.day,
@@ -138,7 +132,8 @@ class Options(_BaseReader):
         """
         now = dt.datetime.now()
 
-        columns = ['Last', 'Bid', 'Ask', 'Chg', 'PctChg', 'Vol', 'Open_Int', 'Root', 'Underlying_Price', 'Quote_Time']
+        columns = ['Last', 'Bid', 'Ask', 'Chg', 'PctChg', 'Vol',
+                   'Open_Int', 'Root', 'Underlying_Price', 'Quote_Time']
         indexes = ['Strike', 'Expiry', 'Type', 'Symbol']
         rows_list, index = self._process_rows(jd, now, expiry)
         df = DataFrame(rows_list, columns=columns, index=MultiIndex.from_tuples(index, names=indexes))
@@ -164,44 +159,3 @@ class Options(_BaseReader):
                 rows_list.append(d)
                 index.append((float(row['strike'].replace(',', '')), expiry, typ, row['s']))
         return rows_list, index
-
-    def get_call_data(self, month=None, year=None, expiry=None):
-        """
-        ***Experimental***
-        Gets call/put data for the stock with the expiration data in the
-        given month and year
-        """
-        raise NotImplementedError()
-
-    def get_put_data(self, month=None, year=None, expiry=None):
-        """
-        ***Experimental***
-        Gets put data for the stock with the expiration data in the
-        given month and year
-        """
-        raise NotImplementedError()
-
-    def get_near_stock_price(self, above_below=2, call=True, put=False,
-                             month=None, year=None, expiry=None):
-        """
-        ***Experimental***
-        Returns a data frame of options that are near the current stock price.
-        """
-        raise NotImplementedError()
-
-    def get_forward_data(self, months, call=True, put=False, near=False,
-                         above_below=2):  # pragma: no cover
-        """
-        ***Experimental***
-        Gets either call, put, or both data for months starting in the current
-        month and going out in the future a specified amount of time.
-        """
-        raise NotImplementedError()
-
-    def get_all_data(self, call=True, put=True):
-        """
-        ***Experimental***
-        Gets either call, put, or both data for all available months starting
-        in the current month.
-        """
-        raise NotImplementedError()

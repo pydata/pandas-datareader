@@ -9,7 +9,7 @@ from pandas.io.parsers import TextParser
 from pandas import DataFrame
 
 from pandas_datareader._utils import RemoteDataError
-from pandas_datareader.base import _BaseReader
+from pandas_datareader.base import _OptionBaseReader
 
 # Items needed for options class
 CUR_MONTH = dt.datetime.now().month
@@ -36,7 +36,7 @@ def _parse_options_data(table):
         return DataFrame(columns=header)
 
 
-class Options(_BaseReader):
+class Options(_OptionBaseReader):
     """
     ***Experimental***
     This class fetches call/put data for a given stock/expiry month.
@@ -44,9 +44,9 @@ class Options(_BaseReader):
     It is instantiated with a string representing the ticker symbol.
 
     The class has the following methods:
-        get_options_data:(month, year, expiry)
-        get_call_data:(month, year, expiry)
-        get_put_data: (month, year, expiry)
+        get_options_data(month, year, expiry)
+        get_call_data(month, year, expiry)
+        get_put_data(month, year, expiry)
         get_near_stock_price(opt_frame, above_below)
         get_all_data(call, put)
         get_forward_data(months, call, put) (deprecated)
@@ -80,11 +80,6 @@ class Options(_BaseReader):
 
     _OPTIONS_BASE_URL = 'http://finance.yahoo.com/q/op?s={sym}'
     _FINANCE_BASE_URL = 'http://finance.yahoo.com'
-
-    def __init__(self, symbol, session=None):
-        """ Instantiates options_data with a ticker saved as symbol """
-        self.symbol = symbol.upper()
-        super(Options, self).__init__(symbols=symbol, session=session)
 
     def get_options_data(self, month=None, year=None, expiry=None):
         """
