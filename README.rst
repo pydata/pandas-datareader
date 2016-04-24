@@ -34,7 +34,7 @@ Install via pip
 Usage
 -----
 
-*In future pandas releases (0.17+) pandas-datareader will become a dependancy and using* ``pandas.io.data``
+*In future pandas releases (0.17+) pandas-datareader will become a dependency and using* ``pandas.io.data``
 *will be equivalent to using* ``pandas_datareader.data``.
 
 For now, you must replace your imports from ``pandas.io`` with ``pandas_datareader``:
