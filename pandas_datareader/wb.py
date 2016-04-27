@@ -116,7 +116,7 @@ class WorldBankReader(_BaseReader):
     _format = 'json'
 
     def __init__(self, symbols=None, countries=None,
-                 start=None, end=None,
+                 start=None, end=None, freq=None,
                  retry_count=3, pause=0.001, session=None, errors='warn'):
 
         if symbols is None:
@@ -125,7 +125,7 @@ class WorldBankReader(_BaseReader):
             symbols = [symbols]
 
         super(WorldBankReader, self).__init__(symbols=symbols,
-                                              start=start, end=end,
+                                              start=start, end=end, freq=freq,
                                               retry_count=retry_count,
                                               pause=pause, session=session)
 
@@ -155,6 +155,10 @@ class WorldBankReader(_BaseReader):
 
     @property
     def params(self):
+        if self.freq == 'M':
+            return {'date': '{0}M{1:02d}:{2}M{3:02d}'.format(self.start.year,
+                    self.start.month, self.end.year, self.end.month),
+                    'per_page': 25000, 'format': 'json'}
         return {'date': '{0}:{1}'.format(self.start.year, self.end.year),
                 'per_page': 25000, 'format': 'json'}
 
