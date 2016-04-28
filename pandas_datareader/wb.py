@@ -148,7 +148,7 @@ class WorldBankReader(_BaseReader):
         if freq not in freq_symbols:
             msg = 'The frequency `{0}` is not in the accepted list.'.format(freq)
             raise ValueError(msg)
-
+        
         self.freq = freq
         self.countries = countries
         self.errors = errors
@@ -165,12 +165,12 @@ class WorldBankReader(_BaseReader):
             return {'date': '{0}M{1:02d}:{2}M{3:02d}'.format(self.start.year,
                     self.start.month, self.end.year, self.end.month),
                     'per_page': 25000, 'format': 'json'}
-        if self.freq == 'Q':
+        elif self.freq == 'Q':
             return {'date': '{0}Q{1}:{2}Q{3}'.format(self.start.year,
-                    divmod(self.start.month-1,3)[0]+1, self.end.year,
-                    divmod(self.end.month-1,3)[0]+1),'per_page': 25000,
+                    self.start.quarter, self.end.year,
+                    self.end.quarter), 'per_page': 25000, 
                     'format': 'json'}
-        if self.freq is None or self.freq == 'A':
+        else:
             return {'date': '{0}:{1}'.format(self.start.year, self.end.year),
                     'per_page': 25000, 'format': 'json'}
 
@@ -372,10 +372,10 @@ def download(country=None, indicator=None, start=2003, end=2005, freq=None,
 
     end: int
         Last year of the data series (inclusive)
-
+        
     freq: str
-        frequency or periodicity of the data to be retrieved (e.g. 'M' for
-        monthly, 'Q' for quarterly, and 'A' for annual). None defaults to
+        frequency or periodicity of the data to be retrieved (e.g. 'M' for 
+        monthly, 'Q' for quarterly, and 'A' for annual). None defaults to 
         annual.
 
     errors: str {'ignore', 'warn', 'raise'}, default 'warn'
