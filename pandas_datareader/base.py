@@ -47,7 +47,6 @@ class _BaseReader(object):
         start, end = _sanitize_dates(start, end)
         self.start = start
         self.end = end
-        self.freq = freq
 
         if not isinstance(retry_count, int) or retry_count < 0:
             raise ValueError("'retry_count' must be integer larger than 0")
