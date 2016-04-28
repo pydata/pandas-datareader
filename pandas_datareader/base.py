@@ -42,14 +42,13 @@ class _BaseReader(object):
     _chunk_size = 1024 * 1024
     _format = 'string'
 
-    def __init__(self, symbols, start=None, end=None, freq=None,
+    def __init__(self, symbols, start=None, end=None,
                  retry_count=3, pause=0.1, session=None):
         self.symbols = symbols
 
         start, end = self._sanitize_dates(start, end)
         self.start = start
         self.end = end
-        self.freq = freq
 
         if not isinstance(retry_count, int) or retry_count < 0:
             raise ValueError("'retry_count' must be integer larger than 0")

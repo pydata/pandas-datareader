@@ -234,6 +234,101 @@ class TestWB(tm.TestCase):
             self.assertTrue(result.columns.equals(exp_col))
             self.assertTrue(len(result) > 10000)
 
+    def test_wdi_download_monthly(self):
+
+
+        expected = {'COPPER': {('World', '2012M01'): 8040.47,
+                               ('World', '2011M12'): 7565.48,
+                               ('World', '2011M11'): 7581.02,
+                               ('World', '2011M10'): 7394.19,
+                               ('World', '2011M09'): 8300.14,
+                               ('World', '2011M08'): 9000.76,
+                               ('World', '2011M07'): 9650.46,
+                               ('World', '2011M06'): 9066.85,
+                               ('World', '2011M05'): 8959.90,
+                               ('World', '2011M04'): 9492.79,
+                               ('World', '2011M03'): 9503.36,
+                               ('World', '2011M02'): 9867.60,
+                               ('World', '2011M01'): 9555.70}}
+        expected = pd.DataFrame(expected)
+        # Round, to ignore revisions to data.
+        expected = np.round(expected, decimals=-3)
+        if PANDAS_0170:
+            expected = expected.sort_index()
+        else:
+            expected = expected.sort()
+
+        cntry_codes = 'ALL'
+        inds = 'COPPER'
+        result = download(country=cntry_codes, indicator=inds,
+                          start=2011, end=2012, freq='M',errors='ignore')
+        if PANDAS_0170:
+            result = result.sort_index()
+        else:
+            result = result.sort()
+        result = np.round(result, decimals=-3)
+
+        if PANDAS_0140:
+            expected.index.names = ['country', 'year']
+        else:
+            # prior versions doesn't allow to set multiple names to MultiIndex
+            # Thus overwrite it with the result
+            expected.index = result.index
+
+        tm.assert_frame_equal(result, expected)
+
+        result = WorldBankReader(inds, countries=cntry_codes,
+                                 start=2011, end=2012, freq='M', errors='ignore').read()
+        if PANDAS_0170:
+            result = result.sort_index()
+        else:
+            result = result.sort()
+        result = np.round(result, decimals=-3)
+        tm.assert_frame_equal(result, expected)
+
+    def test_wdi_download_quarterly(self):
+
+        expected = {'DT.DOD.PUBS.CD.US': {('Albania', '2012Q1'): 3240539817.18,
+                                          ('Albania', '2011Q4'): 3213979715.15,
+                                          ('Albania', '2011Q3'): 3187681048.95,
+                                          ('Albania', '2011Q2'): 3248041513.86,
+                                          ('Albania', '2011Q1'): 3137210567.92,}}
+        expected = pd.DataFrame(expected)
+        # Round, to ignore revisions to data.
+        expected = np.round(expected, decimals=-3)
+        if PANDAS_0170:
+            expected = expected.sort_index()
+        else:
+            expected = expected.sort()
+
+        cntry_codes = 'ALB'
+        inds = 'DT.DOD.PUBS.CD.US'
+        result = download(country=cntry_codes, indicator=inds,
+                          start=2011, end=2012, freq='Q',errors='ignore')
+        if PANDAS_0170:
+            result = result.sort_index()
+        else:
+            result = result.sort()
+        result = np.round(result, decimals=-3)
+
+        if PANDAS_0140:
+            expected.index.names = ['country', 'year']
+        else:
+            # prior versions doesn't allow to set multiple names to MultiIndex
+            # Thus overwrite it with the result
+            expected.index = result.index
+
+        tm.assert_frame_equal(result, expected)
+
+        result = WorldBankReader(inds, countries=cntry_codes,
+                                 start=2011, end=2012, freq='Q', errors='ignore').read()
+        if PANDAS_0170:
+            result = result.sort_index()
+        else:
+            result = result.sort()
+        result = np.round(result, decimals=-1)
+        tm.assert_frame_equal(result, expected)
+
 if __name__ == '__main__':
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)  # pragma: no cover
