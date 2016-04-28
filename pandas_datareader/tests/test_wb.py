@@ -235,8 +235,6 @@ class TestWB(tm.TestCase):
             self.assertTrue(len(result) > 10000)
 
     def test_wdi_download_monthly(self):
-
-
         expected = {'COPPER': {('World', '2012M01'): 8040.47,
                                ('World', '2011M12'): 7565.48,
                                ('World', '2011M11'): 7581.02,
@@ -287,12 +285,11 @@ class TestWB(tm.TestCase):
         tm.assert_frame_equal(result, expected)
 
     def test_wdi_download_quarterly(self):
-
         expected = {'DT.DOD.PUBS.CD.US': {('Albania', '2012Q1'): 3240539817.18,
                                           ('Albania', '2011Q4'): 3213979715.15,
                                           ('Albania', '2011Q3'): 3187681048.95,
                                           ('Albania', '2011Q2'): 3248041513.86,
-                                          ('Albania', '2011Q1'): 3137210567.92,}}
+                                          ('Albania', '2011Q1'): 3137210567.92}}
         expected = pd.DataFrame(expected)
         # Round, to ignore revisions to data.
         expected = np.round(expected, decimals=-3)
@@ -304,7 +301,7 @@ class TestWB(tm.TestCase):
         cntry_codes = 'ALB'
         inds = 'DT.DOD.PUBS.CD.US'
         result = download(country=cntry_codes, indicator=inds,
-                          start=2011, end=2012, freq='Q',errors='ignore')
+                          start=2011, end=2012, freq='Q', errors='ignore')
         if PANDAS_0170:
             result = result.sort_index()
         else:

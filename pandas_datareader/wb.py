@@ -143,12 +143,12 @@ class WorldBankReader(_BaseReader):
                 raise ValueError("Invalid Country Code(s): %s" % tmp)
             if errors == 'warn':
                 warnings.warn('Non-standard ISO country codes: %s' % tmp, UserWarning)
-        
-        freq_symbols = ['M','Q','A', None]
+
+        freq_symbols = ['M', 'Q', 'A', None]
         if freq not in freq_symbols:
             msg = 'The frequency `{0}` is not in the accepted list.'.format(freq)
             raise ValueError(msg)
-        
+
         self.freq = freq
         self.countries = countries
         self.errors = errors
@@ -167,7 +167,7 @@ class WorldBankReader(_BaseReader):
         elif self.freq == 'Q':
             return {'date': '{0}Q{1}:{2}Q{3}'.format(self.start.year,
                     self.start.quarter, self.end.year,
-                    self.end.quarter), 'per_page': 25000, 
+                    self.end.quarter), 'per_page': 25000,
                     'format': 'json'}
         else:
             return {'date': '{0}:{1}'.format(self.start.year, self.end.year),
@@ -367,10 +367,10 @@ def download(country=None, indicator=None, start=2003, end=2005, freq=None,
 
     end: int
         Last year of the data series (inclusive)
-        
+
     freq: str
-        frequency or periodicity of the data to be retrieved (e.g. 'M' for 
-        monthly, 'Q' for quarterly, and 'A' for annual). None defaults to 
+        frequency or periodicity of the data to be retrieved (e.g. 'M' for
+        monthly, 'Q' for quarterly, and 'A' for annual). None defaults to
         annual.
 
     errors: str {'ignore', 'warn', 'raise'}, default 'warn'
