@@ -18,7 +18,9 @@ class EurostatReader(_BaseReader):
         if not isinstance(self.symbols, compat.string_types):
             raise ValueError('data name must be string')
 
-        return '{0}/data/{1}/?'.format(self._URL, self.symbols)
+        q = '{0}/data/{1}/?startperiod={2}&endperiod={3}'
+        return q.format(self._URL, self.symbols,
+                        self.start.year, self.end.year)
 
     @property
     def dsd_url(self):
@@ -37,7 +39,12 @@ class EurostatReader(_BaseReader):
         try:
             data.index = pd.to_datetime(data.index)
             data = data.sort_index()
-            data = data.truncate(self.start, self.end)
         except ValueError:
             pass
+
+        try:
+            data = data.truncate(self.start, self.end)
+        except TypeError:
+            pass
+
         return data

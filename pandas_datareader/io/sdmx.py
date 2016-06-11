@@ -1,10 +1,14 @@
 from __future__ import unicode_literals
 
 import collections
+import time
+import zipfile
 
 import pandas as pd
+import pandas.compat as compat
 
 from pandas_datareader.io.util import _read_content
+from pandas_datareader._utils import HTTPError
 
 
 _STRUCTURE = '{http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure}'
@@ -47,7 +51,27 @@ def read_sdmx(path_or_buf, dtype='float64', dsd=None):
     import xml.etree.ElementTree as ET
     root = ET.fromstring(xdata)
 
-    structure = _get_child(root, _MESSAGE + 'Structure')
+    try:
+        structure = _get_child(root, _MESSAGE + 'Structure')
+    except ValueError:
+        # get zipped path
+        result = list(root.iter(_COMMON + 'Text'))[1].text
+        if not result.startswith('http'):
+            raise ValueError(result)
+
+        for _ in range(60):
+            # wait zipped data is prepared
+            try:
+                data = _read_zipped_sdmx(result)
+                return read_sdmx(data, dtype=dtype, dsd=dsd)
+            except HTTPError:
+                continue
+
+            time.sleep(1)
+        msg = ('Unable to download zipped data within 60 secs, '
+               'please download it manually from: {0}')
+        raise ValueError(msg.format(result))
+
     idx_name = structure.get('dimensionAtObservation')
     dataset = _get_child(root, _DATASET)
 
@@ -81,7 +105,12 @@ def _construct_series(values, name, dsd=None):
     for value in values:
 
         if name in times:
-            idx = pd.DatetimeIndex([v[0] for v in value], name=name)
+            tvalue = [v[0] for v in value]
+            try:
+                idx = pd.DatetimeIndex(tvalue, name=name)
+            except ValueError:
+                # time may be unsupported format, like '2015-B1'
+                idx = pd.Index(tvalue, name=name)
         else:
             idx = pd.Index([v[0] for v in value], name=name)
 
@@ -197,3 +226,15 @@ def _read_sdmx_dsd(path_or_buf):
 
     result = SDMXCode(codes=code_results, ts=times)
     return result
+
+
+def _read_zipped_sdmx(path_or_buf):
+    """ Unzipp data contains SDMX-XML """
+    data = _read_content(path_or_buf)
+
+    zp = compat.BytesIO()
+    zp.write(compat.str_to_bytes(data))
+    f = zipfile.ZipFile(zp)
+    files = f.namelist()
+    assert len(files) == 1
+    return f.open(files[0])
