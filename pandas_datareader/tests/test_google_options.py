@@ -29,7 +29,8 @@ class TestGoogleOptions(tm.TestCase):
         tm.assert_index_equal(df.columns, exp_columns)
         tm.assert_equal(df.index.names, [u'Strike', u'Expiry', u'Type', u'Symbol'])
 
-        dtypes = [np.dtype(x) for x in ['float64'] * 7 + ['object', 'float64', 'datetime64[ns]']]
+        dtypes = ['float64'] * 6 + ['int64', 'object', 'float64', 'datetime64[ns]']
+        dtypes = [np.dtype(x) for x in dtypes]
         tm.assert_series_equal(df.dtypes, pd.Series(dtypes, index=exp_columns))
 
     def test_get_options_data(self):
