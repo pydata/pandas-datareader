@@ -24,7 +24,7 @@ def readme():
         return f.read()
 
 INSTALL_REQUIRES = (
-    ['pandas', 'requests>=2.3.0', 'requests-file', 'requests-ftp']
+    ['pandas', 'requests>=2.3.0', 'requests-file', 'requests-ftp', 'click']
 )
 
 setup(
@@ -58,4 +58,9 @@ setup(
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     test_suite='tests',
     zip_safe=False,
+    entry_points={
+        'console_scripts': [
+            'pdr=pandas_datareader.cli_pandas_datareader:main',
+        ],
+    }
 )
