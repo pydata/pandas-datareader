@@ -34,10 +34,8 @@ Install via pip
 Usage
 -----
 
-*In future pandas releases (0.17+) pandas-datareader will become a dependency and using* ``pandas.io.data``
-*will be equivalent to using* ``pandas_datareader.data``.
-
-For now, you must replace your imports from ``pandas.io`` with ``pandas_datareader``:
+Starting in 0.19.0, pandas will no longer support ``pandas.io.data`` or ``pandas.io.wb``, so
+you must replace your imports from ``pandas.io`` with those from ``pandas_datareader``:
 
 .. code-block:: python
 
