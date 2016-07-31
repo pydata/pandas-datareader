@@ -11,6 +11,7 @@ import pandas.compat as compat
 from pandas.core.common import is_number
 from pandas import Panel, DataFrame
 from pandas import read_csv
+from pandas.io.common import urlencode
 from pandas.compat import StringIO, bytes_to_str
 
 from pandas_datareader._utils import RemoteDataError, SymbolWarning
@@ -123,7 +124,8 @@ class _BaseReader(object):
             if response.status_code == requests.codes.ok:
                 return response
             time.sleep(self.pause)
-
+        if params is not None and len(params) > 0:
+            url = url + "?" + urlencode(params)
         raise RemoteDataError('Unable to read URL: {0}'.format(url))
 
     def _read_lines(self, out):
