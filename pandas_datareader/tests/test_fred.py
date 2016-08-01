@@ -27,7 +27,7 @@ class TestFred(tm.TestCase):
         # self.assertEqual(int(received), 16535)
         # < 2015-08-20 16502 was returned
         # self.assertEqual(int(received), 16502)
-        # < 2015-08-01 16440 was returned
+        # < 2016-08-01 16440 was returned
         # self.assertEqual(int(received), 16440)
         self.assertEqual(int(received), 16475)
 
