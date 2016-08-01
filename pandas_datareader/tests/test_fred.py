@@ -23,11 +23,13 @@ class TestFred(tm.TestCase):
 
         received = web.DataReader("GDP", "fred", start, end)['GDP'].tail(1)[0]
 
-        # < 7/30/14 16535 was returned
+        # < 2014-07-30 16535 was returned
         # self.assertEqual(int(received), 16535)
-        # < 8/20/15 16502 was returned
+        # < 2015-08-20 16502 was returned
         # self.assertEqual(int(received), 16502)
-        self.assertEqual(int(received), 16440)
+        # < 2015-08-01 16440 was returned
+        # self.assertEqual(int(received), 16440)
+        self.assertEqual(int(received), 16475)
 
         with tm.assertRaises(RemoteDataError):
             web.DataReader("NON EXISTENT SERIES", 'fred', start, end)
