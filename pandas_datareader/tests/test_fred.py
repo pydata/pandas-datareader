@@ -19,9 +19,15 @@ class TestFred(tm.TestCase):
         # FRED.
 
         start = datetime(2010, 1, 1)
-        end = datetime(2013, 1, 27)
+        end = datetime(2013, 1, 1)
 
-        received = web.DataReader("GDP", "fred", start, end)['GDP'].tail(1)[0]
+        df = web.DataReader("GDP", "fred", start, end)
+        ts = df['GDP']
+        self.assertEqual(ts.index[0], pd.to_datetime("2010-01-01"))
+        self.assertEqual(ts.index[-1], pd.to_datetime("2013-01-01"))
+        self.assertEqual(ts.index.name, "DATE")
+        self.assertEqual(ts.name, "GDP")
+        received = ts.tail(1)[0]
 
         # < 2014-07-30 16535 was returned
         # self.assertEqual(int(received), 16535)
