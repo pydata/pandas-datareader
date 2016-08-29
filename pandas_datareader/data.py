@@ -19,6 +19,7 @@ from pandas_datareader.fred import FredReader
 from pandas_datareader.famafrench import FamaFrenchReader
 from pandas_datareader.oecd import OECDReader
 from pandas_datareader.edgar import EdgarIndexReader
+from pandas_datareader.oanda import get_oanda_currency_historical_rates
 
 
 def get_data_fred(*args, **kwargs):
@@ -146,6 +147,12 @@ def DataReader(name, data_source=None, start=None, end=None,
         return EdgarIndexReader(symbols=name, start=start, end=end,
                                 retry_count=retry_count, pause=pause,
                                 session=session).read()
+    elif data_source == "oanda":
+        return get_oanda_currency_historical_rates(
+            start, end,
+            quote_currency="USD", base_currency=name,
+            reversed=True, session=session
+        )
     else:
         msg = "data_source=%r is not implemented" % data_source
         raise NotImplementedError(msg)
