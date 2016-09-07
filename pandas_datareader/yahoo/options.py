@@ -677,7 +677,7 @@ class Options(_OptionBaseReader):
         frame.columns = ['Strike', 'Symbol', 'Last', 'Bid', 'Ask', 'Chg', 'PctChg', 'Vol', 'Open_Int', 'IV']
         frame["Rootexp"] = frame.Symbol.str[0:-9]
         frame["Root"] = frame.Rootexp.str[0:-6]
-        frame["Expiry"] = to_datetime(frame.Rootexp.str[-6:])
+        frame["Expiry"] = to_datetime('20' + frame.Rootexp.str[-6:])
         # Removes dashes in equity ticker to map to option ticker.
         # Ex: BRK-B to BRKB140517C00100000
         frame["IsNonstandard"] = frame['Root'] != self.symbol.replace('-', '')
