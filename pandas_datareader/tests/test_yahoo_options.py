@@ -146,9 +146,14 @@ class TestYahooOptions(tm.TestCase):
             raise nose.SkipTest(e)
         self.assertTrue(isinstance(quote_price, float))
 
-    def test_sample_page_price_quote_time1(self):
         # Tests the weekend quote time format
         price, quote_time = self.aapl._underlying_price_and_time_from_url(self.html1)
+        self.assertTrue(isinstance(price, (int, float, complex)))
+        self.assertTrue(isinstance(quote_time, (datetime, pd.Timestamp)))
+
+        # Tests the EDT page format
+        # regression test for #8741
+        price, quote_time = self.aapl._underlying_price_and_time_from_url(self.html2)
         self.assertTrue(isinstance(price, (int, float, complex)))
         self.assertTrue(isinstance(quote_time, (datetime, pd.Timestamp)))
 
@@ -168,13 +173,6 @@ class TestYahooOptions(tm.TestCase):
         chopped = self.aapl._chop_data(self.data1, above_below=2, underlying_price=100000)
         self.assertTrue(isinstance(chopped, pd.DataFrame))
         self.assertTrue(len(chopped) > 1)
-
-    def test_sample_page_price_quote_time2(self):
-        # Tests the EDT page format
-        # regression test for #8741
-        price, quote_time = self.aapl._underlying_price_and_time_from_url(self.html2)
-        self.assertTrue(isinstance(price, (int, float, complex)))
-        self.assertTrue(isinstance(quote_time, (datetime, pd.Timestamp)))
 
     def test_sample_page_chg_float(self):
         # Tests that numeric columns with comma's are appropriately dealt with

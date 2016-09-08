@@ -51,7 +51,7 @@ class TestGoogleOptions(tm.TestCase):
             dates = self.goog.expiry_dates
         except RemoteDataError as e:  # pragma: no cover
             raise nose.SkipTest(e)
-        self.assertTrue(len(dates) > 10)
+        self.assertTrue(len(dates) > 6)
 
     def test_get_call_data(self):
         with tm.assertRaises(NotImplementedError):
