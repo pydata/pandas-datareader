@@ -54,9 +54,8 @@ class TestEurostat(tm.TestCase):
                    'Unadjusted data (i.e. neither seasonally adjusted nor calendar adjusted data)',
                    'Non-residential buildings, except office buildings',
                    'Netherlands', 'Annual')
-        ne_values = [200.05, 186.46, 127.33, 130.67, 143.26, 147.83,
-                     176.69, 227.36, 199.45, 128.49, 100.0, 113.83, 89.33,
-                     77.57]
+        ne_values = [200.0, 186.5, 127.3, 130.7, 143.3, 147.8, 176.7,
+                     227.4, 199.4, 128.5, 100.0, 113.8, 89.3, 77.6]
         ne = pd.Series(ne_values, name=ne_name, index=idx)
 
         uk_name = ('Index, 2010=100',
@@ -64,9 +63,8 @@ class TestEurostat(tm.TestCase):
                    'Unadjusted data (i.e. neither seasonally adjusted nor calendar adjusted data)',
                    'Non-residential buildings, except office buildings',
                    'United Kingdom', 'Annual')
-        uk_values = [112.53, 113.32, 110.18, 112.14, 119.06, 112.66,
-                     113.05, 121.8, 113.97, 105.88, 100.0, 98.56, 103.69,
-                     81.32]
+        uk_values = [112.5, 113.3, 110.2, 112.1, 119.1, 112.7, 113.1,
+                     121.8, 114.0, 105.9, 100.0, 98.6, 103.7, 81.3]
         uk = pd.Series(uk_values, name=uk_name, index=idx)
 
         for expected in [ne, uk]:
@@ -84,7 +82,7 @@ class TestEurostat(tm.TestCase):
                             end=pd.Timestamp('2013-01-01'))
 
         name = ('All taxes and levies included',
-                'Gigajoules (Gross calorific value = GCV)',
+                'Gigajoules (gross calorific value = GCV)',
                 'Euro',
                 'Band D1 : Consumption < 20 GJ',
                 'Natural gas', 'Denmark', 'Semi-annual')
@@ -95,6 +93,7 @@ class TestEurostat(tm.TestCase):
         exp = pd.Series([27.1403, 27.5854, 26.5285, 27.2187,
                          28.5862, 28.6448, 26.8147, 26.4979],
                         index=exp_index, name=name)
+
         tm.assert_series_equal(df[name], exp)
 
     def test_get_prc_hicp_manr_exceeds_limit(self):
