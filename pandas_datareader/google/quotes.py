@@ -1,10 +1,33 @@
-def _get_data(symbols):
-    """
-    Get current yahoo quote
+import pandas as pd
+from dateutil.parser import parse
+import numpy as np
 
-    (Should) Returns a DataFrame
+from pandas_datareader.base import _BaseReader
+import json
+import re
 
-    ToDo: Not implemented
-    """
-    msg = "Google Finance doesn't have this functionality - can't get quote for %s" % symbols
-    raise NotImplementedError(msg)
+
+class GoogleQuotesReader(_BaseReader):
+
+    """Get current google quote"""
+
+    @property
+    def url(self):
+        return 'http://www.google.com/finance/info'
+
+    @property
+    def params(self):
+        if isinstance(self.symbols, pd.compat.string_types):
+            sym_list = self.symbols
+        else:
+            sym_list = ','.join(self.symbols)
+        params = {'q': sym_list}
+        return params
+
+    def _read_lines(self, out):
+        buffer = out.read()
+        m = re.search('// ', buffer)
+        result = json.loads(buffer[m.start() + len('// '):])
+        return pd.DataFrame([[float(x['cp']), float(x['l']), np.datetime64(parse(x['lt']).isoformat())]
+                            for x in result], columns=['change_pct', 'last', 'time'],
+                            index=[x['t'] for x in result])

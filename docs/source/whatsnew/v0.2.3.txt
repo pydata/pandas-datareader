@@ -19,6 +19,13 @@ New features
 ~~~~~~~~~~~~
 
 - ``DataReader`` now supports pulling data for the TSP.
+- ``DataReader`` now supports Google options data source, see :ref:`here<remote_data.google_options>` (:issue:`148`).
+- ``DataReader`` now supports Google quotes, see :ref:`here<remote_data.google_quotes>` (:pull:`188`).
+
+Other enhancements
+^^^^^^^^^^^^^^^^^^
+
+- Eurostat reader now supports larger data returned from API via zip format (:pull:`205`)
 
 .. _whatsnew_023.api_breaking:
 

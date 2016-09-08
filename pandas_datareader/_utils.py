@@ -3,6 +3,12 @@ from pandas.core.common import PandasError
 from distutils.version import LooseVersion
 
 
+if pd.compat.PY3:
+    from urllib.error import HTTPError     # noqa
+else:
+    from urllib2 import HTTPError          # noqa
+
+
 class SymbolWarning(UserWarning):
     pass
 

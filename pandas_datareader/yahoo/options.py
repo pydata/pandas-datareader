@@ -9,7 +9,7 @@ from pandas.io.parsers import TextParser
 from pandas import DataFrame
 
 from pandas_datareader._utils import RemoteDataError
-from pandas_datareader.base import _BaseReader
+from pandas_datareader.base import _OptionBaseReader
 
 # Items needed for options class
 CUR_MONTH = dt.datetime.now().month
@@ -31,12 +31,12 @@ def _parse_options_data(table):
     rows = table.findall('tbody/tr')
     data = [_unpack(r) for r in rows]
     if len(data) > 0:
-        return TextParser(data, names=header).get_chunk()
+        return TextParser(data, names=header, thousands=',').get_chunk()
     else:  # Empty table
         return DataFrame(columns=header)
 
 
-class Options(_BaseReader):
+class Options(_OptionBaseReader):
     """
     ***Experimental***
     This class fetches call/put data for a given stock/expiry month.
@@ -44,9 +44,9 @@ class Options(_BaseReader):
     It is instantiated with a string representing the ticker symbol.
 
     The class has the following methods:
-        get_options_data:(month, year, expiry)
-        get_call_data:(month, year, expiry)
-        get_put_data: (month, year, expiry)
+        get_options_data(month, year, expiry)
+        get_call_data(month, year, expiry)
+        get_put_data(month, year, expiry)
         get_near_stock_price(opt_frame, above_below)
         get_all_data(call, put)
         get_forward_data(months, call, put) (deprecated)
@@ -80,11 +80,6 @@ class Options(_BaseReader):
 
     _OPTIONS_BASE_URL = 'http://finance.yahoo.com/q/op?s={sym}'
     _FINANCE_BASE_URL = 'http://finance.yahoo.com'
-
-    def __init__(self, symbol, session=None):
-        """ Instantiates options_data with a ticker saved as symbol """
-        self.symbol = symbol.upper()
-        super(Options, self).__init__(symbols=symbol, session=session)
 
     def get_options_data(self, month=None, year=None, expiry=None):
         """
@@ -406,9 +401,9 @@ class Options(_BaseReader):
         """
         expiry = self._try_parse_dates(year, month, expiry)
         data = self._get_data_in_date_range(expiry, call=call, put=put)
-        return self.chop_data(data, above_below, self.underlying_price)
+        return self._chop_data(data, above_below, self.underlying_price)
 
-    def chop_data(self, df, above_below=2, underlying_price=None):
+    def _chop_data(self, df, above_below=2, underlying_price=None):
         """Returns a data frame only options that are near the current stock price."""
 
         if not underlying_price:
@@ -552,7 +547,7 @@ class Options(_BaseReader):
         dates = (date for date in self.expiry_dates if date <= end_date.date())
         data = self._get_data_in_date_range(dates, call=call, put=put)
         if near:
-            data = self.chop_data(data, above_below=above_below)
+            data = self._chop_data(data, above_below=above_below)
         return data
 
     def get_all_data(self, call=True, put=True):
@@ -682,7 +677,7 @@ class Options(_BaseReader):
         frame.columns = ['Strike', 'Symbol', 'Last', 'Bid', 'Ask', 'Chg', 'PctChg', 'Vol', 'Open_Int', 'IV']
         frame["Rootexp"] = frame.Symbol.str[0:-9]
         frame["Root"] = frame.Rootexp.str[0:-6]
-        frame["Expiry"] = to_datetime(frame.Rootexp.str[-6:])
+        frame["Expiry"] = to_datetime(frame.Rootexp.str[-6:], format='%y%m%d')
         # Removes dashes in equity ticker to map to option ticker.
         # Ex: BRK-B to BRKB140517C00100000
         frame["IsNonstandard"] = frame['Root'] != self.symbol.replace('-', '')

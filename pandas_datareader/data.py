@@ -5,13 +5,14 @@ Module contains tools for collecting data from various remote sources
 import warnings
 
 from pandas_datareader.google.daily import GoogleDailyReader
-from pandas_datareader.google.quotes import _get_data as get_quote_google  # noqa
+from pandas_datareader.google.quotes import GoogleQuotesReader
 
 from pandas_datareader.yahoo.daily import YahooDailyReader
 from pandas_datareader.yahoo.quotes import YahooQuotesReader
 from pandas_datareader.yahoo.actions import YahooActionReader
 from pandas_datareader.yahoo.components import _get_data as get_components_yahoo  # noqa
 from pandas_datareader.yahoo.options import Options as YahooOptions
+from pandas_datareader.google.options import Options as GoogleOptions
 
 from pandas_datareader.eurostat import EurostatReader
 from pandas_datareader.fred import FredReader
@@ -43,6 +44,10 @@ def get_data_yahoo_actions(*args, **kwargs):
 
 def get_quote_yahoo(*args, **kwargs):
     return YahooQuotesReader(*args, **kwargs).read()
+
+
+def get_quote_google(*args, **kwargs):
+    return GoogleQuotesReader(*args, **kwargs).read()
 
 
 def DataReader(name, data_source=None, start=None, end=None,
@@ -157,5 +162,7 @@ def Options(symbol, data_source=None, session=None):
         data_source = "yahoo"
     if data_source == "yahoo":
         return YahooOptions(symbol, session=session)
+    elif data_source == "google":
+        return GoogleOptions(symbol, session=session)
     else:
-        raise NotImplementedError("currently only yahoo supported")
+        raise NotImplementedError("currently only yahoo and google supported")
