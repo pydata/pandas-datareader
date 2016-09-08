@@ -154,7 +154,7 @@ class EdgarIndexReader(_BaseReader):
 
     def read(self):
         try:
-            self._sec_ftp_session = FTP(_SEC_FTP)
+            self._sec_ftp_session = FTP(_SEC_FTP, timeout=self.timeout)
             self._sec_ftp_session.login()
         except EOFError:
             raise RemoteDataError('FTP server has closed the connection.')
