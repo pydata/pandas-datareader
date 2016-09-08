@@ -14,7 +14,8 @@ from pandas import read_csv
 from pandas.io.common import urlencode
 from pandas.compat import StringIO, bytes_to_str
 
-from pandas_datareader._utils import RemoteDataError, SymbolWarning
+from pandas_datareader._utils import (RemoteDataError, SymbolWarning,
+                                      _sanitize_dates, _init_session)
 
 import requests_ftp
 requests_ftp.monkeypatch_session()
@@ -47,7 +48,7 @@ class _BaseReader(object):
                  retry_count=3, pause=0.1, timeout=30, session=None):
         self.symbols = symbols
 
-        start, end = self._sanitize_dates(start, end)
+        start, end = _sanitize_dates(start, end)
         self.start = start
         self.end = end
 
@@ -56,14 +57,7 @@ class _BaseReader(object):
         self.retry_count = retry_count
         self.pause = pause
         self.timeout = timeout
-        self.session = self._init_session(session, retry_count)
-
-    def _init_session(self, session, retry_count):
-        if session is None:
-            session = requests.Session()
-            session.mount('file://', FileAdapter())
-            # do not set requests max_retries here to support arbitrary pause
-        return session
+        self.session = _init_session(session, retry_count)
 
     @property
     def url(self):
@@ -142,27 +136,6 @@ class _BaseReader(object):
             # Python 3 string has no decode method.
             rs.index.name = rs.index.name.encode('ascii', 'ignore').decode()
         return rs
-
-    def _sanitize_dates(self, start, end):
-        """
-        Return (datetime_start, datetime_end) tuple
-        if start is None - default is 2010/01/01
-        if end is None - default is today
-        """
-        if is_number(start):
-            # regard int as year
-            start = dt.datetime(start, 1, 1)
-        start = to_datetime(start)
-
-        if is_number(end):
-            end = dt.datetime(end, 1, 1)
-        end = to_datetime(end)
-
-        if start is None:
-            start = dt.datetime(2010, 1, 1)
-        if end is None:
-            end = dt.datetime.today()
-        return start, end
 
 
 class _DailyBaseReader(_BaseReader):
