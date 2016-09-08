@@ -44,7 +44,7 @@ class _BaseReader(object):
     _format = 'string'
 
     def __init__(self, symbols, start=None, end=None,
-                 retry_count=3, pause=0.1, session=None):
+                 retry_count=3, pause=0.1, timeout=30, session=None):
         self.symbols = symbols
 
         start, end = self._sanitize_dates(start, end)
@@ -55,6 +55,7 @@ class _BaseReader(object):
             raise ValueError("'retry_count' must be integer larger than 0")
         self.retry_count = retry_count
         self.pause = pause
+        self.timeout = timeout
         self.session = self._init_session(session, retry_count)
 
     def _init_session(self, session, retry_count):
