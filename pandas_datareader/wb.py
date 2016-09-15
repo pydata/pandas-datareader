@@ -117,7 +117,7 @@ class WorldBankReader(_BaseReader):
     _format = 'json'
 
     def __init__(self, symbols=None, countries=None,
-                 start=None, end=None,
+                 start=None, end=None, freq=None,
                  retry_count=3, pause=0.001, session=None, errors='warn'):
 
         if symbols is None:
@@ -144,6 +144,12 @@ class WorldBankReader(_BaseReader):
             if errors == 'warn':
                 warnings.warn('Non-standard ISO country codes: %s' % tmp, UserWarning)
 
+        freq_symbols = ['M', 'Q', 'A', None]
+        if freq not in freq_symbols:
+            msg = 'The frequency `{0}` is not in the accepted list.'.format(freq)
+            raise ValueError(msg)
+
+        self.freq = freq
         self.countries = countries
         self.errors = errors
 
@@ -154,8 +160,18 @@ class WorldBankReader(_BaseReader):
 
     @property
     def params(self):
-        return {'date': '{0}:{1}'.format(self.start.year, self.end.year),
-                'per_page': 25000, 'format': 'json'}
+        if self.freq == 'M':
+            return {'date': '{0}M{1:02d}:{2}M{3:02d}'.format(self.start.year,
+                    self.start.month, self.end.year, self.end.month),
+                    'per_page': 25000, 'format': 'json'}
+        elif self.freq == 'Q':
+            return {'date': '{0}Q{1}:{2}Q{3}'.format(self.start.year,
+                    self.start.quarter, self.end.year,
+                    self.end.quarter), 'per_page': 25000,
+                    'format': 'json'}
+        else:
+            return {'date': '{0}:{1}'.format(self.start.year, self.end.year),
+                    'per_page': 25000, 'format': 'json'}
 
     def read(self):
         data = []
@@ -326,7 +342,7 @@ class WorldBankReader(_BaseReader):
         return out
 
 
-def download(country=None, indicator=None, start=2003, end=2005,
+def download(country=None, indicator=None, start=2003, end=2005, freq=None,
              errors='warn', **kwargs):
     """
     Download data series from the World Bank's World Development Indicators
@@ -352,6 +368,11 @@ def download(country=None, indicator=None, start=2003, end=2005,
     end: int
         Last year of the data series (inclusive)
 
+    freq: str
+        frequency or periodicity of the data to be retrieved (e.g. 'M' for
+        monthly, 'Q' for quarterly, and 'A' for annual). None defaults to
+        annual.
+
     errors: str {'ignore', 'warn', 'raise'}, default 'warn'
         Country codes are validated against a hardcoded list.  This controls
         the outcome of that validation, and attempts to also apply
@@ -370,7 +391,7 @@ def download(country=None, indicator=None, start=2003, end=2005,
 
     """
     return WorldBankReader(symbols=indicator, countries=country,
-                           start=start, end=end, errors=errors,
+                           start=start, end=end, freq=freq, errors=errors,
                            **kwargs).read()
 
 

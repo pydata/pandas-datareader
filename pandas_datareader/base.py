@@ -152,16 +152,18 @@ class _BaseReader(object):
         if is_number(start):
             # regard int as year
             start = dt.datetime(start, 1, 1)
-        start = to_datetime(start)
 
         if is_number(end):
             end = dt.datetime(end, 1, 1)
-        end = to_datetime(end)
 
         if start is None:
             start = dt.datetime(2010, 1, 1)
         if end is None:
             end = dt.datetime.today()
+
+        start = to_datetime(start)
+        end = to_datetime(end)
+
         return start, end
 
 
