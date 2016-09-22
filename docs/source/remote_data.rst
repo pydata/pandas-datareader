@@ -364,7 +364,7 @@ Country Codes
 
 The ``country`` argument accepts a string or list of mixed
 `two <http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`__ or `three <http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3>`__ character
-ISO country codes, as well as dynamic `World Bank exceptions <http://data.worldbank.org/node/18>`__ to the ISO standards.
+ISO country codes, as well as dynamic `World Bank exceptions <https://datahelpdesk.worldbank.org/knowledgebase/articles/898590-api-country-queries>`__ to the ISO standards.
 
 For a list of the the hard-coded country codes (used solely for error handling logic) see ``pandas_datareader.wb.country_codes``.
 
