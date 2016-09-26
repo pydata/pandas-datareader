@@ -147,12 +147,6 @@ class TestYahooOptions(tm.TestCase):
         self.assertTrue(isinstance(price, (int, float, complex)))
         self.assertTrue(isinstance(quote_time, (datetime, pd.Timestamp)))
 
-        # Tests the EDT page format
-        # regression test for #8741
-        price, quote_time = self.aapl._underlying_price_and_time_from_url(self.html2)
-        self.assertTrue(isinstance(price, (int, float, complex)))
-        self.assertTrue(isinstance(quote_time, (datetime, pd.Timestamp)))
-
     def test_chop(self):
         # regression test for #7625
         self.aapl._chop_data(self.data1, above_below=2, underlying_price=np.nan)
