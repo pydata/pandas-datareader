@@ -1,11 +1,12 @@
 import warnings
 import datetime as dt
 import numpy as np
+import json
 
 from pandas import to_datetime
-from pandas import concat, DatetimeIndex, Series
+from pandas import concat, DatetimeIndex, Series, MultiIndex
+from pandas.io.json import read_json
 from pandas.tseries.offsets import MonthEnd
-from pandas.io.parsers import TextParser
 from pandas import DataFrame
 
 from pandas_datareader._utils import RemoteDataError
@@ -17,23 +18,8 @@ CUR_YEAR = dt.datetime.now().year
 CUR_DAY = dt.datetime.now().day
 
 
-def _two_char(s):
-    return '{0:0>2}'.format(s)
-
-
-def _unpack(row, kind='td'):
-    return [val.text_content().strip() for val in row.findall(kind)]
-
-
-def _parse_options_data(table):
-    header = table.findall('thead/tr')
-    header = _unpack(header[0], kind='th')
-    rows = table.findall('tbody/tr')
-    data = [_unpack(r) for r in rows]
-    if len(data) > 0:
-        return TextParser(data, names=header, thousands=',').get_chunk()
-    else:  # Empty table
-        return DataFrame(columns=header)
+def _parse_options_data(jd):
+    return read_json(jd)
 
 
 class Options(_OptionBaseReader):
@@ -78,8 +64,7 @@ class Options(_OptionBaseReader):
     >>> all_data = aapl.get_all_data()
     """
 
-    _OPTIONS_BASE_URL = 'http://finance.yahoo.com/q/op?s={sym}'
-    _FINANCE_BASE_URL = 'http://finance.yahoo.com'
+    _OPTIONS_BASE_URL = 'https://query1.finance.yahoo.com/v7/finance/options/{sym}'
 
     def get_options_data(self, month=None, year=None, expiry=None):
         """
@@ -112,6 +97,7 @@ class Options(_OptionBaseReader):
             Columns:
                 Last: Last option price, float
                 Chg: Change from prior day, float
+                PctChg: Change from prior day in percent, float
                 Bid: Bid price, float
                 Ask: Ask price, float
                 Vol: Volume traded, int64
@@ -120,6 +106,10 @@ class Options(_OptionBaseReader):
                 Underlying: Ticker of the underlying security, string
                 Underlying_Price: Price of the underlying security, float64
                 Quote_Time: Time of the quote, Timestamp
+                Last_Trade_Date: Time of the last trade for this expiry and strike, Timestamp
+                IV: Implied volatility, float
+                JSON: Parsed json object, json
+                    Useful to extract other returned key/value pairs as needed
 
         Notes
         -----
@@ -144,42 +134,20 @@ class Options(_OptionBaseReader):
                        for f in (self.get_put_data,
                                  self.get_call_data)]).sortlevel()
 
-    def _get_option_frames_from_yahoo(self, expiry):
-        url = self._yahoo_url_from_expiry(expiry)
-        option_frames = self._option_frames_from_url(url)
-        frame_name = '_frames' + self._expiry_to_string(expiry)
-        setattr(self, frame_name, option_frames)
-        return option_frames
 
-    @staticmethod
-    def _expiry_to_string(expiry):
-        m1 = _two_char(expiry.month)
-        d1 = _two_char(expiry.day)
-        return str(expiry.year)[-2:] + m1 + d1
+    def _option_from_url(self, url):
 
-    def _yahoo_url_from_expiry(self, expiry):
+        jd = self._parse_url(url)
+        result = jd['optionChain']['result']
         try:
-            expiry_links = self._expiry_links
-
-        except AttributeError:  # pragma: no cover
-            _, expiry_links = self._get_expiry_dates_and_links()
-
-        return self._FINANCE_BASE_URL + expiry_links[expiry]
-
-    def _option_frames_from_url(self, url):
-
-        root = self._parse_url(url)
-        try:
-            calls = root.xpath('//*[@id="optionsCallsTable"]/div[2]/div/table')[0]
-            puts = root.xpath('//*[@id="optionsPutsTable"]/div[2]/div/table')[0]
+            calls = result['options']['calls']
+            puts = result['options']['puts']
         except IndexError:
-            raise RemoteDataError('Option Table not available for url: %s' % url)
+            raise RemoteDataError('Option json not available for url: %s' % url)
 
-        if not hasattr(self, 'underlying_price'):
-            try:
-                self.underlying_price, self.quote_time = self._underlying_price_and_time_from_url(url)
-            except IndexError:
-                self.underlying_price, self.quote_time = np.nan, np.nan
+        self.underlying_price = result['quote']['regularMarketPrice'] if result['quote']['marketState'] == 'PRE' else result['quote']['preMarketPrice']
+        quote_unix_time = result['quote']['regularMarketTime'] if result['quote']['marketState'] == 'PRE' else result['quote']['preMarketTime']
+        self.quote_time = dt.datetime.fromtimestamp(quote_unix_time)
 
         calls = _parse_options_data(calls)
         puts = _parse_options_data(puts)
@@ -189,38 +157,6 @@ class Options(_OptionBaseReader):
 
         return {'calls': calls, 'puts': puts}
 
-    def _underlying_price_and_time_from_url(self, url):
-        root = self._parse_url(url)
-        underlying_price = self._underlying_price_from_root(root)
-        quote_time = self._quote_time_from_root(root)
-        return underlying_price, quote_time
-
-    @staticmethod
-    def _underlying_price_from_root(root):
-        underlying_price = root.xpath('.//*[@class="time_rtq_ticker Fz-30 Fw-b"]')[0]\
-            .getchildren()[0].text
-        underlying_price = underlying_price.replace(',', '')  # GH11
-
-        try:
-            underlying_price = float(underlying_price)
-        except ValueError:
-            underlying_price = np.nan
-
-        return underlying_price
-
-    @staticmethod
-    def _quote_time_from_root(root):
-        # Gets the time of the quote, note this is actually the time of the underlying price.
-        try:
-            quote_time_text = root.xpath('.//*[@class="time_rtq Fz-m"]')[0].getchildren()[1].getchildren()[0].text
-            # TODO: Enable timezone matching when strptime can match EST with %Z
-            quote_time_text = quote_time_text.split(' ')[0]
-            quote_time = dt.datetime.strptime(quote_time_text, "%I:%M%p")
-            quote_time = quote_time.replace(year=CUR_YEAR, month=CUR_MONTH, day=CUR_DAY)
-        except ValueError:
-            quote_time = np.nan
-
-        return quote_time
 
     def _get_option_data(self, expiry, name):
         frame_name = '_frames' + self._expiry_to_string(expiry)
@@ -268,6 +204,7 @@ class Options(_OptionBaseReader):
             Columns:
                 Last: Last option price, float
                 Chg: Change from prior day, float
+                PctChg: Change from prior day in percent, float
                 Bid: Bid price, float
                 Ask: Ask price, float
                 Vol: Volume traded, int64
@@ -276,6 +213,10 @@ class Options(_OptionBaseReader):
                 Underlying: Ticker of the underlying security, string
                 Underlying_Price: Price of the underlying security, float64
                 Quote_Time: Time of the quote, Timestamp
+                Last_Trade_Date: Time of the last trade for this expiry and strike, Timestamp
+                IV: Implied volatility, float
+                JSON: Parsed json object, json
+                    Useful to extract other returned key/value pairs as needed
 
         Notes
         -----
@@ -329,6 +270,7 @@ class Options(_OptionBaseReader):
             Columns:
                 Last: Last option price, float
                 Chg: Change from prior day, float
+                PctChg: Change from prior day in percent, float
                 Bid: Bid price, float
                 Ask: Ask price, float
                 Vol: Volume traded, int64
@@ -337,6 +279,10 @@ class Options(_OptionBaseReader):
                 Underlying: Ticker of the underlying security, string
                 Underlying_Price: Price of the underlying security, float64
                 Quote_Time: Time of the quote, Timestamp
+                Last_Trade_Date: Time of the last trade for this expiry and strike, Timestamp
+                IV: Implied volatility, float
+                JSON: Parsed json object, json
+                    Useful to extract other returned key/value pairs as needed
 
         Notes
         -----
@@ -396,12 +342,35 @@ class Options(_OptionBaseReader):
             desired. If there isn't data as far out as the user has asked for
             then
 
+            Index:
+                Strike: Option strike, int
+                Expiry: Option expiry, Timestamp
+                Type: Call or Put, string
+                Symbol: Option symbol as reported on Yahoo, string
+            Columns:
+                Last: Last option price, float
+                Chg: Change from prior day, float
+                PctChg: Change from prior day in percent, float
+                Bid: Bid price, float
+                Ask: Ask price, float
+                Vol: Volume traded, int64
+                Open_Int: Open interest, int64
+                IsNonstandard: True if the the deliverable is not 100 shares, otherwise false
+                Underlying: Ticker of the underlying security, string
+                Underlying_Price: Price of the underlying security, float64
+                Quote_Time: Time of the quote, Timestamp
+                Last_Trade_Date: Time of the last trade for this expiry and strike, Timestamp
+                IV: Implied volatility, float
+                JSON: Parsed json object, json
+                    Useful to extract other returned key/value pairs as needed
+
          Note: Format of returned data frame is dependent on Yahoo and may change.
 
         """
         expiry = self._try_parse_dates(year, month, expiry)
         data = self._get_data_in_date_range(expiry, call=call, put=put)
-        return self._chop_data(data, above_below, self.underlying_price)
+        underlying_price = data.Underlying_Price[0]
+        return self._chop_data(data, above_below, underlying_price)
 
     def _chop_data(self, df, above_below=2, underlying_price=None):
         """Returns a data frame only options that are near the current stock price."""
@@ -530,6 +499,7 @@ class Options(_OptionBaseReader):
             Columns:
                 Last: Last option price, float
                 Chg: Change from prior day, float
+                PctChg: Change from prior day in percent, float
                 Bid: Bid price, float
                 Ask: Ask price, float
                 Vol: Volume traded, int64
@@ -538,13 +508,17 @@ class Options(_OptionBaseReader):
                 Underlying: Ticker of the underlying security, string
                 Underlying_Price: Price of the underlying security, float64
                 Quote_Time: Time of the quote, Timestamp
+                Last_Trade_Date: Time of the last trade for this expiry and strike, Timestamp
+                IV: Implied volatility, float
+                JSON: Parsed json object, json
+                    Useful to extract other returned key/value pairs as needed
 
                 Note: Format of returned data frame is dependent on Yahoo and may change.
 
         """
         warnings.warn("get_forward_data() is deprecated", FutureWarning)
         end_date = dt.date.today() + MonthEnd(months)
-        dates = (date for date in self.expiry_dates if date <= end_date.date())
+        dates = [date for date in self.expiry_dates if date <= end_date.date()]
         data = self._get_data_in_date_range(dates, call=call, put=put)
         if near:
             data = self._chop_data(data, above_below=above_below)
@@ -577,6 +551,7 @@ class Options(_OptionBaseReader):
             Columns:
                 Last: Last option price, float
                 Chg: Change from prior day, float
+                PctChg: Change from prior day in percent, float
                 Bid: Bid price, float
                 Ask: Ask price, float
                 Vol: Volume traded, int64
@@ -585,30 +560,54 @@ class Options(_OptionBaseReader):
                 Underlying: Ticker of the underlying security, string
                 Underlying_Price: Price of the underlying security, float64
                 Quote_Time: Time of the quote, Timestamp
+                Last_Trade_Date: Time of the last trade for this expiry and strike, Timestamp
+                IV: Implied volatility, float
+                JSON: Parsed json object, json
+                    Useful to extract other returned key/value pairs as needed
 
         Note: Format of returned data frame is dependent on Yahoo and may change.
 
         """
-
-        expiry_dates = self.expiry_dates
-        return self._get_data_in_date_range(dates=expiry_dates, call=call, put=put)
+        return self._load_data()
 
     def _get_data_in_date_range(self, dates, call=True, put=True):
 
         to_ret = Series({'calls': call, 'puts': put})
         to_ret = to_ret[to_ret].index
-        data = []
 
-        for name in to_ret:
-            for expiry_date in dates:
-                nam = name + self._expiry_to_string(expiry_date)
-                try:  # Try to access on the instance
-                    frame = getattr(self, nam)
-                except AttributeError:
-                    frame = self._get_option_data(expiry=expiry_date, name=name)
-                data.append(frame)
+        df = self._load_data(dates)
+        types = [typ for typ in to_ret]
 
-        return concat(data).sortlevel()
+        df_filtered_by_type = df[df.index.map(lambda x: x[2] in types)]
+        df_filtered_by_expiry = df_filtered_by_type[df_filtered_by_type.index.get_level_values('Expiry').isin(dates)]
+        return df_filtered_by_expiry
+
+
+    @property
+    def underlying_price(self):
+        """
+        Returns the underlying price.
+        """
+        try:
+            underlying_price = self._underlying_price
+        except AttributeError:
+            data = self.get_options_data()
+            underlying_price = data.Underlying_Price[0]
+        return underlying_price
+
+
+    @property
+    def quote_time(self):
+        """
+        Returns the quote time.
+        """
+        try:
+            quote_time = self._quote_time
+        except AttributeError:
+            data = self.get_options_data()
+            quote_time = data.Quote_Time[0]
+        return quote_time
+
 
     @property
     def expiry_dates(self):
@@ -618,81 +617,154 @@ class Options(_OptionBaseReader):
         try:
             expiry_dates = self._expiry_dates
         except AttributeError:
-            expiry_dates, _ = self._get_expiry_dates_and_links()
+            expiry_dates = self._get_expiry_dates()
         return expiry_dates
 
-    def _get_expiry_dates_and_links(self):
+    def _get_expiry_dates(self):
         """
         Gets available expiry dates.
 
         Returns
         -------
-        Tuple of:
         List of datetime.date objects
-        Dict of datetime.date objects as keys and corresponding links
         """
 
         url = self._OPTIONS_BASE_URL.format(sym=self.symbol)
-        root = self._parse_url(url)
+        jd = self._parse_url(url)
 
-        try:
-            links = root.xpath('//*[@id="options_menu"]/form/select/option')
-        except IndexError:  # pragma: no cover
-            raise RemoteDataError('Expiry dates not available')
-
-        expiry_dates = [dt.datetime.strptime(element.text, "%B %d, %Y").date() for element in links]
-        links = [element.attrib['data-selectbox-link'] for element in links]
+        expiry_dates =\
+            [dt.datetime.utcfromtimestamp(ts).date() for ts in jd['optionChain']['result'][0]['expirationDates']]
 
         if len(expiry_dates) == 0:
             raise RemoteDataError('Data not available')  # pragma: no cover
 
-        expiry_links = dict(zip(expiry_dates, links))
-        self._expiry_links = expiry_links
         self._expiry_dates = expiry_dates
-        return expiry_dates, expiry_links
+        return expiry_dates
 
     def _parse_url(self, url):
         """
-        Downloads and parses a URL, returns xml root.
 
+        Downloads and parses a URL into a json object.
+        Parameters
+        ----------
+        url : String
+            The url to load and parse
+
+        Returns
+        -------
+        A JSON object
         """
-        try:
-            from lxml.html import parse
-        except ImportError:  # pragma: no cover
-            raise ImportError("Please install lxml if you want to use the "
-                              "{0!r} class".format(self.__class__.__name__))
-        doc = parse(self._read_url_as_StringIO(url))
-        root = doc.getroot()
-        if root is None:  # pragma: no cover
-            raise RemoteDataError("Parsed URL {0!r} has no root"
-                                  "element".format(url))
-        return root
+        jd = json.loads(self._read_url_as_StringIO(url).read())
+        if jd is None:  # pragma: no cover
+            raise RemoteDataError("Parsed URL {0!r} is not a valid json object".format(url))
+        return jd
 
-    def _process_data(self, frame, type):
+    def _process_data(self, jd):
         """
-        Adds columns for Expiry, IsNonstandard (ie: deliverable is not 100 shares)
-        and Tag (the tag indicating what is actually deliverable, None if standard).
+        Parse JSON data into the DataFrame
 
+        Also adds computed columns for:
+            IsNonstandard (ie: deliverable is not 100 shares)
+
+        Parameters
+        ----------
+        jd : json object
+            a json object containing the data to process
+
+        Returns
+        -------
+        pandas.DataFrame
+            A DataFrame with requested options data.
         """
-        frame.columns = ['Strike', 'Symbol', 'Last', 'Bid', 'Ask', 'Chg', 'PctChg', 'Vol', 'Open_Int', 'IV']
-        frame["Rootexp"] = frame.Symbol.str[0:-9]
-        frame["Root"] = frame.Rootexp.str[0:-6]
-        frame["Expiry"] = to_datetime(frame.Rootexp.str[-6:], format='%y%m%d')
-        # Removes dashes in equity ticker to map to option ticker.
-        # Ex: BRK-B to BRKB140517C00100000
-        frame["IsNonstandard"] = frame['Root'] != self.symbol.replace('-', '')
-        del frame["Rootexp"]
-        frame["Underlying"] = self.symbol
-        try:
-            frame['Underlying_Price'] = self.underlying_price
-            frame["Quote_Time"] = self.quote_time
-        except AttributeError:  # pragma: no cover
-            frame['Underlying_Price'] = np.nan
-            frame["Quote_Time"] = np.nan
-        frame.rename(columns={'Open Int': 'Open_Int'}, inplace=True)
-        frame['IV'] = frame['IV'].str.replace(',', '').str.strip('%').astype(float) / 100
-        frame['PctChg'] = frame['PctChg'].str.replace(',', '').str.strip('%').astype(float) / 100
-        frame['Type'] = type
-        frame.set_index(['Strike', 'Expiry', 'Type', 'Symbol'], inplace=True)
 
-        return frame
+        columns = ['Last', 'Bid', 'Ask', 'Chg', 'PctChg', 'Vol',
+                   'Open_Int', 'IV', 'Root', 'IsNonstandard', 'Underlying', 'Underlying_Price', 'Quote_Time',
+                   'Last_Trade_Date', 'JSON']
+        indexes = ['Strike', 'Expiry', 'Type', 'Symbol']
+        rows_list, index = self._process_rows(jd)
+        if len(rows_list) > 0:
+            df = DataFrame(rows_list, columns=columns, index=MultiIndex.from_tuples(index, names=indexes))
+        else:
+            df = DataFrame(columns=columns)
+
+        df['IsNonstandard'] = df['Root'] != self.symbol.replace('-', '')
+
+        return df.sort_index()
+
+
+    def _process_rows(self, jd):
+        rows_list = []
+        index = []
+
+        # handle no results
+        if len(jd['optionChain']['result']) <= 0:
+            return rows_list, index
+
+        quote = jd['optionChain']['result'][0]['quote']
+        for option in jd['optionChain']['result'][0]['options']:
+            for typ in ['calls', 'puts']:
+                options_by_type = option[typ]
+                for option_by_strike in options_by_type:
+                    d = {}
+                    for dkey, rkey, ntype in [('Last', 'lastPrice', float), ('Bid', 'bid', float),
+                                              ('Ask', 'ask', float), ('Chg', 'change', float),
+                                              ('PctChg', 'percentChange', float), ('Vol', 'volume', int),
+                                              ('Open_Int', 'openInterest', int), ('IV', 'impliedVolatility', float),
+                                              ('Last_Trade_Date', 'lastTradeDate', long)]:
+                        try:
+                            d[dkey] = ntype(option_by_strike[rkey])
+                        except (KeyError, ValueError):
+                            pass
+                    d['JSON'] = option_by_strike
+                    d['Root'] = option_by_strike['contractSymbol'][:-15]
+                    d['Underlying'] = self.symbol
+
+                    d['Underlying_Price'] = quote['regularMarketPrice']
+                    quote_unix_time = quote['regularMarketTime']
+                    if quote['marketState'] == 'PRE' and 'preMarketPrice' in quote:
+                        d['Underlying_Price'] = quote['preMarketPrice']
+                        quote_unix_time = quote['preMarketTime']
+                    elif quote['marketState'] == 'POSTPOST' and 'postMarketPrice' in quote:
+                        d['Underlying_Price'] = quote['postMarketPrice']
+                        quote_unix_time = quote['postMarketTime']
+                    d['Quote_Time'] = dt.datetime.utcfromtimestamp(quote_unix_time)
+
+                    self._underlying_price = d['Underlying_Price']
+                    self._quote_time = d['Quote_Time']
+
+                    d['Last_Trade_Date'] = dt.datetime.utcfromtimestamp(d['Last_Trade_Date'])
+
+                    rows_list.append(d)
+                    index.append((float(option_by_strike['strike']),
+                                  dt.datetime.utcfromtimestamp(option_by_strike['expiration']),
+                                  typ,
+                                  option_by_strike['contractSymbol']))
+        return rows_list, index
+
+
+    def _load_data(self, exp_dates=None):
+        """
+        Loads options data.
+
+        Parameters
+        ----------
+        exp_dates : tuple of datetimes, optional(default=None)
+            The expiry dates to load options data for.  If none is specified, uses all expiry dates available for the
+            symbol.
+
+        Returns
+        -------
+        pandas.DataFrame
+            A DataFrame with requested options data.
+        """
+        epoch = dt.datetime.utcfromtimestamp(0)
+        if exp_dates is None:
+            exp_dates = self._get_expiry_dates()
+        exp_unix_times = [int((dt.datetime(exp_date.year, exp_date.month, exp_date.day) - epoch).total_seconds())
+                          for exp_date in exp_dates]
+        data = []
+        for exp_date in exp_unix_times:
+            url = (self._OPTIONS_BASE_URL + '?date={exp_date}').format(sym=self.symbol, exp_date=exp_date)
+            jd = self._parse_url(url)
+            data.append(self._process_data(jd))
+        return concat(data).sortlevel()
