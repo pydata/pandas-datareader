@@ -25,6 +25,7 @@ Currently the following sources are supported:
 
     - :ref:`Yahoo! Finance<remote_data.yahoo>`
     - :ref:`Google Finance<remote_data.google>`
+    - :ref:`Enigma<remote_data.enigma>`
     - :ref:`St.Louis FED (FRED)<remote_data.fred>`
     - :ref:`Kenneth French's data library<remote_data.ff>`
     - :ref:`World Bank<remote_data.wb>`
@@ -194,6 +195,22 @@ Available expiry dates can be accessed from the ``expiry_dates`` property.
       goog = Options('goog', 'google')
       data = goog.get_options_data(expiry=goog.expiry_dates[0])
       data.iloc[0:5, 0:5]
+
+.. _remote_data.enigma:
+
+Enigma
+======
+
+Access datasets from `Enigma <https://app.enigma.io>`__,
+the world's largest repository of structured public data.
+
+.. ipython:: python
+
+    import os
+    import pandas_datareader as pdr
+
+    df = pdr.get_data_enigma('enigma.trade.ams.toxic.2015', os.getenv('ENIGMA_API_KEY'))
+    df.columns
 
 .. _remote_data.fred:
 
