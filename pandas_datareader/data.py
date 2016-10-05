@@ -19,6 +19,7 @@ from pandas_datareader.fred import FredReader
 from pandas_datareader.famafrench import FamaFrenchReader
 from pandas_datareader.oecd import OECDReader
 from pandas_datareader.edgar import EdgarIndexReader
+from pandas_datareader.enigma import EnigmaReader
 from pandas_datareader.oanda import get_oanda_currency_historical_rates
 
 
@@ -38,6 +39,10 @@ def get_data_yahoo(*args, **kwargs):
     return YahooDailyReader(*args, **kwargs).read()
 
 
+def get_data_enigma(*args, **kwargs):
+    return EnigmaReader(*args, **kwargs).read()
+
+
 def get_data_yahoo_actions(*args, **kwargs):
     return YahooActionReader(*args, **kwargs).read()
 
@@ -51,7 +56,7 @@ def get_quote_google(*args, **kwargs):
 
 
 def DataReader(name, data_source=None, start=None, end=None,
-               retry_count=3, pause=0.001, session=None):
+               retry_count=3, pause=0.001, session=None, access_key=None):
     """
     Imports data from a number of online sources.
 
@@ -124,6 +129,9 @@ def DataReader(name, data_source=None, start=None, end=None,
                                  chunksize=25,
                                  retry_count=retry_count, pause=pause,
                                  session=session).read()
+
+    elif data_source == "enigma":
+        return EnigmaReader(datapath=name, api_key=access_key).read()
 
     elif data_source == "fred":
         return FredReader(symbols=name, start=start, end=end,
