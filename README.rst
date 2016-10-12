@@ -25,11 +25,25 @@ Up to date remote data access for pandas, works for multiple versions of pandas.
 Installation
 ------------
 
-Install via pip
+
+Install latest release version via pip
 
 .. code-block:: shell
 
    $ pip install pandas-datareader
+
+Install latest development version
+
+.. code-block:: shell
+
+    $ pip install git+https://github.com/pydata/pandas-datareader.git
+
+or
+
+.. code-block:: shell
+
+    $ git clone https://github.com/pydata/pandas-datareader.git
+    $ python setup.py install
 
 Usage
 -----
