@@ -1,11 +1,8 @@
 import zlib
-import json
 import os
-import sys
 import time
 from pandas.compat import StringIO
 
-from pandas import DataFrame
 import pandas.compat as compat
 import pandas as pd
 import requests
@@ -42,9 +39,9 @@ class EnigmaReader(_BaseReader):
         super(EnigmaReader, self).__init__(symbols=[],
                                            retry_count=retry_count,
                                            pause=pause)
-        if api_key == None:
+        if api_key is None:
             self._api_key = os.getenv('ENIGMA_API_KEY')
-            if self._api_key == None:
+            if self._api_key is None:
                 raise ValueError(
                     """Please provide an Enigma API key or set the ENIGMA_API_KEY environment variable\n
                         If you do not have an API key, you can get one here: https://app.enigma.io/signup""")
@@ -56,7 +53,6 @@ class EnigmaReader(_BaseReader):
             raise ValueError(
                 "The Enigma datapath must be a string (ex: 'enigma.inspections.restaurants.fl')")
 
-            
     @property
     def url(self):
         return 'https://api.enigma.io/v2/export/{}/{}'.format(self._api_key,
@@ -66,23 +62,19 @@ class EnigmaReader(_BaseReader):
     def export_key(self):
         return 'export_url'
 
-    
     @property
     def _head_key(self):
         return 'head_url'
 
-    
     def _request(self, url):
         self.session.headers.update({'User-Agent': 'pandas-datareader'})
         resp = self.session.get(url)
         resp.raise_for_status()
         return resp
 
-    
     def _decompress_export(self, compressed_export_data):
         return zlib.decompress(compressed_export_data, 16 + zlib.MAX_WBITS)
 
-    
     def extract_export_url(self, delay=10, max_attempts=10):
         """
         Performs an HTTP HEAD request on 'head_url' until it returns a `200`.

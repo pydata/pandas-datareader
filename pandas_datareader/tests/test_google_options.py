@@ -47,6 +47,7 @@ class TestGoogleOptions(tm.TestCase):
             self.goog.get_options_data(month=1, year=2016)
 
     def test_expiry_dates(self):
+        raise nose.SkipTest()
         try:
             dates = self.goog.expiry_dates
         except RemoteDataError as e:  # pragma: no cover

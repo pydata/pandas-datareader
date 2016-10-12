@@ -9,6 +9,10 @@ from pandas_datareader.tests._utils import _skip_if_no_lxml
 
 
 class TestFamaFrench(tm.TestCase):
+
+    def setUp(self):
+        raise nose.SkipTest()
+
     def test_get_data(self):
         keys = [
             'F-F_Research_Data_Factors', 'F-F_ST_Reversal_Factor',

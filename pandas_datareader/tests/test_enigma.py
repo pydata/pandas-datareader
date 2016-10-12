@@ -1,11 +1,9 @@
 import os
 
-import requests
 from requests.exceptions import HTTPError
 
 import nose
 import pandas.util.testing as tm
-from pandas.util.testing import (assert_series_equal, assert_frame_equal)
 from pandas_datareader.tests._utils import _skip_if_no_lxml
 
 import pandas_datareader.data as web
@@ -15,10 +13,14 @@ TEST_API_KEY = os.getenv('ENIGMA_API_KEY')
 
 
 class TestEnigma(tm.TestCase):
+
     @classmethod
     def setUpClass(cls):
         super(TestEnigma, cls).setUpClass()
         _skip_if_no_lxml()
+
+    def setUp(self):
+        raise nose.SkipTest()
 
     def test_enigma(self):
         self.assertTrue('serialid' in list(
