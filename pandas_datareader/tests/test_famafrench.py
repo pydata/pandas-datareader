@@ -10,9 +10,6 @@ from pandas_datareader.tests._utils import _skip_if_no_lxml
 
 class TestFamaFrench(tm.TestCase):
 
-    def setUp(self):
-        raise nose.SkipTest()
-
     def test_get_data(self):
         keys = [
             'F-F_Research_Data_Factors', 'F-F_ST_Reversal_Factor',
@@ -21,18 +18,18 @@ class TestFamaFrench(tm.TestCase):
         ]
         for name in keys:
             ff = web.DataReader(name, 'famafrench')
-            assert 'DESCR' in ff
-            assert len(ff) > 1
+            self.assertTrue('DESCR' in ff)
+            self.assertTrue(len(ff) > 1)
 
     def test_get_available_datasets(self):
         _skip_if_no_lxml()
         l = get_available_datasets()
-        assert len(l) > 100
+        self.assertTrue(len(l) > 100)
 
     def test_index(self):
         ff = web.DataReader('F-F_Research_Data_Factors', 'famafrench')
-        assert ff[0].index.freq == 'M'
-        assert ff[1].index.freq == 'A-DEC'
+        self.assertEqual(ff[0].index.freq, 'M')
+        self.assertEqual(ff[1].index.freq, 'A-DEC')
 
     def test_f_f_research(self):
         results = web.DataReader("F-F_Research_Data_Factors", "famafrench",
@@ -42,10 +39,10 @@ class TestFamaFrench(tm.TestCase):
 
         exp = pd.DataFrame({'Mkt-RF': [-3.36, 3.4, 6.31, 2., -7.89, -5.56,
                                        6.93, -4.77, 9.54, 3.88, 0.6, 6.82],
-                            'SMB': [0.2, 1.44, 1.57, 4.92, -0.09, -2.15,
-                                    0.24, -3.03, 3.84, 1.01, 3.69, 0.85],
-                            'HML': [0.61, 2.74, 2.01, 3.12, -2.32, -4.27,
-                                    0.04, -1.51, -2.94, -2.23, -0.58, 3.47],
+                            'SMB': [0.37, 1.19, 1.49, 4.99, 0.0, -2.01, 0.21,
+                                    -2.99, 3.92, 1.14, 3.68, 0.68],
+                            'HML': [0.3, 3.18, 2.15, 2.83, -2.41, -4.52, -0.21,
+                                    -1.96, -3.12, -2.52, -0.91, 3.78],
                             'RF': [0., 0., 0.01, 0.01, 0.01, 0.01, 0.01,
                                    0.01, 0.01, 0.01, 0.01, 0.01]},
                            index=pd.period_range('2010-01-01', '2010-12-01', freq='M', name='Date'),
