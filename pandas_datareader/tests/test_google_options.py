@@ -1,5 +1,7 @@
 import nose
 
+from datetime import date
+
 import numpy as np
 import pandas as pd
 import pandas.util.testing as tm
@@ -51,7 +53,10 @@ class TestGoogleOptions(tm.TestCase):
             dates = self.goog.expiry_dates
         except RemoteDataError as e:  # pragma: no cover
             raise nose.SkipTest(e)
-        self.assertTrue(len(dates) > 6)
+
+        self.assertTrue(len(dates) >= 5)
+        self.assertIsInstance(dates, list)
+        self.assertTrue(all(isinstance(dt, date) for dt in dates))
 
     def test_get_call_data(self):
         with tm.assertRaises(NotImplementedError):

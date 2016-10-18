@@ -1,14 +1,10 @@
 import time
 import warnings
 import numpy as np
-import datetime as dt
 
 import requests
-from requests_file import FileAdapter
 
-from pandas import to_datetime
 import pandas.compat as compat
-from pandas.core.common import is_number
 from pandas import Panel, DataFrame
 from pandas import read_csv
 from pandas.io.common import urlencode
