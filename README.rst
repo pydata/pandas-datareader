@@ -16,7 +16,7 @@ Up to date remote data access for pandas, works for multiple versions of pandas.
     :target: https://coveralls.io/r/pydata/pandas-datareader
 
 .. image:: https://readthedocs.org/projects/pandas-datareader/badge/?version=latest
-    :target: http://pandas-datareader.readthedocs.org/en/latest/
+    :target: https://pandas-datareader.readthedocs.io/en/latest/
 
 .. image:: https://landscape.io/github/pydata/pandas-datareader/master/landscape.svg?style=flat
    :target: https://landscape.io/github/pydata/pandas-datareader/master
@@ -63,4 +63,4 @@ Many functions from the data module have been included in the top level API.
    import pandas_datareader as pdr
    pdr.get_data_yahoo('AAPL')
 
-See the `pandas-datareader documentation <http://pandas-datareader.readthedocs.org/>`_ for more details.
+See the `pandas-datareader documentation <https://pandas-datareader.readthedocs.io/>`_ for more details.

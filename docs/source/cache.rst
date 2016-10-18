@@ -42,4 +42,4 @@ A `SQLite <https://www.sqlite.org/>`_ file named ``cache.sqlite`` will be create
 directory, storing the request until the expiry date.
 
 For additional information on using requests-cache, see the
-`documentation <http://requests-cache.readthedocs.org/>`_.
+`documentation <https://requests-cache.readthedocs.io/>`_.
