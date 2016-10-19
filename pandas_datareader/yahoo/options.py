@@ -704,7 +704,7 @@ class Options(_OptionBaseReader):
                                               ('Ask', 'ask', float), ('Chg', 'change', float),
                                               ('PctChg', 'percentChange', float), ('Vol', 'volume', int),
                                               ('Open_Int', 'openInterest', int), ('IV', 'impliedVolatility', float),
-                                              ('Last_Trade_Date', 'lastTradeDate', long)]:
+                                              ('Last_Trade_Date', 'lastTradeDate', int)]:
                         try:
                             d[dkey] = ntype(option_by_strike[rkey])
                         except (KeyError, ValueError):
