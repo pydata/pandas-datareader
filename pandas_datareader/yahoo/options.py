@@ -134,7 +134,6 @@ class Options(_OptionBaseReader):
                        for f in (self.get_put_data,
                                  self.get_call_data)]).sortlevel()
 
-
     def _option_from_url(self, url):
 
         jd = self._parse_url(url)
@@ -156,7 +155,6 @@ class Options(_OptionBaseReader):
         puts = self._process_data(puts, 'put')
 
         return {'calls': calls, 'puts': puts}
-
 
     def _get_option_data(self, expiry, name):
         frame_name = '_frames' + self._expiry_to_string(expiry)
@@ -582,7 +580,6 @@ class Options(_OptionBaseReader):
         df_filtered_by_expiry = df_filtered_by_type[df_filtered_by_type.index.get_level_values('Expiry').isin(dates)]
         return df_filtered_by_expiry
 
-
     @property
     def underlying_price(self):
         """
@@ -595,7 +592,6 @@ class Options(_OptionBaseReader):
             underlying_price = data.Underlying_Price[0]
         return underlying_price
 
-
     @property
     def quote_time(self):
         """
@@ -607,7 +603,6 @@ class Options(_OptionBaseReader):
             data = self.get_options_data()
             quote_time = data.Quote_Time[0]
         return quote_time
-
 
     @property
     def expiry_dates(self):
@@ -691,7 +686,6 @@ class Options(_OptionBaseReader):
 
         return df.sort_index()
 
-
     def _process_rows(self, jd):
         rows_list = []
         index = []
@@ -740,7 +734,6 @@ class Options(_OptionBaseReader):
                                   typ,
                                   option_by_strike['contractSymbol']))
         return rows_list, index
-
 
     def _load_data(self, exp_dates=None):
         """
