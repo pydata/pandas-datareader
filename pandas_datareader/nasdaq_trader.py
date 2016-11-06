@@ -41,7 +41,7 @@ def _download_nasdaq_symbols(timeout):
 
     lines = []
     try:
-        ftp_session.retrlines('RETR ' +_NASDAQ_TICKER_LOC, lines.append)
+        ftp_session.retrlines('RETR ' + _NASDAQ_TICKER_LOC, lines.append)
     except all_errors as err:
         raise RemoteDataError('Error downloading from %r: $s' %
                               (_NASDAQ_FTP_SERVER, err))
@@ -49,7 +49,7 @@ def _download_nasdaq_symbols(timeout):
         ftp_session.close()
 
     # Sanity Checking
-    if not lines[-1].startwith('File Creation Time:'):
+    if not lines[-1].startswith('File Creation Time:'):
         raise RemoteDataError('Missing expected footer. Found %r' % lines[-1])
 
     # Convert Y/N to True/False.
@@ -74,8 +74,10 @@ def get_nasdaq_symbols(retry_count=3, timeout=30, pause=None):
     Returns
     -------
     nasdaq_tickers : pandas.DataFrame
-        DataFrame wiht company tickers, names, and other properties.
+        DataFrame with company tickers, names, and other properties.
     """
+    global _ticker_cache
+
     if timeout < 0:
         raise ValueError('timeout must be >= 0, not %r' % (timeout,))
 
@@ -84,15 +86,14 @@ def get_nasdaq_symbols(retry_count=3, timeout=30, pause=None):
     elif pause < 0:
         raise ValueError('pause must be >= 0, not %r' % (pause,))
 
-    global _ticker_cache
     if _ticker_cache is None:
         while retry_count > 0:
             try:
                 _ticker_cache = _download_nasdaq_symbols(timeout=timeout)
                 retry_count = -1
-            except Exception:
+            except RemoteDataError:
                 # retry on any exception
-                if retry_count == 0:
+                if retry_count <= 0:
                     raise
                 else:
                     retry_count -= 1
