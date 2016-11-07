@@ -95,5 +95,5 @@ class EnigmaReader(_BaseReader):
 
     def read(self):
         export_gzipped_req = self._request(self.extract_export_url())
-        decompressed_data = self._decompress_export(export_gzipped_req.content)
+        decompressed_data = self._decompress_export(export_gzipped_req.content).decode("utf-8")
         return pd.read_csv(StringIO(decompressed_data))
