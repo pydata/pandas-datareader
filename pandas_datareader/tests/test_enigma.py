@@ -19,36 +19,33 @@ class TestEnigma(tm.TestCase):
         super(TestEnigma, cls).setUpClass()
         _skip_if_no_lxml()
 
-    def setUp(self):
-        raise nose.SkipTest()
+    def test_enigma_datareader(self):
+        try:
+            df = web.DataReader('enigma.inspections.restaurants.fl',
+                                'enigma', access_key=TEST_API_KEY)
+            self.assertTrue('serialid' in df.columns)
+        except HTTPError as e:  # pragma: no cover
+            raise nose.SkipTest(e)
 
-    def test_enigma(self):
-        self.assertTrue('serialid' in list(
-            web.DataReader('enigma.inspections.restaurants.fl',
-                           'enigma',
-                           access_key=TEST_API_KEY).columns))
-        self.assertTrue('serialid' in list(pdr.get_data_enigma(
-            'enigma.inspections.restaurants.fl', TEST_API_KEY)))
+    def test_enigma_get_data_enigma(self):
+        try:
+            df = pdr.get_data_enigma(
+                'enigma.inspections.restaurants.fl', TEST_API_KEY)
+            self.assertTrue('serialid' in df.columns)
+        except HTTPError as e:  # pragma: no cover
+            raise nose.SkipTest(e)
 
     def test_bad_key(self):
-        _exception = None
-        try:
+        with tm.assertRaises(HTTPError):
             web.DataReader('enigma.inspections.restaurants.fl',
                            'enigma',
                            access_key=TEST_API_KEY + 'xxx')
-        except HTTPError as e:
-            _exception = e
-        assert isinstance(_exception, HTTPError)
 
     def test_bad_url(self):
-        _exception = None
-        try:
+        with tm.assertRaises(HTTPError):
             web.DataReader('enigma.inspections.restaurants.fllzzy',
                            'enigma',
                            access_key=TEST_API_KEY)
-        except Exception as e:
-            _exception = e
-        assert isinstance(_exception, HTTPError)
 
 
 if __name__ == '__main__':
