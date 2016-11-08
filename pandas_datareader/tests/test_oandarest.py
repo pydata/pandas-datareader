@@ -1,6 +1,7 @@
 import pandas as pd
 import pandas.util.testing as tm
 import pandas_datareader.data as web
+import nose
 
 from pandas_datareader.oandarest import OANDARestHistoricalInstrumentReader
 
@@ -8,7 +9,7 @@ from pandas_datareader.oandarest import OANDARestHistoricalInstrumentReader
 class TestOandaHistoricalInstrumentReader(tm.TestCase):
     def get_credential(self):
         return {'accountType':"practice",
-                'accountVersion':"0"
+                'apiToken':"API Token missing"
                 }
 
     def test_oanda_historical_currencypair(self):
@@ -16,12 +17,15 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
         end = "2014-03-21T9:00:00Z"
         symbols = ["EUR_USD"]
 
-        pn = OANDARestHistoricalInstrumentReader(
-            symbols=symbols,
-            start=start, end=end,
-            granularity="S5",
-            access_credential=self.get_credential()
-        ).read()
+        try:
+            pn = OANDARestHistoricalInstrumentReader(
+                symbols=symbols,
+                start=start, end=end,
+                granularity="S5",
+                access_credential=self.get_credential()
+            ).read()
+        except Exception as error:
+            raise nose.SkipTest("API Token missing ?" + str(error))
 
         df_rates = pn[symbols[0]]  
 
@@ -33,11 +37,15 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
         end = "2014-03-21T09:00:00Z"
         symbols = ["EUR_USD"]
 
-        pn = web.DataReader(
-                ["EUR_USD"], data_source="oanda_historical_currency", 
-                start=start, end=end,
-                custom=self.get_credential()
-        )
+        try:
+            pn = web.DataReader(
+                    ["EUR_USD"], data_source="oanda_historical_currency",
+                    start=start, end=end,
+                    custom=self.get_credential()
+            )
+        except Exception as error:
+            raise nose.SkipTest("API Token missing ?" + str(error))
+
 
         df_rates = pn[symbols[0]]  
 
