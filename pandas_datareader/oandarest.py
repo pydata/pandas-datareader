@@ -9,6 +9,7 @@ import oandapyV20.endpoints.instruments as instruments
 
 from pandas.compat import StringIO, string_types
 from ._utils import _init_session, _sanitize_dates
+from pandas.tseries.offsets import DateOffset
 
 from pandas_datareader.base import _BaseReader
 
@@ -25,7 +26,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             Date to begin fetching curerncy pair, in RFC3339 ("%Y-%m-%dT%H:%M:%SZ)  # Eg: "2014-03-21T17:41:00Z"
         end: string
             Date to end fetching curerncy pair, in RFC3339 ("%Y-%m-%dT%H:%M:%SZ)  # Eg: "2014-03-21T17:41:00Z"
-        freq: string
+        freq: string or Pandas's DateOffset
             Frequency or periodicity of the candlesticks to be retrieved
             Valid values are the following Panda's Offset Aliases (http://pandas.pydata.org/pandas-docs/stable/timeseries.html):
                     5S  ->  5 second candlesticks, minute alignment
@@ -69,6 +70,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             "10S":"S10" ,
             "15S":"S15",
             "30S":"S30",
+            "T":"M1",
             "1T":"M1",
             "1min":"M1",
             "2T":"M2",
@@ -81,6 +83,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             "15min":"M15",
             "30T":"M30",
             "30min":"M30",
+            "H":"H1",
             "1H":"H1",
             "2H":"H2",
             "3H":"H3",
@@ -192,9 +195,15 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             current_start_rfc3339 = current_start.strftime(rfc3339)
             current_end_rfc3339 = current_end.strftime(rfc3339)
 
-            granularity = freq
-            if freq in OANDARestHistoricalInstrumentReader.SUPPORTED_OFFSET_ALIASES:
-                granularity = OANDARestHistoricalInstrumentReader.SUPPORTED_OFFSET_ALIASES[freq]
+            if isinstance(freq, DateOffset):
+                offsetString = self._normalized_offset_string(freq)
+            else:
+                offsetString = freq
+
+            if offsetString in OANDARestHistoricalInstrumentReader.SUPPORTED_OFFSET_ALIASES:
+                granularity = OANDARestHistoricalInstrumentReader.SUPPORTED_OFFSET_ALIASES[offsetString]
+            else:
+                granularity = offsetString
 
             params = {
                 "granularity": granularity,
@@ -295,4 +304,5 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         lst = s.split(sep)
         return (lst[0], lst[1])
 
-
+    def _normalized_offset_string(self, offset):
+        return str(offset.n) + offset.rule_code
