@@ -3,7 +3,10 @@ import json as json
 import datetime as datetime
 import time
 import re
-import oandapy
+
+from oandapyV20 import API
+import oandapyV20.endpoints.instruments as instruments
+
 from pandas.compat import StringIO, string_types
 from ._utils import _init_session, _sanitize_dates
 
@@ -12,7 +15,7 @@ from pandas_datareader.base import _BaseReader
 class OANDARestHistoricalInstrumentReader(_BaseReader):
     """
         Historical Currency Pair Reader using  OANDA's REST API.
-        See details at http://developer.oanda.com/rest-live/rates/#retrieveInstrumentHistory
+        See details at http://developer.oanda.com/rest-live-v20/instrument-ep/
         symbols : Dict of strings. 
             Each string is a currency pair with format BASE_QUOTE. Eg: ["EUR_USD", "JPY_USD"]
         symbolsTypes: Dict of strings.
@@ -27,6 +30,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             Default: See DEFAULT_GRANULARITY
         candleFormat: string
             Candlesticks representation
+            Valid values: M,B,A
             Default: See DEFAULT_CANDLE_FORMAT
         access_credential: Dict of strings
             Credential to query the api
@@ -34,7 +38,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             credential["apiToken"]="Your OANDA API token". Mandatory. Valid value: See your OANDA Account's API Token
     """
     DEFAULT_GRANULARITY="S5"
-    DEFAULT_CANDLE_FORMAT="midpoint"
+    DEFAULT_CANDLE_FORMAT="M"
 
     def __init__(self,symbols, symbolsTypes=None,
                 start=None, end=None,
@@ -97,15 +101,6 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
                                             quote_currency=None, base_currency=None, 
                                             candleFormat=None, reversed=False, 
                                             access_credential=None, session=None):
-        """
-        access_credential : dict of strings
-            Format {
-                "accountType": "practise OR live (mandatory)",
-                "accountVersion": "0", // 0 for legacy REST API account (supported), v20 for REST-v20 (unsupported for now) 
-                "apiToken"; "Private API token (mandatory)"}
-        other parameter: * 
-            See http://developer.oanda.com/rest-live/rates/#retrieveInstrumentHistory 
-        """
         session = _init_session(session)
         start, end = _sanitize_dates(start, end)
 
@@ -116,17 +111,14 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
 
         currencyPair = "%s_%s" % (base_currency, quote_currency)
 
-        if candleFormat is None:
-            candleFormat = "midpoint"
-
         if access_credential is None:
             raise Exception('No access_crendtial provided. Historical data cannot be fetched')
 
         credential = access_credential
         #print(credential)
 
-        oanda = oandapy.API(environment=credential['accountType'], 
-                            access_token=credential['apiToken'])
+        oanda = API(access_token=credential['apiToken'],
+                    environment=credential['accountType'])
 
         current_start = start
         current_end = end
@@ -146,15 +138,12 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             current_start_rfc3339 = current_start.strftime(rfc3339)
             current_end_rfc3339 = current_end.strftime(rfc3339)
 
-            #print("%s(%s) -> %s(%s)" % (current_start, current_start_timestamp, current_end, current_end_timestamp))
-            #print(type(current_start))
-
             params = {
-                "instrument": currencyPair,
                 "granularity": granularity,
-                "start": current_start_rfc3339,
-                "end": current_end_rfc3339,
-                "candleFormat": candleFormat,
+                "from": current_start_rfc3339,
+                "to": current_end_rfc3339,
+                "price": candleFormat,
+                "smooth": "false",
                 "includeFirst": "true" if includeCandleOnStart else "false",
                 "dailyAlignment" : "17",
                 "alignmentTimezone" : "America/New_York",
@@ -164,21 +153,24 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             #print(params)
 
             try:
-                response = oanda.get_history(**params)
+                request = instruments.InstrumentsCandles(
+                    instrument=currencyPair,
+                    params=params)
+
+                response = oanda.request(request)
                 current_start = current_end
                 includeCandleOnStart = False
             except Exception as error:
-                #print(str(error))
-                error_code = re.findall("error code ([0-9]+)", str(error))
-                if not error_code:
-                    print(str(error))
-                    raise error
-                elif error_code[0] == "36": 
+                isExceedResultsLimitError = re.findall("The results returned satisfying the query exceeds the maximum size", str(error))
+                isExceedResultsLimitError = True if len(isExceedResultsLimitError) else False
+
+                if isExceedResultsLimitError:
                     # Problem: OANDA caps returned range to 5000 results max
                     # Solution: Reduce requested date interval to return less than 5000 results
-                    current_duration /= 2 
-                    continue 
+                    current_duration /= 2
+                    continue
                 else:
+                    print("ERROR OANDA: "+ str(error))
                     print(str(error))
                     raise error
 
@@ -187,12 +179,19 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             if not response:
                 continue
 
-            candles = response['candles'] 
-            candlesJSON = json.dumps(candles)
+            candles = response['candles']
 
-            #print(candlesJSON)
+            if not candles:
+                continue
 
-            df = pd.read_json(candlesJSON, typ='frame', orient='records', convert_dates=['time'])
+            #print(candles)
+
+            ohlc = ['o','h','l','c']
+            df = pd.io.json.json_normalize(
+                    candles,
+                    meta=[ 'time', 'volume', 'complete', ['mid', ohlc], ['ask', ohlc], ['bid', ohlc]]
+                    )
+            df['time'] = pd.to_datetime(df['time'])
 
             with pd.option_context('display.max_columns', None):
                 pass #print(df)
@@ -200,25 +199,33 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             dfs.append(df)
 
         df = pd.concat(dfs);
-        
-        df = df.rename(columns={
-            "time": "date",
-        })
+
+        df.rename(  inplace=True,
+                    index=str,
+                    columns={
+                        "time": "date",
+                        "mid.o": "mid.open",
+                        "mid.h":"mid.high",
+                        "mid.l":"mid.low",
+                        "mid.c":"mid.close",
+                        "ask.o":"ask.open",
+                        "ask.h":"ask.high",
+                        "ask.l":"ask.low",
+                        "ask.c":"ask.close",
+                        "bid.o":"bid.open",
+                        "bid.h":"bid.high",
+                        "bid.l":"bid.low",
+                        "bid.c":"bid.close",
+                        })
+
         df = df.set_index('date')
 
-        # FIXME:Sort by date
-        #df.sort(['date'], ascending=True)
+        # Sort by date as OANDA REST v20 provides no guarantee
+        # returned candles are sorted
+        df.sort_index(axis=0, level='date', ascending=True, inplace=True)
 
-        #print(df)
-
-        #df = df[::-1]
-        #if reversed:
-        #    df.columns = pd.Index(df.columns.map(_reverse_pair))
-        #    df = 1 / df
-        #if len(base_currency) == 1:
-        #    return df.iloc[:, 0]
-        #else:
-        #    return df
+        with pd.option_context('display.max_columns', None):
+            pass #print(df)
 
         return df
 
@@ -229,5 +236,5 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
     def _split_currency_pair(self, s, sep="_"):
         lst = s.split(sep)
         return (lst[0], lst[1])
-        
+
 
