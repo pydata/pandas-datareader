@@ -59,7 +59,7 @@ def get_quote_google(*args, **kwargs):
 
 def DataReader(name, data_source=None, start=None, end=None,
                retry_count=3, pause=0.001, session=None, 
-               custom=None):
+               access_key=None):
     """
     Imports data from a number of online sources.
 
@@ -85,8 +85,8 @@ def DataReader(name, data_source=None, start=None, end=None,
         single value given for symbol, represents the pause between retries.
     session : Session, default None
             requests.sessions.Session instance to be used
-    custom: dict of object
-            Reader specific parameters
+    access_key: dict of object
+            Reader specific credentials
 
     Examples
     ----------
@@ -115,7 +115,7 @@ def DataReader(name, data_source=None, start=None, end=None,
 
     # OANDA REST
     oa = DataReader("EUR_USD", data_source="oanda_rest_historical_currency", 
-                    custom={    "accountType"="practice",
+                    access_key={    "accountType"="practice",
                                     "accountVersion="0"
                                     "apiToken":"Your private API token" })
 
@@ -182,7 +182,7 @@ def DataReader(name, data_source=None, start=None, end=None,
         return OANDARestHistoricalInstrumentReader(
                 symbols=name, symbolsTypes=["currency" for x in name],
                 start=start, end=end, 
-                access_credential=custom, session=session).read()
+                access_credential=access_key, session=session).read()
     else:
         msg = "data_source=%r is not implemented" % data_source
         raise NotImplementedError(msg)

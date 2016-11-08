@@ -42,7 +42,7 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
             pn = web.DataReader(
                     ["EUR_USD"], data_source="oanda_historical_currency",
                     start=start, end=end,
-                    custom=self.get_credential()
+                    access_key=self.get_credential()
             )
         except Exception as error:
             raise nose.SkipTest("API Token missing ?" + str(error))
