@@ -190,7 +190,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             current_end_rfc3339 = current_end.strftime(rfc3339)
 
             if isinstance(freq, DateOffset):
-                offsetString = self._normalized_offset_string(freq)
+                offsetString = freq.freqstr
             else:
                 offsetString = freq
 
@@ -298,5 +298,3 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         lst = s.split(sep)
         return (lst[0], lst[1])
 
-    def _normalized_offset_string(self, offset):
-        return str(offset.n) + offset.rule_code
