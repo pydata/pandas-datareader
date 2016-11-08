@@ -25,24 +25,78 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             Date to begin fetching curerncy pair, in RFC3339 ("%Y-%m-%dT%H:%M:%SZ)  # Eg: "2014-03-21T17:41:00Z"
         end: string
             Date to end fetching curerncy pair, in RFC3339 ("%Y-%m-%dT%H:%M:%SZ)  # Eg: "2014-03-21T17:41:00Z"
-        granularity: string
-            Time range for each candlestick
-            Default: See DEFAULT_GRANULARITY
+        freq: string
+            Frequency or periodicity of the candlesticks to be retrieved
+            Valid values are the following Panda's Offset Aliases (http://pandas.pydata.org/pandas-docs/stable/timeseries.html):
+                    5S  ->  5 second candlesticks, minute alignment
+                    10S -> 10 second candlesticks, minute alignment
+                    15S -> 15 second candlesticks, minute alignment
+                    30S -> 30 second candlesticks, minute alignment
+                    1T,1min  ->  1 minute candlesticks, minute alignment
+                    2T,2min  ->  2 minute candlesticks, hour alignment
+                    4T,4min  ->  4 minute candlesticks, hour alignment
+                    5T,5min  ->  5 minute candlesticks, hour alignment
+                    15T,15min -> 15 minute candlesticks, hour alignment
+                    30T,30min -> 30 minute candlesticks, hour alignment
+                    1H  ->  1 hour candlesticks, hour alignment
+                    2H  ->  1 hour candlesticks, day alignment
+                    3H  ->  3 hour candlesticks, day alignment
+                    4H  ->  4 hour candlesticks, day alignment
+                    6H  ->  6 hour candlesticks, day alignment
+                    8H  ->  8 hour candlesticks, day alignment
+                    12H -> 12 hour candlesticks, day alignment
+                    1D  ->  1 day candlesticks, day alignment
+                    1W  ->  1 week candlesticks, aligned to start of week
+                    1M  ->  1 month candlesticks, aligned to first day of the month
+                    See OANDA REST v20 for updated list
+            Default: See DEFAULT_FREQUENCY
         candleFormat: string
             Candlesticks representation
             Valid values: M,B,A
+                M for midpoint
+                B for Bid
+                A for Ask
             Default: See DEFAULT_CANDLE_FORMAT
         access_credential: Dict of strings
             Credential to query the api
             credential["accountType"]="practise". Mandatory. Valid values: practice, live
             credential["apiToken"]="Your OANDA API token". Mandatory. Valid value: See your OANDA Account's API Token
     """
-    DEFAULT_GRANULARITY="S5"
+    DEFAULT_FREQUENCY="5S"
     DEFAULT_CANDLE_FORMAT="M"
+    SUPPORTED_OFFSET_ALIASES = {
+            "5S":"S5",
+            "10S":"S10" ,
+            "15S":"S15",
+            "30S":"S30",
+            "1T":"M1",
+            "1min":"M1",
+            "2T":"M2",
+            "2min":"M2",
+            "4T":"M4",
+            "4min":"M4",
+            "5T":"M5",
+            "5min":"M5",
+            "15T":"M15",
+            "15min":"M15",
+            "30T":"M30",
+            "30min":"M30",
+            "1H":"H1",
+            "2H":"H2",
+            "3H":"H3",
+            "4H":"H4",
+            "6H":"H6",
+            "8H":"H8",
+            "12H":"H12",
+            "1D":"D",
+            "1W":"W",
+            "1M":"M"
+            }
+
 
     def __init__(self,symbols, symbolsTypes=None,
                 start=None, end=None,
-                granularity=None, candleFormat=None, 
+                freq=None, candleFormat=None,
                 session=None,
                 access_credential=None):
         _BaseReader.__init__(self, symbols, start=start, end=end, session=session)
@@ -54,9 +108,9 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         if symbolsTypes is None:
             self.symbolsTypes = ["currency"];
 
-        self.granularity = granularity
-        if granularity is None:
-            self.granularity=OANDARestHistoricalInstrumentReader.DEFAULT_GRANULARITY
+        self.freq = freq
+        if freq is None:
+            self.freq=OANDARestHistoricalInstrumentReader.DEFAULT_FREQUENCY
 
         self.candleFormat = candleFormat
         if candleFormat is None:
@@ -85,7 +139,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
                 df = self._read_historical_currencypair_rates(
                     self.start, self.end,
                     quote_currency=quote_currency, base_currency=base_currency,
-                    granularity=self.granularity,
+                    freq=self.freq,
                     candleFormat=self.candleFormat,
                     access_credential=self.access_credential,
                     session=self.session
@@ -97,7 +151,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         
         return pd.Panel(dfs)
 
-    def _read_historical_currencypair_rates(self, start, end, granularity=None, 
+    def _read_historical_currencypair_rates(self, start, end, freq=None,
                                             quote_currency=None, base_currency=None, 
                                             candleFormat=None, reversed=False, 
                                             access_credential=None, session=None):
@@ -137,6 +191,10 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             rfc3339 = "%Y-%m-%dT%H:%M:%SZ"  # Eg: 2014-03-21T17:41:00Z
             current_start_rfc3339 = current_start.strftime(rfc3339)
             current_end_rfc3339 = current_end.strftime(rfc3339)
+
+            granularity = freq
+            if freq in OANDARestHistoricalInstrumentReader.SUPPORTED_OFFSET_ALIASES:
+                granularity = OANDARestHistoricalInstrumentReader.SUPPORTED_OFFSET_ALIASES[freq]
 
             params = {
                 "granularity": granularity,

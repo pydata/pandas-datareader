@@ -21,7 +21,7 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
             pn = OANDARestHistoricalInstrumentReader(
                 symbols=symbols,
                 start=start, end=end,
-                granularity="S5",
+                freq="S5",
                 access_credential=self.get_credential()
             ).read()
         except Exception as error:
