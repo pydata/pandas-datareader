@@ -8,9 +8,10 @@ from pandas_datareader.oandarest import OANDARestHistoricalInstrumentReader
 
 
 class TestOandaHistoricalInstrumentReader(tm.TestCase):
+
     def get_credential(self):
-        return {'accountType':"practice",
-                'apiToken':"API Token missing"
+        return {'accountType': "practice",
+                'apiToken': "8106b9109c7c6b17d45ff215f6da9d42-1446c148ee0f4ac9274eb6c2be0784b7"
                 }
 
     def test_oanda_historical_currencypair(self):
@@ -40,15 +41,14 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
 
         try:
             pn = web.DataReader(
-                    ["EUR_USD"], data_source="oanda_historical_currency",
-                    start=start, end=end,
-                    access_key=self.get_credential()
+                ["EUR_USD"], data_source="oanda_historical_currency",
+                start=start, end=end,
+                access_key=self.get_credential()
             )
         except Exception as error:
             raise nose.SkipTest("API Token missing ?" + str(error))
 
-
-        df_rates = pn[symbols[0]]  
+        df_rates = pn[symbols[0]]
 
         self.assertTrue(pd.to_datetime(start) <= df_rates.index[0])
         self.assertTrue(df_rates.index[-1] <= pd.to_datetime(end))
@@ -68,8 +68,7 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
         except Exception as error:
             raise nose.SkipTest("API Token missing ?" + str(error))
 
-        df_rates = pn[symbols[0]]  
+        df_rates = pn[symbols[0]]
 
         self.assertTrue(pd.to_datetime(start) <= df_rates.index[0])
         self.assertTrue(df_rates.index[-1] <= pd.to_datetime(end))
-

@@ -25,6 +25,7 @@ from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
 
 from pandas_datareader.oandarest import OANDARestHistoricalInstrumentReader
 
+
 def get_data_fred(*args, **kwargs):
     return FredReader(*args, **kwargs).read()
 
@@ -58,7 +59,7 @@ def get_quote_google(*args, **kwargs):
 
 
 def DataReader(name, data_source=None, start=None, end=None,
-               retry_count=3, pause=0.001, session=None, 
+               retry_count=3, pause=0.001, session=None,
                access_key=None):
     """
     Imports data from a number of online sources.
@@ -114,7 +115,7 @@ def DataReader(name, data_source=None, start=None, end=None,
     ed2 = DataReader("daily", "edgar-index")
 
     # OANDA REST
-    oa = DataReader("EUR_USD", data_source="oanda_rest_historical_currency", 
+    oa = DataReader("EUR_USD", data_source="oanda_rest_historical_currency",
                     access_key={    "accountType"="practice",
                                     "accountVersion="0"
                                     "apiToken":"Your private API token" })
@@ -180,9 +181,9 @@ def DataReader(name, data_source=None, start=None, end=None,
         return get_nasdaq_symbols(retry_count=retry_count, pause=pause)
     elif data_source == "oanda_historical_currency":
         return OANDARestHistoricalInstrumentReader(
-                symbols=name, symbolsTypes=["currency" for x in name],
-                start=start, end=end, 
-                access_credential=access_key, session=session).read()
+            symbols=name, symbolsTypes=["currency" for x in name],
+            start=start, end=end,
+            access_credential=access_key, session=session).read()
     else:
         msg = "data_source=%r is not implemented" % data_source
         raise NotImplementedError(msg)
