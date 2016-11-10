@@ -7,7 +7,6 @@ import pandas as pd
 
 import nose
 import pandas.util.testing as tm
-from pandas_datareader.tests._utils import _skip_if_no_lxml
 
 import pandas_datareader.data as web
 from pandas_datareader._utils import RemoteDataError
@@ -18,7 +17,6 @@ class TestYahooOptions(tm.TestCase):
     @classmethod
     def setUpClass(cls):
         super(TestYahooOptions, cls).setUpClass()
-        _skip_if_no_lxml()
 
         # aapl has monthlies
         cls.aapl = web.Options('aapl', 'yahoo')
@@ -30,10 +28,9 @@ class TestYahooOptions(tm.TestCase):
             cls.year = cls.year + 1
         cls.expiry = datetime(cls.year, cls.month, 1)
         cls.dirpath = tm.get_data_path()
-        cls.html1 = 'file://' + os.path.join(cls.dirpath, 'yahoo_options1.html')
-        cls.html2 = 'file://' + os.path.join(cls.dirpath, 'yahoo_options2.html')
-        cls.html3 = 'file://' + os.path.join(cls.dirpath, 'yahoo_options3.html')  # Empty table GH#22
-        cls.data1 = cls.aapl._option_frames_from_url(cls.html1)['puts']
+        cls.json1 = 'file://' + os.path.join(cls.dirpath, 'yahoo_options1.json')
+        cls.json2 = 'file://' + os.path.join(cls.dirpath, 'yahoo_options2.json')  # Empty table GH#22
+        cls.data1 = cls.aapl._process_data(cls.aapl._parse_url(cls.json1))
 
     @classmethod
     def tearDownClass(cls):
@@ -49,12 +46,13 @@ class TestYahooOptions(tm.TestCase):
 
         exp_columns = pd.Index(['Last', 'Bid', 'Ask', 'Chg', 'PctChg', 'Vol', 'Open_Int',
                                 'IV', 'Root', 'IsNonstandard', 'Underlying',
-                                'Underlying_Price', 'Quote_Time'])
+                                'Underlying_Price', 'Quote_Time', 'Last_Trade_Date', 'JSON'])
         tm.assert_index_equal(df.columns, exp_columns)
         tm.assert_equal(df.index.names, [u'Strike', u'Expiry', u'Type', u'Symbol'])
 
         dtypes = [np.dtype(x) for x in ['float64'] * 5 +
-                  ['int64', 'int64', 'float64', 'object', 'bool', 'object', 'float64', 'datetime64[ns]']]
+                  ['int64', 'int64', 'float64', 'object', 'bool', 'object', 'float64', 'datetime64[ns]',
+                   'datetime64[ns]', 'object']]
         tm.assert_series_equal(df.dtypes, pd.Series(dtypes, index=exp_columns))
 
     def test_get_options_data(self):
@@ -103,7 +101,7 @@ class TestYahooOptions(tm.TestCase):
 
     def test_get_expiry_dates(self):
         try:
-            dates, _ = self.aapl._get_expiry_dates_and_links()
+            dates = self.aapl._get_expiry_dates()
         except RemoteDataError as e:  # pragma: no cover
             raise nose.SkipTest(e)
         self.assertTrue(len(dates) > 1)
@@ -139,21 +137,13 @@ class TestYahooOptions(tm.TestCase):
         # GH7
         try:
             options_object = web.Options('^spxpm', 'yahoo')
-            url = options_object._yahoo_url_from_expiry(options_object.expiry_dates[0])
-            root = options_object._parse_url(url)
-            quote_price = options_object._underlying_price_from_root(root)
+            quote_price = options_object.underlying_price
         except RemoteDataError as e:  # pragma: no cover
             raise nose.SkipTest(e)
         self.assertTrue(isinstance(quote_price, float))
 
         # Tests the weekend quote time format
-        price, quote_time = self.aapl._underlying_price_and_time_from_url(self.html1)
-        self.assertTrue(isinstance(price, (int, float, complex)))
-        self.assertTrue(isinstance(quote_time, (datetime, pd.Timestamp)))
-
-        # Tests the EDT page format
-        # regression test for #8741
-        price, quote_time = self.aapl._underlying_price_and_time_from_url(self.html2)
+        price, quote_time = self.aapl.underlying_price, self.aapl.quote_time
         self.assertTrue(isinstance(price, (int, float, complex)))
         self.assertTrue(isinstance(quote_time, (datetime, pd.Timestamp)))
 
@@ -194,7 +184,7 @@ class TestYahooOptions(tm.TestCase):
 
     def test_empty_table(self):
         # GH22
-        empty = self.aapl._option_frames_from_url(self.html3)['puts']
+        empty = self.aapl._process_data(self.aapl._parse_url(self.json2))
         self.assertTrue(len(empty) == 0)
 
 if __name__ == '__main__':
