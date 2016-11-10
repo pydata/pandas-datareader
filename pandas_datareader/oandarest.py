@@ -12,9 +12,9 @@ from pandas_datareader.base import _BaseReader
 
 class OANDARestHistoricalInstrumentReader(_BaseReader):
     """
-        Historical Currency Pair Reader using  OANDA's REST API.
+        Historical Currency Pair Reader using  OANDA's REST v20 API.
         See details at http://developer.oanda.com/rest-live-v20/instrument-ep/
-        symbols : Dict of strings.
+        symbols : string or Dict of strings.
             Each string is a currency pair with format BASE_QUOTE. Eg: ["EUR_USD", "JPY_USD"]
         symbolsTypes: Dict of strings.
             Each string represent the type of instrument to fetch data for. Eg: For symbols=["EUR_USD", "EUR_JPY"] then symbolsTypes=["currency", "currency"]
@@ -92,12 +92,22 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         _BaseReader.__init__(self, symbols, start=start,
                              end=end, session=session)
 
+        self.symbols = symbols
         if symbols is None:
             self.symbols = ["EUR_USD"]
+
+        if type(symbols) is str:
+            self.symbols = [symbols]
 
         self.symbolsTypes = symbolsTypes
         if symbolsTypes is None:
             self.symbolsTypes = ["currency"]
+
+        if len(self.symbols) != len(self.symbolsTypes):
+            self.symbolsTypes = ["currency" for x in self.symbols]
+
+        # print(self.symbols)
+        # print(self.symbolsTypes)
 
         self.freq = freq
         if freq is None:
