@@ -30,13 +30,13 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
                     10S -> 10 second candlesticks, minute alignment
                     15S -> 15 second candlesticks, minute alignment
                     30S -> 30 second candlesticks, minute alignment
-                    1T,1min  ->  1 minute candlesticks, minute alignment
+                    T,1min  ->  1 minute candlesticks, minute alignment
                     2T,2min  ->  2 minute candlesticks, hour alignment
                     4T,4min  ->  4 minute candlesticks, hour alignment
                     5T,5min  ->  5 minute candlesticks, hour alignment
                     15T,15min -> 15 minute candlesticks, hour alignment
                     30T,30min -> 30 minute candlesticks, hour alignment
-                    1H  ->  1 hour candlesticks, hour alignment
+                    H  ->  1 hour candlesticks, hour alignment
                     2H  ->  1 hour candlesticks, day alignment
                     3H  ->  3 hour candlesticks, day alignment
                     4H  ->  4 hour candlesticks, day alignment
@@ -69,22 +69,18 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         "15S": "S15",
         "30S": "S30",
         "T": "M1",
-        "1T": "M1",
         "2T": "M2",
         "4T": "M4",
         "5T": "M5",
         "15T": "M15",
         "30T": "M30",
         "H": "H1",
-        "1H": "H1",
         "2H": "H2",
         "3H": "H3",
         "4H": "H4",
         "6H": "H6",
         "8H": "H8",
         "12H": "H12",
-        "1D": "D",
-        "1W": "W",
         "1M": "M"
     }
 
