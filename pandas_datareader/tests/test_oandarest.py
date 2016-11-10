@@ -10,9 +10,7 @@ from pandas_datareader.oandarest import OANDARestHistoricalInstrumentReader
 class TestOandaHistoricalInstrumentReader(tm.TestCase):
 
     def get_credential(self):
-        return {'accountType': "practice",
-                'apiToken': "8106b9109c7c6b17d45ff215f6da9d42-1446c148ee0f4ac9274eb6c2be0784b7"
-                }
+        return {'accountType': "practice"}
 
     def test_oanda_historical_currencypair(self):
         start = "2014-03-19T09:00:00Z"

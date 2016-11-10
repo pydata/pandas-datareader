@@ -115,7 +115,11 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             self.access_credential['accountType'] = "practice"
 
         if 'apiToken' not in access_credential:
-            self.access_credential['apiToken'] = ""
+            self.access_credential['apiToken'] = os.getenv('OANDA_API_TOKEN')
+            if self.access_credential['apiToken'] is None:
+                raise ValueError(
+                    """Please provide an OANDA API token or set the OANDA_API_TOKEN environment variable\n
+                    If you do not have an API key, you can get one here: http://developer.oanda.com/rest-live/authentication/""")
 
     def read(self):
         dfs = {}
