@@ -181,7 +181,7 @@ def DataReader(name, data_source=None, start=None, end=None,
         return get_nasdaq_symbols(retry_count=retry_count, pause=pause)
     elif data_source == "oanda_historical_currency":
         return OANDARestHistoricalInstrumentReader(
-            symbols=name, symbolsTypes=["currency" for x in name],
+            symbols=name, symbolsTypes=None,
             start=start, end=end,
             access_credential=access_key, session=session).read()
     else:
