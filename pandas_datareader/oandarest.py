@@ -264,22 +264,22 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         df.rename(inplace=True,
                   index=str,
                   columns={
-                      "time": "date",
-                      "mid.o": "mid.open",
-                      "mid.h": "mid.high",
-                      "mid.l": "mid.low",
-                      "mid.c": "mid.close",
-                      "ask.o": "ask.open",
-                      "ask.h": "ask.high",
-                      "ask.l": "ask.low",
-                      "ask.c": "ask.close",
-                      "bid.o": "bid.open",
-                      "bid.h": "bid.high",
-                      "bid.l": "bid.low",
-                      "bid.c": "bid.close",
+                      "time": "Date",
+                      "mid.o": "Open",
+                      "mid.h": "High",
+                      "mid.l": "Low",
+                      "mid.c": "Close",
+                      "ask.o": "Open",
+                      "ask.h": "High",
+                      "ask.l": "Low",
+                      "ask.c": "Close",
+                      "bid.o": "Open",
+                      "bid.h": "High",
+                      "bid.l": "Low",
+                      "bid.c": "Close",
                   })
 
-        df = df.set_index('date')
+        df = df.set_index('Date')
 
         # Sort by date as OANDA REST v20 provides no guarantee
         # returned candles are sorted
