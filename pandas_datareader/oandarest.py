@@ -45,9 +45,9 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
                     6H  ->  6 hour candlesticks, day alignment
                     8H  ->  8 hour candlesticks, day alignment
                     12H -> 12 hour candlesticks, day alignment
-                    1D  ->  1 day candlesticks, day alignment
-                    1W  ->  1 week candlesticks, aligned to start of week
-                    1M  ->  1 month candlesticks, aligned to first day of the month
+                    D  ->  1 day candlesticks, day alignment
+                    W  ->  1 week candlesticks, aligned to start of week
+                    M  ->  1 month candlesticks, aligned to first day of the month
                     See OANDA REST v20 for updated list
             Default: See DEFAULT_FREQUENCY
         candleFormat: string
