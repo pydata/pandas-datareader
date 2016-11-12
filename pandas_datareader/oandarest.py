@@ -8,6 +8,7 @@ import oandapyV20.endpoints.instruments as instruments
 
 from ._utils import _init_session, _sanitize_dates
 from pandas.tseries.offsets import DateOffset
+from pandas.compat import OrderedDict
 
 from pandas_datareader.base import _BaseReader
 
@@ -134,7 +135,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
                     If you do not have an API key, you can get one here: http://developer.oanda.com/rest-live/authentication/""")
 
     def read(self):
-        dfs = {}
+        dfs = OrderedDict()
 
         # print(str(self.symbols))
 
