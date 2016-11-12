@@ -189,6 +189,33 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         includeCandleOnStart = True
         dfs = []
 
+        OANDA_OHLC = ['o', 'h', 'l', 'c']
+        OANDA_MID = 'mid'
+        OANDA_ASK = 'ask'
+        OANDA_BID = 'bid'
+        OANDA_TIME = 'time'
+        OANDA_MID_OPEN = 'mid.o'
+        OANDA_MID_HIGH = 'mid.h'
+        OANDA_MID_LOW = 'mid.l'
+        OANDA_MID_CLOSE = 'mid.c'
+        OANDA_ASK_OPEN = 'ask.o'
+        OANDA_ASK_HIGH = 'ask.h'
+        OANDA_ASK_LOW = 'ask.l'
+        OANDA_ASK_CLOSE = 'ask.c'
+        OANDA_BID_OPEN = 'bid.o'
+        OANDA_BID_HIGH = 'bid.h'
+        OANDA_BID_LOW = 'bid.l'
+        OANDA_BID_CLOSE = 'bid.c'
+
+        DATAFRAME_DATE = 'Date'
+        DATAFRAME_MID = 'Mid'
+        DATAFRAME_ASK = 'Ask'
+        DATAFRAME_BID = 'Bid'
+        DATAFRAME_OPEN = 'Open'
+        DATAFRAME_HIGH = 'High'
+        DATAFRAME_LOW = 'Low'
+        DATAFRAME_CLOSE = 'Close'
+
         while current_start < end:
             current_end = current_start + current_duration
 
@@ -263,13 +290,12 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
 
             # print(candles)
 
-            ohlc = ['o', 'h', 'l', 'c']
             df = pd.io.json.json_normalize(
                 candles,
-                meta=['time', 'volume', 'complete', [
-                    'mid', ohlc], ['ask', ohlc], ['bid', ohlc]]
+                meta=[OANDA_TIME, 'volume', 'complete', [
+                    OANDA_MID, OANDA_OHLC], [OANDA_ASK, OANDA_OHLC], [OANDA_BID, OANDA_OHLC]]
             )
-            df['time'] = pd.to_datetime(df['time'])
+            df[OANDA_TIME] = pd.to_datetime(df[OANDA_TIME])
 
             with pd.option_context('display.max_columns', None):
                 pass  # print(df)
@@ -278,29 +304,33 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
 
         df = pd.concat(dfs)
 
+        #Build MultiIndex based on data columns available
+        indexLevelGranularity = []
+        indexLevelOHLC = []
+
         df.rename(inplace=True,
                   index=str,
                   columns={
-                      "time": "Date",
-                      "mid.o": "Open",
-                      "mid.h": "High",
-                      "mid.l": "Low",
-                      "mid.c": "Close",
-                      "ask.o": "Open",
-                      "ask.h": "High",
-                      "ask.l": "Low",
-                      "ask.c": "Close",
-                      "bid.o": "Open",
-                      "bid.h": "High",
-                      "bid.l": "Low",
-                      "bid.c": "Close",
+                      OANDA_TIME: DATAFRAME_DATE,
+                      OANDA_MID_OPEN: DATAFRAME_OPEN,
+                      OANDA_MID_HIGH: DATAFRAME_HIGH,
+                      OANDA_MID_LOW: DATAFRAME_LOW,
+                      OANDA_MID_CLOSE: DATAFRAME_CLOSE,
+                      OANDA_ASK_OPEN: DATAFRAME_OPEN,
+                      OANDA_ASK_HIGH: DATAFRAME_HIGH,
+                      OANDA_ASK_LOW: DATAFRAME_LOW,
+                      OANDA_ASK_CLOSE: DATAFRAME_CLOSE,
+                      OANDA_BID_OPEN: DATAFRAME_OPEN,
+                      OANDA_BID_HIGH: DATAFRAME_HIGH,
+                      OANDA_BID_LOW: DATAFRAME_LOW,
+                      OANDA_BID_CLOSE: DATAFRAME_CLOSE
                   })
 
-        df = df.set_index('Date')
+        df = df.set_index(DATAFRAME_DATE)
 
         # Sort by date as OANDA REST v20 provides no guarantee
         # returned candles are sorted
-        df.sort_index(axis=0, level='date', ascending=True, inplace=True)
+        df.sort_index(axis=0, level=DATAFRAME_DATE, ascending=True, inplace=True)
 
         with pd.option_context('display.max_columns', None):
             pass  # print(df)
