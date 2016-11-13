@@ -62,6 +62,16 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             Credential to query the api
             credential["accountType"]="practise". Mandatory. Valid values: practice, live
             credential["apiToken"]="Your OANDA API token". Mandatory. Valid value: See your OANDA Account's API Token
+
+        Returns:
+        Panel with currency pairs requested. Each dataframe represents a currency pair and is MultiIndexed enabled.
+        Each dataframe data point can be addressed as is (assuming Midpoint data were requested):
+            df['Mid']['Open']
+            df['Mid']['High']
+            df['Mid']['Low']
+            df['Mid']['Close']
+            df['Mid']['Volume']
+            df['Mid']['Complete']
     """
 
     DEFAULT_FREQUENCY = "5S"
@@ -157,7 +167,9 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
                 raise Exception("Symbol Type; %s not supported" %
                                 (symbolsType))
 
-        return pd.Panel(dfs)
+        pn = pd.Panel(dfs)
+        pn.axes[0].name = "Currency"
+        return pn
 
     def _read_historical_currencypair_rates(self, start, end, freq=None,
                                             quote_currency=None, base_currency=None,
@@ -343,6 +355,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
 
         tuples = [(mapping[t[0]], mapping[t[1]]) for t in tuples]
         multiIndex = pd.MultiIndex.from_tuples(tuples)
+        multiIndex.name = "Data"
         df.columns = multiIndex
 
         # Sort by date as OANDA REST v20 provides no guarantee

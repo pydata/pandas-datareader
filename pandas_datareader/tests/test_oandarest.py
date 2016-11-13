@@ -70,7 +70,9 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
         except Exception as error:
             raise nose.SkipTest("API Token missing ?" + str(error))
 
-        df_rates = pn[symbols[0]]
+        self.assertTrue(set(pn) == set(symbols))
 
-        self.assertTrue(pd.to_datetime(start) <= df_rates.index[0])
-        self.assertTrue(df_rates.index[-1] <= pd.to_datetime(end))
+        for s in pn:
+            df_rates = pn[s]
+            self.assertTrue(pd.to_datetime(start) <= df_rates.index[0])
+            self.assertTrue(df_rates.index[-1] <= pd.to_datetime(end))
