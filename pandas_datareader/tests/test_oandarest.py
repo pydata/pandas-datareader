@@ -14,7 +14,7 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
 
     def test_oanda_historical_currencypair(self):
         start = "2014-03-19T09:00:00Z"
-        end = "2014-03-21T9:00:00Z"
+        end = "2014-03-20T9:00:00Z"
         symbols = ["EUR_USD"]
 
         try:
@@ -38,7 +38,7 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
 
     def test_oanda_historical_currencypair2(self):
         start = "2014-03-19T09:00:00Z"
-        end = "2014-03-21T09:00:00Z"
+        end = "2014-03-20T09:00:00Z"
         symbols = "EUR_USD"
 
         try:
@@ -57,7 +57,7 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
 
     def test_oanda_historical_currencypair3(self):
         start = "2014-03-19T09:00:00Z"
-        end = "2014-03-21T9:00:00Z"
+        end = "2014-03-20T9:00:00Z"
         symbols = ["EUR_USD", "USD_JPY"]
 
         try:
