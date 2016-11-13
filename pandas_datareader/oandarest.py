@@ -52,8 +52,8 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
                     See OANDA REST v20 for updated list
             Default: See DEFAULT_FREQUENCY
         candleFormat: string
-            Candlesticks representation
-            Valid values: M,B,A
+            Candlesticks representations. Eg: BA to get bid and ask values
+            Valid values:
                 M for midpoint
                 B for Bid
                 A for Ask
@@ -189,23 +189,26 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         includeCandleOnStart = True
         dfs = []
 
-        OANDA_OHLC = ['o', 'h', 'l', 'c']
+        OANDA_OPEN = 'o'
+        OANDA_HIGH = 'h'
+        OANDA_LOW = 'l'
+        OANDA_CLOSE = 'c'
         OANDA_MID = 'mid'
         OANDA_ASK = 'ask'
         OANDA_BID = 'bid'
+        OANDA_OHLC = [OANDA_OPEN, OANDA_HIGH, OANDA_LOW, OANDA_CLOSE]
         OANDA_TIME = 'time'
+        OANDA_VOLUME = 'volume'
+        OANDA_COMPLETE = 'complete'
         OANDA_MID_OPEN = 'mid.o'
-        OANDA_MID_HIGH = 'mid.h'
-        OANDA_MID_LOW = 'mid.l'
-        OANDA_MID_CLOSE = 'mid.c'
+        OANDA_MID_VOLUME = 'mid.volume'
+        OANDA_MID_COMPLETE = 'mid.complete'
         OANDA_ASK_OPEN = 'ask.o'
-        OANDA_ASK_HIGH = 'ask.h'
-        OANDA_ASK_LOW = 'ask.l'
-        OANDA_ASK_CLOSE = 'ask.c'
+        OANDA_ASK_VOLUME = 'ask.volume'
+        OANDA_ASK_COMPLETE = 'ask.complete'
         OANDA_BID_OPEN = 'bid.o'
-        OANDA_BID_HIGH = 'bid.h'
-        OANDA_BID_LOW = 'bid.l'
-        OANDA_BID_CLOSE = 'bid.c'
+        OANDA_BID_VOLUME = 'bid.volume'
+        OANDA_BID_COMPLETE = 'bid.complete'
 
         DATAFRAME_DATE = 'Date'
         DATAFRAME_MID = 'Mid'
@@ -215,6 +218,8 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         DATAFRAME_HIGH = 'High'
         DATAFRAME_LOW = 'Low'
         DATAFRAME_CLOSE = 'Close'
+        DATAFRAME_VOLUME = 'Volume'
+        DATAFRAME_COMPLETE = 'Complete'
 
         while current_start < end:
             current_end = current_start + current_duration
@@ -275,7 +280,6 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
                     continue
                 else:
                     print("ERROR OANDA: " + str(error))
-                    print(str(error))
                     raise error
 
             # print(response)
@@ -297,42 +301,55 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             )
             df[OANDA_TIME] = pd.to_datetime(df[OANDA_TIME])
 
-            with pd.option_context('display.max_columns', None):
-                pass  # print(df)
-
             dfs.append(df)
 
         df = pd.concat(dfs)
 
-        #Build MultiIndex based on data columns available
-        indexLevelGranularity = []
-        indexLevelOHLC = []
-
-        df.rename(inplace=True,
-                  index=str,
-                  columns={
-                      OANDA_TIME: DATAFRAME_DATE,
-                      OANDA_MID_OPEN: DATAFRAME_OPEN,
-                      OANDA_MID_HIGH: DATAFRAME_HIGH,
-                      OANDA_MID_LOW: DATAFRAME_LOW,
-                      OANDA_MID_CLOSE: DATAFRAME_CLOSE,
-                      OANDA_ASK_OPEN: DATAFRAME_OPEN,
-                      OANDA_ASK_HIGH: DATAFRAME_HIGH,
-                      OANDA_ASK_LOW: DATAFRAME_LOW,
-                      OANDA_ASK_CLOSE: DATAFRAME_CLOSE,
-                      OANDA_BID_OPEN: DATAFRAME_OPEN,
-                      OANDA_BID_HIGH: DATAFRAME_HIGH,
-                      OANDA_BID_LOW: DATAFRAME_LOW,
-                      OANDA_BID_CLOSE: DATAFRAME_CLOSE
-                  })
-
+        # Set date as index
+        df.rename(columns={OANDA_TIME: DATAFRAME_DATE}, inplace=True)
         df = df.set_index(DATAFRAME_DATE)
+
+        # Duplicate Volume/Complete column for easier MultiIndex creation
+        if OANDA_MID_OPEN in df.columns:
+            df[OANDA_MID_VOLUME] = df[OANDA_VOLUME]
+            df[OANDA_MID_COMPLETE] = df[OANDA_COMPLETE]
+
+        if OANDA_ASK_OPEN in df.columns:
+            df[OANDA_ASK_VOLUME] = df[OANDA_VOLUME]
+            df[OANDA_ASK_COMPLETE] = df[OANDA_COMPLETE]
+
+        if OANDA_BID_OPEN in df.columns:
+            df[OANDA_BID_VOLUME] = df[OANDA_VOLUME]
+            df[OANDA_BID_COMPLETE] = df[OANDA_COMPLETE]
+
+        df.drop(OANDA_VOLUME, axis=1, inplace=True)
+        df.drop(OANDA_COMPLETE, axis=1, inplace=True)
+
+        # Build MultiIndex based on data columns available
+        df_columns = df.columns
+        tuples = [tuple(c.split('.')) for c in df_columns]
+
+        mapping = {
+            OANDA_MID: DATAFRAME_MID,
+            OANDA_ASK: DATAFRAME_ASK,
+            OANDA_BID: DATAFRAME_BID,
+            OANDA_VOLUME: DATAFRAME_VOLUME,
+            OANDA_COMPLETE: DATAFRAME_COMPLETE,
+            OANDA_OPEN: DATAFRAME_OPEN,
+            OANDA_HIGH: DATAFRAME_HIGH,
+            OANDA_LOW: DATAFRAME_LOW,
+            OANDA_CLOSE: DATAFRAME_CLOSE
+        }
+
+        tuples = [(mapping[t[0]], mapping[t[1]]) for t in tuples]
+        multiIndex = pd.MultiIndex.from_tuples(tuples)
+        df.columns = multiIndex
 
         # Sort by date as OANDA REST v20 provides no guarantee
         # returned candles are sorted
         df.sort_index(axis=0, level=DATAFRAME_DATE, ascending=True, inplace=True)
 
-        with pd.option_context('display.max_columns', None):
+        with pd.option_context('display.max_columns', None, 'display.multi_sparse', False):
             pass  # print(df)
 
         return df

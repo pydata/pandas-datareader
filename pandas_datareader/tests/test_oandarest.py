@@ -22,6 +22,7 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
                 symbols=symbols,
                 start=start, end=end,
                 freq="5T",
+                candleFormat="BA",
                 access_credential=self.get_credential()
             ).read()
         except Exception as error:
@@ -31,6 +32,9 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
 
         self.assertTrue(pd.to_datetime(start) <= df_rates.index[0])
         self.assertTrue(df_rates.index[-1] <= pd.to_datetime(end))
+
+        self.assertTrue(df_rates['Ask']['Open'] is not None)
+        self.assertTrue(df_rates['Bid']['Open'] is not None)
 
     def test_oanda_historical_currencypair2(self):
         start = "2014-03-19T09:00:00Z"
