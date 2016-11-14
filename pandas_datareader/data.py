@@ -21,6 +21,7 @@ from pandas_datareader.oecd import OECDReader
 from pandas_datareader.edgar import EdgarIndexReader
 from pandas_datareader.enigma import EnigmaReader
 from pandas_datareader.oanda import get_oanda_currency_historical_rates
+from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
 
 
 def get_data_fred(*args, **kwargs):
@@ -161,6 +162,11 @@ def DataReader(name, data_source=None, start=None, end=None,
             quote_currency="USD", base_currency=name,
             reversed=True, session=session
         )
+    elif data_source == 'nasdaq':
+        if name != 'symbols':
+            raise ValueError("Only the string 'symbols' is supported for "
+                             "Nasdaq, not %r" % (name,))
+        return get_nasdaq_symbols(retry_count=retry_count, pause=pause)
     else:
         msg = "data_source=%r is not implemented" % data_source
         raise NotImplementedError(msg)

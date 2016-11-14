@@ -33,6 +33,7 @@ Currently the following sources are supported:
     - :ref:`Eurostat<remote_data.eurostat>`
     - :ref:`Thrift Savings Plan<remote_data.tsp>`
     - :ref:`Oanda currency historical rate<remote_data.oanda_curr_hist>`
+    - :ref:`Nasdaq Trader symbol definitions<remote_data.nasdaq_symbols`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
 
@@ -540,3 +541,33 @@ Download currency historical rate from `Oanda <https://www.oanda.com/>`__.
       2016-06-01  1.115170  1.445410  0.009095
 
       [153 rows x 3 columns]
+
+.. _remote_data.nasdaq_symbols
+
+Nasdaq Trader Symbol Definitions
+==============================
+
+Download the latest symbols from `Nasdaq<ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqtraded.txt/>`__.
+
+Note that Nasdaq updates this file daily, and historical versions are not
+available. More information on the `field<http://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs/>` definitions.
+
+.. code-block:: python
+
+    In [12]: from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
+    In [13]: symbols = get_nasdaq_symbols()
+    In [14]: print(symbols.ix['IBM'])
+        Nasdaq Traded                                                    True
+        Security Name       International Business Machines Corporation Co...
+        Listing Exchange                                                    N
+        Market Category
+        ETF                                                             False
+        Round Lot Size                                                    100
+        Test Issue                                                      False
+        Financial Status                                                  NaN
+        CQS Symbol                                                        IBM
+        NASDAQ Symbol                                                     IBM
+        NextShares                                                      False
+        Name: IBM, dtype: object
+
+
