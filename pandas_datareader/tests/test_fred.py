@@ -84,7 +84,6 @@ class TestFred(tm.TestCase):
         assert_frame_equal(received, expected, check_less_precise=True)
 
     def test_fred_multi_bad_series(self):
-
         names = ['NOTAREALSERIES', 'CPIAUCSL', "ALSO FAKE"]
         with tm.assertRaises(RemoteDataError):
             web.DataReader(names, data_source="fred")
