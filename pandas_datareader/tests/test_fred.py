@@ -89,6 +89,7 @@ class TestFred(tm.TestCase):
         with tm.assertRaises(RemoteDataError):
             web.DataReader(names, data_source="fred")
 
+
 if __name__ == '__main__':
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)  # pragma: no cover
