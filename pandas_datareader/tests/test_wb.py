@@ -234,6 +234,7 @@ class TestWB(tm.TestCase):
             self.assertTrue(result.columns.equals(exp_col))
             self.assertTrue(len(result) > 10000)
 
+
 if __name__ == '__main__':
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)  # pragma: no cover
