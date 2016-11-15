@@ -187,6 +187,7 @@ class TestYahooOptions(tm.TestCase):
         empty = self.aapl._process_data(self.aapl._parse_url(self.json2))
         self.assertTrue(len(empty) == 0)
 
+
 if __name__ == '__main__':
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)  # pragma: no cover
