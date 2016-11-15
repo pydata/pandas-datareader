@@ -81,6 +81,7 @@ class TestFamaFrench(tm.TestCase):
         exp_index = pd.period_range('2010-01-01', '2010-12-01', freq='M', name='Date')
         tm.assert_index_equal(results[0].index, exp_index)
 
+
 if __name__ == '__main__':
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)
