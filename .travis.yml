@@ -42,6 +42,7 @@ install:
 script:
     - export ENIGMA_API_KEY=$ENIGMA_API_KEY
     - nosetests -v --with-coverage --cover-package=pandas_datareader
+    - flake8 --version
     - flake8 --ignore E501 pandas_datareader
 
 after_success:

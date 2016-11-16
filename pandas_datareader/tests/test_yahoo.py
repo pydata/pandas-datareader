@@ -206,6 +206,7 @@ class TestYahoo(tm.TestCase):
         result = web.DataReader(['AAPL', 'F'], 'yahoo-actions', start, end)
         assert isinstance(result, pd.Panel)
 
+
 if __name__ == '__main__':
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)  # pragma: no cover

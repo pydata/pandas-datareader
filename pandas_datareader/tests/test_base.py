@@ -27,6 +27,7 @@ class TestDailyBaseReader(tm.TestCase):
             b = base._DailyBaseReader()
             b._get_params()
 
+
 if __name__ == '__main__':
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)

@@ -53,6 +53,7 @@ class TestDataReader(tm.TestCase):
     def test_not_implemented(self):
         self.assertRaises(NotImplementedError, DataReader, "NA", "NA")
 
+
 if __name__ == '__main__':
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)  # pragma: no cover

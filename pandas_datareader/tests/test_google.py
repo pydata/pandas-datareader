@@ -152,6 +152,7 @@ class TestGoogle(tm.TestCase):
         with tm.assertRaises(ValueError):
             web.get_data_google('F', retry_count=-1)
 
+
 if __name__ == '__main__':
     nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
                    exit=False)  # pragma: no cover
