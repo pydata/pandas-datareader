@@ -27,12 +27,14 @@ Installation
 
 
 Install latest release version via pip
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: shell
 
    $ pip install pandas-datareader
 
 Install latest development version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: shell
 
