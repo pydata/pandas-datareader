@@ -170,7 +170,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         pn = pd.Panel(dfs)
         pn.axes[0].name = "Currency"
 
-        pn = pn.transpose(2,1,0)
+        pn = pn.transpose(2, 1, 0)
 
         return pn
 
