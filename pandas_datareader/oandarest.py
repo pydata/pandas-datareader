@@ -131,13 +131,13 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             self.candleFormat = OANDARestHistoricalInstrumentReader.DEFAULT_CANDLE_FORMAT
 
         self.access_credential = access_credential
-        if access_credential is None:
+        if self.access_credential is None:
             self.access_credential = {}
 
-        if 'accountType' not in access_credential:
+        if 'accountType' not in self.access_credential:
             self.access_credential['accountType'] = "practice"
 
-        if 'apiToken' not in access_credential:
+        if 'apiToken' not in self.access_credential:
             self.access_credential['apiToken'] = os.getenv('OANDA_API_TOKEN')
             if self.access_credential['apiToken'] is None:
                 raise ValueError(
