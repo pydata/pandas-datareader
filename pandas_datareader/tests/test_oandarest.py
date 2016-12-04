@@ -19,10 +19,21 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
         self.assertTrue(set(pn.minor_axis) == set(symbols))
 
         # Data can be access using the following notations
-        # price = pn["Ask"]["Close"]["EUR_USD"]["2014-03-19 09:05:00"]
-        # price = pn["Ask"]["Close","2014-03-19 09:05:00","EUR_USD"]
-        # price = pn.loc[("Ask","Close"),"2014-03-19 09:05:00","EUR_USD"]
-        # price = pn["Ask"]["Close"]["EUR_USD"]["2014-03-19 09:05:00"]
+        prices = []
+        price = pn["Ask"]["Close"]["EUR_USD"]["2014-03-19 09:05:00"]
+        prices.append(price)
+        price = pn["Ask"]["Close","2014-03-19 09:05:00","EUR_USD"]
+        prices.append(price)
+        price = pn.loc[("Ask","Close"),"2014-03-19 09:05:00","EUR_USD"]
+        prices.append(price)
+        price = pn["Ask"]["Close"]["EUR_USD"]["2014-03-19 09:05:00"]
+        prices.append(price)
+
+        for price in prices:
+            print("ASSERT_PANEL")
+            print(type(price))
+            print(price)
+            self.assertTrue(price is type(str))
 
         # For all prices types available
         for item in pn.items:

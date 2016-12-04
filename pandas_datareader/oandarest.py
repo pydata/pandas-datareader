@@ -119,9 +119,6 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         if len(self.symbols) != len(self.symbolsTypes):
             self.symbolsTypes = ["currency" for x in self.symbols]
 
-        # print(self.symbols)
-        # print(self.symbolsTypes)
-
         self.freq = freq
         if freq is None:
             self.freq = OANDARestHistoricalInstrumentReader.DEFAULT_FREQUENCY
@@ -311,8 +308,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
 
             df = pd.io.json.json_normalize(
                 candles,
-                meta=[OANDA_TIME, 'volume', 'complete', [
-                    OANDA_MID, OANDA_OHLC], [OANDA_ASK, OANDA_OHLC], [OANDA_BID, OANDA_OHLC]]
+                meta=[OANDA_TIME, 'volume', 'complete', [OANDA_MID, OANDA_OHLC], [OANDA_ASK, OANDA_OHLC], [OANDA_BID, OANDA_OHLC]]
             )
             df[OANDA_TIME] = pd.to_datetime(df[OANDA_TIME])
 
