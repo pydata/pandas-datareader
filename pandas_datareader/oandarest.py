@@ -54,7 +54,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         candleFormat: string
             Candlesticks representations. Eg: BA to get bid and ask values
             Valid values:
-                M for midpoint
+                M for Midpoint
                 B for Bid
                 A for Ask
             Default: See DEFAULT_CANDLE_FORMAT
@@ -75,7 +75,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
     """
 
     DEFAULT_FREQUENCY = "5S"
-    DEFAULT_CANDLE_FORMAT = "M"
+    DEFAULT_CANDLE_FORMAT = "AMB"
     SUPPORTED_OFFSET_ALIASES = {
         "5S": "S5",
         "10S": "S10",
