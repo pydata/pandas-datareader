@@ -8,6 +8,9 @@ from pandas_datareader.oandarest import OANDARestHistoricalInstrumentReader
 
 
 class TestOandaHistoricalInstrumentReader(tm.TestCase):
+    start = "2014-03-19T09:00:00Z"
+    end = "2014-03-20T9:00:00Z"
+    currency1 = "EUR_USD"
 
     def get_credential(self):
         return {'accountType': "practice"}
@@ -52,14 +55,12 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
                     self.assertTrue(price is not None)
 
     def test_oanda_historical_currencypair(self):
-        start = "2014-03-19T09:00:00Z"
-        end = "2014-03-20T9:00:00Z"
-        symbols = ["EUR_USD"]
+        symbols = [self.currency1]
 
         try:
             pn = OANDARestHistoricalInstrumentReader(
                 symbols=symbols,
-                start=start, end=end,
+                start=self.start, end=self.end,
                 freq="5T",
                 candleFormat="BA",
                 access_credential=self.get_credential()
@@ -67,39 +68,35 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
         except Exception as error:
             raise nose.SkipTest("API Token missing ?" + str(error))
 
-        self.assertPanel(pn, start, end, symbols)
+        self.assertPanel(pn, self.start, self.end, symbols)
 
     def test_oanda_historical_currencypair2(self):
-        start = "2014-03-19T09:00:00Z"
-        end = "2014-03-20T09:00:00Z"
-        symbols = "EUR_USD"
+        symbols = self.currency1
 
         try:
             pn = web.DataReader(
                 symbols, data_source="oanda_historical_currency",
-                start=start, end=end,
+                start=self.start, end=self.end,
                 access_key=self.get_credential()
             )
         except Exception as error:
             raise nose.SkipTest("API Token missing ?" + str(error))
 
-        self.assertPanel(pn, start, end, [symbols])
+        self.assertPanel(pn, self.start, self.end, [symbols])
 
     def test_oanda_historical_currencypair3(self):
-        start = "2014-03-19T09:00:00Z"
-        end = "2014-03-20T9:00:00Z"
-        symbols = ["EUR_USD", "USD_JPY"]
+        symbols = [self.currency1, "USD_JPY"]
 
         try:
             pn = OANDARestHistoricalInstrumentReader(
                 symbols=symbols,
-                start=start, end=end,
+                start=self.start, end=self.end,
                 freq=to_offset("5T"),
                 access_credential=self.get_credential()
             ).read()
         except Exception as error:
             raise nose.SkipTest("API Token missing ?" + str(error))
 
-        self.assertPanel(pn, start, end, symbols)
+        self.assertPanel(pn, self.start, self.end, symbols)
 
 
