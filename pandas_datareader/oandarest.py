@@ -65,13 +65,22 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
 
         Returns:
         Panel with currency pairs requested. Each dataframe represents a currency pair and is MultiIndexed enabled.
-        Each dataframe data point can be addressed as is (assuming Midpoint data were requested):
-            df['Mid']['Open']
-            df['Mid']['High']
-            df['Mid']['Low']
-            df['Mid']['Close']
-            df['Mid']['Volume']
-            df['Mid']['Complete']
+        Each dataframe data point can be addressed as is (assuming Ask data were requested):
+
+        Example:
+        pn = OANDARestHistoricalInstrumentReader(
+            symbols=["EUR_USD"],
+            start="2014-03-19T09:00:00Z",
+            end="2014-03-20T9:00:00Z",
+            freq="5T",
+            candleFormat="MBA",
+            access_credential="See access credential for format"
+        ).read()
+
+        price = pn["Ask"]["Close"]["EUR_USD"]["2014-03-19 09:05:00"]
+        price = pn["Ask"]["Close","2014-03-19 09:05:00","EUR_USD"]
+        price = pn.loc[("Ask","Close"),"2014-03-19 09:05:00","EUR_USD"]
+        price = pn["Ask"]["Close"]["EUR_USD"]["2014-03-19 09:05:00"]
     """
 
     DEFAULT_FREQUENCY = "5S"

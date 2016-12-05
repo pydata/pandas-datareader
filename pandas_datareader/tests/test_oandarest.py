@@ -22,9 +22,9 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
         prices = []
         price = pn["Ask"]["Close"]["EUR_USD"]["2014-03-19 09:05:00"]
         prices.append(price)
-        price = pn["Ask"]["Close","2014-03-19 09:05:00","EUR_USD"]
+        price = pn["Ask"]["Close", "2014-03-19 09:05:00", "EUR_USD"]
         prices.append(price)
-        price = pn.loc[("Ask","Close"),"2014-03-19 09:05:00","EUR_USD"]
+        price = pn.loc[("Ask", "Close"), "2014-03-19 09:05:00", "EUR_USD"]
         prices.append(price)
         price = pn["Ask"]["Close"]["EUR_USD"]["2014-03-19 09:05:00"]
         prices.append(price)
