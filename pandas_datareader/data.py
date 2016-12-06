@@ -183,6 +183,7 @@ def DataReader(name, data_source=None, start=None, end=None,
         return OANDARestHistoricalInstrumentReader(
             symbols=name, symbolsTypes=None,
             start=start, end=end,
+            reader_compatible=True,
             access_credential=access_key, session=session).read()
     else:
         msg = "data_source=%r is not implemented" % data_source

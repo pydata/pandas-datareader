@@ -110,9 +110,14 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
                  start=None, end=None,
                  freq=None, candleFormat=None,
                  session=None,
-                 access_credential=None):
+                 access_credential=None,
+                 reader_compatible=None):
         _BaseReader.__init__(self, symbols, start=start,
                              end=end, session=session)
+
+        self.reader_compatible = reader_compatible
+        if reader_compatible is None:
+            self.reader_compatible = False
 
         self.symbols = symbols
         if symbols is None:
@@ -172,6 +177,10 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             else:
                 raise Exception("Symbol Type; %s not supported" %
                                 (symbolsType))
+
+        if self.reader_compatible and len(dfs) == 1:
+            key = list(dfs.keys())[0]
+            return dfs[key]
 
         pn = pd.Panel(dfs)
         pn.axes[0].name = "Currency"
