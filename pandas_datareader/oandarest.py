@@ -217,7 +217,8 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         current_end = end
         current_duration = current_end - current_start
         includeCandleOnStart = True
-        dfs = []
+
+        df = None
 
         OANDA_OPEN = 'o'
         OANDA_HIGH = 'h'
@@ -324,19 +325,22 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
 
             # print(candles)
 
-            df = pd.io.json.json_normalize(
+            ndf = pd.io.json.json_normalize(
                 candles,
                 meta=[OANDA_TIME, 'volume', 'complete', [OANDA_MID, OANDA_OHLC], [OANDA_ASK, OANDA_OHLC], [OANDA_BID, OANDA_OHLC]]
             )
-            df[OANDA_TIME] = pd.to_datetime(df[OANDA_TIME])
 
-            dfs.append(df)
-
-        df = pd.concat(dfs)
+            if df is None:
+                df = ndf
+            else:
+                df = pd.concat([df, ndf], ignore_index=True)
 
         # Set date as index
         df.rename(columns={OANDA_TIME: DATAFRAME_DATE}, inplace=True)
-        df = df.set_index(DATAFRAME_DATE)
+        df[DATAFRAME_DATE] = pd.to_datetime(df[DATAFRAME_DATE])
+        datetimeIndex = pd.DatetimeIndex(df[DATAFRAME_DATE], name=DATAFRAME_DATE)
+        df = df.drop([DATAFRAME_DATE], axis=1)
+        df = df.set_index(datetimeIndex, verify_integrity=True)
 
         # Duplicate Volume/Complete column for easier MultiIndex creation
         if OANDA_MID_OPEN in df.columns:
