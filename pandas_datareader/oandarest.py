@@ -383,8 +383,10 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         # returned candles are sorted
         df.sort_index(axis=0, level=DATAFRAME_DATE, ascending=True, inplace=True)
 
-        with pd.option_context('display.max_columns', None, 'display.multi_sparse', False):
-            pass  # print(df)
+        with pd.option_context('display.max_columns', 1000, 'display.width', 1000, 'display.multi_sparse', False):
+            # print("")
+            # print(df.head(2))
+            pass
 
         return df
 
