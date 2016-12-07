@@ -340,7 +340,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         df.drop_duplicates([OANDA_TIME], keep="first", inplace=True)
 
         # Set date as index
-        df.rename(columns={OANDA_TIME: DATAFRAME_DATE}, inplace=True)
+        df.rename(columns={OANDA_TIME: DATAFRAME_DATE}, copy=False, inplace=True)
         df[DATAFRAME_DATE] = pd.to_datetime(df[DATAFRAME_DATE])
         datetimeIndex = pd.DatetimeIndex(df[DATAFRAME_DATE], name=DATAFRAME_DATE)
         df = df.drop([DATAFRAME_DATE], axis=1)
