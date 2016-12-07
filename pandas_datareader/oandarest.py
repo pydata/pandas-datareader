@@ -342,9 +342,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         # Set date as index
         df.rename(columns={OANDA_TIME: DATAFRAME_DATE}, copy=False, inplace=True)
         df[DATAFRAME_DATE] = pd.to_datetime(df[DATAFRAME_DATE])
-        datetimeIndex = pd.DatetimeIndex(df[DATAFRAME_DATE], name=DATAFRAME_DATE)
-        df = df.drop([DATAFRAME_DATE], axis=1)
-        df = df.set_index(datetimeIndex, verify_integrity=True)
+        df = df.set_index(DATAFRAME_DATE)
 
         # Duplicate Volume/Complete column for easier MultiIndex creation
         if OANDA_MID_OPEN in df.columns:
