@@ -333,7 +333,8 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             if df is None:
                 df = ndf
             else:
-                df = pd.concat([df, ndf], ignore_index=True)
+                #df = pd.concat([df, ndf], ignore_index=True)
+                df = df.append(ndf, ignore_index=True)
 
         # Set date as index
         df.rename(columns={OANDA_TIME: DATAFRAME_DATE}, inplace=True)
