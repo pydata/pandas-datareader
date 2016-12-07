@@ -336,6 +336,9 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
                 #df = pd.concat([df, ndf], ignore_index=True)
                 df = df.append(ndf, ignore_index=True)
 
+        # Remove duplicates entry with similar time
+        df.drop_duplicates([OANDA_TIME], keep="first", inplace=True)
+
         # Set date as index
         df.rename(columns={OANDA_TIME: DATAFRAME_DATE}, inplace=True)
         df[DATAFRAME_DATE] = pd.to_datetime(df[DATAFRAME_DATE])
