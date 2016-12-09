@@ -33,6 +33,7 @@ Currently the following sources are supported:
     - :ref:`Eurostat<remote_data.eurostat>`
     - :ref:`Thrift Savings Plan<remote_data.tsp>`
     - :ref:`Oanda currency historical rate<remote_data.oanda_curr_hist>`
+    - :ref:`Oanda REST currency historical rate<remote_data.oandarest_curr_hist>`
     - :ref:`Nasdaq Trader symbol definitions<remote_data.nasdaq_symbols`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
@@ -541,6 +542,42 @@ Download currency historical rate from `Oanda <https://www.oanda.com/>`__.
       2016-06-01  1.115170  1.445410  0.009095
 
       [153 rows x 3 columns]
+
+.. _remote_data.oandarest_curr_hist
+
+Oanda REST currency historical rate
+==============================
+
+Download currency historical rate from `Oanda <https://www.oanda.com/>`__.
+
+.. code-block:: python
+
+    In [1]: import pandas_datareader.data as web
+    In [2]: start, end = "2016-01-01", "2016-06-01"
+    In [3]: currency = ["EUR_USD"]
+    In [4]: credential["accountType"]="practise"
+    In [5]: credential["apiToken"]="Your OANDA API token"
+    In [6]: pn = web.DataReader(
+                symbols, data_source="oanda_historical_currency",
+                start=start, end=end,
+                access_key=credentials)
+            )
+ 
+    In [7]: ipdb> pn.transpose(2,1,0)["EUR_USD"].head(5)
+
+                Ask                                 Bid                                 Mid                                              Ask             Bid
+                Close     High      Low     Open    Close     High      Low     Open    Close     High      Low     Open Volume Complete Volume Complete Volume Complete
+      Date
+      2014-03-19 09:00:00  1.39146  1.39148  1.39146  1.39146  1.39138  1.39140  1.39136  1.39136  1.39142  1.39144  1.39141  1.39141      5     True      5     True      5     True
+      2014-03-19 09:00:05  1.39147  1.39148  1.39147  1.39147  1.39138  1.39138  1.39137  1.39137  1.39142  1.39142  1.39142  1.39142      4     True      4     True      4     True
+      2014-03-19 09:00:10  1.39149  1.39149  1.39148  1.39149  1.39138  1.39141  1.39138  1.39141  1.39143  1.39145  1.39143  1.39145      3     True      3     True      3     True
+      2014-03-19 09:00:15  1.39153  1.39153  1.39149  1.39151  1.39143  1.39143  1.39139  1.39140  1.39148  1.39148  1.39144  1.39146      6     True      6     True      6     True
+      2014-03-19 09:00:20  1.39150  1.39154  1.39150  1.39154  1.39140  1.39144  1.39139  1.39143  1.39145  1.39149  1.39145  1.39148     10     True     10     True     10     True
+
+      [15438 rows x 18 columns]
+
+    In [8]: pn["Ask","Close"]["EUR_USD"][pandas._to_datetime("2014-03-19 09:00:00")]
+    Out[8]: 1.39147
 
 .. _remote_data.nasdaq_symbols
 
