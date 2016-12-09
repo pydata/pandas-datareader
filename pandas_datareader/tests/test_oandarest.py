@@ -23,20 +23,16 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
 
         # Data can be access using the following notations
         prices = []
-        price = pn["Ask"]["Close"]["EUR_USD"]["2014-03-19 09:05:00"]
+        price = pn["Ask"]["Close"]["EUR_USD"][pd.to_datetime("2014-03-19 09:00:00")]
         prices.append(price)
-        price = pn["Ask"]["Close", "2014-03-19 09:05:00", "EUR_USD"]
+        price = pn["Ask"]["Close", pd.to_datetime("2014-03-19 09:00:00"), "EUR_USD"]
         prices.append(price)
-        price = pn.loc[("Ask", "Close"), "2014-03-19 09:05:00", "EUR_USD"]
-        prices.append(price)
-        price = pn["Ask"]["Close"]["EUR_USD"]["2014-03-19 09:05:00"]
+        price = pn.loc[("Ask", "Close"), pd.to_datetime("2014-03-19 09:00:00"), "EUR_USD"]
         prices.append(price)
 
-        for price in prices:
-            print("ASSERT_PANEL")
-            print(type(price))
-            print(price)
-            self.assertTrue(price is type(str))
+        # for p in prices:
+        #    print(type(p))
+        #    self.assertTrue(p is type(str))
 
         # For all prices types available
         for item in pn.items:
