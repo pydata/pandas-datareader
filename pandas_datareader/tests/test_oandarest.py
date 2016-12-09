@@ -30,10 +30,6 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
         price = pn.loc[("Ask", "Close"), pd.to_datetime("2014-03-19 09:00:00"), "EUR_USD"]
         prices.append(price)
 
-        # for p in prices:
-        #    print(type(p))
-        #    self.assertTrue(p is type(str))
-
         # For all prices types available
         for item in pn.items:
             for itemValue in item:
@@ -41,14 +37,11 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
                 typeValue = itemValue[item[1]]
                 for currency in typeValue.columns.values:
                     currencyValue = typeValue[currency]
-                    price = currencyValue[0]
+                    value = currencyValue[0]
 
                     # Check non empty time series is available
                     self.assertTrue(pd.to_datetime(start) <= currencyValue.index[0])
                     self.assertTrue(currencyValue.index[-1] <= pd.to_datetime(end))
-
-                    # Check pricing or other data is available
-                    self.assertTrue(price is not None)
 
     def test_oanda_historical_currencypair(self):
         symbols = [self.currency1]
