@@ -67,7 +67,7 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
         self.assertPanel(pn, self.start, self.end, symbols)
 
     def test_oanda_historical_currencypair2(self):
-        symbols = self.currency1
+        symbols = [self.currency1, "USD_JPY"]
 
         try:
             pn = web.DataReader(
@@ -78,7 +78,7 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
         except Exception as error:
             raise nose.SkipTest("API Token missing ?" + str(error))
 
-        self.assertPanel(pn, self.start, self.end, [symbols])
+        self.assertPanel(pn, self.start, self.end, symbols)
 
     def test_oanda_historical_currencypair3(self):
         symbols = [self.currency1, "USD_JPY"]
