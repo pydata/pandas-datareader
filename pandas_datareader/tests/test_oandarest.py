@@ -37,7 +37,7 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
                 typeValue = itemValue[item[1]]
                 for currency in typeValue.columns.values:
                     currencyValue = typeValue[currency]
-                    value = currencyValue[0]
+                    # value = currencyValue[0]
 
                     # Check non empty time series is available
                     self.assertTrue(pd.to_datetime(start) <= currencyValue.index[0])
@@ -87,5 +87,4 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
             raise nose.SkipTest("API Token missing ?" + str(error))
 
         self.assertPanel(pn, self.start, self.end, symbols)
-
 
