@@ -333,7 +333,6 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             if df is None:
                 df = ndf
             else:
-                #df = pd.concat([df, ndf], ignore_index=True)
                 df = df.append(ndf, ignore_index=True)
 
         # Remove duplicates entry with similar time
@@ -386,8 +385,8 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         df.sort_index(axis=0, level=DATAFRAME_DATE, ascending=True, inplace=True)
 
         with pd.option_context('display.max_columns', 1000, 'display.width', 1000, 'display.multi_sparse', False):
-            # print("")
-            # print(df.head(2))
+            #print("\nFINAL")
+            #print(df.head(3))
             pass
 
         return df
