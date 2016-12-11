@@ -1,4 +1,12 @@
 import os
+import sys
+import threading
+from queue import PriorityQueue, Queue, Empty
+import multiprocessing
+from multiprocessing import Lock
+import itertools
+
+from datetime import timedelta
 
 import pandas as pd
 import re
@@ -111,7 +119,8 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
                  freq=None, candleFormat=None,
                  session=None,
                  access_credential=None,
-                 reader_compatible=None):
+                 reader_compatible=None,
+                 max_concurrency=None):
         _BaseReader.__init__(self, symbols, start=start,
                              end=end, session=session)
 
@@ -137,6 +146,17 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         if freq is None:
             self.freq = OANDARestHistoricalInstrumentReader.DEFAULT_FREQUENCY
 
+        if isinstance(freq, DateOffset):
+            offsetString = freq.freqstr
+        else:
+            offsetString = freq
+
+        if offsetString in OANDARestHistoricalInstrumentReader.SUPPORTED_OFFSET_ALIASES:
+            self.granularity = OANDARestHistoricalInstrumentReader.SUPPORTED_OFFSET_ALIASES[
+                offsetString]
+        else:
+            self.granularity = offsetString
+
         self.candleFormat = candleFormat
         if candleFormat is None:
             self.candleFormat = OANDARestHistoricalInstrumentReader.DEFAULT_CANDLE_FORMAT
@@ -154,6 +174,17 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
                 raise ValueError(
                     """Please provide an OANDA API token or set the OANDA_API_TOKEN environment variable\n
                     If you do not have an API key, you can get one here: http://developer.oanda.com/rest-live/authentication/""")
+
+        if max_concurrency is None or max_concurrency < 1:
+            try:
+                self.max_concurrency = multiprocessing.cpu_count()
+            except NotImplementedError:
+                self.max_concurrency = 1
+        # 2 threads min required
+        self.max_concurrency = max(2, self.max_concurrency)
+
+        self.counter_lock = Lock()
+        self.counter = itertools.count()
 
     def read(self):
         dfs = OrderedDict()
@@ -207,50 +238,259 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             raise Exception(
                 'No access_crendtial provided. Historical data cannot be fetched')
 
-        credential = access_credential
-        # print(credential)
+        self.OANDA_OPEN = 'o'
+        self.OANDA_HIGH = 'h'
+        self.OANDA_LOW = 'l'
+        self.OANDA_CLOSE = 'c'
+        self.OANDA_MID = 'mid'
+        self.OANDA_ASK = 'ask'
+        self.OANDA_BID = 'bid'
+        self.OANDA_OHLC = [self.OANDA_OPEN, self.OANDA_HIGH, self.OANDA_LOW, self.OANDA_CLOSE]
+        self.OANDA_TIME = 'time'
+        self.OANDA_VOLUME = 'volume'
+        self.OANDA_COMPLETE = 'complete'
+        self.OANDA_MID_OPEN = 'mid.o'
+        self.OANDA_MID_VOLUME = 'mid.volume'
+        self.OANDA_MID_COMPLETE = 'mid.complete'
+        self.OANDA_ASK_OPEN = 'ask.o'
+        self.OANDA_ASK_VOLUME = 'ask.volume'
+        self.OANDA_ASK_COMPLETE = 'ask.complete'
+        self.OANDA_BID_OPEN = 'bid.o'
+        self.OANDA_BID_VOLUME = 'bid.volume'
+        self.OANDA_BID_COMPLETE = 'bid.complete'
 
-        oanda = API(access_token=credential['apiToken'],
-                    environment=credential['accountType'])
+        self.DATAFRAME_DATE = 'Date'
+        self.DATAFRAME_MID = 'Mid'
+        self.DATAFRAME_ASK = 'Ask'
+        self.DATAFRAME_BID = 'Bid'
+        self.DATAFRAME_OPEN = 'Open'
+        self.DATAFRAME_HIGH = 'High'
+        self.DATAFRAME_LOW = 'Low'
+        self.DATAFRAME_CLOSE = 'Close'
+        self.DATAFRAME_VOLUME = 'Volume'
+        self.DATAFRAME_COMPLETE = 'Complete'
 
-        current_start = start
-        current_end = end
+        df = self._concurrent_historical_currency_pair_download(start, end, currencyPair, access_credential)
+
+        # Remove duplicates entry with similar time
+        df.drop_duplicates([self.OANDA_TIME], keep="first", inplace=True)
+
+        # Set date as index
+        df.rename(columns={self.OANDA_TIME: self.DATAFRAME_DATE}, copy=False, inplace=True)
+        df[self.DATAFRAME_DATE] = pd.to_datetime(df[self.DATAFRAME_DATE])
+        df = df.set_index(self.DATAFRAME_DATE)
+
+        # Duplicate Volume/Complete column for easier MultiIndex creation
+        if self.OANDA_MID_OPEN in df.columns:
+            df[self.OANDA_MID_VOLUME] = df[self.OANDA_VOLUME]
+            df[self.OANDA_MID_COMPLETE] = df[self.OANDA_COMPLETE]
+
+        if self.OANDA_ASK_OPEN in df.columns:
+            df[self.OANDA_ASK_VOLUME] = df[self.OANDA_VOLUME]
+            df[self.OANDA_ASK_COMPLETE] = df[self.OANDA_COMPLETE]
+
+        if self.OANDA_BID_OPEN in df.columns:
+            df[self.OANDA_BID_VOLUME] = df[self.OANDA_VOLUME]
+            df[self.OANDA_BID_COMPLETE] = df[self.OANDA_COMPLETE]
+
+        df.drop(self.OANDA_VOLUME, axis=1, inplace=True)
+        df.drop(self.OANDA_COMPLETE, axis=1, inplace=True)
+
+        # Build MultiIndex based on data columns available
+        df_columns = df.columns
+        tuples = [tuple(c.split('.')) for c in df_columns]
+
+        mapping = {
+            self.OANDA_MID: self.DATAFRAME_MID,
+            self.OANDA_ASK: self.DATAFRAME_ASK,
+            self.OANDA_BID: self.DATAFRAME_BID,
+            self.OANDA_VOLUME: self.DATAFRAME_VOLUME,
+            self.OANDA_COMPLETE: self.DATAFRAME_COMPLETE,
+            self.OANDA_OPEN: self.DATAFRAME_OPEN,
+            self.OANDA_HIGH: self.DATAFRAME_HIGH,
+            self.OANDA_LOW: self.DATAFRAME_LOW,
+            self.OANDA_CLOSE: self.DATAFRAME_CLOSE
+        }
+
+        tuples = [(mapping[t[0]], mapping[t[1]]) for t in tuples]
+
+        multiIndex = pd.MultiIndex.from_tuples(tuples)
+        multiIndex.name = "Data"
+        df.columns = multiIndex
+
+        # Convert some colums to specific datatypes
+        tuples = [
+            t for t in tuples
+            if t[1] in [
+                self.DATAFRAME_OPEN,
+                self.DATAFRAME_HIGH,
+                self.DATAFRAME_LOW,
+                self.DATAFRAME_CLOSE
+            ]
+        ]
+        df[tuples] = df[tuples].apply(pd.to_numeric)
+
+        # Sort by date as OANDA REST v20 provides no guarantee
+        # returned candles are sorted
+        df.sort_index(axis=0, level=self.DATAFRAME_DATE, ascending=True, inplace=True)
+
+        with pd.option_context('display.max_columns', 1000, 'display.width', 1000, 'display.multi_sparse', False):
+            # print("\nFINAL")
+            # print(df.head(3))
+            pass
+
+        return df
+
+    def _concurrent_historical_currency_pair_download(self, start, end, symbol, credential):
+        pending_jobs_queue = PriorityQueue()
+        completed_jobs_queue = PriorityQueue()
+        failed_job_queue = Queue()
+        active_thread_queue = Queue()
+
+        consumer_threads = [
+            threading.Thread(
+                target=self._consume_download_job,
+                args=(
+                    pending_jobs_queue,
+                    completed_jobs_queue,
+                    failed_job_queue,
+                    active_thread_queue,
+                    API(access_token=credential['apiToken'], environment=credential['accountType'])
+                )
+            )
+            for i in range(self.max_concurrency)
+        ]
+        producer_thread = threading.Thread(
+            target=self._produce_download_jobs,
+            args=(
+                start,
+                end,
+                symbol,
+                pending_jobs_queue,
+                active_thread_queue
+            ),
+            name="Producer"
+        )
+
+        thread_pool = [producer_thread] + consumer_threads
+
+        for thread in thread_pool:
+            thread.start()
+            active_thread_queue.put(None)
+
+        df = self._merge_available_results(completed_jobs_queue, active_thread_queue)
+
+        # thread_pool's threads stops by themselves
+
+        return df
+
+    def _merge_available_results(self, completed_jobs_queue, active_thread_queue):
+        df = None
+
+        done = False
+        while not done:
+            done = active_thread_queue.empty()
+            # print("done yet ?" + str(done))
+
+            # Merge available results
+            job = None
+
+            try:
+                priority, counter, job = completed_jobs_queue.get(block=True, timeout=1)
+            except Empty as ex:
+                pass
+
+            if job is not None:
+                if df is None:
+                    df = job.result
+                else:
+                    df = df.append(job.result, ignore_index=True)
+
+                completed_jobs_queue.task_done()
+
+        return df
+
+    def _produce_download_jobs(self, start, end, symbol, pending_jobs_queue, active_thread_queue):
+        for job in self._get_download_jobs(start, end, symbol):
+            pending_jobs_queue.put((job.priority, self._increment_and_get_counter(), job))
+
+        pending_jobs_queue.put((float(sys.maxsize), self._increment_and_get_counter(), None))
+
+        active_thread_queue.get()
+        active_thread_queue.task_done()
+
+    def _consume_download_job(self, pending_jobs_queue, completed_jobs_queue, failed_job_queue, active_thread_queue, oanda):
+        done = False
+        while not done:
+            priority, counter, job = pending_jobs_queue.get()
+
+            if job is not None:
+                # print("consume job:" + str(job.priority) + "start:" + str(job.start) + "end:" + str(job.end))
+                self._download_historical_currency_pair(job, oanda)
+
+                if job.result is None:
+                    if job.failed_count < 1:
+                        job.failed_count = job.failed_count + 1
+                        pending_jobs_queue.put((job.priority, self._increment_and_get_counter(), job))
+                    else:
+                        failed_job_queue.put(job)
+                else:
+                    completed_jobs_queue.put((job.priority, self._increment_and_get_counter(), job))
+
+            else:
+                done = True
+                pending_jobs_queue.put((float(sys.maxsize), self._increment_and_get_counter(), None))
+
+            pending_jobs_queue.task_done()
+
+        active_thread_queue.get()
+        active_thread_queue.task_done()
+
+    def _get_download_jobs(self, start, end, symbol):
+        class Job(object):
+            def __lt__(self, other):
+                return self.priority < other.priority
+
+            def __le__(self, other):
+                return self.priority <= other.priority
+
+            def __eq__(self, other):
+                return self.priority == other.priority
+
+            def __ne__(self, other):
+                return self.priority != other.priority
+
+            def __gt__(self, other):
+                return self.priority > other.priority
+
+            def __ge__(self, other):
+                return self.priority >= other.priority
+
+        index = 0.0
+        for current_start, current_end in self._get_periods(start, end, timedelta(days=1)):
+            index = index + 1.0
+
+            job = Job()
+            job.priority = index
+            job.start = current_start
+            job.end = current_end
+            job.symbol = symbol
+            job.result = None
+            job.failed_count = 0
+
+            # print("produce job:" + str(job.priority) + "start:" + str(job.start) + "end:" + str(job.end))
+
+            yield job
+
+    def _download_historical_currency_pair(self, job, oanda):
+        current_start = job.start
+        current_end = job.end
+        end = job.end
+        currencyPair = job.symbol
         current_duration = current_end - current_start
         includeCandleOnStart = True
 
         df = None
-
-        OANDA_OPEN = 'o'
-        OANDA_HIGH = 'h'
-        OANDA_LOW = 'l'
-        OANDA_CLOSE = 'c'
-        OANDA_MID = 'mid'
-        OANDA_ASK = 'ask'
-        OANDA_BID = 'bid'
-        OANDA_OHLC = [OANDA_OPEN, OANDA_HIGH, OANDA_LOW, OANDA_CLOSE]
-        OANDA_TIME = 'time'
-        OANDA_VOLUME = 'volume'
-        OANDA_COMPLETE = 'complete'
-        OANDA_MID_OPEN = 'mid.o'
-        OANDA_MID_VOLUME = 'mid.volume'
-        OANDA_MID_COMPLETE = 'mid.complete'
-        OANDA_ASK_OPEN = 'ask.o'
-        OANDA_ASK_VOLUME = 'ask.volume'
-        OANDA_ASK_COMPLETE = 'ask.complete'
-        OANDA_BID_OPEN = 'bid.o'
-        OANDA_BID_VOLUME = 'bid.volume'
-        OANDA_BID_COMPLETE = 'bid.complete'
-
-        DATAFRAME_DATE = 'Date'
-        DATAFRAME_MID = 'Mid'
-        DATAFRAME_ASK = 'Ask'
-        DATAFRAME_BID = 'Bid'
-        DATAFRAME_OPEN = 'Open'
-        DATAFRAME_HIGH = 'High'
-        DATAFRAME_LOW = 'Low'
-        DATAFRAME_CLOSE = 'Close'
-        DATAFRAME_VOLUME = 'Volume'
-        DATAFRAME_COMPLETE = 'Complete'
 
         while current_start < end:
             current_end = current_start + current_duration
@@ -264,22 +504,11 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             current_start_rfc3339 = current_start.strftime(rfc3339)
             current_end_rfc3339 = current_end.strftime(rfc3339)
 
-            if isinstance(freq, DateOffset):
-                offsetString = freq.freqstr
-            else:
-                offsetString = freq
-
-            if offsetString in OANDARestHistoricalInstrumentReader.SUPPORTED_OFFSET_ALIASES:
-                granularity = OANDARestHistoricalInstrumentReader.SUPPORTED_OFFSET_ALIASES[
-                    offsetString]
-            else:
-                granularity = offsetString
-
             params = {
-                "granularity": granularity,
+                "granularity": self.granularity,
                 "from": current_start_rfc3339,
                 "to": current_end_rfc3339,
-                "price": candleFormat,
+                "price": self.candleFormat,
                 "smooth": "false",
                 "includeFirst": "true" if includeCandleOnStart else "false",
                 "dailyAlignment": "17",
@@ -327,7 +556,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
 
             ndf = pd.io.json.json_normalize(
                 candles,
-                meta=[OANDA_TIME, 'volume', 'complete', [OANDA_MID, OANDA_OHLC], [OANDA_ASK, OANDA_OHLC], [OANDA_BID, OANDA_OHLC]]
+                meta=[self.OANDA_TIME, 'volume', 'complete', [self.OANDA_MID, self.OANDA_OHLC], [self.OANDA_ASK, self.OANDA_OHLC], [self.OANDA_BID, self.OANDA_OHLC]]
             )
 
             if df is None:
@@ -335,61 +564,25 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             else:
                 df = df.append(ndf, ignore_index=True)
 
-        # Remove duplicates entry with similar time
-        df.drop_duplicates([OANDA_TIME], keep="first", inplace=True)
+        job.result = df
 
-        # Set date as index
-        df.rename(columns={OANDA_TIME: DATAFRAME_DATE}, copy=False, inplace=True)
-        df[DATAFRAME_DATE] = pd.to_datetime(df[DATAFRAME_DATE])
-        df = df.set_index(DATAFRAME_DATE)
+    def _get_periods(self, start, end, delta):
+        current_start = start
+        while current_start < end:
+            if current_start > end:
+                current_end = end
+            else:
+                current_end = current_start + delta
 
-        # Duplicate Volume/Complete column for easier MultiIndex creation
-        if OANDA_MID_OPEN in df.columns:
-            df[OANDA_MID_VOLUME] = df[OANDA_VOLUME]
-            df[OANDA_MID_COMPLETE] = df[OANDA_COMPLETE]
+            yield current_start, current_end
 
-        if OANDA_ASK_OPEN in df.columns:
-            df[OANDA_ASK_VOLUME] = df[OANDA_VOLUME]
-            df[OANDA_ASK_COMPLETE] = df[OANDA_COMPLETE]
+            current_start = current_start + delta
 
-        if OANDA_BID_OPEN in df.columns:
-            df[OANDA_BID_VOLUME] = df[OANDA_VOLUME]
-            df[OANDA_BID_COMPLETE] = df[OANDA_COMPLETE]
-
-        df.drop(OANDA_VOLUME, axis=1, inplace=True)
-        df.drop(OANDA_COMPLETE, axis=1, inplace=True)
-
-        # Build MultiIndex based on data columns available
-        df_columns = df.columns
-        tuples = [tuple(c.split('.')) for c in df_columns]
-
-        mapping = {
-            OANDA_MID: DATAFRAME_MID,
-            OANDA_ASK: DATAFRAME_ASK,
-            OANDA_BID: DATAFRAME_BID,
-            OANDA_VOLUME: DATAFRAME_VOLUME,
-            OANDA_COMPLETE: DATAFRAME_COMPLETE,
-            OANDA_OPEN: DATAFRAME_OPEN,
-            OANDA_HIGH: DATAFRAME_HIGH,
-            OANDA_LOW: DATAFRAME_LOW,
-            OANDA_CLOSE: DATAFRAME_CLOSE
-        }
-
-        tuples = [(mapping[t[0]], mapping[t[1]]) for t in tuples]
-        multiIndex = pd.MultiIndex.from_tuples(tuples)
-        multiIndex.name = "Data"
-        df.columns = multiIndex
-
-        # Sort by date as OANDA REST v20 provides no guarantee
-        # returned candles are sorted
-        df.sort_index(axis=0, level=DATAFRAME_DATE, ascending=True, inplace=True)
-
-        with pd.option_context('display.max_columns', 1000, 'display.width', 1000, 'display.multi_sparse', False):
-            # print("\nFINAL")
-            # print(df.head(3))
-            pass
-
-        return df
+    def _increment_and_get_counter(self):
+        self.counter_lock.acquire()
+        value = next(self.counter)
+        self.counter_lock.release()
+        return value
 
     def _reverse_pair(s, sep="_"):
         lst = s.split(sep)
