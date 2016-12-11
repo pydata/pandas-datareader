@@ -1,7 +1,14 @@
 import os
 import sys
 import threading
-from queue import PriorityQueue, Queue, Empty
+
+try:
+    # Python 3.x
+    from queue import PriorityQueue, Queue, Empty
+except ImportError:
+    # Python 2.x
+    from Queue import PriorityQueue, Queue, Empty
+
 import multiprocessing
 from multiprocessing import Lock
 import itertools
