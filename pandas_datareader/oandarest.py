@@ -213,8 +213,10 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
                     access_credential=self.access_credential,
                     session=self.session
                 )
-                df.name = symbol
-                dfs[symbol] = df
+
+                if df is not None:
+                    df.name = symbol
+                    dfs[symbol] = df
             else:
                 raise Exception("Symbol Type; %s not supported" %
                                 (symbolsType))
@@ -282,72 +284,73 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
 
         df = self._concurrent_historical_currency_pair_download(start, end, currencyPair, access_credential)
 
-        # Remove duplicates entry with similar time
-        df.drop_duplicates([self.OANDA_TIME], keep="first", inplace=True)
+        if df is not None:
+            # Remove duplicates entry with similar time
+            df.drop_duplicates([self.OANDA_TIME], keep="first", inplace=True)
 
-        # Set date as index
-        df.rename(columns={self.OANDA_TIME: self.DATAFRAME_DATE}, copy=False, inplace=True)
-        df[self.DATAFRAME_DATE] = pd.to_datetime(df[self.DATAFRAME_DATE])
-        df = df.set_index(self.DATAFRAME_DATE)
+            # Set date as index
+            df.rename(columns={self.OANDA_TIME: self.DATAFRAME_DATE}, copy=False, inplace=True)
+            df[self.DATAFRAME_DATE] = pd.to_datetime(df[self.DATAFRAME_DATE])
+            df = df.set_index(self.DATAFRAME_DATE)
 
-        # Duplicate Volume/Complete column for easier MultiIndex creation
-        if self.OANDA_MID_OPEN in df.columns:
-            df[self.OANDA_MID_VOLUME] = df[self.OANDA_VOLUME]
-            df[self.OANDA_MID_COMPLETE] = df[self.OANDA_COMPLETE]
+            # Duplicate Volume/Complete column for easier MultiIndex creation
+            if self.OANDA_MID_OPEN in df.columns:
+                df[self.OANDA_MID_VOLUME] = df[self.OANDA_VOLUME]
+                df[self.OANDA_MID_COMPLETE] = df[self.OANDA_COMPLETE]
 
-        if self.OANDA_ASK_OPEN in df.columns:
-            df[self.OANDA_ASK_VOLUME] = df[self.OANDA_VOLUME]
-            df[self.OANDA_ASK_COMPLETE] = df[self.OANDA_COMPLETE]
+            if self.OANDA_ASK_OPEN in df.columns:
+                df[self.OANDA_ASK_VOLUME] = df[self.OANDA_VOLUME]
+                df[self.OANDA_ASK_COMPLETE] = df[self.OANDA_COMPLETE]
 
-        if self.OANDA_BID_OPEN in df.columns:
-            df[self.OANDA_BID_VOLUME] = df[self.OANDA_VOLUME]
-            df[self.OANDA_BID_COMPLETE] = df[self.OANDA_COMPLETE]
+            if self.OANDA_BID_OPEN in df.columns:
+                df[self.OANDA_BID_VOLUME] = df[self.OANDA_VOLUME]
+                df[self.OANDA_BID_COMPLETE] = df[self.OANDA_COMPLETE]
 
-        df.drop(self.OANDA_VOLUME, axis=1, inplace=True)
-        df.drop(self.OANDA_COMPLETE, axis=1, inplace=True)
+            df.drop(self.OANDA_VOLUME, axis=1, inplace=True)
+            df.drop(self.OANDA_COMPLETE, axis=1, inplace=True)
 
-        # Build MultiIndex based on data columns available
-        df_columns = df.columns
-        tuples = [tuple(c.split('.')) for c in df_columns]
+            # Build MultiIndex based on data columns available
+            df_columns = df.columns
+            tuples = [tuple(c.split('.')) for c in df_columns]
 
-        mapping = {
-            self.OANDA_MID: self.DATAFRAME_MID,
-            self.OANDA_ASK: self.DATAFRAME_ASK,
-            self.OANDA_BID: self.DATAFRAME_BID,
-            self.OANDA_VOLUME: self.DATAFRAME_VOLUME,
-            self.OANDA_COMPLETE: self.DATAFRAME_COMPLETE,
-            self.OANDA_OPEN: self.DATAFRAME_OPEN,
-            self.OANDA_HIGH: self.DATAFRAME_HIGH,
-            self.OANDA_LOW: self.DATAFRAME_LOW,
-            self.OANDA_CLOSE: self.DATAFRAME_CLOSE
-        }
+            mapping = {
+                self.OANDA_MID: self.DATAFRAME_MID,
+                self.OANDA_ASK: self.DATAFRAME_ASK,
+                self.OANDA_BID: self.DATAFRAME_BID,
+                self.OANDA_VOLUME: self.DATAFRAME_VOLUME,
+                self.OANDA_COMPLETE: self.DATAFRAME_COMPLETE,
+                self.OANDA_OPEN: self.DATAFRAME_OPEN,
+                self.OANDA_HIGH: self.DATAFRAME_HIGH,
+                self.OANDA_LOW: self.DATAFRAME_LOW,
+                self.OANDA_CLOSE: self.DATAFRAME_CLOSE
+            }
 
-        tuples = [(mapping[t[0]], mapping[t[1]]) for t in tuples]
+            tuples = [(mapping[t[0]], mapping[t[1]]) for t in tuples]
 
-        multiIndex = pd.MultiIndex.from_tuples(tuples)
-        multiIndex.name = "Data"
-        df.columns = multiIndex
+            multiIndex = pd.MultiIndex.from_tuples(tuples)
+            multiIndex.name = "Data"
+            df.columns = multiIndex
 
-        # Convert some colums to specific datatypes
-        tuples = [
-            t for t in tuples
-            if t[1] in [
-                self.DATAFRAME_OPEN,
-                self.DATAFRAME_HIGH,
-                self.DATAFRAME_LOW,
-                self.DATAFRAME_CLOSE
+            # Convert some colums to specific datatypes
+            tuples = [
+                t for t in tuples
+                if t[1] in [
+                    self.DATAFRAME_OPEN,
+                    self.DATAFRAME_HIGH,
+                    self.DATAFRAME_LOW,
+                    self.DATAFRAME_CLOSE
+                ]
             ]
-        ]
-        df[tuples] = df[tuples].apply(pd.to_numeric)
+            df[tuples] = df[tuples].apply(pd.to_numeric)
 
-        # Sort by date as OANDA REST v20 provides no guarantee
-        # returned candles are sorted
-        df.sort_index(axis=0, level=self.DATAFRAME_DATE, ascending=True, inplace=True)
+            # Sort by date as OANDA REST v20 provides no guarantee
+            # returned candles are sorted
+            df.sort_index(axis=0, level=self.DATAFRAME_DATE, ascending=True, inplace=True)
 
-        with pd.option_context('display.max_columns', 1000, 'display.width', 1000, 'display.multi_sparse', False):
-            # print("\nFINAL")
-            # print(df.head(3))
-            pass
+            with pd.option_context('display.max_columns', 1000, 'display.width', 1000, 'display.multi_sparse', False):
+                # print("\nFINAL")
+                # print(df.head(3))
+                pass
 
         return df
 
