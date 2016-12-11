@@ -20,7 +20,7 @@ from time import time
 import pandas as pd
 import re
 
-from oandapyV20 import API
+from oandapyV20 import API, V20Error
 import oandapyV20.endpoints.instruments as instruments
 
 from ._utils import _init_session, _sanitize_dates
@@ -572,7 +572,10 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
                     current_duration /= 2
                     continue
                 else:
-                    print("ERROR OANDA: " + str(error))
+                    if type(error) is V20Error:
+                        print("Request failed with code: " + str(error.code) + " and message: " + str(error.msg))
+                    else:
+                        print("ERROR OANDA: " + str(error))
                     raise error
 
             # print(response)
