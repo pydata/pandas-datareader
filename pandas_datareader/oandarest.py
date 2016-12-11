@@ -7,6 +7,8 @@ from multiprocessing import Lock
 import itertools
 
 from datetime import timedelta
+from datetime import datetime
+from time import time
 
 import pandas as pd
 import re
@@ -175,6 +177,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
                     """Please provide an OANDA API token or set the OANDA_API_TOKEN environment variable\n
                     If you do not have an API key, you can get one here: http://developer.oanda.com/rest-live/authentication/""")
 
+        self.max_concurrency = max_concurrency
         if max_concurrency is None or max_concurrency < 1:
             try:
                 self.max_concurrency = multiprocessing.cpu_count()
@@ -390,6 +393,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         done = False
         while not done:
             done = active_thread_queue.empty()
+
             # print("done yet ?" + str(done))
 
             # Merge available results
@@ -483,6 +487,13 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             yield job
 
     def _download_historical_currency_pair(self, job, oanda):
+        request_period_start = datetime.now()
+        request_period_end = datetime.now()
+        request_period_duration = timedelta(seconds=1)
+        request_count_per_second = 0
+        # OANDA recommends to send no more than 15 reqs / s for an existing connection
+        request_max_per_second = 15
+
         current_start = job.start
         current_end = job.end
         end = job.end
@@ -517,6 +528,21 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             }
 
             # print(params)
+
+            # Limit number of requests per period
+            now = datetime.now()
+            if request_period_end < now:
+                request_count_per_second = 0
+                request_period_start = now
+                request_period_end = request_period_start + request_period_duration
+
+            request_count_per_second += 1
+
+            # print("name: " + threading.current_thread().name + " " + str(request_count_per_second) + " reqs/s")
+
+            if request_count_per_second > request_max_per_second:
+                request_pause_duration = request_period_end - now
+                time.sleep(request_pause_duration.total_seconds())
 
             try:
                 request = instruments.InstrumentsCandles(
