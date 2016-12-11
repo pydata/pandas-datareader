@@ -422,40 +422,42 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         return df
 
     def _produce_download_jobs(self, start, end, symbol, pending_jobs_queue, active_thread_queue):
-        for job in self._get_download_jobs(start, end, symbol):
-            pending_jobs_queue.put((job.priority, self._increment_and_get_counter(), job))
+        try:
+            for job in self._get_download_jobs(start, end, symbol):
+                pending_jobs_queue.put((job.priority, self._increment_and_get_counter(), job))
 
-        pending_jobs_queue.put((float(sys.maxsize), self._increment_and_get_counter(), None))
-
-        active_thread_queue.get()
-        active_thread_queue.task_done()
+            pending_jobs_queue.put((float(sys.maxsize), self._increment_and_get_counter(), None))
+        finally:
+            active_thread_queue.get()
+            active_thread_queue.task_done()
 
     def _consume_download_job(self, pending_jobs_queue, completed_jobs_queue, failed_job_queue, active_thread_queue, oanda):
         done = False
-        while not done:
-            priority, counter, job = pending_jobs_queue.get()
+        try:
+            while not done:
+                priority, counter, job = pending_jobs_queue.get()
 
-            if job is not None:
-                # print("consume job:" + str(job.priority) + "start:" + str(job.start) + "end:" + str(job.end))
-                self._download_historical_currency_pair(job, oanda)
+                if job is not None:
+                    # print("consume job:" + str(job.priority) + "start:" + str(job.start) + "end:" + str(job.end))
+                    self._download_historical_currency_pair(job, oanda)
 
-                if job.result is None:
-                    if job.failed_count < 1:
-                        job.failed_count = job.failed_count + 1
-                        pending_jobs_queue.put((job.priority, self._increment_and_get_counter(), job))
+                    if job.result is None:
+                        if job.failed_count < 1:
+                            job.failed_count = job.failed_count + 1
+                            pending_jobs_queue.put((job.priority, self._increment_and_get_counter(), job))
+                        else:
+                            failed_job_queue.put(job)
                     else:
-                        failed_job_queue.put(job)
+                        completed_jobs_queue.put((job.priority, self._increment_and_get_counter(), job))
+
                 else:
-                    completed_jobs_queue.put((job.priority, self._increment_and_get_counter(), job))
+                    done = True
+                    pending_jobs_queue.put((float(sys.maxsize), self._increment_and_get_counter(), None))
 
-            else:
-                done = True
-                pending_jobs_queue.put((float(sys.maxsize), self._increment_and_get_counter(), None))
-
-            pending_jobs_queue.task_done()
-
-        active_thread_queue.get()
-        active_thread_queue.task_done()
+                pending_jobs_queue.task_done()
+        finally:
+            active_thread_queue.get()
+            active_thread_queue.task_done()
 
     def _get_download_jobs(self, start, end, symbol):
         class Job(object):
