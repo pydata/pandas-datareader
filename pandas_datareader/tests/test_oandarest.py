@@ -87,4 +87,3 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
             raise nose.SkipTest("API Token missing ?" + str(error))
 
         self.assertPanel(pn, self.start, self.end, symbols)
-
