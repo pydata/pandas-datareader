@@ -553,14 +553,14 @@ Download currency historical rate from `Oanda <https://www.oanda.com/>`__.
 .. code-block:: python
 
     In [1]: import pandas_datareader.data as web
-    In [2]: start, end = "2016-01-01", "2016-06-01"
+    In [2]: start, end = "2016-01-01", "2016-02-01"
     In [3]: currency = ["EUR_USD"]
     In [4]: credential["accountType"]="practise"
     In [5]: credential["apiToken"]="Your OANDA API token"
     In [6]: pn = web.DataReader(
                 symbols, data_source="oanda_historical_currency",
                 start=start, end=end,
-                access_key=credentials)
+                access_key=credentials
             )
  
     In [7]: ipdb> pn.transpose(2,1,0)["EUR_USD"].head(5)
