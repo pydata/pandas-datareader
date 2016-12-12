@@ -411,7 +411,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
 
             try:
                 priority, counter, job = completed_jobs_queue.get(block=True, timeout=1)
-            except Empty as ex:
+            except Empty:
                 pass
 
             if job is not None:
