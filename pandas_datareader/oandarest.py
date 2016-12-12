@@ -360,6 +360,8 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         failed_job_queue = Queue()
         active_thread_queue = Queue()
 
+        print(credential)
+
         consumer_threads = [
             threading.Thread(
                 target=self._consume_download_job,
