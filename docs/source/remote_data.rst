@@ -554,16 +554,17 @@ Download currency historical rate from `Oanda <https://www.oanda.com/>`__.
 
     In [1]: import pandas_datareader.data as web
     In [2]: start, end = "2016-01-01", "2016-02-01"
-    In [3]: symbols = ["EUR_USD"]
-    In [4]: credentials["accountType"]="practise"
-    In [5]: credentials["apiToken"]="Your OANDA API token"
-    In [6]: pn = web.DataReader(
+    In [3]: symbols = {}
+    In [4]: symbols = ["EUR_USD"]
+    In [5]: credentials["accountType"]="practice"
+    In [6]: credentials["apiToken"]="Your OANDA API token"
+    In [7]: pn = web.DataReader(
                 symbols, data_source="oanda_historical_currency",
                 start=start, end=end,
                 access_key=credentials
             )
  
-    In [7]: ipdb> pn.transpose(2,1,0)["EUR_USD"].head(5)
+    In [8]: pn.transpose(2,1,0)["EUR_USD"].head(5)
 
                 Ask                                 Bid                                 Mid                                              Ask             Bid
                 Close     High      Low     Open    Close     High      Low     Open    Close     High      Low     Open Volume Complete Volume Complete Volume Complete
@@ -576,8 +577,8 @@ Download currency historical rate from `Oanda <https://www.oanda.com/>`__.
 
       [15438 rows x 18 columns]
 
-    In [8]: pn["Ask","Close"]["EUR_USD"][pandas._to_datetime("2014-03-19 09:00:00")]
-    Out[8]: 1.39147
+    In [9]: pn["Ask","Close"]["EUR_USD"][pandas._to_datetime("2014-03-19 09:00:00")]
+    Out[10]: 1.39147
 
 .. _remote_data.nasdaq_symbols
 
