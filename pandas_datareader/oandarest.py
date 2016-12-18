@@ -1,6 +1,7 @@
 import os
 import sys
 import threading
+import json
 
 import logging
 from logging import NullHandler
@@ -25,6 +26,7 @@ import re
 
 from oandapyV20 import API, V20Error
 import oandapyV20.endpoints.instruments as instruments
+import oandapyV20.endpoints.accounts as accounts
 
 from ._utils import _init_session, _sanitize_dates
 from pandas.tseries.offsets import DateOffset
@@ -630,6 +632,1496 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         self.counter_lock.acquire()
         value = next(self.counter)
         self.counter_lock.release()
+        return value
+
+    def _reverse_pair(s, sep="_"):
+        lst = s.split(sep)
+        return sep.join([lst[1], lst[0]])
+
+    def _split_currency_pair(self, s, sep="_"):
+        lst = s.split(sep)
+        return (lst[0], lst[1])
+
+
+class OANDARestAccountInstrumentReader(_BaseReader):
+    """
+        Tradeable instruments for a given account using  OANDA's REST v20 API.
+        See details at http://developer.oanda.com/rest-live-v20/account-ep/
+        symbols : string or Dict of strings.
+            Each string is a currency pair with format BASE_QUOTE. Eg: ["EUR_USD", "JPY_USD"]
+        symbolsTypes: Dict of strings.
+            Each string represent the type of instrument to fetch data for. Eg: For symbols=["EUR_USD", "EUR_JPY"] then symbolsTypes=["currency", "currency"]
+            Valid values: currency
+        use_default_symbols_if_account_not_authorized: Boolean
+            True if fetching the instruments metadata fails due to HTTP 403
+        access_credential: Dict of strings
+            Credential to query the api
+            credential["accountType"]="practise". Mandatory. Valid values: practice, live
+            credential["apiToken"]="Your OANDA API token". Mandatory. Valid value: See your OANDA Account's API Token
+            credential['accountId']="Your OANDA account Id to query instruments from"
+    """
+
+    def __init__(self, symbols, symbolsTypes=None,
+                 session=None, use_default_symbols_if_account_not_authorized=True,
+                 access_credential=None):
+
+        self.logger = logging.getLogger("pandas_datareader.oandarest.OANDARestAccountInstrumentReader")
+        if not len(self.logger.handlers):
+            self.logger.addHandler(NullHandler())
+
+        self.SYMBOL_ALL = "all_all"
+        self.SYMBOL_TYPE_CURRENCY = "currency"
+
+        self.symbols = symbols
+        if symbols is None:
+            self.symbols = [self.SYMBOL_ALL]
+            self.symbolsTypes = [self.SYMBOL_TYPE_CURRENCY]
+
+        if type(symbols) is str:
+            self.symbols = [symbols]
+
+        self.symbolsTypes = symbolsTypes
+        if symbolsTypes is None:
+            self.symbolsTypes = []
+
+        if len(self.symbols) != len(self.symbolsTypes):
+            self.symbolsTypes = ["currency" for x in self.symbols]
+
+        self.access_credential = access_credential
+        if access_credential is None:
+            self.access_credential = {}
+
+        if 'accountType' not in access_credential:
+            self.access_credential['accountType'] = "practice"
+
+        if 'apiToken' not in access_credential:
+            self.access_credential['apiToken'] = os.getenv('OANDA_API_TOKEN')
+            if self.access_credential['apiToken'] is None:
+                raise ValueError(
+                    """Please provide an OANDA API token or set the OANDA_API_TOKEN environment variable\n
+                    If you do not have an API key, you can get one here: http://developer.oanda.com/rest-live/authentication/""")
+
+        if 'accountId' not in access_credential:
+            self.access_credential['accountId'] = os.getenv('OANDA_ACCOUNT_ID')
+            if self.access_credential['accountId'] is None:
+                raise ValueError(
+                    """Please provide an OANDA ACCOUNT ID token or set the OANDA_ACCOUNT_ID environment variable""")
+
+        self.use_default_symbols_if_account_not_authorized = use_default_symbols_if_account_not_authorized
+        if use_default_symbols_if_account_not_authorized is None:
+            self.use_default_symbols_if_account_not_authorized = True
+
+    def read(self):
+        dfs = {}
+        df_currency = None
+
+        for (index, symbol) in enumerate(self.symbols):
+            symbolsType = self.symbolsTypes[index]
+            if symbolsType is self.SYMBOL_TYPE_CURRENCY:
+                requested_symbols = [] if symbol is self.SYMBOL_ALL else [symbol]
+
+                df = self._read_available_currency_pairs(
+                    symbols=requested_symbols,
+                    access_credential=self.access_credential
+                )
+                if df_currency is None:
+                    df_currency = df
+                else:
+                    df_currency.concat(df)
+            else:
+                raise Exception("Symbol Type; %s not supported" %
+                                (symbolsType))
+
+        dfs["Currencies"] = df_currency
+
+        pn = pd.Panel(dfs)
+        pn.axes[0].name = "Instruments"
+        return pn
+
+    def _read_available_currency_pairs(self, symbols=None, access_credential=None):
+        if access_credential is None:
+            raise Exception(
+                'No access_crendtial provided. Instruments cannot be fetched')
+
+        credential = access_credential
+
+        oanda = API(access_token=credential['apiToken'],
+                    environment=credential['accountType'])
+
+        params = {
+        }
+
+        if symbols:
+            params['instruments'] = ",".join(symbols)
+
+        self.logger.debug(params)
+
+        default_response = None
+        response = None
+
+        try:
+            request = accounts.AccountInstruments(
+                credential['accountId'],
+                params=params)
+
+            response = oanda.request(request)
+        except Exception as error:
+            if type(error) is V20Error:
+                if error.code == 403:
+                    default_response = self._get_default_account_instruments_metadata()
+                else:
+                    self.logger.exception("Request failed with code: " + str(error.code) + " and message: " + str(error.msg))
+            else:
+                self.logger.exception("ERROR OANDA: " + str(error))
+                raise
+
+        self.logger.error(response)
+
+        default_response_used = default_response is not None and self.use_default_symbols_if_account_not_authorized
+
+        if default_response_used:
+            instruments = json.loads(default_response)['instruments']
+        else:
+            instruments = response['instruments']
+
+        oanda_fields = [
+            'displayName',
+            'displayPrecision',
+            'marginRate',
+            'maximumOrderUnits',
+            'maximumPositionSize',
+            'maximumTrailingStopDistance',
+            'minimumTradeSize',
+            'minimumTrailingStopDistance',
+            'name',
+            'pipLocation',
+            'tradeUnitsPrecision',
+            'type',
+            'start_date'
+        ]
+
+        mapping_fields = {key: key[0].upper() + key[1:] for key in oanda_fields}
+        # Standard Instrument Metadata
+        df = pd.io.json.json_normalize(
+            instruments,
+            meta=mapping_fields.keys()
+        )
+
+        df.rename(inplace=True,
+                  index=str,
+                  columns=mapping_fields)
+
+        df = df.set_index(mapping_fields['name'])
+        df['Provider'] = "default" if default_response_used else "real"
+
+        # Extra Instrument Metadata
+        instruments_extra = json.loads(self._get_default_account_instruments_extra_metadata())["instruments"]
+        df_extra = pd.io.json.json_normalize(
+            instruments_extra,
+            meta=mapping_fields.keys()
+        )
+
+        df_extra.rename(
+            inplace=True,
+            index=str,
+            columns=mapping_fields
+        )
+
+        df_extra = df_extra.set_index(mapping_fields['name'])
+
+        # Merge all instruments metadata
+        df = pd.concat([df, df_extra], axis=1)
+
+        df.sort_index(axis=0, level=mapping_fields['name'], ascending=True, inplace=True)
+
+        with pd.option_context('display.max_columns', 1000, 'display.width', 1000, 'display.multi_sparse', False):
+            self.logger.debug(df)
+
+        return df
+
+    def _get_default_account_instruments_extra_metadata(self):
+        # Last updated: 13 Dec 2016
+        # start_date:
+        #  OANDA does not provide this information.
+        #  If you know the real start_date for a currency pair, please update it
+        value = """
+{
+   "instruments":[
+      {
+         "name":"USD_THB",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"GBP_CHF",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"EUR_GBP",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"EUR_JPY",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"EUR_SGD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"CAD_JPY",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"GBP_ZAR",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"EUR_CHF",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"SGD_CHF",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"CHF_ZAR",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"SGD_JPY",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"NZD_USD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"NZD_CHF",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"EUR_HKD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"USD_HKD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"USD_DKK",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"AUD_HKD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"EUR_CZK",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"EUR_NOK",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"NZD_JPY",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"AUD_USD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"AUD_NZD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"EUR_CAD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"GBP_PLN",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"ZAR_JPY",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"USD_SAR",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"GBP_CAD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"AUD_JPY",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"GBP_JPY",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"USD_TRY",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"EUR_NZD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"EUR_ZAR",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"GBP_USD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"USD_MXN",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"EUR_PLN",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"EUR_DKK",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"USD_NOK",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"USD_CZK",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"NZD_SGD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"USD_HUF",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"GBP_HKD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"USD_SEK",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"GBP_SGD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"AUD_CHF",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"AUD_SGD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"USD_CNH",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"TRY_JPY",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"AUD_CAD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"CAD_HKD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"SGD_HKD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"GBP_NZD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"NZD_CAD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"USD_ZAR",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"EUR_SEK",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"USD_SGD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"HKD_JPY",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"EUR_USD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"GBP_AUD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"USD_PLN",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"USD_CAD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"CAD_SGD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"CHF_HKD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"USD_CHF",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"NZD_HKD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"EUR_AUD",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"CAD_CHF",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"CHF_JPY",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"USD_JPY",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"EUR_TRY",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      },
+      {
+         "name":"EUR_HUF",
+         "start_date":"2000-01-01T00:00:00.000Z"
+      }
+   ],
+   "lastTransactionID":"6356"
+}
+    """
+        return value
+
+    def _get_default_account_instruments_metadata(self):
+        # Last updated: 13 Dec 2016
+        value = """
+{
+  "instruments": [
+    {
+      "displayName": "USD/THB",
+      "displayPrecision": 3,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "100.000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.050",
+      "name": "USD_THB",
+      "pipLocation": -2,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "GBP/CHF",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "GBP_CHF",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "EUR/GBP",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "EUR_GBP",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "EUR/JPY",
+      "displayPrecision": 3,
+      "marginRate": "0.03",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "100.000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.050",
+      "name": "EUR_JPY",
+      "pipLocation": -2,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "EUR/SGD",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "EUR_SGD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "CAD/JPY",
+      "displayPrecision": 3,
+      "marginRate": "0.03",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "100.000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.050",
+      "name": "CAD_JPY",
+      "pipLocation": -2,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "GBP/ZAR",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "GBP_ZAR",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "EUR/CHF",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "EUR_CHF",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "SGD/CHF",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "SGD_CHF",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "CHF/ZAR",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "CHF_ZAR",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "SGD/JPY",
+      "displayPrecision": 3,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "100.000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.050",
+      "name": "SGD_JPY",
+      "pipLocation": -2,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "NZD/USD",
+      "displayPrecision": 5,
+      "marginRate": "0.02",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "NZD_USD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "NZD/CHF",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "NZD_CHF",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "EUR/HKD",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "EUR_HKD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "USD/HKD",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "USD_HKD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "USD/DKK",
+      "displayPrecision": 5,
+      "marginRate": "0.02",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "USD_DKK",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "AUD/HKD",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "AUD_HKD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "EUR/CZK",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "EUR_CZK",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "EUR/NOK",
+      "displayPrecision": 5,
+      "marginRate": "0.03",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "EUR_NOK",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "NZD/JPY",
+      "displayPrecision": 3,
+      "marginRate": "0.03",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "100.000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.050",
+      "name": "NZD_JPY",
+      "pipLocation": -2,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "AUD/USD",
+      "displayPrecision": 5,
+      "marginRate": "0.03",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "AUD_USD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "AUD/NZD",
+      "displayPrecision": 5,
+      "marginRate": "0.03",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "AUD_NZD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "EUR/CAD",
+      "displayPrecision": 5,
+      "marginRate": "0.02",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "EUR_CAD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "GBP/PLN",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "GBP_PLN",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "ZAR/JPY",
+      "displayPrecision": 3,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "100.000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.050",
+      "name": "ZAR_JPY",
+      "pipLocation": -2,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "USD/SAR",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "USD_SAR",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "GBP/CAD",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "GBP_CAD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "AUD/JPY",
+      "displayPrecision": 3,
+      "marginRate": "0.03",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "100.000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.050",
+      "name": "AUD_JPY",
+      "pipLocation": -2,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "GBP/JPY",
+      "displayPrecision": 3,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "100.000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.050",
+      "name": "GBP_JPY",
+      "pipLocation": -2,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "USD/TRY",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "USD_TRY",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "EUR/NZD",
+      "displayPrecision": 5,
+      "marginRate": "0.02",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "EUR_NZD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "EUR/ZAR",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "EUR_ZAR",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "GBP/USD",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "GBP_USD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "USD/MXN",
+      "displayPrecision": 5,
+      "marginRate": "0.06",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "USD_MXN",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "EUR/PLN",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "EUR_PLN",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "EUR/DKK",
+      "displayPrecision": 5,
+      "marginRate": "0.02",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "EUR_DKK",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "USD/NOK",
+      "displayPrecision": 5,
+      "marginRate": "0.03",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "USD_NOK",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "USD/CZK",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "USD_CZK",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "NZD/SGD",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "NZD_SGD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "USD/HUF",
+      "displayPrecision": 3,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "100.000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.050",
+      "name": "USD_HUF",
+      "pipLocation": -2,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "GBP/HKD",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "GBP_HKD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "USD/SEK",
+      "displayPrecision": 5,
+      "marginRate": "0.03",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "USD_SEK",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "GBP/SGD",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "GBP_SGD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "AUD/CHF",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "AUD_CHF",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "AUD/SGD",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "AUD_SGD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "USD/CNH",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "USD_CNH",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "TRY/JPY",
+      "displayPrecision": 3,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "100.000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.050",
+      "name": "TRY_JPY",
+      "pipLocation": -2,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "AUD/CAD",
+      "displayPrecision": 5,
+      "marginRate": "0.03",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "AUD_CAD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "CAD/HKD",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "CAD_HKD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "SGD/HKD",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "SGD_HKD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "GBP/NZD",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "GBP_NZD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "NZD/CAD",
+      "displayPrecision": 5,
+      "marginRate": "0.02",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "NZD_CAD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "USD/ZAR",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "USD_ZAR",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "EUR/SEK",
+      "displayPrecision": 5,
+      "marginRate": "0.03",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "EUR_SEK",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "USD/SGD",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "USD_SGD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "HKD/JPY",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "HKD_JPY",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "EUR/USD",
+      "displayPrecision": 5,
+      "marginRate": "0.02",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "EUR_USD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "GBP/AUD",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "GBP_AUD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "USD/PLN",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "USD_PLN",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "USD/CAD",
+      "displayPrecision": 5,
+      "marginRate": "0.02",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "USD_CAD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "CAD/SGD",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "CAD_SGD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "CHF/HKD",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "CHF_HKD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "USD/CHF",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "USD_CHF",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "NZD/HKD",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "NZD_HKD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "EUR/AUD",
+      "displayPrecision": 5,
+      "marginRate": "0.03",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "EUR_AUD",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "CAD/CHF",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "CAD_CHF",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "CHF/JPY",
+      "displayPrecision": 3,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "100.000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.050",
+      "name": "CHF_JPY",
+      "pipLocation": -2,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "USD/JPY",
+      "displayPrecision": 3,
+      "marginRate": "0.03",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "100.000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.050",
+      "name": "USD_JPY",
+      "pipLocation": -2,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "EUR/TRY",
+      "displayPrecision": 5,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "1.00000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.00050",
+      "name": "EUR_TRY",
+      "pipLocation": -4,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    },
+    {
+      "displayName": "EUR/HUF",
+      "displayPrecision": 3,
+      "marginRate": "0.05",
+      "maximumOrderUnits": "100000000",
+      "maximumPositionSize": "0",
+      "maximumTrailingStopDistance": "100.000",
+      "minimumTradeSize": "1",
+      "minimumTrailingStopDistance": "0.050",
+      "name": "EUR_HUF",
+      "pipLocation": -2,
+      "tradeUnitsPrecision": 0,
+      "type": "CURRENCY"
+    }
+  ],
+  "lastTransactionID": "6356"
+}
+        """
         return value
 
     def _reverse_pair(s, sep="_"):

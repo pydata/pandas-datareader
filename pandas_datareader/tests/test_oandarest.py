@@ -9,6 +9,8 @@ import logging
 from logging import StreamHandler
 
 from pandas_datareader.oandarest import OANDARestHistoricalInstrumentReader
+from pandas_datareader.oandarest import OANDARestAccountInstrumentReader
+
 
 def setupLogger(loggerName):
     logger = logging.getLogger(loggerName)
@@ -103,3 +105,43 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
 
 setupLogger("pandas_datareader.oanda.OANDARestHistoricalInstrumentReader")
 
+
+class TestOandaAccountInstrumentReader(tm.TestCase):
+
+    def get_credential(self):
+        return {'accountType': "practice"}
+
+    def test_oanda_account_currencypair(self):
+        symbols = ["EUR_USD"]
+
+        try:
+            pn = OANDARestAccountInstrumentReader(
+                symbols=symbols,
+                access_credential=self.get_credential()
+            ).read()
+        except Exception as error:
+            raise nose.SkipTest("API Token OR Account ID missing ?" + str(error))
+
+        df = pn["Currencies"]
+
+        self.assertTrue(df.shape[0] >= 0)
+        self.assertTrue(df.shape[1] > 0)
+
+    def test_oanda_account_currencypair2(self):
+        symbols = None
+
+        try:
+            pn = OANDARestAccountInstrumentReader(
+                symbols=symbols,
+                access_credential=self.get_credential()
+            ).read()
+        except Exception as error:
+            raise nose.SkipTest("API Token OR account ID missing ?" + str(error))
+
+        df = pn["Currencies"]
+
+        self.assertTrue(df.shape[1] >= 1)
+        self.assertTrue(df.shape[1] > 0)
+
+
+setupLogger("pandas_datareader.oanda.OANDARestAccountInstrumentReader")
