@@ -1,10 +1,22 @@
+import sys
 import pandas as pd
 import pandas.util.testing as tm
 import pandas_datareader.data as web
 from pandas.tseries.frequencies import to_offset
 import nose
 
+import logging
+from logging import StreamHandler
+
 from pandas_datareader.oandarest import OANDARestHistoricalInstrumentReader
+
+def setupLogger(loggerName):
+    logger = logging.getLogger(loggerName)
+    consoleHandler = StreamHandler(stream=sys.stdout)
+    formatter = logging.Formatter('%(name)s/%(threadName)s/s%(asctime)s %(levelname)-8s #### %(message)s')
+    consoleHandler.setFormatter(formatter)
+    logger.addHandler(consoleHandler)
+    logger.setLevel(logging.DEBUG)
 
 
 class TestOandaHistoricalInstrumentReader(tm.TestCase):
@@ -87,3 +99,7 @@ class TestOandaHistoricalInstrumentReader(tm.TestCase):
             raise nose.SkipTest("API Token missing ?" + str(error))
 
         self.assertPanel(pn, self.start, self.end, symbols)
+
+
+setupLogger("pandas_datareader.oanda.OANDARestHistoricalInstrumentReader")
+

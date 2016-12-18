@@ -2,6 +2,9 @@ import os
 import sys
 import threading
 
+import logging
+from logging import NullHandler
+
 try:
     # Python 3.x
     from queue import PriorityQueue, Queue, Empty
@@ -133,6 +136,10 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         _BaseReader.__init__(self, symbols, start=start,
                              end=end, session=session)
 
+        self.logger = logging.getLogger("pandas_datareader.oanda.OANDARestHistoricalInstrumentReader")
+        if not len(self.logger.handlers):
+            self.logger.addHandler(NullHandler())
+
         self.reader_compatible = reader_compatible
         if reader_compatible is None:
             self.reader_compatible = False
@@ -199,7 +206,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
     def read(self):
         dfs = OrderedDict()
 
-        # print(str(self.symbols))
+        self.logger.debug(str(self.symbols))
 
         for (index, symbol) in enumerate(self.symbols):
             symbolsType = self.symbolsTypes[index]
@@ -348,8 +355,8 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             df.sort_index(axis=0, level=self.DATAFRAME_DATE, ascending=True, inplace=True)
 
             with pd.option_context('display.max_columns', 1000, 'display.width', 1000, 'display.multi_sparse', False):
-                # print("\nFINAL")
-                # print(df.head(3))
+                self.logger.debug("Final Currency DataFrame")
+                self.logger.debug(df.head(3))
                 pass
 
         return df
@@ -360,7 +367,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         failed_job_queue = Queue()
         active_thread_queue = Queue()
 
-        print(credential)
+        self.logger.debug(credential)
 
         consumer_threads = [
             threading.Thread(
@@ -406,7 +413,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
         while not done:
             done = active_thread_queue.empty()
 
-            # print("done yet ?" + str(done))
+            self.logger.debug("done yet ?" + str(done))
 
             # Merge available results
             job = None
@@ -443,7 +450,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
                 priority, counter, job = pending_jobs_queue.get()
 
                 if job is not None:
-                    # print("consume job:" + str(job.priority) + "start:" + str(job.start) + "end:" + str(job.end))
+                    self.logger.debug("consume job:" + str(job.priority) + "start:" + str(job.start) + "end:" + str(job.end))
                     self._download_historical_currency_pair(job, oanda)
 
                     if job.result is None:
@@ -496,7 +503,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
             job.result = None
             job.failed_count = 0
 
-            # print("produce job:" + str(job.priority) + "start:" + str(job.start) + "end:" + str(job.end))
+            self.logger.debug("produce job:" + str(job.priority) + "start:" + str(job.start) + "end:" + str(job.end))
 
             yield job
 
@@ -541,7 +548,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
                 "weeklyAlignment": "Friday"
             }
 
-            # print(params)
+            self.logger.debug(params)
 
             # Limit number of requests per period
             now = datetime.now()
@@ -552,7 +559,7 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
 
             request_count_per_second += 1
 
-            # print("name: " + threading.current_thread().name + " " + str(request_count_per_second) + " reqs/s")
+            self.logger.debug(str(request_count_per_second) + " reqs/s")
 
             if request_count_per_second > request_max_per_second:
                 request_pause_duration = request_period_end - now
@@ -580,12 +587,12 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
                     continue
                 else:
                     if type(error) is V20Error:
-                        print("Request failed with code: " + str(error.code) + " and message: " + str(error.msg))
+                        self.logger.exception("Request failed with code: " + str(error.code) + " and message: " + str(error.msg))
                     else:
-                        print("ERROR OANDA: " + str(error))
+                        self.logger.exception("ERROR OANDA: " + str(error))
                     raise error
 
-            # print(response)
+            self.logger.debug(response)
 
             if not response:
                 continue
@@ -594,8 +601,6 @@ class OANDARestHistoricalInstrumentReader(_BaseReader):
 
             if not candles:
                 continue
-
-            # print(candles)
 
             ndf = pd.io.json.json_normalize(
                 candles,
