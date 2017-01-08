@@ -10,6 +10,8 @@ from pandas_datareader._utils import RemoteDataError
 class TestEdgarIndex(tm.TestCase):
 
     def test_get_full_index(self):
+        # As of December 31, SEC has disabled ftp access to EDGAR.  Disabling tests until re-write
+        raise nose.SkipTest()
         try:
             ed = web.DataReader('full', 'edgar-index')
             assert len(ed) > 1000
@@ -22,6 +24,8 @@ class TestEdgarIndex(tm.TestCase):
             raise nose.SkipTest(e)
 
     def test_get_nonzip_index_and_low_date(self):
+        # As of December 31, SEC has disabled ftp access to EDGAR.  Disabling tests until re-write
+        raise nose.SkipTest()
         try:
             ed = web.DataReader('daily', 'edgar-index', '1994-06-30',
                                 '1994-07-02')
@@ -48,6 +52,8 @@ class TestEdgarIndex(tm.TestCase):
             raise nose.SkipTest(e)
 
     def test_6_digit_date(self):
+        # As of December 31, SEC has disabled ftp access to EDGAR.  Disabling tests until re-write
+        raise nose.SkipTest()
         try:
             ed = web.DataReader('daily', 'edgar-index', start='1998-05-18',
                                 end='1998-05-18')
