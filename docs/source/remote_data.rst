@@ -471,6 +471,9 @@ You can specify dataset ID "tran_sf_railac" to get corresponding data via ``Data
 EDGAR Index
 ===========
 
+** As of December 31st, the SEC disabled access via FTP. EDGAR support
+currently broken until re-write to use HTTPS. **
+
 Company filing index from EDGAR (SEC).
 
 The daily indices get large quickly (i.e. the set of daily indices from 1994
@@ -480,17 +483,17 @@ If the FTP server starts refusing your connections, you should be able to
 reconnect after waiting a few minutes.
 
 
-.. ipython:: python
+.. .. ipython:: python
 
-    import pandas_datareader.data as web
-    ed = web.DataReader('full', 'edgar-index')
-    ed[:5]
+..     import pandas_datareader.data as web
+..     ed = web.DataReader('full', 'edgar-index')
+..     ed[:5]
 
-.. ipython:: python
+.. .. ipython:: python
 
-    import pandas_datareader.data as web
-    ed = web.DataReader('daily', 'edgar-index', '1998-05-18', '1998-05-18')
-    ed[:5]
+..     import pandas_datareader.data as web
+..     ed = web.DataReader('daily', 'edgar-index', '1998-05-18', '1998-05-18')
+..     ed[:5]
 
 .. _remote_data.tsp:
 

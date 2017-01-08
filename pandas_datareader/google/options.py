@@ -137,6 +137,11 @@ class Options(_OptionBaseReader):
         indexes = ['Strike', 'Expiry', 'Type', 'Symbol']
         rows_list, index = self._process_rows(jd, now, expiry)
         df = DataFrame(rows_list, columns=columns, index=MultiIndex.from_tuples(index, names=indexes))
+
+        # Make dtype consistent, requires float64 as there can be NaNs
+        df['Vol'] = df['Vol'].astype('float64')
+        df['Open_Int'] = df['Open_Int'].astype('float64')
+
         return df.sort_index()
 
     def _process_rows(self, jd, now, expiry):

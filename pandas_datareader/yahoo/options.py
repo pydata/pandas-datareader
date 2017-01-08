@@ -684,6 +684,10 @@ class Options(_OptionBaseReader):
 
         df['IsNonstandard'] = df['Root'] != self.symbol.replace('-', '')
 
+        # Make dtype consistent, requires float64 as there can be NaNs
+        df['Vol'] = df['Vol'].astype('float64')
+        df['Open_Int'] = df['Open_Int'].astype('float64')
+
         return df.sort_index()
 
     def _process_rows(self, jd):

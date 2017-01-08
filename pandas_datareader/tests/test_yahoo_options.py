@@ -50,8 +50,8 @@ class TestYahooOptions(tm.TestCase):
         tm.assert_index_equal(df.columns, exp_columns)
         tm.assert_equal(df.index.names, [u'Strike', u'Expiry', u'Type', u'Symbol'])
 
-        dtypes = [np.dtype(x) for x in ['float64'] * 5 +
-                  ['int64', 'int64', 'float64', 'object', 'bool', 'object', 'float64', 'datetime64[ns]',
+        dtypes = [np.dtype(x) for x in ['float64'] * 7 +
+                  ['float64', 'object', 'bool', 'object', 'float64', 'datetime64[ns]',
                    'datetime64[ns]', 'object']]
         tm.assert_series_equal(df.dtypes, pd.Series(dtypes, index=exp_columns))
 
