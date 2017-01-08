@@ -570,7 +570,7 @@ class Options(_OptionBaseReader):
 
     def _get_data_in_date_range(self, dates, call=True, put=True):
 
-        to_ret = Series({'calls': call, 'puts': put})
+        to_ret = Series({'call': call, 'put': put})
         to_ret = to_ret[to_ret].index
 
         df = self._load_data(dates)
@@ -735,7 +735,7 @@ class Options(_OptionBaseReader):
                     rows_list.append(d)
                     index.append((float(option_by_strike['strike']),
                                   dt.datetime.utcfromtimestamp(option_by_strike['expiration']),
-                                  typ,
+                                  typ.replace('s', ''),
                                   option_by_strike['contractSymbol']))
         return rows_list, index
 

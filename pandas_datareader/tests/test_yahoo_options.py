@@ -90,6 +90,7 @@ class TestYahooOptions(tm.TestCase):
             raise nose.SkipTest(e)
 
         self.assert_option_result(calls)
+        self.assertTrue(calls.index.levels[2][0], 'call')
 
     def test_get_put_data(self):
         try:
@@ -98,6 +99,7 @@ class TestYahooOptions(tm.TestCase):
             raise nose.SkipTest(e)
 
         self.assert_option_result(puts)
+        self.assertTrue(puts.index.levels[2][0], 'put')
 
     def test_get_expiry_dates(self):
         try:
@@ -169,6 +171,7 @@ class TestYahooOptions(tm.TestCase):
         self.assertEqual(self.data1['Chg'].dtype, 'float64')
 
     def test_month_year(self):
+
         try:
             data = self.aapl.get_call_data(month=self.month, year=self.year)
         except RemoteDataError as e:  # pragma: no cover

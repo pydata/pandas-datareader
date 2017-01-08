@@ -44,6 +44,9 @@ class TestGoogleOptions(tm.TestCase):
 
         self.assert_option_result(options)
 
+        for typ in options.index.levels[2]:
+            self.assertTrue(typ in ['put', 'call'])
+
     def test_get_options_data_yearmonth(self):
         with tm.assertRaises(NotImplementedError):
             self.goog.get_options_data(month=1, year=2016)
