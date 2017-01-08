@@ -5,10 +5,11 @@ language: python
 env:
   - PYTHON=2.7 PANDAS=0.16.2
   - PYTHON=2.7 PANDAS=0.17.1
-  - PYTHON=2.7 PANDAS=0.19.0
+  - PYTHON=2.7 PANDAS=0.19.2
   - PYTHON=3.4 PANDAS=0.17.1
   - PYTHON=3.4 PANDAS=0.18.1
-  - PYTHON=3.5 PANDAS=0.19.0
+  - PYTHON=3.5 PANDAS=0.19.2
+  - PYTHON=3.6 PANDAS=0.19.2
 
 install:
   - pip install -qq flake8
