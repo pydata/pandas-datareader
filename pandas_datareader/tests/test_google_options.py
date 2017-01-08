@@ -31,7 +31,7 @@ class TestGoogleOptions(tm.TestCase):
         tm.assert_index_equal(df.columns, exp_columns)
         tm.assert_equal(df.index.names, [u'Strike', u'Expiry', u'Type', u'Symbol'])
 
-        dtypes = ['float64'] * 6 + ['int64', 'object', 'float64', 'datetime64[ns]']
+        dtypes = ['float64'] * 7 + ['object', 'float64', 'datetime64[ns]']
         dtypes = [np.dtype(x) for x in dtypes]
         tm.assert_series_equal(df.dtypes, pd.Series(dtypes, index=exp_columns))
 
@@ -54,7 +54,7 @@ class TestGoogleOptions(tm.TestCase):
         except RemoteDataError as e:  # pragma: no cover
             raise nose.SkipTest(e)
 
-        self.assertTrue(len(dates) >= 5)
+        self.assertTrue(len(dates) >= 4)
         self.assertIsInstance(dates, list)
         self.assertTrue(all(isinstance(dt, date) for dt in dates))
 
