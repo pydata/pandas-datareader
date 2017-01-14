@@ -1,7 +1,7 @@
 .. _whatsnew_030:
 
-v0.3.0 (January XX, 2017)
-----------------------------
+v0.3.0 (January 14, 2017)
+-------------------------
 
 This is a major release from 0.2.1 and includes new features and a number of bug fixes.
 
@@ -31,12 +31,6 @@ Other enhancements
 - Eurostat reader now supports larger data returned from API via zip format. (:issue:`205`)
 - Added support for Python 3.6.
 - Added support for pandas 19.2
-
-
-.. _whatsnew_030.api_breaking:
-
-Backwards incompatible API changes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. _whatsnew_030.bug_fixes:
 
