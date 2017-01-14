@@ -1,7 +1,7 @@
-.. _whatsnew_030:
+.. _whatsnew_031:
 
-v0.3.0 (January XX, 2017)
-----------------------------
+v0.3.1 (January 14, 2017)
+-------------------------
 
 This is a major release from 0.2.1 and includes new features and a number of bug fixes.
 
@@ -9,11 +9,11 @@ This is a major release from 0.2.1 and includes new features and a number of bug
 Highlights include:
 
 
-.. contents:: What's new in v0.3.0
+.. contents:: What's new in v0.3.1
     :local:
     :backlinks: none
 
-.. _whatsnew_030.enhancements:
+.. _whatsnew_031.enhancements:
 
 New features
 ~~~~~~~~~~~~
@@ -32,13 +32,7 @@ Other enhancements
 - Added support for Python 3.6.
 - Added support for pandas 19.2
 
-
-.. _whatsnew_030.api_breaking:
-
-Backwards incompatible API changes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. _whatsnew_030.bug_fixes:
+.. _whatsnew_031.bug_fixes:
 
 Bug Fixes
 ~~~~~~~~~
