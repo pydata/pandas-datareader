@@ -6,7 +6,7 @@ import gzip
 from pandas import read_csv
 from pandas import DataFrame
 from pandas import to_datetime
-from pandas.io.common import ZipFile
+import zipfile
 from pandas.compat import StringIO
 from pandas.core.common import is_number
 
@@ -65,7 +65,7 @@ class EdgarIndexReader(_BaseReader):
         except EOFError:
             raise RemoteDataError('FTP server has closed the connection.')
         zipf.seek(0)
-        with ZipFile(zipf, 'r') as zf:
+        with zipfile.ZipFile(zipf, 'r') as zf:
             data = zf.open(zf.namelist()[0]).read().decode()
 
         return StringIO(data)
