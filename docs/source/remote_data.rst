@@ -33,7 +33,7 @@ Currently the following sources are supported:
     - :ref:`Eurostat<remote_data.eurostat>`
     - :ref:`Thrift Savings Plan<remote_data.tsp>`
     - :ref:`Oanda currency historical rate<remote_data.oanda_curr_hist>`
-    - :ref:`Nasdaq Trader symbol definitions<remote_data.nasdaq_symbols`
+    - :ref:`Nasdaq Trader symbol definitions<remote_data.nasdaq_symbols>`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
 
@@ -453,7 +453,7 @@ Eurostat
 
 `Eurostat <http://ec.europa.eu/eurostat/>`__ are avaliable via ``DataReader``.
 
-Get ` Rail accidents by type of accident (ERA data) <http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=tran_sf_railac&lang=en>`_ data. The result will be a ``DataFrame`` which has ``DatetimeIndex`` as index and ``MultiIndex`` of attributes or countries as column. The target URL is:
+Get `Rail accidents by type of accident (ERA data) <http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=tran_sf_railac&lang=en>`_ data. The result will be a ``DataFrame`` which has ``DatetimeIndex`` as index and ``MultiIndex`` of attributes or countries as column. The target URL is:
 
 * http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=tran_sf_railac&lang=en
 
@@ -550,10 +550,10 @@ Download currency historical rate from `Oanda <https://www.oanda.com/>`__.
 Nasdaq Trader Symbol Definitions
 ==============================
 
-Download the latest symbols from `Nasdaq<ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqtraded.txt/>`__.
+Download the latest symbols from `Nasdaq <ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqtraded.txt>`_.
 
 Note that Nasdaq updates this file daily, and historical versions are not
-available. More information on the `field<http://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs/>` definitions.
+available. More information on the `field <http://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs/>`_ definitions.
 
 .. code-block:: python
 
