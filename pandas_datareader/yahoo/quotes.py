@@ -6,7 +6,7 @@ from pandas import DataFrame
 
 from pandas_datareader.base import _BaseReader
 
-_yahoo_codes = {'symbol': 's', 'last': 'l1', 'change_pct': 'p2', 'PE': 'r',
+_yahoo_codes = {'symbol': 's', 'last': 'l1', 'change_pct': 'p2', 'PE': 'r', 'PB': 'p6',
                 'time': 't1', 'short_ratio': 's7'}
 
 
