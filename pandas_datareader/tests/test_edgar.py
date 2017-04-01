@@ -65,7 +65,7 @@ class EdgarIndexReader(_BaseReader):
         if len(temp_dates.date) == 0:
             self._URL_YEAR_AND_QTR.append(str(self.start.year) + '/' + _URL_QTR[self.start.month] + '/')
         for date in temp_dates:
-            self._URL_YEAR_AND_QTR.append(str(date.year) + '/' + _URL_QTR[date.month]+'/')
+            self._URL_YEAR_AND_QTR.append(str(date.year) + '/' + _URL_QTR[date.month] + '/')
         return
 
     def _read_full_data(self):
