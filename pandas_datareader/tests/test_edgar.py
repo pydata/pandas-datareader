@@ -22,14 +22,14 @@ class TestEdgarIndex(tm.TestCase):
             raise nose.SkipTest(e)
 
     def test_get_nonzip_index_and_low_date(self):
-        #Dailies now defaults to uncompressed, since gz is not always available
         try:
             ed = web.DataReader('daily', 'edgar-index', '1994-06-30',
                                 '1994-07-02')
             print(type(ed))
             assert len(ed) > 200
-            exp_columns = pd.Index(['cik', 'company_name', 'form_type', 'date_filed', 'filename'],
-                dtype='object')
+            exp_columns = pd.Index(['cik', 'company_name',
+                                    'form_type', 'date_filed',
+                                    'filename'], dtype='object')
             tm.assert_index_equal(ed.columns, exp_columns)
 
         except RemoteDataError as e:
@@ -42,8 +42,9 @@ class TestEdgarIndex(tm.TestCase):
             print(type(ed))
             assert len(ed) < 1200
 
-            exp_columns = pd.Index(['cik', 'company_name', 'form_type', 'date_filed', 'filename'],
-                dtype='object')
+            exp_columns = pd.Index(['cik', 'company_name',
+                                    'form_type', 'date_filed',
+                                    'filename'], dtype='object')
             tm.assert_index_equal(ed.columns, exp_columns)
 
         except RemoteDataError as e:
