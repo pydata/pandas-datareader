@@ -45,6 +45,8 @@ def get_oanda_currency_historical_rates(start, end, quote_currency="USD", base_c
     })
     df = df.set_index("Date")
     df = df[::-1]
+    df.replace(regex=True, inplace=True, to_replace=r',', value=r'')
+    df = df.astype('float64')
     if reversed:
         df.columns = pd.Index(df.columns.map(reverse_pair))
         df = 1 / df
