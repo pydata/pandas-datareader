@@ -39,14 +39,14 @@ def get_oanda_currency_historical_rates(start, end, quote_currency="USD", base_c
     skiprows = 4
     skipfooter = 4
     usecols = range(len(base_currency) + 1)
-    df = pd.read_csv(StringIO(response.text), parse_dates=[0], skiprows=skiprows, skipfooter=skipfooter, usecols=usecols, engine='python')
+    df = pd.read_csv(StringIO(response.text), parse_dates=[0], skiprows=skiprows, skipfooter=skipfooter,
+                     usecols=usecols, engine='python', thousands=',')
     df = df.rename(columns={
         "End Date": "Date",
     })
     df = df.set_index("Date")
     df = df[::-1]
-    df.replace(regex=True, inplace=True, to_replace=r',', value=r'')
-    df = df.astype('float64')
+
     if reversed:
         df.columns = pd.Index(df.columns.map(reverse_pair))
         df = 1 / df
