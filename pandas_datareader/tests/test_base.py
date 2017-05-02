@@ -1,8 +1,13 @@
 import pytest
+import requests
+
 import pandas_datareader.base as base
 
 
 class TestBaseReader(object):
+    def test_requests_not_monkey_patched(self):
+        assert not hasattr(requests.Session(), 'stor')
+
     def test_valid_retry_count(self):
         with pytest.raises(ValueError):
             base._BaseReader([], retry_count='stuff')

@@ -22,3 +22,4 @@ Bug Fixes
 - Handle commas in large price quotes (:issue:`345`)
 - Test suite fixes for test_get_options_data (:issue:`352`)
 - Test suite fixes for test_wdi_download (:issue:`350`)
+- avoid monkey patching requests.Session (:issue:`301`)
