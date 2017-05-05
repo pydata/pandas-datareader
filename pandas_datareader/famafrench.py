@@ -1,7 +1,7 @@
 import tempfile
 import re
 import datetime as dt
-from pandas.io.common import ZipFile
+from zipfile import ZipFile
 from pandas.compat import lmap, StringIO
 from pandas import read_csv, to_datetime
 
