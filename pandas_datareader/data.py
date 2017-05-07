@@ -23,6 +23,8 @@ from pandas_datareader.enigma import EnigmaReader
 from pandas_datareader.oanda import get_oanda_currency_historical_rates
 from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
 
+from pandas_datareader.oandarest import OANDARestHistoricalInstrumentReader
+
 
 def get_data_fred(*args, **kwargs):
     return FredReader(*args, **kwargs).read()
@@ -57,7 +59,8 @@ def get_quote_google(*args, **kwargs):
 
 
 def DataReader(name, data_source=None, start=None, end=None,
-               retry_count=3, pause=0.001, session=None, access_key=None):
+               retry_count=3, pause=0.001, session=None,
+               access_key=None):
     """
     Imports data from a number of online sources.
 
@@ -67,11 +70,11 @@ def DataReader(name, data_source=None, start=None, end=None,
     Parameters
     ----------
     name : str or list of strs
-        the name of the dataset. Some data sources (yahoo, google, fred) will
+        the name of the dataset. Some data sources (yahoo, google, fred, oanda_historical_currency) will
         accept a list of names.
     data_source: {str, None}
         the data source ("yahoo", "yahoo-actions", "yahoo-dividends",
-        "google", "fred", "ff", or "edgar-index")
+        "google", "fred", "ff", or "edgar-index", oanda_historical_currency)
     start : {datetime, None}
         left boundary for range (defaults to 1/1/2010)
     end : {datetime, None}
@@ -83,6 +86,8 @@ def DataReader(name, data_source=None, start=None, end=None,
         single value given for symbol, represents the pause between retries.
     session : Session, default None
             requests.sessions.Session instance to be used
+    access_key: dict of object
+            Reader specific credentials
 
     Examples
     ----------
@@ -108,6 +113,13 @@ def DataReader(name, data_source=None, start=None, end=None,
     # Data from EDGAR index
     ed = DataReader("full", "edgar-index")
     ed2 = DataReader("daily", "edgar-index")
+
+    # OANDA REST
+    oa = DataReader("EUR_USD", data_source="oanda_rest_historical_currency",
+                    access_key={    "accountType"="practice",
+                                    "accountVersion="0"
+                                    "apiToken":"Your private API token" })
+
     """
     if data_source == "yahoo":
         return YahooDailyReader(symbols=name, start=start, end=end,
@@ -167,6 +179,12 @@ def DataReader(name, data_source=None, start=None, end=None,
             raise ValueError("Only the string 'symbols' is supported for "
                              "Nasdaq, not %r" % (name,))
         return get_nasdaq_symbols(retry_count=retry_count, pause=pause)
+    elif data_source == "oanda_historical_currency":
+        return OANDARestHistoricalInstrumentReader(
+            symbols=name, symbolsTypes=None,
+            start=start, end=end,
+            reader_compatible=True,
+            access_credential=access_key, session=session).read()
     else:
         msg = "data_source=%r is not implemented" % data_source
         raise NotImplementedError(msg)

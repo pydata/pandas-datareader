@@ -24,7 +24,11 @@ def readme():
         return f.read()
 
 INSTALL_REQUIRES = (
-    ['pandas', 'requests>=2.3.0', 'requests-file', 'requests-ftp']
+    ['pandas', 'requests>=2.3.0', 'requests-file', 'requests-ftp', 'oandapyV20>=0.1.0']
+)
+
+DEPENDENCY_LINKS = (
+    ['https://github.com/hootnot/oanda-api-v20/archive/af035ef99ae73d998172569bc702326d2df96d4e.zip#egg=oandapyV20-0.1.0']
 )
 
 setup(
@@ -53,6 +57,7 @@ setup(
     ],
     keywords='data',
     install_requires=INSTALL_REQUIRES,
+    dependency_links=DEPENDENCY_LINKS,
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     test_suite='tests',
     zip_safe=False,
