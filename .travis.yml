@@ -30,7 +30,7 @@ install:
   - conda update -q conda
   # Useful for debugging any issues with conda
   - conda info -a
-  - conda create -q -n test-environment python=$PYTHON pandas=$PANDAS nose coverage setuptools html5lib lxml
+  - conda create -q -n test-environment python=$PYTHON pandas=$PANDAS nose coverage setuptools html5lib lxml pytest pytest-cov
   - source activate test-environment
   - pip install beautifulsoup4
   - if [[ "$PYTHON" == "2.6" ]]; then
@@ -42,7 +42,7 @@ install:
 
 script:
     - export ENIGMA_API_KEY=$ENIGMA_API_KEY
-    - nosetests -v --with-coverage --cover-package=pandas_datareader
+    - pytest -s --cov=pandas_datareader --cov-report xml:/tmp/cov-datareader.xml --junitxml=/tmp/datareader.xml
     - flake8 --version
     - flake8 --ignore E501 pandas_datareader
 
