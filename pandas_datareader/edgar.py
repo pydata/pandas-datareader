@@ -3,16 +3,13 @@ import datetime as dt
 from ftplib import FTP
 import gzip
 
-from pandas import read_csv
-from pandas import DataFrame
-from pandas import to_datetime
 from zipfile import ZipFile
 from pandas.compat import StringIO
-from pandas.api.types import is_number
+from pandas import read_csv, DataFrame, to_datetime
 
 from pandas_datareader.base import _BaseReader
-from pandas_datareader.compat import BytesIO
 from pandas_datareader._utils import RemoteDataError
+from pandas_datareader.compat import BytesIO, is_number
 
 
 _URL_FULL = 'edgar/full-index/master.zip'
