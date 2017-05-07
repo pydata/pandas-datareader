@@ -6,9 +6,9 @@ import gzip
 from pandas import read_csv
 from pandas import DataFrame
 from pandas import to_datetime
-from pandas.io.common import ZipFile
+from zipfile import ZipFile
 from pandas.compat import StringIO
-from pandas.core.common import is_number
+from pandas.api.types import is_number
 
 from pandas_datareader.base import _BaseReader
 from pandas_datareader.compat import BytesIO

@@ -2,7 +2,6 @@ import datetime as dt
 from distutils.version import LooseVersion
 
 import pandas as pd
-from pandas.core.common import PandasError
 from pandas import to_datetime
 
 import requests
@@ -45,7 +44,7 @@ class SymbolWarning(UserWarning):
     pass
 
 
-class RemoteDataError(PandasError, IOError):
+class RemoteDataError(IOError):
     pass
 
 
