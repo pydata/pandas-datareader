@@ -1,4 +1,4 @@
-import nose
+import pytest
 
 from datetime import date
 
@@ -39,7 +39,7 @@ class TestGoogleOptions(tm.TestCase):
         try:
             options = self.goog.get_options_data(expiry=self.goog.expiry_dates[0])
         except RemoteDataError as e:  # pragma: no cover
-            raise nose.SkipTest(e)
+            raise pytest.skip(e)
         self.assertTrue(len(options) > 10)
 
         self.assert_option_result(options)
@@ -55,7 +55,7 @@ class TestGoogleOptions(tm.TestCase):
         try:
             dates = self.goog.expiry_dates
         except RemoteDataError as e:  # pragma: no cover
-            raise nose.SkipTest(e)
+            pytest.skip(e)
 
         self.assertTrue(len(dates) >= 4)
         self.assertIsInstance(dates, list)
@@ -84,8 +84,3 @@ class TestGoogleOptions(tm.TestCase):
     def test_get_options_data_with_year(self):
         with tm.assertRaises(NotImplementedError):
             self.goog.get_options_data(year=2016)
-
-
-if __name__ == '__main__':
-    nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
-                   exit=False)  # pragma: no cover

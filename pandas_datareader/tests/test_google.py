@@ -1,18 +1,18 @@
-from datetime import datetime
+import pytest
 
 import numpy as np
 import pandas as pd
-from pandas import compat
 import pandas_datareader.data as web
+
+from pandas import compat
+from datetime import datetime
 from pandas_datareader.data import GoogleDailyReader
-from pandas_datareader._utils import (RemoteDataError, SymbolWarning)
+from pandas_datareader._utils import RemoteDataError, SymbolWarning
 
 import requests
 
 import warnings
-import nose
 import pandas.util.testing as tm
-from nose.tools import assert_equal
 from pandas.util.testing import assert_series_equal
 
 
@@ -21,9 +21,12 @@ def assert_n_failed_equals_n_null_columns(wngs, obj, cls=SymbolWarning):
                                   compat.iteritems(obj)))
     n_all_nan_cols = all_nan_cols.sum()
     valid_warnings = pd.Series([wng for wng in wngs if wng.category == cls])
-    assert_equal(len(valid_warnings), n_all_nan_cols)
+
+    assert len(valid_warnings) == n_all_nan_cols
+
     failed_symbols = all_nan_cols[all_nan_cols].index
     msgs = valid_warnings.map(lambda x: x.message)
+
     assert msgs.str.contains('|'.join(failed_symbols)).all()
 
 
@@ -34,7 +37,7 @@ class TestGoogle(tm.TestCase):
         super(TestGoogle, cls).setUpClass()
         cls.locales = tm.get_locales(prefix='en_US')
         if not cls.locales:  # pragma: no cover
-            raise nose.SkipTest("US English locale not available for testing")
+            pytest.skip("US English locale not available for testing")
 
     @classmethod
     def tearDownClass(cls):
@@ -125,7 +128,7 @@ class TestGoogle(tm.TestCase):
                 assert_n_failed_equals_n_null_columns(w, result)
 
     def test_dtypes(self):
-        # GH3995, #GH8980
+        # see gh-3995, gh-8980
         data = web.get_data_google('F', start='JAN-01-10', end='JAN-27-13')
         assert np.issubdtype(data.Open.dtype, np.number)
         assert np.issubdtype(data.Close.dtype, np.number)
@@ -134,7 +137,7 @@ class TestGoogle(tm.TestCase):
         assert np.issubdtype(data.Volume.dtype, np.number)
 
     def test_unicode_date(self):
-        # GH8967
+        # see gh-8967
         data = web.get_data_google('F', start='JAN-01-10', end='JAN-27-13')
         self.assertEqual(data.index.name, 'Date')
 
@@ -151,8 +154,3 @@ class TestGoogle(tm.TestCase):
 
         with tm.assertRaises(ValueError):
             web.get_data_google('F', retry_count=-1)
-
-
-if __name__ == '__main__':
-    nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
-                   exit=False)  # pragma: no cover

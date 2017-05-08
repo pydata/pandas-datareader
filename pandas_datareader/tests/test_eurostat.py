@@ -1,5 +1,4 @@
-import nose
-import sys
+import pytest
 
 import numpy as np
 import pandas as pd
@@ -10,12 +9,6 @@ from pandas_datareader.compat import PANDAS_0170
 
 
 class TestEurostat(tm.TestCase):
-
-    def setUp(self):
-
-        if sys.version_info < (2, 7, 0):
-            raise nose.SkipTest("Doesn't support Python 2.6 because of"
-                                "ElementTree incompat")
 
     def test_get_cdh_e_fos(self):
         # Employed doctorate holders in non managerial and non professional
@@ -72,10 +65,10 @@ class TestEurostat(tm.TestCase):
             tm.assert_series_equal(result, expected)
 
     def test_get_nrg_pc_202(self):
-        # GH 149
+        # see gh-149
 
         if not PANDAS_0170:
-            raise nose.SkipTest("skip because of comparison failure")
+            pytest.skip("skip because of comparison failure")
 
         df = web.DataReader('nrg_pc_202', 'eurostat',
                             start=pd.Timestamp('2010-01-01'),
@@ -97,14 +90,9 @@ class TestEurostat(tm.TestCase):
         tm.assert_series_equal(df[name], exp)
 
     def test_get_prc_hicp_manr_exceeds_limit(self):
-        # GH 149
+        # see gh-149
         msg = 'Query size exceeds maximum limit'
         with tm.assertRaisesRegexp(ValueError, msg):
             web.DataReader('prc_hicp_manr', 'eurostat',
                            start=pd.Timestamp('2000-01-01'),
                            end=pd.Timestamp('2013-01-01'))
-
-
-if __name__ == '__main__':
-    nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
-                   exit=False)

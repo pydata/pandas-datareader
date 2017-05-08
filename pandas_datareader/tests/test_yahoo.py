@@ -5,10 +5,9 @@ import numpy as np
 import pandas as pd
 from pandas import DataFrame
 
-import nose
+import pytest
 import pandas.util.testing as tm
 from pandas.util.testing import (assert_series_equal, assert_frame_equal)
-from pandas_datareader.tests._utils import _skip_if_no_lxml
 
 import pandas_datareader.data as web
 from pandas_datareader.data import YahooDailyReader
@@ -19,7 +18,7 @@ class TestYahoo(tm.TestCase):
     @classmethod
     def setUpClass(cls):
         super(TestYahoo, cls).setUpClass()
-        _skip_if_no_lxml()
+        pytest.importorskip("lxml")
 
     def test_yahoo(self):
         # asserts that yahoo is minimally working and that it throws
@@ -56,25 +55,28 @@ class TestYahoo(tm.TestCase):
         del _yahoo_codes['name']
         self.assertEqual(df['name'][0], 'Royal Gold, Inc.')
 
+    @pytest.mark.skip('Unreliable test, receive partial '
+                      'components back for dow_jones')
     def test_get_components_dow_jones(self):  # pragma: no cover
-        raise nose.SkipTest('unreliable test, receive partial components back for dow_jones')
-
         df = web.get_components_yahoo('^DJI')  # Dow Jones
         assert isinstance(df, pd.DataFrame)
         self.assertEqual(len(df), 30)
 
+    @pytest.mark.skip('Unreliable test, receive partial '
+                      'components back for dax')
     def test_get_components_dax(self):  # pragma: no cover
-        raise nose.SkipTest('unreliable test, receive partial components back for dax')
-
         df = web.get_components_yahoo('^GDAXI')  # DAX
         assert isinstance(df, pd.DataFrame)
+
         self.assertEqual(len(df), 30)
         self.assertEqual(df[df.name.str.contains('adidas', case=False)].index,
                          'ADS.DE')
 
+    @pytest.mark.skip('Unreliable test, receive partial '
+                      'components back for nasdaq_100')
     def test_get_components_nasdaq_100(self):  # pragma: no cover
-        # as of 7/12/13 the conditional will test false because the link is invalid
-        raise nose.SkipTest('unreliable test, receive partial components back for nasdaq_100')
+        # As of 7/12/13, the conditional will
+        # return false because the link is invalid
 
         df = web.get_components_yahoo('^NDX')  # NASDAQ-100
         assert isinstance(df, pd.DataFrame)
@@ -205,8 +207,3 @@ class TestYahoo(tm.TestCase):
         end = datetime(2015, 5, 9)
         result = web.DataReader(['AAPL', 'F'], 'yahoo-actions', start, end)
         assert isinstance(result, pd.Panel)
-
-
-if __name__ == '__main__':
-    nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
-                   exit=False)  # pragma: no cover

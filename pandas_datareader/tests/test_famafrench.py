@@ -1,11 +1,10 @@
-import nose
+import pytest
+
 import pandas as pd
 import pandas.util.testing as tm
 
 import pandas_datareader.data as web
 from pandas_datareader.famafrench import get_available_datasets
-
-from pandas_datareader.tests._utils import _skip_if_no_lxml
 
 
 class TestFamaFrench(tm.TestCase):
@@ -16,13 +15,14 @@ class TestFamaFrench(tm.TestCase):
             '6_Portfolios_2x3', 'Portfolios_Formed_on_ME',
             'Prior_2-12_Breakpoints', 'ME_Breakpoints',
         ]
+
         for name in keys:
             ff = web.DataReader(name, 'famafrench')
             self.assertTrue('DESCR' in ff)
             self.assertTrue(len(ff) > 1)
 
     def test_get_available_datasets(self):
-        _skip_if_no_lxml()
+        pytest.importorskip("lxml")
         l = get_available_datasets()
         self.assertTrue(len(l) > 100)
 
@@ -80,8 +80,3 @@ class TestFamaFrench(tm.TestCase):
 
         exp_index = pd.period_range('2010-01-01', '2010-12-01', freq='M', name='Date')
         tm.assert_index_equal(results[0].index, exp_index)
-
-
-if __name__ == '__main__':
-    nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
-                   exit=False)

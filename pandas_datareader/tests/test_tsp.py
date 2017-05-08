@@ -1,4 +1,3 @@
-import nose
 import pandas.util.testing as tm
 import datetime as dt
 
@@ -23,8 +22,3 @@ class TestTSPFunds(tm.TestCase):
         r.text = ' a,b '
         ret = tsp.TSPReader._sanitize_response(r)
         assert ret == 'a,b'
-
-
-if __name__ == '__main__':
-    nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
-                   exit=False)
