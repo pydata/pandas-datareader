@@ -8,7 +8,6 @@ import requests
 
 from pandas_datareader.wb import (search, download, get_countries,
                                   get_indicators, WorldBankReader)
-from pandas_datareader.compat import PANDAS_0170, PANDAS_0160
 
 
 class TestWB(tm.TestCase):
@@ -56,17 +55,12 @@ class TestWB(tm.TestCase):
         expected = pd.DataFrame(expected)
         # Round, to ignore revisions to data.
         expected = np.round(expected, decimals=-3)
-        if PANDAS_0170:
-            expected = expected.sort_index()
-        else:
-            expected = expected.sort()
+        expected = expected.sort_index()
 
         result = download(country=cntry_codes, indicator=inds,
                           start=2003, end=2004, errors='ignore')
-        if PANDAS_0170:
-            result = result.sort_index()
-        else:
-            result = result.sort()
+        result = result.sort_index()
+
         # Round, to ignore revisions to data.
         result = np.round(result, decimals=-3)
 
@@ -76,10 +70,8 @@ class TestWB(tm.TestCase):
         # pass start and end as string
         result = download(country=cntry_codes, indicator=inds,
                           start='2003', end='2004', errors='ignore')
-        if PANDAS_0170:
-            result = result.sort_index()
-        else:
-            result = result.sort()
+        result = result.sort_index()
+
         # Round, to ignore revisions to data.
         result = np.round(result, decimals=-3)
         tm.assert_frame_equal(result, expected)
@@ -94,19 +86,13 @@ class TestWB(tm.TestCase):
         expected = pd.DataFrame(expected)
         # Round, to ignore revisions to data.
         expected = np.round(expected, decimals=-3)
-        if PANDAS_0170:
-            expected = expected.sort_index()
-        else:
-            expected = expected.sort()
+        expected = expected.sort_index()
 
         cntry_codes = 'JP'
         inds = 'NY.GDP.PCAP.CD'
         result = download(country=cntry_codes, indicator=inds,
                           start=2000, end=2004, errors='ignore')
-        if PANDAS_0170:
-            result = result.sort_index()
-        else:
-            result = result.sort()
+        result = result.sort_index()
         result = np.round(result, decimals=-3)
 
         expected.index.names = ['country', 'year']
@@ -114,10 +100,7 @@ class TestWB(tm.TestCase):
 
         result = WorldBankReader(inds, countries=cntry_codes,
                                  start=2000, end=2004, errors='ignore').read()
-        if PANDAS_0170:
-            result = result.sort_index()
-        else:
-            result = result.sort()
+        result = result.sort_index()
         result = np.round(result, decimals=-3)
         tm.assert_frame_equal(result, expected)
 
@@ -126,30 +109,28 @@ class TestWB(tm.TestCase):
         inds = 'NY.GDP.PCAP.CD'
 
         with tm.assertRaisesRegexp(ValueError, "Invalid Country Code\\(s\\): XX"):
-            result = download(country=cntry_codes, indicator=inds,
-                              start=2003, end=2004, errors='raise')
+            download(country=cntry_codes, indicator=inds,
+                     start=2003, end=2004, errors='raise')
 
-        if PANDAS_0160:
-            # assert_produces_warning doesn't exists in prior versions
-            with self.assert_produces_warning():
-                result = download(country=cntry_codes, indicator=inds,
-                                  start=2003, end=2004, errors='warn')
-                self.assertTrue(isinstance(result, pd.DataFrame))
-                self.assertEqual(len(result), 2)
+        # assert_produces_warning doesn't exists in prior versions
+        with self.assert_produces_warning():
+            result = download(country=cntry_codes, indicator=inds,
+                              start=2003, end=2004, errors='warn')
+            self.assertTrue(isinstance(result, pd.DataFrame))
+            self.assertEqual(len(result), 2)
 
         cntry_codes = ['USA']
         inds = ['NY.GDP.PCAP.CD', 'BAD_INDICATOR']
 
         with tm.assertRaisesRegexp(ValueError, "The provided parameter value is not valid\\. Indicator: BAD_INDICATOR"):
-            result = download(country=cntry_codes, indicator=inds,
-                              start=2003, end=2004, errors='raise')
+            download(country=cntry_codes, indicator=inds,
+                     start=2003, end=2004, errors='raise')
 
-        if PANDAS_0160:
-            with self.assert_produces_warning():
-                result = download(country=cntry_codes, indicator=inds,
-                                  start=2003, end=2004, errors='warn')
-                self.assertTrue(isinstance(result, pd.DataFrame))
-                self.assertEqual(len(result), 2)
+        with self.assert_produces_warning():
+            result = download(country=cntry_codes, indicator=inds,
+                              start=2003, end=2004, errors='warn')
+            self.assertTrue(isinstance(result, pd.DataFrame))
+            self.assertEqual(len(result), 2)
 
     def test_wdi_download_w_retired_indicator(self):
 
