@@ -8,7 +8,7 @@ import requests
 
 from pandas_datareader.wb import (search, download, get_countries,
                                   get_indicators, WorldBankReader)
-from pandas_datareader._utils import PANDAS_0170, PANDAS_0160, PANDAS_0140
+from pandas_datareader.compat import PANDAS_0170, PANDAS_0160
 
 
 class TestWB(tm.TestCase):
@@ -70,12 +70,7 @@ class TestWB(tm.TestCase):
         # Round, to ignore revisions to data.
         result = np.round(result, decimals=-3)
 
-        if PANDAS_0140:
-            expected.index.names = ['country', 'year']
-        else:
-            # prior versions doesn't allow to set multiple names to MultiIndex
-            # Thus overwrite it with the result
-            expected.index = result.index
+        expected.index.names = ['country', 'year']
         tm.assert_frame_equal(result, expected)
 
         # pass start and end as string
@@ -114,13 +109,7 @@ class TestWB(tm.TestCase):
             result = result.sort()
         result = np.round(result, decimals=-3)
 
-        if PANDAS_0140:
-            expected.index.names = ['country', 'year']
-        else:
-            # prior versions doesn't allow to set multiple names to MultiIndex
-            # Thus overwrite it with the result
-            expected.index = result.index
-
+        expected.index.names = ['country', 'year']
         tm.assert_frame_equal(result, expected)
 
         result = WorldBankReader(inds, countries=cntry_codes,
