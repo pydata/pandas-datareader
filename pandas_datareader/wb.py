@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 
 from pandas_datareader.base import _BaseReader
-from pandas_datareader._utils import PANDAS_0170
+from pandas_datareader.compat import PANDAS_0170
 
 # This list of country codes was pulled from wikipedia during October 2014.
 # While some exceptions do exist, it is the best proxy for countries supported

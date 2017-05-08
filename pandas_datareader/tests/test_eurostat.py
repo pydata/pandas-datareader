@@ -6,7 +6,7 @@ import pandas as pd
 import pandas.util.testing as tm
 import pandas_datareader.data as web
 
-from pandas_datareader._utils import PANDAS_0170
+from pandas_datareader.compat import PANDAS_0170
 
 
 class TestEurostat(tm.TestCase):
