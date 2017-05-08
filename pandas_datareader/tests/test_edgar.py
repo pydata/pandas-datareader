@@ -1,17 +1,21 @@
-import nose
+import pytest
 
 import pandas as pd
 import pandas.util.testing as tm
-
 import pandas_datareader.data as web
+
 from pandas_datareader._utils import RemoteDataError
 
 
 class TestEdgarIndex(tm.TestCase):
 
+    @classmethod
+    def setup_class(cls):
+        # As of December 31, SEC has disabled ftp access to EDGAR.
+        # Disabling tests until re-write.
+        pytest.skip("Disabling tests until re-write.")
+
     def test_get_full_index(self):
-        # As of December 31, SEC has disabled ftp access to EDGAR.  Disabling tests until re-write
-        raise nose.SkipTest()
         try:
             ed = web.DataReader('full', 'edgar-index')
             assert len(ed) > 1000
@@ -21,11 +25,9 @@ class TestEdgarIndex(tm.TestCase):
             tm.assert_index_equal(ed.columns, exp_columns)
 
         except RemoteDataError as e:
-            raise nose.SkipTest(e)
+            pytest.skip(e)
 
     def test_get_nonzip_index_and_low_date(self):
-        # As of December 31, SEC has disabled ftp access to EDGAR.  Disabling tests until re-write
-        raise nose.SkipTest()
         try:
             ed = web.DataReader('daily', 'edgar-index', '1994-06-30',
                                 '1994-07-02')
@@ -39,21 +41,18 @@ class TestEdgarIndex(tm.TestCase):
             tm.assert_index_equal(ed.columns, exp_columns)
 
         except RemoteDataError as e:
-            raise nose.SkipTest(e)
+            pytest.skip(e)
 
     def test_get_gz_index_and_no_date(self):
-        # the test causes Travis timeout
-        raise nose.SkipTest()
+        # TODO: Rewrite, as this test causes Travis to timeout.
 
         try:
             ed = web.DataReader('daily', 'edgar-index')
             assert len(ed) > 2000
         except RemoteDataError as e:
-            raise nose.SkipTest(e)
+            pytest.skip(e)
 
     def test_6_digit_date(self):
-        # As of December 31, SEC has disabled ftp access to EDGAR.  Disabling tests until re-write
-        raise nose.SkipTest()
         try:
             ed = web.DataReader('daily', 'edgar-index', start='1998-05-18',
                                 end='1998-05-18')
@@ -70,9 +69,4 @@ class TestEdgarIndex(tm.TestCase):
             tm.assert_index_equal(ed.columns, exp_columns)
 
         except RemoteDataError as e:
-            raise nose.SkipTest(e)
-
-
-if __name__ == '__main__':
-    nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
-                   exit=False)
+            pytest.skip(e)

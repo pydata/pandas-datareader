@@ -5,7 +5,7 @@ import sys
 import numpy as np
 import pandas as pd
 
-import nose
+import pytest
 import pandas.util.testing as tm
 
 import pandas_datareader.data as web
@@ -66,7 +66,7 @@ class TestYahooOptions(tm.TestCase):
         try:
             options = self.aapl.get_options_data(expiry=self.expiry)
         except RemoteDataError as e:  # pragma: no cover
-            raise nose.SkipTest(e)
+            pytest.skip(e)
 
         self.assert_option_result(options)
 
@@ -75,7 +75,7 @@ class TestYahooOptions(tm.TestCase):
             options = self.aapl.get_near_stock_price(call=True, put=True,
                                                      expiry=self.expiry)
         except RemoteDataError as e:  # pragma: no cover
-            raise nose.SkipTest(e)
+            pytest.skip(e)
 
         self.assert_option_result(options)
 
@@ -87,7 +87,7 @@ class TestYahooOptions(tm.TestCase):
         try:
             calls = self.aapl.get_call_data(expiry=self.expiry)
         except RemoteDataError as e:  # pragma: no cover
-            raise nose.SkipTest(e)
+            pytest.skip(e)
 
         self.assert_option_result(calls)
         self.assertTrue(calls.index.levels[2][0], 'call')
@@ -96,7 +96,7 @@ class TestYahooOptions(tm.TestCase):
         try:
             puts = self.aapl.get_put_data(expiry=self.expiry)
         except RemoteDataError as e:  # pragma: no cover
-            raise nose.SkipTest(e)
+            pytest.skip(e)
 
         self.assert_option_result(puts)
         self.assertTrue(puts.index.levels[2][0], 'put')
@@ -105,14 +105,14 @@ class TestYahooOptions(tm.TestCase):
         try:
             dates = self.aapl._get_expiry_dates()
         except RemoteDataError as e:  # pragma: no cover
-            raise nose.SkipTest(e)
+            pytest.skip(e)
         self.assertTrue(len(dates) > 1)
 
     def test_get_all_data(self):
         try:
             data = self.aapl.get_all_data(put=True)
         except RemoteDataError as e:  # pragma: no cover
-            raise nose.SkipTest(e)
+            pytest.skip(e)
         self.assertTrue(len(data) > 1)
 
         self.assert_option_result(data)
@@ -121,7 +121,7 @@ class TestYahooOptions(tm.TestCase):
         try:
             data = self.aapl.get_call_data(expiry=self.aapl.expiry_dates)
         except RemoteDataError as e:  # pragma: no cover
-            raise nose.SkipTest(e)
+            pytest.skip(e)
         self.assertTrue(len(data) > 1)
 
         self.assert_option_result(data)
@@ -130,7 +130,7 @@ class TestYahooOptions(tm.TestCase):
         try:
             data = self.aapl.get_all_data(call=True, put=False)
         except RemoteDataError as e:  # pragma: no cover
-            raise nose.SkipTest(e)
+            pytest.skip(e)
         self.assertTrue(len(data) > 1)
 
         self.assert_option_result(data)
@@ -141,7 +141,7 @@ class TestYahooOptions(tm.TestCase):
             options_object = web.Options('^spxpm', 'yahoo')
             quote_price = options_object.underlying_price
         except RemoteDataError as e:  # pragma: no cover
-            raise nose.SkipTest(e)
+            pytest.skip(e)
         self.assertTrue(isinstance(quote_price, float))
 
         # Tests the weekend quote time format
@@ -175,12 +175,12 @@ class TestYahooOptions(tm.TestCase):
         try:
             data = self.aapl.get_call_data(month=self.month, year=self.year)
         except RemoteDataError as e:  # pragma: no cover
-            raise nose.SkipTest(e)
+            pytest.skip(e)
 
         self.assertTrue(len(data) > 1)
 
         if sys.version_info[0] == 2 and sys.version_info[1] == 6:
-            raise nose.SkipTest('skip dtype check in python 2.6')
+            pytest.skip('skip dtype check in python 2.6')
         self.assertEqual(data.index.levels[0].dtype, 'float64')  # GH168
 
         self.assert_option_result(data)
@@ -189,8 +189,3 @@ class TestYahooOptions(tm.TestCase):
         # GH22
         empty = self.aapl._process_data(self.aapl._parse_url(self.json2))
         self.assertTrue(len(empty) == 0)
-
-
-if __name__ == '__main__':
-    nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
-                   exit=False)  # pragma: no cover

@@ -1,13 +1,12 @@
 import os
+import pytest
 
 from requests.exceptions import HTTPError
 
-import nose
 import pandas.util.testing as tm
-from pandas_datareader.tests._utils import _skip_if_no_lxml
 
-import pandas_datareader.data as web
 import pandas_datareader as pdr
+import pandas_datareader.data as web
 
 TEST_API_KEY = os.getenv('ENIGMA_API_KEY')
 
@@ -17,7 +16,7 @@ class TestEnigma(tm.TestCase):
     @classmethod
     def setUpClass(cls):
         super(TestEnigma, cls).setUpClass()
-        _skip_if_no_lxml()
+        pytest.importorskip("lxml")
 
     def test_enigma_datareader(self):
         try:
@@ -25,7 +24,7 @@ class TestEnigma(tm.TestCase):
                                 'enigma', access_key=TEST_API_KEY)
             self.assertTrue('serialid' in df.columns)
         except HTTPError as e:  # pragma: no cover
-            raise nose.SkipTest(e)
+            pytest.skip(e)
 
     def test_enigma_get_data_enigma(self):
         try:
@@ -33,7 +32,7 @@ class TestEnigma(tm.TestCase):
                 'enigma.inspections.restaurants.fl', TEST_API_KEY)
             self.assertTrue('serialid' in df.columns)
         except HTTPError as e:  # pragma: no cover
-            raise nose.SkipTest(e)
+            pytest.skip(e)
 
     def test_bad_key(self):
         with tm.assertRaises(HTTPError):
@@ -46,8 +45,3 @@ class TestEnigma(tm.TestCase):
             web.DataReader('enigma.inspections.restaurants.fllzzy',
                            'enigma',
                            access_key=TEST_API_KEY)
-
-
-if __name__ == '__main__':
-    nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
-                   exit=False)

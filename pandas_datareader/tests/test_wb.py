@@ -1,5 +1,5 @@
-import nose
 import time
+import pytest
 
 import numpy as np
 import pandas as pd
@@ -157,11 +157,13 @@ class TestWB(tm.TestCase):
         # Despite showing up in the search feature, and being listed online,
         # the api calls to GDPPCKD don't work in their own query builder, nor
         # pandas module.  GDPPCKD used to be a common symbol.
+        #
         # This test is written to ensure that error messages to pandas users
         # continue to make sense, rather than a user getting some missing
         # key error, cause their JSON message format changed.  If
+        #
         # World bank ever finishes the deprecation of this symbol,
-        # this nose test should still pass.
+        # this test should still pass.
 
         inds = ['GDPPCKD']
 
@@ -171,13 +173,13 @@ class TestWB(tm.TestCase):
         # If for some reason result actually ever has data, it's cause WB
         # fixed the issue with this ticker.  Find another bad one.
         except ValueError as e:
-            raise nose.SkipTest("No indicators returned data: {0}".format(e))
+            pytest.skip("No indicators returned data: {0}".format(e))
 
         # if it ever gets here, it means WB unretired the indicator.
         # even if they dropped it completely, it would still get caught above
         # or the WB API changed somehow in a really unexpected way.
         if len(result) > 0:  # pragma: no cover
-            raise nose.SkipTest("Invalid results")
+            pytest.skip("Invalid results")
 
     def test_wdi_download_w_crash_inducing_countrycode(self):
 
@@ -188,12 +190,12 @@ class TestWB(tm.TestCase):
             result = download(country=cntry_codes, indicator=inds,
                               start=2003, end=2004, errors='ignore')
         except ValueError as e:
-            raise nose.SkipTest("No indicators returned data: {0}".format(e))
+            pytest.skip("No indicators returned data: {0}".format(e))
 
         # if it ever gets here, it means the country code XXX got used by WB
         # or the WB API changed somehow in a really unexpected way.
         if len(result) > 0:  # pragma: no cover
-            raise nose.SkipTest("Invalid results")
+            pytest.skip("Invalid results")
 
     def test_wdi_get_countries(self):
         result1 = get_countries()
@@ -222,8 +224,3 @@ class TestWB(tm.TestCase):
             # assert_index_equal doesn't exists
             self.assertTrue(result.columns.equals(exp_col))
             self.assertTrue(len(result) > 10000)
-
-
-if __name__ == '__main__':
-    nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
-                   exit=False)  # pragma: no cover

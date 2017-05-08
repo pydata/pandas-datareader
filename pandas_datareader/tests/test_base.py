@@ -1,4 +1,3 @@
-import nose
 import pandas.util.testing as tm
 import pandas_datareader.base as base
 
@@ -26,8 +25,3 @@ class TestDailyBaseReader(tm.TestCase):
         with tm.assertRaises(NotImplementedError):
             b = base._DailyBaseReader()
             b._get_params()
-
-
-if __name__ == '__main__':
-    nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
-                   exit=False)

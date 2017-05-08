@@ -1,14 +1,7 @@
-import nose
+import pandas.util.testing as tm
+import pandas_datareader.data as web
 
 from pandas import DataFrame
-try:
-    from pandas.util.testing import assert_produces_warning
-except ImportError:  # pragma: no cover
-    assert_produces_warning = None
-
-import pandas.util.testing as tm
-
-import pandas_datareader.data as web
 from pandas_datareader.data import DataReader
 
 
@@ -22,11 +15,8 @@ class TestOptionsWarnings(tm.TestCase):
         super(TestOptionsWarnings, cls).tearDownClass()
 
     def test_options_source_warning(self):
-        if not assert_produces_warning:  # pragma: no cover
-            raise nose.SkipTest("old version of pandas without "
-                                "compat.assert_produces_warning")
-        with assert_produces_warning():
-            aapl = web.Options('aapl')  # noqa
+        with tm.assert_produces_warning():
+            web.Options('aapl')
 
 
 class TestDataReader(tm.TestCase):
@@ -52,8 +42,3 @@ class TestDataReader(tm.TestCase):
 
     def test_not_implemented(self):
         self.assertRaises(NotImplementedError, DataReader, "NA", "NA")
-
-
-if __name__ == '__main__':
-    nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
-                   exit=False)  # pragma: no cover
