@@ -55,7 +55,7 @@ test:
 
   # requires:
     # Put any additional test requirements here.  For example
-    # - nose
+    # - pytest
 
 about:
   home: https://github.com/pydata/pandas-datareader

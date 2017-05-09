@@ -13,11 +13,6 @@ from pandas_datareader.io.sdmx import read_sdmx, _read_sdmx_dsd
 class TestSDMX(tm.TestCase):
 
     def setUp(self):
-
-        if sys.version_info < (2, 7, 0):
-            import nose
-            raise nose.SkipTest("Doesn't support Python 2.6 because of ElementTree incompat")
-
         self.dirpath = tm.get_data_path()
 
     def test_tourism(self):
@@ -42,8 +37,3 @@ class TestSDMX(tm.TestCase):
                            [25.49, np.nan, 39.05, np.nan]])
         expected = pd.DataFrame(values, index=exp_idx, columns=exp_col)
         tm.assert_frame_equal(df, expected)
-
-
-if __name__ == '__main__':
-    import nose
-    nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'], exit=False)
