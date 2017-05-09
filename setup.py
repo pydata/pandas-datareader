@@ -24,7 +24,7 @@ def readme():
         return f.read()
 
 INSTALL_REQUIRES = (
-    ['pandas', 'requests>=2.3.0', 'requests-file', 'requests-ftp']
+    ['pandas>=0.17.0', 'requests>=2.3.0', 'requests-file', 'requests-ftp']
 )
 
 setup(
@@ -47,8 +47,8 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Scientific/Engineering',
     ],
     keywords='data',
