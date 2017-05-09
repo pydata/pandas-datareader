@@ -18,24 +18,24 @@ class TestFamaFrench(tm.TestCase):
 
         for name in keys:
             ff = web.DataReader(name, 'famafrench')
-            self.assertTrue('DESCR' in ff)
-            self.assertTrue(len(ff) > 1)
+            assert 'DESCR' in ff
+            assert len(ff) > 1
 
     def test_get_available_datasets(self):
         pytest.importorskip("lxml")
         l = get_available_datasets()
-        self.assertTrue(len(l) > 100)
+        assert len(l) > 100
 
     def test_index(self):
         ff = web.DataReader('F-F_Research_Data_Factors', 'famafrench')
-        self.assertEqual(ff[0].index.freq, 'M')
-        self.assertEqual(ff[1].index.freq, 'A-DEC')
+        assert ff[0].index.freq == 'M'
+        assert ff[1].index.freq == 'A-DEC'
 
     def test_f_f_research(self):
         results = web.DataReader("F-F_Research_Data_Factors", "famafrench",
                                  start='2010-01-01', end='2010-12-01')
-        self.assertTrue(isinstance(results, dict))
-        self.assertEqual(len(results), 3)
+        assert isinstance(results, dict)
+        assert len(results) == 3
 
         exp = pd.DataFrame({'Mkt-RF': [-3.36, 3.4, 6.31, 2., -7.89, -5.56,
                                        6.93, -4.77, 9.54, 3.88, 0.6, 6.82],
@@ -45,38 +45,45 @@ class TestFamaFrench(tm.TestCase):
                                     -1.96, -3.12, -2.52, -0.91, 3.78],
                             'RF': [0., 0., 0.01, 0.01, 0.01, 0.01, 0.01,
                                    0.01, 0.01, 0.01, 0.01, 0.01]},
-                           index=pd.period_range('2010-01-01', '2010-12-01', freq='M', name='Date'),
+                           index=pd.period_range('2010-01-01', '2010-12-01',
+                                                 freq='M', name='Date'),
                            columns=['Mkt-RF', 'SMB', 'HML', 'RF'])
         tm.assert_frame_equal(results[0], exp)
 
     def test_me_breakpoints(self):
         results = web.DataReader("ME_Breakpoints", "famafrench",
                                  start='2010-01-01', end='2010-12-01')
-        self.assertTrue(isinstance(results, dict))
-        self.assertEqual(len(results), 2)
-        self.assertEqual(results[0].shape, (12, 21))
+        assert isinstance(results, dict)
+        assert len(results) == 2
+        assert results[0].shape == (12, 21)
 
-        exp_columns = pd.Index(['Count', (0, 5), (5, 10), (10, 15), (15, 20), (20, 25),
-                                (25, 30), (30, 35), (35, 40), (40, 45), (45, 50), (50, 55),
-                                (55, 60), (60, 65), (65, 70), (70, 75), (75, 80), (80, 85),
-                                (85, 90), (90, 95), (95, 100)], dtype='object')
+        exp_columns = pd.Index(['Count', (0, 5), (5, 10), (10, 15), (15, 20),
+                                (20, 25), (25, 30), (30, 35), (35, 40),
+                                (40, 45), (45, 50), (50, 55), (55, 60),
+                                (60, 65), (65, 70), (70, 75), (75, 80),
+                                (80, 85), (85, 90), (90, 95), (95, 100)],
+                               dtype='object')
         tm.assert_index_equal(results[0].columns, exp_columns)
 
-        exp_index = pd.period_range('2010-01-01', '2010-12-01', freq='M', name='Date')
+        exp_index = pd.period_range('2010-01-01', '2010-12-01',
+                                    freq='M', name='Date')
         tm.assert_index_equal(results[0].index, exp_index)
 
     def test_prior_2_12_breakpoints(self):
         results = web.DataReader("Prior_2-12_Breakpoints", "famafrench",
                                  start='2010-01-01', end='2010-12-01')
-        self.assertTrue(isinstance(results, dict))
-        self.assertEqual(len(results), 2)
-        self.assertEqual(results[0].shape, (12, 22))
+        assert isinstance(results, dict)
+        assert len(results) == 2
+        assert results[0].shape == (12, 22)
 
-        exp_columns = pd.Index(['<=0', '>0', (0, 5), (5, 10), (10, 15), (15, 20), (20, 25),
-                                (25, 30), (30, 35), (35, 40), (40, 45), (45, 50), (50, 55),
-                                (55, 60), (60, 65), (65, 70), (70, 75), (75, 80), (80, 85),
-                                (85, 90), (90, 95), (95, 100)], dtype='object')
+        exp_columns = pd.Index(['<=0', '>0', (0, 5), (5, 10), (10, 15),
+                                (15, 20), (20, 25), (25, 30), (30, 35),
+                                (35, 40), (40, 45), (45, 50), (50, 55),
+                                (55, 60), (60, 65), (65, 70), (70, 75),
+                                (75, 80), (80, 85), (85, 90), (90, 95),
+                                (95, 100)], dtype='object')
         tm.assert_index_equal(results[0].columns, exp_columns)
 
-        exp_index = pd.period_range('2010-01-01', '2010-12-01', freq='M', name='Date')
+        exp_index = pd.period_range('2010-01-01', '2010-12-01',
+                                    freq='M', name='Date')
         tm.assert_index_equal(results[0].index, exp_index)

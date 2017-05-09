@@ -13,8 +13,8 @@ class TestEurostat(tm.TestCase):
                             start=pd.Timestamp('2005-01-01'),
                             end=pd.Timestamp('2010-01-01'))
 
-        self.assertTrue(isinstance(df, pd.DataFrame))
-        self.assertEqual(df.shape, (2, 336))
+        assert isinstance(df, pd.DataFrame)
+        assert df.shape == (2, 336)
 
         df = df['Percentage']['Total']['Natural sciences']
         df = df[['Norway', 'Poland', 'Portugal', 'Russia']]
@@ -40,7 +40,8 @@ class TestEurostat(tm.TestCase):
                             name='TIME_PERIOD')
         ne_name = ('Index, 2010=100',
                    'Building permits - m2 of useful floor area',
-                   'Unadjusted data (i.e. neither seasonally adjusted nor calendar adjusted data)',
+                   'Unadjusted data (i.e. neither seasonally adjusted nor '
+                   'calendar adjusted data)',
                    'Non-residential buildings, except office buildings',
                    'Netherlands', 'Annual')
         ne_values = [200.0, 186.5, 127.3, 130.7, 143.3, 147.8, 176.7,
@@ -49,7 +50,8 @@ class TestEurostat(tm.TestCase):
 
         uk_name = ('Index, 2010=100',
                    'Building permits - m2 of useful floor area',
-                   'Unadjusted data (i.e. neither seasonally adjusted nor calendar adjusted data)',
+                   'Unadjusted data (i.e. neither seasonally adjusted nor '
+                   'calendar adjusted data)',
                    'Non-residential buildings, except office buildings',
                    'United Kingdom', 'Annual')
         uk_values = [112.5, 113.3, 110.2, 112.1, 119.1, 112.7, 113.1,

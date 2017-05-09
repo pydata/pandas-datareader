@@ -1,3 +1,5 @@
+import pytest
+
 import pandas.util.testing as tm
 import pandas_datareader.data as web
 
@@ -20,10 +22,6 @@ class TestOptionsWarnings(tm.TestCase):
 
 
 class TestDataReader(tm.TestCase):
-    def test_is_s3_url(self):
-        from pandas.io.common import _is_s3_url
-        self.assertTrue(_is_s3_url("s3://pandas/somethingelse.com"))
-
     def test_read_yahoo(self):
         gs = DataReader("GS", "yahoo")
         assert isinstance(gs, DataFrame)
@@ -41,4 +39,5 @@ class TestDataReader(tm.TestCase):
         assert isinstance(vix, DataFrame)
 
     def test_not_implemented(self):
-        self.assertRaises(NotImplementedError, DataReader, "NA", "NA")
+        with pytest.raises(NotImplementedError):
+            DataReader("NA", "NA")

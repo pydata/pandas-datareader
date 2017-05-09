@@ -32,10 +32,10 @@ class TestEdgarIndex(tm.TestCase):
             ed = web.DataReader('daily', 'edgar-index', '1994-06-30',
                                 '1994-07-02')
             assert len(ed) > 200
+            assert ed.index.nlevels == 2
 
-            self.assertEqual(ed.index.nlevels, 2)
             dti = ed.index.get_level_values(0)
-            self.assertIsInstance(dti, pd.DatetimeIndex)
+            assert isinstance(dti, pd.DatetimeIndex)
             exp_columns = pd.Index(['company_name', 'form_type',
                                     'filename'], dtype='object')
             tm.assert_index_equal(ed.columns, exp_columns)
@@ -57,12 +57,12 @@ class TestEdgarIndex(tm.TestCase):
             ed = web.DataReader('daily', 'edgar-index', start='1998-05-18',
                                 end='1998-05-18')
             assert len(ed) < 1200
+            assert ed.index.nlevels == 2
 
-            self.assertEqual(ed.index.nlevels, 2)
             dti = ed.index.get_level_values(0)
-            self.assertIsInstance(dti, pd.DatetimeIndex)
-            self.assertEqual(dti[0], pd.Timestamp('1998-05-18'))
-            self.assertEqual(dti[-1], pd.Timestamp('1998-05-18'))
+            assert isinstance(dti, pd.DatetimeIndex)
+            assert dti[0] == pd.Timestamp('1998-05-18')
+            assert dti[-1] == pd.Timestamp('1998-05-18')
 
             exp_columns = pd.Index(['company_name', 'form_type',
                                     'filename'], dtype='object')
