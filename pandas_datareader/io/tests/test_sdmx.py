@@ -1,7 +1,6 @@
 # pylint: disable-msg=E1101,W0613,W0603
 
 import os
-import sys
 
 import numpy as np
 import pandas as pd
