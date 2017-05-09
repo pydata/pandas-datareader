@@ -103,13 +103,15 @@ class TestGoogle(tm.TestCase):
                 self.assertRaises(AttributeError, lambda: pan.Close)
 
     def test_get_multi_invalid(self):
-        sl = ['AAPL', 'AMZN', 'INVALID']
-        pan = web.get_data_google(sl, '2012')
-        self.assertIn('INVALID', pan.minor_axis)
+        with warnings.catch_warnings(record=True):
+            sl = ['AAPL', 'AMZN', 'INVALID']
+            pan = web.get_data_google(sl, '2012')
+            self.assertIn('INVALID', pan.minor_axis)
 
     def test_get_multi_all_invalid(self):
-        sl = ['INVALID', 'INVALID2', 'INVALID3']
-        self.assertRaises(RemoteDataError, web.get_data_google, sl, '2012')
+        with warnings.catch_warnings(record=True):
+            sl = ['INVALID', 'INVALID2', 'INVALID3']
+            self.assertRaises(RemoteDataError, web.get_data_google, sl, '2012')
 
     def test_get_multi2(self):
         with warnings.catch_warnings(record=True) as w:

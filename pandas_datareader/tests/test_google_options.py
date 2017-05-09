@@ -57,9 +57,9 @@ class TestGoogleOptions(tm.TestCase):
         except RemoteDataError as e:  # pragma: no cover
             pytest.skip(e)
 
-        self.assertTrue(len(dates) >= 4)
-        self.assertIsInstance(dates, list)
-        self.assertTrue(all(isinstance(dt, date) for dt in dates))
+        assert len(dates) == 2
+        assert isinstance(dates, list)
+        assert all(isinstance(dt, date) for dt in dates)
 
     def test_get_call_data(self):
         with tm.assertRaises(NotImplementedError):
