@@ -22,15 +22,16 @@ class TestFred(tm.TestCase):
 
         df = web.DataReader("GDP", "fred", start, end)
         ts = df['GDP']
-        self.assertEqual(ts.index[0], pd.to_datetime("2010-01-01"))
-        self.assertEqual(ts.index[-1], pd.to_datetime("2013-01-01"))
-        self.assertEqual(ts.index.name, "DATE")
-        self.assertEqual(ts.name, "GDP")
+
+        assert ts.index[0] == pd.to_datetime("2010-01-01")
+        assert ts.index[-1] == pd.to_datetime("2013-01-01")
+        assert ts.index.name == "DATE"
+        assert ts.name == "GDP"
 
         received = ts.tail(1)[0]
-        self.assertEqual(int(received), 16475)
+        assert int(received) == 16475
 
-        with tm.assertRaises(RemoteDataError):
+        with pytest.raises(RemoteDataError):
             web.DataReader("NON EXISTENT SERIES", 'fred', start, end)
 
     def test_fred_nan(self):
@@ -44,11 +45,11 @@ class TestFred(tm.TestCase):
         start = datetime(2010, 1, 1)
         end = datetime(2013, 1, 27)
         df = web.get_data_fred("CPIAUCSL", start, end)
-        self.assertEqual(df.ix['2010-05-01'][0], 217.23)
+        assert df.ix['2010-05-01'][0] == 217.23
 
         t = df.CPIAUCSL.values
         assert np.issubdtype(t.dtype, np.floating)
-        self.assertEqual(t.shape, (37,))
+        assert t.shape == (37,)
 
     def test_fred_part2(self):
         expected = [[576.7],
@@ -61,7 +62,8 @@ class TestFred(tm.TestCase):
 
     def test_invalid_series(self):
         name = "NOT A REAL SERIES"
-        self.assertRaises(Exception, web.get_data_fred, name)
+        with pytest.raises(Exception):
+            web.get_data_fred(name)
 
     @pytest.mark.skip(reason='Buggy as of 2/18/14; maybe a data revision?')
     def test_fred_multi(self):  # pragma: no cover
@@ -77,5 +79,5 @@ class TestFred(tm.TestCase):
 
     def test_fred_multi_bad_series(self):
         names = ['NOTAREALSERIES', 'CPIAUCSL', "ALSO FAKE"]
-        with tm.assertRaises(RemoteDataError):
+        with pytest.raises(RemoteDataError):
             web.DataReader(names, data_source="fred")

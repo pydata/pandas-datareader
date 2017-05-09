@@ -18,17 +18,19 @@ class TestSDMX(tm.TestCase):
         # Eurostat
         # Employed doctorate holders in non managerial and non professional
         # occupations by fields of science (%)
-        dsd = _read_sdmx_dsd(os.path.join(self.dirpath, 'sdmx', 'DSD_cdh_e_fos.xml'))
-        df = read_sdmx(os.path.join(self.dirpath, 'sdmx', 'cdh_e_fos.xml'), dsd=dsd)
+        dsd = _read_sdmx_dsd(os.path.join(self.dirpath, 'sdmx',
+                                          'DSD_cdh_e_fos.xml'))
+        df = read_sdmx(os.path.join(self.dirpath, 'sdmx',
+                                    'cdh_e_fos.xml'), dsd=dsd)
 
-        self.assertTrue(isinstance(df, pd.DataFrame))
-        self.assertEqual(df.shape, (2, 336))
+        assert isinstance(df, pd.DataFrame)
+        assert df.shape == (2, 336)
 
         df = df['Percentage']['Total']['Natural sciences']
         df = df[['Norway', 'Poland', 'Portugal', 'Russia']]
 
-        exp_col = pd.MultiIndex.from_product([['Norway', 'Poland', 'Portugal', 'Russia'],
-                                              ['Annual']],
+        exp_col = pd.MultiIndex.from_product([['Norway', 'Poland', 'Portugal',
+                                               'Russia'], ['Annual']],
                                              names=['GEO', 'FREQ'])
         exp_idx = pd.DatetimeIndex(['2009', '2006'], name='TIME_PERIOD')
 

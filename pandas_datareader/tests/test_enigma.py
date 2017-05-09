@@ -22,7 +22,7 @@ class TestEnigma(tm.TestCase):
         try:
             df = web.DataReader('enigma.inspections.restaurants.fl',
                                 'enigma', access_key=TEST_API_KEY)
-            self.assertTrue('serialid' in df.columns)
+            assert 'serialid' in df.columns
         except HTTPError as e:  # pragma: no cover
             pytest.skip(e)
 
@@ -30,18 +30,16 @@ class TestEnigma(tm.TestCase):
         try:
             df = pdr.get_data_enigma(
                 'enigma.inspections.restaurants.fl', TEST_API_KEY)
-            self.assertTrue('serialid' in df.columns)
+            assert 'serialid' in df.columns
         except HTTPError as e:  # pragma: no cover
             pytest.skip(e)
 
     def test_bad_key(self):
-        with tm.assertRaises(HTTPError):
+        with pytest.raises(HTTPError):
             web.DataReader('enigma.inspections.restaurants.fl',
-                           'enigma',
-                           access_key=TEST_API_KEY + 'xxx')
+                           'enigma', access_key=TEST_API_KEY + 'xxx')
 
     def test_bad_url(self):
-        with tm.assertRaises(HTTPError):
+        with pytest.raises(HTTPError):
             web.DataReader('enigma.inspections.restaurants.fllzzy',
-                           'enigma',
-                           access_key=TEST_API_KEY)
+                           'enigma', access_key=TEST_API_KEY)

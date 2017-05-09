@@ -54,27 +54,28 @@ class TestGoogle(tm.TestCase):
         for locale in self.locales:
             with tm.set_locale(locale):
                 panel = web.DataReader("F", 'google', start, end)
-            self.assertEqual(panel.Close[-1], 13.68)
+            assert panel.Close[-1] == 13.68
 
-        self.assertRaises(Exception, web.DataReader, "NON EXISTENT TICKER",
-                          'google', start, end)
+        with pytest.raises(Exception):
+            web.DataReader('NON EXISTENT TICKER', 'google', start, end)
 
     def assert_option_result(self, df):
         """
         Validate returned quote data has expected format.
         """
-        self.assertTrue(isinstance(df, pd.DataFrame))
-        self.assertTrue(len(df) > 0)
+        assert isinstance(df, pd.DataFrame)
+        assert len(df) > 0
 
         exp_columns = pd.Index(['change_pct', 'last', 'time'])
         tm.assert_index_equal(df.columns, exp_columns)
 
-        dtypes = [np.dtype(x) for x in ['float64', 'float64', 'datetime64[ns]']]
+        dtypes = [np.dtype(x) for x in ['float64', 'float64',
+                                        'datetime64[ns]']]
         tm.assert_series_equal(df.dtypes, pd.Series(dtypes, index=exp_columns))
 
     def test_get_quote_string(self):
         df = web.get_quote_google('GOOG')
-        self.assertTrue(df.ix['GOOG']['last'] > 0.0)
+        assert df.ix['GOOG']['last'] > 0.0
         tm.assert_index_equal(df.index, pd.Index(['GOOG']))
         self.assert_option_result(df)
 
@@ -88,7 +89,7 @@ class TestGoogle(tm.TestCase):
         for locale in self.locales:
             with tm.set_locale(locale):
                 df = web.get_data_google('GOOG').sort_index()
-            self.assertEqual(df.Volume.ix['JAN-02-2015'], 1446662)
+            assert df.Volume.ix['JAN-02-2015'] == 1446662
 
     def test_get_multi1(self):
         for locale in self.locales:
@@ -98,20 +99,22 @@ class TestGoogle(tm.TestCase):
             ts = pan.Close.GOOG.index[pan.Close.AAPL < pan.Close.GOOG]
             if (hasattr(pan, 'Close') and hasattr(pan.Close, 'GOOG') and
                     hasattr(pan.Close, 'AAPL')):
-                self.assertEqual(ts[0].dayofyear, 3)
+                assert ts[0].dayofyear == 3
             else:  # pragma: no cover
-                self.assertRaises(AttributeError, lambda: pan.Close)
+                with pytest.raises(AttributeError):
+                    pan.Close()
 
     def test_get_multi_invalid(self):
         with warnings.catch_warnings(record=True):
             sl = ['AAPL', 'AMZN', 'INVALID']
             pan = web.get_data_google(sl, '2012')
-            self.assertIn('INVALID', pan.minor_axis)
+            assert 'INVALID' in pan.minor_axis
 
     def test_get_multi_all_invalid(self):
         with warnings.catch_warnings(record=True):
             sl = ['INVALID', 'INVALID2', 'INVALID3']
-            self.assertRaises(RemoteDataError, web.get_data_google, sl, '2012')
+            with pytest.raises(RemoteDataError):
+                web.get_data_google(sl, '2012')
 
     def test_get_multi2(self):
         with warnings.catch_warnings(record=True) as w:
@@ -126,7 +129,8 @@ class TestGoogle(tm.TestCase):
 
                 assert np.issubdtype(result.dtype, np.floating)
                 result = pan.Open.ix['Jan-15-12':'Jan-20-12']
-                self.assertEqual((4, 3), result.shape)
+
+                assert result.shape == (4, 3)
                 assert_n_failed_equals_n_null_columns(w, result)
 
     def test_dtypes(self):
@@ -141,18 +145,18 @@ class TestGoogle(tm.TestCase):
     def test_unicode_date(self):
         # see gh-8967
         data = web.get_data_google('F', start='JAN-01-10', end='JAN-27-13')
-        self.assertEqual(data.index.name, 'Date')
+        assert data.index.name == 'Date'
 
     def test_google_reader_class(self):
         r = GoogleDailyReader('GOOG')
         df = r.read()
-        self.assertEqual(df.Volume.ix['JAN-02-2015'], 1446662)
+        assert df.Volume.ix['JAN-02-2015'] == 1446662
 
         session = requests.Session()
         r = GoogleDailyReader('GOOG', session=session)
-        self.assertTrue(r.session is session)
+        assert r.session is session
 
     def test_bad_retry_count(self):
 
-        with tm.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             web.get_data_google('F', retry_count=-1)

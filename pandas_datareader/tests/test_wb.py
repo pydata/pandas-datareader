@@ -19,20 +19,23 @@ class TestWB(tm.TestCase):
         # results actually are.  The fact that there are some, is good enough.
 
         result = search('gdp.*capita.*constant')
-        self.assertTrue(result.name.str.contains('GDP').any())
+        assert result.name.str.contains('GDP').any()
 
         # check cache returns the results within 0.5 sec
         current_time = time.time()
         result = search('gdp.*capita.*constant')
-        self.assertTrue(result.name.str.contains('GDP').any())
-        self.assertTrue(time.time() - current_time < 0.5)
+        assert result.name.str.contains('GDP').any()
+        assert time.time() - current_time < 0.5
 
         result2 = WorldBankReader().search('gdp.*capita.*constant')
         session = requests.Session()
+
         result3 = search('gdp.*capita.*constant', session=session)
-        result4 = WorldBankReader(session=session).search('gdp.*capita.*constant')
+        result4 = WorldBankReader(session=session).search(
+            'gdp.*capita.*constant')
+
         for result in [result2, result3, result4]:
-            self.assertTrue(result.name.str.contains('GDP').any())
+            assert result.name.str.contains('GDP').any()
 
     def test_wdi_download(self):
 
@@ -110,29 +113,31 @@ class TestWB(tm.TestCase):
         cntry_codes = ['USA', 'XX']
         inds = 'NY.GDP.PCAP.CD'
 
-        with tm.assertRaisesRegexp(ValueError, "Invalid Country Code\\(s\\): XX"):
+        with tm.assertRaisesRegexp(ValueError,
+                                   "Invalid Country Code\\(s\\): XX"):
             download(country=cntry_codes, indicator=inds,
                      start=2003, end=2004, errors='raise')
 
-        # assert_produces_warning doesn't exists in prior versions
-        with self.assert_produces_warning():
+        with tm.assert_produces_warning():
             result = download(country=cntry_codes, indicator=inds,
                               start=2003, end=2004, errors='warn')
-            self.assertTrue(isinstance(result, pd.DataFrame))
-            self.assertEqual(len(result), 2)
+            assert isinstance(result, pd.DataFrame)
+            assert len(result), 2
 
         cntry_codes = ['USA']
         inds = ['NY.GDP.PCAP.CD', 'BAD_INDICATOR']
 
-        with tm.assertRaisesRegexp(ValueError, "The provided parameter value is not valid\\. Indicator: BAD_INDICATOR"):
+        with tm.assertRaisesRegexp(ValueError,
+                                   "The provided parameter value is not "
+                                   "valid\\. Indicator: BAD_INDICATOR"):
             download(country=cntry_codes, indicator=inds,
                      start=2003, end=2004, errors='raise')
 
-        with self.assert_produces_warning():
+        with tm.assert_produces_warning():
             result = download(country=cntry_codes, indicator=inds,
                               start=2003, end=2004, errors='warn')
-            self.assertTrue(isinstance(result, pd.DataFrame))
-            self.assertEqual(len(result), 2)
+            assert isinstance(result, pd.DataFrame)
+            assert len(result) == 2
 
     def test_wdi_download_w_retired_indicator(self):
 
@@ -189,10 +194,10 @@ class TestWB(tm.TestCase):
         result4 = WorldBankReader(session=session).get_countries()
 
         for result in [result1, result2, result3, result4]:
-            self.assertTrue('Zimbabwe' in list(result['name']))
-            self.assertTrue(len(result) > 100)
-            self.assertTrue(pd.notnull(result.latitude.mean()))
-            self.assertTrue(pd.notnull(result.longitude.mean()))
+            assert 'Zimbabwe' in list(result['name'])
+            assert len(result) > 100
+            assert pd.notnull(result.latitude.mean())
+            assert pd.notnull(result.longitude.mean())
 
     def test_wdi_get_indicators(self):
         result1 = get_indicators()
@@ -203,7 +208,8 @@ class TestWB(tm.TestCase):
         result4 = WorldBankReader(session=session).get_indicators()
 
         for result in [result1, result2, result3, result4]:
-            exp_col = pd.Index(['id', 'name', 'source', 'sourceNote', 'sourceOrganization', 'topics'])
+            exp_col = pd.Index(['id', 'name', 'source', 'sourceNote',
+                                'sourceOrganization', 'topics'])
             # assert_index_equal doesn't exists
-            self.assertTrue(result.columns.equals(exp_col))
-            self.assertTrue(len(result) > 10000)
+            assert result.columns.equals(exp_col)
+            assert len(result) > 10000
