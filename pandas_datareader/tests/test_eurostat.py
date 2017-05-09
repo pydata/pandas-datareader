@@ -1,11 +1,7 @@
-import pytest
-
 import numpy as np
 import pandas as pd
 import pandas.util.testing as tm
 import pandas_datareader.data as web
-
-from pandas_datareader.compat import PANDAS_0170
 
 
 class TestEurostat(tm.TestCase):
@@ -66,9 +62,6 @@ class TestEurostat(tm.TestCase):
 
     def test_get_nrg_pc_202(self):
         # see gh-149
-
-        if not PANDAS_0170:
-            pytest.skip("skip because of comparison failure")
 
         df = web.DataReader('nrg_pc_202', 'eurostat',
                             start=pd.Timestamp('2010-01-01'),

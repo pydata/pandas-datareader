@@ -7,7 +7,6 @@ import pandas as pd
 import numpy as np
 
 from pandas_datareader.base import _BaseReader
-from pandas_datareader.compat import PANDAS_0170
 
 # This list of country codes was pulled from wikipedia during October 2014.
 # While some exceptions do exist, it is the best proxy for countries supported
@@ -178,11 +177,8 @@ class WorldBankReader(_BaseReader):
             out = reduce(lambda x, y: x.merge(y, how='outer'), data)
             out = out.drop('iso_code', axis=1)
             out = out.set_index(['country', 'year'])
-            if PANDAS_0170:
-                out = out.apply(pd.to_numeric, errors='ignore')
-            else:
-                # deprecated in 0.17.0
-                out = out.convert_objects(convert_numeric=True)
+            out = out.apply(pd.to_numeric, errors='ignore')
+
             return out
         else:
             msg = "No indicators returned data."
@@ -275,11 +271,9 @@ class WorldBankReader(_BaseReader):
 
         data.topics = data.topics.apply(get_list_of_values)
         data.topics = data.topics.apply(lambda x: ' ; '.join(x))
-        # Clean outpu
-        if PANDAS_0170:
-            data = data.sort_values(by='id')
-        else:
-            data = data.sort(columns='id')
+
+        # Clean output
+        data = data.sort_values(by='id')
         data.index = pd.Index(lrange(data.shape[0]))
 
         # cache
