@@ -65,8 +65,3 @@ class TestJSDMX(tm.TestCase):
                             2485000, 27.166, 1990747, 21.763]])
         expected = pd.DataFrame(values, index=exp_idx, columns=exp_col)
         tm.assert_frame_equal(result, expected)
-
-
-if __name__ == '__main__':
-    import nose
-    nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'], exit=False)
