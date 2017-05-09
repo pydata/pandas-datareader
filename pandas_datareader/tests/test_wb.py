@@ -40,21 +40,23 @@ class TestWB(tm.TestCase):
         # standard (CA, MX), non standard (KSV),
         # duplicated (US, US, USA), and unknown (BLA) country codes
 
-        # ...but NOT a crash inducing country code (World bank strips pandas
-        #    users of the luxury of laziness, because they create their
+        # ...but NOT a crash inducing country code (World Bank strips pandas
+        #    users of the luxury of laziness because they create their
         #    own exceptions, and don't clean up legacy country codes.
-        # ...but NOT a retired indicator (User should want it to error.)
+        # ...but NOT a retired indicator (user should want it to error).
 
         cntry_codes = ['CA', 'MX', 'USA', 'US', 'US', 'KSV', 'BLA']
         inds = ['NY.GDP.PCAP.CD', 'BAD.INDICATOR']
 
-        expected = {'NY.GDP.PCAP.CD': {('Canada', '2004'): 31829.522562759001, ('Canada', '2003'): 28026.006013044702,
-                                       ('Kosovo', '2004'): 2135.3328465238301, ('Kosovo', '2003'): 1969.56271307405,
-                                       ('Mexico', '2004'): 7042.0247834044303, ('Mexico', '2003'): 6601.0420648056606,
-                                       ('United States', '2004'): 41928.886136479705, ('United States', '2003'): 39682.472247320402}}
+        # These are the expected results, rounded (robust against
+        # data revisions in the future).
+        expected = {'NY.GDP.PCAP.CD': {('Canada', '2004'): 32000.0,
+                                       ('Canada', '2003'): 28000.0,
+                                       ('Mexico', '2004'): 7000.0,
+                                       ('Mexico', '2003'): 7000.0,
+                                       ('United States', '2004'): 42000.0,
+                                       ('United States', '2003'): 40000.0}}
         expected = pd.DataFrame(expected)
-        # Round, to ignore revisions to data.
-        expected = np.round(expected, decimals=-3)
         expected = expected.sort_index()
 
         result = download(country=cntry_codes, indicator=inds,
@@ -78,14 +80,14 @@ class TestWB(tm.TestCase):
 
     def test_wdi_download_str(self):
 
-        expected = {'NY.GDP.PCAP.CD': {('Japan', '2004'): 36441.50449394,
-                                       ('Japan', '2003'): 33690.93772972,
-                                       ('Japan', '2002'): 31235.58818439,
-                                       ('Japan', '2001'): 32716.41867489,
-                                       ('Japan', '2000'): 37299.64412913}}
+        # These are the expected results, rounded (robust against
+        # data revisions in the future).
+        expected = {'NY.GDP.PCAP.CD': {('Japan', '2004'): 38000.0,
+                                       ('Japan', '2003'): 35000.0,
+                                       ('Japan', '2002'): 32000.0,
+                                       ('Japan', '2001'): 34000.0,
+                                       ('Japan', '2000'): 39000.0}}
         expected = pd.DataFrame(expected)
-        # Round, to ignore revisions to data.
-        expected = np.round(expected, decimals=-3)
         expected = expected.sort_index()
 
         cntry_codes = 'JP'
