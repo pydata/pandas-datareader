@@ -1,11 +1,10 @@
 import pytest
-import pandas.util.testing as tm
 import pandas_datareader.data as web
 
 from pandas_datareader._utils import RemoteDataError
 
 
-class TestNasdaqSymbols(tm.TestCase):
+class TestNasdaqSymbols(object):
 
     def test_get_symbols(self):
         try:

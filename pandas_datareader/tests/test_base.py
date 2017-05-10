@@ -1,9 +1,8 @@
 import pytest
-import pandas.util.testing as tm
 import pandas_datareader.base as base
 
 
-class TestBaseReader(tm.TestCase):
+class TestBaseReader(object):
     def test_valid_retry_count(self):
         with pytest.raises(ValueError):
             base._BaseReader([], retry_count='stuff')
@@ -21,7 +20,7 @@ class TestBaseReader(tm.TestCase):
             b._read_one_data('a', None)
 
 
-class TestDailyBaseReader(tm.TestCase):
+class TestDailyBaseReader(object):
     def test_get_params(self):
         with pytest.raises(NotImplementedError):
             b = base._DailyBaseReader()

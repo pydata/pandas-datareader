@@ -11,7 +11,7 @@ from pandas_datareader.wb import (search, download, get_countries,
 from pandas_datareader.compat import assert_raises_regex
 
 
-class TestWB(tm.TestCase):
+class TestWB(object):
 
     def test_wdi_search(self):
 

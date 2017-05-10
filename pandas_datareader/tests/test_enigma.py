@@ -3,19 +3,16 @@ import pytest
 
 from requests.exceptions import HTTPError
 
-import pandas.util.testing as tm
-
 import pandas_datareader as pdr
 import pandas_datareader.data as web
 
 TEST_API_KEY = os.getenv('ENIGMA_API_KEY')
 
 
-class TestEnigma(tm.TestCase):
+class TestEnigma(object):
 
     @classmethod
-    def setUpClass(cls):
-        super(TestEnigma, cls).setUpClass()
+    def setup_class(cls):
         pytest.importorskip("lxml")
 
     def test_enigma_datareader(self):

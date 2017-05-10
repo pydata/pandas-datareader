@@ -30,18 +30,16 @@ def assert_n_failed_equals_n_null_columns(wngs, obj, cls=SymbolWarning):
     assert msgs.str.contains('|'.join(failed_symbols)).all()
 
 
-class TestGoogle(tm.TestCase):
+class TestGoogle(object):
 
     @classmethod
-    def setUpClass(cls):
-        super(TestGoogle, cls).setUpClass()
+    def setup_class(cls):
         cls.locales = tm.get_locales(prefix='en_US')
         if not cls.locales:  # pragma: no cover
             pytest.skip("US English locale not available for testing")
 
     @classmethod
-    def tearDownClass(cls):
-        super(TestGoogle, cls).tearDownClass()
+    def teardown_class(cls):
         del cls.locales
 
     def test_google(self):

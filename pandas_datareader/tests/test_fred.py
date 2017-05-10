@@ -11,7 +11,7 @@ from pandas import DataFrame
 from pandas_datareader._utils import RemoteDataError
 
 
-class TestFred(tm.TestCase):
+class TestFred(object):
     def test_fred(self):
 
         # Raises an exception when DataReader can't

@@ -6,7 +6,7 @@ import pandas_datareader.data as web
 from pandas_datareader.compat import assert_raises_regex
 
 
-class TestEurostat(tm.TestCase):
+class TestEurostat(object):
 
     def test_get_cdh_e_fos(self):
         # Employed doctorate holders in non managerial and non professional

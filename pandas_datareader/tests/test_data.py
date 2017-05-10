@@ -7,21 +7,14 @@ from pandas import DataFrame
 from pandas_datareader.data import DataReader
 
 
-class TestOptionsWarnings(tm.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        super(TestOptionsWarnings, cls).setUpClass()
-
-    @classmethod
-    def tearDownClass(cls):
-        super(TestOptionsWarnings, cls).tearDownClass()
+class TestOptionsWarnings(object):
 
     def test_options_source_warning(self):
         with tm.assert_produces_warning():
             web.Options('aapl')
 
 
-class TestDataReader(tm.TestCase):
+class TestDataReader(object):
     def test_read_yahoo(self):
         gs = DataReader("GS", "yahoo")
         assert isinstance(gs, DataFrame)

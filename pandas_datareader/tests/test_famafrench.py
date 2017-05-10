@@ -7,7 +7,7 @@ import pandas_datareader.data as web
 from pandas_datareader.famafrench import get_available_datasets
 
 
-class TestFamaFrench(tm.TestCase):
+class TestFamaFrench(object):
 
     def test_get_data(self):
         keys = [

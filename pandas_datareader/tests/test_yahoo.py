@@ -13,10 +13,10 @@ from pandas_datareader.data import YahooDailyReader
 from pandas_datareader.yahoo.quotes import _yahoo_codes
 
 
-class TestYahoo(tm.TestCase):
+class TestYahoo(object):
+
     @classmethod
-    def setUpClass(cls):
-        super(TestYahoo, cls).setUpClass()
+    def setup_class(cls):
         pytest.importorskip("lxml")
 
     def test_yahoo(self):

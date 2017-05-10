@@ -9,9 +9,9 @@ import pandas.util.testing as tm
 from pandas_datareader.io.sdmx import read_sdmx, _read_sdmx_dsd
 
 
-class TestSDMX(tm.TestCase):
+class TestSDMX(object):
 
-    def setUp(self):
+    def setup_method(self, method):
         self.dirpath = tm.get_data_path()
 
     def test_tourism(self):
