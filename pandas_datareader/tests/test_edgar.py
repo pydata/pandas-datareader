@@ -7,7 +7,7 @@ import pandas_datareader.data as web
 from pandas_datareader._utils import RemoteDataError
 
 
-class TestEdgarIndex(tm.TestCase):
+class TestEdgarIndex(object):
 
     @classmethod
     def setup_class(cls):

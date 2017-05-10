@@ -8,7 +8,7 @@ import pandas.util.testing as tm
 import pandas_datareader.data as web
 
 
-class TestOECD(tm.TestCase):
+class TestOECD(object):
 
     def test_get_un_den(self):
         df = web.DataReader('UN_DEN', 'oecd', start=datetime(1960, 1, 1),

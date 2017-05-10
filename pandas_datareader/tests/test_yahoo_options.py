@@ -12,12 +12,10 @@ import pandas_datareader.data as web
 from pandas_datareader._utils import RemoteDataError
 
 
-class TestYahooOptions(tm.TestCase):
+class TestYahooOptions(object):
 
     @classmethod
-    def setUpClass(cls):
-        super(TestYahooOptions, cls).setUpClass()
-
+    def setup_class(cls):
         # AAPL has monthlies
         cls.aapl = web.Options('aapl', 'yahoo')
         today = datetime.today()
@@ -39,8 +37,7 @@ class TestYahooOptions(tm.TestCase):
         cls.data1 = cls.aapl._process_data(cls.aapl._parse_url(cls.json1))
 
     @classmethod
-    def tearDownClass(cls):
-        super(TestYahooOptions, cls).tearDownClass()
+    def teardown_class(cls):
         del cls.aapl, cls.expiry
 
     def assert_option_result(self, df):

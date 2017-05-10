@@ -10,13 +10,11 @@ import pandas_datareader.data as web
 from pandas_datareader._utils import RemoteDataError
 
 
-class TestGoogleOptions(tm.TestCase):
+class TestGoogleOptions(object):
 
     @classmethod
-    def setUpClass(cls):
-        super(TestGoogleOptions, cls).setUpClass()
-
-        # goog has monthlies
+    def setup_class(cls):
+        # GOOG has monthlies
         cls.goog = web.Options('GOOG', 'google')
 
     def test_get_options_data(self):
