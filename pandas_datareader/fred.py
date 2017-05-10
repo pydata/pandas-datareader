@@ -37,8 +37,8 @@ class FredReader(_BaseReader):
                 return data.truncate(self.start, self.end)
             except KeyError:  # pragma: no cover
                 if data.ix[3].name[7:12] == 'Error':
-                    raise IOError("Failed to get the data. Check that {0!r} is "
-                                  "a valid FRED series.".format(name))
+                    raise IOError("Failed to get the data. Check that "
+                                  "{0!r} is a valid FRED series.".format(name))
                 raise
         df = concat([fetch_data(url, n) for url, n in zip(urls, names)],
                     axis=1, join='outer')

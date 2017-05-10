@@ -27,7 +27,8 @@ class EurostatReader(_BaseReader):
         if not isinstance(self.symbols, compat.string_types):
             raise ValueError('data name must be string')
 
-        return '{0}/datastructure/ESTAT/DSD_{1}'.format(self._URL, self.symbols)
+        return '{0}/datastructure/ESTAT/DSD_{1}'.format(
+            self._URL, self.symbols)
 
     def _read_one_data(self, url, params):
         resp_dsd = self._get_response(self.dsd_url)

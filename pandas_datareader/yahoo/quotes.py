@@ -24,8 +24,11 @@ class YahooQuotesReader(_BaseReader):
             sym_list = self.symbols
         else:
             sym_list = '+'.join(self.symbols)
-        # for codes see: http://www.gummy-stuff.org/Yahoo-data.htm
-        request = ''.join(compat.itervalues(_yahoo_codes))  # code request string
+
+        # For codes see: http://www.gummy-stuff.org/Yahoo-data.htm
+        #
+        # Construct the code request string.
+        request = ''.join(compat.itervalues(_yahoo_codes))
         params = {'s': sym_list, 'f': request}
         return params
 

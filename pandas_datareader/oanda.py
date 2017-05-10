@@ -8,7 +8,9 @@ def reverse_pair(s, sep="/"):
     return sep.join([lst[1], lst[0]])
 
 
-def get_oanda_currency_historical_rates(start, end, quote_currency="USD", base_currency=None, reversed=True, session=None):
+def get_oanda_currency_historical_rates(start, end, quote_currency="USD",
+                                        base_currency=None, reversed=True,
+                                        session=None):
     session = _init_session(session)
     start, end = _sanitize_dates(start, end)
 
@@ -39,7 +41,9 @@ def get_oanda_currency_historical_rates(start, end, quote_currency="USD", base_c
     skiprows = 4
     skipfooter = 4
     usecols = range(len(base_currency) + 1)
-    df = pd.read_csv(StringIO(response.text), parse_dates=[0], skiprows=skiprows, skipfooter=skipfooter, usecols=usecols, engine='python')
+    df = pd.read_csv(StringIO(response.text), parse_dates=[0],
+                     skiprows=skiprows, skipfooter=skipfooter,
+                     usecols=usecols, engine='python')
     df = df.rename(columns={
         "End Date": "Date",
     })

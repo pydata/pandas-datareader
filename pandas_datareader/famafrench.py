@@ -115,10 +115,12 @@ class FamaFrenchReader(_BaseReader):
             shape = '({0} rows x {1} cols)'.format(*df.shape)
             table_desc.append('{0} {1}'.format(title, shape).strip())
 
-        descr = '{0}\n{1}\n\n'.format(self.symbols.replace('_', ' '), len(self.symbols) * '-')
+        descr = '{0}\n{1}\n\n'.format(self.symbols.replace('_', ' '),
+                                      len(self.symbols) * '-')
         if doc_chunks:
             descr += ' '.join(doc_chunks).replace(2 * ' ', ' ') + '\n\n'
-        table_descr = map(lambda x: '{0:3} : {1}'.format(*x), enumerate(table_desc))
+        table_descr = map(lambda x: '{0:3} : {1}'.format(*x),
+                          enumerate(table_desc))
         datasets['DESCR'] = descr + '\n'.join(table_descr)
 
         return datasets
@@ -139,7 +141,9 @@ class FamaFrenchReader(_BaseReader):
         response = self.session.get(_URL + 'data_library.html')
         root = document_fromstring(response.content)
 
-        l = filter(lambda x: x.startswith(_URL_PREFIX) and x.endswith(_URL_SUFFIX),
-                   [e.attrib['href'] for e in root.findall('.//a') if 'href' in e.attrib])
+        l = filter(lambda x: (x.startswith(_URL_PREFIX) and
+                              x.endswith(_URL_SUFFIX)),
+                   [(e.attrib['href'] for e in root.findall('.//a')
+                     if 'href' in e.attrib)])
 
         return lmap(lambda x: x[len(_URL_PREFIX):-len(_URL_SUFFIX)], l)

@@ -90,7 +90,8 @@ def DataReader(name, data_source=None, start=None, end=None,
     # Data from Yahoo! Finance
     gs = DataReader("GS", "yahoo")
 
-    # Corporate Actions (Dividend and Split Data) with ex-dates from Yahoo! Finance
+    # Corporate Actions (Dividend and Split Data)
+    # with ex-dates from Yahoo! Finance
     gs = DataReader("GS", "yahoo-actions")
 
     # Data from Google Finance
