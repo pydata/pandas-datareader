@@ -3,6 +3,8 @@ import pandas as pd
 import pandas.util.testing as tm
 import pandas_datareader.data as web
 
+from pandas_datareader.compat import assert_raises_regex
+
 
 class TestEurostat(tm.TestCase):
 
@@ -87,7 +89,7 @@ class TestEurostat(tm.TestCase):
     def test_get_prc_hicp_manr_exceeds_limit(self):
         # see gh-149
         msg = 'Query size exceeds maximum limit'
-        with tm.assertRaisesRegexp(ValueError, msg):
+        with assert_raises_regex(ValueError, msg):
             web.DataReader('prc_hicp_manr', 'eurostat',
                            start=pd.Timestamp('2000-01-01'),
                            end=pd.Timestamp('2013-01-01'))

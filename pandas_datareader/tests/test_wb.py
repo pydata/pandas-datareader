@@ -3,11 +3,12 @@ import pytest
 
 import numpy as np
 import pandas as pd
-import pandas.util.testing as tm
 import requests
 
+import pandas.util.testing as tm
 from pandas_datareader.wb import (search, download, get_countries,
                                   get_indicators, WorldBankReader)
+from pandas_datareader.compat import assert_raises_regex
 
 
 class TestWB(tm.TestCase):
@@ -113,8 +114,8 @@ class TestWB(tm.TestCase):
         cntry_codes = ['USA', 'XX']
         inds = 'NY.GDP.PCAP.CD'
 
-        with tm.assertRaisesRegexp(ValueError,
-                                   "Invalid Country Code\\(s\\): XX"):
+        msg = "Invalid Country Code\\(s\\): XX"
+        with assert_raises_regex(ValueError, msg):
             download(country=cntry_codes, indicator=inds,
                      start=2003, end=2004, errors='raise')
 
@@ -127,9 +128,9 @@ class TestWB(tm.TestCase):
         cntry_codes = ['USA']
         inds = ['NY.GDP.PCAP.CD', 'BAD_INDICATOR']
 
-        with tm.assertRaisesRegexp(ValueError,
-                                   "The provided parameter value is not "
-                                   "valid\\. Indicator: BAD_INDICATOR"):
+        msg = ("The provided parameter value is not valid\\. "
+               "Indicator: BAD_INDICATOR")
+        with assert_raises_regex(ValueError, msg):
             download(country=cntry_codes, indicator=inds,
                      start=2003, end=2004, errors='raise')
 
