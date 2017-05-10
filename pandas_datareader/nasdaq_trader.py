@@ -2,7 +2,9 @@ from ftplib import FTP, all_errors
 from pandas import read_csv
 from pandas_datareader._utils import RemoteDataError
 from pandas.compat import StringIO
+
 import time
+import warnings
 
 _NASDAQ_TICKER_LOC = '/SymbolDirectory/nasdaqtraded.txt'
 _NASDAQ_FTP_SERVER = 'ftp.nasdaqtrader.com'
@@ -56,9 +58,14 @@ def _download_nasdaq_symbols(timeout):
     converter_map = dict((col, _bool_converter) for col, t in _TICKER_DTYPE
                          if t is bool)
 
-    data = read_csv(StringIO('\n'.join(lines[:-1])), '|',
-                    dtype=_TICKER_DTYPE, converters=converter_map,
-                    index_col=1)
+    # For pandas >= 0.20.0, the Python parser issues a warning if
+    # both a converter and dtype are specified for the same column.
+    # However, this measure is probably temporary until the read_csv
+    # behavior is better formalized.
+    with warnings.catch_warnings(record=True):
+        data = read_csv(StringIO('\n'.join(lines[:-1])), '|',
+                        dtype=_TICKER_DTYPE, converters=converter_map,
+                        index_col=1)
 
     # Properly cast enumerations
     for cat in _CATEGORICAL:

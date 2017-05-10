@@ -17,8 +17,18 @@ from pandas.util.testing import assert_series_equal
 
 
 def assert_n_failed_equals_n_null_columns(wngs, obj, cls=SymbolWarning):
-    all_nan_cols = pd.Series(dict((k, pd.isnull(v).all()) for k, v in
-                                  compat.iteritems(obj)))
+    all_nan_cols_dict = {}
+
+    for k, v in compat.iteritems(obj):
+        is_null = pd.isnull(v)
+
+        if hasattr(is_null, 'all'):
+            is_null = is_null.all()
+
+        all_nan_cols_dict[k] = is_null
+
+    all_nan_cols = pd.Series(all_nan_cols_dict)
+
     n_all_nan_cols = all_nan_cols.sum()
     valid_warnings = pd.Series([wng for wng in wngs if wng.category == cls])
 
