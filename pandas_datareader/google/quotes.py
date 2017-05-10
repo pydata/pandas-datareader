@@ -28,6 +28,8 @@ class GoogleQuotesReader(_BaseReader):
         buffer = out.read()
         m = re.search('// ', buffer)
         result = json.loads(buffer[m.start() + len('// '):])
-        return pd.DataFrame([[float(x['cp']), float(x['l']), np.datetime64(parse(x['lt']).isoformat())]
-                            for x in result], columns=['change_pct', 'last', 'time'],
+        return pd.DataFrame([[float(x['cp']), float(x['l']),
+                              np.datetime64(parse(x['lt']).isoformat())]
+                             for x in result], columns=['change_pct',
+                                                        'last', 'time'],
                             index=[x['t'] for x in result])

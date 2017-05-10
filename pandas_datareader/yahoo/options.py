@@ -64,7 +64,8 @@ class Options(_OptionBaseReader):
     >>> all_data = aapl.get_all_data()
     """
 
-    _OPTIONS_BASE_URL = 'https://query1.finance.yahoo.com/v7/finance/options/{sym}'
+    _OPTIONS_BASE_URL = ('https://query1.finance.yahoo.com/'
+                         'v7/finance/options/{sym}')
 
     def get_options_data(self, month=None, year=None, expiry=None):
         """
@@ -81,7 +82,8 @@ class Options(_OptionBaseReader):
         year : number, int, optional(default=None)
             The year the options expire. This should be a 4 digit int.
 
-        expiry : date-like or convertible or list-like object, optional (default=None)
+        expiry : date-like or convertible or
+                 list-like object, optional (default=None)
             The date (or dates) when options expire (defaults to current month)
 
         Returns
@@ -102,18 +104,21 @@ class Options(_OptionBaseReader):
                 Ask: Ask price, float
                 Vol: Volume traded, int64
                 Open_Int: Open interest, int64
-                IsNonstandard: True if the the deliverable is not 100 shares, otherwise false
+                IsNonstandard: True if the the deliverable is not 100 shares,
+                               otherwise False
                 Underlying: Ticker of the underlying security, string
                 Underlying_Price: Price of the underlying security, float64
                 Quote_Time: Time of the quote, Timestamp
-                Last_Trade_Date: Time of the last trade for this expiry and strike, Timestamp
+                Last_Trade_Date: Time of the last trade for this expiry
+                                 and strike, Timestamp
                 IV: Implied volatility, float
                 JSON: Parsed json object, json
                     Useful to extract other returned key/value pairs as needed
 
         Notes
         -----
-        Note: Format of returned data frame is dependent on Yahoo and may change.
+        Note: Format of returned DataFrame is dependent
+              on Yahoo and may change.
 
         When called, this function will add instance variables named
         calls and puts. See the following example:
@@ -142,10 +147,15 @@ class Options(_OptionBaseReader):
             calls = result['options']['calls']
             puts = result['options']['puts']
         except IndexError:
-            raise RemoteDataError('Option json not available for url: %s' % url)
+            raise RemoteDataError('Option json not available '
+                                  'for url: %s' % url)
 
-        self.underlying_price = result['quote']['regularMarketPrice'] if result['quote']['marketState'] == 'PRE' else result['quote']['preMarketPrice']
-        quote_unix_time = result['quote']['regularMarketTime'] if result['quote']['marketState'] == 'PRE' else result['quote']['preMarketTime']
+        self.underlying_price = (result['quote']['regularMarketPrice']
+                                 if result['quote']['marketState'] == 'PRE'
+                                 else result['quote']['preMarketPrice'])
+        quote_unix_time = (result['quote']['regularMarketTime']
+                           if result['quote']['marketState'] == 'PRE'
+                           else result['quote']['preMarketTime'])
         self.quote_time = dt.datetime.fromtimestamp(quote_unix_time)
 
         calls = _parse_options_data(calls)
@@ -186,7 +196,8 @@ class Options(_OptionBaseReader):
         year : number, int, optional(default=None)
             The year the options expire. This should be a 4 digit int.
 
-        expiry : date-like or convertible or list-like object, optional (default=None)
+        expiry : date-like or convertible or
+                 list-like object, optional (default=None)
             The date (or dates) when options expire (defaults to current month)
 
         Returns
@@ -207,18 +218,21 @@ class Options(_OptionBaseReader):
                 Ask: Ask price, float
                 Vol: Volume traded, int64
                 Open_Int: Open interest, int64
-                IsNonstandard: True if the the deliverable is not 100 shares, otherwise false
+                IsNonstandard: True if the the deliverable is not 100 shares,
+                               otherwise false
                 Underlying: Ticker of the underlying security, string
                 Underlying_Price: Price of the underlying security, float64
                 Quote_Time: Time of the quote, Timestamp
-                Last_Trade_Date: Time of the last trade for this expiry and strike, Timestamp
+                Last_Trade_Date: Time of the last trade for this expiry
+                                 and strike, Timestamp
                 IV: Implied volatility, float
                 JSON: Parsed json object, json
                     Useful to extract other returned key/value pairs as needed
 
         Notes
         -----
-        Note: Format of returned data frame is dependent on Yahoo and may change.
+        Note: Format of returned DataFrame is dependent
+              on Yahoo and may change.
 
         When called, this function will add instance variables named
         calls and puts. See the following example:
@@ -252,7 +266,8 @@ class Options(_OptionBaseReader):
         year : number, int, optional(default=None)
             The year the options expire. This should be a 4 digit int.
 
-        expiry : date-like or convertible or list-like object, optional (default=None)
+        expiry : date-like or convertible or
+                 list-like object, optional (default=None)
             The date (or dates) when options expire (defaults to current month)
 
         Returns
@@ -273,18 +288,21 @@ class Options(_OptionBaseReader):
                 Ask: Ask price, float
                 Vol: Volume traded, int64
                 Open_Int: Open interest, int64
-                IsNonstandard: True if the the deliverable is not 100 shares, otherwise false
+                IsNonstandard: True if the the deliverable is not 100 shares,
+                               otherwise false
                 Underlying: Ticker of the underlying security, string
                 Underlying_Price: Price of the underlying security, float64
                 Quote_Time: Time of the quote, Timestamp
-                Last_Trade_Date: Time of the last trade for this expiry and strike, Timestamp
+                Last_Trade_Date: Time of the last trade for this expiry
+                                 and strike, Timestamp
                 IV: Implied volatility, float
                 JSON: Parsed json object, json
                     Useful to extract other returned key/value pairs as needed
 
         Notes
         -----
-        Note: Format of returned data frame is dependent on Yahoo and may change.
+        Note: Format of returned DataFrame is dependent
+              on Yahoo and may change.
 
         When called, this function will add instance variables named
         puts. See the following example:
@@ -309,7 +327,7 @@ class Options(_OptionBaseReader):
                              month=None, year=None, expiry=None):
         """
         ***Experimental***
-        Returns a data frame of options that are near the current stock price.
+        Returns a DataFrame of options that are near the current stock price.
 
         Parameters
         ----------
@@ -330,7 +348,8 @@ class Options(_OptionBaseReader):
         year : number, int, optional(default=None)
             The year the options expire. This should be a 4 digit int.
 
-        expiry : date-like or convertible or list-like object, optional (default=None)
+        expiry : date-like or convertible or list-like object,
+                 optional (default=None)
             The date (or dates) when options expire (defaults to current month)
 
         Returns
@@ -353,16 +372,19 @@ class Options(_OptionBaseReader):
                 Ask: Ask price, float
                 Vol: Volume traded, int64
                 Open_Int: Open interest, int64
-                IsNonstandard: True if the the deliverable is not 100 shares, otherwise false
+                IsNonstandard: True if the the deliverable is not 100 shares,
+                               otherwise false
                 Underlying: Ticker of the underlying security, string
                 Underlying_Price: Price of the underlying security, float64
                 Quote_Time: Time of the quote, Timestamp
-                Last_Trade_Date: Time of the last trade for this expiry and strike, Timestamp
+                Last_Trade_Date: Time of the last trade for this expiry
+                                 and strike, Timestamp
                 IV: Implied volatility, float
                 JSON: Parsed json object, json
                     Useful to extract other returned key/value pairs as needed
 
-         Note: Format of returned data frame is dependent on Yahoo and may change.
+         Note: Format of returned DataFrame is dependent
+               on Yahoo and may change.
 
         """
         expiry = self._try_parse_dates(year, month, expiry)
@@ -371,7 +393,9 @@ class Options(_OptionBaseReader):
         return self._chop_data(data, above_below, underlying_price)
 
     def _chop_data(self, df, above_below=2, underlying_price=None):
-        """Returns a data frame only options that are near the current stock price."""
+        """
+        Returns a DataFrame only options that are near the current stock price.
+        """
 
         if not underlying_price:
             try:
@@ -382,7 +406,8 @@ class Options(_OptionBaseReader):
         max_strike = max(df.index.get_level_values('Strike'))
         min_strike = min(df.index.get_level_values('Strike'))
 
-        if not np.isnan(underlying_price) and min_strike < underlying_price < max_strike:
+        if (not np.isnan(underlying_price) and
+                min_strike < underlying_price < max_strike):
             start_index = np.where(df.index.get_level_values('Strike') >
                                    underlying_price)[0][0]
 
@@ -394,7 +419,8 @@ class Options(_OptionBaseReader):
 
     def _try_parse_dates(self, year, month, expiry):
         """
-        Validates dates provided by user.  Ensures the user either provided both a month and a year or an expiry.
+        Validates dates provided by user. Ensures the user either provided
+        both a month and a year or an expiry.
 
         Parameters
         ----------
@@ -412,10 +438,12 @@ class Options(_OptionBaseReader):
         list of expiry dates (datetime.date)
         """
 
-        # Checks if the user gave one of the month or the year but not both and did not provide an expiry:
-        if (month is not None and year is None) or (month is None and year is not None) and expiry is None:
-            msg = "You must specify either (`year` and `month`) or `expiry` " \
-                  "or none of these options for the next expiry."
+        # Checks if the user gave one of the month or the year
+        # but not both and did not provide an expiry:
+        if ((month is not None and year is None) or
+                (month is None and year is not None) and expiry is None):
+            msg = ("You must specify either (`year` and `month`) or `expiry` "
+                   "or none of these options for the next expiry.")
             raise ValueError(msg)
 
         if expiry is not None:
@@ -436,15 +464,21 @@ class Options(_OptionBaseReader):
 
         else:
             # Year and month passed, provide all expiries in that month
-            expiry = [expiry for expiry in self.expiry_dates if expiry.year == year and expiry.month == month]
+            expiry = [expiry for expiry in self.expiry_dates
+                      if expiry.year == year and expiry.month == month]
             if len(expiry) == 0:
-                raise ValueError('No expiries available in %s-%s' % (year, month))
+                raise ValueError('No expiries available '
+                                 'in %s-%s' % (year, month))
 
         return expiry
 
     def _validate_expiry(self, expiry):
-        """Ensures that an expiry date has data available on Yahoo
-        If the expiry date does not have options that expire on that day, return next expiry"""
+        """
+        Ensures that an expiry date has data available on Yahoo.
+
+        If the expiry date does not have options that expire on that day,
+        return next expiry.
+        """
 
         expiry_dates = self.expiry_dates
         expiry = to_datetime(expiry)
@@ -502,16 +536,19 @@ class Options(_OptionBaseReader):
                 Ask: Ask price, float
                 Vol: Volume traded, int64
                 Open_Int: Open interest, int64
-                IsNonstandard: True if the the deliverable is not 100 shares, otherwise false
+                IsNonstandard: True if the the deliverable is not 100 shares,
+                               otherwise false
                 Underlying: Ticker of the underlying security, string
                 Underlying_Price: Price of the underlying security, float64
                 Quote_Time: Time of the quote, Timestamp
-                Last_Trade_Date: Time of the last trade for this expiry and strike, Timestamp
+                Last_Trade_Date: Time of the last trade for this expiry
+                                 and strike, Timestamp
                 IV: Implied volatility, float
                 JSON: Parsed json object, json
                     Useful to extract other returned key/value pairs as needed
 
-                Note: Format of returned data frame is dependent on Yahoo and may change.
+                Note: Format of returned DataFrame is dependent
+                      on Yahoo and may change.
 
         """
         warnings.warn("get_forward_data() is deprecated", FutureWarning)
@@ -554,18 +591,21 @@ class Options(_OptionBaseReader):
                 Ask: Ask price, float
                 Vol: Volume traded, int64
                 Open_Int: Open interest, int64
-                IsNonstandard: True if the the deliverable is not 100 shares, otherwise false
+                IsNonstandard: True if the the deliverable is not 100 shares,
+                               otherwise false
                 Underlying: Ticker of the underlying security, string
                 Underlying_Price: Price of the underlying security, float64
                 Quote_Time: Time of the quote, Timestamp
-                Last_Trade_Date: Time of the last trade for this expiry and strike, Timestamp
+                Last_Trade_Date: Time of the last trade for this expiry
+                                 and strike, Timestamp
                 IV: Implied volatility, float
                 JSON: Parsed json object, json
                     Useful to extract other returned key/value pairs as needed
 
-        Note: Format of returned data frame is dependent on Yahoo and may change.
-
+        Note: Format of returned DataFrame is dependent
+              on Yahoo and may change.
         """
+
         return self._load_data()
 
     def _get_data_in_date_range(self, dates, call=True, put=True):
@@ -577,7 +617,8 @@ class Options(_OptionBaseReader):
         types = [typ for typ in to_ret]
 
         df_filtered_by_type = df[df.index.map(lambda x: x[2] in types)]
-        df_filtered_by_expiry = df_filtered_by_type[df_filtered_by_type.index.get_level_values('Expiry').isin(dates)]
+        df_filtered_by_expiry = df_filtered_by_type[
+            df_filtered_by_type.index.get_level_values('Expiry').isin(dates)]
         return df_filtered_by_expiry
 
     @property
@@ -627,8 +668,9 @@ class Options(_OptionBaseReader):
         url = self._OPTIONS_BASE_URL.format(sym=self.symbol)
         jd = self._parse_url(url)
 
-        expiry_dates =\
-            [dt.datetime.utcfromtimestamp(ts).date() for ts in jd['optionChain']['result'][0]['expirationDates']]
+        expiry_dates = [dt.datetime.utcfromtimestamp(ts).date()
+                        for ts in jd['optionChain'][
+                            'result'][0]['expirationDates']]
 
         if len(expiry_dates) == 0:
             raise RemoteDataError('Data not available')  # pragma: no cover
@@ -651,7 +693,8 @@ class Options(_OptionBaseReader):
         """
         jd = json.loads(self._read_url_as_StringIO(url).read())
         if jd is None:  # pragma: no cover
-            raise RemoteDataError("Parsed URL {0!r} is not a valid json object".format(url))
+            raise RemoteDataError("Parsed URL {0!r} is not "
+                                  "a valid json object".format(url))
         return jd
 
     def _process_data(self, jd):
@@ -673,12 +716,13 @@ class Options(_OptionBaseReader):
         """
 
         columns = ['Last', 'Bid', 'Ask', 'Chg', 'PctChg', 'Vol',
-                   'Open_Int', 'IV', 'Root', 'IsNonstandard', 'Underlying', 'Underlying_Price', 'Quote_Time',
-                   'Last_Trade_Date', 'JSON']
+                   'Open_Int', 'IV', 'Root', 'IsNonstandard', 'Underlying',
+                   'Underlying_Price', 'Quote_Time', 'Last_Trade_Date', 'JSON']
         indexes = ['Strike', 'Expiry', 'Type', 'Symbol']
         rows_list, index = self._process_rows(jd)
         if len(rows_list) > 0:
-            df = DataFrame(rows_list, columns=columns, index=MultiIndex.from_tuples(index, names=indexes))
+            df = DataFrame(rows_list, columns=columns,
+                           index=MultiIndex.from_tuples(index, names=indexes))
         else:
             df = DataFrame(columns=columns)
 
@@ -704,11 +748,17 @@ class Options(_OptionBaseReader):
                 options_by_type = option[typ]
                 for option_by_strike in options_by_type:
                     d = {}
-                    for dkey, rkey, ntype in [('Last', 'lastPrice', float), ('Bid', 'bid', float),
-                                              ('Ask', 'ask', float), ('Chg', 'change', float),
-                                              ('PctChg', 'percentChange', float), ('Vol', 'volume', int),
-                                              ('Open_Int', 'openInterest', int), ('IV', 'impliedVolatility', float),
-                                              ('Last_Trade_Date', 'lastTradeDate', int)]:
+                    for dkey, rkey, ntype in [
+                        ('Last', 'lastPrice', float),
+                        ('Bid', 'bid', float),
+                        ('Ask', 'ask', float),
+                        ('Chg', 'change', float),
+                        ('PctChg', 'percentChange', float),
+                        ('Vol', 'volume', int),
+                        ('Open_Int', 'openInterest', int),
+                        ('IV', 'impliedVolatility', float),
+                        ('Last_Trade_Date', 'lastTradeDate', int)
+                    ]:
                         try:
                             d[dkey] = ntype(option_by_strike[rkey])
                         except (KeyError, ValueError):
@@ -719,22 +769,27 @@ class Options(_OptionBaseReader):
 
                     d['Underlying_Price'] = quote['regularMarketPrice']
                     quote_unix_time = quote['regularMarketTime']
-                    if quote['marketState'] == 'PRE' and 'preMarketPrice' in quote:
+                    if (quote['marketState'] == 'PRE' and
+                            'preMarketPrice' in quote):
                         d['Underlying_Price'] = quote['preMarketPrice']
                         quote_unix_time = quote['preMarketTime']
-                    elif quote['marketState'] == 'POSTPOST' and 'postMarketPrice' in quote:
+                    elif (quote['marketState'] == 'POSTPOST' and
+                            'postMarketPrice' in quote):
                         d['Underlying_Price'] = quote['postMarketPrice']
                         quote_unix_time = quote['postMarketTime']
-                    d['Quote_Time'] = dt.datetime.utcfromtimestamp(quote_unix_time)
+                    d['Quote_Time'] = dt.datetime.utcfromtimestamp(
+                        quote_unix_time)
 
                     self._underlying_price = d['Underlying_Price']
                     self._quote_time = d['Quote_Time']
 
-                    d['Last_Trade_Date'] = dt.datetime.utcfromtimestamp(d['Last_Trade_Date'])
+                    d['Last_Trade_Date'] = dt.datetime.utcfromtimestamp(
+                        d['Last_Trade_Date'])
 
                     rows_list.append(d)
                     index.append((float(option_by_strike['strike']),
-                                  dt.datetime.utcfromtimestamp(option_by_strike['expiration']),
+                                  dt.datetime.utcfromtimestamp(
+                                      option_by_strike['expiration']),
                                   typ.replace('s', ''),
                                   option_by_strike['contractSymbol']))
         return rows_list, index
@@ -746,8 +801,8 @@ class Options(_OptionBaseReader):
         Parameters
         ----------
         exp_dates : tuple of datetimes, optional(default=None)
-            The expiry dates to load options data for.  If none is specified, uses all expiry dates available for the
-            symbol.
+            The expiry dates to load options data for. If none is specified,
+            uses all expiry dates available for the symbol.
 
         Returns
         -------
@@ -757,11 +812,14 @@ class Options(_OptionBaseReader):
         epoch = dt.datetime.utcfromtimestamp(0)
         if exp_dates is None:
             exp_dates = self._get_expiry_dates()
-        exp_unix_times = [int((dt.datetime(exp_date.year, exp_date.month, exp_date.day) - epoch).total_seconds())
+        exp_unix_times = [int((dt.datetime(
+            exp_date.year, exp_date.month, exp_date.day)
+                               - epoch).total_seconds())
                           for exp_date in exp_dates]
         data = []
         for exp_date in exp_unix_times:
-            url = (self._OPTIONS_BASE_URL + '?date={exp_date}').format(sym=self.symbol, exp_date=exp_date)
+            url = (self._OPTIONS_BASE_URL + '?date={exp_date}').format(
+                sym=self.symbol, exp_date=exp_date)
             jd = self._parse_url(url)
             data.append(self._process_data(jd))
         return concat(data).sortlevel()

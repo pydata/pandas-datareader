@@ -39,8 +39,8 @@ class YahooDailyReader(_DailyBaseReader):
     """
 
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.001, session=None, adjust_price=False, ret_index=False,
-                 chunksize=25, interval='d'):
+                 pause=0.001, session=None, adjust_price=False,
+                 ret_index=False, chunksize=25, interval='d'):
         super(YahooDailyReader, self).__init__(symbols=symbols,
                                                start=start, end=end,
                                                retry_count=retry_count,
@@ -50,7 +50,8 @@ class YahooDailyReader(_DailyBaseReader):
         self.ret_index = ret_index
 
         if interval not in ['d', 'w', 'm', 'v']:
-            raise ValueError("Invalid interval: valid values are 'd', 'w', 'm' and 'v'")
+            raise ValueError("Invalid interval: valid values are "
+                             "'d', 'w', 'm' and 'v'")
         self.interval = interval
 
     @property

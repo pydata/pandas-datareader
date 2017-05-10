@@ -127,7 +127,8 @@ class _BaseReader(object):
             rs = rs[:-1]
         # Get rid of unicode characters in index name.
         try:
-            rs.index.name = rs.index.name.decode('unicode_escape').encode('ascii', 'ignore')
+            rs.index.name = rs.index.name.decode(
+                'unicode_escape').encode('ascii', 'ignore')
         except AttributeError:
             # Python 3 string has no decode method.
             rs.index.name = rs.index.name.encode('ascii', 'ignore').decode()
@@ -152,7 +153,8 @@ class _DailyBaseReader(_BaseReader):
         """ read data """
         # If a single symbol, (e.g., 'GOOG')
         if isinstance(self.symbols, (compat.string_types, int)):
-            df = self._read_one_data(self.url, params=self._get_params(self.symbols))
+            df = self._read_one_data(self.url,
+                                     params=self._get_params(self.symbols))
         # Or multiple symbols, (e.g., ['GOOG', 'AAPL', 'MSFT'])
         elif isinstance(self.symbols, DataFrame):
             df = self._dl_mult_symbols(self.symbols.index)
@@ -167,7 +169,8 @@ class _DailyBaseReader(_BaseReader):
         for sym_group in _in_chunks(symbols, self.chunksize):
             for sym in sym_group:
                 try:
-                    stocks[sym] = self._read_one_data(self.url, self._get_params(sym))
+                    stocks[sym] = self._read_one_data(self.url,
+                                                      self._get_params(sym))
                     passed.append(sym)
                 except IOError:
                     msg = 'Failed to read symbol: {0!r}, replacing with NaN.'

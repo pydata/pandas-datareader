@@ -12,20 +12,24 @@ from pandas_datareader.base import _BaseReader
 
 class EnigmaReader(_BaseReader):
     """
-    Collects Enigma data located at the specified datapath and returns a pandas DataFrame.
+    Collects Enigma data located at the specified datapath and
+    returns a pandas DataFrame.
 
     Usage (high-level):
     ```
         import pandas_datareader as pdr
         df = pdr.get_data_enigma('enigma.inspections.restaurants.fl')
 
-        #in the event that ENIGMA_API_KEY does not exist in your env, it can be supplied as the second arg:
-        df = prd.get_data_enigma('enigma.inspections.restaurants.fl', 'ARIAMFHKJMISF38UT')
+        # in the event that ENIGMA_API_KEY does not exist in your env,
+        # it can be supplied as the second arg:
+        df = prd.get_data_enigma('enigma.inspections.restaurants.fl',
+        ...                      'ARIAMFHKJMISF38UT')
     ```
 
     Usage:
     ```
-        df = EnigmaReader(datapath='enigma.inspections.restaurants.fl', api_key='ARIAMFHKJMISF38UT').read()
+        df = EnigmaReader(datapath='enigma.inspections.restaurants.fl',
+        ...               api_key='ARIAMFHKJMISF38UT').read()
     ```
     """
 
@@ -42,16 +46,18 @@ class EnigmaReader(_BaseReader):
         if api_key is None:
             self._api_key = os.getenv('ENIGMA_API_KEY')
             if self._api_key is None:
-                raise ValueError(
-                    """Please provide an Enigma API key or set the ENIGMA_API_KEY environment variable\n
-                        If you do not have an API key, you can get one here: https://app.enigma.io/signup""")
+                raise ValueError("Please provide an Enigma API key or set "
+                                 "the ENIGMA_API_KEY environment variable\n"
+                                 "If you do not have an API key, you can get "
+                                 "one here: https://app.enigma.io/signup")
         else:
             self._api_key = api_key
 
         self._datapath = datapath
         if not isinstance(self._datapath, compat.string_types):
             raise ValueError(
-                "The Enigma datapath must be a string (ex: 'enigma.inspections.restaurants.fl')")
+                "The Enigma datapath must be a string (ex: "
+                "'enigma.inspections.restaurants.fl')")
 
     @property
     def url(self):
@@ -95,5 +101,6 @@ class EnigmaReader(_BaseReader):
 
     def read(self):
         export_gzipped_req = self._request(self.extract_export_url())
-        decompressed_data = self._decompress_export(export_gzipped_req.content).decode("utf-8")
+        decompressed_data = self._decompress_export(
+            export_gzipped_req.content).decode("utf-8")
         return pd.read_csv(StringIO(decompressed_data))
