@@ -143,7 +143,7 @@ class FamaFrenchReader(_BaseReader):
 
         l = filter(lambda x: (x.startswith(_URL_PREFIX) and
                               x.endswith(_URL_SUFFIX)),
-                   [(e.attrib['href'] for e in root.findall('.//a')
-                     if 'href' in e.attrib)])
+                   [e.attrib['href'] for e in root.findall('.//a')
+                    if 'href' in e.attrib])
 
         return lmap(lambda x: x[len(_URL_PREFIX):-len(_URL_SUFFIX)], l)

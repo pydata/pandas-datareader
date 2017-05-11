@@ -616,7 +616,8 @@ class Options(_OptionBaseReader):
         df = self._load_data(dates)
         types = [typ for typ in to_ret]
 
-        df_filtered_by_type = df[df.index.map(lambda x: x[2] in types)]
+        df_filtered_by_type = df[df.index.map(
+            lambda x: x[2] in types).tolist()]
         df_filtered_by_expiry = df_filtered_by_type[
             df_filtered_by_type.index.get_level_values('Expiry').isin(dates)]
         return df_filtered_by_expiry

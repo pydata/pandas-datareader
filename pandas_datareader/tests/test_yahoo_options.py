@@ -52,8 +52,7 @@ class TestYahooOptions(object):
                                 'Underlying', 'Underlying_Price', 'Quote_Time',
                                 'Last_Trade_Date', 'JSON'])
         tm.assert_index_equal(df.columns, exp_columns)
-        tm.assert_equal(df.index.names, [u'Strike', u'Expiry',
-                                         u'Type', u'Symbol'])
+        assert df.index.names == [u'Strike', u'Expiry', u'Type', u'Symbol']
 
         dtypes = [np.dtype(x) for x in ['float64'] * 7 +
                   ['float64', 'object', 'bool', 'object', 'float64',
