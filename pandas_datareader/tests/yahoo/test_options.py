@@ -1,6 +1,5 @@
 import os
 from datetime import datetime
-import sys
 
 import numpy as np
 import pandas as pd
@@ -195,9 +194,6 @@ class TestYahooOptions(object):
             pytest.skip(e)
 
         assert len(data) > 1
-
-        if sys.version_info[0] == 2 and sys.version_info[1] == 6:
-            pytest.skip('skip dtype check in python 2.6')
         assert data.index.levels[0].dtype == 'float64'
 
         self.assert_option_result(data)
