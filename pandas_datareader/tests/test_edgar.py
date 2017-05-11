@@ -5,6 +5,7 @@ import pandas.util.testing as tm
 import pandas_datareader.data as web
 
 from pandas_datareader._utils import RemoteDataError
+from pandas_datareader._testing import skip_on_exception
 
 
 class TestEdgarIndex(object):
@@ -15,58 +16,47 @@ class TestEdgarIndex(object):
         # Disabling tests until re-write.
         pytest.skip("Disabling tests until re-write.")
 
+    @skip_on_exception(RemoteDataError)
     def test_get_full_index(self):
-        try:
-            ed = web.DataReader('full', 'edgar-index')
-            assert len(ed) > 1000
+        ed = web.DataReader('full', 'edgar-index')
+        assert len(ed) > 1000
 
-            exp_columns = pd.Index(['cik', 'company_name', 'form_type',
-                                    'date_filed', 'filename'], dtype='object')
-            tm.assert_index_equal(ed.columns, exp_columns)
+        exp_columns = pd.Index(['cik', 'company_name', 'form_type',
+                                'date_filed', 'filename'], dtype='object')
+        tm.assert_index_equal(ed.columns, exp_columns)
 
-        except RemoteDataError as e:
-            pytest.skip(e)
-
+    @skip_on_exception(RemoteDataError)
     def test_get_nonzip_index_and_low_date(self):
-        try:
-            ed = web.DataReader('daily', 'edgar-index', '1994-06-30',
-                                '1994-07-02')
-            assert len(ed) > 200
-            assert ed.index.nlevels == 2
+        ed = web.DataReader('daily', 'edgar-index', '1994-06-30',
+                            '1994-07-02')
+        assert len(ed) > 200
+        assert ed.index.nlevels == 2
 
-            dti = ed.index.get_level_values(0)
-            assert isinstance(dti, pd.DatetimeIndex)
-            exp_columns = pd.Index(['company_name', 'form_type',
-                                    'filename'], dtype='object')
-            tm.assert_index_equal(ed.columns, exp_columns)
+        dti = ed.index.get_level_values(0)
+        assert isinstance(dti, pd.DatetimeIndex)
+        exp_columns = pd.Index(['company_name', 'form_type',
+                                'filename'], dtype='object')
+        tm.assert_index_equal(ed.columns, exp_columns)
 
-        except RemoteDataError as e:
-            pytest.skip(e)
-
+    @skip_on_exception(RemoteDataError)
     def test_get_gz_index_and_no_date(self):
         # TODO: Rewrite, as this test causes Travis to timeout.
 
-        try:
-            ed = web.DataReader('daily', 'edgar-index')
-            assert len(ed) > 2000
-        except RemoteDataError as e:
-            pytest.skip(e)
+        ed = web.DataReader('daily', 'edgar-index')
+        assert len(ed) > 2000
 
+    @skip_on_exception(RemoteDataError)
     def test_6_digit_date(self):
-        try:
-            ed = web.DataReader('daily', 'edgar-index', start='1998-05-18',
-                                end='1998-05-18')
-            assert len(ed) < 1200
-            assert ed.index.nlevels == 2
+        ed = web.DataReader('daily', 'edgar-index', start='1998-05-18',
+                            end='1998-05-18')
+        assert len(ed) < 1200
+        assert ed.index.nlevels == 2
 
-            dti = ed.index.get_level_values(0)
-            assert isinstance(dti, pd.DatetimeIndex)
-            assert dti[0] == pd.Timestamp('1998-05-18')
-            assert dti[-1] == pd.Timestamp('1998-05-18')
+        dti = ed.index.get_level_values(0)
+        assert isinstance(dti, pd.DatetimeIndex)
+        assert dti[0] == pd.Timestamp('1998-05-18')
+        assert dti[-1] == pd.Timestamp('1998-05-18')
 
-            exp_columns = pd.Index(['company_name', 'form_type',
-                                    'filename'], dtype='object')
-            tm.assert_index_equal(ed.columns, exp_columns)
-
-        except RemoteDataError as e:
-            pytest.skip(e)
+        exp_columns = pd.Index(['company_name', 'form_type',
+                                'filename'], dtype='object')
+        tm.assert_index_equal(ed.columns, exp_columns)

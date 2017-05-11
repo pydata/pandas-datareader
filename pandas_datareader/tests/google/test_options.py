@@ -8,6 +8,7 @@ import pandas.util.testing as tm
 
 import pandas_datareader.data as web
 from pandas_datareader._utils import RemoteDataError
+from pandas_datareader._testing import skip_on_exception
 
 
 class TestGoogleOptions(object):
@@ -17,12 +18,9 @@ class TestGoogleOptions(object):
         # GOOG has monthlies
         cls.goog = web.Options('GOOG', 'google')
 
+    @skip_on_exception(RemoteDataError)
     def test_get_options_data(self):
-        try:
-            options = self.goog.get_options_data(
-                expiry=self.goog.expiry_dates[0])
-        except RemoteDataError as e:  # pragma: no cover
-            raise pytest.skip(e)
+        options = self.goog.get_options_data(expiry=self.goog.expiry_dates[0])
 
         assert isinstance(options, pd.DataFrame)
         assert len(options) > 10
@@ -48,11 +46,9 @@ class TestGoogleOptions(object):
         with pytest.raises(NotImplementedError):
             self.goog.get_options_data(month=1, year=2016)
 
+    @skip_on_exception(RemoteDataError)
     def test_expiry_dates(self):
-        try:
-            dates = self.goog.expiry_dates
-        except RemoteDataError as e:  # pragma: no cover
-            pytest.skip(e)
+        dates = self.goog.expiry_dates
 
         assert len(dates) == 2
         assert isinstance(dates, list)
