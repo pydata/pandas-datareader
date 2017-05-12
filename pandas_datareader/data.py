@@ -16,7 +16,7 @@ from pandas_datareader.google.quotes import GoogleQuotesReader
 from pandas_datareader.iex.market import MarketReader as IEXMarkets
 from pandas_datareader.iex.ref import SymbolsReader as IEXSymbols
 from pandas_datareader.iex.stats import DailySummaryReader as IEXHistorical
-from pandas_datareader.iex.stats import MonthlySummaryReader as IEXMonthlySummary
+from pandas_datareader.iex.stats import MonthlySummaryReader as IEXMonthSummary
 from pandas_datareader.iex.stats import RecentReader as IEXRecents
 from pandas_datareader.iex.stats import RecordsReader as IEXRecords
 from pandas_datareader.iex.tops import LastReader as IEXLasts
@@ -99,7 +99,7 @@ def get_data_iex(*args, **kwargs):
 
 
 def get_summary_iex(*args, **kwargs):
-    return IEXMonthlySummary(*args, **kwargs).read()
+    return IEXMonthSummary(*args, **kwargs).read()
 
 
 def get_records_iex(*args, **kwargs):
