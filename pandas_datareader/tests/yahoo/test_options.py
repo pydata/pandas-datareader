@@ -9,6 +9,7 @@ import pandas.util.testing as tm
 
 import pandas_datareader.data as web
 from pandas_datareader._utils import RemoteDataError
+from pandas_datareader._testing import skip_on_exception
 
 
 class TestYahooOptions(object):
@@ -58,6 +59,7 @@ class TestYahooOptions(object):
                    'datetime64[ns]', 'datetime64[ns]', 'object']]
         tm.assert_series_equal(df.dtypes, pd.Series(dtypes, index=exp_columns))
 
+    @skip_on_exception(RemoteDataError)
     def test_get_options_data(self):
         # see gh-6105: regression test
         with pytest.raises(ValueError):
@@ -66,87 +68,64 @@ class TestYahooOptions(object):
         with pytest.raises(ValueError):
             self.aapl.get_options_data(year=1992)
 
-        try:
-            options = self.aapl.get_options_data(expiry=self.expiry)
-        except RemoteDataError as e:  # pragma: no cover
-            pytest.skip(e)
-
+        options = self.aapl.get_options_data(expiry=self.expiry)
         self.assert_option_result(options)
 
+    @skip_on_exception(RemoteDataError)
     def test_get_near_stock_price(self):
-        try:
-            options = self.aapl.get_near_stock_price(call=True, put=True,
-                                                     expiry=self.expiry)
-        except RemoteDataError as e:  # pragma: no cover
-            pytest.skip(e)
-
+        options = self.aapl.get_near_stock_price(call=True, put=True,
+                                                 expiry=self.expiry)
         self.assert_option_result(options)
 
     def test_options_is_not_none(self):
         option = web.Options('aapl', 'yahoo')
         assert option is not None
 
+    @skip_on_exception(RemoteDataError)
     def test_get_call_data(self):
-        try:
-            calls = self.aapl.get_call_data(expiry=self.expiry)
-        except RemoteDataError as e:  # pragma: no cover
-            pytest.skip(e)
+        calls = self.aapl.get_call_data(expiry=self.expiry)
 
         self.assert_option_result(calls)
         assert calls.index.levels[2][0] == 'call'
 
+    @skip_on_exception(RemoteDataError)
     def test_get_put_data(self):
-        try:
-            puts = self.aapl.get_put_data(expiry=self.expiry)
-        except RemoteDataError as e:  # pragma: no cover
-            pytest.skip(e)
+        puts = self.aapl.get_put_data(expiry=self.expiry)
 
         self.assert_option_result(puts)
         assert puts.index.levels[2][1] == 'put'
 
+    @skip_on_exception(RemoteDataError)
     def test_get_expiry_dates(self):
-        try:
-            dates = self.aapl._get_expiry_dates()
-        except RemoteDataError as e:  # pragma: no cover
-            pytest.skip(e)
-
+        dates = self.aapl._get_expiry_dates()
         assert len(dates) > 1
 
+    @skip_on_exception(RemoteDataError)
     def test_get_all_data(self):
-        try:
-            data = self.aapl.get_all_data(put=True)
-        except RemoteDataError as e:  # pragma: no cover
-            pytest.skip(e)
+        data = self.aapl.get_all_data(put=True)
 
         assert len(data) > 1
         self.assert_option_result(data)
 
+    @skip_on_exception(RemoteDataError)
     def test_get_data_with_list(self):
-        try:
-            data = self.aapl.get_call_data(expiry=self.aapl.expiry_dates)
-        except RemoteDataError as e:  # pragma: no cover
-            pytest.skip(e)
+        data = self.aapl.get_call_data(expiry=self.aapl.expiry_dates)
 
         assert len(data) > 1
         self.assert_option_result(data)
 
+    @skip_on_exception(RemoteDataError)
     def test_get_all_data_calls_only(self):
-        try:
-            data = self.aapl.get_all_data(call=True, put=False)
-        except RemoteDataError as e:  # pragma: no cover
-            pytest.skip(e)
+        data = self.aapl.get_all_data(call=True, put=False)
 
         assert len(data) > 1
         self.assert_option_result(data)
 
+    @skip_on_exception(RemoteDataError)
     def test_get_underlying_price(self):
         # see gh-7
-
-        try:
-            options_object = web.Options('^spxpm', 'yahoo')
-            quote_price = options_object.underlying_price
-        except RemoteDataError as e:  # pragma: no cover
-            pytest.skip(e)
+        options_object = web.Options('^spxpm', 'yahoo')
+        quote_price = options_object.underlying_price
 
         assert isinstance(quote_price, float)
 
@@ -186,12 +165,10 @@ class TestYahooOptions(object):
         # Tests that numeric columns with comma's are appropriately dealt with
         assert self.data1['Chg'].dtype == 'float64'
 
+    @skip_on_exception(RemoteDataError)
     def test_month_year(self):
         # see gh-168
-        try:
-            data = self.aapl.get_call_data(month=self.month, year=self.year)
-        except RemoteDataError as e:  # pragma: no cover
-            pytest.skip(e)
+        data = self.aapl.get_call_data(month=self.month, year=self.year)
 
         assert len(data) > 1
         assert data.index.levels[0].dtype == 'float64'
