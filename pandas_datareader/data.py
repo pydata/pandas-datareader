@@ -15,7 +15,7 @@ from pandas_datareader.yahoo.options import Options as YahooOptions
 from pandas_datareader.google.options import Options as GoogleOptions
 
 from pandas_datareader.iex.stats import DailySummaryReader as IEXHistorical
-from pandas_datareader.iex.stats import MonthlySummaryReader as IEXMonthlySummary
+from pandas_datareader.iex.stats import MonthlySummaryReader as IEXMonthSummary
 from pandas_datareader.iex.stats import RecentReader as IEXRecents
 from pandas_datareader.iex.stats import RecordsReader as IEXRecords
 from pandas_datareader.iex.market import MarketReader as IEXMarkets
@@ -82,7 +82,7 @@ def get_data_iex(*args, **kwargs):
 
 
 def get_summary_iex(*args, **kwargs):
-    return IEXMonthlySummary(*args, **kwargs).read()
+    return IEXMonthSummary(*args, **kwargs).read()
 
 
 def get_records_iex(*args, **kwargs):
@@ -174,13 +174,13 @@ def DataReader(name, data_source=None, start=None, end=None,
                                  session=session).read()
     elif data_source == "iex-tops":
         return IEXTops(symbols=name, start=start, end=end,
-                              retry_count=retry_count, pause=pause,
-                              session=session).read()
+                       retry_count=retry_count, pause=pause,
+                       session=session).read()
 
     elif data_source == "iex-last":
         return IEXLasts(symbols=name, start=start, end=end,
-                              retry_count=retry_count, pause=pause,
-                              session=session).read()
+                        retry_count=retry_count, pause=pause,
+                        session=session).read()
 
     elif data_source == "enigma":
         return EnigmaReader(datapath=name, api_key=access_key).read()

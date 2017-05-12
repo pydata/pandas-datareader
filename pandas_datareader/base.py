@@ -152,7 +152,8 @@ class _BaseReader(object):
         raise NotImplementedError("Subclass has not implemented method.")
 
     def _output_error(self, out):
-        """If necessary, a service can implement an interpreter for any non-200 HTTP responses.
+        """If necessary, a service can implement an interpreter for any non-200
+         HTTP responses.
 
         :param out: raw output from an HTTP request
         :return: boolean

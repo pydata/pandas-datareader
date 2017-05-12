@@ -4,8 +4,10 @@ from pandas.io.common import urlencode
 from pandas_datareader.base import _BaseReader
 
 # Data provided for free by IEX
-# Data is furnished in compliance with the guidelines promulgated in the IEX API terms of service and manual
-# See https://iextrading.com/api-exhibit-a/ for additional information and conditions of use
+# Data is furnished in compliance with the guidelines promulgated in the IEX
+# API terms of service and manual
+# See https://iextrading.com/api-exhibit-a/ for additional information
+# and conditions of use
 
 
 class IEX(_BaseReader):
@@ -19,9 +21,9 @@ class IEX(_BaseReader):
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
                  pause=0.001, session=None):
         super(IEX, self).__init__(symbols=symbols,
-                                      start=start, end=end,
-                                      retry_count=retry_count,
-                                      pause=pause, session=session)
+                                  start=start, end=end,
+                                  retry_count=retry_count,
+                                  pause=pause, session=session)
 
     @property
     def service(self):
@@ -31,7 +33,8 @@ class IEX(_BaseReader):
     @property
     def url(self):
         qstring = urlencode(self._get_params(self.symbols))
-        return "https://api.iextrading.com/1.0/{}?{}".format(self.service, qstring)
+        return "https://api.iextrading.com/1.0/{}?{}".format(self.service,
+                                                             qstring)
 
     def read(self):
         df = super(IEX, self).read()
@@ -46,8 +49,9 @@ class IEX(_BaseReader):
         return p
 
     def _output_error(self, out):
-        """If IEX returns a non-200 status code, we need to notify the user of the error returned.
-        
+        """If IEX returns a non-200 status code, we need to notify the user of
+        the error returned.
+
         :param out: Raw HTTP Output
         """
         try:
@@ -61,8 +65,9 @@ class IEX(_BaseReader):
                 raise Exception(e)
 
     def _read_lines(self, out):
-        """IEX's output does not need anything complex, so we're overriding to use Pandas' default interpreter
-        
+        """IEX's output does not need anything complex, so we're overriding to
+        use Pandas' default interpreter
+
         :param out: Raw HTTP Output
         :return: DataFrame
         """
