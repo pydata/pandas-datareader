@@ -12,7 +12,7 @@
         python setup.py register sdist bdist_wheel --universal
         twine upload dist/*
 
-*  Do a pull-request to the feedstock on `pandas-datareader-feedstock <https://github.com/conda-forge/pandas-datareader-feedstock/>`__
+*  Do a pull-request to the feedstock on [pandas-datareader-feedstock](https://github.com/conda-forge/pandas-datareader-feedstock/)
 
         update the version
         update the SHA256 (retrieve from PyPI)
