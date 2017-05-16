@@ -17,6 +17,7 @@ from pandas_datareader.iex.market import MarketReader as IEXMarkets
 from pandas_datareader.iex.ref import SymbolsReader as IEXSymbols
 from pandas_datareader.iex.stats import DailySummaryReader as IEXHistorical
 from pandas_datareader.iex.stats import MonthlySummaryReader as IEXMonthSummary
+from pandas_datareader.iex.deep import Deep as IEXDeep
 from pandas_datareader.iex.stats import RecentReader as IEXRecents
 from pandas_datareader.iex.stats import RecordsReader as IEXRecords
 from pandas_datareader.iex.tops import LastReader as IEXLasts
@@ -114,6 +115,10 @@ def get_iex_symbols(*args, **kwargs):
     return IEXSymbols(*args, **kwargs).read()
 
 
+def get_iex_book(*args, **kwargs):
+    return IEXDeep(*args, **kwargs).read()
+
+
 def DataReader(name, data_source=None, start=None, end=None,
                retry_count=3, pause=0.001, session=None, access_key=None):
     """
@@ -208,6 +213,11 @@ def DataReader(name, data_source=None, start=None, end=None,
                                 chunksize=25,
                                 retry_count=retry_count, pause=pause,
                                 session=session).read()
+
+    elif data_source == "iex-book":
+        return IEXDeep(symbols=name, service="book", start=start, end=end,
+                       retry_count=retry_count, pause=pause,
+                       session=session).read()
 
     elif data_source == "enigma":
         return EnigmaReader(dataset_id=name, api_key=access_key).read()
