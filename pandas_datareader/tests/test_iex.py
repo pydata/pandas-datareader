@@ -39,3 +39,9 @@ class TestIEX(object):
         tickers = dftickers[:5].symbol.values
         df = get_last_iex(tickers[:5])
         assert df["price"].mean() > 0
+
+    def test_deep(self):
+        dob = DataReader('GS', 'iex-book')
+        assert 'GS' in dob
+        assert 'asks' in dob['GS']
+        assert dob['GS']['bids'][0]['price'] > 0
