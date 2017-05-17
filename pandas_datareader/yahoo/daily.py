@@ -61,9 +61,9 @@ class YahooDailyReader(_DailyBaseReader):
         self.adjust_price = adjust_price
         self.ret_index = ret_index
 
-        if interval not in ['d', 'w', 'm', 'v']:
+        if interval not in ['d', 'w', 'm']:
             raise ValueError("Invalid interval: valid values are "
-                             "'d', 'w', 'm' and 'v'")
+                             "'d', 'w', 'm'")
         self.interval = '1' + interval
         # self.crumb = '64ZkTeri7Xq'
         self.crumb = self._get_crumb(retry_count)
