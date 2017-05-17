@@ -99,7 +99,7 @@ class _BaseReader(object):
         """
         return response.content
 
-    def _get_response(self, url, params=None):
+    def _get_response(self, url, params=None, headers=None):
         """ send raw HTTP request to get requests.Response from the specified url
         Parameters
         ----------
@@ -111,7 +111,7 @@ class _BaseReader(object):
 
         # initial attempt + retry
         for i in range(self.retry_count + 1):
-            response = self.session.get(url, params=params)
+            response = self.session.get(url, params=params, headers=headers)
             if response.status_code == requests.codes.ok:
                 return response
             time.sleep(self.pause)
@@ -120,7 +120,7 @@ class _BaseReader(object):
         raise RemoteDataError('Unable to read URL: {0}'.format(url))
 
     def _read_lines(self, out):
-        rs = read_csv(out, index_col=0, parse_dates=True, na_values='-')[::-1]
+        rs = read_csv(out, index_col=0, parse_dates=True, na_values='-')
         # Yahoo! Finance sometimes does this awesome thing where they
         # return 2 rows for the most recent business day
         if len(rs) > 2 and rs.index[-1] == rs.index[-2]:  # pragma: no cover

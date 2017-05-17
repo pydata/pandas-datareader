@@ -1,3 +1,6 @@
+import re
+import time
+import pandas as pd
 from pandas_datareader.base import _DailyBaseReader
 
 
@@ -46,29 +49,39 @@ class YahooDailyReader(_DailyBaseReader):
                                                retry_count=retry_count,
                                                pause=pause, session=session,
                                                chunksize=chunksize)
+
+        self.headers = {
+            'Connection': 'keep-alive',
+            'Expires': str(-1),
+            'Upgrade-Insecure-Requests': str(1),
+            # Google Chrome:
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36'  # noqa
+        }
+
         self.adjust_price = adjust_price
         self.ret_index = ret_index
 
         if interval not in ['d', 'w', 'm', 'v']:
             raise ValueError("Invalid interval: valid values are "
                              "'d', 'w', 'm' and 'v'")
-        self.interval = interval
+        self.interval = '1' + interval
+        # self.crumb = '64ZkTeri7Xq'
+        self.crumb = self._get_crumb(retry_count)
 
     @property
     def url(self):
-        return 'http://ichart.finance.yahoo.com/table.csv'
+        return 'https://query1.finance.yahoo.com/v7/finance/download/{}'.format(self.symbols)  # noqa
 
     def _get_params(self, symbol):
+        unix_start = int(time.mktime(self.start.timetuple()))
+        unix_end = int(time.mktime(self.end.timetuple()))
+
         params = {
-            's': symbol,
-            'a': self.start.month - 1,
-            'b': self.start.day,
-            'c': self.start.year,
-            'd': self.end.month - 1,
-            'e': self.end.day,
-            'f': self.end.year,
-            'g': self.interval,
-            'ignore': '.csv'
+            'period1': unix_start,
+            'period2': unix_end,
+            'interval': self.interval,
+            'events': 'history',
+            'crumb': self.crumb
         }
         return params
 
@@ -79,7 +92,29 @@ class YahooDailyReader(_DailyBaseReader):
             df['Ret_Index'] = _calc_return_index(df['Adj Close'])
         if self.adjust_price:
             df = _adjust_prices(df)
+        temp = pd.date_range(self.start, self.end, None, self.interval)
         return df
+
+    def _get_crumb(self, retries):
+        # Scrape a history page for a valid crumb ID:
+        tu = "https://finance.yahoo.com/quote/{}/history".format(self.symbols)
+        response = self._get_response(tu,
+                                      params=self.params, headers=self.headers)
+        out = str(self._sanitize_response(response))
+        # Matches: {"crumb":"AlphaNumeric"}
+        regex = re.search(r'{"crumb" ?: ?"([A-Za-z0-9.]{11,})"}', out)
+
+        try:
+            crumbs = regex.groups()
+        except:
+            # It is possible we hit a 401 with frequent requests. Cool-off:
+            if retries > 0:
+                time.sleep(2)
+                retries -= 1
+                crumbs = [self._get_crumb(retries)]
+            raise OSError("Unable to retrieve Yahoo breadcrumb, exiting.")
+
+        return crumbs[0]
 
 
 def _adjust_prices(hist_data, price_list=None):
