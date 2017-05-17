@@ -106,7 +106,7 @@ class YahooDailyReader(_DailyBaseReader):
                                       params=self.params, headers=self.headers)
         out = str(self._sanitize_response(response))
         # Matches: {"crumb":"AlphaNumeric"}
-        regex = re.search(r'{"crumb" ?: ?"([A-Za-z0-9.]{11,})"}', out)
+        regex = re.search(r'"crumb" ?: ?"([A-Za-z0-9.]{11,})"', out)
 
         try:
             crumbs = regex.groups()
