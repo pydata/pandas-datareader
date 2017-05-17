@@ -1,61 +1,51 @@
-import csv
-from pandas import to_datetime, DataFrame
-
-from pandas_datareader.base import _DailyBaseReader
+from pandas import concat
+from pandas_datareader.yahoo.daily import YahooDailyReader
 
 
-class YahooActionReader(_DailyBaseReader):
-
+class YahooActionReader(YahooDailyReader):
     """
     Returns DataFrame of historical corporate actions (dividends and stock
     splits) from symbols, over date range, start to end. All dates in the
     resulting DataFrame correspond with dividend and stock split ex-dates.
     """
+    def read(self):
+        dividends = YahooDivReader(symbols=self.symbols,
+                                   start=self.start,
+                                   end=self.end,
+                                   retry_count=self.retry_count,
+                                   pause=self.pause,
+                                   session=self.session).read()
+        # Add a label column so we can combine our two DFs
+        dividends["action"] = "DIVIDEND"
+        dividends = dividends.rename(columns={'Dividends': 'value'})
+
+        splits = YahooSplitReader(symbols=self.symbols,
+                                  start=self.start,
+                                  end=self.end,
+                                  retry_count=self.retry_count,
+                                  pause=self.pause,
+                                  session=self.session).read()
+        # Add a label column so we can combine our two DFs
+        splits["action"] = "SPLIT"
+        splits = splits.rename(columns={'Stock Splits': 'value'})
+        # Converts fractional form splits (i.e. "2/1") into conversion ratios,
+        # then take the reciprocal
+        splits['value'] = splits.apply(lambda x: 1/eval(x['value']), axis=1)
+
+        output = concat([dividends, splits]).sort_index(ascending=False)
+
+        return output
+
+
+class YahooDivReader(YahooDailyReader):
 
     @property
-    def url(self):
-        return 'http://ichart.finance.yahoo.com/x'
+    def service(self):
+        return 'div'
 
-    def _get_params(self, symbols=None):
-        params = {
-            's': self.symbols,
-            'a': self.start.month - 1,
-            'b': self.start.day,
-            'c': self.start.year,
-            'd': self.end.month - 1,
-            'e': self.end.day,
-            'f': self.end.year,
-            'g': 'v'
-        }
-        return params
 
-    def _read_lines(self, out):
-        actions_index = []
-        actions_entries = []
+class YahooSplitReader(YahooDailyReader):
 
-        for line in csv.reader(out.readlines()):
-            # Ignore lines that aren't dividends or splits (Yahoo
-            # add a bunch of irrelevant fields.)
-            if len(line) != 3 or line[0] not in ('DIVIDEND', 'SPLIT'):
-                continue
-
-            action, date, value = line
-            if action == 'DIVIDEND':
-                actions_index.append(to_datetime(date))
-                actions_entries.append({
-                    'action': action,
-                    'value': float(value)
-                })
-            elif action == 'SPLIT' and ':' in value:
-                # Convert the split ratio to a fraction. For example a
-                # 4:1 split expressed as a fraction is 1/4 = 0.25.
-                denominator, numerator = value.split(':', 1)
-                split_fraction = float(numerator) / float(denominator)
-
-                actions_index.append(to_datetime(date))
-                actions_entries.append({
-                    'action': action,
-                    'value': split_fraction
-                })
-
-        return DataFrame(actions_entries, index=actions_index)
+    @property
+    def service(self):
+        return 'split'

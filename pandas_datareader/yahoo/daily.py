@@ -69,6 +69,10 @@ class YahooDailyReader(_DailyBaseReader):
         self.crumb = self._get_crumb(retry_count)
 
     @property
+    def service(self):
+        return 'history'
+
+    @property
     def url(self):
         return 'https://query1.finance.yahoo.com/v7/finance/download/{}'.format(self.symbols)  # noqa
 
@@ -80,7 +84,7 @@ class YahooDailyReader(_DailyBaseReader):
             'period1': unix_start,
             'period2': unix_end,
             'interval': self.interval,
-            'events': 'history',
+            'events': self.service,
             'crumb': self.crumb
         }
         return params
@@ -93,7 +97,7 @@ class YahooDailyReader(_DailyBaseReader):
         if self.adjust_price:
             df = _adjust_prices(df)
         temp = pd.date_range(self.start, self.end, None, self.interval)
-        return df
+        return df.sort_index()
 
     def _get_crumb(self, retries):
         # Scrape a history page for a valid crumb ID:
