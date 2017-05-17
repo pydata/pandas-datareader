@@ -14,15 +14,9 @@ from pandas_datareader.yahoo.components import _get_data as get_components_yahoo
 from pandas_datareader.yahoo.options import Options as YahooOptions
 from pandas_datareader.google.options import Options as GoogleOptions
 
-from pandas_datareader.iex.stats import DailySummaryReader as IEXHistorical
-from pandas_datareader.iex.stats import MonthlySummaryReader as IEXMonthSummary
 from pandas_datareader.iex.deep import Deep as IEXDeep
-from pandas_datareader.iex.stats import RecentReader as IEXRecents
-from pandas_datareader.iex.stats import RecordsReader as IEXRecords
-from pandas_datareader.iex.market import MarketReader as IEXMarkets
 from pandas_datareader.iex.tops import LastReader as IEXLasts
 from pandas_datareader.iex.tops import TopsReader as IEXTops
-from pandas_datareader.iex.ref import SymbolsReader as IEXSymbols
 
 from pandas_datareader.eurostat import EurostatReader
 from pandas_datareader.fred import FredReader
@@ -75,31 +69,118 @@ def get_last_iex(*args, **kwargs):
 
 
 def get_markets_iex(*args, **kwargs):
-    return IEXMarkets(*args, **kwargs).read()
+    """
+    Returns near-real time volume data across markets segregated by tape
+    and including a percentage of overall volume during the session
+    
+    This endpoint does not accept any parameters.
+    
+    Reference: https://www.iextrading.com/developer/docs/#markets
+    
+    :return: DataFrame
+    """
+    from pandas_datareader.iex.market import MarketReader
+    return MarketReader(*args, **kwargs).read()
 
 
-def get_data_iex(*args, **kwargs):
-    return IEXHistorical(*args, **kwargs).read()
+def get_dailysummary_iex(*args, **kwargs):
+    """
+    Returns a summary of daily market volume statistics. Without parameters,
+    this will return the most recent trading session by default.
+    
+    :param start: 
+        A datetime object - the beginning of the date range.
+    :param end:
+        A datetime object - the end of the date range.
+        
+    Reference: https://www.iextrading.com/developer/docs/#historical-daily
+        
+    :return: DataFrame
+    """
+    from pandas_datareader.iex.stats import DailySummaryReader
+    return DailySummaryReader(*args, **kwargs).read()
 
 
 def get_summary_iex(*args, **kwargs):
-    return IEXMonthSummary(*args, **kwargs).read()
+    """
+    Returns an aggregated monthly summary of market volume and a variety of 
+    related metrics for trades by lot size, security market cap, and venue.
+    In the absence of parameters, this will return month-to-date statistics.
+    For ranges spanning multiple months, this will return one row per month.
+        
+    :param start: 
+        A datetime object - the beginning of the date range.
+    :param end:
+        A datetime object - the end of the date range.
+        
+    :return: DataFrame
+    """
+    from pandas_datareader.iex.stats import MonthlySummaryReader
+    return MonthlySummaryReader(*args, **kwargs).read()
 
 
 def get_records_iex(*args, **kwargs):
-    return IEXRecords(*args, **kwargs).read()
+    """
+    Returns the record value, record date, recent value, and 30-day average for
+    market volume, # of symbols traded, # of routed trades and notional value.
+    This function accepts no additional parameters.
+    
+    Reference: https://www.iextrading.com/developer/docs/#records
+    
+    :return: DataFrame
+    """
+    from pandas_datareader.iex.stats import RecordsReader
+    return RecordsReader(*args, **kwargs).read()
 
 
 def get_recent_iex(*args, **kwargs):
-    return IEXRecents(*args, **kwargs).read()
+    """
+    Returns market volume and trade routing statistics for recent sessions.
+    Also reports IEX's relative market share, lit share volume and a boolean
+    halfday indicator.
+    
+    Reference: https://www.iextrading.com/developer/docs/#recent
+    
+    :return: DataFrame
+    """
+    from pandas_datareader.iex.stats import RecentReader
+    return RecentReader(*args, **kwargs).read()
 
 
 def get_iex_symbols(*args, **kwargs):
-    return IEXSymbols(*args, **kwargs).read()
+    """
+    Returns a list of all equity symbols available for trading on IEX. Accepts
+    no additional parameters.
+    
+    Reference: https://www.iextrading.com/developer/docs/#symbols
+    
+    :return: DataFrame
+    """
+    from pandas_datareader.iex.ref import SymbolsReader
+    return SymbolsReader(*args, **kwargs).read()
 
 
 def get_iex_book(*args, **kwargs):
-    return IEXDeep(*args, **kwargs).read()
+    """
+    Returns an array of dictionaries with depth of book data from IEX for up to
+    10 securities at a time. Returns a dictionary of the bid and ask books.
+    
+    :param symbols:
+        A string or list of strings of valid tickers
+    :param service:
+        'book': Live depth of book data
+        'op-halt-status': Checks to see if the exchange has instituted a halt
+        'security-event': Denotes individual security related event
+        'ssr-status': Short Sale Price Test restrictions, per reg 201 of SHO
+        'system-event': Relays current feed status (i.e. market open)
+        'trades': Retrieves recent executions, trade size/price and flags
+        'trade-breaks': Lists execution breaks for the current trading session
+        'trading-status': Returns status and cause codes for securities
+     
+    :return: Object
+    """
+    from pandas_datareader.iex.deep import Deep
+    return Deep(*args, **kwargs).read()
 
 
 def DataReader(name, data_source=None, start=None, end=None,
@@ -129,7 +210,9 @@ def DataReader(name, data_source=None, start=None, end=None,
         single value given for symbol, represents the pause between retries.
     session : Session, default None
             requests.sessions.Session instance to be used
-
+    access_key : (str, None)
+        Optional parameter to specify an API key for certain data sources.
+    
     Examples
     ----------
 
@@ -142,7 +225,14 @@ def DataReader(name, data_source=None, start=None, end=None,
 
     # Data from Google Finance
     aapl = DataReader("AAPL", "google")
-
+    
+    # Price and volume data from IEX
+    tops = DataReader(["GS", "AAPL"], "iex-tops")
+    # Top of book executions from IEX
+    gs = DataReader("GS", "iex-last")
+    # Real-time depth of book data from IEX
+    gs = DataReader("GS", "iex-book")
+    
     # Data from FRED
     vix = DataReader("VIXCLS", "fred")
 
@@ -166,6 +256,7 @@ def DataReader(name, data_source=None, start=None, end=None,
         return YahooActionReader(symbols=name, start=start, end=end,
                                  retry_count=retry_count, pause=pause,
                                  session=session).read()
+
     elif data_source == "yahoo-dividends":
         return YahooDivReader(symbols=name, start=start, end=end,
                               adjust_price=False, chunksize=25,
@@ -209,25 +300,30 @@ def DataReader(name, data_source=None, start=None, end=None,
         return OECDReader(symbols=name, start=start, end=end,
                           retry_count=retry_count, pause=pause,
                           session=session).read()
+
     elif data_source == "eurostat":
         return EurostatReader(symbols=name, start=start, end=end,
                               retry_count=retry_count, pause=pause,
                               session=session).read()
+
     elif data_source == "edgar-index":
         return EdgarIndexReader(symbols=name, start=start, end=end,
                                 retry_count=retry_count, pause=pause,
                                 session=session).read()
+
     elif data_source == "oanda":
         return get_oanda_currency_historical_rates(
             start, end,
             quote_currency="USD", base_currency=name,
             reversed=True, session=session
         )
+
     elif data_source == 'nasdaq':
         if name != 'symbols':
             raise ValueError("Only the string 'symbols' is supported for "
                              "Nasdaq, not %r" % (name,))
         return get_nasdaq_symbols(retry_count=retry_count, pause=pause)
+
     else:
         msg = "data_source=%r is not implemented" % data_source
         raise NotImplementedError(msg)

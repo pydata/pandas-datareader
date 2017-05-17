@@ -3,9 +3,10 @@ import pytest
 import pandas.util.testing as tm
 
 from pandas import DataFrame
-from datetime import datetime
+from datetime import datetime, timedelta
 from pandas_datareader.data import (DataReader, get_summary_iex, get_last_iex,
-                                    get_data_iex, get_iex_symbols)
+                                    get_dailysummary_iex, get_iex_symbols,
+                                    get_iex_book)
 
 
 class TestIEX(object):
@@ -27,7 +28,7 @@ class TestIEX(object):
         tm.assert_frame_equal(df, DataFrame())
 
     def test_daily(self):
-        df = get_data_iex(start=datetime(2017, 5, 5), end=datetime(2017, 5, 6))
+        df = get_dailysummary_iex(start=datetime(2017, 5, 5), end=datetime(2017, 5, 6))  #noqa
         assert df['routedVolume'].iloc[0] == 39974788
 
     def test_symbols(self):
@@ -41,7 +42,6 @@ class TestIEX(object):
         assert df["price"].mean() > 0
 
     def test_deep(self):
-        dob = DataReader('GS', 'iex-book')
-        assert 'GS' in dob
-        assert 'asks' in dob['GS']
-        assert dob['GS']['bids'][0]['price'] > 0
+        dob = get_iex_book('GS', service='system-event')
+        assert len(dob['eventResponse']) > 0
+        assert dob['timestamp'] > datetime.now() - timedelta(days=1)
