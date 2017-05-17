@@ -108,17 +108,12 @@ class TestYahoo(object):
         # weekly interval data
         pan = web.get_data_yahoo('XOM', '2013-01-01',
                                  '2013-12-31', interval='w')
-        assert len(pan) == 53
+        assert len(pan) == 52
 
-        # montly interval data
-        pan = web.get_data_yahoo('XOM', '2013-01-01',
+        # monthly interval data
+        pan = web.get_data_yahoo('XOM', '2012-12-31',
                                  '2013-12-31', interval='m')
         assert len(pan) == 12
-
-        # dividend data
-        pan = web.get_data_yahoo('XOM', '2013-01-01',
-                                 '2013-12-31', interval='v')
-        assert len(pan) == 4
 
         # test fail on invalid interval
         with pytest.raises(ValueError):
@@ -132,17 +127,18 @@ class TestYahoo(object):
     def test_get_data_multiple_symbols_two_dates(self):
         pan = web.get_data_yahoo(['GE', 'MSFT', 'INTC'], 'JAN-01-12',
                                  'JAN-31-12')
-        result = pan.Close.ix['01-18-12']
-        assert len(result) == 3
+        result = pan.Close['01-18-12'].T
+        assert result.size == 3
 
         # sanity checking
-        assert np.issubdtype(result.dtype, np.floating)
+        assert result.dtypes.all() == np.floating
 
         expected = np.array([[18.99, 28.4, 25.18],
                              [18.58, 28.31, 25.13],
                              [19.03, 28.16, 25.52],
                              [18.81, 28.82, 25.87]])
-        result = pan.Open.ix['Jan-15-12':'Jan-20-12']
+        df = pan.Open
+        result = df[(df.index >= 'Jan-15-12') & (df.index <= 'Jan-20-12')]
         assert expected.shape == result.shape
 
     def test_get_date_ret_index(self):
@@ -212,6 +208,8 @@ class TestYahoo(object):
                                       0.47, 0.43571, 0.43571, 0.43571,
                                       0.43571, 0.37857, 0.37857, 0.37857]},
                            index=exp_idx)
+        exp.index.name = 'Date'
+
         tm.assert_frame_equal(result, exp)
 
     def test_yahoo_DataReader_multi(self):
