@@ -45,13 +45,16 @@ class YahooDailyReader(_DailyBaseReader):
     """
 
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.001, session=None, adjust_price=False,
+                 pause=0.35, session=None, adjust_price=False,
                  ret_index=False, chunksize=25, interval='d'):
         super(YahooDailyReader, self).__init__(symbols=symbols,
                                                start=start, end=end,
                                                retry_count=retry_count,
                                                pause=pause, session=session,
                                                chunksize=chunksize)
+        # Ladder up the wait time between subsequent requests to improve
+        # probability of a successful retry
+        self.pause_multiplier = 2.5
 
         self.headers = {
             'Connection': 'keep-alive',
