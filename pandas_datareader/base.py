@@ -123,7 +123,7 @@ class _BaseReader(object):
             # Increase time between subsequent requests, per subclass.
             pause *= self.pause_multiplier
             # Get a new breadcrumb if necessary, in case ours is invalidated
-            if 'crumb' in params:
+            if isinstance(params, list) and 'crumb' in params:
                 params['crumb'] = self._get_crumb(self.retry_count)
         if params is not None and len(params) > 0:
             url = url + "?" + urlencode(params)
