@@ -1,7 +1,10 @@
 import re
 import time
-import pandas as pd
-from pandas_datareader.base import _DailyBaseReader
+import warnings
+import numpy as np
+from pandas import Panel
+from pandas_datareader.base import (_DailyBaseReader, _in_chunks)
+from pandas_datareader._utils import (RemoteDataError, SymbolWarning)
 
 
 class YahooDailyReader(_DailyBaseReader):
@@ -84,6 +87,11 @@ class YahooDailyReader(_DailyBaseReader):
         return 'https://query1.finance.yahoo.com/v7/finance/download/{}'\
             .format(self.symbols)
 
+    @staticmethod
+    def yurl(symbol):
+        return 'https://query1.finance.yahoo.com/v7/finance/download/{}'\
+            .format(symbol)
+
     def _get_params(self, symbol):
         unix_start = int(time.mktime(self.start.timetuple()))
         unix_end = int(time.mktime(self.end.timetuple()))
@@ -105,6 +113,36 @@ class YahooDailyReader(_DailyBaseReader):
         if self.adjust_price:
             df = _adjust_prices(df)
         return df.sort_index()
+
+    def _dl_mult_symbols(self, symbols):
+        stocks = {}
+        failed = []
+        passed = []
+        for sym_group in _in_chunks(symbols, self.chunksize):
+            for sym in sym_group:
+                try:
+                    stocks[sym] = self._read_one_data(self.yurl(sym),
+                                                      self._get_params(sym))
+                    passed.append(sym)
+                except IOError:
+                    msg = 'Failed to read symbol: {0!r}, replacing with NaN.'
+                    warnings.warn(msg.format(sym), SymbolWarning)
+                    failed.append(sym)
+
+        if len(passed) == 0:
+            msg = "No data fetched using {0!r}"
+            raise RemoteDataError(msg.format(self.__class__.__name__))
+        try:
+            if len(stocks) > 0 and len(failed) > 0 and len(passed) > 0:
+                df_na = stocks[passed[0]].copy()
+                df_na[:] = np.nan
+                for sym in failed:
+                    stocks[sym] = df_na
+            return Panel(stocks).swapaxes('items', 'minor')
+        except AttributeError:
+            # cannot construct a panel with just 1D nans indicating no data
+            msg = "No data fetched using {0!r}"
+            raise RemoteDataError(msg.format(self.__class__.__name__))
 
     def _get_crumb(self, retries):
         # Scrape a history page for a valid crumb ID:
