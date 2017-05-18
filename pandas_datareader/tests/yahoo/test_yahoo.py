@@ -108,17 +108,12 @@ class TestYahoo(object):
         # weekly interval data
         pan = web.get_data_yahoo('XOM', '2013-01-01',
                                  '2013-12-31', interval='w')
-        assert len(pan) == 53
+        assert len(pan) == 52
 
-        # montly interval data
-        pan = web.get_data_yahoo('XOM', '2013-01-01',
+        # monthly interval data
+        pan = web.get_data_yahoo('XOM', '2012-12-31',
                                  '2013-12-31', interval='m')
         assert len(pan) == 12
-
-        # dividend data
-        pan = web.get_data_yahoo('XOM', '2013-01-01',
-                                 '2013-12-31', interval='v')
-        assert len(pan) == 4
 
         # test fail on invalid interval
         with pytest.raises(ValueError):

@@ -60,12 +60,19 @@ class YahooDailyReader(_DailyBaseReader):
 
         self.adjust_price = adjust_price
         self.ret_index = ret_index
+        self.interval = interval
 
-        if interval not in ['d', 'w', 'm']:
-            raise ValueError("Invalid interval: valid values are "
-                             "'d', 'w', 'm'")
-        self.interval = '1' + interval
-        # self.crumb = '64ZkTeri7Xq'
+        if self.interval not in ['d', 'wk', 'mo', 'm', 'w']:
+            raise ValueError("Invalid interval: valid values are  'd', 'wk' and 'mo'. 'm' and 'w' have been implemented for "  # noqa
+                             "backward compatibility. 'v' has been moved to the yahoo-actions or yahoo-dividends APIs.")  # noqa
+        elif self.interval in ['m', 'mo']:
+            self.pdinterval = 'm'
+            self.interval = 'mo'
+        elif self.interval in ['w', 'wk']:
+            self.pdinterval = 'w'
+            self.interval = 'wk'
+
+        self.interval = '1' + self.interval
         self.crumb = self._get_crumb(retry_count)
 
     @property
@@ -74,7 +81,8 @@ class YahooDailyReader(_DailyBaseReader):
 
     @property
     def url(self):
-        return 'https://query1.finance.yahoo.com/v7/finance/download/{}'.format(self.symbols)  # noqa
+        return 'https://query1.finance.yahoo.com/v7/finance/download/{}'\
+            .format(self.symbols)
 
     def _get_params(self, symbol):
         unix_start = int(time.mktime(self.start.timetuple()))
@@ -96,7 +104,6 @@ class YahooDailyReader(_DailyBaseReader):
             df['Ret_Index'] = _calc_return_index(df['Adj Close'])
         if self.adjust_price:
             df = _adjust_prices(df)
-        temp = pd.date_range(self.start, self.end, None, self.interval)
         return df.sort_index()
 
     def _get_crumb(self, retries):
@@ -106,19 +113,19 @@ class YahooDailyReader(_DailyBaseReader):
                                       params=self.params, headers=self.headers)
         out = str(self._sanitize_response(response))
         # Matches: {"crumb":"AlphaNumeric"}
-        regex = re.search(r'"crumb" ?: ?"([A-Za-z0-9.]{11,})"', out)
+        regex = re.search(r'"crumb" ?: ?"([A-Za-z0-9.\\]{11,})"', out)
 
-        try:
+        if regex is not None:
             crumbs = regex.groups()
-        except:
+            crumb = re.sub(r'\\', '', crumbs[0])
+            return crumb
+        elif retries > 0:
             # It is possible we hit a 401 with frequent requests. Cool-off:
-            if retries > 0:
-                time.sleep(2)
-                retries -= 1
-                crumbs = [self._get_crumb(retries)]
+            time.sleep(2)
+            retries -= 1
+            return self._get_crumb(retries)
+        else:
             raise OSError("Unable to retrieve Yahoo breadcrumb, exiting.")
-
-        return crumbs[0]
 
 
 def _adjust_prices(hist_data, price_list=None):
