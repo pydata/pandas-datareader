@@ -87,7 +87,9 @@ class _BaseReader(object):
         text = self._sanitize_response(response)
         out = StringIO()
         if len(text) == 0:
-            raise IOError("Request returned no data.")
+            service = self.__class__.__name__
+            raise IOError("{} request returned no data; check URL for invalid "
+                          "inputs: {}".format(service, self.url))
         if isinstance(text, compat.binary_type):
             out.write(bytes_to_str(text))
         else:

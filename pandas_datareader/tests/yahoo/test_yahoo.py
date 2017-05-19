@@ -127,7 +127,7 @@ class TestYahoo(object):
     def test_get_data_multiple_symbols_two_dates(self):
         pan = web.get_data_yahoo(['GE', 'MSFT', 'INTC'], 'JAN-01-12',
                                  'JAN-31-12')
-        result = pan.Close['01-18-12'].transpose()
+        result = pan.Close['01-18-12'].T
         assert result.size == 3
 
         # sanity checking
