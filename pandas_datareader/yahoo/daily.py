@@ -154,19 +154,10 @@ class YahooDailyReader(_DailyBaseReader):
                                       params=self.params, headers=self.headers)
         out = str(self._sanitize_response(response))
         # Matches: {"crumb":"AlphaNumeric"}
-        regex = re.search(r'"crumb" ?: ?"([A-Za-z0-9.\\]{11,})"', out)
+        rpat = '"CrumbStore":{"crumb":"([^"]+)"}'
 
-        if regex is not None:
-            crumbs = regex.groups()
-            crumb = re.sub(r'\\', '', crumbs[0])
-            return crumb
-        elif retries > 0:
-            # It is possible we hit a 401 with frequent requests. Cool-off:
-            time.sleep(2)
-            retries -= 1
-            return self._get_crumb(retries)
-        else:
-            raise OSError("Unable to retrieve Yahoo breadcrumb, exiting.")
+        crumb = re.findall(rpat, out)[0]
+        return crumb.encode('ascii').decode('unicode-escape')
 
 
 def _adjust_prices(hist_data, price_list=None):
