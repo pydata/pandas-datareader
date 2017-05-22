@@ -10,6 +10,7 @@ from pandas_datareader.enigma import EnigmaReader
 from pandas_datareader.eurostat import EurostatReader
 from pandas_datareader.famafrench import FamaFrenchReader
 from pandas_datareader.fred import FredReader
+from pandas_datareader.stooq import StooqDailyReader
 from pandas_datareader.google.daily import GoogleDailyReader
 from pandas_datareader.google.options import Options as GoogleOptions
 from pandas_datareader.google.quotes import GoogleQuotesReader
@@ -150,6 +151,11 @@ def DataReader(name, data_source=None, start=None, end=None,
         return BankOfCanadaReader(symbols=name, start=start, end=end,
                                   retry_count=retry_count, pause=pause,
                                   session=session).read()
+    elif data_source == "stooq":
+        return StooqDailyReader(symbols=name,
+                                 chunksize=25,
+                                 retry_count=retry_count, pause=pause,
+                                 session=session).read()
 
     elif data_source == "enigma":
         return EnigmaReader(dataset_id=name, api_key=access_key).read()
