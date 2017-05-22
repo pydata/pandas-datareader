@@ -34,6 +34,8 @@ Currently the following sources are supported:
     - :ref:`Thrift Savings Plan<remote_data.tsp>`
     - :ref:`Oanda currency historical rate<remote_data.oanda_curr_hist>`
     - :ref:`Nasdaq Trader symbol definitions<remote_data.nasdaq_symbols`
+    - :ref:`Stooq<remote_data.stooq>`
+
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
 
@@ -574,3 +576,14 @@ available. More information on the `field<http://www.nasdaqtrader.com/trader.asp
         Name: IBM, dtype: object
 
 
+.. _remote_data.stooq:
+
+Stooq Index Data
+================
+Google finance doesn't provide common index data download. The Stooq site has the data for download. 
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+    f = web.DataReader("^DJI", 'stooq')
+    f[:10]
