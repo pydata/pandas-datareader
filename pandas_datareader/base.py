@@ -136,7 +136,8 @@ class _BaseReader(object):
         raise NotImplementedError("Subclass has not implemented method.")
 
     def _read_lines(self, out):
-        rs = read_csv(out, index_col=0, parse_dates=True, na_values='-')[::-1]
+        rs = read_csv(out, index_col=0, parse_dates=True,
+                      na_values=('-', 'null'))[::-1]
         # Yahoo! Finance sometimes does this awesome thing where they
         # return 2 rows for the most recent business day
         if len(rs) > 2 and rs.index[-1] == rs.index[-2]:  # pragma: no cover
