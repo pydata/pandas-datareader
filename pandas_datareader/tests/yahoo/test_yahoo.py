@@ -89,6 +89,7 @@ class TestYahoo(object):
                                  index=['@^NDX'])
             tm.assert_frame_equal(df, expected)
 
+    @skip_on_exception(RemoteDataError)
     def test_get_data_single_symbol(self):
         # single symbol
         # http://finance.yahoo.com/q/hp?s=GOOG&a=09&b=08&c=2010&d=09&e=10&f=2010&g=d
@@ -219,7 +220,10 @@ class TestYahoo(object):
                            index=exp_idx)
         exp.index.name = 'Date'
 
-        tm.assert_frame_equal(result.sort(axis=1), exp.sort(axis=1))
+        exp = exp.sort_index(axis=1)
+        result = result.sort_index(axis=1)
+
+        tm.assert_frame_equal(result, exp)
 
     @skip_on_exception(RemoteDataError)
     def test_yahoo_DataReader_multi(self):
