@@ -22,6 +22,7 @@ from pandas_datareader.edgar import EdgarIndexReader
 from pandas_datareader.enigma import EnigmaReader
 from pandas_datareader.oanda import get_oanda_currency_historical_rates
 from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
+from pandas_datareader.quandl import QuandlReader
 
 
 def get_data_fred(*args, **kwargs):
@@ -54,6 +55,10 @@ def get_quote_yahoo(*args, **kwargs):
 
 def get_quote_google(*args, **kwargs):
     return GoogleQuotesReader(*args, **kwargs).read()
+
+
+def get_data_quandl(*args, **kwargs):
+    return QuandlReader(*args, **kwargs).read()
 
 
 def DataReader(name, data_source=None, start=None, end=None,
@@ -168,6 +173,10 @@ def DataReader(name, data_source=None, start=None, end=None,
             raise ValueError("Only the string 'symbols' is supported for "
                              "Nasdaq, not %r" % (name,))
         return get_nasdaq_symbols(retry_count=retry_count, pause=pause)
+    elif data_source == "quandl":
+        return QuandlReader(symbols=name, start=start, end=end,
+                            retry_count=retry_count, pause=pause,
+                            session=session).read()
     else:
         msg = "data_source=%r is not implemented" % data_source
         raise NotImplementedError(msg)
