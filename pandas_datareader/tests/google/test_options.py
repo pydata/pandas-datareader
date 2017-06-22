@@ -50,7 +50,7 @@ class TestGoogleOptions(object):
     def test_expiry_dates(self):
         dates = self.goog.expiry_dates
 
-        assert len(dates) == 2
+        assert len(dates) == 1
         assert isinstance(dates, list)
         assert all(isinstance(dt, date) for dt in dates)
 
