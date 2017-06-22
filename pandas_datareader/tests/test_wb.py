@@ -57,6 +57,8 @@ class TestWB(object):
         # data revisions in the future).
         expected = {'NY.GDP.PCAP.CD': {('Canada', '2004'): 32000.0,
                                        ('Canada', '2003'): 28000.0,
+                                       ('Kosovo', '2004'): 2000.0,
+                                       ('Kosovo', '2003'): 2000.0,
                                        ('Mexico', '2004'): 7000.0,
                                        ('Mexico', '2003'): 7000.0,
                                        ('United States', '2004'): 42000.0,
