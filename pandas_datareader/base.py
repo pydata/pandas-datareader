@@ -117,9 +117,15 @@ class _BaseReader(object):
         # initial attempt + retry
         pause = self.pause
         for i in range(self.retry_count + 1):
-            response = self.session.get(url, params=params, headers=headers)
-            if response.status_code == requests.codes.ok:
-                return response
+            try:
+                response = self.session.get(url,
+                                            params=params,
+                                            headers=headers)
+                if response.status_code == requests.codes.ok:
+                    return response
+            finally:
+                self.session.close()
+
             time.sleep(pause)
 
             # Increase time between subsequent requests, per subclass.

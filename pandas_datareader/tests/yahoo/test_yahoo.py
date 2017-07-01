@@ -103,7 +103,7 @@ class TestYahoo(object):
         # daily interval data
         pan = web.get_data_yahoo('XOM', '2013-01-01',
                                  '2013-12-31', interval='d')
-        assert len(pan) == 252
+        assert len(pan) == 251
 
         # weekly interval data
         pan = web.get_data_yahoo('XOM', '2013-01-01',
@@ -210,7 +210,7 @@ class TestYahoo(object):
                            index=exp_idx)
         exp.index.name = 'Date'
 
-        tm.assert_frame_equal(result, exp)
+        tm.assert_frame_equal(result, exp, check_like=True)
 
     def test_yahoo_DataReader_multi(self):
         start = datetime(2010, 1, 1)
