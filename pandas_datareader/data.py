@@ -14,6 +14,15 @@ from pandas_datareader.yahoo.components import _get_data as get_components_yahoo
 from pandas_datareader.yahoo.options import Options as YahooOptions
 from pandas_datareader.google.options import Options as GoogleOptions
 
+from pandas_datareader.iex.stats import DailySummaryReader as IEXHistorical
+from pandas_datareader.iex.stats import MonthlySummaryReader as IEXMonthlySummary
+from pandas_datareader.iex.stats import RecentReader as IEXRecents
+from pandas_datareader.iex.stats import RecordsReader as IEXRecords
+from pandas_datareader.iex.market import MarketReader as IEXMarkets
+from pandas_datareader.iex.tops import LastReader as IEXLasts
+from pandas_datareader.iex.tops import TopsReader as IEXTops
+from pandas_datareader.iex.ref import SymbolsReader as IEXSymbols
+
 from pandas_datareader.eurostat import EurostatReader
 from pandas_datareader.fred import FredReader
 from pandas_datareader.famafrench import FamaFrenchReader
@@ -54,6 +63,38 @@ def get_quote_yahoo(*args, **kwargs):
 
 def get_quote_google(*args, **kwargs):
     return GoogleQuotesReader(*args, **kwargs).read()
+
+
+def get_tops_iex(*args, **kwargs):
+    return IEXTops(*args, **kwargs).read()
+
+
+def get_last_iex(*args, **kwargs):
+    return IEXLasts(*args, **kwargs).read()
+
+
+def get_markets_iex(*args, **kwargs):
+    return IEXMarkets(*args, **kwargs).read()
+
+
+def get_data_iex(*args, **kwargs):
+    return IEXHistorical(*args, **kwargs).read()
+
+
+def get_summary_iex(*args, **kwargs):
+    return IEXMonthlySummary(*args, **kwargs).read()
+
+
+def get_records_iex(*args, **kwargs):
+    return IEXRecords(*args, **kwargs).read()
+
+
+def get_recent_iex(*args, **kwargs):
+    return IEXRecents(*args, **kwargs).read()
+
+
+def get_iex_symbols(*args, **kwargs):
+    return IEXSymbols(*args, **kwargs).read()
 
 
 def DataReader(name, data_source=None, start=None, end=None,
@@ -131,6 +172,15 @@ def DataReader(name, data_source=None, start=None, end=None,
                                  chunksize=25,
                                  retry_count=retry_count, pause=pause,
                                  session=session).read()
+    elif data_source == "iex-tops":
+        return IEXTops(symbols=name, start=start, end=end,
+                              retry_count=retry_count, pause=pause,
+                              session=session).read()
+
+    elif data_source == "iex-last":
+        return IEXLasts(symbols=name, start=start, end=end,
+                              retry_count=retry_count, pause=pause,
+                              session=session).read()
 
     elif data_source == "enigma":
         return EnigmaReader(datapath=name, api_key=access_key).read()
