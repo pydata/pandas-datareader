@@ -8,7 +8,6 @@ import pytest
 import pandas.util.testing as tm
 
 import pandas_datareader.data as web
-from pandas_datareader._utils import RemoteDataError
 
 
 @pytest.yield_fixture
@@ -93,7 +92,6 @@ class TestYahooOptions(object):
                    'datetime64[ns]', 'datetime64[ns]', 'object']]
         tm.assert_series_equal(df.dtypes, pd.Series(dtypes, index=exp_columns))
 
-    @pytest.mark.xfail(RemoteDataError, reason="remote data exception")
     def test_get_options_data(self, aapl, expiry):
         # see gh-6105: regression test
         with pytest.raises(ValueError):
@@ -105,7 +103,6 @@ class TestYahooOptions(object):
         options = aapl.get_options_data(expiry=expiry)
         self.assert_option_result(options)
 
-    @pytest.mark.xfail(RemoteDataError, reason="remote data exception")
     def test_get_near_stock_price(self, aapl, expiry):
         options = aapl.get_near_stock_price(call=True, put=True,
                                             expiry=expiry)
@@ -115,47 +112,40 @@ class TestYahooOptions(object):
         option = web.Options('aapl', 'yahoo')
         assert option is not None
 
-    @pytest.mark.xfail(RemoteDataError, reason="remote data exception")
     def test_get_call_data(self, aapl, expiry):
         calls = aapl.get_call_data(expiry=expiry)
 
         self.assert_option_result(calls)
         assert calls.index.levels[2][0] == 'call'
 
-    @pytest.mark.xfail(RemoteDataError, reason="remote data exception")
     def test_get_put_data(self, aapl, expiry):
         puts = aapl.get_put_data(expiry=expiry)
 
         self.assert_option_result(puts)
         assert puts.index.levels[2][1] == 'put'
 
-    @pytest.mark.xfail(RemoteDataError, reason="remote data exception")
     def test_get_expiry_dates(self, aapl):
         dates = aapl._get_expiry_dates()
         assert len(dates) > 1
 
-    @pytest.mark.xfail(RemoteDataError, reason="remote data exception")
     def test_get_all_data(self, aapl):
         data = aapl.get_all_data(put=True)
 
         assert len(data) > 1
         self.assert_option_result(data)
 
-    @pytest.mark.xfail(RemoteDataError, reason="remote data exception")
     def test_get_data_with_list(self, aapl):
         data = aapl.get_call_data(expiry=aapl.expiry_dates)
 
         assert len(data) > 1
         self.assert_option_result(data)
 
-    @pytest.mark.xfail(RemoteDataError, reason="remote data exception")
     def test_get_all_data_calls_only(self, aapl):
         data = aapl.get_all_data(call=True, put=False)
 
         assert len(data) > 1
         self.assert_option_result(data)
 
-    @pytest.mark.xfail(RemoteDataError, reason="remote data exception")
     def test_get_underlying_price(self, aapl):
         # see gh-7
         options_object = web.Options('^spxpm', 'yahoo')
@@ -199,7 +189,6 @@ class TestYahooOptions(object):
         # Tests that numeric columns with comma's are appropriately dealt with
         assert data1['Chg'].dtype == 'float64'
 
-    @pytest.mark.xfail(RemoteDataError, reason="remote data exception")
     def test_month_year(self, aapl, month, year):
         # see gh-168
         data = aapl.get_call_data(month=month, year=year)

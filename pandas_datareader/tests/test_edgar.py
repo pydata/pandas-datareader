@@ -4,7 +4,6 @@ import pandas as pd
 import pandas.util.testing as tm
 import pandas_datareader.data as web
 
-from pandas_datareader._utils import RemoteDataError
 
 
 class TestEdgarIndex(object):
@@ -15,7 +14,6 @@ class TestEdgarIndex(object):
         # Disabling tests until re-write.
         pytest.skip("Disabling tests until re-write.")
 
-    @pytest.mark.xfail(RemoteDataError, reason="remote data exception")
     def test_get_full_index(self):
         ed = web.DataReader('full', 'edgar-index')
         assert len(ed) > 1000
@@ -24,7 +22,6 @@ class TestEdgarIndex(object):
                                 'date_filed', 'filename'], dtype='object')
         tm.assert_index_equal(ed.columns, exp_columns)
 
-    @pytest.mark.xfail(RemoteDataError, reason="remote data exception")
     def test_get_nonzip_index_and_low_date(self):
         ed = web.DataReader('daily', 'edgar-index', '1994-06-30',
                             '1994-07-02')
@@ -37,14 +34,12 @@ class TestEdgarIndex(object):
                                 'filename'], dtype='object')
         tm.assert_index_equal(ed.columns, exp_columns)
 
-    @pytest.mark.xfail(RemoteDataError, reason="remote data exception")
     def test_get_gz_index_and_no_date(self):
         # TODO: Rewrite, as this test causes Travis to timeout.
 
         ed = web.DataReader('daily', 'edgar-index')
         assert len(ed) > 2000
 
-    @pytest.mark.xfail(RemoteDataError, reason="remote data exception")
     def test_6_digit_date(self):
         ed = web.DataReader('daily', 'edgar-index', start='1998-05-18',
                             end='1998-05-18')

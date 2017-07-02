@@ -1,8 +1,6 @@
 import os
 import pytest
 
-from requests.exceptions import HTTPError
-
 import pandas_datareader as pdr
 import pandas_datareader.data as web
 
@@ -16,13 +14,11 @@ class TestEnigma(object):
     def setup_class(cls):
         pytest.importorskip("lxml")
 
-    @pytest.mark.xfail(HTTPError, reason="remote data exception")
     def test_enigma_datareader(self):
         df = web.DataReader('enigma.inspections.restaurants.fl',
                             'enigma', access_key=TEST_API_KEY)
         assert 'serialid' in df.columns
 
-    @pytest.mark.xfail(HTTPError, reason="remote data exception")
     def test_enigma_get_data_enigma(self):
         df = pdr.get_data_enigma(
             'enigma.inspections.restaurants.fl', TEST_API_KEY)

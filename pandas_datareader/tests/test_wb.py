@@ -142,7 +142,6 @@ class TestWB(object):
             assert isinstance(result, pd.DataFrame)
             assert len(result) == 2
 
-    @pytest.mark.xfail(ValueError, reason="remote data exception")
     def test_wdi_download_w_retired_indicator(self):
 
         cntry_codes = ['CA', 'MX', 'US']
@@ -168,7 +167,6 @@ class TestWB(object):
         if len(result) > 0:  # pragma: no cover
             pytest.skip("Invalid results")
 
-    @pytest.mark.xfail(ValueError, reason="remote data exception")
     def test_wdi_download_w_crash_inducing_countrycode(self):
 
         cntry_codes = ['CA', 'MX', 'US', 'XXX']
