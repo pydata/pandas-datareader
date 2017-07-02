@@ -35,7 +35,7 @@ class TestYahoo(object):
 
     def test_get_quote_series(self):
         df = web.get_quote_yahoo(pd.Series(['GOOG', 'AAPL', 'GOOG']))
-        tm.assert_series_equal(df.ix[0], df.ix[2])
+        tm.assert_series_equal(df.iloc[0], df.iloc[2])
 
     def test_get_quote_string(self):
         _yahoo_codes.update({'MarketCap': 'j1'})
@@ -44,7 +44,7 @@ class TestYahoo(object):
 
     def test_get_quote_stringlist(self):
         df = web.get_quote_yahoo(['GOOG', 'AAPL', 'GOOG'])
-        tm.assert_series_equal(df.ix[0], df.ix[2])
+        tm.assert_series_equal(df.iloc[0], df.iloc[2])
 
     def test_get_quote_comma_name(self):
         _yahoo_codes.update({'name': 'n'})
@@ -148,7 +148,7 @@ class TestYahoo(object):
 
         if hasattr(pan, 'Ret_Index') and hasattr(pan.Ret_Index, 'INTC'):
             tstamp = pan.Ret_Index.INTC.first_valid_index()
-            result = pan.Ret_Index.ix[tstamp]['INTC']
+            result = pan.Ret_Index.loc[tstamp, 'INTC']
             assert result == 1.0
 
         # sanity checking
@@ -163,11 +163,11 @@ class TestYahoo(object):
         assert sum(actions['action'] == 'DIVIDEND') == 20
         assert sum(actions['action'] == 'SPLIT') == 1
 
-        assert actions.ix['1995-05-11']['action'][0] == 'SPLIT'
-        assert actions.ix['1995-05-11']['value'][0] == 1 / 1.1
+        assert actions.loc['1995-05-11', 'action'][0] == 'SPLIT'
+        assert actions.loc['1995-05-11', 'value'][0] == 1 / 1.1
 
-        assert actions.ix['1993-05-10']['action'][0] == 'DIVIDEND'
-        assert actions.ix['1993-05-10']['value'][0] == 0.3
+        assert actions.loc['1993-05-10', 'action'][0] == 'DIVIDEND'
+        assert actions.loc['1993-05-10', 'value'][0] == 0.3
 
     def test_get_data_yahoo_actions_invalid_symbol(self):
         start = datetime(1990, 1, 1)

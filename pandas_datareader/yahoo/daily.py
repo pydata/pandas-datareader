@@ -183,15 +183,16 @@ def _calc_return_index(price_df):
     (typically NaN) is set to 1.
     """
     df = price_df.pct_change().add(1).cumprod()
-    mask = df.ix[1].notnull() & df.ix[0].isnull()
-    df.ix[0][mask] = 1
+    mask = df.iloc[1].notnull() & df.iloc[0].isnull()
+    df.loc[df.index[0], mask] = 1
 
     # Check for first stock listings after starting date of index in ret_index
     # If True, find first_valid_index and set previous entry to 1.
     if (~mask).any():
         for sym in mask.index[~mask]:
+            sym_idx = df.columns.get_loc(sym)
             tstamp = df[sym].first_valid_index()
             t_idx = df.index.get_loc(tstamp) - 1
-            df[sym].ix[t_idx] = 1
+            df.iloc[t_idx, sym_idx] = 1
 
     return df

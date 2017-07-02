@@ -137,7 +137,7 @@ class Options(_OptionBaseReader):
         """
         return concat([f(month, year, expiry)
                        for f in (self.get_put_data,
-                                 self.get_call_data)]).sortlevel()
+                                 self.get_call_data)]).sort_index()
 
     def _option_from_url(self, url):
 
@@ -823,4 +823,4 @@ class Options(_OptionBaseReader):
                 sym=self.symbol, exp_date=exp_date)
             jd = self._parse_url(url)
             data.append(self._process_data(jd))
-        return concat(data).sortlevel()
+        return concat(data).sort_index()
