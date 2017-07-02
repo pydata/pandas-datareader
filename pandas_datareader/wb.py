@@ -159,6 +159,12 @@ class WorldBankReader(_BaseReader):
                 'per_page': 25000, 'format': 'json'}
 
     def read(self):
+        try:
+            return self._read()
+        finally:
+            self.close()
+
+    def _read(self):
         data = []
         for indicator in self.symbols:
             # Build URL for api call
@@ -321,7 +327,7 @@ class WorldBankReader(_BaseReader):
         indicators = self.get_indicators()
         data = indicators[field]
         idx = data.str.contains(string, case=case)
-        out = indicators.ix[idx].dropna()
+        out = indicators.loc[idx].dropna()
         return out
 
 

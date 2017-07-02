@@ -20,6 +20,12 @@ class FredReader(_BaseReader):
         return "http://research.stlouisfed.org/fred2/series/"
 
     def read(self):
+        try:
+            return self._read()
+        finally:
+            self.close()
+
+    def _read(self):
         if not is_list_like(self.symbols):
             names = [self.symbols]
         else:

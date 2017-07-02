@@ -8,7 +8,6 @@ import requests
 import pandas.util.testing as tm
 from pandas_datareader.wb import (search, download, get_countries,
                                   get_indicators, WorldBankReader)
-from pandas_datareader._testing import skip_on_exception
 from pandas_datareader.compat import assert_raises_regex
 
 
@@ -143,7 +142,6 @@ class TestWB(object):
             assert isinstance(result, pd.DataFrame)
             assert len(result) == 2
 
-    @skip_on_exception(ValueError)
     def test_wdi_download_w_retired_indicator(self):
 
         cntry_codes = ['CA', 'MX', 'US']
@@ -160,28 +158,33 @@ class TestWB(object):
 
         inds = ['GDPPCKD']
 
-        result = download(country=cntry_codes, indicator=inds,
-                          start=2003, end=2004, errors='ignore')
+        with pytest.raises(ValueError):
+            result = download(country=cntry_codes, indicator=inds,
+                              start=2003, end=2004, errors='ignore')
 
-        # If it ever gets here, it means WB unretired the indicator.
-        # even if they dropped it completely, it would still get caught above
-        # or the WB API changed somehow in a really unexpected way.
-        if len(result) > 0:  # pragma: no cover
-            pytest.skip("Invalid results")
+            # If it ever gets here, it means WB unretired the indicator.
+            # even if they dropped it completely, it would still
+            # get caught above
+            # or the WB API changed somehow in a really
+            # unexpected way.
+            if len(result) > 0:  # pragma: no cover
+                pytest.skip("Invalid results")
 
-    @skip_on_exception(ValueError)
     def test_wdi_download_w_crash_inducing_countrycode(self):
 
         cntry_codes = ['CA', 'MX', 'US', 'XXX']
         inds = ['NY.GDP.PCAP.CD']
 
-        result = download(country=cntry_codes, indicator=inds,
-                          start=2003, end=2004, errors='ignore')
+        with pytest.raises(ValueError):
+            result = download(country=cntry_codes, indicator=inds,
+                              start=2003, end=2004, errors='ignore')
 
-        # If it ever gets here, it means the country code XXX got used by WB
-        # or the WB API changed somehow in a really unexpected way.
-        if len(result) > 0:  # pragma: no cover
-            pytest.skip("Invalid results")
+            # If it ever gets here, it means the country code XXX
+            # got used by WB
+            # or the WB API changed somehow in a really
+            # unexpected way.
+            if len(result) > 0:  # pragma: no cover
+                pytest.skip("Invalid results")
 
     def test_wdi_get_countries(self):
         result1 = get_countries()

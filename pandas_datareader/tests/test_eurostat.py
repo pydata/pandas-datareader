@@ -3,14 +3,11 @@ import pandas as pd
 import pandas.util.testing as tm
 import pandas_datareader.data as web
 
-from pandas_datareader._utils import RemoteDataError
 from pandas_datareader.compat import assert_raises_regex
-from pandas_datareader._testing import skip_on_exception
 
 
 class TestEurostat(object):
 
-    @skip_on_exception(RemoteDataError)
     def test_get_cdh_e_fos(self):
         # Employed doctorate holders in non managerial and non professional
         # occupations by fields of science (%)
@@ -35,7 +32,6 @@ class TestEurostat(object):
         expected = pd.DataFrame(values, index=exp_idx, columns=exp_col)
         tm.assert_frame_equal(df, expected)
 
-    @skip_on_exception(RemoteDataError)
     def test_get_sts_cobp_a(self):
         # Building permits - annual data (2010 = 100)
         df = web.DataReader('sts_cobp_a', 'eurostat',
@@ -68,7 +64,6 @@ class TestEurostat(object):
             result = df[expected.name]
             tm.assert_series_equal(result, expected)
 
-    @skip_on_exception(RemoteDataError)
     def test_get_nrg_pc_202(self):
         # see gh-149
 
@@ -91,7 +86,6 @@ class TestEurostat(object):
 
         tm.assert_series_equal(df[name], exp)
 
-    @skip_on_exception(RemoteDataError)
     def test_get_prc_hicp_manr_exceeds_limit(self):
         # see gh-149
         msg = 'Query size exceeds maximum limit'

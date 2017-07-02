@@ -151,6 +151,12 @@ class EdgarIndexReader(_BaseReader):
 
     def read(self):
         try:
+            return self._read()
+        finally:
+            self.close()
+
+    def _read(self):
+        try:
             self._sec_ftp_session = FTP(_SEC_FTP, timeout=self.timeout)
             self._sec_ftp_session.login()
         except EOFError:

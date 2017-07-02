@@ -9,7 +9,7 @@ from pandas_datareader.google.quotes import GoogleQuotesReader
 
 from pandas_datareader.yahoo.daily import YahooDailyReader
 from pandas_datareader.yahoo.quotes import YahooQuotesReader
-from pandas_datareader.yahoo.actions import YahooActionReader
+from pandas_datareader.yahoo.actions import (YahooActionReader, YahooDivReader)
 from pandas_datareader.yahoo.components import _get_data as get_components_yahoo  # noqa
 from pandas_datareader.yahoo.options import Options as YahooOptions
 from pandas_datareader.google.options import Options as GoogleOptions
@@ -121,10 +121,10 @@ def DataReader(name, data_source=None, start=None, end=None,
                                  retry_count=retry_count, pause=pause,
                                  session=session).read()
     elif data_source == "yahoo-dividends":
-        return YahooDailyReader(symbols=name, start=start, end=end,
-                                adjust_price=False, chunksize=25,
-                                retry_count=retry_count, pause=pause,
-                                session=session, interval='v').read()
+        return YahooDivReader(symbols=name, start=start, end=end,
+                              adjust_price=False, chunksize=25,
+                              retry_count=retry_count, pause=pause,
+                              session=session, interval='d').read()
 
     elif data_source == "google":
         return GoogleDailyReader(symbols=name, start=start, end=end,

@@ -38,14 +38,14 @@ class TestFred(object):
         start = datetime(2010, 1, 1)
         end = datetime(2013, 1, 27)
         df = web.DataReader("DFII5", "fred", start, end)
-        assert pd.isnull(df.ix['2010-01-01'][0])
+        assert pd.isnull(df.loc['2010-01-01'][0])
 
     @pytest.mark.skip(reason='Buggy as of 2/18/14; maybe a data revision?')
     def test_fred_parts(self):  # pragma: no cover
         start = datetime(2010, 1, 1)
         end = datetime(2013, 1, 27)
         df = web.get_data_fred("CPIAUCSL", start, end)
-        assert df.ix['2010-05-01'][0] == 217.23
+        assert df.loc['2010-05-01'][0] == 217.23
 
         t = df.CPIAUCSL.values
         assert np.issubdtype(t.dtype, np.floating)
@@ -57,7 +57,7 @@ class TestFred(object):
                     [684.7],
                     [848.3],
                     [933.3]]
-        result = web.get_data_fred("A09024USA144NNBR", start="1915").ix[:5]
+        result = web.get_data_fred("A09024USA144NNBR", start="1915").iloc[:5]
         tm.assert_numpy_array_equal(result.values, np.array(expected))
 
     def test_invalid_series(self):
