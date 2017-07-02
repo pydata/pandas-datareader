@@ -816,9 +816,10 @@ class Options(_OptionBaseReader):
         try:
             if exp_dates is None:
                 exp_dates = self._get_expiry_dates()
-            exp_unix_times = [int((dt.datetime(
-                exp_date.year, exp_date.month, exp_date.day)
-                                   - epoch).total_seconds())
+            exp_unix_times = [int((dt.datetime(exp_date.year,
+                                               exp_date.month,
+                                               exp_date.day) - epoch
+                                   ).total_seconds())
                               for exp_date in exp_dates]
             for exp_date in exp_unix_times:
                 url = (self._OPTIONS_BASE_URL + '?date={exp_date}').format(

@@ -8,7 +8,6 @@ import requests
 import pandas.util.testing as tm
 from pandas_datareader.wb import (search, download, get_countries,
                                   get_indicators, WorldBankReader)
-from pandas_datareader._testing import skip_on_exception
 from pandas_datareader.compat import assert_raises_regex
 
 
@@ -143,7 +142,7 @@ class TestWB(object):
             assert isinstance(result, pd.DataFrame)
             assert len(result) == 2
 
-    @skip_on_exception(ValueError)
+    @pytest.mark.xfail(ValueError, reason="remote data exception")
     def test_wdi_download_w_retired_indicator(self):
 
         cntry_codes = ['CA', 'MX', 'US']
@@ -169,7 +168,7 @@ class TestWB(object):
         if len(result) > 0:  # pragma: no cover
             pytest.skip("Invalid results")
 
-    @skip_on_exception(ValueError)
+    @pytest.mark.xfail(ValueError, reason="remote data exception")
     def test_wdi_download_w_crash_inducing_countrycode(self):
 
         cntry_codes = ['CA', 'MX', 'US', 'XXX']
