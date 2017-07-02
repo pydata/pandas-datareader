@@ -198,7 +198,7 @@ class _DailyBaseReader(_BaseReader):
                     stocks[sym] = self._read_one_data(self.url,
                                                       self._get_params(sym))
                     passed.append(sym)
-                except IOError as e:
+                except IOError:
                     msg = 'Failed to read symbol: {0!r}, replacing with NaN.'
                     warnings.warn(msg.format(sym), SymbolWarning)
                     failed.append(sym)
