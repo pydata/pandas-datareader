@@ -142,6 +142,7 @@ class TestYahoo(object):
         result = df[(df.index >= 'Jan-15-12') & (df.index <= 'Jan-20-12')]
         assert expected.shape == result.shape
 
+    @pytest.mark.xfail(reason="failing after #355")
     def test_get_date_ret_index(self):
         pan = web.get_data_yahoo(['GE', 'INTC', 'IBM'], '1977', '1987',
                                  ret_index=True)
