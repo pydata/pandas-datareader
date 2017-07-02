@@ -1,0 +1,25 @@
+.. _whatsnew_050:
+
+v0.5.0 (July ??, 2017)
+----------------------
+
+This is a major release from 0.4.0.
+
+Highlights include:
+
+.. contents:: What's new in v0.5.0
+    :local:
+    :backlinks: none
+
+.. _whatsnew_050.enhancements:
+
+Enhancements
+~~~~~~~~~~~~
+
+- Compat with new Yahoo API (:issue:`315`)
+
+.. _whatsnew_040.api_breaking:
+
+Backwards incompatible API changes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
