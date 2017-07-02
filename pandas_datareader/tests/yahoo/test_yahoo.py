@@ -10,7 +10,9 @@ import pandas.util.testing as tm
 
 import pandas_datareader.data as web
 from pandas_datareader.data import YahooDailyReader
+from pandas_datareader._utils import RemoteDataError
 from pandas_datareader.yahoo.quotes import _yahoo_codes
+from pandas_datareader._testing import skip_on_exception
 
 
 class TestYahoo(object):
@@ -87,18 +89,21 @@ class TestYahoo(object):
                                  index=['@^NDX'])
             tm.assert_frame_equal(df, expected)
 
+    @skip_on_exception(RemoteDataError)
     def test_get_data_single_symbol(self):
         # single symbol
         # http://finance.yahoo.com/q/hp?s=GOOG&a=09&b=08&c=2010&d=09&e=10&f=2010&g=d
         # just test that we succeed
         web.get_data_yahoo('GOOG')
 
+    @skip_on_exception(RemoteDataError)
     def test_get_data_adjust_price(self):
         goog = web.get_data_yahoo('GOOG')
         goog_adj = web.get_data_yahoo('GOOG', adjust_price=True)
         assert 'Adj Close' not in goog_adj.columns
         assert (goog['Open'] * goog_adj['Adj_Ratio']).equals(goog_adj['Open'])
 
+    @skip_on_exception(RemoteDataError)
     def test_get_data_interval(self):
         # daily interval data
         pan = web.get_data_yahoo('XOM', '2013-01-01',
@@ -108,43 +113,42 @@ class TestYahoo(object):
         # weekly interval data
         pan = web.get_data_yahoo('XOM', '2013-01-01',
                                  '2013-12-31', interval='w')
-        assert len(pan) == 53
+        assert len(pan) == 52
 
-        # montly interval data
-        pan = web.get_data_yahoo('XOM', '2013-01-01',
+        # monthly interval data
+        pan = web.get_data_yahoo('XOM', '2012-12-31',
                                  '2013-12-31', interval='m')
         assert len(pan) == 12
-
-        # dividend data
-        pan = web.get_data_yahoo('XOM', '2013-01-01',
-                                 '2013-12-31', interval='v')
-        assert len(pan) == 4
 
         # test fail on invalid interval
         with pytest.raises(ValueError):
             web.get_data_yahoo('XOM', interval='NOT VALID')
 
+    @skip_on_exception(RemoteDataError)
     def test_get_data_multiple_symbols(self):
         # just test that we succeed
         sl = ['AAPL', 'AMZN', 'GOOG']
         web.get_data_yahoo(sl, '2012')
 
+    @skip_on_exception(RemoteDataError)
     def test_get_data_multiple_symbols_two_dates(self):
         pan = web.get_data_yahoo(['GE', 'MSFT', 'INTC'], 'JAN-01-12',
                                  'JAN-31-12')
-        result = pan.Close.ix['01-18-12']
-        assert len(result) == 3
+        result = pan.Close['01-18-12'].T
+        assert result.size == 3
 
         # sanity checking
-        assert np.issubdtype(result.dtype, np.floating)
+        assert result.dtypes.all() == np.floating
 
         expected = np.array([[18.99, 28.4, 25.18],
                              [18.58, 28.31, 25.13],
                              [19.03, 28.16, 25.52],
                              [18.81, 28.82, 25.87]])
-        result = pan.Open.ix['Jan-15-12':'Jan-20-12']
+        df = pan.Open
+        result = df[(df.index >= 'Jan-15-12') & (df.index <= 'Jan-20-12')]
         assert expected.shape == result.shape
 
+    @skip_on_exception(RemoteDataError)
     def test_get_date_ret_index(self):
         pan = web.get_data_yahoo(['GE', 'INTC', 'IBM'], '1977', '1987',
                                  ret_index=True)
@@ -158,6 +162,7 @@ class TestYahoo(object):
         # sanity checking
         assert np.issubdtype(pan.values.dtype, np.floating)
 
+    @skip_on_exception(RemoteDataError)
     def test_get_data_yahoo_actions(self):
         start = datetime(1990, 1, 1)
         end = datetime(2000, 4, 5)
@@ -191,6 +196,7 @@ class TestYahoo(object):
         r = YahooDailyReader('GOOG', session=session)
         assert r.session is session
 
+    @skip_on_exception(RemoteDataError)
     def test_yahoo_DataReader(self):
         start = datetime(2010, 1, 1)
         end = datetime(2015, 5, 9)
@@ -212,8 +218,14 @@ class TestYahoo(object):
                                       0.47, 0.43571, 0.43571, 0.43571,
                                       0.43571, 0.37857, 0.37857, 0.37857]},
                            index=exp_idx)
+        exp.index.name = 'Date'
+
+        exp = exp.sort_index(axis=1)
+        result = result.sort_index(axis=1)
+
         tm.assert_frame_equal(result, exp)
 
+    @skip_on_exception(RemoteDataError)
     def test_yahoo_DataReader_multi(self):
         start = datetime(2010, 1, 1)
         end = datetime(2015, 5, 9)
