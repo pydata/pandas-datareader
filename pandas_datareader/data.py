@@ -25,35 +25,43 @@ from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
 
 
 def get_data_fred(*args, **kwargs):
-    return FredReader(*args, **kwargs).read()
+    with FredReader(*args, **kwargs) as reader:
+        return reader.read()
 
 
 def get_data_famafrench(*args, **kwargs):
-    return FamaFrenchReader(*args, **kwargs).read()
+    with FamaFrenchReader(*args, **kwargs) as reader:
+        return reader.read()
 
 
 def get_data_google(*args, **kwargs):
-    return GoogleDailyReader(*args, **kwargs).read()
+    with GoogleDailyReader(*args, **kwargs) as reader:
+        return reader.read()
 
 
 def get_data_yahoo(*args, **kwargs):
-    return YahooDailyReader(*args, **kwargs).read()
+    with YahooDailyReader(*args, **kwargs) as reader:
+        return reader.read()
 
 
 def get_data_enigma(*args, **kwargs):
-    return EnigmaReader(*args, **kwargs).read()
+    with EnigmaReader(*args, **kwargs) as reader:
+        return reader.read()
 
 
 def get_data_yahoo_actions(*args, **kwargs):
-    return YahooActionReader(*args, **kwargs).read()
+    with YahooActionReader(*args, **kwargs) as reader:
+        return reader.read()
 
 
 def get_quote_yahoo(*args, **kwargs):
-    return YahooQuotesReader(*args, **kwargs).read()
+    with YahooQuotesReader(*args, **kwargs) as reader:
+        return reader.read()
 
 
 def get_quote_google(*args, **kwargs):
-    return GoogleQuotesReader(*args, **kwargs).read()
+    with GoogleQuotesReader(*args, **kwargs) as reader:
+        return reader.read()
 
 
 def DataReader(name, data_source=None, start=None, end=None,

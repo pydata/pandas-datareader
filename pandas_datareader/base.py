@@ -55,6 +55,12 @@ class _BaseReader(object):
         self.timeout = timeout
         self.session = _init_session(session, retry_count)
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exception_type, exception_value, exception_traceback):
+        self.session.close()
+
     @property
     def url(self):
         # must be overridden in subclass
