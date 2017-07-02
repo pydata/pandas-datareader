@@ -18,8 +18,11 @@ Enhancements
 
 - Compat with new Yahoo API (:issue:`315`)
 
-.. _whatsnew_040.api_breaking:
+.. _whatsnew_050.bug_fixes:
 
-Backwards incompatible API changes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Bug Fixes
+~~~~~~~~~
 
+- Handle commas in large price quotes (:issue:`345`)
+- Test suite fixes for test_get_options_data (:issue:`352`)
+- Test suite fixes for test_wdi_download (:issue:`350`)
