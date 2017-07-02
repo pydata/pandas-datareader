@@ -509,7 +509,7 @@ Download mutual fund index prices for the TSP.
     tspreader.read()
 
 
-.. _remote_data.oanda_curr_hist
+.. _remote_data.oanda_curr_hist:
 
 Oanda currency historical rate
 ==============================
@@ -545,7 +545,7 @@ Download currency historical rate from `Oanda <https://www.oanda.com/>`__.
 
       [153 rows x 3 columns]
 
-.. _remote_data.nasdaq_symbols
+.. _remote_data.nasdaq_symbols:
 
 Nasdaq Trader Symbol Definitions
 ==============================
