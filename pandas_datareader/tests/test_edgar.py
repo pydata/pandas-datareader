@@ -5,7 +5,6 @@ import pandas.util.testing as tm
 import pandas_datareader.data as web
 
 
-
 class TestEdgarIndex(object):
 
     @classmethod

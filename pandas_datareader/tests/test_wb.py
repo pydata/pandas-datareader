@@ -158,8 +158,9 @@ class TestWB(object):
 
         inds = ['GDPPCKD']
 
-        result = download(country=cntry_codes, indicator=inds,
-                          start=2003, end=2004, errors='ignore')
+        with pytest.raises(ValueError):
+            result = download(country=cntry_codes, indicator=inds,
+                              start=2003, end=2004, errors='ignore')
 
         # If it ever gets here, it means WB unretired the indicator.
         # even if they dropped it completely, it would still get caught above
@@ -172,8 +173,9 @@ class TestWB(object):
         cntry_codes = ['CA', 'MX', 'US', 'XXX']
         inds = ['NY.GDP.PCAP.CD']
 
-        result = download(country=cntry_codes, indicator=inds,
-                          start=2003, end=2004, errors='ignore')
+        with pytest.raises(ValueError):
+            result = download(country=cntry_codes, indicator=inds,
+                              start=2003, end=2004, errors='ignore')
 
         # If it ever gets here, it means the country code XXX got used by WB
         # or the WB API changed somehow in a really unexpected way.
