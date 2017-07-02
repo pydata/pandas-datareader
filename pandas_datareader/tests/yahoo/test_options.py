@@ -12,33 +12,68 @@ from pandas_datareader._utils import RemoteDataError
 from pandas_datareader._testing import skip_on_exception
 
 
+@pytest.yield_fixture
+def aapl():
+    aapl = web.Options('aapl', 'yahoo')
+    yield aapl
+    aapl.close()
+
+
+@pytest.fixture
+def month():
+
+    # AAPL has monthlies
+    today = datetime.today()
+    month = today.month + 1
+
+    if month > 12:  # pragma: no cover
+        month = 1
+
+    return month
+
+
+@pytest.fixture
+def year():
+
+    # AAPL has monthlies
+    today = datetime.today()
+    year = today.year
+    month = today.month + 1
+
+    if month > 12:  # pragma: no cover
+        year = year + 1
+
+    return year
+
+
+@pytest.fixture
+def expiry(month, year):
+    return datetime(year, month, 1)
+
+
+@pytest.fixture
+def json1():
+    dirpath = tm.get_data_path()
+    json1 = 'file://' + os.path.join(
+        dirpath, 'yahoo_options1.json')
+    return json1
+
+
+@pytest.fixture
+def json2():
+    # see gh-22: empty table
+    dirpath = tm.get_data_path()
+    json2 = 'file://' + os.path.join(
+        dirpath, 'yahoo_options2.json')
+    return json2
+
+
+@pytest.fixture
+def data1(aapl, json1):
+    return aapl._process_data(aapl._parse_url(json1))
+
+
 class TestYahooOptions(object):
-
-    @classmethod
-    def setup_class(cls):
-        # AAPL has monthlies
-        cls.aapl = web.Options('aapl', 'yahoo')
-        today = datetime.today()
-        cls.year = today.year
-        cls.month = today.month + 1
-
-        if cls.month > 12:  # pragma: no cover
-            cls.month = 1
-            cls.year = cls.year + 1
-
-        cls.expiry = datetime(cls.year, cls.month, 1)
-        cls.dirpath = tm.get_data_path()
-        cls.json1 = 'file://' + os.path.join(
-            cls.dirpath, 'yahoo_options1.json')
-
-        # see gh-22: empty table
-        cls.json2 = 'file://' + os.path.join(
-            cls.dirpath, 'yahoo_options2.json')
-        cls.data1 = cls.aapl._process_data(cls.aapl._parse_url(cls.json1))
-
-    @classmethod
-    def teardown_class(cls):
-        del cls.aapl, cls.expiry
 
     def assert_option_result(self, df):
         """
@@ -60,21 +95,21 @@ class TestYahooOptions(object):
         tm.assert_series_equal(df.dtypes, pd.Series(dtypes, index=exp_columns))
 
     @skip_on_exception(RemoteDataError)
-    def test_get_options_data(self):
+    def test_get_options_data(self, aapl, expiry):
         # see gh-6105: regression test
         with pytest.raises(ValueError):
-            self.aapl.get_options_data(month=3)
+            aapl.get_options_data(month=3)
 
         with pytest.raises(ValueError):
-            self.aapl.get_options_data(year=1992)
+            aapl.get_options_data(year=1992)
 
-        options = self.aapl.get_options_data(expiry=self.expiry)
+        options = aapl.get_options_data(expiry=expiry)
         self.assert_option_result(options)
 
     @skip_on_exception(RemoteDataError)
-    def test_get_near_stock_price(self):
-        options = self.aapl.get_near_stock_price(call=True, put=True,
-                                                 expiry=self.expiry)
+    def test_get_near_stock_price(self, aapl, expiry):
+        options = aapl.get_near_stock_price(call=True, put=True,
+                                            expiry=expiry)
         self.assert_option_result(options)
 
     def test_options_is_not_none(self):
@@ -82,47 +117,47 @@ class TestYahooOptions(object):
         assert option is not None
 
     @skip_on_exception(RemoteDataError)
-    def test_get_call_data(self):
-        calls = self.aapl.get_call_data(expiry=self.expiry)
+    def test_get_call_data(self, aapl, expiry):
+        calls = aapl.get_call_data(expiry=expiry)
 
         self.assert_option_result(calls)
         assert calls.index.levels[2][0] == 'call'
 
     @skip_on_exception(RemoteDataError)
-    def test_get_put_data(self):
-        puts = self.aapl.get_put_data(expiry=self.expiry)
+    def test_get_put_data(self, aapl, expiry):
+        puts = aapl.get_put_data(expiry=expiry)
 
         self.assert_option_result(puts)
         assert puts.index.levels[2][1] == 'put'
 
     @skip_on_exception(RemoteDataError)
-    def test_get_expiry_dates(self):
-        dates = self.aapl._get_expiry_dates()
+    def test_get_expiry_dates(self, aapl):
+        dates = aapl._get_expiry_dates()
         assert len(dates) > 1
 
     @skip_on_exception(RemoteDataError)
-    def test_get_all_data(self):
-        data = self.aapl.get_all_data(put=True)
+    def test_get_all_data(self, aapl):
+        data = aapl.get_all_data(put=True)
 
         assert len(data) > 1
         self.assert_option_result(data)
 
     @skip_on_exception(RemoteDataError)
-    def test_get_data_with_list(self):
-        data = self.aapl.get_call_data(expiry=self.aapl.expiry_dates)
+    def test_get_data_with_list(self, aapl):
+        data = aapl.get_call_data(expiry=aapl.expiry_dates)
 
         assert len(data) > 1
         self.assert_option_result(data)
 
     @skip_on_exception(RemoteDataError)
-    def test_get_all_data_calls_only(self):
-        data = self.aapl.get_all_data(call=True, put=False)
+    def test_get_all_data_calls_only(self, aapl):
+        data = aapl.get_all_data(call=True, put=False)
 
         assert len(data) > 1
         self.assert_option_result(data)
 
     @skip_on_exception(RemoteDataError)
-    def test_get_underlying_price(self):
+    def test_get_underlying_price(self, aapl):
         # see gh-7
         options_object = web.Options('^spxpm', 'yahoo')
         quote_price = options_object.underlying_price
@@ -130,52 +165,52 @@ class TestYahooOptions(object):
         assert isinstance(quote_price, float)
 
         # Tests the weekend quote time format
-        price, quote_time = self.aapl.underlying_price, self.aapl.quote_time
+        price, quote_time = aapl.underlying_price, aapl.quote_time
 
         assert isinstance(price, (int, float, complex))
         assert isinstance(quote_time, (datetime, pd.Timestamp))
 
-    def test_chop(self):
+    def test_chop(self, aapl, data1):
         # gh-7625: regression test
-        self.aapl._chop_data(self.data1, above_below=2,
-                             underlying_price=np.nan)
-        chopped = self.aapl._chop_data(self.data1, above_below=2,
-                                       underlying_price=100)
+        aapl._chop_data(data1, above_below=2,
+                        underlying_price=np.nan)
+        chopped = aapl._chop_data(data1, above_below=2,
+                                  underlying_price=100)
 
         assert isinstance(chopped, pd.DataFrame)
         assert len(chopped) > 1
 
-        chopped2 = self.aapl._chop_data(self.data1, above_below=2,
-                                        underlying_price=None)
+        chopped2 = aapl._chop_data(data1, above_below=2,
+                                   underlying_price=None)
 
         assert isinstance(chopped2, pd.DataFrame)
         assert len(chopped2) > 1
 
-    def test_chop_out_of_strike_range(self):
+    def test_chop_out_of_strike_range(self, aapl, data1):
         # gh-7625: regression test
-        self.aapl._chop_data(self.data1, above_below=2,
-                             underlying_price=np.nan)
-        chopped = self.aapl._chop_data(self.data1, above_below=2,
-                                       underlying_price=100000)
+        aapl._chop_data(data1, above_below=2,
+                        underlying_price=np.nan)
+        chopped = aapl._chop_data(data1, above_below=2,
+                                  underlying_price=100000)
 
         assert isinstance(chopped, pd.DataFrame)
         assert len(chopped) > 1
 
-    def test_sample_page_chg_float(self):
+    def test_sample_page_chg_float(self, data1):
         # Tests that numeric columns with comma's are appropriately dealt with
-        assert self.data1['Chg'].dtype == 'float64'
+        assert data1['Chg'].dtype == 'float64'
 
     @skip_on_exception(RemoteDataError)
-    def test_month_year(self):
+    def test_month_year(self, aapl, month, year):
         # see gh-168
-        data = self.aapl.get_call_data(month=self.month, year=self.year)
+        data = aapl.get_call_data(month=month, year=year)
 
         assert len(data) > 1
         assert data.index.levels[0].dtype == 'float64'
 
         self.assert_option_result(data)
 
-    def test_empty_table(self):
+    def test_empty_table(self, aapl, json2):
         # see gh-22
-        empty = self.aapl._process_data(self.aapl._parse_url(self.json2))
+        empty = aapl._process_data(aapl._parse_url(json2))
         assert len(empty) == 0

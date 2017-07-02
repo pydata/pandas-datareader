@@ -810,17 +810,21 @@ class Options(_OptionBaseReader):
         pandas.DataFrame
             A DataFrame with requested options data.
         """
-        epoch = dt.datetime.utcfromtimestamp(0)
-        if exp_dates is None:
-            exp_dates = self._get_expiry_dates()
-        exp_unix_times = [int((dt.datetime(
-            exp_date.year, exp_date.month, exp_date.day)
-                               - epoch).total_seconds())
-                          for exp_date in exp_dates]
         data = []
-        for exp_date in exp_unix_times:
-            url = (self._OPTIONS_BASE_URL + '?date={exp_date}').format(
-                sym=self.symbol, exp_date=exp_date)
-            jd = self._parse_url(url)
-            data.append(self._process_data(jd))
-        return concat(data).sort_index()
+        epoch = dt.datetime.utcfromtimestamp(0)
+
+        try:
+            if exp_dates is None:
+                exp_dates = self._get_expiry_dates()
+            exp_unix_times = [int((dt.datetime(
+                exp_date.year, exp_date.month, exp_date.day)
+                                   - epoch).total_seconds())
+                              for exp_date in exp_dates]
+            for exp_date in exp_unix_times:
+                url = (self._OPTIONS_BASE_URL + '?date={exp_date}').format(
+                    sym=self.symbol, exp_date=exp_date)
+                jd = self._parse_url(url)
+                data.append(self._process_data(jd))
+            return concat(data).sort_index()
+        finally:
+            self.close()

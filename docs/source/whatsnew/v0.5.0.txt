@@ -23,6 +23,7 @@ Enhancements
 Bug Fixes
 ~~~~~~~~~
 
+- web sessions are closed properly at the end of use (:issue:``)
 - Handle commas in large price quotes (:issue:`345`)
 - Test suite fixes for test_get_options_data (:issue:`352`)
 - Test suite fixes for test_wdi_download (:issue:`350`)
