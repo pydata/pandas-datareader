@@ -5,33 +5,30 @@ language: python
 matrix:
   fast_finish: true
   include:
-  - os: linux
+  - dist: trusty
     env:
       - PYTHON=2.7 PANDAS=0.17.1
-  - os: linux
+  - dist: trusty
     env:
       - PYTHON=2.7 PANDAS=0.19.2
-  - os: linux
+  - dist: trusty
     env:
       - PYTHON=3.5 PANDAS=0.17.1
-  - os: linux
+  - dist: trusty
     env:
       - PYTHON=3.5 PANDAS=0.18.1
-  - os: linux
-    env:
-      - PYTHON=3.5 PANDAS=0.19.2
-  - os: linux
+  - dist: trusty
     env:
       - PYTHON=3.6 PANDAS=0.19.2
-  - os: linux
+  - dist: trusty
     env:
-      - PYTHON=3.6 PANDAS=0.20.1
+      - PYTHON=3.6 PANDAS=0.20.2
   # In allow failures
-  - os: linux
+  - dist: trusty
     env:
       - PYTHON=3.6 PANDAS="MASTER"
   allow_failures:
-    - os: linux
+    - dist: trusty
       env:
         - PYTHON=3.6 PANDAS="MASTER"
 
