@@ -110,12 +110,15 @@ class YahooDailyReader(_DailyBaseReader):
 
     def read(self):
         """ read one data from specified URL """
-        df = super(YahooDailyReader, self).read()
-        if self.ret_index:
-            df['Ret_Index'] = _calc_return_index(df['Adj Close'])
-        if self.adjust_price:
-            df = _adjust_prices(df)
-        return df.sort_index()
+        try:
+            df = super(YahooDailyReader, self).read()
+            if self.ret_index:
+                df['Ret_Index'] = _calc_return_index(df['Adj Close'])
+            if self.adjust_price:
+                df = _adjust_prices(df)
+            return df.sort_index()
+        finally:
+            self.close()
 
     def _dl_mult_symbols(self, symbols):
         stocks = {}
@@ -127,7 +130,7 @@ class YahooDailyReader(_DailyBaseReader):
                     stocks[sym] = self._read_one_data(self.yurl(sym),
                                                       self._get_params(sym))
                     passed.append(sym)
-                except IOError:
+                except IOError as e:
                     msg = 'Failed to read symbol: {0!r}, replacing with NaN.'
                     warnings.warn(msg.format(sym), SymbolWarning)
                     failed.append(sym)

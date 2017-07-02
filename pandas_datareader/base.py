@@ -56,6 +56,10 @@ class _BaseReader(object):
         self.pause_multiplier = 1
         self.session = _init_session(session, retry_count)
 
+    def close(self):
+        """ close my session """
+        self.session.close()
+
     @property
     def url(self):
         # must be overridden in subclass
@@ -67,7 +71,10 @@ class _BaseReader(object):
 
     def read(self):
         """ read data """
-        return self._read_one_data(self.url, self.params)
+        try:
+            return self._read_one_data(self.url, self.params)
+        finally:
+            self.close()
 
     def _read_one_data(self, url, params):
         """ read one data from specified URL """
@@ -117,14 +124,11 @@ class _BaseReader(object):
         # initial attempt + retry
         pause = self.pause
         for i in range(self.retry_count + 1):
-            try:
-                response = self.session.get(url,
-                                            params=params,
-                                            headers=headers)
-                if response.status_code == requests.codes.ok:
-                    return response
-            finally:
-                self.session.close()
+            response = self.session.get(url,
+                                        params=params,
+                                        headers=headers)
+            if response.status_code == requests.codes.ok:
+                return response
 
             time.sleep(pause)
 
@@ -194,7 +198,7 @@ class _DailyBaseReader(_BaseReader):
                     stocks[sym] = self._read_one_data(self.url,
                                                       self._get_params(sym))
                     passed.append(sym)
-                except IOError:
+                except IOError as e:
                     msg = 'Failed to read symbol: {0!r}, replacing with NaN.'
                     warnings.warn(msg.format(sym), SymbolWarning)
                     failed.append(sym)
