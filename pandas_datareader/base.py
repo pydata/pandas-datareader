@@ -137,13 +137,27 @@ class _BaseReader(object):
             # Get a new breadcrumb if necessary, in case ours is invalidated
             if isinstance(params, list) and 'crumb' in params:
                 params['crumb'] = self._get_crumb(self.retry_count)
+
+            # If our output error function returns True, exit the loop.
+            if self._output_error(response):
+                break
+
         if params is not None and len(params) > 0:
             url = url + "?" + urlencode(params)
+
         raise RemoteDataError('Unable to read URL: {0}'.format(url))
 
     def _get_crumb(self, *args):
         """ To be implemented by subclass """
         raise NotImplementedError("Subclass has not implemented method.")
+
+    def _output_error(self, out):
+        """If necessary, a service can implement an interpreter for any non-200 HTTP responses.
+
+        :param out: raw output from an HTTP request
+        :return: boolean
+        """
+        return False
 
     def _read_lines(self, out):
         rs = read_csv(out, index_col=0, parse_dates=True, na_values='-')[::-1]
