@@ -10,6 +10,7 @@ from pandas_datareader._testing import skip_on_exception
 TEST_API_KEY = os.getenv('ENIGMA_API_KEY')
 
 
+@pytest.mark.skipif(TEST_API_KEY is None, reason="no enigma_api_key")
 class TestEnigma(object):
 
     @classmethod
