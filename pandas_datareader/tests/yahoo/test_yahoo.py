@@ -97,6 +97,7 @@ class TestYahoo(object):
         # just test that we succeed
         web.get_data_yahoo('GOOG')
 
+    @skip_on_exception(RemoteDataError)
     def test_get_data_adjust_price(self):
         goog = web.get_data_yahoo('GOOG')
         goog_adj = web.get_data_yahoo('GOOG', adjust_price=True)
@@ -184,6 +185,7 @@ class TestYahoo(object):
         with pytest.raises(IOError):
             web.get_data_yahoo_actions('UNKNOWN TICKER', start, end)
 
+    @skip_on_exception(RemoteDataError)
     def test_yahoo_reader_class(self):
         r = YahooDailyReader('GOOG')
         df = r.read()
