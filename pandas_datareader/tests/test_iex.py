@@ -28,7 +28,8 @@ class TestIEX(object):
         tm.assert_frame_equal(df, DataFrame())
 
     def test_daily(self):
-        df = get_dailysummary_iex(start=datetime(2017, 5, 5), end=datetime(2017, 5, 6))  #noqa
+        df = get_dailysummary_iex(start=datetime(2017, 5, 5),
+                                  end=datetime(2017, 5, 6))
         assert df['routedVolume'].iloc[0] == 39974788
 
     def test_symbols(self):
