@@ -131,6 +131,7 @@ class TestYahoo(object):
         sl = ['AAPL', 'AMZN', 'GOOG']
         web.get_data_yahoo(sl, '2012')
 
+    @skip_on_exception(RemoteDataError)
     def test_get_data_multiple_symbols_two_dates(self):
         pan = web.get_data_yahoo(['GE', 'MSFT', 'INTC'], 'JAN-01-12',
                                  'JAN-31-12')
