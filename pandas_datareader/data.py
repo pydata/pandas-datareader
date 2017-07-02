@@ -92,7 +92,7 @@ def get_dailysummary_iex(*args, **kwargs):
         A datetime object - the beginning of the date range.
     :param end:
         A datetime object - the end of the date range.
-  
+
     Reference: https://www.iextrading.com/developer/docs/#historical-daily
 
     :return: DataFrame
@@ -107,7 +107,7 @@ def get_summary_iex(*args, **kwargs):
     related metrics for trades by lot size, security market cap, and venue.
     In the absence of parameters, this will return month-to-date statistics.
     For ranges spanning multiple months, this will return one row per month.
- 
+
     :param start:
         A datetime object - the beginning of the date range.
     :param end:
