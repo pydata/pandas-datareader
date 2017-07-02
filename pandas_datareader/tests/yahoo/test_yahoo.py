@@ -212,7 +212,7 @@ class TestYahoo(object):
                            index=exp_idx)
         exp.index.name = 'Date'
 
-        tm.assert_frame_equal(result, exp, check_like=True)
+        tm.assert_frame_equal(result.reindex_like(exp), exp)
 
     def test_yahoo_DataReader_multi(self):
         start = datetime(2010, 1, 1)
