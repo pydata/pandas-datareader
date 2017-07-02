@@ -50,7 +50,7 @@ class TestJSDMX(object):
         result = read_jsdmx(os.path.join(self.dirpath, 'jsdmx',
                                          'land_use.json'))
         assert isinstance(result, pd.DataFrame)
-        result = result.ix['2010':'2011']
+        result = result.loc['2010':'2011']
 
         exp_col = pd.MultiIndex.from_product([
             ['Japan', 'United States'],

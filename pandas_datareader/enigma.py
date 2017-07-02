@@ -100,6 +100,12 @@ class EnigmaReader(_BaseReader):
             return resp.json()[self.export_key]
 
     def read(self):
+        try:
+            return self._read()
+        finally:
+            self.close()
+
+    def _read(self):
         export_gzipped_req = self._request(self.extract_export_url())
         decompressed_data = self._decompress_export(
             export_gzipped_req.content).decode("utf-8")

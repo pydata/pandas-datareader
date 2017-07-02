@@ -83,13 +83,13 @@ class TestGoogle(object):
 
     def test_get_quote_string(self):
         df = web.get_quote_google('GOOG')
-        assert df.ix['GOOG']['last'] > 0.0
+        assert df.loc['GOOG', 'last'] > 0.0
         tm.assert_index_equal(df.index, pd.Index(['GOOG']))
         self.assert_option_result(df)
 
     def test_get_quote_stringlist(self):
         df = web.get_quote_google(['GOOG', 'AMZN', 'GOOG'])
-        assert_series_equal(df.ix[0], df.ix[2])
+        assert_series_equal(df.iloc[0], df.iloc[2])
         tm.assert_index_equal(df.index, pd.Index(['GOOG', 'AMZN', 'GOOG']))
         self.assert_option_result(df)
 
@@ -97,7 +97,7 @@ class TestGoogle(object):
         for locale in self.locales:
             with tm.set_locale(locale):
                 df = web.get_data_google('GOOG').sort_index()
-            assert df.Volume.ix['JAN-02-2015'] == 1446662
+            assert df.Volume.loc['JAN-02-2015'] == 1446662
 
     def test_get_multi1(self):
         for locale in self.locales:
@@ -130,13 +130,13 @@ class TestGoogle(object):
                 with tm.set_locale(locale):
                     pan = web.get_data_google(['GE', 'MSFT', 'INTC'],
                                               'JAN-01-12', 'JAN-31-12')
-                result = pan.Close.ix['01-18-12']
+                result = pan.Close.loc['01-18-12']
                 assert_n_failed_equals_n_null_columns(w, result)
 
                 # sanity checking
 
                 assert np.issubdtype(result.dtype, np.floating)
-                result = pan.Open.ix['Jan-15-12':'Jan-20-12']
+                result = pan.Open.loc['Jan-15-12':'Jan-20-12']
 
                 assert result.shape == (4, 3)
                 assert_n_failed_equals_n_null_columns(w, result)
@@ -158,7 +158,7 @@ class TestGoogle(object):
     def test_google_reader_class(self):
         r = GoogleDailyReader('GOOG')
         df = r.read()
-        assert df.Volume.ix['JAN-02-2015'] == 1446662
+        assert df.Volume.loc['JAN-02-2015'] == 1446662
 
         session = requests.Session()
         r = GoogleDailyReader('GOOG', session=session)
