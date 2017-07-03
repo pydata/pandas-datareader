@@ -131,8 +131,14 @@ class TestYahoo(object):
         sl = ['AAPL', 'AMZN', 'GOOG']
         web.get_data_yahoo(sl, '2012')
 
+    def test_get_data_null_as_missing_data_no_adjust(self):
+        # just test that we succeed
+        result = web.get_data_yahoo('SRCE', '20160626', '20160705', adjust_price=False)
+        # sanity checking
+        assert result.dtypes.all() == np.floating
+
     @skip_on_exception(RemoteDataError)
-    def test_get_data_null_as_missing_data(self):
+    def test_get_data_null_as_missing_data_adjust(self):
         # just test that we succeed
         web.get_data_yahoo('SRCE', '20160626', '20160705', adjust_price=True)
 
