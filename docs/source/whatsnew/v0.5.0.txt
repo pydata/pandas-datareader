@@ -23,3 +23,4 @@ Bug Fixes
 - Test suite fixes for test_get_options_data (:issue:`352`)
 - Test suite fixes for test_wdi_download (:issue:`350`)
 - avoid monkey patching requests.Session (:issue:`301`)
+- :func:`get_data_yahoo` now treats ``'null'`` strings as missing values  (:issue:`342`)
