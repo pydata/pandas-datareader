@@ -132,6 +132,11 @@ class TestYahoo(object):
         web.get_data_yahoo(sl, '2012')
 
     @skip_on_exception(RemoteDataError)
+    def test_get_data_null_as_missing_data(self):
+        # just test that we succeed
+        web.get_data_yahoo('SRCE', '20160626', '20160705', adjust_price=True)
+
+    @skip_on_exception(RemoteDataError)
     def test_get_data_multiple_symbols_two_dates(self):
         pan = web.get_data_yahoo(['GE', 'MSFT', 'INTC'], 'JAN-01-12',
                                  'JAN-31-12')
