@@ -199,6 +199,32 @@ Available expiry dates can be accessed from the ``expiry_dates`` property.
 
 .. _remote_data.enigma:
 
+Quandl
+======
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+    symbol = 'WIKI/AAPL'  # or 'AAPL.US'
+    df = web.DataReader(symbol, 'quandl', "2015-01-01", "2015-01-05")
+    df.ix['2015-01-04']
+
+.. _remote_data.quandl:
+
+Daily financial data (prices of stocks, ETFs etc.) from quandl.com.
+The symbol names consist of two parts: DB name and symbol name.
+DB names can be all the free ones listed on the Quandl website.
+Symbol names vary with DB name; for WIKI (US stocks), they are the common
+ticker symbols, in some other cases (such as FSE) they can be a bit strange.
+Some sources are also mapped to suitable ISO country codes in the dot suffix
+style shown above,
+currently available for BE, CN, DE, FR, IN, JP, NL, PT, UK, US.
+
+Unfortunately (as of June 2017), each DB has a different data schema,
+the coverage in terms of time range is sometimes surprisingly small, and
+the data quality is not always good.
+
+
 Enigma
 ======
 
