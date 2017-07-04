@@ -158,9 +158,7 @@ class YahooDailyReader(_DailyBaseReader):
         out = str(self._sanitize_response(response))
         # Matches: {"crumb":"AlphaNumeric"}
         rpat = '"CrumbStore":{"crumb":"([^"]+)"}'
-
-        crumb = re.findall(rpat, out)[0]
-        return crumb.encode('ascii').decode('unicode-escape')
+        return re.findall(rpat, out)[0]
 
 
 def _adjust_prices(hist_data, price_list=None):
