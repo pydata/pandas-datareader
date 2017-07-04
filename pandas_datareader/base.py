@@ -13,9 +13,6 @@ from pandas.compat import StringIO, bytes_to_str
 from pandas_datareader._utils import (RemoteDataError, SymbolWarning,
                                       _sanitize_dates, _init_session)
 
-import requests_ftp
-requests_ftp.monkeypatch_session()
-
 
 class _BaseReader(object):
 
