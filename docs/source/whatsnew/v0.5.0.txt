@@ -13,6 +13,13 @@ Highlights include:
     :local:
     :backlinks: none
 
+.. _whatsnew_050.enhancements:
+
+Enhancements
+~~~~~~~~~~~~
+
+- ``DataReader`` now supports Quandl, see :ref:`here<remote_data.quandl>` (:issue:`361`).
+
 .. _whatsnew_050.bug_fixes:
 
 Bug Fixes
