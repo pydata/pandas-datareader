@@ -133,7 +133,7 @@ class TestYahoo(object):
 
     @pytest.mark.parametrize('adj_pr', [True, False])
     def test_get_data_null_as_missing_data(self, adj_pr):
-        #workaround as skip_on_exception decorator changes signature
+        # workaround as skip_on_exception decorator changes signature
         # should it be changed to a signature-preserving decorator?
         @skip_on_exception(RemoteDataError)
         def null_as_missing_data(adj_price):
