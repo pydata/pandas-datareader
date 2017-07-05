@@ -7,6 +7,8 @@ import warnings
 from pandas_datareader.google.daily import GoogleDailyReader
 from pandas_datareader.google.quotes import GoogleQuotesReader
 
+from pandas_datareader.quandl.daily import QuandlDailyReader
+
 from pandas_datareader.yahoo.daily import YahooDailyReader
 from pandas_datareader.yahoo.quotes import YahooQuotesReader
 from pandas_datareader.yahoo.actions import (YahooActionReader, YahooDivReader)
@@ -40,6 +42,10 @@ def get_data_yahoo(*args, **kwargs):
     return YahooDailyReader(*args, **kwargs).read()
 
 
+def get_data_quandl(*args, **kwargs):
+    return QuandlDailyReader(*args, **kwargs).read()
+
+
 def get_data_enigma(*args, **kwargs):
     return EnigmaReader(*args, **kwargs).read()
 
@@ -61,7 +67,8 @@ def DataReader(name, data_source=None, start=None, end=None,
     """
     Imports data from a number of online sources.
 
-    Currently supports Yahoo! Finance, Google Finance, St. Louis FED (FRED),
+    Currently supports Yahoo! Finance, Google Finance, Quandl, St.
+    Louis FED (FRED),
     Kenneth French's data library, and the SEC's EDGAR Index.
 
     Parameters
@@ -71,7 +78,7 @@ def DataReader(name, data_source=None, start=None, end=None,
         accept a list of names.
     data_source: {str, None}
         the data source ("yahoo", "yahoo-actions", "yahoo-dividends",
-        "google", "fred", "ff", or "edgar-index")
+        "google", "quandl", "fred", "ff", or "edgar-index")
     start : {datetime, None}
         left boundary for range (defaults to 1/1/2010)
     end : {datetime, None}
@@ -96,6 +103,9 @@ def DataReader(name, data_source=None, start=None, end=None,
 
     # Data from Google Finance
     aapl = DataReader("AAPL", "google")
+
+    # Data from Quandl
+    aapl = DataReader("AAPL", "quandl")
 
     # Data from FRED
     vix = DataReader("VIXCLS", "fred")
@@ -128,6 +138,12 @@ def DataReader(name, data_source=None, start=None, end=None,
 
     elif data_source == "google":
         return GoogleDailyReader(symbols=name, start=start, end=end,
+                                 chunksize=25,
+                                 retry_count=retry_count, pause=pause,
+                                 session=session).read()
+
+    elif data_source == "quandl":
+        return QuandlDailyReader(symbols=name, start=start, end=end,
                                  chunksize=25,
                                  retry_count=retry_count, pause=pause,
                                  session=session).read()
