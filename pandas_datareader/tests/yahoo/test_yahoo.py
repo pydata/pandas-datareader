@@ -132,17 +132,12 @@ class TestYahoo(object):
         web.get_data_yahoo(sl, '2012')
 
     @pytest.mark.parametrize('adj_pr', [True, False])
+    @skip_on_exception(RemoteDataError)
     def test_get_data_null_as_missing_data(self, adj_pr):
-        # TODO: We can't decorate the test function along with
-        # parametrization because it errors.  Investigate this later.
-        @skip_on_exception(RemoteDataError)
-        def null_as_missing_data(adj_price):
-            result = web.get_data_yahoo('SRCE', '20160626', '20160705',
-                                        adjust_price=adj_pr)
-            # sanity checking
-            assert result.dtypes.all() == np.floating
-
-        null_as_missing_data(adj_pr)
+        result = web.get_data_yahoo('SRCE', '20160626', '20160705',
+                                    adjust_price=adj_pr)
+        # sanity checking
+        assert result.dtypes.all() == np.floating
 
     @skip_on_exception(RemoteDataError)
     def test_get_data_multiple_symbols_two_dates(self):
