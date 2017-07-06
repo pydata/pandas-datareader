@@ -25,7 +25,7 @@ def skip_on_exception(exp):
             try:
                 f(*args, **kwargs)
             except exp as e:
-                skip(e)
+                skip(str(e))
 
         return wrapper
 
