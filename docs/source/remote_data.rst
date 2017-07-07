@@ -26,6 +26,7 @@ Currently the following sources are supported:
     - :ref:`Yahoo! Finance<remote_data.yahoo>`
     - :ref:`Google Finance<remote_data.google>`
     - :ref:`Enigma<remote_data.enigma>`
+    - :ref:`Quandl<remote_data.quandl>`
     - :ref:`St.Louis FED (FRED)<remote_data.fred>`
     - :ref:`Kenneth French's data library<remote_data.ff>`
     - :ref:`World Bank<remote_data.wb>`
@@ -79,7 +80,7 @@ Historical dividends from Yahoo! Finance.
 .. _remote_data.yahoo_quotes:
 
 Yahoo! Finance Quotes
-----------------------
+---------------------
 ***Experimental***
 
 The YahooQuotesReader class allows to get quotes data from Yahoo! Finance.
@@ -165,7 +166,7 @@ Google Finance
 .. _remote_data.google_quotes:
 
 Google Finance Quotes
-----------------------
+---------------------
 ***Experimental***
 
 The GoogleQuotesReader class allows to get quotes data from Google Finance.
@@ -212,6 +213,33 @@ the world's largest repository of structured public data.
 
     df = pdr.get_data_enigma('enigma.trade.ams.toxic.2015', os.getenv('ENIGMA_API_KEY'))
     df.columns
+
+.. _remote_data.quandl:
+
+Quandl
+======
+
+Daily financial data (prices of stocks, ETFs etc.) from
+`Quandl <https://www.quandl.com/>`__.
+The symbol names consist of two parts: DB name and symbol name.
+DB names can be all the
+`free ones listed on the Quandl website <https://blog.quandl.com/free-data-on-quandl>__.
+Symbol names vary with DB name; for WIKI (US stocks), they are the common
+ticker symbols, in some other cases (such as FSE) they can be a bit strange.
+Some sources are also mapped to suitable ISO country codes in the dot suffix
+style shown above, currently available for
+`BE, CN, DE, FR, IN, JP, NL, PT, UK, US <https://www.quandl.com/search?query=>`__.
+
+As of June 2017, each DB has a different data schema,
+the coverage in terms of time range is sometimes surprisingly small, and
+the data quality is not always good.
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+    symbol = 'WIKI/AAPL'  # or 'AAPL.US'
+    df = web.DataReader(symbol, 'quandl', "2015-01-01", "2015-01-05")
+    df.loc['2015-01-02']
 
 .. _remote_data.fred:
 
@@ -548,7 +576,7 @@ Download currency historical rate from `Oanda <https://www.oanda.com/>`__.
 .. _remote_data.nasdaq_symbols:
 
 Nasdaq Trader Symbol Definitions
-==============================
+================================
 
 Download the latest symbols from `Nasdaq <ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqtraded.txt>`_.
 
@@ -572,5 +600,3 @@ available. More information on the `field <http://www.nasdaqtrader.com/trader.as
         NASDAQ Symbol                                                     IBM
         NextShares                                                      False
         Name: IBM, dtype: object
-
-
