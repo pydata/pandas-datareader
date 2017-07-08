@@ -104,17 +104,17 @@ class TestYahoo(object):
         assert 'Adj Close' not in goog_adj.columns
         assert (goog['Open'] * goog_adj['Adj_Ratio']).equals(goog_adj['Open'])
 
-    @pytest.mark.xfail(reason="failing after #355")
+    @skip_on_exception(RemoteDataError)
     def test_get_data_interval(self):
         # daily interval data
         pan = web.get_data_yahoo('XOM', '2013-01-01',
                                  '2013-12-31', interval='d')
-        assert len(pan) == 251
+        assert len(pan) == 252
 
         # weekly interval data
         pan = web.get_data_yahoo('XOM', '2013-01-01',
                                  '2013-12-31', interval='w')
-        assert len(pan) == 52
+        assert len(pan) == 53
 
         # monthly interval data
         pan = web.get_data_yahoo('XOM', '2012-12-31',

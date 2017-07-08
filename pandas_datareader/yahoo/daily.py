@@ -97,7 +97,8 @@ class YahooDailyReader(_DailyBaseReader):
 
     def _get_params(self, symbol):
         unix_start = int(time.mktime(self.start.timetuple()))
-        unix_end = int(time.mktime(self.end.timetuple()))
+        day_end = self.end.replace(hour=23, minute=59, second=59)
+        unix_end = int(time.mktime(day_end.timetuple()))
 
         params = {
             'period1': unix_start,
