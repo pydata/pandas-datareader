@@ -20,6 +20,13 @@ Enhancements
 
 - ``DataReader`` now supports Quandl, see :ref:`here<remote_data.quandl>` (:issue:`361`).
 
+.. _whatsnew_050.api_breaking:
+
+Backwards incompatible API changes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Removed Oanda as it became subscription only (:issue:`296`).
+
 .. _whatsnew_050.bug_fixes:
 
 Bug Fixes
