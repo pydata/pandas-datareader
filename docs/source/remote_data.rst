@@ -33,7 +33,6 @@ Currently the following sources are supported:
     - :ref:`OECD<remote_data.oecd>`
     - :ref:`Eurostat<remote_data.eurostat>`
     - :ref:`Thrift Savings Plan<remote_data.tsp>`
-    - :ref:`Oanda currency historical rate<remote_data.oanda_curr_hist>`
     - :ref:`Nasdaq Trader symbol definitions<remote_data.nasdaq_symbols>`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
@@ -536,42 +535,6 @@ Download mutual fund index prices for the TSP.
     tspreader = tsp.TSPReader(start='2015-10-1', end='2015-12-31')
     tspreader.read()
 
-
-.. _remote_data.oanda_curr_hist:
-
-Oanda currency historical rate
-==============================
-
-Download currency historical rate from `Oanda <https://www.oanda.com/>`__.
-
-.. code-block:: python
-
-    In [1]: from pandas_datareader.oanda import get_oanda_currency_historical_rates
-    In [2]: start, end = "2016-01-01", "2016-06-01"
-    In [3]: quote_currency = "USD"
-    In [4]: base_currency = ["EUR", "GBP", "JPY"]
-    In [5]: df_rates = get_oanda_currency_historical_rates(
-                start, end,
-                quote_currency=quote_currency,
-                base_currency=base_currency
-            )
-    In [6]: print(df_rates)
-
-                   EUR/USD   GBP/USD   JPY/USD
-      Date
-      2016-01-01  1.087090  1.473989  0.008320
-      2016-01-02  1.087090  1.473989  0.008320
-      2016-01-03  1.087090  1.473989  0.008320
-      2016-01-04  1.086730  1.473481  0.008370
-      2016-01-05  1.078760  1.469430  0.008388
-      ...              ...       ...       ...
-      2016-05-28  1.111669  1.462630  0.009072
-      2016-05-29  1.111669  1.462630  0.009072
-      2016-05-30  1.112479  1.461999  0.009006
-      2016-05-31  1.114269  1.461021  0.009010
-      2016-06-01  1.115170  1.445410  0.009095
-
-      [153 rows x 3 columns]
 
 .. _remote_data.nasdaq_symbols:
 

@@ -20,7 +20,6 @@ from pandas_datareader.famafrench import FamaFrenchReader
 from pandas_datareader.oecd import OECDReader
 from pandas_datareader.edgar import EdgarIndexReader
 from pandas_datareader.enigma import EnigmaReader
-from pandas_datareader.oanda import get_oanda_currency_historical_rates
 from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
 from pandas_datareader.quandl import QuandlReader
 
@@ -162,12 +161,6 @@ def DataReader(name, data_source=None, start=None, end=None,
         return EdgarIndexReader(symbols=name, start=start, end=end,
                                 retry_count=retry_count, pause=pause,
                                 session=session).read()
-    elif data_source == "oanda":
-        return get_oanda_currency_historical_rates(
-            start, end,
-            quote_currency="USD", base_currency=name,
-            reversed=True, session=session
-        )
     elif data_source == 'nasdaq':
         if name != 'symbols':
             raise ValueError("Only the string 'symbols' is supported for "
