@@ -137,7 +137,13 @@ class TestYahoo(object):
         result = web.get_data_yahoo('SRCE', '20160626', '20160705',
                                     adjust_price=adj_pr)
         # sanity checking
-        assert result.dtypes.all() == np.floating
+        floats = ['Open', 'High', 'Low', 'Close']
+        if adj_pr:
+            floats.append('Adj_Ratio')
+        else:
+            floats.append('Adj Close')
+
+        assert result[floats].dtypes.all() == np.floating
 
     @skip_on_exception(RemoteDataError)
     def test_get_data_multiple_symbols_two_dates(self):
