@@ -22,7 +22,7 @@ matrix:
       - PYTHON=3.6 PANDAS=0.19.2
   - dist: trusty
     env:
-      - PYTHON=3.6 PANDAS=LATEST
+      - PYTHON=3.6 PANDAS=0.20.2
   # In allow failures
   - dist: trusty
     env:
@@ -57,8 +57,6 @@ install:
       conda install numpy pytz python-dateutil;
       PRE_WHEELS="https://7933911d6844c6c53a7d-47bd50c35cd79bd838daf386af554a83.ssl.cf2.rackcdn.com";
       pip install --pre --upgrade --timeout=60 -f $PRE_WHEELS pandas;
-    elif [[ "$PANDAS" == "LATEST" ]]; then
-      conda install pandas
     else
       conda install pandas=$PANDAS;
     fi
