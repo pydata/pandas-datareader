@@ -23,6 +23,7 @@ def readme():
     with open('README.rst') as f:
         return f.read()
 
+
 INSTALL_REQUIRES = (
     ['pandas>=0.17.0', 'requests>=2.3.0', 'requests-file', 'requests-ftp']
 )
