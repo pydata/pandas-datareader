@@ -1,43 +1,43 @@
-import zlib
 import os
-import time
 from pandas.compat import StringIO
 
 import pandas.compat as compat
 import pandas as pd
-import requests
 
 from pandas_datareader.base import _BaseReader
 
 
 class EnigmaReader(_BaseReader):
     """
-    Collects Enigma data located at the specified datapath and
-    returns a pandas DataFrame.
+    Collects current snapshot of Enigma data located at the specified
+    dataset ID and returns a pandas DataFrame.
+
+    # Example
+    Download current snapshot for the following Florida Inspections Dataset
+    https://public.enigma.com/datasets/bedaf052-5fcd-4758-8d27-048ce8746c6a
 
     Usage (high-level):
     ```
         import pandas_datareader as pdr
-        df = pdr.get_data_enigma('enigma.inspections.restaurants.fl')
+        df = pdr.get_data_enigma('bedaf052-5fcd-4758-8d27-048ce8746c6a')
 
         # in the event that ENIGMA_API_KEY does not exist in your env,
         # it can be supplied as the second arg:
-        df = prd.get_data_enigma('enigma.inspections.restaurants.fl',
-        ...                      'ARIAMFHKJMISF38UT')
+        df = prd.get_data_enigma('bedaf052-5fcd-4758-8d27-048ce8746c6a',
+        ...                      'INSERT_API_KEY')
     ```
 
     Usage:
     ```
-        df = EnigmaReader(datapath='enigma.inspections.restaurants.fl',
-        ...               api_key='ARIAMFHKJMISF38UT').read()
+        df = EnigmaReader(dataset_id='bedaf052-5fcd-4758-8d27-048ce8746c6a',
+        ...               api_key='INSERT_API_KEY').read()
     ```
     """
-
     def __init__(self,
-                 datapath=None,
+                 dataset_id=None,
                  api_key=None,
                  retry_count=5,
-                 pause=0.250,
+                 pause=0.5,
                  session=None):
 
         super(EnigmaReader, self).__init__(symbols=[],
@@ -49,55 +49,23 @@ class EnigmaReader(_BaseReader):
                 raise ValueError("Please provide an Enigma API key or set "
                                  "the ENIGMA_API_KEY environment variable\n"
                                  "If you do not have an API key, you can get "
-                                 "one here: https://app.enigma.io/signup")
+                                 "one here: http://public.enigma.com/signup")
         else:
             self._api_key = api_key
 
-        self._datapath = datapath
-        if not isinstance(self._datapath, compat.string_types):
+        self._dataset_id = dataset_id
+        if not isinstance(self._dataset_id, compat.string_types):
+            # TODO: test if string is valid UUID
             raise ValueError(
-                "The Enigma datapath must be a string (ex: "
-                "'enigma.inspections.restaurants.fl')")
+                "The Enigma dataset_id must be a UUID4 string (ex: "
+                "'bedaf052-5fcd-4758-8d27-048ce8746c6a')")
 
-    @property
-    def url(self):
-        return 'https://api.enigma.io/v2/export/{}/{}'.format(self._api_key,
-                                                              self._datapath)
-
-    @property
-    def export_key(self):
-        return 'export_url'
-
-    @property
-    def _head_key(self):
-        return 'head_url'
-
-    def _request(self, url):
-        self.session.headers.update({'User-Agent': 'pandas-datareader'})
-        resp = self.session.get(url)
-        resp.raise_for_status()
-        return resp
-
-    def _decompress_export(self, compressed_export_data):
-        return zlib.decompress(compressed_export_data, 16 + zlib.MAX_WBITS)
-
-    def extract_export_url(self, delay=10, max_attempts=10):
-        """
-        Performs an HTTP HEAD request on 'head_url' until it returns a `200`.
-        This allows the Enigma API time to export the requested data.
-        """
-        resp = self._request(self.url)
-        attempts = 0
-        while True:
-            try:
-                requests.head(resp.json()[self._head_key]).raise_for_status()
-            except Exception as e:
-                attempts += 1
-                if attempts > max_attempts:
-                    raise e
-                time.sleep(delay)
-                continue
-            return resp.json()[self.export_key]
+        headers = {
+            'Authorization': 'Bearer {0}'.format(self._api_key),
+            'User-Agent': 'pandas-datareader',
+        }
+        self.session.headers.update(headers)
+        self._base_url = "https://public.enigma.com/api"
 
     def read(self):
         try:
@@ -106,7 +74,33 @@ class EnigmaReader(_BaseReader):
             self.close()
 
     def _read(self):
-        export_gzipped_req = self._request(self.extract_export_url())
-        decompressed_data = self._decompress_export(
-            export_gzipped_req.content).decode("utf-8")
-        return pd.read_csv(StringIO(decompressed_data))
+        snapshot_id = self.get_current_snapshot_id(self._dataset_id)
+        exported_data = self.get_snapshot_export(snapshot_id)  # TODO: Retry?
+        decoded_data = exported_data.decode("utf-8")
+        return pd.read_csv(StringIO(decoded_data))
+
+    def _get(self, url):
+        """HTTP GET Request"""
+        url = "{0}/{1}".format(self._base_url, url)
+        response = self.session.get(url)
+        response.raise_for_status()
+        return response
+
+    def get_current_snapshot_id(self):
+        """Get ID of the most current snapshot of a dataset"""
+        dataset_metadata = self.get_dataset_metadata()
+        return dataset_metadata['current_snapshot']['id']
+
+    def get_dataset_metadata(self, dataset_id):
+        """Get the Dataset Model of this EnigmaReader's dataset
+            <Add Link to Model Docs>
+        """
+        url = "datasets/{0}?row_limit=0".format(dataset_id)
+        response = self._get(url)
+        return response.json()
+
+    def get_snapshot_export(self, snapshot_id):
+        """Return raw CSV of a dataset"""
+        url = "export/{0}".format(snapshot_id)
+        response = self._get(url)
+        return response.content
