@@ -38,7 +38,7 @@ class EnigmaReader(_BaseReader):
                  dataset_id=None,
                  api_key=None,
                  retry_count=5,
-                 pause=0.5,
+                 pause=.75,
                  session=None):
 
         super(EnigmaReader, self).__init__(symbols=[],
@@ -99,9 +99,9 @@ class EnigmaReader(_BaseReader):
                 else:
                     raise e
 
-    def get_current_snapshot_id(self):
+    def get_current_snapshot_id(self, dataset_id):
         """Get ID of the most current snapshot of a dataset"""
-        dataset_metadata = self.get_dataset_metadata()
+        dataset_metadata = self.get_dataset_metadata(dataset_id)
         return dataset_metadata['current_snapshot']['id']
 
     def get_dataset_metadata(self, dataset_id):
