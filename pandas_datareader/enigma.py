@@ -1,6 +1,7 @@
 import os
-from pandas.compat import StringIO
+import time
 
+from pandas.compat import StringIO
 import pandas.compat as compat
 import pandas as pd
 
@@ -66,6 +67,8 @@ class EnigmaReader(_BaseReader):
         }
         self.session.headers.update(headers)
         self._base_url = "https://public.enigma.com/api"
+        self._retry_count = retry_count
+        self._retry_delay = pause
 
     def read(self):
         try:
@@ -80,11 +83,21 @@ class EnigmaReader(_BaseReader):
         return pd.read_csv(StringIO(decoded_data))
 
     def _get(self, url):
-        """HTTP GET Request"""
+        """HTTP GET Request with Retry Logic"""
         url = "{0}/{1}".format(self._base_url, url)
-        response = self.session.get(url)
-        response.raise_for_status()
-        return response
+        attempts = 0
+        while True:
+            try:
+                response = self.session.get(url)
+                response.raise_for_status()
+                return response
+            except Exception as e:
+                if attempts < self._retry_count:
+                    attempts += 1
+                    time.sleep(self._retry_delay)
+                    continue
+                else:
+                    raise e
 
     def get_current_snapshot_id(self):
         """Get ID of the most current snapshot of a dataset"""
