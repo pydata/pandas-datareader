@@ -56,9 +56,8 @@ class EnigmaReader(_BaseReader):
 
         self._dataset_id = dataset_id
         if not isinstance(self._dataset_id, compat.string_types):
-            # TODO: test if string is valid UUID
             raise ValueError(
-                "The Enigma dataset_id must be a UUID4 string (ex: "
+                "The Enigma dataset_id must be a string (ex: "
                 "'bedaf052-5fcd-4758-8d27-048ce8746c6a')")
 
         headers = {
@@ -106,7 +105,7 @@ class EnigmaReader(_BaseReader):
 
     def get_dataset_metadata(self, dataset_id):
         """Get the Dataset Model of this EnigmaReader's dataset
-            <Add Link to Model Docs>
+            https://docs.public.enigma.com/resources/dataset/index.html
         """
         url = "datasets/{0}?row_limit=0".format(dataset_id)
         response = self._get(url)

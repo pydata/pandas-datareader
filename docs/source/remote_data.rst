@@ -202,15 +202,18 @@ Available expiry dates can be accessed from the ``expiry_dates`` property.
 Enigma
 ======
 
-Access datasets from `Enigma <https://app.enigma.io>`__,
+Access datasets from `Enigma <https://public.enigma.com>`__,
 the world's largest repository of structured public data.
+
+Datasets are unique identified by the ``uuid4`` at the end of a dataset's web address.
+For example, the following code downloads USDA Food Recall Data from https://public.enigma.com/datasets/292129b0-1275-44c8-a6a3-2a0881f24fe1.
 
 .. ipython:: python
 
     import os
     import pandas_datareader as pdr
 
-    df = pdr.get_data_enigma('enigma.trade.ams.toxic.2015', os.getenv('ENIGMA_API_KEY'))
+    df = pdr.get_data_enigma('292129b0-1275-44c8-a6a3-2a0881f24fe1', os.getenv('ENIGMA_API_KEY'))
     df.columns
 
 .. _remote_data.quandl:

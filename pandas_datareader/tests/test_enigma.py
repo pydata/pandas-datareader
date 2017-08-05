@@ -12,9 +12,9 @@ TEST_API_KEY = os.getenv('ENIGMA_API_KEY')
 class TestEnigma(object):
 
     @property
-    def dataset_id():
+    def dataset_id(self):
         """
-        USDA Food Recall Archive
+        USDA Food Recall Archive - 1996
         Selected for being a relatively small dataset.
         https://public.enigma.com/datasets/292129b0-1275-44c8-a6a3-2a0881f24fe1
         """

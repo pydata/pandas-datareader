@@ -137,7 +137,7 @@ def DataReader(name, data_source=None, start=None, end=None,
                                  session=session).read()
 
     elif data_source == "enigma":
-        return EnigmaReader(datapath=name, api_key=access_key).read()
+        return EnigmaReader(dataset_id=name, api_key=access_key).read()
 
     elif data_source == "fred":
         return FredReader(symbols=name, start=start, end=end,
