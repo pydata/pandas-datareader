@@ -203,10 +203,12 @@ Enigma
 ======
 
 Access datasets from `Enigma <https://public.enigma.com>`__,
-the world's largest repository of structured public data.
+the world's largest repository of structured public data. Note that the Enigma
+URL has changed from `app.enigma.io <https://app.enigma.io>`__ as of release 
+``0.6.0``, as the old API deprecated.
 
 Datasets are unique identified by the ``uuid4`` at the end of a dataset's web address.
-For example, the following code downloads USDA Food Recall Data from https://public.enigma.com/datasets/292129b0-1275-44c8-a6a3-2a0881f24fe1.
+For example, the following code downloads from  `USDA Food Recalls 1996 Data <https://public.enigma.com/datasets/292129b0-1275-44c8-a6a3-2a0881f24fe1>`__.
 
 .. ipython:: python
 
