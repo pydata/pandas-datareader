@@ -6,13 +6,13 @@ import warnings
 
 from pandas_datareader.google.daily import GoogleDailyReader
 from pandas_datareader.google.quotes import GoogleQuotesReader
+from pandas_datareader.google.options import Options as GoogleOptions
 
 from pandas_datareader.yahoo.daily import YahooDailyReader
 from pandas_datareader.yahoo.quotes import YahooQuotesReader
 from pandas_datareader.yahoo.actions import (YahooActionReader, YahooDivReader)
 from pandas_datareader.yahoo.components import _get_data as get_components_yahoo  # noqa
 from pandas_datareader.yahoo.options import Options as YahooOptions
-from pandas_datareader.google.options import Options as GoogleOptions
 
 from pandas_datareader.eurostat import EurostatReader
 from pandas_datareader.fred import FredReader
@@ -22,6 +22,7 @@ from pandas_datareader.edgar import EdgarIndexReader
 from pandas_datareader.enigma import EnigmaReader
 from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
 from pandas_datareader.quandl import QuandlReader
+from pandas_datareader.moex import MoexReader
 
 
 def get_data_fred(*args, **kwargs):
@@ -59,6 +60,8 @@ def get_quote_google(*args, **kwargs):
 def get_data_quandl(*args, **kwargs):
     return QuandlReader(*args, **kwargs).read()
 
+def get_data_moex(*args, **kwargs):
+    return MoexReader(*args, **kwargs).read()
 
 def DataReader(name, data_source=None, start=None, end=None,
                retry_count=3, pause=0.001, session=None, access_key=None):
@@ -168,6 +171,10 @@ def DataReader(name, data_source=None, start=None, end=None,
         return get_nasdaq_symbols(retry_count=retry_count, pause=pause)
     elif data_source == "quandl":
         return QuandlReader(symbols=name, start=start, end=end,
+                            retry_count=retry_count, pause=pause,
+                            session=session).read()
+    elif data_source == "moex":
+        return MoexReader(symbols=name, start=start, end=end,
                             retry_count=retry_count, pause=pause,
                             session=session).read()
     else:
