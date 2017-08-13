@@ -1,7 +1,10 @@
+# flake8: noqa
+
 from pandas_datareader.base import _DailyBaseReader
 from pandas import read_csv, compat
-from pandas.compat import StringIO, bytes_to_str
+from pandas.compat import StringIO
 import datetime as dt
+
 
 class MoexReader(_DailyBaseReader):
 
@@ -40,14 +43,15 @@ class MoexReader(_DailyBaseReader):
             raise ValueError("Support for multiple symbols is not yet implemented.")
 
     __url_metadata = "https://iss.moex.com/iss/securities/{symbol}.csv"
-    __url_data = "https://iss.moex.com/iss/history/engines/{engine}/markets/{market}/securities/{symbol}.csv"
+    __url_data = "https://iss.moex.com/iss/history/engines/{engine}/" \
+                 "markets/{market}/securities/{symbol}.csv"
 
     @property
     def url(self):
         return self.__url_data.format(
-            engine = self.__engine,
-            market = self.__market,
-            symbol = self.symbols
+            engine=self.__engine,
+            market=self.__market,
+            symbol=self.symbols
         )
 
     def _get_params(self, start):
@@ -70,7 +74,9 @@ class MoexReader(_DailyBaseReader):
 
     def _get_metadata(self):
         """ get a market and an engine for a given symbol """
-        response = self._get_response(self.__url_metadata.format(symbol=self.symbols))
+        response = self._get_response(
+            self.__url_metadata.format(symbol=self.symbols)
+        )
         text = self._sanitize_response(response)
         if len(text) == 0:
             service = self.__class__.__name__
@@ -80,34 +86,39 @@ class MoexReader(_DailyBaseReader):
             text = text.decode('windows-1251')
         else:
             text = text
-        
+
         header_str = 'secid;boardid;'
         get_data = False
         for s in text.splitlines():
             if s.startswith(header_str):
                 get_data = True
                 continue
-            if get_data and s!='':
+            if get_data and s != '':
                 fields = s.split(';')
                 return fields[5], fields[7]
         service = self.__class__.__name__
-        raise IOError("{} request returned no metadata"
-                      ": {}\nTypo in security symbol `{}`?".format(service, self.__url_metadata.format(symbol=self.symbols), self.symbols))
+        raise IOError("{} request returned no metadata: {}\n"
+                      "Typo in security symbol `{}`?".format(
+                        service,
+                        self.__url_metadata.format(symbol=self.symbols),
+                        self.symbols
+                      )
+                     )
 
     def read(self):
         """ read data """
         try:
             self.__market, self.__engine = self._get_metadata()
 
-            end = self.end.strftime('%Y-%m-%d')
             out_list = []
             date_column = None
-            while True: # read in loop with small date intervals
-                if len(out_list)>0:
+            while True:  # read in loop with small date intervals
+                if len(out_list) > 0:
                     if date_column is None:
                         date_column = out_list[0].split(';').index('TRADEDATE')
 
-                    start_str = out_list[-1].split(';', 4)[date_column] # get the last downloaded date
+                    # get the last downloaded date
+                    start_str = out_list[-1].split(';', 4)[date_column]
                     start = dt.datetime.strptime(start_str, '%Y-%m-%d').date()
                 else:
                     start_str = self.start.strftime('%Y-%m-%d')
@@ -117,7 +128,8 @@ class MoexReader(_DailyBaseReader):
                     break
                 
                 params = self._get_params(start_str)
-                strings_out = self._read_url_as_String(self.url, params).splitlines()[2:]
+                strings_out = self._read_url_as_String(self.url, params) \
+                                  .splitlines()[2:]
                 strings_out = list(filter(lambda x: x.strip(), strings_out))
 
                 if len(out_list) == 0:
@@ -125,7 +137,7 @@ class MoexReader(_DailyBaseReader):
                     if len(strings_out) < 101:
                         break
                 else:
-                    out_list += strings_out[1:] # remove CSV head line
+                    out_list += strings_out[1:]  # remove CSV head line
                     if len(strings_out) < 100:
                         break
             str_io = StringIO('\r\n'.join(out_list))

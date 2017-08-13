@@ -60,8 +60,10 @@ def get_quote_google(*args, **kwargs):
 def get_data_quandl(*args, **kwargs):
     return QuandlReader(*args, **kwargs).read()
 
+
 def get_data_moex(*args, **kwargs):
     return MoexReader(*args, **kwargs).read()
+
 
 def DataReader(name, data_source=None, start=None, end=None,
                retry_count=3, pause=0.001, session=None, access_key=None):
@@ -175,8 +177,8 @@ def DataReader(name, data_source=None, start=None, end=None,
                             session=session).read()
     elif data_source == "moex":
         return MoexReader(symbols=name, start=start, end=end,
-                            retry_count=retry_count, pause=pause,
-                            session=session).read()
+                          retry_count=retry_count, pause=pause,
+                          session=session).read()
     else:
         msg = "data_source=%r is not implemented" % data_source
         raise NotImplementedError(msg)
