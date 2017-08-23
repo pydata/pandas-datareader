@@ -160,8 +160,9 @@ class MoexReader(_DailyBaseReader):
             out = text
         return out
 
-    def _read_lines(self, out):
-        rs = read_csv(out, index_col='TRADEDATE', parse_dates=True, sep=';',
+    def _read_lines(self, input):
+        """ return pandas DataFrame from input """
+        rs = read_csv(input, index_col='TRADEDATE', parse_dates=True, sep=';',
                       na_values=('-', 'null'))
         # Get rid of unicode characters in index name.
         try:
