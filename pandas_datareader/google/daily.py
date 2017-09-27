@@ -31,6 +31,7 @@ class GoogleDailyReader(_DailyBaseReader):
 
     @property
     def url(self):
+        # a dummy commit to check if tests are failed
         return 'http://www.google.com/finance/historical'
 
     def _get_params(self, symbol):
