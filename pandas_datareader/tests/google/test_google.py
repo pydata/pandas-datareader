@@ -61,7 +61,7 @@ class TestGoogle(object):
 
         for locale in self.locales:
             with tm.set_locale(locale):
-                panel = web.DataReader("F", 'google', start, end)
+                panel = web.DataReader("NYSE:F", 'google', start, end)
             assert panel.Close[-1] == 13.68
 
         with pytest.raises(Exception):
@@ -82,12 +82,14 @@ class TestGoogle(object):
         tm.assert_series_equal(df.dtypes, pd.Series(dtypes, index=exp_columns))
 
     def test_get_quote_string(self):
+        pytest.skip("Google quote api is offline as of Oct 1, 2017")
         df = web.get_quote_google('GOOG')
         assert df.loc['GOOG', 'last'] > 0.0
         tm.assert_index_equal(df.index, pd.Index(['GOOG']))
         self.assert_option_result(df)
 
     def test_get_quote_stringlist(self):
+        pytest.skip("Google quote api is offline as of Oct 1, 2017")
         df = web.get_quote_google(['GOOG', 'AMZN', 'GOOG'])
         assert_series_equal(df.iloc[0], df.iloc[2])
         tm.assert_index_equal(df.index, pd.Index(['GOOG', 'AMZN', 'GOOG']))
@@ -143,7 +145,10 @@ class TestGoogle(object):
 
     def test_dtypes(self):
         # see gh-3995, gh-8980
-        data = web.get_data_google('F', start='JAN-01-10', end='JAN-27-13')
+        data = web.get_data_google(
+                'NYSE:F',
+                start='JAN-01-10',
+                end='JAN-27-13')
         assert np.issubdtype(data.Open.dtype, np.number)
         assert np.issubdtype(data.Close.dtype, np.number)
         assert np.issubdtype(data.Low.dtype, np.number)
@@ -152,7 +157,10 @@ class TestGoogle(object):
 
     def test_unicode_date(self):
         # see gh-8967
-        data = web.get_data_google('F', start='JAN-01-10', end='JAN-27-13')
+        data = web.get_data_google(
+                'NYSE:F',
+                start='JAN-01-10',
+                end='JAN-27-13')
         assert data.index.name == 'Date'
 
     def test_google_reader_class(self):
@@ -167,4 +175,4 @@ class TestGoogle(object):
     def test_bad_retry_count(self):
 
         with pytest.raises(ValueError):
-            web.get_data_google('F', retry_count=-1)
+            web.get_data_google('NYSE:F', retry_count=-1)

@@ -9,7 +9,9 @@ import re
 
 class GoogleQuotesReader(_BaseReader):
 
-    """Get current google quote"""
+    """Get current google quote
+       WARNING: OFFLINE AS OF OCT 1, 2017
+    """
 
     @property
     def url(self):
