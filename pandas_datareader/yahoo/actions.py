@@ -1,3 +1,5 @@
+from __future__ import division
+
 from pandas import (concat, DataFrame)
 from pandas_datareader.yahoo.daily import YahooDailyReader
 
