@@ -25,7 +25,7 @@ class TestYahoo(object):
     def test_yahoo(self):
         # Asserts that yahoo is minimally working
         start = datetime(2010, 1, 1)
-        end = datetime(2013, 1, 27)
+        end = datetime(2013, 1, 25)
 
         assert web.DataReader('F', 'yahoo', start, end)['Close'][-1] == 13.68
 
@@ -205,7 +205,7 @@ class TestYahoo(object):
         r = YahooDailyReader('GOOG')
         df = r.read()
 
-        assert df.Volume.loc['JAN-02-2015'] == 1447500
+        assert df.Volume.loc['JAN-02-2015'] == 1447600
 
         session = requests.Session()
 

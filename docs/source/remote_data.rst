@@ -170,11 +170,13 @@ Google Finance Quotes
 
 The GoogleQuotesReader class allows to get quotes data from Google Finance.
 
-.. ipython:: python
+OFFLINE AS OF OCT 1, 2017
 
-    import pandas_datareader.data as web
-    q = web.get_quote_google(['AMZN', 'GOOG'])
-    q
+.. .. ipython:: python
+
+..     import pandas_datareader.data as web
+..     q = web.get_quote_google(['AMZN', 'GOOG'])
+..     q
 
 .. _remote_data.google_options:
 

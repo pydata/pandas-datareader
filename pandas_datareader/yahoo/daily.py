@@ -117,7 +117,7 @@ class YahooDailyReader(_DailyBaseReader):
                 df['Ret_Index'] = _calc_return_index(df['Adj Close'])
             if self.adjust_price:
                 df = _adjust_prices(df)
-            return df.sort_index()
+            return df.sort_index().dropna(how='all')
         finally:
             self.close()
 
