@@ -467,16 +467,3 @@ class KeyRatiosReader(object):
         df = df.drop(0, axis=0)
         df = df.set_index(["Symbols", "Groups"])
         return df
-
-
-
-# def WACC(symbol, tax_rate=.35):
-#     pct_equity = 0
-#     pct_debt = 0
-#     cost_equity = 0
-#     cost_debt = 0
-#
-#
-#
-# def DiscountedCashFlows(symbol, wacc, terminal_rate):
-#     pass
