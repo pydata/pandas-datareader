@@ -13,7 +13,8 @@ from pandas_datareader.yahoo.actions import YahooActionReader
 from pandas_datareader.yahoo.components import _get_data as get_components_yahoo  # noqa
 from pandas_datareader.yahoo.options import Options as YahooOptions
 from pandas_datareader.google.options import Options as GoogleOptions
-
+from pandas_datareader.mstar.daily import MorningstarDailyReader
+from pandas_datareader.mstar.financials import IncomeStatementReader, BalanceSheetReader, CashflowStatementReader, KeyRatiosReader
 from pandas_datareader.eurostat import EurostatReader
 from pandas_datareader.fred import FredReader
 from pandas_datareader.famafrench import FamaFrenchReader
@@ -39,6 +40,17 @@ def get_data_google(*args, **kwargs):
 def get_data_yahoo(*args, **kwargs):
     return YahooDailyReader(*args, **kwargs).read()
 
+def get_data_morningstar(*args, **kwargs):
+    return MorningstarDailyReader(*args, **kwargs).read()
+
+def get_mstar_financials_income(*args, **kwargs):
+    return IncomeStatementReader(*args, **kwargs).read()
+
+def get_mstar_financials_balance(*args, **kwargs):
+    return BalanceSheetReader(*args, **kwargs).read()
+
+def get_mstar_financials_cashflows(*args, **kwargs):
+    return CashflowStatementReader(*args, **kwargs).read()
 
 def get_data_enigma(*args, **kwargs):
     return EnigmaReader(*args, **kwargs).read()
