@@ -81,15 +81,15 @@ class TestGoogle(object):
                                         'datetime64[ns]']]
         tm.assert_series_equal(df.dtypes, pd.Series(dtypes, index=exp_columns))
 
+    @pytest.mark.xfail(reason="Google quote api is offline as of Oct 1, 2017")
     def test_get_quote_string(self):
-        pytest.skip("Google quote api is offline as of Oct 1, 2017")
         df = web.get_quote_google('GOOG')
         assert df.loc['GOOG', 'last'] > 0.0
         tm.assert_index_equal(df.index, pd.Index(['GOOG']))
         self.assert_option_result(df)
 
+    @pytest.mark.xfail(reason="Google quote api is offline as of Oct 1, 2017")
     def test_get_quote_stringlist(self):
-        pytest.skip("Google quote api is offline as of Oct 1, 2017")
         df = web.get_quote_google(['GOOG', 'AMZN', 'GOOG'])
         assert_series_equal(df.iloc[0], df.iloc[2])
         tm.assert_index_equal(df.index, pd.Index(['GOOG', 'AMZN', 'GOOG']))
