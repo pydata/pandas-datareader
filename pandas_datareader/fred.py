@@ -1,4 +1,4 @@
-from pandas.core.common import is_list_like
+from pandas.api.types import is_list_like
 from pandas import concat, read_csv
 
 from pandas_datareader.base import _BaseReader
