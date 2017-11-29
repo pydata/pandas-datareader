@@ -36,8 +36,8 @@ class GoogleDailyReader(_DailyBaseReader):
     def _get_params(self, symbol):
         params = {
             'q': symbol,
-            'startdate': self.start.strftime('%b %d, %Y'),
-            'enddate': self.end.strftime('%b %d, %Y'),
+            'startdate': self.start.strftime('%Y/%m/%d'),
+            'enddate': self.end.strftime('%Y/%m/%d'),
             'output': "csv"
         }
         return params
