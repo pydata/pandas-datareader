@@ -24,11 +24,15 @@ def _sanitize_dates(start, end):
     if is_number(start):
         # regard int as year
         start = dt.datetime(start, 1, 1)
-    start = to_datetime(start)
+    else:
+        # it may fail in pandas 0.18.1 if we don't infer
+        start = to_datetime(start, infer_datetime_format=True)
 
     if is_number(end):
         end = dt.datetime(end, 1, 1)
-    end = to_datetime(end)
+    else:
+        # it may fail in pandas 0.18.1 if we don't infer
+        end = to_datetime(end, infer_datetime_format=True)
 
     if start is None:
         start = dt.datetime(2010, 1, 1)
