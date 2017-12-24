@@ -17,7 +17,6 @@ from pandas_datareader._utils import (RemoteDataError, SymbolWarning,
 class _BaseReader(object):
 
     """
-
     Parameters
     ----------
         sym : string with a single Single stock symbol (ticker).
