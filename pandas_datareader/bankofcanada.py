@@ -1,10 +1,11 @@
 from __future__ import unicode_literals
 
 import pandas.compat as compat
+
 from pandas_datareader.base import _BaseReader
 
-class BankOfCanadaReader(_BaseReader):
 
+class BankOfCanadaReader(_BaseReader):
     """Get data for the given name from Bank of Canada."""
 
     _URL = 'http://www.bankofcanada.ca/valet/observations'
