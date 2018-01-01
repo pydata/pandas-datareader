@@ -26,14 +26,14 @@ Currently the following sources are supported:
     - :ref:`Yahoo! Finance<remote_data.yahoo>`
     - :ref:`Google Finance<remote_data.google>`
     - :ref:`Enigma<remote_data.enigma>`
+    - :ref:`Quandl<remote_data.quandl>`
     - :ref:`St.Louis FED (FRED)<remote_data.fred>`
     - :ref:`Kenneth French's data library<remote_data.ff>`
     - :ref:`World Bank<remote_data.wb>`
     - :ref:`OECD<remote_data.oecd>`
     - :ref:`Eurostat<remote_data.eurostat>`
     - :ref:`Thrift Savings Plan<remote_data.tsp>`
-    - :ref:`Oanda currency historical rate<remote_data.oanda_curr_hist>`
-    - :ref:`Nasdaq Trader symbol definitions<remote_data.nasdaq_symbols`
+    - :ref:`Nasdaq Trader symbol definitions<remote_data.nasdaq_symbols>`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
 
@@ -79,7 +79,7 @@ Historical dividends from Yahoo! Finance.
 .. _remote_data.yahoo_quotes:
 
 Yahoo! Finance Quotes
-----------------------
+---------------------
 ***Experimental***
 
 The YahooQuotesReader class allows to get quotes data from Yahoo! Finance.
@@ -165,16 +165,18 @@ Google Finance
 .. _remote_data.google_quotes:
 
 Google Finance Quotes
-----------------------
+---------------------
 ***Experimental***
 
 The GoogleQuotesReader class allows to get quotes data from Google Finance.
 
-.. ipython:: python
+OFFLINE AS OF OCT 1, 2017
 
-    import pandas_datareader.data as web
-    q = web.get_quote_google(['AMZN', 'GOOG'])
-    q
+.. .. ipython:: python
+
+..     import pandas_datareader.data as web
+..     q = web.get_quote_google(['AMZN', 'GOOG'])
+..     q
 
 .. _remote_data.google_options:
 
@@ -202,16 +204,48 @@ Available expiry dates can be accessed from the ``expiry_dates`` property.
 Enigma
 ======
 
-Access datasets from `Enigma <https://app.enigma.io>`__,
-the world's largest repository of structured public data.
+Access datasets from `Enigma <https://public.enigma.com>`__,
+the world's largest repository of structured public data. Note that the Enigma
+URL has changed from `app.enigma.io <https://app.enigma.io>`__ as of release 
+``0.6.0``, as the old API deprecated.
+
+Datasets are unique identified by the ``uuid4`` at the end of a dataset's web address.
+For example, the following code downloads from  `USDA Food Recalls 1996 Data <https://public.enigma.com/datasets/292129b0-1275-44c8-a6a3-2a0881f24fe1>`__.
 
 .. ipython:: python
 
     import os
     import pandas_datareader as pdr
 
-    df = pdr.get_data_enigma('enigma.trade.ams.toxic.2015', os.getenv('ENIGMA_API_KEY'))
+    df = pdr.get_data_enigma('292129b0-1275-44c8-a6a3-2a0881f24fe1', os.getenv('ENIGMA_API_KEY'))
     df.columns
+
+.. _remote_data.quandl:
+
+Quandl
+======
+
+Daily financial data (prices of stocks, ETFs etc.) from
+`Quandl <https://www.quandl.com/>`__.
+The symbol names consist of two parts: DB name and symbol name.
+DB names can be all the
+`free ones listed on the Quandl website <https://blog.quandl.com/free-data-on-quandl>__.
+Symbol names vary with DB name; for WIKI (US stocks), they are the common
+ticker symbols, in some other cases (such as FSE) they can be a bit strange.
+Some sources are also mapped to suitable ISO country codes in the dot suffix
+style shown above, currently available for
+`BE, CN, DE, FR, IN, JP, NL, PT, UK, US <https://www.quandl.com/search?query=>`__.
+
+As of June 2017, each DB has a different data schema,
+the coverage in terms of time range is sometimes surprisingly small, and
+the data quality is not always good.
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+    symbol = 'WIKI/AAPL'  # or 'AAPL.US'
+    df = web.DataReader(symbol, 'quandl', "2015-01-01", "2015-01-05")
+    df.loc['2015-01-02']
 
 .. _remote_data.fred:
 
@@ -453,7 +487,7 @@ Eurostat
 
 `Eurostat <http://ec.europa.eu/eurostat/>`__ are avaliable via ``DataReader``.
 
-Get ` Rail accidents by type of accident (ERA data) <http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=tran_sf_railac&lang=en>`_ data. The result will be a ``DataFrame`` which has ``DatetimeIndex`` as index and ``MultiIndex`` of attributes or countries as column. The target URL is:
+Get `Rail accidents by type of accident (ERA data) <http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=tran_sf_railac&lang=en>`_ data. The result will be a ``DataFrame`` which has ``DatetimeIndex`` as index and ``MultiIndex`` of attributes or countries as column. The target URL is:
 
 * http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=tran_sf_railac&lang=en
 
@@ -471,6 +505,9 @@ You can specify dataset ID "tran_sf_railac" to get corresponding data via ``Data
 EDGAR Index
 ===========
 
+** As of December 31st, the SEC disabled access via FTP. EDGAR support
+currently broken until re-write to use HTTPS. **
+
 Company filing index from EDGAR (SEC).
 
 The daily indices get large quickly (i.e. the set of daily indices from 1994
@@ -480,17 +517,17 @@ If the FTP server starts refusing your connections, you should be able to
 reconnect after waiting a few minutes.
 
 
-.. ipython:: python
+.. .. ipython:: python
 
-    import pandas_datareader.data as web
-    ed = web.DataReader('full', 'edgar-index')
-    ed[:5]
+..     import pandas_datareader.data as web
+..     ed = web.DataReader('full', 'edgar-index')
+..     ed[:5]
 
-.. ipython:: python
+.. .. ipython:: python
 
-    import pandas_datareader.data as web
-    ed = web.DataReader('daily', 'edgar-index', '1998-05-18', '1998-05-18')
-    ed[:5]
+..     import pandas_datareader.data as web
+..     ed = web.DataReader('daily', 'edgar-index', '1998-05-18', '1998-05-18')
+..     ed[:5]
 
 .. _remote_data.tsp:
 
@@ -506,51 +543,15 @@ Download mutual fund index prices for the TSP.
     tspreader.read()
 
 
-.. _remote_data.oanda_curr_hist
-
-Oanda currency historical rate
-==============================
-
-Download currency historical rate from `Oanda <https://www.oanda.com/>`__.
-
-.. code-block:: python
-
-    In [1]: from pandas_datareader.oanda import get_oanda_currency_historical_rates
-    In [2]: start, end = "2016-01-01", "2016-06-01"
-    In [3]: quote_currency = "USD"
-    In [4]: base_currency = ["EUR", "GBP", "JPY"]
-    In [5]: df_rates = get_oanda_currency_historical_rates(
-                start, end,
-                quote_currency=quote_currency,
-                base_currency=base_currency
-            )
-    In [6]: print(df_rates)
-
-                   EUR/USD   GBP/USD   JPY/USD
-      Date
-      2016-01-01  1.087090  1.473989  0.008320
-      2016-01-02  1.087090  1.473989  0.008320
-      2016-01-03  1.087090  1.473989  0.008320
-      2016-01-04  1.086730  1.473481  0.008370
-      2016-01-05  1.078760  1.469430  0.008388
-      ...              ...       ...       ...
-      2016-05-28  1.111669  1.462630  0.009072
-      2016-05-29  1.111669  1.462630  0.009072
-      2016-05-30  1.112479  1.461999  0.009006
-      2016-05-31  1.114269  1.461021  0.009010
-      2016-06-01  1.115170  1.445410  0.009095
-
-      [153 rows x 3 columns]
-
-.. _remote_data.nasdaq_symbols
+.. _remote_data.nasdaq_symbols:
 
 Nasdaq Trader Symbol Definitions
-==============================
+================================
 
-Download the latest symbols from `Nasdaq<ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqtraded.txt/>`__.
+Download the latest symbols from `Nasdaq <ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqtraded.txt>`_.
 
 Note that Nasdaq updates this file daily, and historical versions are not
-available. More information on the `field<http://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs/>` definitions.
+available. More information on the `field <http://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs/>`_ definitions.
 
 .. code-block:: python
 
@@ -569,5 +570,3 @@ available. More information on the `field<http://www.nasdaqtrader.com/trader.asp
         NASDAQ Symbol                                                     IBM
         NextShares                                                      False
         Name: IBM, dtype: object
-
-

@@ -1,14 +1,14 @@
-import nose
-
 from datetime import datetime
+from pandas_datareader._utils import RemoteDataError
+
+import pytest
 import numpy as np
 import pandas as pd
 import pandas.util.testing as tm
 import pandas_datareader.data as web
-from pandas_datareader._utils import RemoteDataError
 
 
-class TestOECD(tm.TestCase):
+class TestOECD(object):
 
     def test_get_un_den(self):
         df = web.DataReader('UN_DEN', 'oecd', start=datetime(1960, 1, 1),
@@ -82,13 +82,8 @@ class TestOECD(tm.TestCase):
                                    expected)
 
     def test_oecd_invalid_symbol(self):
-        with tm.assertRaises(RemoteDataError):
+        with pytest.raises(RemoteDataError):
             web.DataReader('INVALID_KEY', 'oecd')
 
-        with tm.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             web.DataReader(1234, 'oecd')
-
-
-if __name__ == '__main__':
-    nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
-                   exit=False)

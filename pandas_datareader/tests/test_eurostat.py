@@ -1,21 +1,12 @@
-import nose
-import sys
-
 import numpy as np
 import pandas as pd
 import pandas.util.testing as tm
 import pandas_datareader.data as web
 
-from pandas_datareader._utils import PANDAS_0170
+from pandas_datareader.compat import assert_raises_regex
 
 
-class TestEurostat(tm.TestCase):
-
-    def setUp(self):
-
-        if sys.version_info < (2, 7, 0):
-            raise nose.SkipTest("Doesn't support Python 2.6 because of"
-                                "ElementTree incompat")
+class TestEurostat(object):
 
     def test_get_cdh_e_fos(self):
         # Employed doctorate holders in non managerial and non professional
@@ -24,8 +15,8 @@ class TestEurostat(tm.TestCase):
                             start=pd.Timestamp('2005-01-01'),
                             end=pd.Timestamp('2010-01-01'))
 
-        self.assertTrue(isinstance(df, pd.DataFrame))
-        self.assertEqual(df.shape, (2, 336))
+        assert isinstance(df, pd.DataFrame)
+        assert df.shape == (2, 336)
 
         df = df['Percentage']['Total']['Natural sciences']
         df = df[['Norway', 'Poland', 'Portugal', 'Russia']]
@@ -51,7 +42,8 @@ class TestEurostat(tm.TestCase):
                             name='TIME_PERIOD')
         ne_name = ('Index, 2010=100',
                    'Building permits - m2 of useful floor area',
-                   'Unadjusted data (i.e. neither seasonally adjusted nor calendar adjusted data)',
+                   'Unadjusted data (i.e. neither seasonally adjusted nor '
+                   'calendar adjusted data)',
                    'Non-residential buildings, except office buildings',
                    'Netherlands', 'Annual')
         ne_values = [200.0, 186.5, 127.3, 130.7, 143.3, 147.8, 176.7,
@@ -60,7 +52,8 @@ class TestEurostat(tm.TestCase):
 
         uk_name = ('Index, 2010=100',
                    'Building permits - m2 of useful floor area',
-                   'Unadjusted data (i.e. neither seasonally adjusted nor calendar adjusted data)',
+                   'Unadjusted data (i.e. neither seasonally adjusted nor '
+                   'calendar adjusted data)',
                    'Non-residential buildings, except office buildings',
                    'United Kingdom', 'Annual')
         uk_values = [112.5, 113.3, 110.2, 112.1, 119.1, 112.7, 113.1,
@@ -72,10 +65,7 @@ class TestEurostat(tm.TestCase):
             tm.assert_series_equal(result, expected)
 
     def test_get_nrg_pc_202(self):
-        # GH 149
-
-        if not PANDAS_0170:
-            raise nose.SkipTest("skip because of comparison failure")
+        # see gh-149
 
         df = web.DataReader('nrg_pc_202', 'eurostat',
                             start=pd.Timestamp('2010-01-01'),
@@ -97,14 +87,9 @@ class TestEurostat(tm.TestCase):
         tm.assert_series_equal(df[name], exp)
 
     def test_get_prc_hicp_manr_exceeds_limit(self):
-        # GH 149
+        # see gh-149
         msg = 'Query size exceeds maximum limit'
-        with tm.assertRaisesRegexp(ValueError, msg):
+        with assert_raises_regex(ValueError, msg):
             web.DataReader('prc_hicp_manr', 'eurostat',
                            start=pd.Timestamp('2000-01-01'),
                            end=pd.Timestamp('2013-01-01'))
-
-
-if __name__ == '__main__':
-    nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
-                   exit=False)

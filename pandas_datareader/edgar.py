@@ -3,16 +3,13 @@ import datetime as dt
 from ftplib import FTP
 import gzip
 
-from pandas import read_csv
-from pandas import DataFrame
-from pandas import to_datetime
-from pandas.io.common import ZipFile
+from zipfile import ZipFile
 from pandas.compat import StringIO
-from pandas.core.common import is_number
+from pandas import read_csv, DataFrame, to_datetime
 
 from pandas_datareader.base import _BaseReader
-from pandas_datareader.compat import BytesIO
 from pandas_datareader._utils import RemoteDataError
+from pandas_datareader.compat import BytesIO, is_number
 
 
 _URL_FULL = 'edgar/full-index/master.zip'
@@ -153,6 +150,12 @@ class EdgarIndexReader(_BaseReader):
         return path
 
     def read(self):
+        try:
+            return self._read()
+        finally:
+            self.close()
+
+    def _read(self):
         try:
             self._sec_ftp_session = FTP(_SEC_FTP, timeout=self.timeout)
             self._sec_ftp_session.login()

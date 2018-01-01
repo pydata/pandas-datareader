@@ -18,7 +18,7 @@ def read_jsdmx(path_or_buf):
 
     Parameters
     ----------
-    filepath_or_buffer : a valid SDMX-JSON string or file-like
+    path_or_buf : a valid SDMX-JSON string or file-like
         http://sdmx.org/wp-content/uploads/2014/07/sdmx-json-data-message.pdf
 
     Returns
@@ -58,7 +58,8 @@ def _get_indexer(index):
     if index.nlevels == 1:
         return [str(i) for i in compat.range(len(index))]
     else:
-        it = itertools.product(*[compat.range(len(level)) for level in index.levels])
+        it = itertools.product(*[compat.range(
+            len(level)) for level in index.levels])
         return [':'.join(map(str, i)) for i in it]
 
 

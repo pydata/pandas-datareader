@@ -1,53 +1,50 @@
 import os
+import pytest
 
 from requests.exceptions import HTTPError
-
-import nose
-import pandas.util.testing as tm
-from pandas_datareader.tests._utils import _skip_if_no_lxml
-
-import pandas_datareader.data as web
 import pandas_datareader as pdr
+import pandas_datareader.data as web
 
 TEST_API_KEY = os.getenv('ENIGMA_API_KEY')
 
 
-class TestEnigma(tm.TestCase):
+@pytest.mark.skipif(TEST_API_KEY is None, reason="no enigma_api_key")
+class TestEnigma(object):
+
+    @property
+    def dataset_id(self):
+        """
+        USDA Food Recall Archive - 1996
+        Selected for being a relatively small dataset.
+        https://public.enigma.com/datasets/292129b0-1275-44c8-a6a3-2a0881f24fe1
+        """
+        return "292129b0-1275-44c8-a6a3-2a0881f24fe1"
 
     @classmethod
-    def setUpClass(cls):
-        super(TestEnigma, cls).setUpClass()
-        _skip_if_no_lxml()
+    def setup_class(cls):
+        pytest.importorskip("lxml")
 
     def test_enigma_datareader(self):
         try:
-            df = web.DataReader('enigma.inspections.restaurants.fl',
+            df = web.DataReader(self.dataset_id,
                                 'enigma', access_key=TEST_API_KEY)
-            self.assertTrue('serialid' in df.columns)
-        except HTTPError as e:  # pragma: no cover
-            raise nose.SkipTest(e)
+            assert 'case_number' in df.columns
+        except HTTPError as e:
+            pytest.skip(e)
 
     def test_enigma_get_data_enigma(self):
         try:
-            df = pdr.get_data_enigma(
-                'enigma.inspections.restaurants.fl', TEST_API_KEY)
-            self.assertTrue('serialid' in df.columns)
-        except HTTPError as e:  # pragma: no cover
-            raise nose.SkipTest(e)
+            df = pdr.get_data_enigma(self.dataset_id, TEST_API_KEY)
+            assert 'case_number' in df.columns
+        except HTTPError as e:
+            pytest.skip(e)
 
     def test_bad_key(self):
-        with tm.assertRaises(HTTPError):
-            web.DataReader('enigma.inspections.restaurants.fl',
-                           'enigma',
-                           access_key=TEST_API_KEY + 'xxx')
+        with pytest.raises(HTTPError):
+            web.DataReader(self.dataset_id,
+                           'enigma', access_key=TEST_API_KEY + 'xxx')
 
-    def test_bad_url(self):
-        with tm.assertRaises(HTTPError):
-            web.DataReader('enigma.inspections.restaurants.fllzzy',
-                           'enigma',
-                           access_key=TEST_API_KEY)
-
-
-if __name__ == '__main__':
-    nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
-                   exit=False)
+    def test_bad_dataset_id(self):
+        with pytest.raises(HTTPError):
+            web.DataReader('zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzz',
+                           'enigma', access_key=TEST_API_KEY)

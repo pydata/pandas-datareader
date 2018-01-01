@@ -13,9 +13,6 @@ from pandas.compat import StringIO, bytes_to_str
 from pandas_datareader._utils import (RemoteDataError, SymbolWarning,
                                       _sanitize_dates, _init_session)
 
-import requests_ftp
-requests_ftp.monkeypatch_session()
-
 
 class _BaseReader(object):
 
@@ -53,7 +50,12 @@ class _BaseReader(object):
         self.retry_count = retry_count
         self.pause = pause
         self.timeout = timeout
+        self.pause_multiplier = 1
         self.session = _init_session(session, retry_count)
+
+    def close(self):
+        """ close my session """
+        self.session.close()
 
     @property
     def url(self):
@@ -66,7 +68,10 @@ class _BaseReader(object):
 
     def read(self):
         """ read data """
-        return self._read_one_data(self.url, self.params)
+        try:
+            return self._read_one_data(self.url, self.params)
+        finally:
+            self.close()
 
     def _read_one_data(self, url, params):
         """ read one data from specified URL """
@@ -85,6 +90,10 @@ class _BaseReader(object):
         response = self._get_response(url, params=params)
         text = self._sanitize_response(response)
         out = StringIO()
+        if len(text) == 0:
+            service = self.__class__.__name__
+            raise IOError("{} request returned no data; check URL for invalid "
+                          "inputs: {}".format(service, self.url))
         if isinstance(text, compat.binary_type):
             out.write(bytes_to_str(text))
         else:
@@ -99,7 +108,7 @@ class _BaseReader(object):
         """
         return response.content
 
-    def _get_response(self, url, params=None):
+    def _get_response(self, url, params=None, headers=None):
         """ send raw HTTP request to get requests.Response from the specified url
         Parameters
         ----------
@@ -110,24 +119,40 @@ class _BaseReader(object):
         """
 
         # initial attempt + retry
+        pause = self.pause
         for i in range(self.retry_count + 1):
-            response = self.session.get(url, params=params)
+            response = self.session.get(url,
+                                        params=params,
+                                        headers=headers)
             if response.status_code == requests.codes.ok:
                 return response
-            time.sleep(self.pause)
+
+            time.sleep(pause)
+
+            # Increase time between subsequent requests, per subclass.
+            pause *= self.pause_multiplier
+            # Get a new breadcrumb if necessary, in case ours is invalidated
+            if isinstance(params, list) and 'crumb' in params:
+                params['crumb'] = self._get_crumb(self.retry_count)
         if params is not None and len(params) > 0:
             url = url + "?" + urlencode(params)
         raise RemoteDataError('Unable to read URL: {0}'.format(url))
 
+    def _get_crumb(self, *args):
+        """ To be implemented by subclass """
+        raise NotImplementedError("Subclass has not implemented method.")
+
     def _read_lines(self, out):
-        rs = read_csv(out, index_col=0, parse_dates=True, na_values='-')[::-1]
+        rs = read_csv(out, index_col=0, parse_dates=True,
+                      na_values=('-', 'null'))[::-1]
         # Yahoo! Finance sometimes does this awesome thing where they
         # return 2 rows for the most recent business day
         if len(rs) > 2 and rs.index[-1] == rs.index[-2]:  # pragma: no cover
             rs = rs[:-1]
         # Get rid of unicode characters in index name.
         try:
-            rs.index.name = rs.index.name.decode('unicode_escape').encode('ascii', 'ignore')
+            rs.index.name = rs.index.name.decode(
+                'unicode_escape').encode('ascii', 'ignore')
         except AttributeError:
             # Python 3 string has no decode method.
             rs.index.name = rs.index.name.encode('ascii', 'ignore').decode()
@@ -152,7 +177,8 @@ class _DailyBaseReader(_BaseReader):
         """ read data """
         # If a single symbol, (e.g., 'GOOG')
         if isinstance(self.symbols, (compat.string_types, int)):
-            df = self._read_one_data(self.url, params=self._get_params(self.symbols))
+            df = self._read_one_data(self.url,
+                                     params=self._get_params(self.symbols))
         # Or multiple symbols, (e.g., ['GOOG', 'AAPL', 'MSFT'])
         elif isinstance(self.symbols, DataFrame):
             df = self._dl_mult_symbols(self.symbols.index)
@@ -167,7 +193,8 @@ class _DailyBaseReader(_BaseReader):
         for sym_group in _in_chunks(symbols, self.chunksize):
             for sym in sym_group:
                 try:
-                    stocks[sym] = self._read_one_data(self.url, self._get_params(sym))
+                    stocks[sym] = self._read_one_data(self.url,
+                                                      self._get_params(sym))
                     passed.append(sym)
                 except IOError:
                     msg = 'Failed to read symbol: {0!r}, replacing with NaN.'

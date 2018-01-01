@@ -50,7 +50,7 @@ or
 Usage
 -----
 
-Starting in 0.19.0, pandas will no longer support ``pandas.io.data`` or ``pandas.io.wb``, so
+Starting in 0.19.0, pandas no longer supports ``pandas.io.data`` or ``pandas.io.wb``, so
 you must replace your imports from ``pandas.io`` with those from ``pandas_datareader``:
 
 .. code-block:: python

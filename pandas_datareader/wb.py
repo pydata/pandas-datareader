@@ -7,7 +7,6 @@ import pandas as pd
 import numpy as np
 
 from pandas_datareader.base import _BaseReader
-from pandas_datareader._utils import PANDAS_0170
 
 # This list of country codes was pulled from wikipedia during October 2014.
 # While some exceptions do exist, it is the best proxy for countries supported
@@ -142,7 +141,8 @@ class WorldBankReader(_BaseReader):
             if errors == 'raise':
                 raise ValueError("Invalid Country Code(s): %s" % tmp)
             if errors == 'warn':
-                warnings.warn('Non-standard ISO country codes: %s' % tmp, UserWarning)
+                warnings.warn('Non-standard ISO '
+                              'country codes: %s' % tmp, UserWarning)
 
         self.countries = countries
         self.errors = errors
@@ -150,7 +150,8 @@ class WorldBankReader(_BaseReader):
     @property
     def url(self):
         countries = ';'.join(self.countries)
-        return "http://api.worldbank.org/countries/" + countries + "/indicators/"
+        return ("http://api.worldbank.org/countries/" +
+                countries + "/indicators/")
 
     @property
     def params(self):
@@ -158,6 +159,12 @@ class WorldBankReader(_BaseReader):
                 'per_page': 25000, 'format': 'json'}
 
     def read(self):
+        try:
+            return self._read()
+        finally:
+            self.close()
+
+    def _read(self):
         data = []
         for indicator in self.symbols:
             # Build URL for api call
@@ -178,11 +185,8 @@ class WorldBankReader(_BaseReader):
             out = reduce(lambda x, y: x.merge(y, how='outer'), data)
             out = out.drop('iso_code', axis=1)
             out = out.set_index(['country', 'year'])
-            if PANDAS_0170:
-                out = out.apply(pd.to_numeric, errors='ignore')
-            else:
-                # deprecated in 0.17.0
-                out = out.convert_objects(convert_numeric=True)
+            out = out.apply(pd.to_numeric, errors='ignore')
+
             return out
         else:
             msg = "No indicators returned data."
@@ -226,7 +230,8 @@ class WorldBankReader(_BaseReader):
         """Query information about countries
 
         Provides information such as:
-            country code, region, income level, capital city, latitude and longitude
+            country code, region, income level,
+            capital city, latitude, and longitude
         """
         url = 'http://api.worldbank.org/countries/?per_page=1000&format=json'
 
@@ -238,8 +243,10 @@ class WorldBankReader(_BaseReader):
         data.incomeLevel = [x['value'] for x in data.incomeLevel]
         data.lendingType = [x['value'] for x in data.lendingType]
         data.region = [x['value'] for x in data.region]
-        data.latitude = [float(x) if x != "" else np.nan for x in data.latitude]
-        data.longitude = [float(x) if x != "" else np.nan for x in data.longitude]
+        data.latitude = [float(x) if x != "" else np.nan
+                         for x in data.latitude]
+        data.longitude = [float(x) if x != "" else np.nan
+                          for x in data.longitude]
         data = data.rename(columns={'id': 'iso3c', 'iso2Code': 'iso2c'})
         return data
 
@@ -275,11 +282,9 @@ class WorldBankReader(_BaseReader):
 
         data.topics = data.topics.apply(get_list_of_values)
         data.topics = data.topics.apply(lambda x: ' ; '.join(x))
-        # Clean outpu
-        if PANDAS_0170:
-            data = data.sort_values(by='id')
-        else:
-            data = data.sort(columns='id')
+
+        # Clean output
+        data = data.sort_values(by='id')
         data.index = pd.Index(lrange(data.shape[0]))
 
         # cache
@@ -322,7 +327,7 @@ class WorldBankReader(_BaseReader):
         indicators = self.get_indicators()
         data = indicators[field]
         idx = data.str.contains(string, case=case)
-        out = indicators.ix[idx].dropna()
+        out = indicators.loc[idx].dropna()
         return out
 
 
@@ -375,10 +380,11 @@ def download(country=None, indicator=None, start=2003, end=2005,
 
 
 def get_countries(**kwargs):
-    '''Query information about countries
+    """Query information about countries
 
     Provides information such as:
-        country code, region, income level, capital city, latitude and longitude
+        country code, region, income level,
+        capital city, latitude, and longitude
 
     Parameters
     ----------
@@ -386,7 +392,7 @@ def get_countries(**kwargs):
     kwargs:
         keywords passed to WorldBankReader
 
-    '''
+    """
     return WorldBankReader(**kwargs).get_countries()
 
 
@@ -440,4 +446,6 @@ def search(string='gdp.*capi', field='name', case=False, **kwargs):
     sourceNote:
     topics:
     """
-    return WorldBankReader(**kwargs).search(string=string, field=field, case=case)
+
+    return WorldBankReader(**kwargs).search(string=string, field=field,
+                                            case=case)

@@ -2,13 +2,35 @@ sudo: false
 
 language: python
 
-env:
-  - PYTHON=2.7 PANDAS=0.16.2
-  - PYTHON=2.7 PANDAS=0.17.1
-  - PYTHON=2.7 PANDAS=0.19.0
-  - PYTHON=3.4 PANDAS=0.17.1
-  - PYTHON=3.4 PANDAS=0.18.1
-  - PYTHON=3.5 PANDAS=0.19.0
+matrix:
+  fast_finish: true
+  include:
+  - dist: trusty
+    env:
+      - PYTHON=2.7 PANDAS=0.17.1
+  - dist: trusty
+    env:
+      - PYTHON=2.7 PANDAS=0.19.2
+  - dist: trusty
+    env:
+      - PYTHON=3.5 PANDAS=0.17.1
+  - dist: trusty
+    env:
+      - PYTHON=3.5 PANDAS=0.18.1
+  - dist: trusty
+    env:
+      - PYTHON=3.6 PANDAS=0.19.2
+  - dist: trusty
+    env:
+      - PYTHON=3.6 PANDAS=0.20.2
+  # In allow failures
+  - dist: trusty
+    env:
+      - PYTHON=3.6 PANDAS="MASTER"
+  allow_failures:
+    - dist: trusty
+      env:
+        - PYTHON=3.6 PANDAS="MASTER"
 
 install:
   - pip install -qq flake8
@@ -29,22 +51,25 @@ install:
   - conda update -q conda
   # Useful for debugging any issues with conda
   - conda info -a
-  - conda create -q -n test-environment python=$PYTHON pandas=$PANDAS nose coverage setuptools html5lib lxml
+  - conda create -q -n test-environment python=$PYTHON coverage setuptools html5lib lxml pytest pytest-cov wrapt
   - source activate test-environment
-  - pip install beautifulsoup4
-  - if [[ "$PYTHON" == "2.6" ]]; then
-      pip install simplejson;
+  - if [[ "$PANDAS" == "MASTER" ]]; then
+      conda install numpy pytz python-dateutil;
+      PRE_WHEELS="https://7933911d6844c6c53a7d-47bd50c35cd79bd838daf386af554a83.ssl.cf2.rackcdn.com";
+      pip install --pre --upgrade --timeout=60 -f $PRE_WHEELS pandas;
+    else
+      conda install pandas=$PANDAS;
     fi
+  - pip install beautifulsoup4
   - pip install coveralls --quiet
   - conda list
   - python setup.py install
 
 script:
     - export ENIGMA_API_KEY=$ENIGMA_API_KEY
-    - nosetests -v --with-coverage --cover-package=pandas_datareader
+    - pytest -s -r xX --cov=pandas_datareader --cov-report xml:/tmp/cov-datareader.xml --junitxml=/tmp/datareader.xml
     - flake8 --version
-    - flake8 --ignore E501 pandas_datareader
+    - flake8 pandas_datareader
 
 after_success:
   - coveralls
-

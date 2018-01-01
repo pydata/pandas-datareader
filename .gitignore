@@ -6,3 +6,7 @@ build
 dist
 docs/build
 .tox/
+.cache/
+.idea
+*.iml
+*~

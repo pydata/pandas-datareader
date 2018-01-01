@@ -60,14 +60,15 @@ class Options(_OptionBaseReader):
 
         Parameters
         ----------
-        month : number, int, optional(default=None)
+        month : number, int, optional (default=None)
             The month the options expire. This should be either 1 or 2
             digits.
 
-        year : number, int, optional(default=None)
+        year : number, int, optional (default=None)
             The year the options expire. This should be a 4 digit int.
 
-        expiry : date-like or convertible or list-like object, optional (default=None)
+        expiry : date-like or convertible or
+                 list-like object, optional (default=None)
             The date (or dates) when options expire (defaults to current month)
 
         Returns
@@ -93,14 +94,16 @@ class Options(_OptionBaseReader):
 
         Notes
         -----
-        Note: Format of returned data frame is dependent on Google and may change.
+        Note: Format of returned data frame is dependent on
+              Google and may change.
 
             >>> goog = Options('goog', 'google')  # Create object
             >>> goog.get_options_data(expiry=goog.expiry_dates[0])  # Get data
 
         """
         if month is not None or year is not None:
-            raise NotImplementedError('month and year parameters cannot be used')
+            raise NotImplementedError('month and year parameters '
+                                      'cannot be used')
         if expiry is None:
             raise ValueError('expiry has to be set')
         d = self._load_data(expiry)
@@ -116,12 +119,14 @@ class Options(_OptionBaseReader):
         except AttributeError:
             # has to be a non-valid date, to trigger returning 'expirations'
             d = self._load_data(dt.datetime(2016, 1, 3))
-            self._expiry_dates = [dt.date(x['y'], x['m'], x['d']) for x in d['expirations']]
+            self._expiry_dates = [dt.date(x['y'], x['m'], x['d'])
+                                  for x in d['expirations']]
         return self._expiry_dates
 
     def _load_data(self, expiry):
-        url = self._OPTIONS_BASE_URL.format(sym=self.symbol, day=expiry.day,
-                                            month=expiry.month, year=expiry.year)
+        url = self._OPTIONS_BASE_URL.format(
+            sym=self.symbol, day=expiry.day,
+            month=expiry.month, year=expiry.year)
         s = re.sub(r'(\w+):', '"\\1":', self._read_url_as_StringIO(url).read())
         return json.loads(s)
 
@@ -136,7 +141,13 @@ class Options(_OptionBaseReader):
                    'Open_Int', 'Root', 'Underlying_Price', 'Quote_Time']
         indexes = ['Strike', 'Expiry', 'Type', 'Symbol']
         rows_list, index = self._process_rows(jd, now, expiry)
-        df = DataFrame(rows_list, columns=columns, index=MultiIndex.from_tuples(index, names=indexes))
+        df = DataFrame(rows_list, columns=columns,
+                       index=MultiIndex.from_tuples(index, names=indexes))
+
+        # Make dtype consistent, requires float64 as there can be NaNs
+        df['Vol'] = df['Vol'].astype('float64')
+        df['Open_Int'] = df['Open_Int'].astype('float64')
+
         return df.sort_index()
 
     def _process_rows(self, jd, now, expiry):
@@ -145,9 +156,12 @@ class Options(_OptionBaseReader):
         for key, typ in [['calls', 'call'], ['puts', 'put']]:
             for row in jd[key]:
                 d = {}
-                for dkey, rkey, ntype in [('Last', 'p', float), ('Bid', 'b', float),
-                                          ('Ask', 'a', float), ('Chg', 'c', float),
-                                          ('PctChg', 'cp', float), ('Vol', 'vol', int),
+                for dkey, rkey, ntype in [('Last', 'p', float),
+                                          ('Bid', 'b', float),
+                                          ('Ask', 'a', float),
+                                          ('Chg', 'c', float),
+                                          ('PctChg', 'cp', float),
+                                          ('Vol', 'vol', int),
                                           ('Open_Int', 'oi', int)]:
                     try:
                         d[dkey] = ntype(row[rkey].replace(',', ''))
@@ -157,5 +171,6 @@ class Options(_OptionBaseReader):
                 d['Underlying_Price'] = jd['underlying_price']
                 d['Quote_Time'] = now
                 rows_list.append(d)
-                index.append((float(row['strike'].replace(',', '')), expiry, typ, row['s']))
+                index.append((float(row['strike'].replace(',', '')),
+                              expiry, typ, row['s']))
         return rows_list, index

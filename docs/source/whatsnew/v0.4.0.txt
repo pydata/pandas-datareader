@@ -1,0 +1,28 @@
+.. _whatsnew_040:
+
+v0.4.0 (May 15, 2017)
+---------------------
+
+This is a major release from 0.3.0 and includes compat with pandas 0.20.1, and some backwards incompatible API changes.
+
+Highlights include:
+
+.. contents:: What's new in v0.4.0
+    :local:
+    :backlinks: none
+
+.. _whatsnew_040.enhancements:
+
+Enhancements
+~~~~~~~~~~~~
+
+- Compat with pandas 0.20.1 (:issue:`304`, :issue:`320`)
+- Switched test framework to use ``pytest`` (:issue:`310`, :issue:`312`)
+
+.. _whatsnew_040.api_breaking:
+
+Backwards incompatible API changes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Support has been dropped for Python 2.6 and 3.4 (:issue:`313`)
+- Support has been dropped for `pandas` versions before 0.17.0 (:issue:`313`)

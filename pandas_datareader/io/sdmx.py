@@ -8,7 +8,7 @@ import pandas as pd
 import pandas.compat as compat
 
 from pandas_datareader.io.util import _read_content
-from pandas_datareader._utils import HTTPError
+from pandas_datareader.compat import HTTPError
 
 
 _STRUCTURE = '{http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure}'
@@ -141,7 +141,8 @@ def _construct_index(keys, dsd=None):
             except KeyError:
                 values[name] = [value]
 
-    midx = pd.MultiIndex.from_arrays([values[name] for name in names], names=names)
+    midx = pd.MultiIndex.from_arrays([values[name] for name in names],
+                                     names=names)
     return midx
 
 
@@ -168,9 +169,11 @@ def _get_child(element, key):
     if len(elements) == 1:
         return elements[0]
     elif len(elements) == 0:
-        raise ValueError("Element {0} contains no {1}".format(element.tag, key))
+        raise ValueError("Element {0} contains "
+                         "no {1}".format(element.tag, key))
     else:
-        raise ValueError("Element {0} contains multiple {1}".format(element.tag, key))
+        raise ValueError("Element {0} contains "
+                         "multiple {1}".format(element.tag, key))
 
 
 _NAME_EN = ".//{0}Name[@{1}lang='en']".format(_COMMON, _XML)

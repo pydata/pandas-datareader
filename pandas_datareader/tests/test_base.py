@@ -1,33 +1,32 @@
-import nose
-import pandas.util.testing as tm
+import pytest
+import requests
+
 import pandas_datareader.base as base
 
 
-class TestBaseReader(tm.TestCase):
+class TestBaseReader(object):
+    def test_requests_not_monkey_patched(self):
+        assert not hasattr(requests.Session(), 'stor')
+
     def test_valid_retry_count(self):
-        with tm.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             base._BaseReader([], retry_count='stuff')
-        with tm.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             base._BaseReader([], retry_count=-1)
 
     def test_invalid_url(self):
-        with tm.assertRaises(NotImplementedError):
+        with pytest.raises(NotImplementedError):
             base._BaseReader([]).url
 
     def test_invalid_format(self):
-        with tm.assertRaises(NotImplementedError):
+        with pytest.raises(NotImplementedError):
             b = base._BaseReader([])
             b._format = 'IM_NOT_AN_IMPLEMENTED_TYPE'
             b._read_one_data('a', None)
 
 
-class TestDailyBaseReader(tm.TestCase):
+class TestDailyBaseReader(object):
     def test_get_params(self):
-        with tm.assertRaises(NotImplementedError):
+        with pytest.raises(NotImplementedError):
             b = base._DailyBaseReader()
             b._get_params()
-
-
-if __name__ == '__main__':
-    nose.runmodule(argv=[__file__, '-vvs', '-x', '--pdb', '--pdb-failure'],
-                   exit=False)

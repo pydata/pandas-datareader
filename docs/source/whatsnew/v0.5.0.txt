@@ -1,0 +1,40 @@
+.. _whatsnew_050:
+
+v0.5.0 (July 25, 2017)
+----------------------
+
+This is a major release from 0.4.0. We recommend that all users upgrade.
+
+Highlights include:
+
+- Compat with the new Yahoo iCharts API. Yahoo removed the older API, this release restores ability to download from Yahoo. (:issue:`315`)
+
+.. contents:: What's new in v0.5.0
+    :local:
+    :backlinks: none
+
+.. _whatsnew_050.enhancements:
+
+Enhancements
+~~~~~~~~~~~~
+
+- ``DataReader`` now supports Quandl, see :ref:`here<remote_data.quandl>` (:issue:`361`).
+
+.. _whatsnew_050.api_breaking:
+
+Backwards incompatible API changes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Removed Oanda as it became subscription only (:issue:`296`).
+
+.. _whatsnew_050.bug_fixes:
+
+Bug Fixes
+~~~~~~~~~
+
+- web sessions are closed properly at the end of use (:issue:`355`)
+- Handle commas in large price quotes (:issue:`345`)
+- Test suite fixes for test_get_options_data (:issue:`352`)
+- Test suite fixes for test_wdi_download (:issue:`350`)
+- avoid monkey patching requests.Session (:issue:`301`)
+- :func:`get_data_yahoo` now treats ``'null'`` strings as missing values  (:issue:`342`)
