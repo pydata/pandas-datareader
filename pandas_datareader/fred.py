@@ -17,7 +17,7 @@ class FredReader(_BaseReader):
 
     @property
     def url(self):
-        return "http://research.stlouisfed.org/fred2/series/"
+        return "https://fred.stlouisfed.org/graph/fredgraph.csv"
 
     def read(self):
         try:
@@ -31,8 +31,7 @@ class FredReader(_BaseReader):
         else:
             names = self.symbols
 
-        urls = [self.url + '%s' % n + '/downloaddata/%s' % n + '.csv' for
-                n in names]
+        urls = ["{}?id={}".format(self.url, n) for n in names]
 
         def fetch_data(url, name):
             resp = self._read_url_as_StringIO(url)
