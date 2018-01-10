@@ -201,7 +201,7 @@ class WorldBankReader(_BaseReader):
             try:
                 msg = msg['key'].split() + ["\n "] + msg['value'].split()
                 wb_err = ' '.join(msg)
-            except:
+            except Exception:
                 wb_err = ""
                 if 'key' in msg.keys():
                     wb_err = msg['key'] + "\n "
@@ -274,7 +274,7 @@ class WorldBankReader(_BaseReader):
         def get_value(x):
             try:
                 return x['value']
-            except:
+            except Exception:
                 return ''
 
         def get_list_of_values(x):

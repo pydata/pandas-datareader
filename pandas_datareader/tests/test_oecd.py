@@ -10,6 +10,7 @@ import pandas_datareader.data as web
 
 class TestOECD(object):
 
+    @pytest.mark.xfail(reason='Incorrect URL')
     def test_get_un_den(self):
         df = web.DataReader('UN_DEN', 'oecd', start=datetime(1960, 1, 1),
                             end=datetime(2012, 1, 1))
@@ -64,6 +65,7 @@ class TestOECD(object):
             expected = pd.Series(values, index=index, name=label)
             tm.assert_series_equal(df[label], expected)
 
+    @pytest.mark.xfail(reason='Incorrect URL')
     def test_get_tourism(self):
         df = web.DataReader('TOURISM_INBOUND', 'oecd',
                             start=datetime(2008, 1, 1),
