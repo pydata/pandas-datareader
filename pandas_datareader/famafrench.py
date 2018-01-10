@@ -1,9 +1,10 @@
-import tempfile
-import re
 import datetime as dt
+import re
+import tempfile
 from zipfile import ZipFile
-from pandas.compat import lmap, StringIO
+
 from pandas import read_csv, to_datetime
+from pandas.compat import lmap, StringIO
 
 from pandas_datareader.base import _BaseReader
 
@@ -32,13 +33,12 @@ def _parse_date_famafrench(x):
     x = x.strip()
     try:
         return dt.datetime.strptime(x, '%Y%m')
-    except:
+    except Exception:
         pass
     return to_datetime(x)
 
 
 class FamaFrenchReader(_BaseReader):
-
     """
     Get data for the given name from the Fama/French data library.
 
@@ -106,7 +106,7 @@ class FamaFrenchReader(_BaseReader):
                 idx_name = df.index.name  # hack for pandas 0.16.2
                 df = df.to_period(df.index.inferred_freq[:1])
                 df.index.name = idx_name
-            except:
+            except Exception:
                 pass
             df = df.truncate(self.start, self.end)
             datasets[i] = df
@@ -141,9 +141,9 @@ class FamaFrenchReader(_BaseReader):
         response = self.session.get(_URL + 'data_library.html')
         root = document_fromstring(response.content)
 
-        l = filter(lambda x: (x.startswith(_URL_PREFIX) and
-                              x.endswith(_URL_SUFFIX)),
-                   [e.attrib['href'] for e in root.findall('.//a')
-                    if 'href' in e.attrib])
+        datasets = [e.attrib['href'] for e in root.findall('.//a')
+                    if 'href' in e.attrib]
+        datasets = [ds for ds in datasets if ds.startswith(_URL_PREFIX)
+                    and ds.endswith(_URL_SUFFIX)]
 
-        return lmap(lambda x: x[len(_URL_PREFIX):-len(_URL_SUFFIX)], l)
+        return lmap(lambda x: x[len(_URL_PREFIX):-len(_URL_SUFFIX)], datasets)

@@ -4,7 +4,7 @@ import requests
 import numpy as np
 import pandas as pd
 from pandas import DataFrame
-
+from requests.exceptions import ConnectionError
 import pytest
 import pandas.util.testing as tm
 
@@ -13,6 +13,8 @@ from pandas_datareader.data import YahooDailyReader
 from pandas_datareader.yahoo.quotes import _yahoo_codes
 from pandas_datareader._utils import RemoteDataError
 from pandas_datareader._testing import skip_on_exception
+
+XFAIL_REASON = 'Known connection failures on Yahoo when testing!'
 
 
 class TestYahoo(object):
@@ -37,21 +39,34 @@ class TestYahoo(object):
             web.DataReader('NON EXISTENT TICKER', 'yahoo', start, end)
 
     def test_get_quote_series(self):
-        df = web.get_quote_yahoo(pd.Series(['GOOG', 'AAPL', 'GOOG']))
+        try:
+            df = web.get_quote_yahoo(pd.Series(['GOOG', 'AAPL', 'GOOG']))
+        except ConnectionError:
+            pytest.xfail(reason=XFAIL_REASON)
         tm.assert_series_equal(df.iloc[0], df.iloc[2])
 
     def test_get_quote_string(self):
         _yahoo_codes.update({'MarketCap': 'j1'})
-        df = web.get_quote_yahoo('GOOG')
+        try:
+            df = web.get_quote_yahoo('GOOG')
+        except ConnectionError:
+            pytest.xfail(reason=XFAIL_REASON)
+
         assert not pd.isnull(df['MarketCap'][0])
 
     def test_get_quote_stringlist(self):
-        df = web.get_quote_yahoo(['GOOG', 'AAPL', 'GOOG'])
+        try:
+            df = web.get_quote_yahoo(['GOOG', 'AAPL', 'GOOG'])
+        except ConnectionError:
+            pytest.xfail(reason=XFAIL_REASON)
         tm.assert_series_equal(df.iloc[0], df.iloc[2])
 
     def test_get_quote_comma_name(self):
         _yahoo_codes.update({'name': 'n'})
-        df = web.get_quote_yahoo(['RGLD'])
+        try:
+            df = web.get_quote_yahoo(['RGLD'])
+        except ConnectionError:
+            pytest.xfail(reason=XFAIL_REASON)
         del _yahoo_codes['name']
         assert df['name'][0] == 'Royal Gold, Inc.'
 

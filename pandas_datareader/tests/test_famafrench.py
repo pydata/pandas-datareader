@@ -23,8 +23,8 @@ class TestFamaFrench(object):
 
     def test_get_available_datasets(self):
         pytest.importorskip("lxml")
-        l = get_available_datasets()
-        assert len(l) > 100
+        avail = get_available_datasets()
+        assert len(avail) > 100
 
     def test_index(self):
         ff = web.DataReader('F-F_Research_Data_Factors', 'famafrench')
