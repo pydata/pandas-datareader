@@ -29,6 +29,13 @@ class GoogleDailyReader(_DailyBaseReader):
         requests.sessions.Session instance to be used
     """
 
+    def __init__(self, symbols=None, start=None, end=None, retry_count=3,
+             chunksize = 25, pause=0.35, session=None):
+        super(GoogleDailyReader, self).__init__(symbols=symbols,
+                                               start=start, end=end,
+                                               retry_count=retry_count,
+                                               pause=pause, session=session,
+                                               chunksize=chunksize)
     @property
     def url(self):
         return 'http://finance.google.com/finance/historical'
