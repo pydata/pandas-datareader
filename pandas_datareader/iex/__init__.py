@@ -1,7 +1,9 @@
 import json
+
 import pandas as pd
 from pandas.io.common import urlencode
 from pandas_datareader.base import _BaseReader
+
 
 # Data provided for free by IEX
 # Data is furnished in compliance with the guidelines promulgated in the IEX
@@ -11,7 +13,6 @@ from pandas_datareader.base import _BaseReader
 
 
 class IEX(_BaseReader):
-
     """
     Serves as the base class for all IEX API services.
     """
@@ -56,7 +57,7 @@ class IEX(_BaseReader):
         """
         try:
             content = json.loads(out.text)
-        except:
+        except Exception:
             raise TypeError("Failed to interpret response as JSON.")
 
         for key, string in content.items():
