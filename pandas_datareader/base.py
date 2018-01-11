@@ -94,7 +94,7 @@ class _BaseReader(object):
             raise IOError("{} request returned no data; check URL for invalid "
                           "inputs: {}".format(service, self.url))
         if isinstance(text, compat.binary_type):
-            out.write(bytes_to_str(text))
+            out.write(text.decode(encoding="latin_1"))
         else:
             out.write(text)
         out.seek(0)
