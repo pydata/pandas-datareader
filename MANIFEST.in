@@ -4,3 +4,5 @@ include pandas_datareader/*.py
 
 include pandas_datareader/tests/*.py
 include pandas_datareader/tests/data/*
+include versioneer.py
+include pandas_datareader/_version.py

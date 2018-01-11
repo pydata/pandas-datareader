@@ -1,22 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from ast import parse
-import os
 from setuptools import setup, find_packages
 
+import versioneer
 
 NAME = 'pandas-datareader'
-
-
-def version():
-    """Return version string."""
-    with open(os.path.join(os.path.abspath(os.path.dirname(__file__)),
-                           'pandas_datareader',
-                           '__init__.py')) as input_file:
-        for line in input_file:
-            if line.startswith('__version__'):
-                return parse(line).body[0].value.s
 
 
 def readme():
@@ -30,7 +19,8 @@ INSTALL_REQUIRES = (
 
 setup(
     name=NAME,
-    version=version(),
+    version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
     description="Data readers extracted from the pandas codebase,"
                 "should be compatible with recent pandas versions",
     long_description=readme(),
