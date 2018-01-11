@@ -4,25 +4,30 @@ Module contains tools for collecting data from various remote sources
 
 import warnings
 
-from pandas_datareader.google.daily import GoogleDailyReader
-from pandas_datareader.google.quotes import GoogleQuotesReader
-from pandas_datareader.google.options import Options as GoogleOptions
-
-from pandas_datareader.yahoo.daily import YahooDailyReader
-from pandas_datareader.yahoo.quotes import YahooQuotesReader
-from pandas_datareader.yahoo.actions import (YahooActionReader, YahooDivReader)
-from pandas_datareader.yahoo.components import _get_data as get_components_yahoo  # noqa
-from pandas_datareader.yahoo.options import Options as YahooOptions
-
-from pandas_datareader.eurostat import EurostatReader
-from pandas_datareader.fred import FredReader
-from pandas_datareader.famafrench import FamaFrenchReader
-from pandas_datareader.oecd import OECDReader
+from pandas_datareader.bankofcanada import BankOfCanadaReader
 from pandas_datareader.edgar import EdgarIndexReader
 from pandas_datareader.enigma import EnigmaReader
-from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
-from pandas_datareader.quandl import QuandlReader
+from pandas_datareader.eurostat import EurostatReader
+from pandas_datareader.famafrench import FamaFrenchReader
+from pandas_datareader.fred import FredReader
+from pandas_datareader.google.daily import GoogleDailyReader
+from pandas_datareader.google.options import Options as GoogleOptions
+from pandas_datareader.google.quotes import GoogleQuotesReader
 from pandas_datareader.moex import MoexReader
+from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
+from pandas_datareader.oecd import OECDReader
+from pandas_datareader.quandl import QuandlReader
+from pandas_datareader.yahoo.actions import (YahooActionReader, YahooDivReader)
+from pandas_datareader.yahoo.components import _get_data as \
+    get_components_yahoo
+from pandas_datareader.yahoo.daily import YahooDailyReader
+from pandas_datareader.yahoo.options import Options as YahooOptions
+from pandas_datareader.yahoo.quotes import YahooQuotesReader
+
+__all__ = ['get_components_yahoo', 'get_data_enigma', 'get_data_famafrench',
+           'get_data_fred', 'get_data_google', 'get_data_moex',
+           'get_data_quandl', 'get_data_yahoo', 'get_data_yahoo_actions',
+           'get_nasdaq_symbols', 'get_quote_google', 'get_quote_yahoo']
 
 
 def get_data_fred(*args, **kwargs):
@@ -140,6 +145,11 @@ def DataReader(name, data_source=None, start=None, end=None,
                                  chunksize=25,
                                  retry_count=retry_count, pause=pause,
                                  session=session).read()
+
+    elif data_source == "bankofcanada":
+        return BankOfCanadaReader(symbols=name, start=start, end=end,
+                                  retry_count=retry_count, pause=pause,
+                                  session=session).read()
 
     elif data_source == "enigma":
         return EnigmaReader(dataset_id=name, api_key=access_key).read()
