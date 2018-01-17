@@ -1,0 +1,8 @@
+lxml
+numpy
+pandas
+pytest
+requests
+requests_file
+requests_ftp
+wrapt

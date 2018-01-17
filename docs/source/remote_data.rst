@@ -17,13 +17,17 @@
 Remote Data Access
 ******************
 
+.. warning::
+
+  Yahoo! Finance has been immediately deprecated.  Yahoo! substantially
+  altered their API in late 2017 and the csv endpoint was retired.
+
 .. _remote_data.data_reader:
 
 Functions from :mod:`pandas_datareader.data` and :mod:`pandas_datareader.wb`
 extract data from various Internet sources into a pandas DataFrame.
 Currently the following sources are supported:
 
-    - :ref:`Yahoo! Finance<remote_data.yahoo>`
     - :ref:`Google Finance<remote_data.google>`
     - :ref:`Enigma<remote_data.enigma>`
     - :ref:`Quandl<remote_data.quandl>`
@@ -34,171 +38,31 @@ Currently the following sources are supported:
     - :ref:`Eurostat<remote_data.eurostat>`
     - :ref:`Thrift Savings Plan<remote_data.tsp>`
     - :ref:`Nasdaq Trader symbol definitions<remote_data.nasdaq_symbols>`
+    - :ref:`IEX<remote_data.iex>`
     - :ref:`Stooq<remote_data.stooq>`
+    - :ref:`MOEX<remote_data.moex>`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
-
-.. _remote_data.yahoo:
-
-Yahoo! Finance
-==============
-
-Historical stock prices from Yahoo! Finance.
-
-.. ipython:: python
-
-    import pandas_datareader.data as web
-    import datetime
-    start = datetime.datetime(2010, 1, 1)
-    end = datetime.datetime(2013, 1, 27)
-    f = web.DataReader("F", 'yahoo', start, end)
-    f.ix['2010-01-04']
-
-Historical corporate actions (Dividends and Stock Splits) with ex-dates from Yahoo! Finance.
-
-.. ipython:: python
-
-  import pandas_datareader.data as web
-  import datetime
-
-  start = datetime.datetime(2010, 1, 1)
-  end = datetime.datetime(2015, 5, 9)
-
-  web.DataReader('AAPL', 'yahoo-actions', start, end)
-
-Historical dividends from Yahoo! Finance.
-
-.. ipython:: python
-
-    import pandas_datareader.data as web
-    import datetime
-    start = datetime.datetime(2010, 1, 1)
-    end = datetime.datetime(2013, 1, 27)
-    f = web.DataReader("F", 'yahoo-dividends', start, end)
-    f
-
-.. _remote_data.yahoo_quotes:
-
-Yahoo! Finance Quotes
----------------------
-***Experimental***
-
-The YahooQuotesReader class allows to get quotes data from Yahoo! Finance.
-
-.. ipython:: python
-
-    import pandas_datareader.data as web
-    amzn = web.get_quote_yahoo('AMZN')
-    amzn
-
-.. _remote_data.yahoo_options:
-
-Yahoo! Finance Options
-----------------------
-***Experimental***
-
-The Options class allows the download of options data from Yahoo! Finance.
-
-The ``get_all_data`` method downloads and caches option data for all expiry months
-and provides a formatted ``DataFrame`` with a hierarchical index, so its easy to get
-to the specific option you want.
-
-.. ipython:: python
-
-      from pandas_datareader.data import Options
-      aapl = Options('aapl', 'yahoo')
-      data = aapl.get_all_data()
-      data.iloc[0:5, 0:5]
-
-      #Show the $100 strike puts at all expiry dates:
-      data.loc[(100, slice(None), 'put'),:].iloc[0:5, 0:5]
-
-      #Show the volume traded of $100 strike puts at all expiry dates:
-      data.loc[(100, slice(None), 'put'),'Vol'].head()
-
-If you don't want to download all the data, more specific requests can be made.
-
-.. ipython:: python
-
-      import datetime
-      expiry = datetime.date(2016, 1, 1)
-      data = aapl.get_call_data(expiry=expiry)
-      data.iloc[0:5:, 0:5]
-
-Note that if you call ``get_all_data`` first, this second call will happen much faster,
-as the data is cached.
-
-If a given expiry date is not available, data for the next available expiry will be
-returned (January 15, 2015 in the above example).
-
-Available expiry dates can be accessed from the ``expiry_dates`` property.
-
-.. ipython:: python
-
-      aapl.expiry_dates
-      data = aapl.get_call_data(expiry=aapl.expiry_dates[0])
-      data.iloc[0:5:, 0:5]
-
-A list-like object containing dates can also be passed to the expiry parameter,
-returning options data for all expiry dates in the list.
-
-.. ipython:: python
-
-      data = aapl.get_near_stock_price(expiry=aapl.expiry_dates[0:3])
-      data.iloc[0:5:, 0:5]
-
-The ``month`` and ``year`` parameters can be used to get all options data for a given month.
 
 .. _remote_data.google:
 
 Google Finance
 ==============
 
+.. warning::
+
+  Google'a API has become less reliable during 2017.  While the google
+  datareader often works as expected, it is not uncommon to experience
+  a range of errors when attempting to read data, especially in bulk.
+
 .. ipython:: python
 
     import pandas_datareader.data as web
     import datetime
     start = datetime.datetime(2010, 1, 1)
     end = datetime.datetime(2013, 1, 27)
-    f = web.DataReader("F", 'google', start, end)
+    f = web.DataReader('F', 'google', start, end)
     f.ix['2010-01-04']
-
-.. _remote_data.google_quotes:
-
-Google Finance Quotes
----------------------
-***Experimental***
-
-The GoogleQuotesReader class allows to get quotes data from Google Finance.
-
-OFFLINE AS OF OCT 1, 2017
-
-.. .. ipython:: python
-
-..     import pandas_datareader.data as web
-..     q = web.get_quote_google(['AMZN', 'GOOG'])
-..     q
-
-.. _remote_data.google_options:
-
-Google Finance Options
-----------------------
-***Experimental***
-
-The Options class allows the download of options data from Google Finance.
-
-The ``get_options_data`` method downloads options data for specified expiry date
-and provides a formatted ``DataFrame`` with a hierarchical index, so its easy to get
-to the specific option you want.
-
-Available expiry dates can be accessed from the ``expiry_dates`` property.
-
-.. ipython:: python
-
-      from pandas_datareader.data import Options
-      goog = Options('goog', 'google')
-      data = goog.get_options_data(expiry=goog.expiry_dates[0])
-      data.iloc[0:5, 0:5]
 
 .. _remote_data.enigma:
 
@@ -230,7 +94,7 @@ Daily financial data (prices of stocks, ETFs etc.) from
 `Quandl <https://www.quandl.com/>`__.
 The symbol names consist of two parts: DB name and symbol name.
 DB names can be all the
-`free ones listed on the Quandl website <https://blog.quandl.com/free-data-on-quandl>__.
+`free ones listed on the Quandl website <https://blog.quandl.com/free-data-on-quandl>`__.
 Symbol names vary with DB name; for WIKI (US stocks), they are the common
 ticker symbols, in some other cases (such as FSE) they can be a bit strange.
 Some sources are also mapped to suitable ISO country codes in the dot suffix
@@ -245,7 +109,7 @@ the data quality is not always good.
 
     import pandas_datareader.data as web
     symbol = 'WIKI/AAPL'  # or 'AAPL.US'
-    df = web.DataReader(symbol, 'quandl', "2015-01-01", "2015-01-05")
+    df = web.DataReader(symbol, 'quandl', '2015-01-01', '2015-01-05')
     df.loc['2015-01-02']
 
 .. _remote_data.fred:
@@ -259,11 +123,11 @@ FRED
     import datetime
     start = datetime.datetime(2010, 1, 1)
     end = datetime.datetime(2013, 1, 27)
-    gdp = web.DataReader("GDP", "fred", start, end)
+    gdp = web.DataReader('GDP', 'fred', start, end)
     gdp.ix['2013-01-01']
 
     # Multiple series:
-    inflation = web.DataReader(["CPIAUCSL", "CPILFESL"], "fred", start, end)
+    inflation = web.DataReader(['CPIAUCSL', 'CPILFESL'], 'fred', start, end)
     inflation.head()
 
 
@@ -281,9 +145,9 @@ The ``get_available_datasets`` function returns a list of all available datasets
     from pandas_datareader.famafrench import get_available_datasets
     import pandas_datareader.data as web
     len(get_available_datasets())
-    ds = web.DataReader("5_Industry_Portfolios", "famafrench")
+    ds = web.DataReader('5_Industry_Portfolios', 'famafrench')
     print(ds['DESCR'])
-    ds[4].ix['1926-07']
+    ds[4].head()
 
 .. _remote_data.wb:
 
@@ -306,14 +170,8 @@ constant dollars in North America, you would use the ``search`` function:
 .. code-block:: python
 
     In [1]: from pandas_datareader import wb
+    In [2]: mathces = wb.search('gdp.*capita.*const')
 
-    In [2]: wb.search('gdp.*capita.*const').iloc[:,:2]
-    Out[2]:
-                         id                                               name
-    3242            GDPPCKD             GDP per Capita, constant US$, millions
-    5143     NY.GDP.PCAP.KD                 GDP per capita (constant 2005 US$)
-    5145     NY.GDP.PCAP.KN                      GDP per capita (constant LCU)
-    5147  NY.GDP.PCAP.PP.KD  GDP per capita, PPP (constant 2005 internation...
 
 Then you would use the ``download`` function to acquire the data from the World
 Bank's servers:
@@ -388,7 +246,7 @@ populations in rich countries tend to use cellphones at a higher rate:
 
     In [17]: import numpy as np
     In [18]: import statsmodels.formula.api as smf
-    In [19]: mod = smf.ols("cellphone ~ np.log(gdp)", dat).fit()
+    In [19]: mod = smf.ols('cellphone ~ np.log(gdp)', dat).fit()
     In [20]: print(mod.summary())
                                 OLS Regression Results
     ==============================================================================
@@ -454,7 +312,7 @@ There are at least 3 kinds of indicators:
 
 Use the ``errors`` argument to control warnings and exceptions.  Setting
 errors to ignore or warn, won't stop failed responses.  (ie, 100% bad
-indicators, or a single "bad" (#4 above) country code).
+indicators, or a single 'bad' (#4 above) country code).
 
 See docstrings for more info.
 
@@ -463,11 +321,11 @@ See docstrings for more info.
 OECD
 ====
 
-`OECD Statistics <http://stats.oecd.org/>`__ are avaliable via ``DataReader``.
+`OECD Statistics <http://stats.oecd.org/>`__ are available via ``DataReader``.
 You have to specify OECD's data set code.
 
 To confirm data set code, access to ``each data -> Export -> SDMX Query``. Following
-example is to download "Trade Union Density" data which set code is "UN_DEN".
+example is to download 'Trade Union Density' data which set code is 'TUD'.
 
 
 .. ipython:: python
@@ -475,7 +333,7 @@ example is to download "Trade Union Density" data which set code is "UN_DEN".
     import pandas_datareader.data as web
     import datetime
 
-    df = web.DataReader('UN_DEN', 'oecd', end=datetime.datetime(2012, 1, 1))
+    df = web.DataReader('TUD', 'oecd', end=datetime.datetime(2012, 1, 1))
 
     df.columns
 
@@ -486,49 +344,20 @@ example is to download "Trade Union Density" data which set code is "UN_DEN".
 Eurostat
 ========
 
-`Eurostat <http://ec.europa.eu/eurostat/>`__ are avaliable via ``DataReader``.
+`Eurostat <http://ec.europa.eu/eurostat/>`__ are available via ``DataReader``.
 
 Get `Rail accidents by type of accident (ERA data) <http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=tran_sf_railac&lang=en>`_ data. The result will be a ``DataFrame`` which has ``DatetimeIndex`` as index and ``MultiIndex`` of attributes or countries as column. The target URL is:
 
 * http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=tran_sf_railac&lang=en
 
-You can specify dataset ID "tran_sf_railac" to get corresponding data via ``DataReader``.
+You can specify dataset ID 'tran_sf_railac' to get corresponding data via ``DataReader``.
 
 .. ipython:: python
 
     import pandas_datareader.data as web
 
-    df = web.DataReader("tran_sf_railac", 'eurostat')
+    df = web.DataReader('tran_sf_railac', 'eurostat')
     df
-
-.. _remote_data.edgar:
-
-EDGAR Index
-===========
-
-** As of December 31st, the SEC disabled access via FTP. EDGAR support
-currently broken until re-write to use HTTPS. **
-
-Company filing index from EDGAR (SEC).
-
-The daily indices get large quickly (i.e. the set of daily indices from 1994
-to 2015 is 1.5GB), and the FTP server will close the connection past some
-downloading threshold . In testing, pulling one year at a time works well.
-If the FTP server starts refusing your connections, you should be able to
-reconnect after waiting a few minutes.
-
-
-.. .. ipython:: python
-
-..     import pandas_datareader.data as web
-..     ed = web.DataReader('full', 'edgar-index')
-..     ed[:5]
-
-.. .. ipython:: python
-
-..     import pandas_datareader.data as web
-..     ed = web.DataReader('daily', 'edgar-index', '1998-05-18', '1998-05-18')
-..     ed[:5]
 
 .. _remote_data.tsp:
 
@@ -573,6 +402,20 @@ available. More information on the `field <http://www.nasdaqtrader.com/trader.as
         Name: IBM, dtype: object
 
 
+.. _remote_data.iex:
+
+The Investors Exchange (IEX) provides a wide range of data through an
+`API <https://iextrading.com/developer/docs/>`__. There are two interfaces
+to this API that are directly exposed: tops (`'iex-tops'`) and last
+(`'iex-lasts'`).  A third interface to the deep API is exposed through
+`IEXDeep` class or the `get_iex_book` function.
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+    f = web.DataReader('gs', 'iex-tops')
+    f[:10]
+
 .. _remote_data.stooq:
 
 Stooq Index Data
@@ -582,5 +425,18 @@ Google finance doesn't provide common index data download. The Stooq site has th
 .. ipython:: python
 
     import pandas_datareader.data as web
-    f = web.DataReader("^DJI", 'stooq')
+    f = web.DataReader('^DJI', 'stooq')
     f[:10]
+
+.. _remote_data.moex:
+
+MOEX Data
+=========
+The Moscow Exchange (MOEX) provides historical data.
+
+
+.. ipython:: python
+
+   import pandas_datareader.data as web
+   f = web.DataReader('USD000UTSTOM', 'moex', start='2017-07-01', end='2017-07-31')
+   f.head()

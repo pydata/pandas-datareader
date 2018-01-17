@@ -13,7 +13,7 @@ class TestOECD(object):
 
     @pytest.mark.xfail(reason='Incorrect URL')
     def test_get_un_den(self):
-        df = web.DataReader('NAAG', 'oecd', start=datetime(1960, 1, 1),
+        df = web.DataReader('TUD', 'oecd', start=datetime(1960, 1, 1),
                             end=datetime(2012, 1, 1))
 
         au = [50.17292785, 49.47181009, 49.52106174, 49.16341327,

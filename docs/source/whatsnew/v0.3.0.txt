@@ -18,10 +18,10 @@ Highlights include:
 New features
 ~~~~~~~~~~~~
 
-- ``DataReader`` now supports dividend only pulls from Yahoo! Finance, see :ref:`here<remote_data.yahoo>` (:issue:`138`).
+- ``DataReader`` now supports dividend only pulls from Yahoo! Finance (:issue:`138`).
 - ``DataReader`` now supports downloading mutual fund prices from the Thrift Savings Plan, see :ref:`here<remote_data.tsp>` (:issue:`157`).
-- ``DataReader`` now supports Google options data source, see :ref:`here<remote_data.google_options>` (:issue:`148`).
-- ``DataReader`` now supports Google quotes, see :ref:`here<remote_data.google_quotes>` (:issue:`188`).
+- ``DataReader`` now supports Google options data source (:issue:`148`).
+- ``DataReader`` now supports Google quotes (:issue:`188`).
 - ``DataReader`` now supports Enigma dataset.  see :ref:`here<remote_data.enigma>` (:issue:`245`).
 - ``DataReader`` now supports downloading a full list of NASDAQ listed symbols.  see :ref:`here<remote_data.nasdaq_symbols>` (:issue:`254`).
 

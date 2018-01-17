@@ -28,7 +28,7 @@ Backwards incompatible API changes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-- Fama French indexes are not Pandas.PeriodIndex for annual and montly data, and
+- Fama French indexes are not Pandas.PeriodIndex for annual and monthly data, and
   pandas.DatetimeIndex otherwise (:issue:`56`).
 
 .. _whatsnew_020.bug_fixes:

@@ -13,7 +13,7 @@ Highlights include:
     :local:
     :backlinks: none
 
-.. _whatsnew_020.enhancements:
+.. _whatsnew_021.enhancements:
 
 New features
 ~~~~~~~~~~~~
