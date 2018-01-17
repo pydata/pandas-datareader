@@ -21,6 +21,7 @@ class TestYahoo(object):
 
     @classmethod
     def setup_class(cls):
+        pytest.skip('Skip all Yahoo! tests.')
         pytest.importorskip("lxml")
 
     @skip_on_exception(RemoteDataError)
