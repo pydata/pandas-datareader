@@ -10,7 +10,6 @@ from pandas_datareader.enigma import EnigmaReader
 from pandas_datareader.eurostat import EurostatReader
 from pandas_datareader.famafrench import FamaFrenchReader
 from pandas_datareader.fred import FredReader
-from pandas_datareader.stooq import StooqDailyReader
 from pandas_datareader.google.daily import GoogleDailyReader
 from pandas_datareader.google.options import Options as GoogleOptions
 from pandas_datareader.google.quotes import GoogleQuotesReader
@@ -18,6 +17,7 @@ from pandas_datareader.moex import MoexReader
 from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
 from pandas_datareader.oecd import OECDReader
 from pandas_datareader.quandl import QuandlReader
+from pandas_datareader.stooq import StooqDailyReader
 from pandas_datareader.yahoo.actions import (YahooActionReader, YahooDivReader)
 from pandas_datareader.yahoo.components import _get_data as \
     get_components_yahoo
@@ -28,7 +28,8 @@ from pandas_datareader.yahoo.quotes import YahooQuotesReader
 __all__ = ['get_components_yahoo', 'get_data_enigma', 'get_data_famafrench',
            'get_data_fred', 'get_data_google', 'get_data_moex',
            'get_data_quandl', 'get_data_yahoo', 'get_data_yahoo_actions',
-           'get_nasdaq_symbols', 'get_quote_google', 'get_quote_yahoo']
+           'get_nasdaq_symbols', 'get_quote_google', 'get_quote_yahoo',
+           'get_data_stooq', 'DataReader']
 
 
 def get_data_fred(*args, **kwargs):
@@ -69,6 +70,10 @@ def get_data_quandl(*args, **kwargs):
 
 def get_data_moex(*args, **kwargs):
     return MoexReader(*args, **kwargs).read()
+
+
+def get_data_stooq(*args, **kwargs):
+    return StooqDailyReader(*args, **kwargs).read()
 
 
 def DataReader(name, data_source=None, start=None, end=None,
@@ -153,9 +158,9 @@ def DataReader(name, data_source=None, start=None, end=None,
                                   session=session).read()
     elif data_source == "stooq":
         return StooqDailyReader(symbols=name,
-                                 chunksize=25,
-                                 retry_count=retry_count, pause=pause,
-                                 session=session).read()
+                                chunksize=25,
+                                retry_count=retry_count, pause=pause,
+                                session=session).read()
 
     elif data_source == "enigma":
         return EnigmaReader(dataset_id=name, api_key=access_key).read()
