@@ -207,8 +207,7 @@ def get_iex_book(*args, **kwargs):
 
     :return: Object
     """
-    from pandas_datareader.iex.deep import Deep
-    return Deep(*args, **kwargs).read()
+    return IEXDeep(*args, **kwargs).read()
 
 
 def DataReader(name, data_source=None, start=None, end=None,

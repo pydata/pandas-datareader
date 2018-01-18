@@ -161,8 +161,8 @@ class Options(_OptionBaseReader):
         calls = _parse_options_data(calls)
         puts = _parse_options_data(puts)
 
-        calls = self._process_data(calls, 'call')
-        puts = self._process_data(puts, 'put')
+        calls = self._process_data(calls)
+        puts = self._process_data(puts)
 
         return {'calls': calls, 'puts': puts}
 
