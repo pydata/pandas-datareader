@@ -8,6 +8,8 @@ from pandas_datareader.bankofcanada import BankOfCanadaReader
 from pandas_datareader.edgar import EdgarIndexReader
 from pandas_datareader.enigma import EnigmaReader
 from pandas_datareader.eurostat import EurostatReader
+from pandas_datareader.exceptions import ImmediateDeprecationError, \
+    DEP_ERROR_MSG
 from pandas_datareader.famafrench import FamaFrenchReader
 from pandas_datareader.fred import FredReader
 from pandas_datareader.google.daily import GoogleDailyReader
@@ -51,6 +53,7 @@ def get_data_google(*args, **kwargs):
 
 
 def get_data_yahoo(*args, **kwargs):
+    raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Actions'))
     return YahooDailyReader(*args, **kwargs).read()
 
 
@@ -59,14 +62,17 @@ def get_data_enigma(*args, **kwargs):
 
 
 def get_data_yahoo_actions(*args, **kwargs):
+    raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Actions'))
     return YahooActionReader(*args, **kwargs).read()
 
 
 def get_quote_yahoo(*args, **kwargs):
+    raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Actions'))
     return YahooQuotesReader(*args, **kwargs).read()
 
 
 def get_quote_google(*args, **kwargs):
+    raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Google Quotes'))
     return GoogleQuotesReader(*args, **kwargs).read()
 
 
@@ -210,17 +216,16 @@ def DataReader(name, data_source=None, start=None, end=None,
     """
     Imports data from a number of online sources.
 
-    Currently supports Yahoo! Finance, Google Finance, St. Louis FED (FRED),
-    Kenneth French's data library, and the SEC's EDGAR Index.
+    Currently supports Google Finance, St. Louis FED (FRED),
+    and Kenneth French's data library, among others.
 
     Parameters
     ----------
     name : str or list of strs
-        the name of the dataset. Some data sources (yahoo, google, fred) will
+        the name of the dataset. Some data sources (google, fred) will
         accept a list of names.
     data_source: {str, None}
-        the data source ("yahoo", "yahoo-actions", "yahoo-dividends",
-        "google", "fred", "ff", or "edgar-index")
+        the data source ("google", "fred", "ff")
     start : {datetime, None}
         left boundary for range (defaults to 1/1/2010)
     end : {datetime, None}
@@ -237,14 +242,6 @@ def DataReader(name, data_source=None, start=None, end=None,
 
     Examples
     ----------
-
-    # Data from Yahoo! Finance
-    gs = DataReader("GS", "yahoo")
-
-    # Corporate Actions (Dividend and Split Data)
-    # with ex-dates from Yahoo! Finance
-    gs = DataReader("GS", "yahoo-actions")
-
     # Data from Google Finance
     aapl = DataReader("AAPL", "google")
 
@@ -263,23 +260,23 @@ def DataReader(name, data_source=None, start=None, end=None,
     ff = DataReader("F-F_Research_Data_Factors_weekly", "famafrench")
     ff = DataReader("6_Portfolios_2x3", "famafrench")
     ff = DataReader("F-F_ST_Reversal_Factor", "famafrench")
-
-    # Data from EDGAR index
-    ed = DataReader("full", "edgar-index")
-    ed2 = DataReader("daily", "edgar-index")
     """
     if data_source == "yahoo":
+        raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Daily'))
         return YahooDailyReader(symbols=name, start=start, end=end,
                                 adjust_price=False, chunksize=25,
                                 retry_count=retry_count, pause=pause,
                                 session=session).read()
 
     elif data_source == "yahoo-actions":
+        raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Actions'))
         return YahooActionReader(symbols=name, start=start, end=end,
                                  retry_count=retry_count, pause=pause,
                                  session=session).read()
 
     elif data_source == "yahoo-dividends":
+        comp = 'Yahoo Dividends'
+        raise ImmediateDeprecationError(DEP_ERROR_MSG.format(comp))
         return YahooDivReader(symbols=name, start=start, end=end,
                               adjust_price=False, chunksize=25,
                               retry_count=retry_count, pause=pause,
@@ -337,6 +334,7 @@ def DataReader(name, data_source=None, start=None, end=None,
                               retry_count=retry_count, pause=pause,
                               session=session).read()
     elif data_source == "edgar-index":
+        raise ImmediateDeprecationError(DEP_ERROR_MSG.format('EDGAR'))
         return EdgarIndexReader(symbols=name, start=start, end=end,
                                 retry_count=retry_count, pause=pause,
                                 session=session).read()
@@ -364,8 +362,10 @@ def Options(symbol, data_source=None, session=None):
                       " data_source) instead", FutureWarning, stacklevel=2)
         data_source = "yahoo"
     if data_source == "yahoo":
+        raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Options'))
         return YahooOptions(symbol, session=session)
     elif data_source == "google":
+        raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Google Options'))
         return GoogleOptions(symbol, session=session)
     else:
         raise NotImplementedError("currently only yahoo and google supported")

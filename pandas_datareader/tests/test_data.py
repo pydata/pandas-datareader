@@ -1,17 +1,7 @@
 import pytest
 
-import pandas.util.testing as tm
-import pandas_datareader.data as web
-
 from pandas import DataFrame
 from pandas_datareader.data import DataReader
-
-
-class TestOptionsWarnings(object):
-
-    def test_options_source_warning(self):
-        with tm.assert_produces_warning():
-            web.Options('aapl')
 
 
 class TestDataReader(object):

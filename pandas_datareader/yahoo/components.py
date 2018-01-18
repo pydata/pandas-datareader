@@ -1,6 +1,9 @@
 from pandas import DataFrame
 from pandas.io.common import urlopen
 
+from pandas_datareader.exceptions import ImmediateDeprecationError, \
+    DEP_ERROR_MSG
+
 _URL = 'http://download.finance.yahoo.com/d/quotes.csv?'
 
 
@@ -25,6 +28,7 @@ def _get_data(idx_sym):  # pragma: no cover
     -------
     idx_df : DataFrame
     """
+    raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Components'))
     stats = 'snx'
     # URL of form:
     # http://download.finance.yahoo.com/d/quotes.csv?s=@%5EIXIC&f=snxl1d1t1c1ohgv
