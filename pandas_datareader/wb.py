@@ -14,6 +14,8 @@ from pandas_datareader.base import _BaseReader
 # 3-digit ISO 3166-1 alpha-3, codes, with 'all', 'ALL', and 'All' appended ot
 # the end.
 
+WB_API_URL = 'https://api.worldbank.org/v2'
+
 country_codes = ['AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AO', 'AQ', 'AR',
                  'AS', 'AT', 'AU', 'AW', 'AX', 'AZ', 'BA', 'BB', 'BD', 'BE',
                  'BF', 'BG', 'BH', 'BI', 'BJ', 'BL', 'BM', 'BN', 'BO', 'BQ',
@@ -158,8 +160,7 @@ class WorldBankReader(_BaseReader):
     @property
     def url(self):
         countries = ';'.join(self.countries)
-        return ("http://api.worldbank.org/countries/" +
-                countries + "/indicators/")
+        return WB_API_URL + '/countries/' + countries + '/indicators/'
 
     @property
     def params(self):
@@ -251,7 +252,7 @@ class WorldBankReader(_BaseReader):
             country code, region, income level,
             capital city, latitude, and longitude
         """
-        url = 'http://api.worldbank.org/countries/?per_page=1000&format=json'
+        url = WB_API_URL + '/countries/?per_page=1000&format=json'
 
         resp = self._get_response(url)
         data = resp.json()[1]
@@ -274,7 +275,7 @@ class WorldBankReader(_BaseReader):
         if isinstance(_cached_series, pd.DataFrame):
             return _cached_series.copy()
 
-        url = 'http://api.worldbank.org/indicators?per_page=50000&format=json'
+        url = WB_API_URL + '/indicators?per_page=50000&format=json'
 
         resp = self._get_response(url)
         data = resp.json()[1]
