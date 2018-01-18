@@ -20,7 +20,7 @@ def get_available_datasets(**kwargs):
     Parameters
     ----------
     session : Session, default None
-            requests.sessions.Session instance to be used
+        requests.sessions.Session instance to be used
 
     Returns
     -------

@@ -34,7 +34,7 @@ def read_sdmx(path_or_buf, dtype='float64', dsd=None):
 
     Parameters
     ----------
-    filepath_or_buffer : a valid SDMX-XML string or file-like
+    path_or_buf : a valid SDMX-XML string or file-like
         https://webgate.ec.europa.eu/fpfis/mwikis/sdmx/index.php/Main_Page
     dtype : str
         dtype to coerce values
@@ -65,9 +65,9 @@ def read_sdmx(path_or_buf, dtype='float64', dsd=None):
                 data = _read_zipped_sdmx(result)
                 return read_sdmx(data, dtype=dtype, dsd=dsd)
             except HTTPError:
+                time.sleep(1)
                 continue
 
-            time.sleep(1)
         msg = ('Unable to download zipped data within 60 secs, '
                'please download it manually from: {0}')
         raise ValueError(msg.format(result))

@@ -231,7 +231,7 @@ def DataReader(name, data_source=None, start=None, end=None,
         Time, in seconds, to pause between consecutive queries of chunks. If
         single value given for symbol, represents the pause between retries.
     session : Session, default None
-            requests.sessions.Session instance to be used
+        requests.sessions.Session instance to be used
     access_key : (str, None)
         Optional parameter to specify an API key for certain data sources.
 

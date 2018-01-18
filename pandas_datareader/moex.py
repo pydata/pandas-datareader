@@ -124,7 +124,7 @@ class MoexReader(_DailyBaseReader):
                     start_str = self.start.strftime('%Y-%m-%d')
                     start = self.start
 
-                if start >= self.end or start>=dt.date.today():
+                if start >= self.end or start >= dt.date.today():
                     break
                 
                 params = self._get_params(start_str)
