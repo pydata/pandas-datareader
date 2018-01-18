@@ -397,7 +397,7 @@ def get_countries(**kwargs):
 
 
 def get_indicators(**kwargs):
-    '''Download information about all World Bank data series
+    """Download information about all World Bank data series
 
     Parameters
     ----------
@@ -405,7 +405,7 @@ def get_indicators(**kwargs):
     kwargs:
         keywords passed to WorldBankReader
 
-    '''
+    """
     return WorldBankReader(**kwargs).get_indicators()
 
 

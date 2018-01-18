@@ -43,7 +43,7 @@ class EnigmaReader(_BaseReader):
 
         super(EnigmaReader, self).__init__(symbols=[],
                                            retry_count=retry_count,
-                                           pause=pause)
+                                           pause=pause, session=session)
         if api_key is None:
             self._api_key = os.getenv('ENIGMA_API_KEY')
             if self._api_key is None:

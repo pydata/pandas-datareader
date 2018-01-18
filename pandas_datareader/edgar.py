@@ -125,7 +125,7 @@ class EdgarIndexReader(_BaseReader):
     def _check_idx(self, idx_entry):
         if re.match(_FILENAME_MASTER_RE, idx_entry['name']):
             if idx_entry['date'] is not None:
-                if (self.start <= idx_entry['date'] <= self.end):
+                if self.start <= idx_entry['date'] <= self.end:
                     return True
         else:
             return False
@@ -235,7 +235,7 @@ class EdgarIndexReader(_BaseReader):
                     filedate = dt.datetime.strptime(idx_date, '%y%m%d')
                     if filedate > _EDGAR_MAX_6_DIGIT_DATE:
                         filedate = None
-            elif len(idx_date) == 8:
+            else:  # len(idx_date) == 8:
                 filedate = dt.datetime.strptime(idx_date, '%Y%m%d')
         except AttributeError:
             filedate = None
@@ -244,7 +244,7 @@ class EdgarIndexReader(_BaseReader):
 
     def _check_mlsd_year(self, entry):
         try:
-            if (self.start.year <= int(entry['name']) <= self.end.year):
+            if self.start.year <= int(entry['name']) <= self.end.year:
                 return True
             else:
                 return False
