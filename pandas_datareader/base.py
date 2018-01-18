@@ -55,6 +55,7 @@ class _BaseReader(object):
         self.timeout = timeout
         self.pause_multiplier = 1
         self.session = _init_session(session, retry_count)
+        self.freq = freq
 
     def close(self):
         """ close my session """

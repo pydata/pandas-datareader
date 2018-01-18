@@ -147,7 +147,8 @@ class WorldBankReader(_BaseReader):
         freq_symbols = ['M', 'Q', 'A', None]
 
         if freq not in freq_symbols:
-            msg = 'The frequency `{0}` is not in the accepted list.'.format(freq)
+            msg = 'The frequency `{0}` is not in the accepted ' \
+                  'list.'.format(freq)
             raise ValueError(msg)
 
         self.freq = freq

@@ -1,14 +1,14 @@
 import time
-import pytest
 
 import numpy as np
 import pandas as pd
+import pandas.util.testing as tm
+import pytest
 import requests
 
-import pandas.util.testing as tm
+from pandas_datareader.compat import assert_raises_regex
 from pandas_datareader.wb import (search, download, get_countries,
                                   get_indicators, WorldBankReader)
-from pandas_datareader.compat import assert_raises_regex
 
 
 class TestWB(object):
@@ -236,25 +236,26 @@ class TestWB(object):
         cntry_codes = 'ALL'
         inds = 'COPPER'
         result = download(country=cntry_codes, indicator=inds,
-                          start=2011, end=2012, freq='M',errors='ignore')
+                          start=2011, end=2012, freq='M', errors='ignore')
         result = result.sort_index()
         result = np.round(result, decimals=-3)
 
         expected.index.names = ['country', 'year']
         tm.assert_frame_equal(result, expected)
 
-        result = WorldBankReader(inds, countries=cntry_codes,
-                                 start=2011, end=2012, freq='M', errors='ignore').read()
+        result = WorldBankReader(inds, countries=cntry_codes, start=2011,
+                                 end=2012, freq='M', errors='ignore').read()
         result = result.sort_index()
         result = np.round(result, decimals=-3)
         tm.assert_frame_equal(result, expected)
 
     def test_wdi_download_quarterly(self):
-        expected = {'DT.DOD.PUBS.CD.US': {('Albania', '2012Q1'): 3240539817.18,
-                                          ('Albania', '2011Q4'): 3213979715.15,
-                                          ('Albania', '2011Q3'): 3187681048.95,
-                                          ('Albania', '2011Q2'): 3248041513.86,
-                                          ('Albania', '2011Q1'): 3137210567.92}}
+        code = 'DT.DOD.PUBS.CD.US'
+        expected = {code: {('Albania', '2012Q1'): 3240539817.18,
+                           ('Albania', '2011Q4'): 3213979715.15,
+                           ('Albania', '2011Q3'): 3187681048.95,
+                           ('Albania', '2011Q2'): 3248041513.86,
+                           ('Albania', '2011Q1'): 3137210567.92}}
         expected = pd.DataFrame(expected)
         # Round, to ignore revisions to data.
         expected = np.round(expected, decimals=-3)
@@ -262,15 +263,15 @@ class TestWB(object):
         cntry_codes = 'ALB'
         inds = 'DT.DOD.PUBS.CD.US'
         result = download(country=cntry_codes, indicator=inds,
-                          start=2011, end=2012, freq='Q',errors='ignore')
+                          start=2011, end=2012, freq='Q', errors='ignore')
         result = result.sort_index()
         result = np.round(result, decimals=-3)
 
         expected.index.names = ['country', 'year']
         tm.assert_frame_equal(result, expected)
 
-        result = WorldBankReader(inds, countries=cntry_codes,
-                                 start=2011, end=2012, freq='Q', errors='ignore').read()
+        result = WorldBankReader(inds, countries=cntry_codes, start=2011,
+                                 end=2012, freq='Q', errors='ignore').read()
         result = result.sort_index()
         result = np.round(result, decimals=-1)
         tm.assert_frame_equal(result, expected)
