@@ -19,25 +19,29 @@ class _BaseReader(object):
     """
     Parameters
     ----------
-        sym : string with a single Single stock symbol (ticker).
+        symbols : {str, List[str]}
+            String symbol of like of symbols
         start : string, (defaults to '1/1/2010')
-                Starting date, timestamp. Parses many different kind of date
-                representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
+            Starting date, timestamp. Parses many different kind of date
+            representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
         end : string, (defaults to today)
-                Ending date, timestamp. Same format as starting date.
+            Ending date, timestamp. Same format as starting date.
         retry_count : int, default 3
-                Number of times to retry query request.
+            Number of times to retry query request.
         pause : float, default 0.1
-                Time, in seconds, of the pause between retries.
+            Time, in seconds, of the pause between retries.
         session : Session, default None
-                requests.sessions.Session instance to be used
+            requests.sessions.Session instance to be used
+        freq : {str, None}
+            Frequency to use in select readers
     """
 
     _chunk_size = 1024 * 1024
     _format = 'string'
 
-    def __init__(self, symbols, start=None, end=None,
-                 retry_count=3, pause=0.1, timeout=30, session=None):
+    def __init__(self, symbols, start=None, end=None,  retry_count=3,
+                 pause=0.1, timeout=30, session=None, freq=None):
+
         self.symbols = symbols
 
         start, end = _sanitize_dates(start, end)
@@ -51,6 +55,7 @@ class _BaseReader(object):
         self.timeout = timeout
         self.pause_multiplier = 1
         self.session = _init_session(session, retry_count)
+        self.freq = freq
 
     def close(self):
         """ close my session """
