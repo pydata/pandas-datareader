@@ -1,9 +1,8 @@
+from datetime import datetime
+
 import pytest
-
-import pandas.util.testing as tm
-
 from pandas import DataFrame
-from datetime import datetime, timedelta
+
 from pandas_datareader.data import (DataReader, get_summary_iex, get_last_iex,
                                     get_dailysummary_iex, get_iex_symbols,
                                     get_iex_book)
@@ -25,8 +24,10 @@ class TestIEX(object):
 
     def test_false_ticker(self):
         df = get_last_iex("INVALID TICKER")
-        tm.assert_frame_equal(df, DataFrame())
+        assert df.shape[0] == 0
 
+    @pytest.mark.xfail(reason='IEX daily history API is returning 500 as of '
+                              'Jan 2018')
     def test_daily(self):
         df = get_dailysummary_iex(start=datetime(2017, 5, 5),
                                   end=datetime(2017, 5, 6))
@@ -43,6 +44,5 @@ class TestIEX(object):
         assert df["price"].mean() > 0
 
     def test_deep(self):
-        dob = get_iex_book('GS', service='system-event')
-        assert len(dob['eventResponse']) > 0
-        assert dob['timestamp'] > datetime.now() - timedelta(days=1)
+        dob = get_iex_book('GS', service='book')
+        assert 'GS' in dob

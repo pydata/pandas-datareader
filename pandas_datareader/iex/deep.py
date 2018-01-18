@@ -11,6 +11,11 @@ from datetime import datetime
 class Deep(IEX):
     def __init__(self, symbols=None, service=None, start=None, end=None,
                  retry_count=3, pause=0.001, session=None):
+        if isinstance(symbols, str):
+            symbols = symbols.lower()
+        else:
+            symbols = [s.lower() for s in symbols]
+
         super(Deep, self).__init__(symbols=symbols,
                                    start=start, end=end,
                                    retry_count=retry_count,

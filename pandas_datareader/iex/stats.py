@@ -1,6 +1,10 @@
-import pandas as pd
 from datetime import datetime, timedelta
+
+import pandas as pd
+
+from pandas_datareader.exceptions import UnstableAPIWarning
 from pandas_datareader.iex import IEX
+
 
 # Data provided for free by IEX
 # Data is furnished in compliance with the guidelines promulgated in the IEX
@@ -12,6 +16,9 @@ from pandas_datareader.iex import IEX
 class DailySummaryReader(IEX):
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
                  pause=0.001, session=None):
+        import warnings
+        warnings.warn('Daily statistics is not working due to issues with the '
+                      'IEX API', UnstableAPIWarning)
         self.curr_date = start
         super(DailySummaryReader, self).__init__(symbols=symbols,
                                                  start=start, end=end,

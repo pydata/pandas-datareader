@@ -39,6 +39,10 @@ class IEX(_BaseReader):
 
     def read(self):
         df = super(IEX, self).read()
+        if isinstance(df, pd.DataFrame):
+            df = df.squeeze()
+            if not isinstance(df, pd.DataFrame):
+                df = pd.DataFrame(df)
         return df
 
     def _get_params(self, symbols):
