@@ -40,12 +40,11 @@ class TestFred(object):
         df = web.DataReader("DFII5", "fred", start, end)
         assert pd.isnull(df.loc['2010-01-01'][0])
 
-    @pytest.mark.skip(reason='Buggy as of 2/18/14; maybe a data revision?')
     def test_fred_parts(self):  # pragma: no cover
         start = datetime(2010, 1, 1)
         end = datetime(2013, 1, 27)
         df = web.get_data_fred("CPIAUCSL", start, end)
-        assert df.loc['2010-05-01'][0] == 217.23
+        assert df.loc['2010-05-01'][0] == 217.29
 
         t = df.CPIAUCSL.values
         assert np.issubdtype(t.dtype, np.floating)
@@ -65,7 +64,6 @@ class TestFred(object):
         with pytest.raises(Exception):
             web.get_data_fred(name)
 
-    @pytest.mark.skip(reason='Buggy as of 2/18/14; maybe a data revision?')
     def test_fred_multi(self):  # pragma: no cover
         names = ['CPIAUCSL', 'CPALTT01USQ661S', 'CPILFESL']
         start = datetime(2010, 1, 1)

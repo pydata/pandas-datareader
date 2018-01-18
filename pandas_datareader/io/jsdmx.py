@@ -23,7 +23,7 @@ def read_jsdmx(path_or_buf):
 
     Returns
     -------
-    results : Series, DataFrame, or dictionaly of Series or DataFrame.
+    results : Series, DataFrame, or dictionary of Series or DataFrame.
     """
 
     jdata = _read_content(path_or_buf)
@@ -93,10 +93,14 @@ def _parse_dimensions(dimensions):
         values = [v['name'] for v in key['values']]
 
         role = key.get('role', None)
-        if role == 'time':
+        if role in ('time', 'TIME_PERIOD'):
             values = pd.DatetimeIndex(values)
 
         arrays.append(values)
         names.append(key['name'])
     midx = pd.MultiIndex.from_product(arrays, names=names)
+    if len(arrays) == 1 and isinstance(midx, pd.MultiIndex):
+        # Fix for pandas >= 0.21
+        midx = midx.levels[0]
+
     return midx

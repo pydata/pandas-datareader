@@ -73,6 +73,9 @@ def data1(aapl, json1):
 
 class TestYahooOptions(object):
 
+    def setup_class(cls):
+        pytest.skip('Skip all Yahoo! tests.')
+
     def assert_option_result(self, df):
         """
         Validate returned option data has expected format.
