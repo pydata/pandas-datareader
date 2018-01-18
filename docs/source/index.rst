@@ -17,6 +17,7 @@ Contents:
    whatsnew.rst
    remote_data.rst
    cache.rst
+   see-also.rst
 
 
 Indices and tables

@@ -343,6 +343,7 @@ def DataReader(name, data_source=None, start=None, end=None,
             raise ValueError("Only the string 'symbols' is supported for "
                              "Nasdaq, not %r" % (name,))
         return get_nasdaq_symbols(retry_count=retry_count, pause=pause)
+
     elif data_source == "quandl":
         return QuandlReader(symbols=name, start=start, end=end,
                             retry_count=retry_count, pause=pause,

@@ -1,0 +1,74 @@
+.. _whatsnew_060:
+
+v0.6.0 (January TODO, 2018)
+---------------------------
+
+This is a major release from 0.5.0. We recommend that all users upgrade.
+
+.. warning::
+
+  Yahoo!, Google Options, Google Quotes and EDGAR have been immediately
+  deprecated.
+
+Highlights include:
+
+- A new data connector for stock index data provided by Stooq was
+  introduced. (:issue:`447`)
+
+- A new data connector for data provided by the Bank of Canada was
+  introduced. (:issue:`440`)
+
+- Immediate deprecation of Yahoo!, Google Options and Quotes and EDGAR.
+
+
+.. contents:: What's new in v0.6.0
+    :local:
+    :backlinks: none
+
+.. _whatsnew_060.enhancements:
+
+Enhancements
+~~~~~~~~~~~~
+
+- A new data connector for stock index data provided by Stooq was
+  introduced. (:issue:`447`)
+
+- A new data connector for data provided by the Bank of Canada was
+  introduced. (:issue:`440`)
+
+
+
+.. _whatsnew_060.api_breaking:
+
+Backwards incompatible API changes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Deprecation of Yahoo readers.  Yahoo! retired the financial data end points in
+  late 2017.  It is not possible to reliably retrieve data from Yahoo! without
+  these endpoints. The Yahoo! readers have been immediately deprecated and
+  will raise an `ImmediateDeprecationError` when called.
+
+- Deprecation of EDGAR readers. EDGAR substantially altered their API. The EDGAR
+  readers have been immediately deprecated and will raise an
+  `ImmediateDeprecationError` when called.
+
+- Google finance data will raise an `UnstableAPIWarning` when first called.
+  Google has also altered their API in a way that makes reading data
+  unreliable.  It many call it works.  However it also regularly fails,
+  especially when used for bulk downloading. Google may be removed in the
+  future.
+
+.. _whatsnew_060.bug_fixes:
+
+Bug Fixes
+~~~~~~~~~
+
+- `freq` parameter was added to the WorldBank connector to address a limitation (:issue:`198`, :issue:`449`).
+- The Enigma data connector was updated to the latest API (:issue:`380`).
+- The Google finance endpoint was updated to the latest value (:issue:`404`).
+- Tne end point for FRED was updated to the latest values (:issue:`436`).
+
+Other Changes
+~~~~~~~~~~~~~
+- The minimum tested pandas version was increased to 0.19.2 (:issue:`441`).
+- Added versioneer to simplifying releases (:issue:`442`).
