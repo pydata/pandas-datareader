@@ -20,6 +20,10 @@ class TestDataReader(object):
         gs = DataReader("GS", "google")
         assert isinstance(gs, DataFrame)
 
+    def test_read_iex(self):
+        gs = DataReader("GS", "iex-last")
+        assert isinstance(gs, DataFrame)
+
     def test_read_fred(self):
         vix = DataReader("VIXCLS", "fred")
         assert isinstance(vix, DataFrame)
