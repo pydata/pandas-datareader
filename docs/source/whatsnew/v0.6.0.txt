@@ -36,8 +36,6 @@ Enhancements
 - A new data connector for data provided by the Bank of Canada was
   introduced. (:issue:`440`)
 
-
-
 .. _whatsnew_060.api_breaking:
 
 Backwards incompatible API changes
@@ -67,8 +65,10 @@ Bug Fixes
 - The Enigma data connector was updated to the latest API (:issue:`380`).
 - The Google finance endpoint was updated to the latest value (:issue:`404`).
 - Tne end point for FRED was updated to the latest values (:issue:`436`).
+- Tne end point for WorldBank was updated to the latest values (:issue:`456`).
 
 Other Changes
 ~~~~~~~~~~~~~
 - The minimum tested pandas version was increased to 0.19.2 (:issue:`441`).
-- Added versioneer to simplifying releases (:issue:`442`).
+- Added versioneer to simplifying release (:issue:`442`).
+
