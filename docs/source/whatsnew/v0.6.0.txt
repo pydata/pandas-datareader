@@ -71,4 +71,5 @@ Other Changes
 ~~~~~~~~~~~~~
 - The minimum tested pandas version was increased to 0.19.2 (:issue:`441`).
 - Added versioneer to simplifying release (:issue:`442`).
+- Added doctr to automatically build docs for gh-pages (:issue:`459`).
 
