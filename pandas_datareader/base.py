@@ -15,25 +15,24 @@ from pandas_datareader._utils import (RemoteDataError, SymbolWarning,
 
 
 class _BaseReader(object):
-
     """
     Parameters
     ----------
-        symbols : {str, List[str]}
-            String symbol of like of symbols
-        start : string, (defaults to '1/1/2010')
-            Starting date, timestamp. Parses many different kind of date
-            representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
-        end : string, (defaults to today)
-            Ending date, timestamp. Same format as starting date.
-        retry_count : int, default 3
-            Number of times to retry query request.
-        pause : float, default 0.1
-            Time, in seconds, of the pause between retries.
-        session : Session, default None
-            requests.sessions.Session instance to be used
-        freq : {str, None}
-            Frequency to use in select readers
+    symbols : {str, List[str]}
+        String symbol of like of symbols
+    start : string, (defaults to '1/1/2010')
+        Starting date, timestamp. Parses many different kind of date
+        representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
+    end : string, (defaults to today)
+        Ending date, timestamp. Same format as starting date.
+    retry_count : int, default 3
+        Number of times to retry query request.
+    pause : float, default 0.1
+        Time, in seconds, of the pause between retries.
+    session : Session, default None
+        requests.sessions.Session instance to be used
+    freq : {str, None}
+        Frequency to use in select readers
     """
 
     _chunk_size = 1024 * 1024
@@ -58,7 +57,7 @@ class _BaseReader(object):
         self.freq = freq
 
     def close(self):
-        """ close my session """
+        """Close network session"""
         self.session.close()
 
     @property
@@ -71,7 +70,7 @@ class _BaseReader(object):
         return None
 
     def read(self):
-        """ read data """
+        """Read data from connector"""
         try:
             return self._read_one_data(self.url, self.params)
         finally:
@@ -193,7 +192,7 @@ class _DailyBaseReader(_BaseReader):
         raise NotImplementedError
 
     def read(self):
-        """ read data """
+        """Read data"""
         # If a single symbol, (e.g., 'GOOG')
         if isinstance(self.symbols, (compat.string_types, int)):
             df = self._read_one_data(self.url,
