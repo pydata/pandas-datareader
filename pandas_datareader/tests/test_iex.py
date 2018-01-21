@@ -45,4 +45,7 @@ class TestIEX(object):
 
     def test_deep(self):
         dob = get_iex_book('GS', service='book')
-        assert 'GS' in dob
+        if dob:
+            assert 'GS' in dob
+        else:
+            pytest.xfail(reason='Can only get Book when market open')

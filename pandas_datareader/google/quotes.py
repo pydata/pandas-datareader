@@ -15,7 +15,7 @@ class GoogleQuotesReader(_BaseReader):
 
     @property
     def url(self):
-        return 'http://www.google.com/finance/info'
+        return 'https://finance.google.com/finance/info'
 
     @property
     def params(self):
