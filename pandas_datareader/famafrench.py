@@ -44,11 +44,6 @@ class FamaFrenchReader(_BaseReader):
 
     For annual and monthly data, index is a pandas.PeriodIndex, otherwise
     it's a pandas.DatetimeIndex.
-
-    Returns
-    -------
-    df : a dictionary of pandas.DataFrame. Tables are accessed by integer keys.
-         See df['DESCR'] for a description of the dataset
     """
 
     @property
@@ -65,6 +60,18 @@ class FamaFrenchReader(_BaseReader):
                 data = zf.open(zf.namelist()[0]).read().decode()
 
         return data
+
+    def read(self):
+        """
+        Read data
+
+        Returns
+        -------
+        df : dict
+            A dictionary of DataFrames. Tables are accessed by integer keys.
+            See df['DESCR'] for a description of the data set.
+        """
+        return super(FamaFrenchReader, self).read()
 
     def _read_one_data(self, url, params):
 
@@ -128,9 +135,11 @@ class FamaFrenchReader(_BaseReader):
     def get_available_datasets(self):
         """
         Get the list of datasets available from the Fama/French data library.
+
         Returns
         -------
-        A list of valid inputs for get_data_famafrench.
+        datasets: list
+            A list of valid inputs for get_data_famafrench
         """
         try:
             from lxml.html import document_fromstring
