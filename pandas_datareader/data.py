@@ -4,9 +4,6 @@ Module contains tools for collecting data from various remote sources
 
 import warnings
 
-from pandas_datareader.mstar.financials import BalanceSheetReader, \
-    CashflowStatementReader, IncomeStatementReader, KeyRatiosReader
-
 from pandas_datareader.bankofcanada import BankOfCanadaReader
 from pandas_datareader.edgar import EdgarIndexReader
 from pandas_datareader.enigma import EnigmaReader
@@ -43,8 +40,6 @@ __all__ = ['get_components_yahoo', 'get_data_enigma', 'get_data_famafrench',
            'get_recent_iex', 'get_markets_iex', 'get_last_iex',
            'get_iex_symbols', 'get_iex_book', 'get_dailysummary_iex',
            'get_data_morningstar', 'get_data_stooq',
-           'get_mstar_financials_balance', 'get_mstar_financials_cashflows',
-           'get_mstar_financials_income', 'get_mstar_financials_keyratios',
            'get_data_stooq', 'DataReader']
 
 
@@ -106,22 +101,6 @@ def get_last_iex(*args, **kwargs):
 
 def get_data_morningstar(*args, **kwargs):
     return MorningstarDailyReader(*args, **kwargs).read()
-
-
-def get_mstar_financials_income(*args, **kwargs):
-    return IncomeStatementReader(*args, **kwargs).read()
-
-
-def get_mstar_financials_balance(*args, **kwargs):
-    return BalanceSheetReader(*args, **kwargs).read()
-
-
-def get_mstar_financials_cashflows(*args, **kwargs):
-    return CashflowStatementReader(*args, **kwargs).read()
-
-
-def get_mstar_financials_keyratios(*args, **kwargs):
-    return KeyRatiosReader(*args, **kwargs).read()
 
 
 def get_markets_iex(*args, **kwargs):
