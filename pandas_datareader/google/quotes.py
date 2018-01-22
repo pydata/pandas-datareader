@@ -1,10 +1,11 @@
-import pandas as pd
-from dateutil.parser import parse
-import numpy as np
-
-from pandas_datareader.base import _BaseReader
 import json
 import re
+
+import numpy as np
+import pandas as pd
+from dateutil.parser import parse
+
+from pandas_datareader.base import _BaseReader
 
 
 class GoogleQuotesReader(_BaseReader):
@@ -15,7 +16,7 @@ class GoogleQuotesReader(_BaseReader):
 
     @property
     def url(self):
-        return 'https://finance.google.com/finance/info'
+        return 'http://www.google.com/finance/info'
 
     @property
     def params(self):

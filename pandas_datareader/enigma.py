@@ -1,9 +1,9 @@
 import os
 import time
 
-from pandas.compat import StringIO
-import pandas.compat as compat
 import pandas as pd
+import pandas.compat as compat
+from pandas.compat import StringIO
 
 from pandas_datareader.base import _BaseReader
 
@@ -11,21 +11,28 @@ from pandas_datareader.base import _BaseReader
 class EnigmaReader(_BaseReader):
     """
     Collects current snapshot of Enigma data located at the specified
-    data set ID and returns a pandas DataFrame.
+    dataset ID and returns a pandas DataFrame.
 
-    Examples
-    --------
-    Download current snapshot for the following Florida Inspections Dataset:
+    # Example
+    Download current snapshot for the following Florida Inspections Dataset
     https://public.enigma.com/datasets/bedaf052-5fcd-4758-8d27-048ce8746c6a
 
-    >>> import pandas_datareader as pdr
-    >>> df = pdr.get_data_enigma('bedaf052-5fcd-4758-8d27-048ce8746c6a')
+    Usage (high-level):
+    ```
+        import pandas_datareader as pdr
+        df = pdr.get_data_enigma('bedaf052-5fcd-4758-8d27-048ce8746c6a')
 
-    In the event that ENIGMA_API_KEY does not exist in your env, the key can
-    be supplied as the second argument or as the keyword argument `api_key`
+        # in the event that ENIGMA_API_KEY does not exist in your env,
+        # it can be supplied as the second arg:
+        df = prd.get_data_enigma('bedaf052-5fcd-4758-8d27-048ce8746c6a',
+        ...                      'INSERT_API_KEY')
+    ```
 
-    >>> df = EnigmaReader(dataset_id='bedaf052-5fcd-4758-8d27-048ce8746c6a',
-    ...                   api_key='INSERT_API_KEY').read()
+    Usage:
+    ```
+        df = EnigmaReader(dataset_id='bedaf052-5fcd-4758-8d27-048ce8746c6a',
+        ...               api_key='INSERT_API_KEY').read()
+    ```
     """
     def __init__(self,
                  dataset_id=None,

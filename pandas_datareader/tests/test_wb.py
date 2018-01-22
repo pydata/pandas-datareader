@@ -210,7 +210,7 @@ class TestWB(object):
 
         for result in [result1, result2, result3, result4]:
             exp_col = pd.Index(['id', 'name', 'source', 'sourceNote',
-                                'sourceOrganization', 'topics', 'unit'])
+                                'sourceOrganization', 'topics'])
             # assert_index_equal doesn't exists
             assert result.columns.equals(exp_col)
             assert len(result) > 10000

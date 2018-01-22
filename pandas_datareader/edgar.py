@@ -1,16 +1,15 @@
-import re
 import datetime as dt
-from ftplib import FTP
 import gzip
-
+import re
+from ftplib import FTP
 from zipfile import ZipFile
-from pandas.compat import StringIO
+
 from pandas import read_csv, DataFrame, to_datetime
+from pandas.compat import StringIO
 
-from pandas_datareader.base import _BaseReader
 from pandas_datareader._utils import RemoteDataError
+from pandas_datareader.base import _BaseReader
 from pandas_datareader.compat import BytesIO, is_number
-
 
 _URL_FULL = 'edgar/full-index/master.zip'
 _URL_DAILY = 'ftp://ftp.sec.gov/'

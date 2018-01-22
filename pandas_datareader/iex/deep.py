@@ -1,5 +1,7 @@
-from pandas_datareader.iex import IEX
 from datetime import datetime
+
+from pandas_datareader.iex import IEX
+
 
 # Data provided for free by IEX
 # Data is furnished in compliance with the guidelines promulgated in the IEX

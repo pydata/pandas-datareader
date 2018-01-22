@@ -7,9 +7,8 @@ import zipfile
 import pandas as pd
 import pandas.compat as compat
 
-from pandas_datareader.io.util import _read_content
 from pandas_datareader.compat import HTTPError
-
+from pandas_datareader.io.util import _read_content
 
 _STRUCTURE = '{http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure}'
 _MESSAGE = '{http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message}'

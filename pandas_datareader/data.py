@@ -15,11 +15,12 @@ from pandas_datareader.fred import FredReader
 from pandas_datareader.google.daily import GoogleDailyReader
 from pandas_datareader.google.options import Options as GoogleOptions
 from pandas_datareader.google.quotes import GoogleQuotesReader
-from pandas_datareader.iex.daily import IEXDailyReader
 from pandas_datareader.iex.deep import Deep as IEXDeep
-from pandas_datareader.iex.tops import LastReader as IEXLasts
-from pandas_datareader.iex.tops import TopsReader as IEXTops
+from pandas_datareader.iex.tops import LastReader as IEXLasts, TopsReader as IEXTops
 from pandas_datareader.moex import MoexReader
+from pandas_datareader.mstar.daily import MorningstarDailyReader
+from pandas_datareader.mstar.financials import IncomeStatementReader, \
+    BalanceSheetReader, CashflowStatementReader, KeyRatiosReader
 from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
 from pandas_datareader.oecd import OECDReader
 from pandas_datareader.quandl import QuandlReader
@@ -38,8 +39,9 @@ __all__ = ['get_components_yahoo', 'get_data_enigma', 'get_data_famafrench',
            'get_tops_iex', 'get_summary_iex', 'get_records_iex',
            'get_recent_iex', 'get_markets_iex', 'get_last_iex',
            'get_iex_symbols', 'get_iex_book', 'get_dailysummary_iex',
-           'get_data_stooq', 'DataReader']
-
+           'get_data_stooq', 'DataReader', 'get_data_morningstar',
+           'get_mstar_financials_balance','get_mstar_financials_cashflows',
+           'get_mstar_financials_income','get_mstar_financials_keyratios']
 
 def get_data_fred(*args, **kwargs):
     return FredReader(*args, **kwargs).read()
@@ -56,6 +58,21 @@ def get_data_google(*args, **kwargs):
 def get_data_yahoo(*args, **kwargs):
     raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Actions'))
     return YahooDailyReader(*args, **kwargs).read()
+
+def get_data_morningstar(*args, **kwargs):
+    return MorningstarDailyReader(*args, **kwargs).read()
+
+def get_mstar_financials_income(*args, **kwargs):
+    return IncomeStatementReader(*args, **kwargs).read()
+
+def get_mstar_financials_balance(*args, **kwargs):
+    return BalanceSheetReader(*args, **kwargs).read()
+
+def get_mstar_financials_cashflows(*args, **kwargs):
+    return CashflowStatementReader(*args, **kwargs).read()
+
+def get_mstar_financials_keyratios(*args, **kwargs):
+    return KeyRatiosReader(*args, **kwargs).read()
 
 
 def get_data_enigma(*args, **kwargs):
@@ -208,7 +225,8 @@ def get_iex_book(*args, **kwargs):
 
     :return: Object
     """
-    return IEXDeep(*args, **kwargs).read()
+    from pandas_datareader.iex.deep import Deep
+    return Deep(*args, **kwargs).read()
 
 
 def DataReader(name, data_source=None, start=None, end=None,
@@ -287,13 +305,12 @@ def DataReader(name, data_source=None, start=None, end=None,
                                  chunksize=25,
                                  retry_count=retry_count, pause=pause,
                                  session=session).read()
-
-    elif data_source == "iex":
-        return IEXDailyReader(symbols=name, start=start, end=end,
-                              chunksize=25,
-                              retry_count=retry_count, pause=pause,
-                              session=session).read()
-
+    
+    elif data_source == "morningstar":
+        return MorningstarDailyReader(symbols=name, start=start, end=end,
+                                      retry_count=retry_count, pause=pause,
+                                      session=session).read()
+                                      
     elif data_source == "iex-tops":
         return IEXTops(symbols=name, start=start, end=end,
                        retry_count=retry_count, pause=pause,
@@ -377,3 +394,18 @@ def Options(symbol, data_source=None, session=None):
         return GoogleOptions(symbol, session=session)
     else:
         raise NotImplementedError("currently only yahoo and google supported")
+
+def Financials(symbols, freq, npds, session=None, data_source="morningstar",
+               report_typ=None, *args, **kwargs):
+    if data_source != "morningstar":
+        raise ValueError("Currently only morningstar is supported.")
+    else:
+        if report_typ == "income":
+            IncomeStatementReader(symbols=symbols, freq=freq, npds=npds, kwargs=dict(**kwargs)).read()
+        elif report_typ == "balance":
+            BalanceSheetReader(symbols=symbols, freq=freq, npds=npds, kwargs=dict(**kwargs)).read()
+        elif report_typ == "cashflow":
+            CashflowStatementReader(symbols=symbols, freq=freq, npds=npds, kwargs=dict(**kwargs)).read()
+        elif report_typ == "keyratios":
+            KeyRatiosReader(symbols).read()
+

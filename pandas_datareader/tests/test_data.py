@@ -1,6 +1,6 @@
 import pytest
-
 from pandas import DataFrame
+
 from pandas_datareader.data import DataReader
 
 

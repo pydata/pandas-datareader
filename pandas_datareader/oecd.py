@@ -1,11 +1,12 @@
 import pandas as pd
 import pandas.compat as compat
 
-from pandas_datareader.io import read_jsdmx
 from pandas_datareader.base import _BaseReader
+from pandas_datareader.io import read_jsdmx
 
 
 class OECDReader(_BaseReader):
+
     """Get data for the given name from OECD."""
 
     _format = 'json'

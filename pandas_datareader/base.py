@@ -1,38 +1,37 @@
 import time
 import warnings
+
 import numpy as np
-
-import requests
-
 import pandas.compat as compat
-from pandas import Panel, DataFrame
-from pandas import read_csv
-from pandas.io.common import urlencode
+import requests
+from pandas import Panel, DataFrame, read_csv
 from pandas.compat import StringIO, bytes_to_str
+from pandas.io.common import urlencode
 
 from pandas_datareader._utils import (RemoteDataError, SymbolWarning,
                                       _sanitize_dates, _init_session)
 
 
 class _BaseReader(object):
+
     """
     Parameters
     ----------
-    symbols : {str, List[str]}
-        String symbol of like of symbols
-    start : string, (defaults to '1/1/2010')
-        Starting date, timestamp. Parses many different kind of date
-        representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
-    end : string, (defaults to today)
-        Ending date, timestamp. Same format as starting date.
-    retry_count : int, default 3
-        Number of times to retry query request.
-    pause : float, default 0.1
-        Time, in seconds, of the pause between retries.
-    session : Session, default None
-        requests.sessions.Session instance to be used
-    freq : {str, None}
-        Frequency to use in select readers
+        symbols : {str, List[str]}
+            String symbol of like of symbols
+        start : string, (defaults to '1/1/2010')
+            Starting date, timestamp. Parses many different kind of date
+            representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
+        end : string, (defaults to today)
+            Ending date, timestamp. Same format as starting date.
+        retry_count : int, default 3
+            Number of times to retry query request.
+        pause : float, default 0.1
+            Time, in seconds, of the pause between retries.
+        session : Session, default None
+            requests.sessions.Session instance to be used
+        freq : {str, None}
+            Frequency to use in select readers
     """
 
     _chunk_size = 1024 * 1024
@@ -57,7 +56,7 @@ class _BaseReader(object):
         self.freq = freq
 
     def close(self):
-        """Close network session"""
+        """ close my session """
         self.session.close()
 
     @property
@@ -70,7 +69,7 @@ class _BaseReader(object):
         return None
 
     def read(self):
-        """Read data from connector"""
+        """ read data """
         try:
             return self._read_one_data(self.url, self.params)
         finally:
@@ -192,7 +191,7 @@ class _DailyBaseReader(_BaseReader):
         raise NotImplementedError
 
     def read(self):
-        """Read data"""
+        """ read data """
         # If a single symbol, (e.g., 'GOOG')
         if isinstance(self.symbols, (compat.string_types, int)):
             df = self._read_one_data(self.url,

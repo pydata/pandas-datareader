@@ -7,22 +7,22 @@ matrix:
   include:
   - dist: trusty
     env:
+      - PYTHON=2.7 PANDAS=0.17.1
+  - dist: trusty
+    env:
       - PYTHON=2.7 PANDAS=0.19.2
   - dist: trusty
     env:
-      - PYTHON=2.7 PANDAS=0.22
+      - PYTHON=3.5 PANDAS=0.17.1
   - dist: trusty
     env:
-      - PYTHON=3.5 PANDAS=0.19.2
+      - PYTHON=3.5 PANDAS=0.18.1
   - dist: trusty
     env:
-      - PYTHON=3.5 PANDAS=0.20.3
+      - PYTHON=3.6 PANDAS=0.19.2
   - dist: trusty
     env:
-      - PYTHON=3.6 PANDAS=0.21.1
-  - dist: trusty
-    env:
-      - PYTHON=3.6 PANDAS=0.22 DOCBUILD=true
+      - PYTHON=3.6 PANDAS=0.20.2
   # In allow failures
   - dist: trusty
     env:
@@ -60,10 +60,6 @@ install:
     else
       conda install pandas=$PANDAS;
     fi
-  - if [[ $DOCBUILD ]]; then
-      conda install sphinx ipython matplotlib;
-      pip install sphinx_rtd_theme doctr;
-    fi
   - pip install beautifulsoup4
   - pip install coveralls --quiet
   - conda list
@@ -76,16 +72,4 @@ script:
     - flake8 pandas_datareader
 
 after_success:
-  - |
-    if [[ ${DOCBUILD} ]]; then
-      cd docs
-      make html && make html
-      cd ..
-      doctr deploy devel --build-tags
-      if [[ -z ${TRAVIS_TAG} ]]; then
-        echo "Not a tagged build."
-      else
-        doctr deploy doc --build-tags
-      fi
-    fi
   - coveralls

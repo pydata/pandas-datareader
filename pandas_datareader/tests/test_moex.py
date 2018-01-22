@@ -1,6 +1,6 @@
 import pytest
-
 from requests.exceptions import HTTPError
+
 import pandas_datareader.data as web
 
 

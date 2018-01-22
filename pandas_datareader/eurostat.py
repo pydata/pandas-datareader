@@ -3,11 +3,12 @@ from __future__ import unicode_literals
 import pandas as pd
 import pandas.compat as compat
 
-from pandas_datareader.io.sdmx import read_sdmx, _read_sdmx_dsd
 from pandas_datareader.base import _BaseReader
+from pandas_datareader.io.sdmx import read_sdmx, _read_sdmx_dsd
 
 
 class EurostatReader(_BaseReader):
+
     """Get data for the given name from Eurostat."""
 
     _URL = 'http://www.ec.europa.eu/eurostat/SDMX/diss-web/rest'
