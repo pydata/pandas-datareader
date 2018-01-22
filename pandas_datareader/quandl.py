@@ -43,8 +43,9 @@ class QuandlReader(_DailyBaseReader):
 
     @property
     def url(self):
-        symbol = self.symbols if isinstance(self.symbols, str) \
-                              else self.symbols[0]
+        """API URL"""
+        symbol = self.symbols if isinstance(self.symbols, str) else \
+            self.symbols[0]
         mm = self._fullmatch(r"([A-Z0-9]+)(([/\.])([A-Z0-9_]+))?", symbol)
         assert mm, ("Symbol '%s' must conform to Quandl convention 'DB/SYM'" %
                     symbol)
@@ -102,6 +103,7 @@ class QuandlReader(_DailyBaseReader):
         return {}
 
     def read(self):
+        """Read data"""
         df = super(QuandlReader, self).read()
         df.rename(columns=lambda n: n.replace(' ', '')
                                      .replace('.', '')

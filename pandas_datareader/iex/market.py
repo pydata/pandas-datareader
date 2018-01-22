@@ -8,6 +8,14 @@ from pandas_datareader.iex import IEX
 
 
 class MarketReader(IEX):
+    """
+    Near real-time traded volume
+
+    Notes
+    -----
+    Market data is captured by the IEX system between approximately 7:45 a.m.
+    and 5:15 p.m. ET.
+    """
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
                  pause=0.001, session=None):
         super(MarketReader, self).__init__(symbols=symbols,
@@ -17,6 +25,7 @@ class MarketReader(IEX):
 
     @property
     def service(self):
+        """Service endpoint"""
         return "market"
 
     def _get_params(self, symbols):

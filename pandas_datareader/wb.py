@@ -146,11 +146,13 @@ class WorldBankReader(_BaseReader):
 
     @property
     def url(self):
+        """API URL"""
         countries = ';'.join(self.countries)
         return WB_API_URL + '/countries/' + countries + '/indicators/'
 
     @property
     def params(self):
+        """Parameters to use in API calls"""
         if self.freq == 'M':
             return {'date': '{0}M{1:02d}:{2}M{3:02d}'.format(self.start.year,
                     self.start.month, self.end.year, self.end.month),
@@ -444,6 +446,7 @@ def search(string='gdp.*capi', field='name', case=False, **kwargs):
 
     id : Data series indicator (for use with the ``indicator`` argument of
     ``WDI()``) e.g. NY.GNS.ICTR.GN.ZS"
+
       * name: Short description of the data series
       * source: Data collection project
       * sourceOrganization: Data collection organization

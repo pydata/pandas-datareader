@@ -28,16 +28,19 @@ class IEX(_BaseReader):
 
     @property
     def service(self):
+        """Service endpoint"""
         # This property will be overridden by the subclass
         raise NotImplementedError("IEX API service not specified.")
 
     @property
     def url(self):
+        """API URL"""
         qstring = urlencode(self._get_params(self.symbols))
         return "https://api.iextrading.com/1.0/{}?{}".format(self.service,
                                                              qstring)
 
     def read(self):
+        """Read data"""
         df = super(IEX, self).read()
         if isinstance(df, pd.DataFrame):
             df = df.squeeze()

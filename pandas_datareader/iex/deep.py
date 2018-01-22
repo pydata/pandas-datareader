@@ -9,6 +9,19 @@ from datetime import datetime
 
 
 class Deep(IEX):
+    """
+    Retrieve order book data from IEX
+
+    Notes
+    -----
+    Real-time depth of book quotations direct from IEX. Returns aggregated
+    size of resting displayed orders at a price and side. Does not indicate
+    the size or number of individual orders at any price level. Non-displayed
+    orders and non-displayed portions of reserve orders are not counted.
+
+    Also provides last trade price and size information. Routed executions
+    are not reported.
+    """
     def __init__(self, symbols=None, service=None, start=None, end=None,
                  retry_count=3, pause=0.001, session=None):
         if isinstance(symbols, str):
@@ -24,6 +37,7 @@ class Deep(IEX):
 
     @property
     def service(self):
+        """Service endpoint"""
         ss = "/" + self.sub if self.sub is not None else ""
         return "deep{}".format(ss)
 

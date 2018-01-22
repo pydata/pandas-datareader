@@ -26,6 +26,7 @@ class StooqDailyReader(_DailyBaseReader):
 
     @property
     def url(self):
+        """API URL"""
         return 'https://stooq.com/q/d/l/'
 
     def _get_params(self, symbol):

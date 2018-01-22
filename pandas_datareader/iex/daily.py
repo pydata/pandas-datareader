@@ -50,10 +50,12 @@ class IEXDailyReader(_DailyBaseReader):
 
     @property
     def url(self):
+        """API URL"""
         return 'https://api.iextrading.com/1.0/stock/market/batch'
 
     @property
     def endpoint(self):
+        """API endpoint"""
         return "chart"
 
     def _get_params(self, symbol):
@@ -83,7 +85,7 @@ class IEXDailyReader(_DailyBaseReader):
                 "Invalid date specified. Must be within past 5 years.")
 
     def read(self):
-        """read data"""
+        """Read data"""
         try:
             return self._read_one_data(self.url,
                                        self._get_params(self.symbols))

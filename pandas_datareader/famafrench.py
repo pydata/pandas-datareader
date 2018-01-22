@@ -48,6 +48,7 @@ class FamaFrenchReader(_BaseReader):
 
     @property
     def url(self):
+        """API URL"""
         return ''.join([_URL, _URL_PREFIX, self.symbols, _URL_SUFFIX])
 
     def _read_zipfile(self, url):

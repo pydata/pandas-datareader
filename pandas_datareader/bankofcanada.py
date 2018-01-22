@@ -12,6 +12,7 @@ class BankOfCanadaReader(_BaseReader):
 
     @property
     def url(self):
+        """API URL"""
         if not isinstance(self.symbols, compat.string_types):
             raise ValueError('data name must be string')
 
@@ -19,6 +20,7 @@ class BankOfCanadaReader(_BaseReader):
 
     @property
     def params(self):
+        """Parameters to use in API calls"""
         return {'start_date': self.start.strftime('%Y-%m-%d'),
                 'end_date': self.end.strftime('%Y-%m-%d')}
 

@@ -52,6 +52,7 @@ class MoexReader(_DailyBaseReader):
 
     @property
     def url(self):
+        """API URL"""
         return self.__url_data.format(
             engine=self.__engine,
             market=self.__market,

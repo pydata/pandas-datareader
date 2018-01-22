@@ -62,11 +62,13 @@ class _BaseReader(object):
 
     @property
     def url(self):
+        """API URL"""
         # must be overridden in subclass
         raise NotImplementedError
 
     @property
     def params(self):
+        """Parameters to use in API calls"""
         return None
 
     def read(self):
