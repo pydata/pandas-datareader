@@ -50,8 +50,7 @@ Enhancements
 - A new data connector for data provided by the Bank of Canada was
   introduced. (:issue:`440`)
 
-- A new data connector for stock pricing data and financial reports
-  provided by Morningstar was introduced.
+- A new data connector for stock pricing data provided by Morningstar was introduced.
 
 .. _whatsnew_060.api_breaking:
 

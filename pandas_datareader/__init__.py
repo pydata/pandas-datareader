@@ -23,6 +23,4 @@ __all__ = ['__version__', 'get_components_yahoo', 'get_data_enigma',
            'get_nasdaq_symbols', 'get_mstar_financials_keyratios',
            'get_nasdaq_symbols', 'get_data_quandl', 'get_data_moex',
            'get_data_fred', 'get_dailysummary_iex', 'get_data_morningstar',
-           'get_data_stooq', 'get_mstar_financials_balance',
-           'get_mstar_financials_cashflows', 'get_mstar_financials_income',
-           'DataReader', 'Options']
+           'get_data_stooq','DataReader', 'Options']

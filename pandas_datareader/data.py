@@ -4,6 +4,9 @@ Module contains tools for collecting data from various remote sources
 
 import warnings
 
+from pandas_datareader.mstar.financials import BalanceSheetReader, \
+    CashflowStatementReader, IncomeStatementReader, KeyRatiosReader
+
 from pandas_datareader.bankofcanada import BankOfCanadaReader
 from pandas_datareader.edgar import EdgarIndexReader
 from pandas_datareader.enigma import EnigmaReader
@@ -21,8 +24,6 @@ from pandas_datareader.iex.tops import LastReader as IEXLasts, \
     TopsReader as IEXTops
 from pandas_datareader.moex import MoexReader
 from pandas_datareader.mstar.daily import MorningstarDailyReader
-from pandas_datareader.mstar.financials import BalanceSheetReader, \
-    CashflowStatementReader, IncomeStatementReader, KeyRatiosReader
 from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
 from pandas_datareader.oecd import OECDReader
 from pandas_datareader.quandl import QuandlReader
@@ -385,6 +386,11 @@ def DataReader(name, data_source=None, start=None, end=None,
         return MoexReader(symbols=name, start=start, end=end,
                           retry_count=retry_count, pause=pause,
                           session=session).read()
+    elif data_source == "morningstar":
+        return MorningstarDailyReader(symbols=name, start=start, end=end,
+                                      retry_count=retry_count, pause=pause,
+                                      session=session, interval="d").read()
+
     else:
         msg = "data_source=%r is not implemented" % data_source
         raise NotImplementedError(msg)
