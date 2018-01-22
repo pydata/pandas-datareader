@@ -7,6 +7,10 @@ import pandas_datareader.data as web
 
 class TestIEXDaily(object):
 
+    @classmethod
+    def setup_class(cls):
+        pytest.importorskip("lxml")
+
     @property
     def start(self):
         return datetime(2015, 2, 9)
@@ -27,7 +31,7 @@ class TestIEXDaily(object):
         start = datetime(2010, 1, 5)
         end = datetime(2017, 5, 24)
         with pytest.raises(Exception):
-            df = web.DataReader(["AAPL", "TSLA"], "iex", start, end)
+            web.DataReader(["AAPL", "TSLA"], "iex", start, end)
 
     def test_single_symbol(self):
         df = web.DataReader("AAPL", "iex", self.start, self.end)
@@ -72,4 +76,3 @@ class TestIEXDaily(object):
         expected4 = t.loc["2017-05-24"]
         assert expected4["close"] == 310.22
         assert expected4["high"] == 311.0
-

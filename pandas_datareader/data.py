@@ -290,9 +290,9 @@ def DataReader(name, data_source=None, start=None, end=None,
 
     elif data_source == "iex":
         return IEXDailyReader(symbols=name, start=start, end=end,
-                                chunksize=25,
-                                retry_count=retry_count, pause=pause,
-                                session=session).read()
+                              chunksize=25,
+                              retry_count=retry_count, pause=pause,
+                              session=session).read()
 
     elif data_source == "iex-tops":
         return IEXTops(symbols=name, start=start, end=end,

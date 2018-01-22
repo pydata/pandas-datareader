@@ -43,8 +43,10 @@ class IEXDailyReader(_DailyBaseReader):
 
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
                  pause=0.35, session=None, chunksize=25):
-        super(IEXDailyReader, self).__init__(symbols=symbols, start=start, end=end,
-                                             retry_count=retry_count, pause=pause, session=session, chunksize=chunksize)
+        super(IEXDailyReader, self).__init__(symbols=symbols, start=start,
+                                             end=end, retry_count=retry_count,
+                                             pause=pause, session=session,
+                                             chunksize=chunksize)
 
     @property
     def url(self):
@@ -83,7 +85,8 @@ class IEXDailyReader(_DailyBaseReader):
     def read(self):
         """read data"""
         try:
-            return self._read_one_data(self.url, self._get_params(self.symbols))
+            return self._read_one_data(self.url,
+                                       self._get_params(self.symbols))
         finally:
             self.close()
 
@@ -103,8 +106,8 @@ class IEXDailyReader(_DailyBaseReader):
             df = df[values]
             sstart = self.start.strftime('%Y-%m-%d')
             send = self.end.strftime('%Y-%m-%d')
-            df= df.loc[sstart:send]
-            result.update({symbol:df})
+            df = df.loc[sstart:send]
+            result.update({symbol: df})
         if len(result) > 1:
             return result
         return result[self.symbols]
