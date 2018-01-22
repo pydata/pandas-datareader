@@ -63,6 +63,7 @@ class EnigmaReader(_BaseReader):
         self._retry_delay = pause
 
     def read(self):
+        """Read data"""
         try:
             return self._read()
         finally:

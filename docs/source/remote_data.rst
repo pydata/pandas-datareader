@@ -39,7 +39,6 @@ Currently the following sources are supported:
     - :ref:`Eurostat<remote_data.eurostat>`
     - :ref:`Thrift Savings Plan<remote_data.tsp>`
     - :ref:`Nasdaq Trader symbol definitions<remote_data.nasdaq_symbols>`
-    - :ref:`IEX<remote_data.iex>`
     - :ref:`Stooq<remote_data.stooq>`
     - :ref:`MOEX<remote_data.moex>`
 
@@ -70,7 +69,9 @@ Google Finance
 IEX
 ===
 
-Historical stock prices from `IEX <https://iextrading.com/developer/>`__, 
+The Investors Exchange (IEX) provides a wide range of data through an
+`API <https://iextrading.com/developer/docs/>`__.  Historical stock
+prices are available for up to 5 years:
 
 .. ipython:: python
 
@@ -81,8 +82,16 @@ Historical stock prices from `IEX <https://iextrading.com/developer/>`__,
     f = web.DataReader('F', 'iex', start, end)
     f.loc['2015-02-09']
 
+There are additional interfaces to this API that are
+directly exposed: tops (`'iex-tops'`) and last (`'iex-lasts'`).
+A third interface to the deep API is exposed through
+`Deep` class or the `get_iex_book` function.
 
-Prices are available up for the past 5 years.
+.. ipython:: python
+
+    import pandas_datareader.data as web
+    f = web.DataReader('gs', 'iex-tops')
+    f[:10]
 
 .. _remote_data.enigma:
 
@@ -421,20 +430,6 @@ available. More information on the `field <http://www.nasdaqtrader.com/trader.as
         NextShares                                                      False
         Name: IBM, dtype: object
 
-
-.. _remote_data.iex:
-
-The Investors Exchange (IEX) provides a wide range of data through an
-`API <https://iextrading.com/developer/docs/>`__. There are two interfaces
-to this API that are directly exposed: tops (`'iex-tops'`) and last
-(`'iex-lasts'`).  A third interface to the deep API is exposed through
-`IEXDeep` class or the `get_iex_book` function.
-
-.. ipython:: python
-
-    import pandas_datareader.data as web
-    f = web.DataReader('gs', 'iex-tops')
-    f[:10]
 
 .. _remote_data.stooq:
 

@@ -39,6 +39,7 @@ class TSPReader(_BaseReader):
 
     @property
     def url(self):
+        """API URL"""
         return 'https://www.tsp.gov/InvestmentFunds/FundPerformance/index.html'
 
     def read(self):
@@ -49,6 +50,7 @@ class TSPReader(_BaseReader):
 
     @property
     def params(self):
+        """Parameters to use in API calls"""
         return {'startdate': self.start.strftime('%m/%d/%Y'),
                 'enddate': self.end.strftime('%m/%d/%Y'),
                 'fundgroup': self.symbols,

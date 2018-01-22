@@ -1,6 +1,12 @@
 The Investors Exchange (IEX)
 ----------------------------
 
+.. py:module:: pandas_datareader.iex.daily
+
+.. autoclass:: IEXDailyReader
+   :members:
+   :inherited-members:
+
 .. py:module:: pandas_datareader.iex.market
 
 .. autoclass:: MarketReader

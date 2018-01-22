@@ -14,6 +14,9 @@ from pandas_datareader.iex import IEX
 
 
 class DailySummaryReader(IEX):
+    """
+    Daily statistics from IEX for a day or month
+    """
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
                  pause=0.001, session=None):
         import warnings
@@ -27,6 +30,7 @@ class DailySummaryReader(IEX):
 
     @property
     def service(self):
+        """Service endpoint"""
         return "stats/historical/daily"
 
     def _get_params(self, symbols):
@@ -54,6 +58,7 @@ class DailySummaryReader(IEX):
 
 
 class MonthlySummaryReader(IEX):
+    """Monthly statistics from IEX"""
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
                  pause=0.001, session=None):
         self.curr_date = start
@@ -67,6 +72,7 @@ class MonthlySummaryReader(IEX):
 
     @property
     def service(self):
+        """Service endpoint"""
         return "stats/historical"
 
     def _get_params(self, symbols):
@@ -111,6 +117,9 @@ class MonthlySummaryReader(IEX):
 
 
 class RecordsReader(IEX):
+    """
+    Total matched volume information from IEX
+    """
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
                  pause=0.001, session=None):
         super(RecordsReader, self).__init__(symbols=symbols,
@@ -120,6 +129,7 @@ class RecordsReader(IEX):
 
     @property
     def service(self):
+        """Service endpoint"""
         return "stats/records"
 
     def _get_params(self, symbols):
@@ -128,6 +138,23 @@ class RecordsReader(IEX):
 
 
 class RecentReader(IEX):
+    """Recent trading volume from IEX
+
+    Notes
+    -----
+    Returns 6 fields for each day:
+
+      * date: refers to the trading day.
+      * volume: refers to executions received from order routed to away
+        trading centers.
+      * routedVolume: refers to single counted shares matched from executions
+        on IEX.
+      * marketShare: refers to IEX's percentage of total US Equity market
+        volume.
+      * isHalfday: will be true if the trading day is a half day.
+      * litVolume: refers to the number of lit shares traded on IEX
+        (single-counted).
+    """
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
                  pause=0.001, session=None):
         super(RecentReader, self).__init__(symbols=symbols,
@@ -137,6 +164,7 @@ class RecentReader(IEX):
 
     @property
     def service(self):
+        """Service endpoint"""
         return "stats/recent"
 
     def _get_params(self, symbols):

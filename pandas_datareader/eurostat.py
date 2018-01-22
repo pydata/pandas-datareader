@@ -14,6 +14,7 @@ class EurostatReader(_BaseReader):
 
     @property
     def url(self):
+        """API URL"""
         if not isinstance(self.symbols, compat.string_types):
             raise ValueError('data name must be string')
 
@@ -23,6 +24,7 @@ class EurostatReader(_BaseReader):
 
     @property
     def dsd_url(self):
+        """API DSD URL"""
         if not isinstance(self.symbols, compat.string_types):
             raise ValueError('data name must be string')
 

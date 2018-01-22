@@ -1,6 +1,6 @@
 .. _whatsnew_060:
 
-v0.6.0 (January TODO, 2018)
+v0.6.0 (January 23, 2018)
 ---------------------------
 
 This is a major release from 0.5.0. We recommend that all users upgrade.
@@ -10,16 +10,30 @@ This is a major release from 0.5.0. We recommend that all users upgrade.
   Yahoo!, Google Options, Google Quotes and EDGAR have been immediately
   deprecated.
 
+.. note::
+
+  Google finance is still functioning for historical price data,
+  although there are frequent reports of failures.  Failure is frequently
+  encountered when bulk downloading historical price data.
+
 Highlights include:
 
+- Immediate deprecation of Yahoo!, Google Options and Quotes and EDGAR. The
+  end points behind these APIs have radically changed and the existing readers
+  require complete rewrites. In the case of most Yahoo! data the endpoints
+  have been removed.  PDR would like to restore these features, and pull
+  requests are welcome.
+
+- A new connector for IEX daily price data was introduced (:issue:`465`).
+
+- A new connector for IEX the majority of the IEX API was introduced
+  (:issue:`446`).
+
 - A new data connector for stock index data provided by Stooq was
-  introduced. (:issue:`447`)
+  introduced (:issue:`447`).
 
 - A new data connector for data provided by the Bank of Canada was
-  introduced. (:issue:`440`)
-
-- Immediate deprecation of Yahoo!, Google Options and Quotes and EDGAR.
-
+  introduced (:issue:`440`).
 
 .. contents:: What's new in v0.6.0
     :local:

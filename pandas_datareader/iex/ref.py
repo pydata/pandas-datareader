@@ -8,6 +8,14 @@ from pandas_datareader.iex import IEX
 
 
 class SymbolsReader(IEX):
+    """
+    Symbols available for trading on IEX
+
+    Notes
+    -----
+    Returns symbols IEX supports for trading. Updated daily as of 7:45 a.m.
+    ET.
+    """
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
                  pause=0.001, session=None):
         super(SymbolsReader, self).__init__(symbols=symbols,
@@ -17,6 +25,7 @@ class SymbolsReader(IEX):
 
     @property
     def service(self):
+        """Service endpoint"""
         return "ref-data/symbols"
 
     def _get_params(self, symbols):

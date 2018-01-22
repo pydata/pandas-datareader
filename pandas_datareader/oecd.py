@@ -12,6 +12,7 @@ class OECDReader(_BaseReader):
 
     @property
     def url(self):
+        """API URL"""
         url = 'http://stats.oecd.org/SDMX-JSON/data'
 
         if not isinstance(self.symbols, compat.string_types):

@@ -20,6 +20,7 @@ class YahooQuotesReader(_BaseReader):
 
     @property
     def params(self):
+        """Parameters to use in API calls"""
         if isinstance(self.symbols, compat.string_types):
             sym_list = self.symbols
         else:

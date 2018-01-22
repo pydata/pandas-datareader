@@ -7,20 +7,22 @@ from pandas_datareader.base import _BaseReader
 class FredReader(_BaseReader):
     """
     Get data for the given name from the St. Louis FED (FRED).
-    Date format is datetime
-
-    Returns a DataFrame.
-
-    If multiple names are passed for "series" then the index of the
-    DataFrame is the outer join of the indicies of each series.
     """
 
     @property
     def url(self):
+        """API URL"""
         return "https://fred.stlouisfed.org/graph/fredgraph.csv"
 
     def read(self):
-        """Read data"""
+        """Read data
+
+        Returns
+        -------
+        data : DataFrame
+            If multiple names are passed for "series" then the index of the
+            DataFrame is the outer join of the indicies of each series.
+        """
         try:
             return self._read()
         finally:
@@ -35,6 +37,7 @@ class FredReader(_BaseReader):
         urls = ["{}?id={}".format(self.url, n) for n in names]
 
         def fetch_data(url, name):
+            """Utillity to fetch data"""
             resp = self._read_url_as_StringIO(url)
             data = read_csv(resp, index_col=0, parse_dates=True,
                             header=None, skiprows=1, names=["DATE", name],
