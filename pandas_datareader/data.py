@@ -9,20 +9,21 @@ from pandas_datareader.google.quotes import GoogleQuotesReader
 
 from pandas_datareader.yahoo.daily import YahooDailyReader
 from pandas_datareader.yahoo.quotes import YahooQuotesReader
-from pandas_datareader.yahoo.actions import YahooActionReader
+from pandas_datareader.yahoo.actions import (YahooActionReader, YahooDivReader)
 from pandas_datareader.yahoo.components import _get_data as get_components_yahoo  # noqa
 from pandas_datareader.yahoo.options import Options as YahooOptions
 from pandas_datareader.google.options import Options as GoogleOptions
 from pandas_datareader.mstar.daily import MorningstarDailyReader
-from pandas_datareader.mstar.financials import IncomeStatementReader, BalanceSheetReader, CashflowStatementReader, KeyRatiosReader
+from pandas_datareader.mstar.financials import IncomeStatementReader, \
+    BalanceSheetReader, CashflowStatementReader, KeyRatiosReader
 from pandas_datareader.eurostat import EurostatReader
 from pandas_datareader.fred import FredReader
 from pandas_datareader.famafrench import FamaFrenchReader
 from pandas_datareader.oecd import OECDReader
 from pandas_datareader.edgar import EdgarIndexReader
 from pandas_datareader.enigma import EnigmaReader
-from pandas_datareader.oanda import get_oanda_currency_historical_rates
 from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
+from pandas_datareader.quandl import QuandlReader
 
 
 def get_data_fred(*args, **kwargs):
@@ -52,6 +53,9 @@ def get_mstar_financials_balance(*args, **kwargs):
 def get_mstar_financials_cashflows(*args, **kwargs):
     return CashflowStatementReader(*args, **kwargs).read()
 
+def get_mstar_financials_keyratios(*args, **kwargs):
+    return KeyRatiosReader(*args, **kwargs).read()
+
 def get_data_enigma(*args, **kwargs):
     return EnigmaReader(*args, **kwargs).read()
 
@@ -66,6 +70,10 @@ def get_quote_yahoo(*args, **kwargs):
 
 def get_quote_google(*args, **kwargs):
     return GoogleQuotesReader(*args, **kwargs).read()
+
+
+def get_data_quandl(*args, **kwargs):
+    return QuandlReader(*args, **kwargs).read()
 
 
 def DataReader(name, data_source=None, start=None, end=None,
@@ -102,7 +110,8 @@ def DataReader(name, data_source=None, start=None, end=None,
     # Data from Yahoo! Finance
     gs = DataReader("GS", "yahoo")
 
-    # Corporate Actions (Dividend and Split Data) with ex-dates from Yahoo! Finance
+    # Corporate Actions (Dividend and Split Data)
+    # with ex-dates from Yahoo! Finance
     gs = DataReader("GS", "yahoo-actions")
 
     # Data from Google Finance
@@ -132,10 +141,10 @@ def DataReader(name, data_source=None, start=None, end=None,
                                  retry_count=retry_count, pause=pause,
                                  session=session).read()
     elif data_source == "yahoo-dividends":
-        return YahooDailyReader(symbols=name, start=start, end=end,
-                                adjust_price=False, chunksize=25,
-                                retry_count=retry_count, pause=pause,
-                                session=session, interval='v').read()
+        return YahooDivReader(symbols=name, start=start, end=end,
+                              adjust_price=False, chunksize=25,
+                              retry_count=retry_count, pause=pause,
+                              session=session, interval='d').read()
 
     elif data_source == "google":
         return GoogleDailyReader(symbols=name, start=start, end=end,
@@ -144,7 +153,7 @@ def DataReader(name, data_source=None, start=None, end=None,
                                  session=session).read()
 
     elif data_source == "enigma":
-        return EnigmaReader(datapath=name, api_key=access_key).read()
+        return EnigmaReader(dataset_id=name, api_key=access_key).read()
 
     elif data_source == "fred":
         return FredReader(symbols=name, start=start, end=end,
@@ -168,17 +177,15 @@ def DataReader(name, data_source=None, start=None, end=None,
         return EdgarIndexReader(symbols=name, start=start, end=end,
                                 retry_count=retry_count, pause=pause,
                                 session=session).read()
-    elif data_source == "oanda":
-        return get_oanda_currency_historical_rates(
-            start, end,
-            quote_currency="USD", base_currency=name,
-            reversed=True, session=session
-        )
     elif data_source == 'nasdaq':
         if name != 'symbols':
             raise ValueError("Only the string 'symbols' is supported for "
                              "Nasdaq, not %r" % (name,))
         return get_nasdaq_symbols(retry_count=retry_count, pause=pause)
+    elif data_source == "quandl":
+        return QuandlReader(symbols=name, start=start, end=end,
+                            retry_count=retry_count, pause=pause,
+                            session=session).read()
     else:
         msg = "data_source=%r is not implemented" % data_source
         raise NotImplementedError(msg)

@@ -48,7 +48,11 @@ class DailySummaryReader(IEX):
         dfs = []
         for date in (self.start + timedelta(n) for n in range(tlen.days)):
             self.curr_date = date
+<<<<<<< HEAD
             tdf = super(DailySummaryReader, self).read()
+=======
+            tdf = super(IEX, self).read()
+>>>>>>> Added Morningstar Tests
             dfs.append(tdf)
         return pd.concat(dfs)
 
@@ -99,7 +103,11 @@ class MonthlySummaryReader(IEX):
 
         for date in lrange:
             self.curr_date = date
+<<<<<<< HEAD
             tdf = super(MonthlySummaryReader, self).read()
+=======
+            tdf = super(IEX, self).read()
+>>>>>>> Added Morningstar Tests
 
             # We may not return data if this was a weekend/holiday:
             if not tdf.empty:

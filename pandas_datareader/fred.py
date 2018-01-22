@@ -1,5 +1,5 @@
-from pandas.core.common import is_list_like
 from pandas import concat, read_csv
+from pandas.core.common import is_list_like
 
 from pandas_datareader.base import _BaseReader
 

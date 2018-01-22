@@ -2,6 +2,10 @@ import json
 
 import pandas as pd
 from pandas.io.common import urlencode
+<<<<<<< HEAD
+=======
+
+>>>>>>> Added Morningstar Tests
 from pandas_datareader.base import _BaseReader
 
 

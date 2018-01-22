@@ -1,9 +1,9 @@
 import os
 import time
 
-from pandas.compat import StringIO
-import pandas.compat as compat
 import pandas as pd
+import pandas.compat as compat
+from pandas.compat import StringIO
 
 from pandas_datareader.base import _BaseReader
 

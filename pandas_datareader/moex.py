@@ -9,6 +9,7 @@ from pandas_datareader.base import _DailyBaseReader
 
 
 class MoexReader(_DailyBaseReader):
+<<<<<<< HEAD
     """
     Returns DataFrame of historical stock prices from symbols from Moex
 
@@ -21,6 +22,23 @@ class MoexReader(_DailyBaseReader):
         Starting date, timestamp. Parses many different kind of date
         representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
     end : str, (defaults to today)
+=======
+
+    """
+    Returns DataFrame of historical stock prices from symbols, over date
+    range, start to end. To avoid being penalized by Moex servers,
+    pauses between downloading 'chunks' of symbols can be specified.
+
+    Parameters
+    ----------
+    symbols : string, array-like object (list, tuple, Series), or DataFrame
+        Single stock symbol (ticker), array-like object of symbols or
+        DataFrame with index containing stock symbols.
+    start : string, (defaults to '1/1/2010')
+        Starting date, timestamp. Parses many different kind of date
+        representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
+    end : string, (defaults to today)
+>>>>>>> Added Morningstar Tests
         Ending date, timestamp. Same format as starting date.
     retry_count : int, default 3
         Number of times to retry query request.
@@ -31,11 +49,14 @@ class MoexReader(_DailyBaseReader):
         Number of symbols to download consecutively before intiating pause.
     session : Session, default None
         requests.sessions.Session instance to be used
+<<<<<<< HEAD
 
     Notes
     -----
     To avoid being penalized by Moex servers, pauses between downloading
     'chunks' of symbols can be specified.
+=======
+>>>>>>> Added Morningstar Tests
     """
 
     def __init__(self, *args, **kwargs):
@@ -103,6 +124,7 @@ class MoexReader(_DailyBaseReader):
         service = self.__class__.__name__
         raise IOError("{} request returned no metadata: {}\n"
                       "Typo in security symbol `{}`?".format(
+<<<<<<< HEAD
             service,
             self.__url_metadata.format(symbol=self.symbols),
             self.symbols
@@ -111,6 +133,16 @@ class MoexReader(_DailyBaseReader):
 
     def read(self):
         """Read data"""
+=======
+                        service,
+                        self.__url_metadata.format(symbol=self.symbols),
+                        self.symbols
+                      )
+                     )
+
+    def read(self):
+        """ read data """
+>>>>>>> Added Morningstar Tests
         try:
             self.__market, self.__engine = self._get_metadata()
 
@@ -130,7 +162,11 @@ class MoexReader(_DailyBaseReader):
 
                 if start >= self.end or start >= dt.date.today():
                     break
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> Added Morningstar Tests
                 params = self._get_params(start_str)
                 strings_out = self._read_url_as_String(self.url, params) \
                                   .splitlines()[2:]

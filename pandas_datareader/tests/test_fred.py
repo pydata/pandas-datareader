@@ -1,13 +1,12 @@
 from datetime import datetime
 
-import pytest
-
 import numpy as np
 import pandas as pd
 import pandas.util.testing as tm
-import pandas_datareader.data as web
-
+import pytest
 from pandas import DataFrame
+
+import pandas_datareader.data as web
 from pandas_datareader._utils import RemoteDataError
 
 
