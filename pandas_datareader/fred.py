@@ -20,7 +20,6 @@ class FredReader(_BaseReader):
         return "https://fred.stlouisfed.org/graph/fredgraph.csv"
 
     def read(self):
-        """Read data"""
         try:
             return self._read()
         finally:

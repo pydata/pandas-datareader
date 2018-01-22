@@ -20,11 +20,7 @@ class TestIEX(object):
     def test_historical(self):
         df = get_summary_iex(start=datetime(2017, 4, 1),
                              end=datetime(2017, 4, 30))
-<<<<<<< HEAD
-        assert df.T["averageDailyVolume"].iloc[0] == 137650908.9
-=======
         assert df["averageDailyVolume"].iloc[0] == 137650908.9
->>>>>>> Added Morningstar Tests
 
     def test_false_ticker(self):
         df = get_last_iex("INVALID TICKER")
@@ -49,11 +45,4 @@ class TestIEX(object):
 
     def test_deep(self):
         dob = get_iex_book('GS', service='book')
-<<<<<<< HEAD
-        if dob:
-            assert 'GS' in dob
-        else:
-            pytest.xfail(reason='Can only get Book when market open')
-=======
         assert 'GS' in dob
->>>>>>> Added Morningstar Tests

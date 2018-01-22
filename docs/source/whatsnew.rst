@@ -18,7 +18,6 @@ What's New
 
 These are new features and improvements of note in each release.
 
-.. include:: whatsnew/v0.6.0.txt
 .. include:: whatsnew/v0.5.0.txt
 .. include:: whatsnew/v0.4.0.txt
 .. include:: whatsnew/v0.3.0.txt

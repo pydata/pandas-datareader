@@ -1,13 +1,11 @@
-import warnings
 import datetime as dt
-import numpy as np
 import json
+import warnings
 
-from pandas import to_datetime
-from pandas import concat, DatetimeIndex, Series, MultiIndex
+import numpy as np
+from pandas import to_datetime, concat, DatetimeIndex, Series, MultiIndex, DataFrame
 from pandas.io.json import read_json
 from pandas.tseries.offsets import MonthEnd
-from pandas import DataFrame
 
 from pandas_datareader._utils import RemoteDataError
 from pandas_datareader.base import _OptionBaseReader
@@ -161,8 +159,8 @@ class Options(_OptionBaseReader):
         calls = _parse_options_data(calls)
         puts = _parse_options_data(puts)
 
-        calls = self._process_data(calls)
-        puts = self._process_data(puts)
+        calls = self._process_data(calls, 'call')
+        puts = self._process_data(puts, 'put')
 
         return {'calls': calls, 'puts': puts}
 

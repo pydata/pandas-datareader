@@ -1,11 +1,6 @@
 import pytest
-<<<<<<< HEAD
-
-from requests.exceptions import HTTPError
-=======
 from requests.exceptions import HTTPError
 
->>>>>>> Added Morningstar Tests
 import pandas_datareader.data as web
 
 

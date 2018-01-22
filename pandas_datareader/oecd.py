@@ -6,6 +6,7 @@ from pandas_datareader.io import read_jsdmx
 
 
 class OECDReader(_BaseReader):
+
     """Get data for the given name from OECD."""
 
     _format = 'json'
