@@ -11,9 +11,6 @@ from pandas_datareader.data import BalanceSheetReader, \
 
 class TestMorningstarFinancials(object):
 
-    @classmethod
-    def setup_class(cls):
-        pytest.skip('Skip all Morningstar tests.')
 
     @skip_on_exception(RemoteDataError)
     def multi_symbol_keyratios(self):

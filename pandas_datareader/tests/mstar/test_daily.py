@@ -12,9 +12,6 @@ from pandas_datareader.data import MorningstarDailyReader
 
 class TestMorningstarDaily(object):
 
-    @classmethod
-    def setup_class(cls):
-        pytest.skip('Skip all Morningstar tests.')
 
     @skip_on_exception(RemoteDataError)
     def invalid_date(self):
@@ -24,14 +21,17 @@ class TestMorningstarDaily(object):
             web.DataReader("MSFT", 'morningstar', start="2001-02-02",
                            end="1999-03-03")
 
+    @skip_on_exception(RemoteDataError)
     def invalid_partial_multi_symbols(self):
         df = web.DataReader(['MSFT', "21##", ""], "morningstar")
         assert (len(df.Close.keys()) == 1)
 
+    @skip_on_exception(RemoteDataError)
     def invalid_multi_symbols(self):
         with pytest.raises(IndexError):
             web.DataReader(["#$@", "21122"], "morningstar")
 
+    @skip_on_exception(RemoteDataError)
     def invalid_symbol_type(self):
         with pytest.raises(TypeError):
             web.DataReader([12332], data_source='morningstar')
@@ -88,6 +88,7 @@ class TestMorningstarDaily(object):
 
         assert all([type(i) == float for i in df.Close.values[0:3]])
 
+    @skip_on_exception(RemoteDataError)
     def incl_dividend_column_multi(self):
         df = web.get_data_morningstar(symbols=['XOM', 'MSFT'],
                                       start='2013-01-01',
@@ -95,12 +96,14 @@ class TestMorningstarDaily(object):
 
         assert ("isDividend" in df.keys())
 
+    @skip_on_exception(RemoteDataError)
     def incl_splits_column_multi(self):
         df = web.get_data_morningstar(symbols=['XOM', 'MSFT'],
                                       start='2013-01-01',
                                       end='2013-03-04', incl_dividends=True)
         assert ("isSplit" in df.keys())
 
+    @skip_on_exception(RemoteDataError)
     def excl_volume_column_multi(self):
         df = web.get_data_morningstar(symbols=["XOM", "MSFT"],
                                       start='2013-01-01',
