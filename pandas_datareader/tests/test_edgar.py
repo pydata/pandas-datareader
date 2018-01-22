@@ -1,8 +1,9 @@
-import pytest
-
 import pandas as pd
 import pandas.util.testing as tm
+import pytest
+
 import pandas_datareader.data as web
+from pandas_datareader.exceptions import ImmediateDeprecationError
 
 
 class TestEdgarIndex(object):
@@ -12,6 +13,10 @@ class TestEdgarIndex(object):
         # As of December 31, SEC has disabled ftp access to EDGAR.
         # Disabling tests until re-write.
         pytest.skip("Disabling tests until re-write.")
+
+    def test_raises(self):
+        with pytest.raises(ImmediateDeprecationError):
+            web.DataReader('full', 'edgar-index')
 
     def test_get_full_index(self):
         ed = web.DataReader('full', 'edgar-index')

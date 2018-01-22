@@ -1,8 +1,13 @@
 from pandas_datareader.base import _DailyBaseReader
+from pandas_datareader.exceptions import UnstableAPIWarning
+
+UNSTABLE_WARNING = """
+The Google Finance API has not been stable since late 2017. Requests seem
+to fail at random. Failure is especially common when bulk downloading.
+"""
 
 
 class GoogleDailyReader(_DailyBaseReader):
-
     """
     Returns DataFrame/Panel of historical stock prices from symbols, over date
     range, start to end. To avoid being penalized by Google Finance servers,
@@ -28,6 +33,14 @@ class GoogleDailyReader(_DailyBaseReader):
     session : Session, default None
         requests.sessions.Session instance to be used
     """
+
+    def __init__(self, symbols=None, start=None, end=None, retry_count=3,
+                 pause=0.001, session=None, chunksize=25):
+        import warnings
+        warnings.warn(UNSTABLE_WARNING, UnstableAPIWarning)
+        super(GoogleDailyReader, self).__init__(symbols, start, end,
+                                                retry_count, pause, session,
+                                                chunksize)
 
     @property
     def url(self):

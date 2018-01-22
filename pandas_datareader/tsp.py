@@ -27,8 +27,8 @@ class TSPReader(_BaseReader):
     """
 
     def __init__(self,
-                 symbols=['Linc', 'L2020', 'L2030', 'L2040',
-                          'L2050', 'G', 'F', 'C', 'S', 'I'],
+                 symbols=('Linc', 'L2020', 'L2030', 'L2040',
+                          'L2050', 'G', 'F', 'C', 'S', 'I'),
                  start=None, end=None, retry_count=3, pause=0.001,
                  session=None):
         super(TSPReader, self).__init__(symbols=symbols,

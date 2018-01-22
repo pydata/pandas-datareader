@@ -1,17 +1,19 @@
 from datetime import datetime
-from pandas_datareader._utils import RemoteDataError
 
-import pytest
 import numpy as np
 import pandas as pd
 import pandas.util.testing as tm
+import pytest
+
 import pandas_datareader.data as web
+from pandas_datareader._utils import RemoteDataError
 
 
 class TestOECD(object):
 
+    @pytest.mark.xfail(reason='Incorrect URL')
     def test_get_un_den(self):
-        df = web.DataReader('UN_DEN', 'oecd', start=datetime(1960, 1, 1),
+        df = web.DataReader('TUD', 'oecd', start=datetime(1960, 1, 1),
                             end=datetime(2012, 1, 1))
 
         au = [50.17292785, 49.47181009, 49.52106174, 49.16341327,
@@ -70,7 +72,7 @@ class TestOECD(object):
                             end=datetime(2012, 1, 1))
 
         jp = np.array([8351000, 6790000, 8611000, 6219000,
-                      8368000], dtype=float)
+                       8368000], dtype=float)
         us = np.array([175702309, 160507417, 164079732, 167600277,
                        171320408], dtype=float)
         index = pd.date_range('2008-01-01', '2012-01-01', freq='AS',

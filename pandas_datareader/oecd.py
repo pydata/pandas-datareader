@@ -1,8 +1,8 @@
 import pandas as pd
 import pandas.compat as compat
 
-from pandas_datareader.io import read_jsdmx
 from pandas_datareader.base import _BaseReader
+from pandas_datareader.io import read_jsdmx
 
 
 class OECDReader(_BaseReader):
@@ -26,7 +26,9 @@ class OECDReader(_BaseReader):
         df = read_jsdmx(out)
         try:
             idx_name = df.index.name  # hack for pandas 0.16.2
-            df.index = pd.to_datetime(df.index)
+            df.index = pd.to_datetime(df.index, errors='ignore')
+            for col in df:
+                df[col] = pd.to_numeric(df[col], errors='ignore')
             df = df.sort_index()
             df = df.truncate(self.start, self.end)
             df.index.name = idx_name

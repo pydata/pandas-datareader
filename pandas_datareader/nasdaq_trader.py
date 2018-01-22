@@ -1,10 +1,11 @@
-from ftplib import FTP, all_errors
-from pandas import read_csv
-from pandas_datareader._utils import RemoteDataError
-from pandas.compat import StringIO
-
 import time
 import warnings
+from ftplib import FTP, all_errors
+
+from pandas import read_csv
+from pandas.compat import StringIO
+
+from pandas_datareader._utils import RemoteDataError
 
 _NASDAQ_TICKER_LOC = '/SymbolDirectory/nasdaqtraded.txt'
 _NASDAQ_FTP_SERVER = 'ftp.nasdaqtrader.com'
@@ -38,14 +39,14 @@ def _download_nasdaq_symbols(timeout):
         ftp_session = FTP(_NASDAQ_FTP_SERVER, timeout=timeout)
         ftp_session.login()
     except all_errors as err:
-        raise RemoteDataError('Error connecting to %r: $s' %
+        raise RemoteDataError('Error connecting to %r: %s' %
                               (_NASDAQ_FTP_SERVER, err))
 
     lines = []
     try:
         ftp_session.retrlines('RETR ' + _NASDAQ_TICKER_LOC, lines.append)
     except all_errors as err:
-        raise RemoteDataError('Error downloading from %r: $s' %
+        raise RemoteDataError('Error downloading from %r: %s' %
                               (_NASDAQ_FTP_SERVER, err))
     finally:
         ftp_session.close()

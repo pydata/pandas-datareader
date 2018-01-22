@@ -1,14 +1,12 @@
 import time
 import warnings
+
 import numpy as np
-
-import requests
-
 import pandas.compat as compat
-from pandas import Panel, DataFrame
-from pandas import read_csv
-from pandas.io.common import urlencode
+import requests
+from pandas import Panel, DataFrame, read_csv
 from pandas.compat import StringIO, bytes_to_str
+from pandas.io.common import urlencode
 
 from pandas_datareader._utils import (RemoteDataError, SymbolWarning,
                                       _sanitize_dates, _init_session)
@@ -17,28 +15,31 @@ from pandas_datareader._utils import (RemoteDataError, SymbolWarning,
 class _BaseReader(object):
 
     """
-
     Parameters
     ----------
-        sym : string with a single Single stock symbol (ticker).
+        symbols : {str, List[str]}
+            String symbol of like of symbols
         start : string, (defaults to '1/1/2010')
-                Starting date, timestamp. Parses many different kind of date
-                representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
+            Starting date, timestamp. Parses many different kind of date
+            representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
         end : string, (defaults to today)
-                Ending date, timestamp. Same format as starting date.
+            Ending date, timestamp. Same format as starting date.
         retry_count : int, default 3
-                Number of times to retry query request.
+            Number of times to retry query request.
         pause : float, default 0.1
-                Time, in seconds, of the pause between retries.
+            Time, in seconds, of the pause between retries.
         session : Session, default None
-                requests.sessions.Session instance to be used
+            requests.sessions.Session instance to be used
+        freq : {str, None}
+            Frequency to use in select readers
     """
 
     _chunk_size = 1024 * 1024
     _format = 'string'
 
-    def __init__(self, symbols, start=None, end=None,
-                 retry_count=3, pause=0.1, timeout=30, session=None):
+    def __init__(self, symbols, start=None, end=None,  retry_count=3,
+                 pause=0.1, timeout=30, session=None, freq=None):
+
         self.symbols = symbols
 
         start, end = _sanitize_dates(start, end)
@@ -52,6 +53,7 @@ class _BaseReader(object):
         self.timeout = timeout
         self.pause_multiplier = 1
         self.session = _init_session(session, retry_count)
+        self.freq = freq
 
     def close(self):
         """ close my session """
@@ -134,13 +136,28 @@ class _BaseReader(object):
             # Get a new breadcrumb if necessary, in case ours is invalidated
             if isinstance(params, list) and 'crumb' in params:
                 params['crumb'] = self._get_crumb(self.retry_count)
+
+            # If our output error function returns True, exit the loop.
+            if self._output_error(response):
+                break
+
         if params is not None and len(params) > 0:
             url = url + "?" + urlencode(params)
+
         raise RemoteDataError('Unable to read URL: {0}'.format(url))
 
     def _get_crumb(self, *args):
         """ To be implemented by subclass """
         raise NotImplementedError("Subclass has not implemented method.")
+
+    def _output_error(self, out):
+        """If necessary, a service can implement an interpreter for any non-200
+         HTTP responses.
+
+        :param out: raw output from an HTTP request
+        :return: boolean
+        """
+        return False
 
     def _read_lines(self, out):
         rs = read_csv(out, index_col=0, parse_dates=True,
