@@ -29,6 +29,7 @@ extract data from various Internet sources into a pandas DataFrame.
 Currently the following sources are supported:
 
     - :ref:`Google Finance<remote_data.google>`
+    - :ref:`IEX<remote_data.iex>`
     - :ref:`Enigma<remote_data.enigma>`
     - :ref:`Quandl<remote_data.quandl>`
     - :ref:`St.Louis FED (FRED)<remote_data.fred>`
@@ -63,6 +64,25 @@ Google Finance
     end = datetime.datetime(2013, 1, 27)
     f = web.DataReader('F', 'google', start, end)
     f.ix['2010-01-04']
+
+.. _remote_data.iex:
+
+IEX
+===
+
+Historical stock prices from `IEX <https://iextrading.com/developer/>`__, 
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+    from datetime import datetime
+    start = datetime(2015, 2, 9)
+    end = datetime(2017, 5, 24)
+    f = web.DataReader('F', 'iex', start, end)
+    f.loc['2015-02-09']
+
+
+Prices are available up for the past 5 years.
 
 .. _remote_data.enigma:
 

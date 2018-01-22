@@ -15,6 +15,7 @@ from pandas_datareader.fred import FredReader
 from pandas_datareader.google.daily import GoogleDailyReader
 from pandas_datareader.google.options import Options as GoogleOptions
 from pandas_datareader.google.quotes import GoogleQuotesReader
+from pandas_datareader.iex.daily import IEXDailyReader
 from pandas_datareader.iex.deep import Deep as IEXDeep
 from pandas_datareader.iex.tops import LastReader as IEXLasts
 from pandas_datareader.iex.tops import TopsReader as IEXTops
@@ -286,6 +287,13 @@ def DataReader(name, data_source=None, start=None, end=None,
                                  chunksize=25,
                                  retry_count=retry_count, pause=pause,
                                  session=session).read()
+
+    elif data_source == "iex":
+        return IEXDailyReader(symbols=name, start=start, end=end,
+                              chunksize=25,
+                              retry_count=retry_count, pause=pause,
+                              session=session).read()
+
     elif data_source == "iex-tops":
         return IEXTops(symbols=name, start=start, end=end,
                        retry_count=retry_count, pause=pause,
