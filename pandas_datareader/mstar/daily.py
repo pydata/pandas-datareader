@@ -1,85 +1,112 @@
-
-from datetime import datetime, timedelta
-from pandas import DataFrame
-from pandas_datareader._utils import (SymbolWarning, _sanitize_dates)
-import requests
 import time
+from datetime import datetime, timedelta
 from warnings import warn
+
+import requests
+from pandas import DataFrame
+
+from pandas_datareader._utils import (SymbolWarning, _sanitize_dates)
+
 
 class MorningstarDailyReader(object):
 
-
-    def __init__(self, start=None, end=datetime.today().strftime("%Y-%m-%d"), *args, **kwargs):
+    def __init__(self, start=None, end=None, *args, **kwargs):
+        if end is None:
+            end = datetime.today().strftime("%Y-%m-%d")
 
         self.start, self.end = _sanitize_dates(start, end)
+
         self.retry_count = kwargs.get("retry_count", 3)
         self.pause = kwargs.get("pause", 0.001)
         self.timeout = kwargs.get("timeout", 30)
-        self.session = requests.session()
-        symbols = kwargs.get("symbols")
+        self.session = kwargs.get("session", requests.session())
 
-        self.incl_splits = kwargs.get("incl_splits", True)
-        self.incl_dividends = kwargs.get("incl_dividends", True)
+        self.incl_splits = kwargs.get("incl_splits", False)
+        self.incl_dividends = kwargs.get("incl_dividends", False)
         self.incl_vol = kwargs.get("incl_volume", True)
-        self.incl_adjclose = kwargs.get("incl_adjclose", True)
         self.currency = kwargs.get("currency", "usd")
+        self.interval = kwargs.get("interval", "d")
 
-        if type(symbols) is str:
-            self.symbols = [symbols]
-        elif hasattr(symbols, "__iter__"):
-            self.symbols = symbols
-        else:
-            raise TypeError("symbols must be string or iterable. not %s" % type(symbols))
+        self.symbols = kwargs.get("symbols")
 
         self._symbol_data_cache = []
 
-    def _get_params(self):
-        p = {"range": "|".join([self.start.strftime("%Y-%m-%d"), self.end.strftime("%Y-%m-%d")]), "f": "d",
-             "curry": self.currency, "dtype": "his", "showVol": "true",
-             "hasF": "true", "isD": "true", "isS": "true", "ProdCode": "DIRECT"}
+    def _url_params(self):
+        if self.interval not in ['d', 'wk', 'mo', 'm', 'w']:
+            raise ValueError("Invalid interval: valid values are  'd', 'wk' "
+                             "and 'mo'. 'm' and 'w' have been implemented for "
+                             "backward compatibility")
+        elif self.interval in ['m', 'mo']:
+            self.interval = 'm'
+        elif self.interval in ['w', 'wk']:
+            self.interval = 'w'
+
+        if self.currency != "usd":
+            warn("Caution! There is no explicit check for a valid currency "
+                 "acronym\nIf an error is encountered consider changing this "
+                 "value.")
+
+        p = {"range": "|".join(
+            [self.start.strftime("%Y-%m-%d"), self.end.strftime("%Y-%m-%d")]),
+            "f": self.interval, "curry": self.currency,
+            "dtype": "his", "showVol": "true",
+            "hasF": "true", "isD": "true", "isS": "true",
+            "ProdCode": "DIRECT"}
 
         return p
 
+    def _check_dates(self, *dates):
+        if dates[0] > dates[1]:
+            raise ValueError("Invalid start & end date! Start date cannot "
+                             "be later than end date.")
+        else:
+            return dates[0], dates[1]
+
     def _dl_mult_symbols(self, symbols):
-        passed = []
         failed = []
         symbol_data = []
         for symbol in symbols:
 
-            params = self._get_params()
+            params = self._url_params()
             params.update({"ticker": symbol})
-            _baseurl = "http://globalquote.morningstar.com/globalcomponent/RealtimeHistoricalStockData.ashx"
+            _baseurl = "http://globalquote.morningstar.com/globalcomponent/" \
+                       "RealtimeHistoricalStockData.ashx"
 
             try:
                 resp = requests.get(_baseurl, params=params)
             except Exception:
-                if self.retry_count == 0:
-                    print("skipping symbol %s: number of retries exceeded." % symbol)
-                    pass
-                else:
-                    if symbol in failed:
+                if symbol not in failed:
+                    if self.retry_count == 0:
+                        warn("skipping symbol %s: number of retries "
+                             "exceeded." % symbol)
                         pass
                     else:
                         print("adding %s to retry list" % symbol)
                         failed.append(symbol)
             else:
                 if resp.status_code == requests.codes.ok:
-                    jsdata = self._restruct_json(symbol=symbol, jsondata=resp.json())
+                    jsdata = self._restruct_json(symbol=symbol,
+                                                 jsondata=resp.json())
                     symbol_data.extend(jsdata)
-                    passed.append(symbol)
+                else:
+                    raise Exception("Request Error!: %s : %s" % (
+                        resp.status_code, resp.reason))
+
             time.sleep(self.pause)
-        if len(failed) > 0 and self.retry_count >0:
+
+        if len(failed) > 0 and self.retry_count > 0:
             self._dl_mult_symbols(symbols=failed)
             self.retry_count -= 1
         else:
             self.retry_count = 0
 
         if self.retry_count == 0 and len(failed) > 0:
-            warn(SymbolWarning("The following symbols were excluded do to http request errors: \n %s" % failed))
+            warn("The following symbols were excluded do to http "
+                 "request errors: \n %s" % failed, SymbolWarning)
 
-        symbols_df = DataFrame(symbol_data)
-        dfx = symbols_df.set_index(["symbol", "date"])
-        return dfx.to_panel().swapaxes(axis1="items", axis2="minor")
+        symbols_df = DataFrame(data=symbol_data)
+        dfx = symbols_df.set_index(["Symbol", "Date"])
+        return dfx
 
     @staticmethod
     def _convert_index2date(enddate, indexvals):
@@ -90,8 +117,8 @@ class MorningstarDailyReader(object):
             i += 1
             yield d.strftime("%Y-%m-%d")
 
-    # @staticmethod
-    # def _adjust_close_price(price, event_type, event_value):
+    #
+    # def _adjust_close_price(price, event_type, event_value): #noqa
     #     if event_type is "split":
     #         e, s = event_value.split(":")
     #         adj=(price * int(s))/e
@@ -115,29 +142,52 @@ class MorningstarDailyReader(object):
             bar = pricedata[p]
             d = next(date_)
             bardict = {
-                "symbol": symbol, "date": d, "open": bar[0], "high": bar[1], "low": bar[2],
-                "close": bar[3]
+                "Symbol": symbol, "Date": d, "Open": bar[0], "High": bar[1],
+                "Low": bar[2],
+                "Close": bar[3]
             }
             if len(divdata) == 0:
                 pass
             else:
-                events = [x for x in divdata if
-                          (datetime.strptime(x["Date"], "%Y-%m-%d") - datetime.strptime(d, "%Y-%m-%d")).days == 0]
+                events = []
+                for x in divdata:
+                    delta = (datetime.strptime(x["Date"], "%Y-%m-%d") -
+                             datetime.strptime(d, "%Y-%m-%d"))
+                    if delta.days == 0:
+                        events.append(x)
                 for e in events:
-                    if e["Type"].find("Div") > -1 and self.incl_dividends is True:
-                        bardict.update({"is_dividend": e["Desc"].replace(e["Type"], "")})
-                    elif e["Type"].find("Split") > -1 and self.incl_splits is True:
-                        bardict.update({"is_split": e["Desc"].replace(e["Type"], "")})
+                    if (self.incl_dividends is True and
+                            e["Type"].find("Div") > -1):
+                        val = e["Desc"].replace(e["Type"], "")
+                        bardict.update({"isDividend": val})
+                    elif (self.incl_splits is True and
+                            e["Type"].find("Split") > -1):
+                        val = e["Desc"].replace(e["Type"], "")
+                        bardict.update({"isSplit": val})
                     else:
                         pass
             if self.incl_vol is True:
-                bardict.update({"volume": volumes[p]*1000000})
-            else: pass
-
+                bardict.update({"Volume": int(volumes[p] * 1000000)})
+            else:
+                pass
 
             barss.append(bardict)
         return barss
 
     def read(self):
-        return self._dl_mult_symbols(symbols=self.symbols)
-
+        if type(self.symbols) is str:
+            df = self._dl_mult_symbols(symbols=[self.symbols])
+            if len(df.Close.keys()) == 0:
+                raise IndexError("None of the provided symbols were valid")
+            else:
+                return df
+        elif hasattr(self.symbols, "__iter__"):
+            df = self._dl_mult_symbols(symbols=self.symbols)
+            if len(df.Close.keys()) == 0:
+                raise IndexError("None of the provided symbols were valid")
+            else:
+                return df
+        else:
+            raise TypeError(
+                "symbols must be iterable or string and not type %s" %
+                type(self.symbols))
