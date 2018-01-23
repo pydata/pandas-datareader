@@ -77,5 +77,9 @@ Many functions from the data module have been included in the top level API.
 Documentation
 -------------
 
-See the `pandas-datareader documentation <https://pandas-datareader.readthedocs.io/>`_
-for more details.
+`Stable documentation <https://pydata.github.io/pandas-datareader/stable/>`__
+is available at . A second copy of the stable documentation is hosted on
+`read the docs <https://pandas-datareader.readthedocs.io/>`_ for more details.
+
+`Development documentation <https://pydata.github.io/pandas-datareader/devel/>`__
+is available for the latest changes in master.

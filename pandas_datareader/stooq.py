@@ -22,6 +22,10 @@ class StooqDailyReader(_DailyBaseReader):
         Number of symbols to download consecutively before intiating pause.
     session : Session, default None
         requests.sessions.Session instance to be used
+
+    Notes
+    -----
+    See `Stooq <https://stooq.com>`__
     """
 
     @property

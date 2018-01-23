@@ -6,7 +6,11 @@ from pandas_datareader.base import _BaseReader
 
 
 class BankOfCanadaReader(_BaseReader):
-    """Get data for the given name from Bank of Canada."""
+    """Get data for the given name from Bank of Canada.
+
+    Notes
+    -----
+    See `Bank of Canada <https://www.bankofcanada.ca/rates/>`__"""
 
     _URL = 'http://www.bankofcanada.ca/valet/observations'
 

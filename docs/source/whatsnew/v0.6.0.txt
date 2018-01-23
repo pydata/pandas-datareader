@@ -47,14 +47,24 @@ Highlights include:
 Enhancements
 ~~~~~~~~~~~~
 
-- A new data connector for stock index data provided by Stooq was
-  introduced. (:issue:`447`)
 
-- A new data connector for data provided by the Bank of Canada was
-  introduced. (:issue:`440`)
+- A new data connector for data provided by the
+  `Bank of Canada <https://www.bankofcanada.ca/rates/>`__ was introduced.
+  (:issue:`440`)
 
-- A new data connector for stock pricing data provided by Morningstar
-  was introduced. (:issue:`467`)
+- A new data connector for stock index data provided by
+  `Stooq <https://stooq.com>`__ was introduced. (:issue:`447`)
+
+- A new connector for IEX the majority of the
+  `IEX API <https://iextrading.com/developer/docs/>`__  was introduced
+  (:issue:`446`).
+
+- A new connector for
+  `IEX daily price data <https://iextrading.com/developer/docs/>`__  was
+  introduced (:issue:`465`).
+
+- A new data connector for stock pricing data provided by
+  `Morningstar <http://www.morningstar.com>`__ was introduced. (:issue:`467`)
 
 .. _whatsnew_060.api_breaking:
 
