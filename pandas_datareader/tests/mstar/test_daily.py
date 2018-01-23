@@ -38,7 +38,7 @@ class TestMorningstarDaily(object):
         start = datetime(2014, 3, 5)
         end = datetime(2018, 1, 18)
         df = web.DataReader('MSFT', 'morningstar', start=start, end=end)
-        assert (df['Close'][-1] == 89.8)
+        assert (df['Open'][-1] == 89.8)
 
     @skip_on_exception(RemoteDataError)
     def test_get_data_single_symbol(self):
@@ -114,7 +114,7 @@ class TestMorningstarDaily(object):
         dr = MorningstarDailyReader(symbols="GOOG", interval="d")
         df = dr.read()
 
-        assert df.Volume[('GOOG', '2017-12-13')] == 1279659
+        assert df.Close[('GOOG', '2017-12-13')] == 1040.61
 
         session = requests.Session()
 

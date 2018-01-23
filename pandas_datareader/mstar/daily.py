@@ -172,9 +172,8 @@ class MorningstarDailyReader(_BaseReader):
             bar = pricedata[p]
             d = next(date_)
             bardict = {
-                "Symbol": symbol, "Date": d, "Open": bar[0], "High": bar[1],
-                "Low": bar[2],
-                "Close": bar[3]
+                "Symbol": symbol, "Date": d, "Close": bar[0], "High": bar[1],
+                "Low": bar[2], "Open": bar[3]
             }
             if len(divdata) == 0:
                 pass
