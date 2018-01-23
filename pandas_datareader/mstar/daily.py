@@ -5,29 +5,56 @@ from warnings import warn
 import requests
 from pandas import DataFrame
 
-from pandas_datareader._utils import (SymbolWarning, _sanitize_dates)
+from pandas_datareader._utils import SymbolWarning
+from pandas_datareader.base import _BaseReader
 
 
-class MorningstarDailyReader(object):
+class MorningstarDailyReader(_BaseReader):
+    """
+    Read daily data from Morningstar
 
-    def __init__(self, start=None, end=None, *args, **kwargs):
-        if end is None:
-            end = datetime.today().strftime("%Y-%m-%d")
+    Parameters
+    ----------
+    symbols : {str, List[str]}
+        String symbol of like of symbols
+    start : string, (defaults to '1/1/2010')
+        Starting date, timestamp. Parses many different kind of date
+        representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
+    end : string, (defaults to today)
+        Ending date, timestamp. Same format as starting date.
+    retry_count : int, default 3
+        Number of times to retry query request.
+    pause : float, default 0.1
+        Time, in seconds, of the pause between retries.
+    session : Session, default None
+        requests.sessions.Session instance to be used
+    freq : {str, None}
+        Frequency to use in select readers
+    incl_splits : bool, optional
+        Include splits in data
+    incl_dividends : bool,, optional
+        Include divdends in data
+    incl_volume : bool, optional
+        Include volume in data
+    currency : str, optional
+        Currency to use for data
+    interval : str, optional
+        Sampling interval to use for downloaded data
+    """
 
-        self.start, self.end = _sanitize_dates(start, end)
+    def __init__(self, symbols, start=None, end=None, retry_count=3,
+                 pause=0.1, timeout=30, session=None, freq=None,
+                 incl_splits=False, incl_dividends=False, incl_volume=True,
+                 currency='usd', interval='d'):
+        super(MorningstarDailyReader, self).__init__(symbols, start, end,
+                                                     retry_count, pause,
+                                                     timeout, session, freq)
 
-        self.retry_count = kwargs.get("retry_count", 3)
-        self.pause = kwargs.get("pause", 0.001)
-        self.timeout = kwargs.get("timeout", 30)
-        self.session = kwargs.get("session", requests.session())
-
-        self.incl_splits = kwargs.get("incl_splits", False)
-        self.incl_dividends = kwargs.get("incl_dividends", False)
-        self.incl_vol = kwargs.get("incl_volume", True)
-        self.currency = kwargs.get("currency", "usd")
-        self.interval = kwargs.get("interval", "d")
-
-        self.symbols = kwargs.get("symbols")
+        self.incl_splits = incl_splits
+        self.incl_dividends = incl_dividends
+        self.incl_vol = incl_volume
+        self.currency = currency
+        self.interval = interval
 
         self._symbol_data_cache = []
 
@@ -55,12 +82,15 @@ class MorningstarDailyReader(object):
 
         return p
 
-    def _check_dates(self, *dates):
-        if dates[0] > dates[1]:
-            raise ValueError("Invalid start & end date! Start date cannot "
-                             "be later than end date.")
-        else:
-            return dates[0], dates[1]
+    @property
+    def url(self):
+        """API URL"""
+        return "http://globalquote.morningstar.com/globalcomponent/" \
+               "RealtimeHistoricalStockData.ashx"
+
+    def _get_crumb(self, *args):
+        """Not required """
+        pass
 
     def _dl_mult_symbols(self, symbols):
         failed = []
@@ -69,11 +99,9 @@ class MorningstarDailyReader(object):
 
             params = self._url_params()
             params.update({"ticker": symbol})
-            _baseurl = "http://globalquote.morningstar.com/globalcomponent/" \
-                       "RealtimeHistoricalStockData.ashx"
 
             try:
-                resp = requests.get(_baseurl, params=params)
+                resp = requests.get(self.url, params=params)
             except Exception:
                 if symbol not in failed:
                     if self.retry_count == 0:
@@ -85,8 +113,12 @@ class MorningstarDailyReader(object):
                         failed.append(symbol)
             else:
                 if resp.status_code == requests.codes.ok:
+                    jsondata = resp.json()
+                    if jsondata is None:
+                        failed.append(symbol)
+                        continue
                     jsdata = self._restruct_json(symbol=symbol,
-                                                 jsondata=resp.json())
+                                                 jsondata=jsondata)
                     symbol_data.extend(jsdata)
                 else:
                     raise Exception("Request Error!: %s : %s" % (
@@ -95,12 +127,16 @@ class MorningstarDailyReader(object):
             time.sleep(self.pause)
 
         if len(failed) > 0 and self.retry_count > 0:
+            # TODO: This appears to do nothing since
+            # TODO: successful symbols are not added to
             self._dl_mult_symbols(symbols=failed)
             self.retry_count -= 1
         else:
             self.retry_count = 0
 
-        if self.retry_count == 0 and len(failed) > 0:
+        if not symbol_data:
+            raise ValueError('All symbols were invalid')
+        elif self.retry_count == 0 and len(failed) > 0:
             warn("The following symbols were excluded do to http "
                  "request errors: \n %s" % failed, SymbolWarning)
 
@@ -117,19 +153,9 @@ class MorningstarDailyReader(object):
             i += 1
             yield d.strftime("%Y-%m-%d")
 
-    #
-    # def _adjust_close_price(price, event_type, event_value): #noqa
-    #     if event_type is "split":
-    #         e, s = event_value.split(":")
-    #         adj=(price * int(s))/e
-    #     elif event_type is "dividend":
-    #         adj = price - float(event_value)
-    #     else:
-    #         raise ValueError("Invalid event_type")
-    #     return adj
-
     def _restruct_json(self, symbol, jsondata):
-
+        if jsondata is None:
+            return
         divdata = jsondata["DividendData"]
 
         pricedata = jsondata["PriceDataList"][0]["Datapoints"]
@@ -156,12 +182,11 @@ class MorningstarDailyReader(object):
                     if delta.days == 0:
                         events.append(x)
                 for e in events:
-                    if (self.incl_dividends is True and
-                            e["Type"].find("Div") > -1):
+                    if self.incl_dividends and e["Type"].find("Div") > -1:
                         val = e["Desc"].replace(e["Type"], "")
                         bardict.update({"isDividend": val})
                     elif (self.incl_splits is True and
-                            e["Type"].find("Split") > -1):
+                          e["Type"].find("Split") > -1):
                         val = e["Desc"].replace(e["Type"], "")
                         bardict.update({"isSplit": val})
                     else:
@@ -175,19 +200,24 @@ class MorningstarDailyReader(object):
         return barss
 
     def read(self):
-        if type(self.symbols) is str:
-            df = self._dl_mult_symbols(symbols=[self.symbols])
-            if len(df.Close.keys()) == 0:
-                raise IndexError("None of the provided symbols were valid")
-            else:
-                return df
-        elif hasattr(self.symbols, "__iter__"):
-            df = self._dl_mult_symbols(symbols=self.symbols)
-            if len(df.Close.keys()) == 0:
-                raise IndexError("None of the provided symbols were valid")
-            else:
-                return df
+        """Read data"""
+        if isinstance(self.symbols, str):
+            symbols = [self.symbols]
         else:
-            raise TypeError(
-                "symbols must be iterable or string and not type %s" %
-                type(self.symbols))
+            symbols = self.symbols
+
+        is_str = False
+        try:
+            is_str = all(map(lambda v: isinstance(v, str), symbols))
+        except Exception:
+            pass
+
+        if not is_str:
+            raise TypeError("symbols must be iterable or string and not "
+                            "type %s" % type(self.symbols))
+
+        df = self._dl_mult_symbols(symbols=symbols)
+        if len(df.index.levels[0]) == 0:
+            raise ValueError("None of the provided symbols were valid")
+        else:
+            return df

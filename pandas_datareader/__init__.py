@@ -18,6 +18,6 @@ __all__ = ['__version__', 'get_components_yahoo', 'get_data_enigma',
            'get_iex_book', 'get_iex_symbols', 'get_last_iex',
            'get_markets_iex', 'get_recent_iex', 'get_records_iex',
            'get_summary_iex', 'get_tops_iex',
-           'get_nasdaq_symbols', 'get_nasdaq_symbols', 'get_data_quandl', 'get_data_moex',
+           'get_nasdaq_symbols', 'get_data_quandl', 'get_data_moex',
            'get_data_fred', 'get_dailysummary_iex', 'get_data_morningstar',
-           'get_data_stooq','DataReader', 'Options']
+           'get_data_stooq', 'DataReader', 'Options']

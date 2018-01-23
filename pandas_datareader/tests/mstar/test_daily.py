@@ -1,5 +1,6 @@
 from datetime import datetime
 
+import numpy as np
 import pandas as pd
 import pytest
 import requests
@@ -12,35 +13,32 @@ from pandas_datareader.data import MorningstarDailyReader
 
 class TestMorningstarDaily(object):
 
-
     @skip_on_exception(RemoteDataError)
-    def invalid_date(self):
+    def test_invalid_date(self):
         with pytest.raises(ValueError):
             web.DataReader("MSFT", 'morningstar', start="1990-03-A")
         with pytest.raises(ValueError):
             web.DataReader("MSFT", 'morningstar', start="2001-02-02",
                            end="1999-03-03")
 
-    @skip_on_exception(RemoteDataError)
-    def invalid_partial_multi_symbols(self):
-        df = web.DataReader(['MSFT', "21##", ""], "morningstar")
-        assert (len(df.Close.keys()) == 1)
+    def test_invalid_partial_multi_symbols(self):
+        df = web.DataReader(['MSFT', "21##", ""], "morningstar", retry_count=0)
+        assert (len(df.index.levels[0]) == 1)
 
-    @skip_on_exception(RemoteDataError)
-    def invalid_multi_symbols(self):
-        with pytest.raises(IndexError):
-            web.DataReader(["#$@", "21122"], "morningstar")
+    def test_invalid_multi_symbols(self):
+        with pytest.raises(ValueError):
+            web.DataReader(["#$@", "21122"], "morningstar", retry_count=0)
 
-    @skip_on_exception(RemoteDataError)
-    def invalid_symbol_type(self):
+    def test_invalid_symbol_type(self):
         with pytest.raises(TypeError):
-            web.DataReader([12332], data_source='morningstar')
+            web.DataReader([12332], data_source='morningstar', retry_count=0)
 
     @skip_on_exception(RemoteDataError)
     def test_mstar(self):
         start = datetime(2014, 3, 5)
-        assert (web.DataReader('MSFT', 'morningstar', start=start)['Close'][
-                    -1] == 89.8)
+        end = datetime(2018, 1, 18)
+        df = web.DataReader('MSFT', 'morningstar', start=start, end=end)
+        assert (df['Close'][-1] == 89.8)
 
     @skip_on_exception(RemoteDataError)
     def test_get_data_single_symbol(self):
@@ -51,17 +49,17 @@ class TestMorningstarDaily(object):
     @skip_on_exception(RemoteDataError)
     def test_get_data_interval(self):
         # daily interval data
-        pan = web.get_data_morningstar(symbol='XOM', start='2013-01-01',
+        pan = web.get_data_morningstar(symbols='XOM', start='2013-01-01',
                                        end='2013-12-31', interval='d')
         assert len(pan) == 261
 
         # weekly interval data
-        pan = web.get_data_morningstar(symbol='XOM', start='2013-01-01',
+        pan = web.get_data_morningstar(symbols='XOM', start='2013-01-01',
                                        end='2013-12-31', interval='w')
         assert len(pan) == 54
 
         # monthly interval data
-        pan = web.get_data_morningstar(symbol='XOM', start='2013-01-01',
+        pan = web.get_data_morningstar(symbols='XOM', start='2013-01-01',
                                        end='2013-12-31', interval='m')
         assert len(pan) == 13
 
@@ -80,30 +78,31 @@ class TestMorningstarDaily(object):
         df = web.get_data_morningstar(symbols=['XOM', 'MSFT'],
                                       start='2013-01-01',
                                       end='2013-03-04')
-        result = df.keys()
 
-        assert len(result) == 6
+        assert len(df.index.levels[0]) == 2
+        assert 'XOM' in df.index.levels[0]
+        assert 'MSFT' in df.index.levels[0]
 
         # sanity checking
+        assert df.dtypes['Close'] == np.float64
+        assert df.dtypes['Open'] == np.float64
+        assert df.dtypes['Low'] == np.float64
+        assert df.dtypes['High'] == np.float64
+        assert df.dtypes['Volume'] == np.int64
 
-        assert all([type(i) == float for i in df.Close.values[0:3]])
-
-    @skip_on_exception(RemoteDataError)
     def incl_dividend_column_multi(self):
         df = web.get_data_morningstar(symbols=['XOM', 'MSFT'],
                                       start='2013-01-01',
                                       end='2013-03-04', incl_dividends=True)
 
-        assert ("isDividend" in df.keys())
+        assert ("isDividend" in df)
 
-    @skip_on_exception(RemoteDataError)
     def incl_splits_column_multi(self):
         df = web.get_data_morningstar(symbols=['XOM', 'MSFT'],
                                       start='2013-01-01',
                                       end='2013-03-04', incl_dividends=True)
-        assert ("isSplit" in df.keys())
+        assert ("isSplit" in df)
 
-    @skip_on_exception(RemoteDataError)
     def excl_volume_column_multi(self):
         df = web.get_data_morningstar(symbols=["XOM", "MSFT"],
                                       start='2013-01-01',
@@ -112,15 +111,16 @@ class TestMorningstarDaily(object):
 
     @skip_on_exception(RemoteDataError)
     def test_mstar_reader_class(self):
-        df = MorningstarDailyReader(symbols="GOOG", interval="d")
-        df = df.read().Volume["2014-04-07"]
-        assert df == 4401618
+        dr = MorningstarDailyReader(symbols="GOOG", interval="d")
+        df = dr.read()
+
+        assert df.Volume[('GOOG', '2017-12-13')] == 1279659
 
         session = requests.Session()
 
-        r = MorningstarDailyReader('GOOG', session=session)
-        df = r.read()
-        assert (df.session is session)
+        dr = MorningstarDailyReader('GOOG', session=session)
+        dr.read()
+        assert dr.session is session
 
     @skip_on_exception(RemoteDataError)
     def test_mstar_DataReader_multi(self):
