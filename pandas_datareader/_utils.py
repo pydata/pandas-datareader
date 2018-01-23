@@ -34,6 +34,8 @@ def _sanitize_dates(start, end):
         start = dt.datetime(2010, 1, 1)
     if end is None:
         end = dt.datetime.today()
+    if start > end:
+        raise ValueError('start must be an earlier date than end')
     return start, end
 
 

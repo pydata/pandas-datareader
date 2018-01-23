@@ -16,8 +16,8 @@ class TestBankOfCanada(object):
             return 'FX{}CAD'.format(currency_code)
 
     def check_bankofcanada_count(self, code):
-        df = web.DataReader(self.get_symbol(code), 'bankofcanada',
-                            date.today() - timedelta(days=30), date.today())
+        start, end = date.today() - timedelta(days=30), date.today()
+        df = web.DataReader(self.get_symbol(code), 'bankofcanada', start, end)
         assert df.size > 15
 
     def check_bankofcanada_valid(self, code):
@@ -57,7 +57,7 @@ class TestBankOfCanada(object):
         self.check_bankofcanada_inverted('EUR')
 
     def test_bankofcanada_bad_range(self):
-        with pytest.raises(RemoteDataError):
+        with pytest.raises(ValueError):
             web.DataReader('FXCADUSD', 'bankofcanada',
                            date.today(), date.today() - timedelta(days=30))
 
