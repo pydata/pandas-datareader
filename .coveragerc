@@ -1,0 +1,30 @@
+# .coveragerc to control coverage.py
+[run]
+source = pandas_datareader
+branch = True
+include = */pandas_datareader/*
+omit =
+    */_version.py
+    */yahoo/*
+    */google/options.py
+    */google/quotes.py
+    */tests/google/test_options.py
+
+[report]
+# Regexes for lines to exclude from consideration
+exclude_lines =
+    # Have to re-enable the standard pragma
+    pragma: no cover
+    # Don't complain if tests don't hit defensive assertion code:
+    raise NotImplementedError
+    raise ImmediateDeprecationError
+    # Ignore pass
+    pass
+include = */pandas_datareader/*
+omit =
+    */_version.py
+    */yahoo/*
+    */google/options.py
+    */google/quotes.py
+    */tests/google/test_options.py
+ignore_errors = True
