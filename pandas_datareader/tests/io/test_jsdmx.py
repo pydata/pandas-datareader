@@ -5,7 +5,6 @@ import os
 import numpy as np
 import pandas as pd
 import pandas.util.testing as tm
-import pytest
 
 from pandas_datareader.io import read_jsdmx
 
@@ -15,39 +14,42 @@ class TestJSDMX(object):
     def setup_method(self, method):
         self.dirpath = tm.get_data_path()
 
-    @pytest.mark.xfail(reason='Parsing error')
+    # @pytest.mark.xfail(reason='Parsing error')
     def test_tourism(self):
         # OECD -> Industry and Services -> Inbound Tourism
         result = read_jsdmx(os.path.join(self.dirpath, 'jsdmx',
                                          'tourism.json'))
         assert isinstance(result, pd.DataFrame)
+        jp = result['Japan']
+        visitors = ['China', 'Hong Kong, China',
+                    'Total international arrivals',
+                    'Korea', 'Chinese Taipei', 'United States']
 
-        exp_col = pd.MultiIndex.from_product(
-            [['Japan'], ['China', 'Hong Kong, China',
-                         'Total international arrivals',
-                         'Total international receipts',
-                         'International passenger transport receipts',
-                         'International travel receipts',
-                         'Korea', 'Chinese Taipei', 'United States']],
-            names=['Country', 'Variable'])
-        exp_idx = pd.DatetimeIndex(['2004', '2005', '2006', '2007',
-                                    '2008', '2009', '2010', '2011',
-                                    '2012'], name='Year')
-
-        values = np.array([
-            [616, 300, 6138, 1550, 330, 1220, 1588, 1081, 760],
-            [653, 299, 6728, 1710, 340, 1370, 1747, 1275, 822],
-            [812, 352, 7334, 1330, 350, 980, 2117, 1309, 817],
-            [942, 432, 8347, 1460, 360, 1100, 2601, 1385, 816],
-            [1000, 550, 8351, 1430, 310, 1120, 2382, 1390, 768],
-            [1006, 450, 6790, 1170, 210, 960, 1587, 1024, 700],
-            [1413, 509, 8611, 1350, 190, 1160, 2440, 1268, 727],
-            [1043, 365, 6219, 1000, 100, 900, 1658, 994, 566],
-            [1430, 482, 8368, 1300, 100, 1200, 2044, 1467, 717]])
+        exp_col = pd.Index(
+            ['China', 'Hong Kong, China', 'Total international arrivals',
+             'Korea', 'Chinese Taipei', 'United States'],
+            name='Variable')
+        exp_idx = pd.DatetimeIndex(['2008-01-01', '2009-01-01', '2010-01-01',
+                                    '2011-01-01', '2012-01-01', '2013-01-01',
+                                    '2014-01-01', '2015-01-01', '2016-01-01'],
+                                   name='Year')
+        values = [
+            [1000000.0, 550000.0, 8351000.0, 2382000.0, 1390000.0, 768000.0],
+            [1006000.0, 450000.0, 6790000.0, 1587000.0, 1024000.0, 700000.0],
+            [1413000.0, 509000.0, 8611000.0, 2440000.0, 1268000.0, 727000.0],
+            [1043000.0, 365000.0, 6219000.0, 1658000.0, 994000.0, 566000.0],
+            [1430000.0, 482000.0, 8368000.0, 2044000.0, 1467000.0, 717000.0],
+            [1314000.0, 746000.0, 10364000.0, 2456000.0, 2211000.0, 799000.0],
+            [2409000.0, 926000.0, 13413000.0, 2755000.0, 2830000.0, 892000.0],
+            [4993689.0, 1524292.0, 19737409.0, 4002095.0, 3677075.0,
+             1033258.0],
+            [6373564.0, 1839193.0, 24039700.0, 5090302.0, 4167512.0, 1242719.0]
+        ]
+        values = np.array(values, dtype='object')
         expected = pd.DataFrame(values, index=exp_idx, columns=exp_col)
-        tm.assert_frame_equal(result, expected)
+        tm.assert_frame_equal(jp[visitors], expected)
 
-    @pytest.mark.xfail(reason='Parsing error')
+    # @pytest.mark.xfail(reason='Parsing error')
     def test_land_use(self):
         # OECD -> Environment -> Resources Land Use
         result = read_jsdmx(os.path.join(self.dirpath, 'jsdmx',
@@ -55,22 +57,27 @@ class TestJSDMX(object):
         assert isinstance(result, pd.DataFrame)
         result = result.loc['2010':'2011']
 
+        cols = ['Arable land and permanent crops',
+                'Arable and cropland % land area',
+                'Total area', 'Forest', 'Forest % land area',
+                'Land area', 'Permanent meadows and pastures',
+                'Meadows and pastures % land area', 'Other areas',
+                'Other % land area']
         exp_col = pd.MultiIndex.from_product([
             ['Japan', 'United States'],
-            ['Arable land and permanent crops',
-             'Arable and cropland % land area',
-             'Total area', 'Forest', 'Forest % land area',
-             'Land area', 'Permanent meadows and pastures',
-             'Meadows and pastures % land area', 'Other areas',
-             'Other % land area']], names=['Country', 'Variable'])
+            cols], names=['Country', 'Variable'])
         exp_idx = pd.DatetimeIndex(['2010', '2011'], name='Year')
-        values = np.array([[45930, 12.601, 377950, 249790, 68.529, 364500,
-                            np.nan, np.nan, 68780, 18.87, 1624330, 17.757,
-                            9831510, 3040220, 33.236, 9147420, 2485000,
-                            27.166, 1997870, 21.841],
-                           [45610, 12.513, 377955, 249878, 68.554, 364500,
-                            np.nan, np.nan, 69012, 18.933, 1627625, 17.793,
-                            9831510, 3044048, 33.278, 9147420, 2485000,
-                            27.166, 1990747, 21.763]])
+        values = [
+            [53790.0, 14.753154141525, 377800.0, np.nan, np.nan, 364600.0,
+             5000.0, 1.3713658804169, np.nan, np.nan,
+             1897990.0, 20.722767650476, 9629090.0, np.nan, np.nan, 9158960.0,
+             2416000.0, 26.378540795025, np.nan,
+             np.nan],
+            [53580.0, 14.691527282698, 377800.0, np.nan, np.nan, 364700.0,
+             5000.0, 1.3709898546751, np.nan, np.nan,
+             1897990.0, 20.722767650476, 9629090.0, np.nan, np.nan, 9158960.0,
+             2416000.0, 26.378540795025, np.nan,
+             np.nan]]
+        values = np.array(values)
         expected = pd.DataFrame(values, index=exp_idx, columns=exp_col)
-        tm.assert_frame_equal(result, expected)
+        tm.assert_frame_equal(result[exp_col], expected)
