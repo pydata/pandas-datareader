@@ -40,6 +40,10 @@ class MorningstarDailyReader(_BaseReader):
         Currency to use for data
     interval : str, optional
         Sampling interval to use for downloaded data
+
+    Notes
+    -----
+    See `Morningstar <http://www.morningstar.com>`__
     """
 
     def __init__(self, symbols, start=None, end=None, retry_count=3,
