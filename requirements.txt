@@ -1,8 +1,12 @@
 lxml
-numpy
-pandas
-pytest
-requests
-requests_file
-requests_ftp
+pandas>=0.19.2
+pytest>=3
+requests>=2.3.0
+requests-file
+requests-ftp
 wrapt
+# Documentation Only
+matplotlib
+ipython
+sphinx
+sphinx_rtd_theme

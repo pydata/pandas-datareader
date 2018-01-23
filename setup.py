@@ -14,7 +14,7 @@ def readme():
 
 
 INSTALL_REQUIRES = (
-    ['pandas>=0.17.0', 'requests>=2.3.0', 'requests-file', 'requests-ftp']
+    ['pandas>=0.19.2', 'requests>=2.3.0', 'requests-file', 'requests-ftp', 'wrapt', 'lxml']
 )
 
 setup(

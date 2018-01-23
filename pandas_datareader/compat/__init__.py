@@ -10,6 +10,7 @@ PANDAS_VERSION = LooseVersion(pd.__version__)
 
 PANDAS_0190 = (PANDAS_VERSION >= LooseVersion('0.19.0'))
 PANDAS_0200 = (PANDAS_VERSION >= LooseVersion('0.20.0'))
+PANDAS_0210 = (PANDAS_VERSION >= LooseVersion('0.21.0'))
 
 if PANDAS_0190:
     from pandas.api.types import is_number
