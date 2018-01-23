@@ -78,7 +78,9 @@ Documentation
 -------------
 
 `Stable documentation <https://pydata.github.io/pandas-datareader/stable/>`__
-is available at . A second copy of the stable documentation is hosted on
+is available on
+`github.io <https://pydata.github.io/pandas-datareader/stable/>`__.
+A second copy of the stable documentation is hosted on
 `read the docs <https://pandas-datareader.readthedocs.io/>`_ for more details.
 
 `Development documentation <https://pydata.github.io/pandas-datareader/devel/>`__
