@@ -24,6 +24,9 @@ Highlights include:
   have been removed.  PDR would like to restore these features, and pull
   requests are welcome.
 
+- A new connector for Morningstart Open, High, Low, Close and Volume was
+  introduced (:issue:`467`)
+
 - A new connector for IEX daily price data was introduced (:issue:`465`).
 
 - A new connector for IEX the majority of the IEX API was introduced
@@ -49,6 +52,9 @@ Enhancements
 
 - A new data connector for data provided by the Bank of Canada was
   introduced. (:issue:`440`)
+
+- A new data connector for stock pricing data provided by Morningstar
+  was introduced. (:issue:`467`)
 
 .. _whatsnew_060.api_breaking:
 
