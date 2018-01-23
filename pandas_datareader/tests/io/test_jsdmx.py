@@ -5,7 +5,6 @@ import os
 import numpy as np
 import pandas as pd
 import pandas.util.testing as tm
-import pytest
 
 from pandas_datareader.io import read_jsdmx
 

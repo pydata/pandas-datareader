@@ -31,31 +31,6 @@ Up to date remote data access for pandas, works for multiple versions of pandas.
   although there are frequent reports of failures.  Failure is frequently
   encountered when bulk downloading historical price data.
 
-Installation
-------------
-
-
-Install latest release version via pip
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. code-block:: shell
-
-   $ pip install pandas-datareader
-
-Install latest development version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. code-block:: shell
-
-    $ pip install git+https://github.com/pydata/pandas-datareader.git
-
-or
-
-.. code-block:: shell
-
-    $ git clone https://github.com/pydata/pandas-datareader.git
-    $ python setup.py install
-
 Usage
 -----
 
@@ -85,3 +60,48 @@ A second copy of the stable documentation is hosted on
 
 `Development documentation <https://pydata.github.io/pandas-datareader/devel/>`__
 is available for the latest changes in master.
+
+Installation
+------------
+
+Requirements
+~~~~~~~~~~~~
+
+Using pandas datareader requires the following packages:
+
+* pandas>=0.19.2
+* lxml
+* requests>=2.3.0
+* requests-file
+* requests-ftp
+* wrapt
+
+Building the documentation additionally requires:
+
+* matplotlib
+* ipython
+* sphinx
+* sphinx_rtd_theme
+
+Testing requires pytest.
+
+Install latest release version via pip
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: shell
+
+   $ pip install pandas-datareader
+
+Install latest development version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: shell
+
+    $ pip install git+https://github.com/pydata/pandas-datareader.git
+
+or
+
+.. code-block:: shell
+
+    $ git clone https://github.com/pydata/pandas-datareader.git
+    $ python setup.py install
