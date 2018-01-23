@@ -8,8 +8,8 @@ from pandas_datareader.bankofcanada import BankOfCanadaReader
 from pandas_datareader.edgar import EdgarIndexReader
 from pandas_datareader.enigma import EnigmaReader
 from pandas_datareader.eurostat import EurostatReader
-from pandas_datareader.exceptions import ImmediateDeprecationError, \
-    DEP_ERROR_MSG
+from pandas_datareader.exceptions import DEP_ERROR_MSG, \
+    ImmediateDeprecationError
 from pandas_datareader.famafrench import FamaFrenchReader
 from pandas_datareader.fred import FredReader
 from pandas_datareader.google.daily import GoogleDailyReader
@@ -17,9 +17,10 @@ from pandas_datareader.google.options import Options as GoogleOptions
 from pandas_datareader.google.quotes import GoogleQuotesReader
 from pandas_datareader.iex.daily import IEXDailyReader
 from pandas_datareader.iex.deep import Deep as IEXDeep
-from pandas_datareader.iex.tops import LastReader as IEXLasts
-from pandas_datareader.iex.tops import TopsReader as IEXTops
+from pandas_datareader.iex.tops import LastReader as IEXLasts, \
+    TopsReader as IEXTops
 from pandas_datareader.moex import MoexReader
+from pandas_datareader.mstar.daily import MorningstarDailyReader
 from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
 from pandas_datareader.oecd import OECDReader
 from pandas_datareader.quandl import QuandlReader
@@ -38,6 +39,7 @@ __all__ = ['get_components_yahoo', 'get_data_enigma', 'get_data_famafrench',
            'get_tops_iex', 'get_summary_iex', 'get_records_iex',
            'get_recent_iex', 'get_markets_iex', 'get_last_iex',
            'get_iex_symbols', 'get_iex_book', 'get_dailysummary_iex',
+           'get_data_morningstar', 'get_data_stooq',
            'get_data_stooq', 'DataReader']
 
 
@@ -95,6 +97,10 @@ def get_tops_iex(*args, **kwargs):
 
 def get_last_iex(*args, **kwargs):
     return IEXLasts(*args, **kwargs).read()
+
+
+def get_data_morningstar(*args, **kwargs):
+    return MorningstarDailyReader(*args, **kwargs).read()
 
 
 def get_markets_iex(*args, **kwargs):
@@ -359,6 +365,11 @@ def DataReader(name, data_source=None, start=None, end=None,
         return MoexReader(symbols=name, start=start, end=end,
                           retry_count=retry_count, pause=pause,
                           session=session).read()
+    elif data_source == "morningstar":
+        return MorningstarDailyReader(symbols=name, start=start, end=end,
+                                      retry_count=retry_count, pause=pause,
+                                      session=session, interval="d").read()
+
     else:
         msg = "data_source=%r is not implemented" % data_source
         raise NotImplementedError(msg)
