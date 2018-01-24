@@ -1,5 +1,5 @@
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
 from warnings import warn
 
 import requests
@@ -7,6 +7,7 @@ from pandas import DataFrame
 
 from pandas_datareader._utils import SymbolWarning
 from pandas_datareader.base import _BaseReader
+import pandas as pd
 
 
 class MorningstarDailyReader(_BaseReader):
@@ -149,13 +150,9 @@ class MorningstarDailyReader(_BaseReader):
         return dfx
 
     @staticmethod
-    def _convert_index2date(enddate, indexvals):
-        i = 0
-        while i < len(indexvals):
-            days = indexvals[len(indexvals) - 1] - indexvals[i]
-            d = enddate - timedelta(days=days)
-            i += 1
-            yield d.strftime("%Y-%m-%d")
+    def _convert_index2date(indexvals):
+        base = pd.to_datetime('1900-1-1')
+        return [base + pd.to_timedelta(iv, unit='d') for iv in indexvals]
 
     def _restruct_json(self, symbol, jsondata):
         if jsondata is None:
@@ -166,11 +163,11 @@ class MorningstarDailyReader(_BaseReader):
         dateidx = jsondata["PriceDataList"][0]["DateIndexs"]
         volumes = jsondata["VolumeList"]["Datapoints"]
 
-        date_ = self._convert_index2date(enddate=self.end, indexvals=dateidx)
+        dates = self._convert_index2date(indexvals=dateidx)
         barss = []
         for p in range(len(pricedata)):
             bar = pricedata[p]
-            d = next(date_)
+            d = dates[p]
             bardict = {
                 "Symbol": symbol, "Date": d, "Close": bar[0], "High": bar[1],
                 "Low": bar[2], "Open": bar[3]
@@ -180,8 +177,8 @@ class MorningstarDailyReader(_BaseReader):
             else:
                 events = []
                 for x in divdata:
-                    delta = (datetime.strptime(x["Date"], "%Y-%m-%d") -
-                             datetime.strptime(d, "%Y-%m-%d"))
+                    delta = (datetime.strptime(x["Date"], "%Y-%m-%d")
+                             - d.to_pydatetime())
                     if delta.days == 0:
                         events.append(x)
                 for e in events:

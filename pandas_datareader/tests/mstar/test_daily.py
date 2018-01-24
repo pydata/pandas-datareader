@@ -114,7 +114,7 @@ class TestMorningstarDaily(object):
         dr = MorningstarDailyReader(symbols="GOOG", interval="d")
         df = dr.read()
 
-        assert df.Close[('GOOG', '2017-12-13')] == 1040.61
+        assert df.Close['GOOG']['2017-12-13'] == 1040.61
 
         session = requests.Session()
 
