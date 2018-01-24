@@ -66,6 +66,24 @@ Google Finance
     f = web.DataReader('F', 'google', start, end)
     f.ix['2010-01-04']
 
+.. _remote_data.tiingo:
+
+Tiingo
+======
+`Tiingo <https://www.tiingo.com>`__ is a tracing platform that provides a data
+api with historical end-of-day prices on equities, mutual funds and ETFs.
+Free registration is required to get an API key.  Free accounts are rate
+limited and can access a limited number of symbols (500 at the time of
+writing).
+
+.. ipython:: python
+
+    import os
+    import pandas_datareader as pdr
+
+    df = pdr.get_data_tiingo('GOOG', api_key=os.getenv('TIINGO_API_KEY'))
+    df.head()
+
 .. _remote_data.morningstar:
 
 Morningstar

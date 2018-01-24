@@ -17,5 +17,6 @@ Data Readers
    quandl
    robinhood
    stooq
+   tiingo
    tsp
    world-bank

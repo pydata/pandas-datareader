@@ -24,6 +24,10 @@ Highlights include:
   have been removed.  PDR would like to restore these features, and pull
   requests are welcome.
 
+- A new connector for Tiingo was introduced.  Tiingo provides
+  historical end-of-day data for a large set of equities, ETFs and mutual
+  funds. Free registration is required to get an API key (:issue:`478`).
+
 - A new connector for Robinhood was introduced.  This provides
   up to 1 year of historical end-of-day data. It also provides near
   real-time quotes.  (:issue:`477`).
@@ -71,6 +75,9 @@ Enhancements
 
 - A new data connector for stock pricing data provided by
   `Robinhood <https://www.robinhood.com>`__ was introduced. (:issue:`477`)
+
+- A new data connector for stock pricing data provided by
+  `Tiingo <https://api.tiingo.com/docs>`__ was introduced. (:issue:`478`)
 
 .. _whatsnew_060.api_breaking:
 
