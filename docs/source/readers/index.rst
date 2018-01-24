@@ -15,6 +15,7 @@ Data Readers
    nasdaq-trader
    oecd
    quandl
+   robinhood
    stooq
    tsp
    world-bank
