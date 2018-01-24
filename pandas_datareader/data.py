@@ -27,6 +27,7 @@ from pandas_datareader.quandl import QuandlReader
 from pandas_datareader.robinhood import RobinhoodHistoricalReader, \
     RobinhoodQuoteReader
 from pandas_datareader.stooq import StooqDailyReader
+from pandas_datareader.tiingo import TiingoDailyReader, TiingoQuoteReader
 from pandas_datareader.yahoo.actions import (YahooActionReader, YahooDivReader)
 from pandas_datareader.yahoo.components import _get_data as \
     get_components_yahoo
@@ -112,6 +113,14 @@ def get_data_robinhood(*args, **kwargs):
 
 def get_quotes_robinhood(*args, **kwargs):
     return RobinhoodQuoteReader(*args, **kwargs).read()
+
+
+def get_data_tiingo(*args, **kwargs):
+    return TiingoDailyReader(*args, **kwargs).read()
+
+
+def get_quotes_tiingo(*args, **kwargs):
+    return TiingoQuoteReader(*args, **kwargs).read()
 
 
 def get_markets_iex(*args, **kwargs):
@@ -384,6 +393,11 @@ def DataReader(name, data_source=None, start=None, end=None,
         return RobinhoodHistoricalReader(symbols=name, start=start, end=end,
                                          retry_count=retry_count, pause=pause,
                                          session=session).read()
+    elif data_source == 'tiingo':
+        return TiingoDailyReader(symbols=name, start=start, end=end,
+                                 retry_count=retry_count, pause=pause,
+                                 session=session,
+                                 api_key=access_key).read()
     else:
         msg = "data_source=%r is not implemented" % data_source
         raise NotImplementedError(msg)
