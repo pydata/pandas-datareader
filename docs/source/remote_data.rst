@@ -31,6 +31,7 @@ Currently the following sources are supported:
     - :ref:`Google Finance<remote_data.google>`
     - :ref:`Morningstar<remote_data.morningstar>`
     - :ref:`IEX<remote_data.iex>`
+    - :ref:`Robinhood<remote_data.robinhood>`
     - :ref:`Enigma<remote_data.enigma>`
     - :ref:`Quandl<remote_data.quandl>`
     - :ref:`St.Louis FED (FRED)<remote_data.fred>`
@@ -109,6 +110,22 @@ A third interface to the deep API is exposed through
     import pandas_datareader.data as web
     f = web.DataReader('gs', 'iex-tops')
     f[:10]
+
+
+.. _remote_data.robinhood:
+
+Robinhood
+=========
+`Robinhood <https://www.robinhood.com>`__ is a stock trading platform with an
+API that provides a limited set of data. Historical daily data is limited to 1
+year relative to today.
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+    from datetime import datetime
+    f = web.DataReader('F', 'robinhood')
+    f.head()
 
 .. _remote_data.enigma:
 

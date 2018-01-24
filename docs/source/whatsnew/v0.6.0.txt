@@ -1,6 +1,6 @@
 .. _whatsnew_060:
 
-v0.6.0 (January 23, 2018)
+v0.6.0 (January 24, 2018)
 ---------------------------
 
 This is a major release from 0.5.0. We recommend that all users upgrade.
@@ -24,7 +24,11 @@ Highlights include:
   have been removed.  PDR would like to restore these features, and pull
   requests are welcome.
 
-- A new connector for Morningstart Open, High, Low, Close and Volume was
+- A new connector for Robinhood was introduced.  This provides
+  up to 1 year of historical end-of-day data. It also provides near
+  real-time quotes.  (:issue:`477`).
+
+- A new connector for Morningstar Open, High, Low, Close and Volume was
   introduced (:issue:`467`)
 
 - A new connector for IEX daily price data was introduced (:issue:`465`).
@@ -47,7 +51,6 @@ Highlights include:
 Enhancements
 ~~~~~~~~~~~~
 
-
 - A new data connector for data provided by the
   `Bank of Canada <https://www.bankofcanada.ca/rates/>`__ was introduced.
   (:issue:`440`)
@@ -65,6 +68,9 @@ Enhancements
 
 - A new data connector for stock pricing data provided by
   `Morningstar <http://www.morningstar.com>`__ was introduced. (:issue:`467`)
+
+- A new data connector for stock pricing data provided by
+  `Robinhood <https://www.robinhood.com>`__ was introduced. (:issue:`477`)
 
 .. _whatsnew_060.api_breaking:
 

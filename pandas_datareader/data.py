@@ -24,6 +24,8 @@ from pandas_datareader.mstar.daily import MorningstarDailyReader
 from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
 from pandas_datareader.oecd import OECDReader
 from pandas_datareader.quandl import QuandlReader
+from pandas_datareader.robinhood import RobinhoodHistoricalReader, \
+    RobinhoodQuoteReader
 from pandas_datareader.stooq import StooqDailyReader
 from pandas_datareader.yahoo.actions import (YahooActionReader, YahooDivReader)
 from pandas_datareader.yahoo.components import _get_data as \
@@ -40,7 +42,8 @@ __all__ = ['get_components_yahoo', 'get_data_enigma', 'get_data_famafrench',
            'get_recent_iex', 'get_markets_iex', 'get_last_iex',
            'get_iex_symbols', 'get_iex_book', 'get_dailysummary_iex',
            'get_data_morningstar', 'get_data_stooq',
-           'get_data_stooq', 'DataReader']
+           'get_data_stooq', 'get_data_robinhood', 'get_quotes_robinhood',
+           'DataReader']
 
 
 def get_data_fred(*args, **kwargs):
@@ -101,6 +104,14 @@ def get_last_iex(*args, **kwargs):
 
 def get_data_morningstar(*args, **kwargs):
     return MorningstarDailyReader(*args, **kwargs).read()
+
+
+def get_data_robinhood(*args, **kwargs):
+    return RobinhoodHistoricalReader(*args, **kwargs).read()
+
+
+def get_quotes_robinhood(*args, **kwargs):
+    return RobinhoodQuoteReader(*args, **kwargs).read()
 
 
 def get_markets_iex(*args, **kwargs):
@@ -369,7 +380,10 @@ def DataReader(name, data_source=None, start=None, end=None,
         return MorningstarDailyReader(symbols=name, start=start, end=end,
                                       retry_count=retry_count, pause=pause,
                                       session=session, interval="d").read()
-
+    elif data_source == 'robinhood':
+        return RobinhoodHistoricalReader(symbols=name, start=start, end=end,
+                                         retry_count=retry_count, pause=pause,
+                                         session=session).read()
     else:
         msg = "data_source=%r is not implemented" % data_source
         raise NotImplementedError(msg)
