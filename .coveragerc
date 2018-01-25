@@ -6,9 +6,11 @@ include = */pandas_datareader/*
 omit =
     */_version.py
     */yahoo/*
+    */edgar.py
     */google/options.py
     */google/quotes.py
     */tests/google/test_options.py
+    */tests/test_edgar.py
 
 [report]
 # Regexes for lines to exclude from consideration
