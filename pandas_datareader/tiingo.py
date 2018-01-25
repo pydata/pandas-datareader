@@ -58,8 +58,8 @@ class TiingoDailyReader(_BaseReader):
             self.symbols = [self.symbols]
         self._symbol = ''
         if api_key is None:
-            api_key = os.environ.get('TIINGO_API_KEY', None)
-        if api_key is None:
+            api_key = os.getenv('TIINGO_API_KEY')
+        if not api_key or not isinstance(api_key, str):
             raise ValueError('The tiingo API key must be provided either '
                              'through the api_key variable or through the '
                              'environmental variable TIINGO_API_KEY.')

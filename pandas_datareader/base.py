@@ -125,6 +125,7 @@ class _BaseReader(object):
 
         # initial attempt + retry
         pause = self.pause
+        last_response_text = ''
         for i in range(self.retry_count + 1):
             response = self.session.get(url,
                                         params=params,
@@ -132,6 +133,7 @@ class _BaseReader(object):
             if response.status_code == requests.codes.ok:
                 return response
 
+            last_response_text = response.text.encode(response.encoding)
             time.sleep(pause)
 
             # Increase time between subsequent requests, per subclass.
@@ -146,8 +148,11 @@ class _BaseReader(object):
 
         if params is not None and len(params) > 0:
             url = url + "?" + urlencode(params)
+        msg = 'Unable to read URL: {0}'.format(url)
+        if last_response_text:
+            msg += '\nResponse Text:\n{0}'.format(last_response_text)
 
-        raise RemoteDataError('Unable to read URL: {0}'.format(url))
+        raise RemoteDataError(msg)
 
     def _get_crumb(self, *args):
         """ To be implemented by subclass """

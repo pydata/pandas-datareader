@@ -1,10 +1,13 @@
 # flake8: noqa
-import pandas as pd
-import pandas.io.common as com
-import pandas.compat as compat
-
-from io import BytesIO
+import sys
 from distutils.version import LooseVersion
+from io import BytesIO
+
+import pandas as pd
+import pandas.compat as compat
+import pandas.io.common as com
+
+PY3 = sys.version_info >= (3, 0)
 
 PANDAS_VERSION = LooseVersion(pd.__version__)
 
