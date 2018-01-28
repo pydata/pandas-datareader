@@ -1,0 +1,309 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Thrift Savings Plan (TSP) &mdash; pandas-datareader 0.5.0+112.g05220cd documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pandas-datareader 0.5.0+112.g05220cd documentation" href="../index.html"/>
+        <link rel="up" title="Data Readers" href="index.html"/>
+        <link rel="next" title="World Bank" href="world-bank.html"/>
+        <link rel="prev" title="Tiingo" href="tiingo.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pandas-datareader
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../whatsnew.html">What’s New</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../remote_data.html">Remote Data Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cache.html">Caching queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../see-also.html">Other Data Sources</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Data Readers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fred.html">Federal Reserve Economic Data (FRED)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="famafrench.html">Fama-French Data (Ken French’s Data Library)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bank-of-canada.html">Bank of Canada</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enigma.html">Engima</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eurostat.html">Eurostat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iex.html">The Investors Exchange (IEX)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moex.html">Moscow Exchange (MOEX)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morningstar.html">Morningstar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nasdaq-trader.html">NASDAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oecd.html">Organisation for Economic Co-operation and Development (OECD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quandl.html">Quandl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robinhood.html">Robinhood</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stooq.html">Stooq.com</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tiingo.html">Tiingo</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Thrift Savings Plan (TSP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="world-bank.html">World Bank</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pandas-datareader</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Data Readers</a> &raquo;</li>
+        
+      <li>Thrift Savings Plan (TSP)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/readers/tsp.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pandas_datareader.tsp">
+<span id="thrift-savings-plan-tsp"></span><h1>Thrift Savings Plan (TSP)<a class="headerlink" href="#module-pandas_datareader.tsp" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pandas_datareader.tsp.TSPReader">
+<em class="property">class </em><code class="descclassname">pandas_datareader.tsp.</code><code class="descname">TSPReader</code><span class="sig-paren">(</span><em>symbols=('Linc'</em>, <em>'L2020'</em>, <em>'L2030'</em>, <em>'L2040'</em>, <em>'L2050'</em>, <em>'G'</em>, <em>'F'</em>, <em>'C'</em>, <em>'S'</em>, <em>'I')</em>, <em>start=None</em>, <em>end=None</em>, <em>retry_count=3</em>, <em>pause=0.001</em>, <em>session=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.tsp.TSPReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns DataFrame of historical TSP fund prices from symbols, over date
+range, start to end.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>symbols</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>, </em><em>array-like object</em><em> (</em><em>list</em><em>, </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a><em>, </em><em>Series</em><em>)</em><em>, or </em><em>DataFrame</em>) – Single stock symbol (ticker), array-like object of symbols or
+DataFrame with index containing stock symbols.</li>
+<li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>, </em><em>(</em><em>defaults to '1/1/2010'</em><em>)</em>) – Starting date, timestamp. Parses many different kind of date
+representations (e.g., ‘JAN-01-2010’, ‘1/1/10’, ‘Jan, 1, 1980’)</li>
+<li><strong>end</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>, </em><em>(</em><em>defaults to today</em><em>)</em>) – Ending date, timestamp. Same format as starting date.</li>
+<li><strong>retry_count</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a><em>, </em><em>default 3</em>) – Number of times to retry query request.</li>
+<li><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a><em>, </em><em>default 0</em>) – Time, in seconds, to pause between consecutive queries of chunks. If
+single value given for symbol, represents the pause between retries.</li>
+<li><strong>session</strong> (<em>Session</em><em>, </em><em>default None</em>) – requests.sessions.Session instance to be used</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pandas_datareader.tsp.TSPReader.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.tsp.TSPReader.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close network session</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pandas_datareader.tsp.TSPReader.params">
+<code class="descname">params</code><a class="headerlink" href="#pandas_datareader.tsp.TSPReader.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameters to use in API calls</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pandas_datareader.tsp.TSPReader.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.tsp.TSPReader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>read one data from specified URL</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pandas_datareader.tsp.TSPReader.url">
+<code class="descname">url</code><a class="headerlink" href="#pandas_datareader.tsp.TSPReader.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>API URL</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="world-bank.html" class="btn btn-neutral float-right" title="World Bank" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tiingo.html" class="btn btn-neutral" title="Tiingo" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, The PyData Development Team.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.5.0+112.g05220cd',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
