@@ -2,6 +2,12 @@ sudo: false
 
 language: python
 
+env:
+  global:
+    # Doctr deploy key for pydata/pandas-datareader
+    - secure: "iGbOAbBSV5y0TKDh2CifRSk6OpLA9GbEEL/hscHFLSDDUCWcdfvYXda3SWJFWyoQ5QUxSigXWd+ukr4u92d7lmB7m3TWj6BAMNuRpatTgnejLNwLvNeYdvLAxPvx39Cq85frd1Rx1beBLn3h/4wm4Ah+dR5W9NH8+x3OuZMH3Eo="
+
+
 matrix:
   fast_finish: true
   include:
