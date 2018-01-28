@@ -1,0 +1,388 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pandas-datareader &mdash; pandas-datareader 0.6.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="pandas-datareader 0.6.0 documentation" href="#"/>
+        <link rel="next" title="What’s New" href="whatsnew.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> pandas-datareader
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.6.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="whatsnew.html">What’s New</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote_data.html">Remote Data Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cache.html">Caching queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="see-also.html">Other Data Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readers/index.html">Data Readers</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">pandas-datareader</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>pandas-datareader</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pandas-datareader">
+<h1>pandas-datareader<a class="headerlink" href="#pandas-datareader" title="Permalink to this headline">¶</a></h1>
+<p>Up to date remote data access for pandas, works for multiple versions of pandas.</p>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/pandas-datareader/"><img alt="https://img.shields.io/pypi/v/pandas-datareader.svg" src="https://img.shields.io/pypi/v/pandas-datareader.svg" /></a>
+<a class="reference external image-reference" href="https://travis-ci.org/pydata/pandas-datareader"><img alt="https://travis-ci.org/pydata/pandas-datareader.svg?branch=master" src="https://travis-ci.org/pydata/pandas-datareader.svg?branch=master" /></a>
+<a class="reference external image-reference" href="https://coveralls.io/r/pydata/pandas-datareader"><img alt="https://coveralls.io/repos/pydata/pandas-datareader/badge.svg?branch=master" src="https://coveralls.io/repos/pydata/pandas-datareader/badge.svg?branch=master" /></a>
+<a class="reference external image-reference" href="https://pandas-datareader.readthedocs.io/en/latest/"><img alt="https://readthedocs.org/projects/pandas-datareader/badge/?version=latest" src="https://readthedocs.org/projects/pandas-datareader/badge/?version=latest" /></a>
+<a class="reference external image-reference" href="https://landscape.io/github/pydata/pandas-datareader/master"><img alt="Code Health" src="https://landscape.io/github/pydata/pandas-datareader/master/landscape.svg?style=flat" /></a>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">As of v0.6.0 Yahoo!, Google Options, Google Quotes and EDGAR have
+been immediately deprecated due to large changes in their API and
+no stable replacement.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">As of v0.6.0 Google finance is still functioning for historical price data,
+although there are frequent reports of failures.  Failure is frequently
+encountered when bulk downloading historical price data.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>Starting in 0.19.0, pandas no longer supports <code class="docutils literal"><span class="pre">pandas.io.data</span></code> or <code class="docutils literal"><span class="pre">pandas.io.wb</span></code>, so
+you must replace your imports from <code class="docutils literal"><span class="pre">pandas.io</span></code> with those from <code class="docutils literal"><span class="pre">pandas_datareader</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandas.io</span> <span class="kn">import</span> <span class="n">data</span><span class="p">,</span> <span class="n">wb</span> <span class="c1"># becomes</span>
+<span class="kn">from</span> <span class="nn">pandas_datareader</span> <span class="kn">import</span> <span class="n">data</span><span class="p">,</span> <span class="n">wb</span>
+</pre></div>
+</div>
+<p>Many functions from the data module have been included in the top level API.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="kn">as</span> <span class="nn">pdr</span>
+<span class="n">pdr</span><span class="o">.</span><span class="n">get_data_fred</span><span class="p">(</span><span class="s1">&#39;GS10&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://pydata.github.io/pandas-datareader/stable/">Stable documentation</a>
+is available on
+<a class="reference external" href="https://pydata.github.io/pandas-datareader/stable/">github.io</a>.
+A second copy of the stable documentation is hosted on
+<a class="reference external" href="https://pandas-datareader.readthedocs.io/">read the docs</a> for more details.</p>
+<p><a class="reference external" href="https://pydata.github.io/pandas-datareader/devel/">Development documentation</a>
+is available for the latest changes in master.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="requirements">
+<h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
+<p>Using pandas datareader requires the following packages:</p>
+<ul class="simple">
+<li>pandas&gt;=0.19.2</li>
+<li>lxml</li>
+<li>requests&gt;=2.3.0</li>
+<li>requests-file</li>
+<li>requests-ftp</li>
+<li>wrapt</li>
+</ul>
+<p>Building the documentation additionally requires:</p>
+<ul class="simple">
+<li>matplotlib</li>
+<li>ipython</li>
+<li>sphinx</li>
+<li>sphinx_rtd_theme</li>
+</ul>
+<p>Testing requires pytest.</p>
+</div>
+<div class="section" id="install-latest-release-version-via-pip">
+<h3>Install latest release version via pip<a class="headerlink" href="#install-latest-release-version-via-pip" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>$ pip install pandas-datareader
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-latest-development-version">
+<h3>Install latest development version<a class="headerlink" href="#install-latest-development-version" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>$ pip install git+https://github.com/pydata/pandas-datareader.git
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>$ git clone https://github.com/pydata/pandas-datareader.git
+$ python setup.py install
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id1">
+<h2>Documentation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="whatsnew.html">What’s New</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-6-0-january-24-2018">v0.6.0 (January 24, 2018)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-5-0-july-25-2017">v0.5.0 (July 25, 2017)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-4-0-may-15-2017">v0.4.0 (May 15, 2017)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-3-0-january-14-2017">v0.3.0 (January 14, 2017)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-2-1-november-26-2015">v0.2.1 (November 26, 2015)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-2-0-october-9-2015">v0.2.0 (October 9, 2015)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="remote_data.html">Remote Data Access</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="remote_data.html#google-finance">Google Finance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote_data.html#tiingo">Tiingo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote_data.html#morningstar">Morningstar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote_data.html#iex">IEX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote_data.html#robinhood">Robinhood</a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote_data.html#enigma">Enigma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote_data.html#quandl">Quandl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote_data.html#fred">FRED</a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote_data.html#fama-french">Fama/French</a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote_data.html#world-bank">World Bank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote_data.html#oecd">OECD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote_data.html#eurostat">Eurostat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote_data.html#tsp-fund-data">TSP Fund Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote_data.html#nasdaq-trader-symbol-definitions">Nasdaq Trader Symbol Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote_data.html#stooq-index-data">Stooq Index Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote_data.html#moex-data">MOEX Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cache.html">Caching queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="see-also.html">Other Data Sources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="see-also.html#alpha-vantage">Alpha Vantage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="see-also.html#tiingo">Tiingo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="see-also.html#barchart">Barchart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="see-also.html#list-of-other-sources">List of Other Sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readers/index.html">Data Readers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readers/fred.html">Federal Reserve Economic Data (FRED)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readers/famafrench.html">Fama-French Data (Ken French’s Data Library)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readers/bank-of-canada.html">Bank of Canada</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readers/enigma.html">Engima</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readers/eurostat.html">Eurostat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readers/iex.html">The Investors Exchange (IEX)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readers/moex.html">Moscow Exchange (MOEX)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readers/morningstar.html">Morningstar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readers/nasdaq-trader.html">NASDAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readers/oecd.html">Organisation for Economic Co-operation and Development (OECD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readers/quandl.html">Quandl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readers/robinhood.html">Robinhood</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readers/stooq.html">Stooq.com</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readers/tiingo.html">Tiingo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readers/tsp.html">Thrift Savings Plan (TSP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readers/world-bank.html">World Bank</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="whatsnew.html" class="btn btn-neutral float-right" title="What’s New" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, The PyData Development Team.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.6.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
