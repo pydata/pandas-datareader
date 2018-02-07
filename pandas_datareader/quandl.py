@@ -1,10 +1,10 @@
+import os
 import re
 
 from pandas_datareader.base import _DailyBaseReader
 
 
 class QuandlReader(_DailyBaseReader):
-
     """
     Returns DataFrame of historical stock prices from symbol, over date
     range, start to end.
@@ -37,9 +37,24 @@ class QuandlReader(_DailyBaseReader):
         Number of symbols to download consecutively before intiating pause.
     session : Session, default None
         requests.sessions.Session instance to be used
+    api_key : str, optional
+        Quandl API key . If not provided the environmental variable
+        QUANDL_API_KEY is read. The API key is *required*.
     """
 
     _BASE_URL = "https://www.quandl.com/api/v3/datasets/"
+
+    def __init__(self, symbols, start=None, end=None, retry_count=3, pause=0.1,
+                 session=None, chunksize=25, api_key=None):
+        super(QuandlReader, self).__init__(symbols, start, end, retry_count,
+                                           pause, session, chunksize)
+        if api_key is None:
+            api_key = os.getenv('QUANDL_API_KEY')
+        if not api_key or not isinstance(api_key, str):
+            raise ValueError('The Quandl API key must be provided either '
+                             'through the api_key variable or through the '
+                             'environmental variable QUANDL_API_KEY.')
+        self.api_key = api_key
 
     @property
     def url(self):
@@ -65,37 +80,39 @@ class QuandlReader(_DailyBaseReader):
             'start_date': self.start.strftime('%Y-%m-%d'),
             'end_date': self.end.strftime('%Y-%m-%d'),
             'order': "asc",
+            'api_key': self.api_key
         }
         paramstring = '&'.join(['%s=%s' % (k, v) for k, v in params.items()])
-        return '%s%s/%s.csv?%s' % (self._BASE_URL, datasetname,
-                                   symbol, paramstring)
+        url = '{url}{dataset}/{symbol}.csv?{params}'
+        return url.format(url=self._BASE_URL, dataset=datasetname,
+                          symbol=symbol, params=paramstring)
 
     def _fullmatch(self, regex, string, flags=0):
         """Emulate python-3.4 re.fullmatch()."""
         return re.match("(?:" + regex + r")\Z", string, flags=flags)
 
     _COUNTRYCODE_TO_DATASET = dict(
-            # https://www.quandl.com/data/EURONEXT-Euronext-Stock-Exchange
-            BE='EURONEXT',
-            # https://www.quandl.com/data/HKEX-Hong-Kong-Exchange
-            CN='HKEX',
-            # https://www.quandl.com/data/SSE-Boerse-Stuttgart
-            DE='SSE',
-            FR='EURONEXT',
-            # https://www.quandl.com/data/NSE-National-Stock-Exchange-of-India
-            IN='NSE',
-            # https://www.quandl.com/data/TSE-Tokyo-Stock-Exchange
-            JP='TSE',
-            NL='EURONEXT',
-            PT='EURONEXT',
-            # https://www.quandl.com/data/LSE-London-Stock-Exchange
-            UK='LSE',
-            # https://www.quandl.com/data/WIKI-Wiki-EOD-Stock-Prices
-            US='WIKI',
-        )
+        # https://www.quandl.com/data/EURONEXT-Euronext-Stock-Exchange
+        BE='EURONEXT',
+        # https://www.quandl.com/data/HKEX-Hong-Kong-Exchange
+        CN='HKEX',
+        # https://www.quandl.com/data/SSE-Boerse-Stuttgart
+        DE='SSE',
+        FR='EURONEXT',
+        # https://www.quandl.com/data/NSE-National-Stock-Exchange-of-India
+        IN='NSE',
+        # https://www.quandl.com/data/TSE-Tokyo-Stock-Exchange
+        JP='TSE',
+        NL='EURONEXT',
+        PT='EURONEXT',
+        # https://www.quandl.com/data/LSE-London-Stock-Exchange
+        UK='LSE',
+        # https://www.quandl.com/data/WIKI-Wiki-EOD-Stock-Prices
+        US='WIKI',
+    )
 
     def _db_from_countrycode(self, code):
-        assert code in self._COUNTRYCODE_TO_DATASET,\
+        assert code in self._COUNTRYCODE_TO_DATASET, \
             "No Quandl dataset known for country code '%s'" % code
         return self._COUNTRYCODE_TO_DATASET[code]
 
@@ -106,12 +123,12 @@ class QuandlReader(_DailyBaseReader):
         """Read data"""
         df = super(QuandlReader, self).read()
         df.rename(columns=lambda n: n.replace(' ', '')
-                                     .replace('.', '')
-                                     .replace('/', '')
-                                     .replace('%', '')
-                                     .replace('(', '')
-                                     .replace(')', '')
-                                     .replace("'", '')
-                                     .replace('-', ''),
+                  .replace('.', '')
+                  .replace('/', '')
+                  .replace('%', '')
+                  .replace('(', '')
+                  .replace(')', '')
+                  .replace("'", '')
+                  .replace('-', ''),
                   inplace=True)
         return df

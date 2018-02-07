@@ -1,0 +1,30 @@
+.. _whatsnew_070:
+
+v0.7.0 (Xxxxxxx YY, 20ZZ)
+---------------------------
+
+
+Highlights include:
+
+
+.. contents:: What's new in v0.7.0
+    :local:
+    :backlinks: none
+
+.. _whatsnew_070.enhancements:
+
+Enhancements
+~~~~~~~~~~~~
+
+.. _whatsnew_070.api_breaking:
+
+Backwards incompatible API changes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. _whatsnew_070.bug_fixes:
+
+Bug Fixes
+~~~~~~~~~
+
+- Added support for passing the API KEY to QuandlReader either directly or by
+  setting the environmental variable QUANDL_API_KEY (:issue:`485`).

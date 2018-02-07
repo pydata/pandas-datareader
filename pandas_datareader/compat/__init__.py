@@ -17,8 +17,10 @@ PANDAS_0210 = (PANDAS_VERSION >= LooseVersion('0.21.0'))
 
 if PANDAS_0190:
     from pandas.api.types import is_number
+    from pandas.util.testing import assert_frame_equal
 else:
     from pandas.core.common import is_number
+    from pandas.testing import assert_frame_equal
 
 if PANDAS_0200:
     from pandas.util.testing import assert_raises_regex
