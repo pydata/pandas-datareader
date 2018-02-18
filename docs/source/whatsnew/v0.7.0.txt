@@ -55,3 +55,4 @@ Bug Fixes
 - Added support for optionally passing a custom base_url to the EnigmaReader  (:issue:`499`).
 - Fixed Morningstar 'retry' incrementation (:issue:`513`)
 - Updated Google Daily Price API to functional url (:issue:`502`)
+- Fix Yahoo! price data (:issue:`498`)

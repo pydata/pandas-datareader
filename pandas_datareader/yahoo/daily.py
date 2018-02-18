@@ -125,16 +125,16 @@ class YahooDailyReader(_DailyBaseReader):
         ptrn = r'root\.App\.main = (.*?);\n}\(this\)\);'
         jsn = json.loads(re.search(ptrn, resp.text, re.DOTALL).group(1))
         df = DataFrame(
-                jsn['context']['dispatcher']['stores']
-                ['HistoricalPriceStore']['prices']
-                )
+            jsn['context']['dispatcher']['stores']
+            ['HistoricalPriceStore']['prices']
+        )
         df['date'] = to_datetime(df['date'], unit='s').dt.date
         df = df.dropna(subset=['close'])
         df = df[['date', 'high', 'low', 'open', 'close',
                  'volume', 'adjclose']]
 
         if self.ret_index:
-            df['Ret_Index'] = _calc_return_index(df['adjclose'])
+            df['Ret_Index'] = _calc_return_index(df['Adj Close'])
         if self.adjust_price:
             df = _adjust_prices(df)
         return df.sort_index().dropna(how='all')
