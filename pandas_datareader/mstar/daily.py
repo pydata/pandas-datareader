@@ -165,7 +165,7 @@ class MorningstarDailyReader(_BaseReader):
         if jsondata["VolumeList"]:
             volumes = jsondata["VolumeList"]["Datapoints"]
         else:
-            volumes = [np.nan] * 1000000
+            volumes = None
 
         dates = self._convert_index2date(indexvals=dateidx)
         barss = []
@@ -196,10 +196,10 @@ class MorningstarDailyReader(_BaseReader):
                     else:
                         pass
             if self.incl_vol is True:
-                try:
+                if volumes is None:
+                    bardict.update({"Volume": np.nan})
+                else:
                     bardict.update({"Volume": int(volumes[p] * 1000000)})
-                except ValueError:
-                    bardict.update({"Volume": volumes[p]})
             else:
                 pass
 
