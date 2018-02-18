@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Remote Data Access &mdash; pandas-datareader 0.6.0 documentation</title>
+  <title>Remote Data Access &mdash; pandas-datareader 0.6.0+3.g9acc0d0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="pandas-datareader 0.6.0 documentation" href="index.html"/>
+    <link rel="top" title="pandas-datareader 0.6.0+3.g9acc0d0 documentation" href="index.html"/>
         <link rel="next" title="Caching queries" href="cache.html"/>
         <link rel="prev" title="What’s New" href="whatsnew.html"/> 
 
@@ -231,7 +231,7 @@ a range of errors when attempting to read data, especially in bulk.</p>
 <span class="gp">In [5]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;google&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
 
 <span class="gp">In [6]: </span><span class="n">f</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="s1">&#39;2010-01-04&#39;</span><span class="p">]</span>
-<span class="go">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      Out[6]: </span>
+<span class="go">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Out[6]: </span>
 <span class="go">Open            10.17</span>
 <span class="go">High            10.28</span>
 <span class="go">Low             10.05</span>
@@ -353,19 +353,19 @@ year relative to today.</p>
 <span class="gh">Out[29]: </span><span class="go"></span>
 <span class="go">                  close_price high_price  interpolated low_price open_price  \</span>
 <span class="go">symbol begins_at                                                              </span>
-<span class="go">F      2017-01-30     11.9029    11.9895         False   11.8163    11.9895   </span>
-<span class="go">       2017-01-31     11.8933    11.9222         False   11.7297    11.8452   </span>
-<span class="go">       2017-02-01     11.8548    12.1050         False   11.7586    11.9799   </span>
-<span class="go">       2017-02-02     11.8163    11.9029         False   11.7682    11.8356   </span>
-<span class="go">       2017-02-03     12.0858    12.1435         False   11.9222    11.9511   </span>
+<span class="go">F      2017-02-21     11.9174    11.9456         False   11.8423    11.8423   </span>
+<span class="go">       2017-02-22     11.8986    11.9878         False   11.8798    11.8892   </span>
+<span class="go">       2017-02-23     11.7953    11.9409         False   11.7859    11.9268   </span>
+<span class="go">       2017-02-24     11.7108    11.7483         False   11.6263    11.7483   </span>
+<span class="go">       2017-02-27     11.8892    11.9080         False   11.6732    11.7296   </span>
 
 <span class="go">                  session    volume  </span>
 <span class="go">symbol begins_at                     </span>
-<span class="go">F      2017-01-30     reg  39254173  </span>
-<span class="go">       2017-01-31     reg  46974479  </span>
-<span class="go">       2017-02-01     reg  44396812  </span>
-<span class="go">       2017-02-02     reg  29035383  </span>
-<span class="go">       2017-02-03     reg  38245251  </span>
+<span class="go">F      2017-02-21     reg  29156181  </span>
+<span class="go">       2017-02-22     reg  24787512  </span>
+<span class="go">       2017-02-23     reg  22520597  </span>
+<span class="go">       2017-02-24     reg  40817305  </span>
+<span class="go">       2017-02-27     reg  41713096  </span>
 </pre></div>
 </div>
 </div>
@@ -387,41 +387,41 @@ For example, the following code downloads from  <a class="reference external" hr
 <span class="nn">&lt;ipython-input-32-f46ac2b42095&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_enigma</span><span class="p">(</span><span class="s1">&#39;292129b0-1275-44c8-a6a3-2a0881f24fe1&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ENIGMA_API_KEY&#39;</span><span class="p">))</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">get_data_enigma</span><span class="nt">(*args, **kwargs)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+3.g9acc0d0-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">get_data_enigma</span><span class="nt">(*args, **kwargs)</span>
 <span class="g g-Whitespace">     </span><span class="mi">66</span> 
 <span class="g g-Whitespace">     </span><span class="mi">67</span> <span class="k">def</span> <span class="nf">get_data_enigma</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="ne">---&gt; </span><span class="mi">68</span>     <span class="k">return</span> <span class="n">EnigmaReader</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="g g-Whitespace">     </span><span class="mi">69</span> 
 <span class="g g-Whitespace">     </span><span class="mi">70</span> 
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">read</span><span class="nt">(self)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+3.g9acc0d0-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">read</span><span class="nt">(self)</span>
 <span class="g g-Whitespace">     </span><span class="mi">66</span>         <span class="sd">&quot;&quot;&quot;Read data&quot;&quot;&quot;</span>
 <span class="g g-Whitespace">     </span><span class="mi">67</span>         <span class="k">try</span><span class="p">:</span>
 <span class="ne">---&gt; </span><span class="mi">68</span>             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">()</span>
 <span class="g g-Whitespace">     </span><span class="mi">69</span>         <span class="k">finally</span><span class="p">:</span>
 <span class="g g-Whitespace">     </span><span class="mi">70</span>             <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_read</span><span class="nt">(self)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+3.g9acc0d0-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_read</span><span class="nt">(self)</span>
 <span class="g g-Whitespace">     </span><span class="mi">72</span>     <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="g g-Whitespace">     </span><span class="mi">73</span>         <span class="n">snapshot_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_snapshot_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">)</span>
 <span class="ne">---&gt; </span><span class="mi">74</span>         <span class="n">exported_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_snapshot_export</span><span class="p">(</span><span class="n">snapshot_id</span><span class="p">)</span>  <span class="c1"># TODO: Retry?</span>
 <span class="g g-Whitespace">     </span><span class="mi">75</span>         <span class="n">decoded_data</span> <span class="o">=</span> <span class="n">exported_data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">76</span>         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">StringIO</span><span class="p">(</span><span class="n">decoded_data</span><span class="p">))</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">get_snapshot_export</span><span class="nt">(self, snapshot_id)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+3.g9acc0d0-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">get_snapshot_export</span><span class="nt">(self, snapshot_id)</span>
 <span class="g g-Whitespace">    </span><span class="mi">109</span>         <span class="sd">&quot;&quot;&quot;Return raw CSV of a dataset&quot;&quot;&quot;</span>
 <span class="g g-Whitespace">    </span><span class="mi">110</span>         <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;export/{0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">snapshot_id</span><span class="p">)</span>
 <span class="ne">--&gt; </span><span class="mi">111</span>         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">112</span>         <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_get</span><span class="nt">(self, url)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+3.g9acc0d0-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_get</span><span class="nt">(self, url)</span>
 <span class="g g-Whitespace">     </span><span class="mi">91</span>                     <span class="k">continue</span>
 <span class="g g-Whitespace">     </span><span class="mi">92</span>                 <span class="k">else</span><span class="p">:</span>
 <span class="ne">---&gt; </span><span class="mi">93</span>                     <span class="k">raise</span> <span class="n">e</span>
 <span class="g g-Whitespace">     </span><span class="mi">94</span> 
 <span class="g g-Whitespace">     </span><span class="mi">95</span>     <span class="k">def</span> <span class="nf">get_current_snapshot_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">):</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_get</span><span class="nt">(self, url)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+3.g9acc0d0-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_get</span><span class="nt">(self, url)</span>
 <span class="g g-Whitespace">     </span><span class="mi">83</span>             <span class="k">try</span><span class="p">:</span>
 <span class="g g-Whitespace">     </span><span class="mi">84</span>                 <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 <span class="ne">---&gt; </span><span class="mi">85</span>                 <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
@@ -438,7 +438,7 @@ For example, the following code downloads from  <a class="reference external" hr
 <span class="ne">HTTPError</span>: 429 Client Error: TOO MANY REQUESTS for url: https://public.enigma.com/api/export/29746625-6fbc-4594-8a43-27bf1f1bcfb3
 
 <span class="gp">In [33]: </span><span class="n">df</span><span class="o">.</span><span class="n">columns</span>
-<span class="go">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ---------------------------------------------------------------------------</span>
+<span class="go">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ---------------------------------------------------------------------------</span>
 <span class="go">NameError                                 Traceback (most recent call last)</span>
 <span class="go">&lt;ipython-input-33-b666bf274d0a&gt; in &lt;module&gt;()</span>
 <span class="go">----&gt; 1 df.columns</span>
@@ -939,16 +939,16 @@ available. More information on the <a class="reference external" href="http://ww
 <span class="gh">Out[65]: </span><span class="go"></span>
 <span class="go">                Open      High       Low     Close       Volume</span>
 <span class="go">Date                                                           </span>
-<span class="go">2018-01-26  26466.74  26616.71  26425.35  26616.71          NaN</span>
-<span class="go">2018-01-25  26313.06  26458.25  26259.72  26392.79   95732448.0</span>
-<span class="go">2018-01-24  26282.07  26392.80  26106.94  26252.12  123271104.0</span>
-<span class="go">2018-01-23  26214.87  26246.19  26143.90  26210.81  109272288.0</span>
-<span class="go">2018-01-22  26025.32  26215.23  25974.65  26214.60  126357768.0</span>
-<span class="go">2018-01-19  25987.35  26071.72  25942.83  26071.72  171541424.0</span>
-<span class="go">2018-01-18  26149.55  26153.42  25947.32  26017.81  122449616.0</span>
-<span class="go">2018-01-17  25910.78  26130.45  25865.02  26115.65  133700112.0</span>
-<span class="go">2018-01-16  25987.62  26086.12  25702.99  25792.86  171084224.0</span>
-<span class="go">2018-01-12  25638.39  25810.43  25633.08  25803.19  103878720.0</span>
+<span class="go">2018-02-16  25165.94  25432.42  25149.26  25219.38          NaN</span>
+<span class="go">2018-02-15  25047.82  25203.95  24809.42  25200.37  110581240.0</span>
+<span class="go">2018-02-14  24535.82  24925.95  24490.36  24893.49  114401024.0</span>
+<span class="go">2018-02-13  24540.33  24705.72  24421.03  24640.45   99077712.0</span>
+<span class="go">2018-02-12  24337.76  24765.16  24290.48  24601.27  149693824.0</span>
+<span class="go">2018-02-09  23992.67  24382.14  23360.29  24190.90  198760880.0</span>
+<span class="go">2018-02-08  24902.30  24903.68  23849.23  23860.46  179770672.0</span>
+<span class="go">2018-02-07  24892.87  25293.96  24785.44  24893.35  146600464.0</span>
+<span class="go">2018-02-06  24085.17  24946.23  23778.74  24912.77  231326304.0</span>
+<span class="go">2018-02-05  25337.87  25520.53  23923.88  24345.75  210835440.0</span>
 </pre></div>
 </div>
 </div>
@@ -1025,7 +1025,7 @@ available. More information on the <a class="reference external" href="http://ww
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.6.0',
+            VERSION:'0.6.0+3.g9acc0d0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

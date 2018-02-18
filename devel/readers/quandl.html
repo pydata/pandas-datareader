@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Quandl &mdash; pandas-datareader 0.6.0 documentation</title>
+  <title>Quandl &mdash; pandas-datareader 0.6.0+3.g9acc0d0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="pandas-datareader 0.6.0 documentation" href="../index.html"/>
+    <link rel="top" title="pandas-datareader 0.6.0+3.g9acc0d0 documentation" href="../index.html"/>
         <link rel="up" title="Data Readers" href="index.html"/>
         <link rel="next" title="Robinhood" href="robinhood.html"/>
         <link rel="prev" title="Organisation for Economic Co-operation and Development (OECD)" href="oecd.html"/> 
@@ -184,7 +184,7 @@
 <span id="quandl"></span><h1>Quandl<a class="headerlink" href="#module-pandas_datareader.quandl" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pandas_datareader.quandl.QuandlReader">
-<em class="property">class </em><code class="descclassname">pandas_datareader.quandl.</code><code class="descname">QuandlReader</code><span class="sig-paren">(</span><em>symbols=None</em>, <em>start=None</em>, <em>end=None</em>, <em>retry_count=3</em>, <em>pause=0.001</em>, <em>session=None</em>, <em>chunksize=25</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.quandl.QuandlReader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pandas_datareader.quandl.</code><code class="descname">QuandlReader</code><span class="sig-paren">(</span><em>symbols</em>, <em>start=None</em>, <em>end=None</em>, <em>retry_count=3</em>, <em>pause=0.1</em>, <em>session=None</em>, <em>chunksize=25</em>, <em>api_key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.quandl.QuandlReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns DataFrame of historical stock prices from symbol, over date
 range, start to end.</p>
 <div class="versionadded">
@@ -212,6 +212,8 @@ representations (e.g., ‘JAN-01-2010’, ‘1/1/10’, ‘Jan, 1, 1980’)</li>
 single value given for symbol, represents the pause between retries.</li>
 <li><strong>chunksize</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a><em>, </em><em>default 25</em>) – Number of symbols to download consecutively before intiating pause.</li>
 <li><strong>session</strong> (<em>Session</em><em>, </em><em>default None</em>) – requests.sessions.Session instance to be used</li>
+<li><strong>api_key</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>, </em><em>optional</em>) – Quandl API key . If not provided the environmental variable
+QUANDL_API_KEY is read. The API key is <em>required</em>.</li>
 </ul>
 </td>
 </tr>
@@ -289,7 +291,7 @@ single value given for symbol, represents the pause between retries.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.6.0',
+            VERSION:'0.6.0+3.g9acc0d0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
