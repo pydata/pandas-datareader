@@ -36,10 +36,9 @@ class AlphaVantage(_BaseReader):
     @property
     def params(self):
         return {
-            'symbol': self.symbols,
             'function': self.function,
             'apikey': self.api_key
-            }
+        }
 
     @property
     def function(self):

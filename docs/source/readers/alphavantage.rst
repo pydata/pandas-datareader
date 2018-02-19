@@ -19,4 +19,11 @@ AlphaVantage
 
 .. autoclass:: AVSectorPerformanceReader
 	:members:
-	:inherited-member:
+	:inherited-members:
+
+
+.. py:module:: pandas_datareader.av.quotes
+
+.. autoclass:: AVQuotesReader
+	:members:
+	:inherited-members:

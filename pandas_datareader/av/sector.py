@@ -24,13 +24,6 @@ class AVSectorPerformanceReader(AlphaVantage):
         ALPHAVANTAGE_API_KEY is read. The API key is *required*.
     """
     @property
-    def params(self):
-        return {
-            'function': self.function,
-            'apikey': self.api_key
-        }
-
-    @property
     def function(self):
         return 'SECTOR'
 

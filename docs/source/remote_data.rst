@@ -185,6 +185,25 @@ The top-level function ``get_data_av`` is also provided. This function will
 return the ``TIME_SERIES_DAILY`` endpoint for the symbol and date range
 provided.
 
+Quotes
+^^^^^^
+
+`AlphaVantage <https://www.alphavantage.co/documentation>`__ Batch Stock Quotes
+endpoint allows the retrieval of realtime stock quotes for up to 100 symbols at
+once. These quotes are accessible through the top-level function
+``get_quote_av``.
+
+.. ipython:: python
+
+    import os
+    from datetime import datetime
+    import pandas_datareader.data as web
+
+    web.get_quote_av(["AAPL", "TSLA"])
+
+
+.. note:: Most quotes are only available during market hours.
+
 Forex
 ^^^^^
 

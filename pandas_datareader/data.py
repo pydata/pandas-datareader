@@ -5,6 +5,7 @@ Module contains tools for collecting data from various remote sources
 import warnings
 
 from pandas_datareader.av.forex import AVForexReader
+from pandas_datareader.av.quotes import AVQuotesReader
 from pandas_datareader.av.sector import AVSectorPerformanceReader
 from pandas_datareader.av.time_series import AVTimeSeriesReader
 from pandas_datareader.bankofcanada import BankOfCanadaReader
@@ -73,6 +74,10 @@ def get_data_yahoo(*args, **kwargs):
 
 def get_data_enigma(*args, **kwargs):
     return EnigmaReader(*args, **kwargs).read()
+
+
+def get_quote_av(*args, **kwargs):
+    return AVQuotesReader(*args, **kwargs).read()
 
 
 def get_data_yahoo_actions(*args, **kwargs):
