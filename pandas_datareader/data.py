@@ -4,6 +4,9 @@ Module contains tools for collecting data from various remote sources
 
 import warnings
 
+from pandas_datareader.av.forex import AlphaVantageForexReader
+from pandas_datareader.av.sector import AVSectorPerformanceReader
+from pandas_datareader.av.time_series import AVTimeSeriesReader
 from pandas_datareader.bankofcanada import BankOfCanadaReader
 from pandas_datareader.edgar import EdgarIndexReader
 from pandas_datareader.enigma import EnigmaReader
@@ -45,6 +48,10 @@ __all__ = ['get_components_yahoo', 'get_data_enigma', 'get_data_famafrench',
            'get_data_morningstar', 'get_data_stooq',
            'get_data_stooq', 'get_data_robinhood', 'get_quotes_robinhood',
            'DataReader']
+
+
+def get_data_av(*args, **kwargs):
+    return AVTimeSeriesReader(*args, **kwargs).read()
 
 
 def get_data_fred(*args, **kwargs):
@@ -121,6 +128,14 @@ def get_data_tiingo(*args, **kwargs):
 
 def get_quotes_tiingo(*args, **kwargs):
     return TiingoQuoteReader(*args, **kwargs).read()
+
+
+def get_exchange_rate_av(*args, **kwargs):
+    return AlphaVantageForexReader(*args, **kwargs).read()
+
+
+def get_sector_performance_av(*args, **kwargs):
+    return AVSectorPerformanceReader(*args, **kwargs).read()
 
 
 def get_markets_iex(*args, **kwargs):
@@ -307,6 +322,53 @@ def DataReader(name, data_source=None, start=None, end=None,
                               adjust_price=False, chunksize=25,
                               retry_count=retry_count, pause=pause,
                               session=session, interval='d').read()
+
+    elif data_source == "av-forex":
+        return AlphaVantageForexReader(pairs=name, retry_count=retry_count,
+                                       pause=pause, session=session,
+                                       api_key=access_key).read()
+
+    elif data_source == "av-daily":
+        return AVTimeSeriesReader(symbols=name,
+                                  function="TIME_SERIES_DAILY", start=start,
+                                  end=end, retry_count=retry_count,
+                                  pause=pause, session=session,
+                                  api_key=access_key).read()
+
+    elif data_source == "av-daily-adjusted":
+        return AVTimeSeriesReader(symbols=name,
+                                  function="TIME_SERIES_DAILY_ADJUSTED",
+                                  start=start, end=end,
+                                  retry_count=retry_count, pause=pause,
+                                  session=session, api_key=access_key).read()
+
+    elif data_source == "av-weekly":
+        return AVTimeSeriesReader(symbols=name,
+                                  function="TIME_SERIES_WEEKLY", start=start,
+                                  end=end, retry_count=retry_count,
+                                  pause=pause, session=session,
+                                  api_key=access_key).read()
+
+    elif data_source == "av-weekly-adjusted":
+        return AVTimeSeriesReader(symbols=name,
+                                  function="TIME_SERIES_WEEKLY_ADJUSTED",
+                                  start=start, end=end,
+                                  retry_count=retry_count, pause=pause,
+                                  session=session, api_key=access_key).read()
+
+    elif data_source == "av-monthly":
+        return AVTimeSeriesReader(symbols=name,
+                                  function="TIME_SERIES_MONTHLY", start=start,
+                                  end=end, retry_count=retry_count,
+                                  pause=pause, session=session,
+                                  api_key=access_key).read()
+
+    elif data_source == "av-monthly-adjusted":
+        return AVTimeSeriesReader(symbols=name,
+                                  function="TIME_SERIES_MONTHLY_ADJUSTED",
+                                  start=start, end=end,
+                                  retry_count=retry_count, pause=pause,
+                                  session=session, api_key=access_key).read()
 
     elif data_source == "google":
         return GoogleDailyReader(symbols=name, start=start, end=end,
