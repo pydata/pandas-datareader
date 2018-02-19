@@ -4,7 +4,7 @@ Module contains tools for collecting data from various remote sources
 
 import warnings
 
-from pandas_datareader.av.forex import AlphaVantageForexReader
+from pandas_datareader.av.forex import AVForexReader
 from pandas_datareader.av.sector import AVSectorPerformanceReader
 from pandas_datareader.av.time_series import AVTimeSeriesReader
 from pandas_datareader.bankofcanada import BankOfCanadaReader
@@ -131,7 +131,7 @@ def get_quotes_tiingo(*args, **kwargs):
 
 
 def get_exchange_rate_av(*args, **kwargs):
-    return AlphaVantageForexReader(*args, **kwargs).read()
+    return AVForexReader(*args, **kwargs).read()
 
 
 def get_sector_performance_av(*args, **kwargs):
@@ -324,9 +324,9 @@ def DataReader(name, data_source=None, start=None, end=None,
                               session=session, interval='d').read()
 
     elif data_source == "av-forex":
-        return AlphaVantageForexReader(pairs=name, retry_count=retry_count,
-                                       pause=pause, session=session,
-                                       api_key=access_key).read()
+        return AVForexReader(pairs=name, retry_count=retry_count,
+                             pause=pause, session=session,
+                             api_key=access_key).read()
 
     elif data_source == "av-daily":
         return AVTimeSeriesReader(symbols=name,

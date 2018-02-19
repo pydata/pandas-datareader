@@ -3,7 +3,7 @@ AlphaVantage
 
 .. py:module:: pandas_datareader.av.forex
 
-.. autoclass:: AlphaVantageForexReader
+.. autoclass:: AVForexReader
    :members:
    :inherited-members:
 

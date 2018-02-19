@@ -5,7 +5,7 @@ from pandas_datareader._utils import RemoteDataError
 import pandas as pd
 
 
-class AlphaVantageForexReader(AlphaVantage):
+class AVForexReader(AlphaVantage):
     """
     Returns DataFrame of the AlphaVantage Foreign Exchange (FX) Exchange Rates
     data.
@@ -30,12 +30,12 @@ class AlphaVantageForexReader(AlphaVantage):
     def __init__(self, pairs=None, retry_count=3, pause=0.5, session=None,
                  api_key=None):
 
-        super(AlphaVantageForexReader, self).__init__(symbols=pairs,
-                                                      start=None, end=None,
-                                                      retry_count=retry_count,
-                                                      pause=pause,
-                                                      session=session,
-                                                      api_key=api_key)
+        super(AVForexReader, self).__init__(symbols=pairs,
+                                            start=None, end=None,
+                                            retry_count=retry_count,
+                                            pause=pause,
+                                            session=session,
+                                            api_key=api_key)
         self.from_curr = {}
         self.to_curr = {}
         self.optional_params = {}
@@ -77,7 +77,7 @@ class AlphaVantageForexReader(AlphaVantage):
                 'from_currency': self.from_curr[pair],
                 'to_currency': self.to_curr[pair],
                 }
-            data = super(AlphaVantageForexReader, self).read()
+            data = super(AVForexReader, self).read()
             result.append(data)
         df = pd.concat(result, axis=1)
         df.columns = self.pairs

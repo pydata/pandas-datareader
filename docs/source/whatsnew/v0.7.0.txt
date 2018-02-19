@@ -18,7 +18,7 @@ Enhancements
 
 - A new data connector for data provided by
   `AlphaVantage <https://www.alphavantage.co/documentation>`__ was
-  introduced to obtain forex data.
+  introduced to obtain Foreign Exchange (FX) data.
   (:issue:`389`)
 
 - A new data connector for data provided by
@@ -44,3 +44,4 @@ Bug Fixes
 
 - Added support for passing the API KEY to QuandlReader either directly or by
   setting the environmental variable QUANDL_API_KEY (:issue:`485`).
+- Handle Morningstar index volume data properly (:issue:`486`).
