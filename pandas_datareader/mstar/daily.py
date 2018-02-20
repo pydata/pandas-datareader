@@ -4,6 +4,7 @@ from warnings import warn
 
 import requests
 from pandas import DataFrame
+import numpy as np
 
 from pandas_datareader._utils import SymbolWarning
 from pandas_datareader.base import _BaseReader
@@ -161,7 +162,10 @@ class MorningstarDailyReader(_BaseReader):
 
         pricedata = jsondata["PriceDataList"][0]["Datapoints"]
         dateidx = jsondata["PriceDataList"][0]["DateIndexs"]
-        volumes = jsondata["VolumeList"]["Datapoints"]
+        if jsondata["VolumeList"]:
+            volumes = jsondata["VolumeList"]["Datapoints"]
+        else:
+            volumes = None
 
         dates = self._convert_index2date(indexvals=dateidx)
         barss = []
@@ -192,7 +196,10 @@ class MorningstarDailyReader(_BaseReader):
                     else:
                         pass
             if self.incl_vol is True:
-                bardict.update({"Volume": int(volumes[p] * 1000000)})
+                if volumes is None:
+                    bardict.update({"Volume": np.nan})
+                else:
+                    bardict.update({"Volume": int(volumes[p] * 1000000)})
             else:
                 pass
 

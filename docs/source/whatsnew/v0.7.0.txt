@@ -29,3 +29,4 @@ Bug Fixes
 - Added support for passing the API KEY to QuandlReader either directly or by
   setting the environmental variable QUANDL_API_KEY (:issue:`485`).
 - Added back support for Yahoo! price data
+- Handle Morningstar index volume data properly (:issue:`486`).
