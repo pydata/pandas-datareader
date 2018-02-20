@@ -14,7 +14,7 @@ class AVForexReader(AlphaVantage):
 
     Parameters
     ----------
-    pairs : string, array-like object (list, tuple, Series)
+    symbols : string, array-like object (list, tuple, Series)
         Single currency pair (formatted 'FROM/TO') or list of the same.
     retry_count : int, default 3
         Number of times to retry query request.
@@ -27,10 +27,10 @@ class AVForexReader(AlphaVantage):
         AlphaVantage API key . If not provided the environmental variable
         ALPHAVANTAGE_API_KEY is read. The API key is *required*.
     """
-    def __init__(self, pairs=None, retry_count=3, pause=0.5, session=None,
+    def __init__(self, symbols=None, retry_count=3, pause=0.5, session=None,
                  api_key=None):
 
-        super(AVForexReader, self).__init__(symbols=pairs,
+        super(AVForexReader, self).__init__(symbols=symbols,
                                             start=None, end=None,
                                             retry_count=retry_count,
                                             pause=pause,
@@ -39,19 +39,19 @@ class AVForexReader(AlphaVantage):
         self.from_curr = {}
         self.to_curr = {}
         self.optional_params = {}
-        if isinstance(pairs, str):
-            self.pairs = [pairs]
+        if isinstance(symbols, str):
+            self.symbols = [symbols]
         else:
-            self.pairs = pairs
+            self.symbols = symbols
         try:
-            for pair in self.pairs:
+            for pair in self.symbols:
                 self.from_curr[pair] = pair.split('/')[0]
                 self.to_curr[pair] = pair.split('/')[1]
         except Exception as e:
             print(e)
             raise ValueError("Please input a currency pair "
                              "formatted 'FROM/TO' or a list of "
-                             "currency pairs")
+                             "currency symbols")
 
     @property
     def function(self):
@@ -72,7 +72,7 @@ class AVForexReader(AlphaVantage):
 
     def read(self):
         result = []
-        for pair in self.pairs:
+        for pair in self.symbols:
             self.optional_params = {
                 'from_currency': self.from_curr[pair],
                 'to_currency': self.to_curr[pair],
@@ -80,7 +80,7 @@ class AVForexReader(AlphaVantage):
             data = super(AVForexReader, self).read()
             result.append(data)
         df = pd.concat(result, axis=1)
-        df.columns = self.pairs
+        df.columns = self.symbols
         return df
 
     def _read_lines(self, out):

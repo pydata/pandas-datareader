@@ -51,7 +51,7 @@ __all__ = ['get_components_yahoo', 'get_data_enigma', 'get_data_famafrench',
            'DataReader']
 
 
-def get_data_av(*args, **kwargs):
+def get_data_alphavantage(*args, **kwargs):
     return AVTimeSeriesReader(*args, **kwargs).read()
 
 
@@ -329,7 +329,7 @@ def DataReader(name, data_source=None, start=None, end=None,
                               session=session, interval='d').read()
 
     elif data_source == "av-forex":
-        return AVForexReader(pairs=name, retry_count=retry_count,
+        return AVForexReader(symbols=name, retry_count=retry_count,
                              pause=pause, session=session,
                              api_key=access_key).read()
 

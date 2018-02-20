@@ -12,6 +12,8 @@ class AVSectorPerformanceReader(AlphaVantage):
 
     Parameters
     ----------
+    symbols : string, array-like object (list, tuple, Series)
+        Single currency pair (formatted 'FROM/TO') or list of the same.
     retry_count : int, default 3
         Number of times to retry query request.
     pause : int, default 0.5

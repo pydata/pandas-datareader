@@ -181,7 +181,8 @@ symbols. The following endpoints are available:
                        access_key=os.getenv('ALPHAVANTAGE_API_KEY'))
     f.loc["2017-02-09"]
 
-The top-level function ``get_data_av`` is also provided. This function will
+The top-level function ``get_data_alphavantage`` is also provided. This
+function will
 return the ``TIME_SERIES_DAILY`` endpoint for the symbol and date range
 provided.
 
