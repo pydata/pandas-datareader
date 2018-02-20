@@ -60,6 +60,7 @@ class AlphaVantage(_BaseReader):
                                  ".".format(self.symbols))
             else:
                 raise RemoteDataError()
-        df.sort_index(ascending=True, inplace=True)
+        df = df[sorted(df.columns)]
+        # df.sort_index(ascending=True, inplace=True)
         df.columns = [id[3:] for id in df.columns]
         return df
