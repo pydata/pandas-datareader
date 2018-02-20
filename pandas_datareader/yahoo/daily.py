@@ -119,7 +119,6 @@ class YahooDailyReader(_DailyBaseReader):
             df = self._dl_mult_symbols(self.symbols)
         return df
 
-    
     def _read_one_data(self, url, params):
         """ read one data from specified URL """
         resp = self._get_response(url, params=params)
@@ -129,11 +128,11 @@ class YahooDailyReader(_DailyBaseReader):
                 jsn['context']['dispatcher']['stores']
                 ['HistoricalPriceStore']['prices']
                 )
-        df['date'] = to_datetime(df['date'], unit='s').dt.date            
-        df = df.dropna(subset=['close'])            
-        df = df[['date', 'high', 'low', 'open', 'close', 
+        df['date'] = to_datetime(df['date'], unit='s').dt.date
+        df = df.dropna(subset=['close'])
+        df = df[['date', 'high', 'low', 'open', 'close',
                  'volume', 'adjclose']]
-        
+
         if self.ret_index:
             df['Ret_Index'] = _calc_return_index(df['Adj Close'])
         if self.adjust_price:
@@ -169,6 +168,7 @@ class YahooDailyReader(_DailyBaseReader):
             # cannot construct a panel with just 1D nans indicating no data
             msg = "No data fetched using {0!r}"
             raise RemoteDataError(msg.format(self.__class__.__name__))
+
 
 def _adjust_prices(hist_data, price_list=None):
     """
