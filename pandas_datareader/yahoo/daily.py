@@ -131,7 +131,6 @@ class YahooDailyReader(_DailyBaseReader):
         """ read one data from specified symbol """
         url = 'https://finance.yahoo.com/quote/{}/history'.format(symbol)
         params = self._get_params(symbol)
-
         resp = self._get_response(url, params=params)
         ptrn = r'root\.App\.main = (.*?);\n}\(this\)\);'
         try:
@@ -176,6 +175,7 @@ class YahooDailyReader(_DailyBaseReader):
 
         return dfs
 
+
     def _dl_mult_symbols(self, symbols):
         stocks = {}
         failed = []
@@ -201,6 +201,7 @@ class YahooDailyReader(_DailyBaseReader):
             for k in stocks:
                 dfs[k] = concat(stocks[k]).set_index(['Ticker', 'Date'])
             return dfs
+
 
 
 def _adjust_prices(hist_data, price_list=None):
