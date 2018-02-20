@@ -1,10 +1,12 @@
 import re
+import json
 import time
 import warnings
 import numpy as np
-from pandas import Panel
+from pandas import Panel, DataFrame, to_datetime
 from pandas_datareader.base import (_DailyBaseReader, _in_chunks)
 from pandas_datareader._utils import (RemoteDataError, SymbolWarning)
+import pandas.compat as compat
 
 
 class YahooDailyReader(_DailyBaseReader):
@@ -46,12 +48,13 @@ class YahooDailyReader(_DailyBaseReader):
 
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
                  pause=0.35, session=None, adjust_price=False,
-                 ret_index=False, chunksize=25, interval='d'):
+                 ret_index=False, chunksize=1, interval='d'):
         super(YahooDailyReader, self).__init__(symbols=symbols,
                                                start=start, end=end,
                                                retry_count=retry_count,
                                                pause=pause, session=session,
                                                chunksize=chunksize)
+
         # Ladder up the wait time between subsequent requests to improve
         # probability of a successful retry
         self.pause_multiplier = 2.5
@@ -79,20 +82,14 @@ class YahooDailyReader(_DailyBaseReader):
             self.interval = 'wk'
 
         self.interval = '1' + self.interval
-        self.crumb = self._get_crumb(retry_count)
 
     @property
     def service(self):
         return 'history'
 
-    @property
-    def url(self):
-        return 'https://query1.finance.yahoo.com/v7/finance/download/{}'\
-            .format(self.symbols)
-
     @staticmethod
     def yurl(symbol):
-        return 'https://query1.finance.yahoo.com/v7/finance/download/{}'\
+        return 'https://finance.yahoo.com/quote/{}/history'\
             .format(symbol)
 
     def _get_params(self, symbol):
@@ -104,28 +101,49 @@ class YahooDailyReader(_DailyBaseReader):
             'period1': unix_start,
             'period2': unix_end,
             'interval': self.interval,
-            'events': self.service,
-            'crumb': self.crumb
+            'frequency': self.interval,
+            'filter': self.service
         }
         return params
 
     def read(self):
+        """Read data"""
+        # If a single symbol, (e.g., 'GOOG')
+        if isinstance(self.symbols, (compat.string_types, int)):
+            df = self._read_one_data(self.yurl(self.symbols),
+                                     params=self._get_params(self.symbols))
+        # Or multiple symbols, (e.g., ['GOOG', 'AAPL', 'MSFT'])
+        elif isinstance(self.symbols, DataFrame):
+            df = self._dl_mult_symbols(self.symbols.index)
+        else:
+            df = self._dl_mult_symbols(self.symbols)
+        return df
+
+    def _read_one_data(self, url, params):
         """ read one data from specified URL """
-        try:
-            df = super(YahooDailyReader, self).read()
-            if self.ret_index:
-                df['Ret_Index'] = _calc_return_index(df['Adj Close'])
-            if self.adjust_price:
-                df = _adjust_prices(df)
-            return df.sort_index().dropna(how='all')
-        finally:
-            self.close()
+        resp = self._get_response(url, params=params)
+        ptrn = r'root\.App\.main = (.*?);\n}\(this\)\);'
+        jsn = json.loads(re.search(ptrn, resp.text, re.DOTALL).group(1))
+        df = DataFrame(
+                jsn['context']['dispatcher']['stores']
+                ['HistoricalPriceStore']['prices']
+                )
+        df['date'] = to_datetime(df['date'], unit='s').dt.date
+        df = df.dropna(subset=['close'])
+        df = df[['date', 'high', 'low', 'open', 'close',
+                 'volume', 'adjclose']]
+
+        if self.ret_index:
+            df['Ret_Index'] = _calc_return_index(df['adjclose'])
+        if self.adjust_price:
+            df = _adjust_prices(df)
+        return df.sort_index().dropna(how='all')
 
     def _dl_mult_symbols(self, symbols):
         stocks = {}
         failed = []
         passed = []
-        for sym_group in _in_chunks(symbols, self.chunksize):
+        for sym_group in _in_chunks(symbols, 1):    # ignoring chunksize
             for sym in sym_group:
                 try:
                     stocks[sym] = self._read_one_data(self.yurl(sym),
@@ -150,18 +168,6 @@ class YahooDailyReader(_DailyBaseReader):
             # cannot construct a panel with just 1D nans indicating no data
             msg = "No data fetched using {0!r}"
             raise RemoteDataError(msg.format(self.__class__.__name__))
-
-    def _get_crumb(self, retries):
-        # Scrape a history page for a valid crumb ID:
-        tu = "https://finance.yahoo.com/quote/{}/history".format(self.symbols)
-        response = self._get_response(tu,
-                                      params=self.params, headers=self.headers)
-        out = str(self._sanitize_response(response))
-        # Matches: {"crumb":"AlphaNumeric"}
-        rpat = '"CrumbStore":{"crumb":"([^"]+)"}'
-
-        crumb = re.findall(rpat, out)[0]
-        return crumb.encode('ascii').decode('unicode-escape')
 
 
 def _adjust_prices(hist_data, price_list=None):

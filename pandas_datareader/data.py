@@ -60,7 +60,6 @@ def get_data_google(*args, **kwargs):
 
 
 def get_data_yahoo(*args, **kwargs):
-    raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Actions'))
     return YahooDailyReader(*args, **kwargs).read()
 
 
