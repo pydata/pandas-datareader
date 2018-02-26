@@ -51,6 +51,7 @@ Bug Fixes
 - Added support for passing the API KEY to QuandlReader either directly or by
   setting the environmental variable QUANDL_API_KEY (:issue:`485`).
 - Handle Morningstar index volume data properly (:issue:`486`).
+<<<<<<< HEAD
 - Added support for optionally passing a custom base_url to the EnigmaReader  (:issue:`499`).
 - Fixed Morningstar 'retry' incrementation (:issue:`513`)
 - Updated Google Daily Price API to functional url (:issue:`502`)
@@ -58,3 +59,5 @@ Bug Fixes
 - Added back support for Yahoo! price, dividends, and splits data for stocks
 	and currency pairs (:issue:`487`).
 - Add `is_list_like` to compatibility layer to avoid failure on pandas >= 0.23 (:issue:`520`)
+- Added back support for Yahoo! price, dividends, and splits data for stocks
+	and currency pairs (:issue:`487`).

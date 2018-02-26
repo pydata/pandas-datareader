@@ -5,6 +5,7 @@ import warnings
 from pandas import (DataFrame, to_datetime, concat)
 from pandas_datareader.base import _DailyBaseReader
 from pandas_datareader._utils import (RemoteDataError, SymbolWarning)
+from pandas.core.indexes.numeric import Int64Index
 import pandas.compat as compat
 
 
@@ -113,13 +114,13 @@ class YahooDailyReader(_DailyBaseReader):
                 dfs = self._dl_mult_symbols(self.symbols)
 
             for k in dfs:
-                if 'Date' in dfs[k]:
+                if isinstance(dfs[k].index, Int64Index):
                     dfs[k] = dfs[k].set_index('Date')
                 dfs[k] = dfs[k].sort_index().dropna(how='all')
 
             if self.ret_index:
                 dfs['prices']['Ret_Index'] = \
-                    _calc_return_index(dfs['prices']['Adj Close'])
+                                _calc_return_index(dfs['prices']['Adj Close'])
             if self.adjust_price:
                 dfs['prices'] = _adjust_prices(dfs['prices'])
 
@@ -201,7 +202,6 @@ class YahooDailyReader(_DailyBaseReader):
             for k in stocks:
                 dfs[k] = concat(stocks[k]).set_index(['Ticker', 'Date'])
             return dfs
-
 
 
 def _adjust_prices(hist_data, price_list=None):
