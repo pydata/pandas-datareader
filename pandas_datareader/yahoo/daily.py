@@ -2,19 +2,20 @@ import re
 import json
 import time
 import warnings
-import numpy as np
-from pandas import Panel, DataFrame, to_datetime
-from pandas_datareader.base import (_DailyBaseReader, _in_chunks)
+from pandas import (DataFrame, to_datetime, concat)
+from pandas_datareader.base import _DailyBaseReader
 from pandas_datareader._utils import (RemoteDataError, SymbolWarning)
+from pandas.core.indexes.numeric import Int64Index
 import pandas.compat as compat
 
 
 class YahooDailyReader(_DailyBaseReader):
 
     """
-    Returns DataFrame/Panel of historical stock prices from symbols, over date
-    range, start to end. To avoid being penalized by Yahoo! Finance servers,
-    pauses between downloading 'chunks' of symbols can be specified.
+    Returns a dictionary of DataFrames with historical stock prices, dividends,
+    and splits from symbols, over date range, start to end. To avoid being
+    penalized by Yahoo! Finance servers, pauses between downloading 'chunks' of
+    symbols can be specified.
 
     Parameters
     ----------
@@ -48,7 +49,8 @@ class YahooDailyReader(_DailyBaseReader):
 
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
                  pause=0.35, session=None, adjust_price=False,
-                 ret_index=False, chunksize=1, interval='d'):
+                 ret_index=False, chunksize=1, interval='d',
+                 get_actions=True):
         super(YahooDailyReader, self).__init__(symbols=symbols,
                                                start=start, end=end,
                                                retry_count=retry_count,
@@ -70,6 +72,7 @@ class YahooDailyReader(_DailyBaseReader):
         self.adjust_price = adjust_price
         self.ret_index = ret_index
         self.interval = interval
+        self.get_actions = get_actions
 
         if self.interval not in ['d', 'wk', 'mo', 'm', 'w']:
             raise ValueError("Invalid interval: valid values are  'd', 'wk' and 'mo'. 'm' and 'w' have been implemented for "  # noqa
@@ -83,15 +86,6 @@ class YahooDailyReader(_DailyBaseReader):
 
         self.interval = '1' + self.interval
 
-    @property
-    def service(self):
-        return 'history'
-
-    @staticmethod
-    def yurl(symbol):
-        return 'https://finance.yahoo.com/quote/{}/history'\
-            .format(symbol)
-
     def _get_params(self, symbol):
         unix_start = int(time.mktime(self.start.timetuple()))
         day_end = self.end.replace(hour=23, minute=59, second=59)
@@ -102,72 +96,112 @@ class YahooDailyReader(_DailyBaseReader):
             'period2': unix_end,
             'interval': self.interval,
             'frequency': self.interval,
-            'filter': self.service
+            'filter': 'history'
         }
         return params
 
     def read(self):
         """Read data"""
-        # If a single symbol, (e.g., 'GOOG')
-        if isinstance(self.symbols, (compat.string_types, int)):
-            df = self._read_one_data(self.yurl(self.symbols),
-                                     params=self._get_params(self.symbols))
-        # Or multiple symbols, (e.g., ['GOOG', 'AAPL', 'MSFT'])
-        elif isinstance(self.symbols, DataFrame):
-            df = self._dl_mult_symbols(self.symbols.index)
-        else:
-            df = self._dl_mult_symbols(self.symbols)
-        return df
+        try:
+            # If a single symbol, (e.g., 'GOOG')
+            if isinstance(self.symbols, (compat.string_types, int)):
+                dfs = self._read_one_data(self.symbols)
 
-    def _read_one_data(self, url, params):
-        """ read one data from specified URL """
+            # Or multiple symbols, (e.g., ['GOOG', 'AAPL', 'MSFT'])
+            elif isinstance(self.symbols, DataFrame):
+                dfs = self._dl_mult_symbols(self.symbols.index)
+            else:
+                dfs = self._dl_mult_symbols(self.symbols)
+
+            for k in dfs:
+                if isinstance(dfs[k].index, Int64Index):
+                    dfs[k] = dfs[k].set_index('Date')
+                dfs[k] = dfs[k].sort_index().dropna(how='all')
+
+            if self.ret_index:
+                dfs['prices']['Ret_Index'] = \
+                                _calc_return_index(dfs['prices']['Adj Close'])
+            if self.adjust_price:
+                dfs['prices'] = _adjust_prices(dfs['prices'])
+
+            return dfs
+        finally:
+            self.close()
+
+    def _read_one_data(self, symbol):
+        """ read one data from specified symbol """
+        url = 'https://finance.yahoo.com/quote/{}/history'.format(symbol)
+        params = self._get_params(symbol)
+
         resp = self._get_response(url, params=params)
         ptrn = r'root\.App\.main = (.*?);\n}\(this\)\);'
-        jsn = json.loads(re.search(ptrn, resp.text, re.DOTALL).group(1))
-        df = DataFrame(
-                jsn['context']['dispatcher']['stores']
-                ['HistoricalPriceStore']['prices']
-                )
-        df['date'] = to_datetime(df['date'], unit='s').dt.date
-        df = df.dropna(subset=['close'])
-        df = df[['date', 'high', 'low', 'open', 'close',
-                 'volume', 'adjclose']]
+        try:
+            j = json.loads(re.search(ptrn, resp.text, re.DOTALL).group(1))
+            data = j['context']['dispatcher']['stores']['HistoricalPriceStore']
+        except KeyError:
+            msg = 'No data fetched for symbol {} using {}'
+            raise RemoteDataError(msg.format(symbol, self.__class__.__name__))
 
-        if self.ret_index:
-            df['Ret_Index'] = _calc_return_index(df['adjclose'])
-        if self.adjust_price:
-            df = _adjust_prices(df)
-        return df.sort_index().dropna(how='all')
+        # price data
+        prices = DataFrame(data['prices'])
+        prices.columns = map(str.capitalize, prices.columns)
+        prices['Date'] = to_datetime(prices['Date'], unit='s').dt.date
+
+        prices = prices[prices['Data'].isnull()]
+        prices = prices[['Date', 'High', 'Low', 'Open', 'Close', 'Volume',
+                         'Adjclose']]
+        prices = prices.rename(columns={'Adjclose': 'Adj Close'})
+
+        dfs = {'prices': prices}
+
+        # dividends & splits data
+        if self.get_actions:
+            actions = DataFrame(data['eventsData'])
+            actions.columns = map(str.capitalize, actions.columns)
+            actions['Date'] = to_datetime(actions['Date'], unit='s').dt.date
+
+            types = actions['Type'].unique()
+            if 'DIVIDEND' in types:
+                divs = actions[actions.Type == 'DIVIDEND'].copy()
+                divs = divs[['Date', 'Amount']].reset_index(drop=True)
+                dfs['dividends'] = divs
+
+            if 'SPLIT' in types:
+                splits = actions[actions.Type == 'SPLIT'].copy()
+                splits['SplitRatio'] = splits['Splitratio'].apply(
+                        lambda x: eval(x))
+                splits = splits[['Date', 'Denominator', 'Numerator',
+                                 'SplitRatio']]
+                splits = splits.reset_index(drop=True)
+                dfs['splits'] = splits
+
+        return dfs
 
     def _dl_mult_symbols(self, symbols):
         stocks = {}
         failed = []
         passed = []
-        for sym_group in _in_chunks(symbols, 1):    # ignoring chunksize
-            for sym in sym_group:
-                try:
-                    stocks[sym] = self._read_one_data(self.yurl(sym),
-                                                      self._get_params(sym))
-                    passed.append(sym)
-                except IOError:
-                    msg = 'Failed to read symbol: {0!r}, replacing with NaN.'
-                    warnings.warn(msg.format(sym), SymbolWarning)
-                    failed.append(sym)
+        for sym in symbols:
+            try:
+                dfs = self._read_one_data(sym)
+                for k in dfs:
+                    dfs[k]['Ticker'] = sym
+                    if k not in stocks:
+                        stocks[k] = []
+                    stocks[k].append(dfs[k])
+                passed.append(sym)
+            except IOError:
+                msg = 'Failed to read symbol: {0!r}, replacing with NaN.'
+                warnings.warn(msg.format(sym), SymbolWarning)
+                failed.append(sym)
 
         if len(passed) == 0:
             msg = "No data fetched using {0!r}"
             raise RemoteDataError(msg.format(self.__class__.__name__))
-        try:
-            if len(stocks) > 0 and len(failed) > 0 and len(passed) > 0:
-                df_na = stocks[passed[0]].copy()
-                df_na[:] = np.nan
-                for sym in failed:
-                    stocks[sym] = df_na
-            return Panel(stocks).swapaxes('items', 'minor')
-        except AttributeError:
-            # cannot construct a panel with just 1D nans indicating no data
-            msg = "No data fetched using {0!r}"
-            raise RemoteDataError(msg.format(self.__class__.__name__))
+        else:
+            for k in stocks:
+                dfs[k] = concat(stocks[k]).set_index(['Ticker', 'Date'])
+            return dfs
 
 
 def _adjust_prices(hist_data, price_list=None):
