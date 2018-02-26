@@ -32,7 +32,6 @@ from pandas_datareader.robinhood import RobinhoodHistoricalReader, \
     RobinhoodQuoteReader
 from pandas_datareader.stooq import StooqDailyReader
 from pandas_datareader.tiingo import TiingoDailyReader, TiingoQuoteReader
-from pandas_datareader.yahoo.actions import (YahooActionReader, YahooDivReader)
 from pandas_datareader.yahoo.components import _get_data as \
     get_components_yahoo
 from pandas_datareader.yahoo.daily import YahooDailyReader
@@ -81,7 +80,6 @@ def get_quote_av(*args, **kwargs):
 
 def get_data_yahoo_actions(*args, **kwargs):
     raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Actions'))
-    return YahooActionReader(*args, **kwargs).read()
 
 
 def get_quote_yahoo(*args, **kwargs):
@@ -312,67 +310,6 @@ def DataReader(name, data_source=None, start=None, end=None,
                                 adjust_price=False, chunksize=25,
                                 retry_count=retry_count, pause=pause,
                                 session=session).read()
-
-    elif data_source == "yahoo-actions":
-        raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Actions'))
-        return YahooActionReader(symbols=name, start=start, end=end,
-                                 retry_count=retry_count, pause=pause,
-                                 session=session).read()
-
-    elif data_source == "yahoo-dividends":
-        comp = 'Yahoo Dividends'
-        raise ImmediateDeprecationError(DEP_ERROR_MSG.format(comp))
-        return YahooDivReader(symbols=name, start=start, end=end,
-                              adjust_price=False, chunksize=25,
-                              retry_count=retry_count, pause=pause,
-                              session=session, interval='d').read()
-
-    elif data_source == "av-forex":
-        return AVForexReader(symbols=name, retry_count=retry_count,
-                             pause=pause, session=session,
-                             api_key=access_key).read()
-
-    elif data_source == "av-daily":
-        return AVTimeSeriesReader(symbols=name,
-                                  function="TIME_SERIES_DAILY", start=start,
-                                  end=end, retry_count=retry_count,
-                                  pause=pause, session=session,
-                                  api_key=access_key).read()
-
-    elif data_source == "av-daily-adjusted":
-        return AVTimeSeriesReader(symbols=name,
-                                  function="TIME_SERIES_DAILY_ADJUSTED",
-                                  start=start, end=end,
-                                  retry_count=retry_count, pause=pause,
-                                  session=session, api_key=access_key).read()
-
-    elif data_source == "av-weekly":
-        return AVTimeSeriesReader(symbols=name,
-                                  function="TIME_SERIES_WEEKLY", start=start,
-                                  end=end, retry_count=retry_count,
-                                  pause=pause, session=session,
-                                  api_key=access_key).read()
-
-    elif data_source == "av-weekly-adjusted":
-        return AVTimeSeriesReader(symbols=name,
-                                  function="TIME_SERIES_WEEKLY_ADJUSTED",
-                                  start=start, end=end,
-                                  retry_count=retry_count, pause=pause,
-                                  session=session, api_key=access_key).read()
-
-    elif data_source == "av-monthly":
-        return AVTimeSeriesReader(symbols=name,
-                                  function="TIME_SERIES_MONTHLY", start=start,
-                                  end=end, retry_count=retry_count,
-                                  pause=pause, session=session,
-                                  api_key=access_key).read()
-
-    elif data_source == "av-monthly-adjusted":
-        return AVTimeSeriesReader(symbols=name,
-                                  function="TIME_SERIES_MONTHLY_ADJUSTED",
-                                  start=start, end=end,
-                                  retry_count=retry_count, pause=pause,
-                                  session=session, api_key=access_key).read()
 
     elif data_source == "google":
         return GoogleDailyReader(symbols=name, start=start, end=end,
