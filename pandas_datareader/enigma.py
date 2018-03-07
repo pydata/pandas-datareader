@@ -32,7 +32,8 @@ class EnigmaReader(_BaseReader):
                  api_key=None,
                  retry_count=5,
                  pause=.75,
-                 session=None):
+                 session=None,
+                 base_url="https://public.enigma.com/api"):
 
         super(EnigmaReader, self).__init__(symbols=[],
                                            retry_count=retry_count,
@@ -58,7 +59,7 @@ class EnigmaReader(_BaseReader):
             'User-Agent': 'pandas-datareader',
         }
         self.session.headers.update(headers)
-        self._base_url = "https://public.enigma.com/api"
+        self._base_url = base_url
         self._retry_count = retry_count
         self._retry_delay = pause
 
