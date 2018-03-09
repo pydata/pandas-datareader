@@ -30,3 +30,4 @@ Bug Fixes
   setting the environmental variable QUANDL_API_KEY (:issue:`485`).
 - Added back support for Yahoo! price data
 - Handle Morningstar index volume data properly (:issue:`486`).
+- Added support for optionally passing a custom base_url to the EnigmaReader.
