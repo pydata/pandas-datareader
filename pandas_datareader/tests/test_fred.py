@@ -70,7 +70,7 @@ class TestFred(object):
         end = datetime(2013, 1, 27)
 
         received = web.DataReader(names, "fred", start, end).head(1)
-        expected = DataFrame([[217.478, 0.99701529, 220.544]], columns=names,
+        expected = DataFrame([[217.488, 99.68746, 220.633]], columns=names,
                              index=[pd.tslib.Timestamp('2010-01-01 00:00:00')])
         expected.index.rename('DATE', inplace=True)
         tm.assert_frame_equal(received, expected, check_less_precise=True)
