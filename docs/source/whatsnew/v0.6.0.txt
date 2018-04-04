@@ -46,6 +46,9 @@ Highlights include:
 - A new data connector for data provided by the Bank of Canada was
   introduced (:issue:`440`).
 
+- A new data connector for data provided by Moscow Exchange (MOEX)
+  introduced (:issue:`381`).
+  
 .. contents:: What's new in v0.6.0
     :local:
     :backlinks: none
@@ -78,6 +81,11 @@ Enhancements
 
 - A new data connector for stock pricing data provided by
   `Tiingo <https://api.tiingo.com/docs>`__ was introduced. (:issue:`478`)
+  
+- A new data connector for data provided by
+  `Moscow Exchange <https://iss.moex.com/iss/reference/?lang=en>`__
+  was introduced. (:issue:`381`).
+
 
 .. _whatsnew_060.api_breaking:
 
