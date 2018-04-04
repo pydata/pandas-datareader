@@ -13,6 +13,22 @@ class EnigmaReader(_BaseReader):
     Collects current snapshot of Enigma data located at the specified
     data set ID and returns a pandas DataFrame.
 
+    Parameters
+    ----------
+    dataset_id : str
+        Enigma dataset UUID.
+    api_key : str, optional
+        Enigma API key. If not provided, the environmental variable
+        ENIGMA_API_KEY is read.
+    retry_count : int, (defaults to 5)
+        Number of times to retry query request.
+    pause : float, (defaults to 0.75)
+        Time, in seconds, of the pause between retries.
+    session : Session, (defaults to None)
+        requests.sessions.Session instance to be used.
+    base_url : str, optional (defaults to https://public.enigma.com/api)
+        Alternative Enigma endpoint to be used.
+
     Examples
     --------
     Download current snapshot for the following Florida Inspections Dataset:
