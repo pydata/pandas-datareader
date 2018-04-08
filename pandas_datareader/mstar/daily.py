@@ -143,8 +143,7 @@ class MorningstarDailyReader(_BaseReader):
         elif self.retry_count == 0 and len(failed) > 0:
             warn("The following symbols were excluded do to http "
                  "request errors: \n %s" % failed, SymbolWarning)
-            continue
-        
+
         symbols_df = DataFrame(data=symbol_data)
         dfx = symbols_df.set_index(["Symbol", "Date"])
         return dfx
