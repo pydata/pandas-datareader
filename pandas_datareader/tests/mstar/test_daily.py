@@ -9,7 +9,7 @@ import pandas_datareader.data as web
 from pandas_datareader._testing import skip_on_exception
 from pandas_datareader._utils import RemoteDataError
 from pandas_datareader.data import MorningstarDailyReader
-
+from pandas_datareader._utils import SymbolWarning
 
 class TestMorningstarDaily(object):
 
@@ -22,8 +22,9 @@ class TestMorningstarDaily(object):
                            end="1999-03-03")
 
     def test_invalid_partial_multi_symbols(self):
-        df = web.DataReader(['MSFT', "21##", ""], "morningstar", retry_count=0)
-        assert (len(df.index.levels[0]) == 1)
+        with pytest.warns(SymbolWarning):
+            df = web.DataReader(['MSFT', "21##", ""], "morningstar", retry_count=0)
+            assert (len(df.index.levels[0]) == 1)
 
     def test_invalid_multi_symbols(self):
         with pytest.raises(ValueError):
