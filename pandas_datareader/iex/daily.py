@@ -60,7 +60,6 @@ class IEXDailyReader(_DailyBaseReader):
 
     def _get_params(self, symbol):
         chart_range = self._range_string_from_date()
-        print(chart_range)
         if isinstance(symbol, list):
             symbolList = ','.join(symbol)
         else:
