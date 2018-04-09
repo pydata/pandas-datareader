@@ -379,7 +379,7 @@ def DataReader(name, data_source=None, start=None, end=None,
     elif data_source == "quandl":
         return QuandlReader(symbols=name, start=start, end=end,
                             retry_count=retry_count, pause=pause,
-                            session=session).read()
+                            session=session, api_key=access_key).read()
     elif data_source == "moex":
         return MoexReader(symbols=name, start=start, end=end,
                           retry_count=retry_count, pause=pause,
