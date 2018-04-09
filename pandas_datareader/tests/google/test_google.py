@@ -86,54 +86,49 @@ class TestGoogle(object):
 
     @pytest.mark.xfail(reason="Google quote api is offline as of Oct 1, 2017")
     def test_get_quote_string(self):
-        with pytest.warns(UnstableAPIWarning):
-            df = web.get_quote_google('GOOG')
-            assert df.loc['GOOG', 'last'] > 0.0
-            tm.assert_index_equal(df.index, pd.Index(['GOOG']))
-            self.assert_option_result(df)
+        df = web.get_quote_google('GOOG')
+        assert df.loc['GOOG', 'last'] > 0.0
+        tm.assert_index_equal(df.index, pd.Index(['GOOG']))
+        self.assert_option_result(df)
 
     @pytest.mark.xfail(reason="Google quote api is offline as of Oct 1, 2017")
     def test_get_quote_stringlist(self):
-        with pytest.warns(UnstableAPIWarning):
-            df = web.get_quote_google(['GOOG', 'AMZN', 'GOOG'])
-            assert_series_equal(df.iloc[0], df.iloc[2])
-            tm.assert_index_equal(df.index, pd.Index(['GOOG', 'AMZN', 'GOOG']))
-            self.assert_option_result(df)
+        df = web.get_quote_google(['GOOG', 'AMZN', 'GOOG'])
+        assert_series_equal(df.iloc[0], df.iloc[2])
+        tm.assert_index_equal(df.index, pd.Index(['GOOG', 'AMZN', 'GOOG']))
+        self.assert_option_result(df)
 
     def test_get_goog_volume(self):
-        with pytest.warns(UnstableAPIWarning):
-            for locale in self.locales:
-                with tm.set_locale(locale):
-                    df = web.get_data_google('GOOG').sort_index()
-                assert df.Volume.loc['JAN-02-2015'] == 1446662
+
+        for locale in self.locales:
+            with tm.set_locale(locale):
+                df = web.get_data_google('GOOG').sort_index()
+            assert df.Volume.loc['JAN-02-2015'] == 1446662
 
 
     def test_get_multi1(self):
-        with pytest.warns(UnstableAPIWarning):
-            for locale in self.locales:
-                sl = ['AAPL', 'AMZN', 'GOOG']
-                with tm.set_locale(locale):
-                    pan = web.get_data_google(sl, '2012')
-                ts = pan.Close.GOOG.index[pan.Close.AAPL < pan.Close.GOOG]
-                if (hasattr(pan, 'Close') and hasattr(pan.Close, 'GOOG') and
-                        hasattr(pan.Close, 'AAPL')):
-                    assert ts[0].dayofyear == 3
-                else:  # pragma: no cover
-                    with pytest.raises(AttributeError):
-                        pan.Close()
+        for locale in self.locales:
+            sl = ['AAPL', 'AMZN', 'GOOG']
+            with tm.set_locale(locale):
+                pan = web.get_data_google(sl, '2012')
+            ts = pan.Close.GOOG.index[pan.Close.AAPL < pan.Close.GOOG]
+            if (hasattr(pan, 'Close') and hasattr(pan.Close, 'GOOG') and
+                    hasattr(pan.Close, 'AAPL')):
+                assert ts[0].dayofyear == 3
+            else:  # pragma: no cover
+                with pytest.raises(AttributeError):
+                    pan.Close()
 
 
     def test_get_multi_invalid(self):
-        with pytest.warns(UnstableAPIWarning):
-            sl = ['AAPL', 'AMZN', 'INVALID']
-            pan = web.get_data_google(sl, '2012')
-            assert 'INVALID' in pan.minor_axis
+        sl = ['AAPL', 'AMZN', 'INVALID']
+        pan = web.get_data_google(sl, '2012')
+        assert 'INVALID' in pan.minor_axis
 
     def test_get_multi_all_invalid(self):
-        with pytest.warns(UnstableAPIWarning):
-            sl = ['INVALID', 'INVALID2', 'INVALID3']
-            with pytest.raises(RemoteDataError):
-                web.get_data_google(sl, '2012')
+        sl = ['INVALID', 'INVALID2', 'INVALID3']
+        with pytest.raises(RemoteDataError):
+            web.get_data_google(sl, '2012')
 
     def test_get_multi2(self):
         with warnings.catch_warnings(record=True) as w:
