@@ -62,11 +62,10 @@ class TestGoogle(object):
 
         start = datetime(2010, 1, 1)
         end = datetime(2013, 1, 27)
-        with pytest.warns(UnstableAPIWarning):
-            for locale in self.locales:
-                with tm.set_locale(locale):
-                        panel = web.DataReader("NYSE:F", 'google', start, end)
-                        assert panel.Close[-1] == 13.68
+        for locale in self.locales:
+            with tm.set_locale(locale):
+                    panel = web.DataReader("NYSE:F", 'google', start, end)
+                    assert panel.Close[-1] == 13.68
 
             with pytest.raises(Exception):
                 web.DataReader('NON EXISTENT TICKER', 'google', start, end)
@@ -155,39 +154,38 @@ class TestGoogle(object):
 
 
     def test_dtypes(self):
-        with pytest.warns(UnstableAPIWarning):
-            # see gh-3995, gh-8980
-            data = web.get_data_google(
-                    'NYSE:F',
-                    start='JAN-01-10',
-                    end='JAN-27-13')
-            assert np.issubdtype(data.Open.dtype, np.number)
-            assert np.issubdtype(data.Close.dtype, np.number)
-            assert np.issubdtype(data.Low.dtype, np.number)
-            assert np.issubdtype(data.High.dtype, np.number)
-            assert np.issubdtype(data.Volume.dtype, np.number)
+        # see gh-3995, gh-8980
+        data = web.get_data_google(
+                'NYSE:F',
+                start='JAN-01-10',
+                end='JAN-27-13')
+        assert np.issubdtype(data.Open.dtype, np.number)
+        assert np.issubdtype(data.Close.dtype, np.number)
+        assert np.issubdtype(data.Low.dtype, np.number)
+        assert np.issubdtype(data.High.dtype, np.number)
+        assert np.issubdtype(data.Volume.dtype, np.number)
 
     def test_unicode_date(self):
         # see gh-8967
-        with pytest.warns(UnstableAPIWarning):
-            data = web.get_data_google(
-                    'NYSE:F',
-                    start='JAN-01-10',
-                    end='JAN-27-13')
-            assert data.index.name == 'Date'
+
+        data = web.get_data_google(
+                'NYSE:F',
+                start='JAN-01-10',
+                end='JAN-27-13')
+        assert data.index.name == 'Date'
 
 
     def test_google_reader_class(self):
-        with pytest.warns(UnstableAPIWarning):
-            r = GoogleDailyReader('GOOG')
-            df = r.read()
-            assert df.Volume.loc['JAN-02-2015'] == 1446662
 
-            session = requests.Session()
-            r = GoogleDailyReader('GOOG', session=session)
-            assert r.session is session
+        r = GoogleDailyReader('GOOG')
+        df = r.read()
+        assert df.Volume.loc['JAN-02-2015'] == 1446662
+
+        session = requests.Session()
+        r = GoogleDailyReader('GOOG', session=session)
+        assert r.session is session
 
     def test_bad_retry_count(self):
-        with pytest.warns(UnstableAPIWarning):
-            with pytest.raises(ValueError):
-                web.get_data_google('NYSE:F', retry_count=-1)
+
+        with pytest.raises(ValueError):
+            web.get_data_google('NYSE:F', retry_count=-1)
