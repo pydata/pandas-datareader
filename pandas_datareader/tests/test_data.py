@@ -2,13 +2,14 @@ import pytest
 
 from pandas import DataFrame
 from pandas_datareader.data import DataReader
-
+from pandas_datareader.exceptions import UnstableAPIWarning
 
 class TestDataReader(object):
 
     def test_read_google(self):
-        gs = DataReader("GS", "google")
-        assert isinstance(gs, DataFrame)
+        with pytest.warns(UnstableAPIWarning):
+            gs = DataReader("GS", "google")
+            assert isinstance(gs, DataFrame)
 
     def test_read_iex(self):
         gs = DataReader("GS", "iex-last")

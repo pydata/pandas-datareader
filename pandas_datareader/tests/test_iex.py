@@ -6,7 +6,7 @@ from pandas import DataFrame
 from pandas_datareader.data import (DataReader, get_summary_iex, get_last_iex,
                                     get_dailysummary_iex, get_iex_symbols,
                                     get_iex_book)
-
+from pandas_datareader.exceptions import UnstableAPIWarning
 
 class TestIEX(object):
     @classmethod
@@ -29,9 +29,10 @@ class TestIEX(object):
     @pytest.mark.xfail(reason='IEX daily history API is returning 500 as of '
                               'Jan 2018')
     def test_daily(self):
-        df = get_dailysummary_iex(start=datetime(2017, 5, 5),
-                                  end=datetime(2017, 5, 6))
-        assert df['routedVolume'].iloc[0] == 39974788
+        with pytest.warns(UnstableAPIWarning):
+            df = get_dailysummary_iex(start=datetime(2017, 5, 5),
+                                      end=datetime(2017, 5, 6))
+            assert df['routedVolume'].iloc[0] == 39974788
 
     def test_symbols(self):
         df = get_iex_symbols()

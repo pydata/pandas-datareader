@@ -55,6 +55,7 @@ class _BaseReader(object):
         self.pause_multiplier = 1
         self.session = _init_session(session, retry_count)
         self.freq = freq
+        self.headers= {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"}
 
     def close(self):
         """Close network session"""
@@ -74,25 +75,25 @@ class _BaseReader(object):
     def read(self):
         """Read data from connector"""
         try:
-            return self._read_one_data(self.url, self.params)
+            return self._read_one_data(self.url, self.params, self.headers)
         finally:
             self.close()
 
-    def _read_one_data(self, url, params):
+    def _read_one_data(self, url, params, headers=None):
         """ read one data from specified URL """
         if self._format == 'string':
-            out = self._read_url_as_StringIO(url, params=params)
+            out = self._read_url_as_StringIO(url, params=params, headers=headers)
         elif self._format == 'json':
-            out = self._get_response(url, params=params).json()
+            out = self._get_response(url, params=params, headers=headers).json()
         else:
             raise NotImplementedError(self._format)
         return self._read_lines(out)
 
-    def _read_url_as_StringIO(self, url, params=None):
+    def _read_url_as_StringIO(self, url, params=None, headers=None):
         """
         Open url (and retry)
         """
-        response = self._get_response(url, params=params)
+        response = self._get_response(url, params=params, headers=headers)
         text = self._sanitize_response(response)
         out = StringIO()
         if len(text) == 0:
@@ -168,8 +169,10 @@ class _BaseReader(object):
         return False
 
     def _read_lines(self, out):
-        rs = read_csv(out, index_col=0, parse_dates=True,
-                      na_values=('-', 'null'))[::-1]
+        rs = read_csv(out, index_col=0, parse_dates=True, na_values=('-', 'null'))[::-1]
+        # Need to remove blank space character in header names
+        rs.columns = list(map(lambda x: x.strip(), rs.columns.values.tolist()))
+
         # Yahoo! Finance sometimes does this awesome thing where they
         # return 2 rows for the most recent business day
         if len(rs) > 2 and rs.index[-1] == rs.index[-2]:  # pragma: no cover
@@ -181,6 +184,7 @@ class _BaseReader(object):
         except AttributeError:
             # Python 3 string has no decode method.
             rs.index.name = rs.index.name.encode('ascii', 'ignore').decode()
+
         return rs
 
 
@@ -203,7 +207,8 @@ class _DailyBaseReader(_BaseReader):
         # If a single symbol, (e.g., 'GOOG')
         if isinstance(self.symbols, (compat.string_types, int)):
             df = self._read_one_data(self.url,
-                                     params=self._get_params(self.symbols))
+                                     params=self._get_params(self.symbols),
+                                     headers=self.headers)
         # Or multiple symbols, (e.g., ['GOOG', 'AAPL', 'MSFT'])
         elif isinstance(self.symbols, DataFrame):
             df = self._dl_mult_symbols(self.symbols.index)
@@ -219,7 +224,8 @@ class _DailyBaseReader(_BaseReader):
             for sym in sym_group:
                 try:
                     stocks[sym] = self._read_one_data(self.url,
-                                                      self._get_params(sym))
+                                                      self._get_params(sym),
+                                                      self.headers)
                     passed.append(sym)
                 except IOError:
                     msg = 'Failed to read symbol: {0!r}, replacing with NaN.'
