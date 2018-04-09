@@ -55,7 +55,9 @@ class _BaseReader(object):
         self.pause_multiplier = 1
         self.session = _init_session(session, retry_count)
         self.freq = freq
-        self.headers= {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"}
+        # TODO: Allow for useragent to be passed in request headers.
+        #       Many APIs block the default python agent
+        # self.headers= {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"}
 
     def close(self):
         """Close network session"""
@@ -75,25 +77,25 @@ class _BaseReader(object):
     def read(self):
         """Read data from connector"""
         try:
-            return self._read_one_data(self.url, self.params, self.headers)
+            return self._read_one_data(self.url, self.params)
         finally:
             self.close()
 
-    def _read_one_data(self, url, params, headers=None):
+    def _read_one_data(self, url, params):
         """ read one data from specified URL """
         if self._format == 'string':
-            out = self._read_url_as_StringIO(url, params=params, headers=headers)
+            out = self._read_url_as_StringIO(url, params=params)
         elif self._format == 'json':
-            out = self._get_response(url, params=params, headers=headers).json()
+            out = self._get_response(url, params=params).json()
         else:
             raise NotImplementedError(self._format)
         return self._read_lines(out)
 
-    def _read_url_as_StringIO(self, url, params=None, headers=None):
+    def _read_url_as_StringIO(self, url, params=None):
         """
         Open url (and retry)
         """
-        response = self._get_response(url, params=params, headers=headers)
+        response = self._get_response(url, params=params)
         text = self._sanitize_response(response)
         out = StringIO()
         if len(text) == 0:
@@ -114,7 +116,7 @@ class _BaseReader(object):
         """
         return response.content
 
-    def _get_response(self, url, params=None, headers=None):
+    def _get_response(self, url, params=None):
         """ send raw HTTP request to get requests.Response from the specified url
         Parameters
         ----------
@@ -129,8 +131,7 @@ class _BaseReader(object):
         last_response_text = ''
         for i in range(self.retry_count + 1):
             response = self.session.get(url,
-                                        params=params,
-                                        headers=headers)
+                                        params=params)
             if response.status_code == requests.codes.ok:
                 return response
 
@@ -170,7 +171,7 @@ class _BaseReader(object):
 
     def _read_lines(self, out):
         rs = read_csv(out, index_col=0, parse_dates=True, na_values=('-', 'null'))[::-1]
-        # Need to remove blank space character in header names
+        # Needed to remove blank space character in header names
         rs.columns = list(map(lambda x: x.strip(), rs.columns.values.tolist()))
 
         # Yahoo! Finance sometimes does this awesome thing where they
@@ -207,8 +208,7 @@ class _DailyBaseReader(_BaseReader):
         # If a single symbol, (e.g., 'GOOG')
         if isinstance(self.symbols, (compat.string_types, int)):
             df = self._read_one_data(self.url,
-                                     params=self._get_params(self.symbols),
-                                     headers=self.headers)
+                                     params=self._get_params(self.symbols))
         # Or multiple symbols, (e.g., ['GOOG', 'AAPL', 'MSFT'])
         elif isinstance(self.symbols, DataFrame):
             df = self._dl_mult_symbols(self.symbols.index)
@@ -224,8 +224,7 @@ class _DailyBaseReader(_BaseReader):
             for sym in sym_group:
                 try:
                     stocks[sym] = self._read_one_data(self.url,
-                                                      self._get_params(sym),
-                                                      self.headers)
+                                                      self._get_params(sym))
                     passed.append(sym)
                 except IOError:
                     msg = 'Failed to read symbol: {0!r}, replacing with NaN.'
