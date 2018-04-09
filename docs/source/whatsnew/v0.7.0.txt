@@ -30,3 +30,5 @@ Bug Fixes
   setting the environmental variable QUANDL_API_KEY (:issue:`485`).
 - Added back support for Yahoo! price data
 - Handle Morningstar index volume data properly (:issue:`486`).
+- Fixed Morningstar 'retry' incrementation (:issue:`513`)
+- Updated Google Daily Price API to functional url (:issue:`502`)
