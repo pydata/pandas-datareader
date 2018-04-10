@@ -12,6 +12,7 @@ from pandas_datareader._utils import RemoteDataError
 
 
 class TestFred(object):
+
     def test_fred(self):
 
         # Raises an exception when DataReader can't
@@ -75,6 +76,7 @@ class TestFred(object):
                              index=[pd.tslib.Timestamp('2010-01-01 00:00:00')])
         expected.index.rename('DATE', inplace=True)
         tm.assert_frame_equal(received, expected, check_less_precise=True)
+
     def test_fred_multi_bad_series(self):
         names = ['NOTAREALSERIES', 'CPIAUCSL', "ALSO FAKE"]
         with pytest.raises(RemoteDataError):

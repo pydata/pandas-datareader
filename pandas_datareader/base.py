@@ -55,9 +55,6 @@ class _BaseReader(object):
         self.pause_multiplier = 1
         self.session = _init_session(session, retry_count)
         self.freq = freq
-        # TODO: Allow for useragent to be passed in request headers.
-        #       Many APIs block the default python agent
-        # self.headers= {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"}
 
     def close(self):
         """Close network session"""

@@ -62,7 +62,6 @@ class MorningstarDailyReader(_BaseReader):
         self.currency = currency
         self.interval = interval
 
-
     def _url_params(self):
         if self.interval not in ['d', 'wk', 'mo', 'm', 'w']:
             raise ValueError("Invalid interval: valid values are  'd', 'wk' "
@@ -102,13 +101,12 @@ class MorningstarDailyReader(_BaseReader):
         if symbol_data is None:
             symbol_data = []
         for symbol in symbols:
-
             params = self._url_params()
             params.update({"ticker": symbol})
 
             try:
                 resp = requests.get(self.url, params=params)
-            except Exception:
+            except (requests.HTTPError, requests.ConnectionError, requests.RequestException):
                 if symbol not in failed:
                     if self.retry_count == 0:
                         warn("skipping symbol %s: number of retries "
@@ -172,8 +170,7 @@ class MorningstarDailyReader(_BaseReader):
             d = dates[p]
             bardict = {
                 "Symbol": symbol, "Date": d, "Close": bar[0], "High": bar[1],
-                "Low": bar[2], "Open": bar[3]
-            }
+                "Low": bar[2], "Open": bar[3]}
             if len(divdata) == 0:
                 pass
             else:
@@ -214,7 +211,7 @@ class MorningstarDailyReader(_BaseReader):
         is_str = False
         try:
             is_str = all(map(lambda v: isinstance(v, str), symbols))
-        except Exception:
+        except ValueError:
             pass
 
         if not is_str:

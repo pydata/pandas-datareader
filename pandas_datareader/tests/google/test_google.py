@@ -8,7 +8,6 @@ from pandas import compat
 from datetime import datetime
 from pandas_datareader.data import GoogleDailyReader
 from pandas_datareader._utils import RemoteDataError, SymbolWarning
-from pandas_datareader.exceptions import UnstableAPIWarning
 
 import requests
 
@@ -40,7 +39,7 @@ def assert_n_failed_equals_n_null_columns(wngs, obj, cls=SymbolWarning):
 
     assert msgs.str.contains('|'.join(failed_symbols)).all()
 
-#TODO need to run strip() on all column headers
+
 class TestGoogle(object):
 
     @classmethod
@@ -105,7 +104,6 @@ class TestGoogle(object):
                 df = web.get_data_google('GOOG').sort_index()
             assert df.Volume.loc['JAN-02-2015'] == 1446662
 
-
     def test_get_multi1(self):
         for locale in self.locales:
             sl = ['AAPL', 'AMZN', 'GOOG']
@@ -118,7 +116,6 @@ class TestGoogle(object):
             else:  # pragma: no cover
                 with pytest.raises(AttributeError):
                     pan.Close()
-
 
     def test_get_multi_invalid(self):
         sl = ['AAPL', 'AMZN', 'INVALID']
@@ -147,7 +144,6 @@ class TestGoogle(object):
                 assert result.shape == (4, 3)
                 assert_n_failed_equals_n_null_columns(w, result)
 
-
     def test_dtypes(self):
         # see gh-3995, gh-8980
         data = web.get_data_google(
@@ -168,7 +164,6 @@ class TestGoogle(object):
                 start='JAN-01-10',
                 end='JAN-27-13')
         assert data.index.name == 'Date'
-
 
     def test_google_reader_class(self):
 

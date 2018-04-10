@@ -11,6 +11,7 @@ from pandas_datareader._utils import RemoteDataError
 from pandas_datareader.data import MorningstarDailyReader
 from pandas_datareader._utils import SymbolWarning
 
+
 class TestMorningstarDaily(object):
 
     @skip_on_exception(RemoteDataError)
@@ -23,7 +24,8 @@ class TestMorningstarDaily(object):
 
     def test_invalid_partial_multi_symbols(self):
         with pytest.warns(SymbolWarning):
-            df = web.DataReader(['MSFT', "21##", ""], "morningstar", retry_count=0)
+            df = web.DataReader(['MSFT', "21##", ""],
+                                "morningstar", retry_count=0)
             assert (len(df.index.levels[0]) == 1)
 
     def test_invalid_multi_symbols(self):
