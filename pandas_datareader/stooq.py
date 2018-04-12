@@ -5,8 +5,7 @@ class StooqDailyReader(_DailyBaseReader):
 
     """
     Returns DataFrame/Panel of historical stock prices from symbols, over date
-    range, start to end. To avoid being penalized by Google Finance servers,
-    pauses between downloading 'chunks' of symbols can be specified.
+    range, start to end.
 
     Parameters
     ----------
@@ -23,6 +22,7 @@ class StooqDailyReader(_DailyBaseReader):
     session : Session, default None
         requests.sessions.Session instance to be used
 
+
     Notes
     -----
     See `Stooq <https://stooq.com>`__
@@ -33,7 +33,15 @@ class StooqDailyReader(_DailyBaseReader):
         """API URL"""
         return 'https://stooq.com/q/d/l/'
 
-    def _get_params(self, symbol):
+    def _get_params(self, symbol, country="US"):
+        symbol_parts = symbol.split(".")
+        if len(symbol_parts) == 1:
+            symbol = ".".join([symbol, country])
+        else:
+            if symbol_parts[1].lower() not in ['de', 'hk', 'hu', 'jp',
+                                               'pl', 'uk', 'us']:
+                symbol = ".".join([symbol, "US"])
+
         params = {
             's': symbol,
             'i': "d"
