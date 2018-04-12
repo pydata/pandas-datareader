@@ -21,7 +21,7 @@ class TestDataReader(object):
         assert isinstance(vix, DataFrame)
 
     def test_read_mstar(self):
-        gs = DataReader("GS", data_source = "morningstar")
+        gs = DataReader("GS", data_source="morningstar")
         assert isinstance(gs, DataFrame)
 
     def test_not_implemented(self):

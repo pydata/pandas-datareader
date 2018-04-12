@@ -106,7 +106,8 @@ class MorningstarDailyReader(_BaseReader):
 
             try:
                 resp = requests.get(self.url, params=params)
-            except (requests.HTTPError, requests.ConnectionError, requests.RequestException):
+            except (requests.HTTPError, requests.ConnectionError,
+                    requests.RequestException):
                 if symbol not in failed:
                     if self.retry_count == 0:
                         warn("skipping symbol %s: number of retries "

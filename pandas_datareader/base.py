@@ -167,7 +167,8 @@ class _BaseReader(object):
         return False
 
     def _read_lines(self, out):
-        rs = read_csv(out, index_col=0, parse_dates=True, na_values=('-', 'null'))[::-1]
+        rs = read_csv(out, index_col=0, parse_dates=True,
+                      na_values=('-', 'null'))[::-1]
         # Needed to remove blank space character in header names
         rs.columns = list(map(lambda x: x.strip(), rs.columns.values.tolist()))
 

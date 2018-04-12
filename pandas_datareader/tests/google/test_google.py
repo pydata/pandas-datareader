@@ -52,7 +52,6 @@ class TestGoogle(object):
     def teardown_class(cls):
         del cls.locales
 
-
     def test_google(self):
 
         # asserts that google is minimally working and that it throws

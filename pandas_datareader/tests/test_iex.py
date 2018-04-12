@@ -8,6 +8,7 @@ from pandas_datareader.data import (DataReader, get_summary_iex, get_last_iex,
                                     get_iex_book)
 from pandas_datareader.exceptions import UnstableAPIWarning
 
+
 class TestIEX(object):
     @classmethod
     def setup_class(cls):
