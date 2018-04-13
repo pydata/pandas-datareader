@@ -28,12 +28,15 @@ devel/_static/comment.png
 devel/_static/css/badge_only.css
 devel/_static/css/theme.css
 devel/_static/doctools.js
+devel/_static/documentation_options.js
 devel/_static/down-pressed.png
 devel/_static/down.png
 devel/_static/file.png
 devel/_static/fonts/Inconsolata-Bold.ttf
 devel/_static/fonts/Inconsolata-Regular.ttf
 devel/_static/fonts/Lato-Bold.ttf
+devel/_static/fonts/Lato-BoldItalic.ttf
+devel/_static/fonts/Lato-Italic.ttf
 devel/_static/fonts/Lato-Regular.ttf
 devel/_static/fonts/RobotoSlab-Bold.ttf
 devel/_static/fonts/RobotoSlab-Regular.ttf
@@ -41,7 +44,8 @@ devel/_static/fonts/fontawesome-webfont.eot
 devel/_static/fonts/fontawesome-webfont.svg
 devel/_static/fonts/fontawesome-webfont.ttf
 devel/_static/fonts/fontawesome-webfont.woff
-devel/_static/jquery-3.1.0.js
+devel/_static/fonts/fontawesome-webfont.woff2
+devel/_static/jquery-3.2.1.js
 devel/_static/jquery.js
 devel/_static/js/modernizr.min.js
 devel/_static/js/theme.js

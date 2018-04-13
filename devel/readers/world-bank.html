@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>World Bank &mdash; pandas-datareader 0.6.0+4.g0debb02 documentation</title>
+  <title>World Bank &mdash; pandas-datareader 0.6.0+15.g8a9ca74 documentation</title>
   
 
   
@@ -25,26 +25,18 @@
   
 
   
-  
     <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="pandas-datareader 0.6.0+4.g0debb02 documentation" href="../index.html"/>
-        <link rel="up" title="Data Readers" href="index.html"/>
-        <link rel="prev" title="Thrift Savings Plan (TSP)" href="tsp.html"/> 
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Thrift Savings Plan (TSP)" href="tsp.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -125,7 +117,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">pandas-datareader</a>
@@ -133,9 +125,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -190,15 +183,15 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>symbols</strong> (<em>WorldBank indicator string</em><em> or </em><em>list of strings</em>) – taken from the <code class="docutils literal"><span class="pre">id</span></code> field in <code class="docutils literal"><span class="pre">WDIsearch()</span></code></li>
-<li><strong>countries</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a><em> or </em><em>list of strings.</em>) – <code class="docutils literal"><span class="pre">all</span></code> downloads data for all countries
+<li><strong>symbols</strong> (<em>WorldBank indicator string</em><em> or </em><em>list of strings</em>) – taken from the <code class="docutils literal notranslate"><span class="pre">id</span></code> field in <code class="docutils literal notranslate"><span class="pre">WDIsearch()</span></code></li>
+<li><strong>countries</strong> (<em>string</em><em> or </em><em>list of strings.</em>) – <code class="docutils literal notranslate"><span class="pre">all</span></code> downloads data for all countries
 2 or 3 character ISO country codes select individual
 countries (e.g.``US``,``CA``) or (e.g.``USA``,``CAN``).  The codes
 can be mixed.
 The two ISO lists of countries, provided by wikipedia, are hardcoded
 into pandas as of 11/10/2014.</li>
-<li><strong>start</strong> (<em>Timestamp</em><em> or </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – First year of the data series. Month and day are ignored.</li>
-<li><strong>end</strong> (<em>Timestamp</em><em> or </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – Last year of the data series (inclusive). Month and day are ignored.</li>
+<li><strong>start</strong> (<em>Timestamp</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – First year of the data series. Month and day are ignored.</li>
+<li><strong>end</strong> (<em>Timestamp</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Last year of the data series (inclusive). Month and day are ignored.</li>
 <li><strong>errors</strong> (<em>str {'ignore'</em><em>, </em><em>'warn'</em><em>, </em><em>'raise'}</em><em>, </em><em>default 'warn'</em>) – Country codes are validated against a hardcoded list.  This controls
 the outcome of that validation, and attempts to also apply
 to the results from world bank.
@@ -259,10 +252,10 @@ errors=’raise’, will raise a ValueError on a bad country code.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>string</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – regular expression</li>
-<li><strong>field</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – id, name, source, sourceNote, sourceOrganization, topics
+<li><strong>string</strong> (<em>string</em>) – regular expression</li>
+<li><strong>field</strong> (<em>string</em>) – id, name, source, sourceNote, sourceOrganization, topics
 See notes below</li>
-<li><strong>case</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – case sensitive search?</li>
+<li><strong>case</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – case sensitive search?</li>
 </ul>
 </td>
 </tr>
@@ -273,8 +266,8 @@ See notes below</li>
 list of available series. Depending on the speed of your network
 connection, this can take time. Subsequent searches will use the cached
 copy, so they should be much faster.</p>
-<p>id : Data series indicator (for use with the <code class="docutils literal"><span class="pre">indicator</span></code> argument of
-<code class="docutils literal"><span class="pre">WDI()</span></code>) e.g. NY.GNS.ICTR.GN.ZS”
+<p>id : Data series indicator (for use with the <code class="docutils literal notranslate"><span class="pre">indicator</span></code> argument of
+<code class="docutils literal notranslate"><span class="pre">WDI()</span></code>) e.g. NY.GNS.ICTR.GN.ZS”
 name: Short description of the data series
 source: Data collection project
 sourceOrganization: Data collection organization
@@ -300,17 +293,17 @@ topics:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>indicator</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a><em> or </em><em>list of strings</em>) – taken from the <code class="docutils literal"><span class="pre">id</span></code> field in <code class="docutils literal"><span class="pre">WDIsearch()</span></code></li>
-<li><strong>country</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a><em> or </em><em>list of strings.</em>) – <p><code class="docutils literal"><span class="pre">all</span></code> downloads data for all countries
+<li><strong>indicator</strong> (<em>string</em><em> or </em><em>list of strings</em>) – taken from the <code class="docutils literal notranslate"><span class="pre">id</span></code> field in <code class="docutils literal notranslate"><span class="pre">WDIsearch()</span></code></li>
+<li><strong>country</strong> (<em>string</em><em> or </em><em>list of strings.</em>) – <p><code class="docutils literal notranslate"><span class="pre">all</span></code> downloads data for all countries
 2 or 3 character ISO country codes select individual
 countries (e.g.``US``,``CA``) or (e.g.``USA``,``CAN``).  The codes
 can be mixed.</p>
 <p>The two ISO lists of countries, provided by wikipedia, are hardcoded
 into pandas as of 11/10/2014.</p>
 </li>
-<li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – First year of the data series</li>
-<li><strong>end</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – Last year of the data series (inclusive)</li>
-<li><strong>freq</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – frequency or periodicity of the data to be retrieved (e.g. ‘M’ for
+<li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – First year of the data series</li>
+<li><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Last year of the data series (inclusive)</li>
+<li><strong>freq</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – frequency or periodicity of the data to be retrieved (e.g. ‘M’ for
 monthly, ‘Q’ for quarterly, and ‘A’ for annual). None defaults to
 annual.</li>
 <li><strong>errors</strong> (<em>str {'ignore'</em><em>, </em><em>'warn'</em><em>, </em><em>'raise'}</em><em>, </em><em>default 'warn'</em>) – Country codes are validated against a hardcoded list.  This controls
@@ -373,9 +366,9 @@ capital city, latitude, and longitude</dd>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>string</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – regular expression</li>
-<li><strong>field</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – id, name, source, sourceNote, sourceOrganization, topics. See notes</li>
-<li><strong>case</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – case sensitive search?</li>
+<li><strong>string</strong> (<em>string</em>) – regular expression</li>
+<li><strong>field</strong> (<em>string</em>) – id, name, source, sourceNote, sourceOrganization, topics. See notes</li>
+<li><strong>case</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – case sensitive search?</li>
 <li><strong>kwargs</strong> – keywords passed to WorldBankReader</li>
 </ul>
 </td>
@@ -387,8 +380,8 @@ capital city, latitude, and longitude</dd>
 list of available series. Depending on the speed of your network
 connection, this can take time. Subsequent searches will use the cached
 copy, so they should be much faster.</p>
-<p>id : Data series indicator (for use with the <code class="docutils literal"><span class="pre">indicator</span></code> argument of
-<code class="docutils literal"><span class="pre">WDI()</span></code>) e.g. NY.GNS.ICTR.GN.ZS”</p>
+<p>id : Data series indicator (for use with the <code class="docutils literal notranslate"><span class="pre">indicator</span></code> argument of
+<code class="docutils literal notranslate"><span class="pre">WDI()</span></code>) e.g. NY.GNS.ICTR.GN.ZS”</p>
 <blockquote>
 <div><ul class="simple">
 <li>name: Short description of the data series</li>
@@ -405,9 +398,7 @@ copy, so they should be much faster.</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -427,7 +418,7 @@ copy, so they should be much faster.</p>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -445,7 +436,8 @@ copy, so they should be much faster.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.6.0+4.g0debb02',
+            VERSION:'0.6.0+15.g8a9ca74',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -463,14 +455,13 @@ copy, so they should be much faster.</p>
     <script type="text/javascript" src="../_static/js/theme.js"></script>
   
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>
