@@ -63,12 +63,16 @@ class TestIEXDaily(object):
         assert len(t) == 73
 
         expected1 = a.loc["2017-02-09"]
-        tm.assert_almost_equal(expected1["close"], 130.36, check_less_precise=True)
-        tm.assert_almost_equal(expected1["high"], 130.38, check_less_precise=True)
+        tm.assert_almost_equal(expected1["close"], 130.36,
+                               check_less_precise=True)
+        tm.assert_almost_equal(expected1["high"], 130.38,
+                               check_less_precise=True)
 
         expected2 = a.loc["2017-05-24"]
-        tm.assert_almost_equal(expected2["close"], 151.57, check_less_precise=True)
-        tm.assert_almost_equal(expected2["high"], 152.40, check_less_precise=True)
+        tm.assert_almost_equal(expected2["close"], 151.57,
+                               check_less_precise=True)
+        tm.assert_almost_equal(expected2["high"], 152.40,
+                               check_less_precise=True)
 
         expected3 = t.loc["2017-02-09"]
         assert expected3["close"] == 269.20
