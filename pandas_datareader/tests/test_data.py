@@ -2,10 +2,13 @@ import pytest
 
 from pandas import DataFrame
 from pandas_datareader.data import DataReader
+from pandas_datareader._utils import RemoteDataError
+from pandas_datareader._testing import skip_on_exception
 
 
 class TestDataReader(object):
 
+    @skip_on_exception(RemoteDataError)
     def test_read_google(self):
         gs = DataReader("GS", "google")
         assert isinstance(gs, DataFrame)

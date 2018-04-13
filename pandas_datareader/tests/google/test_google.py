@@ -8,6 +8,7 @@ from pandas import compat
 from datetime import datetime
 from pandas_datareader.data import GoogleDailyReader
 from pandas_datareader._utils import RemoteDataError, SymbolWarning
+from pandas_datareader._testing import skip_on_exception
 
 import requests
 
@@ -52,6 +53,7 @@ class TestGoogle(object):
     def teardown_class(cls):
         del cls.locales
 
+    @skip_on_exception(RemoteDataError)
     def test_google(self):
         # asserts that google is minimally working and that it throws
         # an exception when DataReader can't get a 200 response from
@@ -95,12 +97,14 @@ class TestGoogle(object):
         tm.assert_index_equal(df.index, pd.Index(['GOOG', 'AMZN', 'GOOG']))
         self.assert_option_result(df)
 
+    @skip_on_exception(RemoteDataError)
     def test_get_goog_volume(self):
         for locale in self.locales:
             with tm.set_locale(locale):
                 df = web.get_data_google('GOOG').sort_index()
             assert df.Volume.loc['JAN-02-2015'] == 1446662
 
+    @skip_on_exception(RemoteDataError)
     def test_get_multi1(self):
         for locale in self.locales:
             sl = ['AAPL', 'AMZN', 'GOOG']
@@ -114,6 +118,7 @@ class TestGoogle(object):
                 with pytest.raises(AttributeError):
                     pan.Close()
 
+    @skip_on_exception(RemoteDataError)
     def test_get_multi_invalid(self):
         with warnings.catch_warnings(record=True):
             sl = ['AAPL', 'AMZN', 'INVALID']
@@ -126,6 +131,7 @@ class TestGoogle(object):
             with pytest.raises(RemoteDataError):
                 web.get_data_google(sl, '2012')
 
+    @skip_on_exception(RemoteDataError)
     def test_get_multi2(self):
         with warnings.catch_warnings(record=True) as w:
             for locale in self.locales:
@@ -143,6 +149,7 @@ class TestGoogle(object):
                 assert result.shape == (4, 3)
                 assert_n_failed_equals_n_null_columns(w, result)
 
+    @skip_on_exception(RemoteDataError)
     def test_dtypes(self):
         # see gh-3995, gh-8980
         data = web.get_data_google(
@@ -155,6 +162,7 @@ class TestGoogle(object):
         assert np.issubdtype(data.High.dtype, np.number)
         assert np.issubdtype(data.Volume.dtype, np.number)
 
+    @skip_on_exception(RemoteDataError)
     def test_unicode_date(self):
         # see gh-8967
         data = web.get_data_google(
@@ -163,6 +171,7 @@ class TestGoogle(object):
                 end='JAN-27-13')
         assert data.index.name == 'Date'
 
+    @skip_on_exception(RemoteDataError)
     def test_google_reader_class(self):
         r = GoogleDailyReader('GOOG')
         df = r.read()
