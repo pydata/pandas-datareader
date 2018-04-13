@@ -5,7 +5,6 @@ import warnings
 from pandas import (DataFrame, to_datetime, concat)
 from pandas_datareader.base import _DailyBaseReader
 from pandas_datareader._utils import (RemoteDataError, SymbolWarning)
-from pandas.core.indexes.numeric import Int64Index
 import pandas.compat as compat
 
 
@@ -114,7 +113,7 @@ class YahooDailyReader(_DailyBaseReader):
                 dfs = self._dl_mult_symbols(self.symbols)
 
             for k in dfs:
-                if isinstance(dfs[k].index, Int64Index):
+                if 'Date' in dfs[k]:
                     dfs[k] = dfs[k].set_index('Date')
                 dfs[k] = dfs[k].sort_index().dropna(how='all')
 
