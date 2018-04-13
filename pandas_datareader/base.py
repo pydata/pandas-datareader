@@ -113,7 +113,7 @@ class _BaseReader(object):
         """
         return response.content
 
-    def _get_response(self, url, params=None):
+    def _get_response(self, url, params=None, headers=None):
         """ send raw HTTP request to get requests.Response from the specified url
         Parameters
         ----------
@@ -128,7 +128,8 @@ class _BaseReader(object):
         last_response_text = ''
         for i in range(self.retry_count + 1):
             response = self.session.get(url,
-                                        params=params)
+                                        params=params,
+                                        headers=headers)
             if response.status_code == requests.codes.ok:
                 return response
 
