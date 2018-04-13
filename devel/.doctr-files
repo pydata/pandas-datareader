@@ -1,5 +1,6 @@
 devel/_sources/cache.rst.txt
 devel/_sources/index.rst.txt
+devel/_sources/readers/alphavantage.rst.txt
 devel/_sources/readers/bank-of-canada.rst.txt
 devel/_sources/readers/enigma.rst.txt
 devel/_sources/readers/eurostat.rst.txt
@@ -63,6 +64,7 @@ devel/genindex.html
 devel/index.html
 devel/objects.inv
 devel/py-modindex.html
+devel/readers/alphavantage.html
 devel/readers/bank-of-canada.html
 devel/readers/enigma.html
 devel/readers/eurostat.html
