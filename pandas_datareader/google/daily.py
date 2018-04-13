@@ -45,7 +45,8 @@ class GoogleDailyReader(_DailyBaseReader):
     @property
     def url(self):
         """API URL"""
-        return 'https://finance.google.com/finance/historical'
+        # Thanks user:vnmabus for pointing this out.
+        return 'https://finance.google.co.uk/bctzjpnsun/historical'
 
     def _get_params(self, symbol):
         params = {

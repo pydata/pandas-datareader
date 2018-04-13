@@ -62,8 +62,6 @@ class MorningstarDailyReader(_BaseReader):
         self.currency = currency
         self.interval = interval
 
-        self._symbol_data_cache = []
-
     def _url_params(self):
         if self.interval not in ['d', 'wk', 'mo', 'm', 'w']:
             raise ValueError("Invalid interval: valid values are  'd', 'wk' "
@@ -98,17 +96,18 @@ class MorningstarDailyReader(_BaseReader):
         """Not required """
         pass
 
-    def _dl_mult_symbols(self, symbols):
+    def _dl_mult_symbols(self, symbols, symbol_data=None):
         failed = []
-        symbol_data = []
+        if symbol_data is None:
+            symbol_data = []
         for symbol in symbols:
-
             params = self._url_params()
             params.update({"ticker": symbol})
 
             try:
                 resp = requests.get(self.url, params=params)
-            except Exception:
+            except (requests.HTTPError, requests.ConnectionError,
+                    requests.RequestException):
                 if symbol not in failed:
                     if self.retry_count == 0:
                         warn("skipping symbol %s: number of retries "
@@ -122,10 +121,11 @@ class MorningstarDailyReader(_BaseReader):
                     jsondata = resp.json()
                     if jsondata is None:
                         failed.append(symbol)
-                        continue
-                    jsdata = self._restruct_json(symbol=symbol,
-                                                 jsondata=jsondata)
-                    symbol_data.extend(jsdata)
+                        pass
+                    else:
+                        jsdata = self._restruct_json(symbol=symbol,
+                                                     jsondata=jsondata)
+                        symbol_data.extend(jsdata)
                 else:
                     raise Exception("Request Error!: %s : %s" % (
                         resp.status_code, resp.reason))
@@ -133,14 +133,12 @@ class MorningstarDailyReader(_BaseReader):
             time.sleep(self.pause)
 
         if len(failed) > 0 and self.retry_count > 0:
-            # TODO: This appears to do nothing since
-            # TODO: successful symbols are not added to
-            self._dl_mult_symbols(symbols=failed)
             self.retry_count -= 1
+            self._dl_mult_symbols(symbols=failed, symbol_data=symbol_data)
         else:
             self.retry_count = 0
 
-        if not symbol_data:
+        if len(symbol_data) == 0 and self.retry_count == 0:
             raise ValueError('All symbols were invalid')
         elif self.retry_count == 0 and len(failed) > 0:
             warn("The following symbols were excluded do to http "
@@ -156,8 +154,7 @@ class MorningstarDailyReader(_BaseReader):
         return [base + pd.to_timedelta(iv, unit='d') for iv in indexvals]
 
     def _restruct_json(self, symbol, jsondata):
-        if jsondata is None:
-            return
+
         divdata = jsondata["DividendData"]
 
         pricedata = jsondata["PriceDataList"][0]["Datapoints"]
@@ -174,8 +171,7 @@ class MorningstarDailyReader(_BaseReader):
             d = dates[p]
             bardict = {
                 "Symbol": symbol, "Date": d, "Close": bar[0], "High": bar[1],
-                "Low": bar[2], "Open": bar[3]
-            }
+                "Low": bar[2], "Open": bar[3]}
             if len(divdata) == 0:
                 pass
             else:
@@ -216,7 +212,7 @@ class MorningstarDailyReader(_BaseReader):
         is_str = False
         try:
             is_str = all(map(lambda v: isinstance(v, str), symbols))
-        except Exception:
+        except ValueError:
             pass
 
         if not is_str:

@@ -12,6 +12,7 @@ from pandas_datareader._utils import RemoteDataError
 
 
 class TestFred(object):
+
     def test_fred(self):
 
         # Raises an exception when DataReader can't
@@ -70,6 +71,7 @@ class TestFred(object):
         end = datetime(2013, 1, 27)
 
         received = web.DataReader(names, "fred", start, end).head(1)
+
         expected = DataFrame([[217.488, 99.68746, 220.633]], columns=names,
                              index=[pd.tslib.Timestamp('2010-01-01 00:00:00')])
         expected.index.rename('DATE', inplace=True)

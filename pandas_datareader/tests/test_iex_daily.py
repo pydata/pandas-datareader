@@ -26,7 +26,8 @@ class TestIEXDaily(object):
 
     def test_iex_bad_symbol_list(self):
         with pytest.raises(Exception):
-            web.DataReader(["AAPL", "BADTICKER"], "iex", self.start, self.end)
+            web.DataReader(["AAPL", "BADTICKER"], "iex",
+                           self.start, self.end)
 
     def test_daily_invalid_date(self):
         start = datetime(2010, 1, 5)

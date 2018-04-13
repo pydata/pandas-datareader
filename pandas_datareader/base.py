@@ -113,7 +113,7 @@ class _BaseReader(object):
         """
         return response.content
 
-    def _get_response(self, url, params=None, headers=None):
+    def _get_response(self, url, params=None):
         """ send raw HTTP request to get requests.Response from the specified url
         Parameters
         ----------
@@ -128,8 +128,7 @@ class _BaseReader(object):
         last_response_text = ''
         for i in range(self.retry_count + 1):
             response = self.session.get(url,
-                                        params=params,
-                                        headers=headers)
+                                        params=params)
             if response.status_code == requests.codes.ok:
                 return response
 
@@ -170,6 +169,9 @@ class _BaseReader(object):
     def _read_lines(self, out):
         rs = read_csv(out, index_col=0, parse_dates=True,
                       na_values=('-', 'null'))[::-1]
+        # Needed to remove blank space character in header names
+        rs.columns = list(map(lambda x: x.strip(), rs.columns.values.tolist()))
+
         # Yahoo! Finance sometimes does this awesome thing where they
         # return 2 rows for the most recent business day
         if len(rs) > 2 and rs.index[-1] == rs.index[-2]:  # pragma: no cover
@@ -181,6 +183,7 @@ class _BaseReader(object):
         except AttributeError:
             # Python 3 string has no decode method.
             rs.index.name = rs.index.name.encode('ascii', 'ignore').decode()
+
         return rs
 
 

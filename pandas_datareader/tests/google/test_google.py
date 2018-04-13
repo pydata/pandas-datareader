@@ -55,19 +55,20 @@ class TestGoogle(object):
 
     @skip_on_exception(RemoteDataError)
     def test_google(self):
+
         # asserts that google is minimally working and that it throws
         # an exception when DataReader can't get a 200 response from
         # google
+
         start = datetime(2010, 1, 1)
         end = datetime(2013, 1, 27)
-
         for locale in self.locales:
             with tm.set_locale(locale):
-                panel = web.DataReader("NYSE:F", 'google', start, end)
-            assert panel.Close[-1] == 13.68
+                    panel = web.DataReader("NYSE:F", 'google', start, end)
+                    assert panel.Close[-1] == 13.68
 
-        with pytest.raises(Exception):
-            web.DataReader('NON EXISTENT TICKER', 'google', start, end)
+            with pytest.raises(Exception):
+                web.DataReader('NON EXISTENT TICKER', 'google', start, end)
 
     def assert_option_result(self, df):
         """
@@ -99,6 +100,7 @@ class TestGoogle(object):
 
     @skip_on_exception(RemoteDataError)
     def test_get_goog_volume(self):
+
         for locale in self.locales:
             with tm.set_locale(locale):
                 df = web.get_data_google('GOOG').sort_index()
@@ -120,16 +122,14 @@ class TestGoogle(object):
 
     @skip_on_exception(RemoteDataError)
     def test_get_multi_invalid(self):
-        with warnings.catch_warnings(record=True):
-            sl = ['AAPL', 'AMZN', 'INVALID']
-            pan = web.get_data_google(sl, '2012')
-            assert 'INVALID' in pan.minor_axis
+        sl = ['AAPL', 'AMZN', 'INVALID']
+        pan = web.get_data_google(sl, '2012')
+        assert 'INVALID' in pan.minor_axis
 
     def test_get_multi_all_invalid(self):
-        with warnings.catch_warnings(record=True):
-            sl = ['INVALID', 'INVALID2', 'INVALID3']
-            with pytest.raises(RemoteDataError):
-                web.get_data_google(sl, '2012')
+        sl = ['INVALID', 'INVALID2', 'INVALID3']
+        with pytest.raises(RemoteDataError):
+            web.get_data_google(sl, '2012')
 
     @skip_on_exception(RemoteDataError)
     def test_get_multi2(self):
@@ -165,6 +165,7 @@ class TestGoogle(object):
     @skip_on_exception(RemoteDataError)
     def test_unicode_date(self):
         # see gh-8967
+
         data = web.get_data_google(
                 'NYSE:F',
                 start='JAN-01-10',
@@ -173,6 +174,7 @@ class TestGoogle(object):
 
     @skip_on_exception(RemoteDataError)
     def test_google_reader_class(self):
+
         r = GoogleDailyReader('GOOG')
         df = r.read()
         assert df.Volume.loc['JAN-02-2015'] == 1446662
