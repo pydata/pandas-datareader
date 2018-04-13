@@ -29,6 +29,7 @@ extract data from various Internet sources into a pandas DataFrame.
 Currently the following sources are supported:
 
     - :ref:`Google Finance<remote_data.google>`
+    - :ref:`Tiingo<remote_data.tiingo>`
     - :ref:`Morningstar<remote_data.morningstar>`
     - :ref:`IEX<remote_data.iex>`
     - :ref:`Robinhood<remote_data.robinhood>`
