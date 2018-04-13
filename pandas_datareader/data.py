@@ -307,7 +307,7 @@ def DataReader(name, data_source=None, start=None, end=None,
     ff = DataReader("F-F_ST_Reversal_Factor", "famafrench")
     """
     if data_source == "yahoo":
-        raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Daily'))
+        # raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Daily'))
         return YahooDailyReader(symbols=name, start=start, end=end,
                                 adjust_price=False, chunksize=25,
                                 retry_count=retry_count, pause=pause,

@@ -89,8 +89,8 @@ class YahooDailyReader(_DailyBaseReader):
 
     @staticmethod
     def yurl(symbol):
-        return 'https://finance.yahoo.com/quote/{}/history'\
-            .format(symbol)
+        return 'https://finance.yahoo.com/quote/{0}/history?p={1}'\
+            .format(symbol, symbol)
 
     def _get_params(self, symbol):
         unix_start = int(time.mktime(self.start.timetuple()))
