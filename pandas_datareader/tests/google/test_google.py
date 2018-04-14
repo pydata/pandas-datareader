@@ -16,6 +16,9 @@ import warnings
 import pandas.util.testing as tm
 from pandas.util.testing import assert_series_equal
 
+pytestmark = pytest.mark.filterwarnings(
+    'ignore::pandas_datareader.exceptions.UnstableAPIWarning')
+
 
 def assert_n_failed_equals_n_null_columns(wngs, obj, cls=SymbolWarning):
     all_nan_cols_dict = {}
@@ -64,8 +67,8 @@ class TestGoogle(object):
         end = datetime(2013, 1, 27)
         for locale in self.locales:
             with tm.set_locale(locale):
-                    panel = web.DataReader("NYSE:F", 'google', start, end)
-                    assert panel.Close[-1] == 13.68
+                panel = web.DataReader("NYSE:F", 'google', start, end)
+                assert panel.Close[-1] == 13.68
 
             with pytest.raises(Exception):
                 web.DataReader('NON EXISTENT TICKER', 'google', start, end)
@@ -153,9 +156,9 @@ class TestGoogle(object):
     def test_dtypes(self):
         # see gh-3995, gh-8980
         data = web.get_data_google(
-                'NYSE:F',
-                start='JAN-01-10',
-                end='JAN-27-13')
+            'NYSE:F',
+            start='JAN-01-10',
+            end='JAN-27-13')
         assert np.issubdtype(data.Open.dtype, np.number)
         assert np.issubdtype(data.Close.dtype, np.number)
         assert np.issubdtype(data.Low.dtype, np.number)
@@ -167,9 +170,9 @@ class TestGoogle(object):
         # see gh-8967
 
         data = web.get_data_google(
-                'NYSE:F',
-                start='JAN-01-10',
-                end='JAN-27-13')
+            'NYSE:F',
+            start='JAN-01-10',
+            end='JAN-27-13')
         assert data.index.name == 'Date'
 
     @skip_on_exception(RemoteDataError)
