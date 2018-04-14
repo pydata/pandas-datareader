@@ -14,6 +14,7 @@ PANDAS_VERSION = LooseVersion(pd.__version__)
 PANDAS_0190 = (PANDAS_VERSION >= LooseVersion('0.19.0'))
 PANDAS_0200 = (PANDAS_VERSION >= LooseVersion('0.20.0'))
 PANDAS_0210 = (PANDAS_VERSION >= LooseVersion('0.21.0'))
+PANDAS_0230 = (PANDAS_VERSION >= LooseVersion('0.23.0'))
 
 if PANDAS_0190:
     from pandas.api.types import is_number
@@ -38,6 +39,12 @@ if PANDAS_0200:
 else:
     from pandas.util.testing import assertRaisesRegexp as assert_raises_regex
     get_filepath_or_buffer = com.get_filepath_or_buffer
+
+if PANDAS_0230:
+    from pandas.core.dtypes.common import is_list_like
+else:
+    from pandas.core.common import is_list_like
+
 
 if compat.PY3:
     from urllib.error import HTTPError
