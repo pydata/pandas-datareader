@@ -43,7 +43,7 @@ class YahooDailyReader(_DailyBaseReader):
         Number of symbols to download consecutively before intiating pause.
     interval : string, default 'd'
         Time interval code, valid values are 'd' for daily, 'w' for weekly,
-        'm' for monthly and 'v' for dividend.
+        'm' for monthly.
     """
 
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
@@ -146,7 +146,8 @@ class YahooDailyReader(_DailyBaseReader):
         prices.columns = map(str.capitalize, prices.columns)
         prices['Date'] = to_datetime(prices['Date'], unit='s').dt.date
 
-        prices = prices[prices['Data'].isnull()]
+        if 'Data' in prices.columns:
+            prices = prices[prices['Data'].isnull()]
         prices = prices[['Date', 'High', 'Low', 'Open', 'Close', 'Volume',
                          'Adjclose']]
         prices = prices.rename(columns={'Adjclose': 'Adj Close'})
@@ -154,7 +155,7 @@ class YahooDailyReader(_DailyBaseReader):
         dfs = {'prices': prices}
 
         # dividends & splits data
-        if self.get_actions:
+        if self.get_actions and data['eventsData']:
             actions = DataFrame(data['eventsData'])
             actions.columns = map(str.capitalize, actions.columns)
             actions['Date'] = to_datetime(actions['Date'], unit='s').dt.date
@@ -201,7 +202,6 @@ class YahooDailyReader(_DailyBaseReader):
             for k in stocks:
                 dfs[k] = concat(stocks[k]).set_index(['Ticker', 'Date'])
             return dfs
-
 
 def _adjust_prices(hist_data, price_list=None):
     """
