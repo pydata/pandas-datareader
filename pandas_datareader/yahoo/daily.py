@@ -146,7 +146,8 @@ class YahooDailyReader(_DailyBaseReader):
         prices.columns = map(str.capitalize, prices.columns)
         prices['Date'] = to_datetime(prices['Date'], unit='s').dt.date
 
-        prices = prices[prices['Data'].isnull()]
+        if 'Data' in prices.columns:
+            prices = prices[prices['Data'].isnull()]
         prices = prices[['Date', 'High', 'Low', 'Open', 'Close', 'Volume',
                          'Adjclose']]
         prices = prices.rename(columns={'Adjclose': 'Adj Close'})
@@ -154,7 +155,7 @@ class YahooDailyReader(_DailyBaseReader):
         dfs = {'prices': prices}
 
         # dividends & splits data
-        if self.get_actions:
+        if self.get_actions and data['eventsData']:
             actions = DataFrame(data['eventsData'])
             actions.columns = map(str.capitalize, actions.columns)
             actions['Date'] = to_datetime(actions['Date'], unit='s').dt.date
@@ -173,8 +174,9 @@ class YahooDailyReader(_DailyBaseReader):
                                  'SplitRatio']]
                 splits = splits.reset_index(drop=True)
                 dfs['splits'] = splits
-
         return dfs
+            
+            
 
 
     def _dl_mult_symbols(self, symbols):
