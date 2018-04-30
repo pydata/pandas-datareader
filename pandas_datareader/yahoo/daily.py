@@ -5,7 +5,10 @@ import warnings
 from pandas import (DataFrame, to_datetime, concat)
 from pandas_datareader.base import _DailyBaseReader
 from pandas_datareader._utils import (RemoteDataError, SymbolWarning)
+<<<<<<< HEAD
 from pandas.core.indexes.numeric import Int64Index
+=======
+>>>>>>> upstream/master
 import pandas.compat as compat
 
 
@@ -114,13 +117,21 @@ class YahooDailyReader(_DailyBaseReader):
                 dfs = self._dl_mult_symbols(self.symbols)
 
             for k in dfs:
+<<<<<<< HEAD
                 if isinstance(dfs[k].index, Int64Index):
+=======
+                if 'Date' in dfs[k]:
+>>>>>>> upstream/master
                     dfs[k] = dfs[k].set_index('Date')
                 dfs[k] = dfs[k].sort_index().dropna(how='all')
 
             if self.ret_index:
                 dfs['prices']['Ret_Index'] = \
+<<<<<<< HEAD
                                 _calc_return_index(dfs['prices']['Adj Close'])
+=======
+                    _calc_return_index(dfs['prices']['Adj Close'])
+>>>>>>> upstream/master
             if self.adjust_price:
                 dfs['prices'] = _adjust_prices(dfs['prices'])
 
@@ -169,7 +180,11 @@ class YahooDailyReader(_DailyBaseReader):
             if 'SPLIT' in types:
                 splits = actions[actions.Type == 'SPLIT'].copy()
                 splits['SplitRatio'] = splits['Splitratio'].apply(
+<<<<<<< HEAD
                         lambda x: eval(x))
+=======
+                    lambda x: eval(x))
+>>>>>>> upstream/master
                 splits = splits[['Date', 'Denominator', 'Numerator',
                                  'SplitRatio']]
                 splits = splits.reset_index(drop=True)

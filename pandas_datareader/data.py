@@ -4,6 +4,10 @@ Module contains tools for collecting data from various remote sources
 
 import warnings
 
+from pandas_datareader.av.forex import AVForexReader
+from pandas_datareader.av.quotes import AVQuotesReader
+from pandas_datareader.av.sector import AVSectorPerformanceReader
+from pandas_datareader.av.time_series import AVTimeSeriesReader
 from pandas_datareader.bankofcanada import BankOfCanadaReader
 from pandas_datareader.edgar import EdgarIndexReader
 from pandas_datareader.enigma import EnigmaReader
@@ -46,6 +50,10 @@ __all__ = ['get_components_yahoo', 'get_data_enigma', 'get_data_famafrench',
            'DataReader']
 
 
+def get_data_alphavantage(*args, **kwargs):
+    return AVTimeSeriesReader(*args, **kwargs).read()
+
+
 def get_data_fred(*args, **kwargs):
     return FredReader(*args, **kwargs).read()
 
@@ -64,6 +72,10 @@ def get_data_yahoo(*args, **kwargs):
 
 def get_data_enigma(*args, **kwargs):
     return EnigmaReader(*args, **kwargs).read()
+
+
+def get_quote_av(*args, **kwargs):
+    return AVQuotesReader(*args, **kwargs).read()
 
 
 def get_data_yahoo_actions(*args, **kwargs):
@@ -118,6 +130,14 @@ def get_data_tiingo(*args, **kwargs):
 
 def get_quotes_tiingo(*args, **kwargs):
     return TiingoQuoteReader(*args, **kwargs).read()
+
+
+def get_exchange_rate_av(*args, **kwargs):
+    return AVForexReader(*args, **kwargs).read()
+
+
+def get_sector_performance_av(*args, **kwargs):
+    return AVSectorPerformanceReader(*args, **kwargs).read()
 
 
 def get_markets_iex(*args, **kwargs):
@@ -363,7 +383,7 @@ def DataReader(name, data_source=None, start=None, end=None,
     elif data_source == "quandl":
         return QuandlReader(symbols=name, start=start, end=end,
                             retry_count=retry_count, pause=pause,
-                            session=session).read()
+                            session=session, api_key=access_key).read()
     elif data_source == "moex":
         return MoexReader(symbols=name, start=start, end=end,
                           retry_count=retry_count, pause=pause,

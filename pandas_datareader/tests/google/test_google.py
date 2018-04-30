@@ -8,12 +8,16 @@ from pandas import compat
 from datetime import datetime
 from pandas_datareader.data import GoogleDailyReader
 from pandas_datareader._utils import RemoteDataError, SymbolWarning
+from pandas_datareader._testing import skip_on_exception
 
 import requests
 
 import warnings
 import pandas.util.testing as tm
 from pandas.util.testing import assert_series_equal
+
+pytestmark = pytest.mark.filterwarnings(
+    'ignore::pandas_datareader.exceptions.UnstableAPIWarning')
 
 
 def assert_n_failed_equals_n_null_columns(wngs, obj, cls=SymbolWarning):
@@ -52,20 +56,22 @@ class TestGoogle(object):
     def teardown_class(cls):
         del cls.locales
 
+    @skip_on_exception(RemoteDataError)
     def test_google(self):
+
         # asserts that google is minimally working and that it throws
         # an exception when DataReader can't get a 200 response from
         # google
+
         start = datetime(2010, 1, 1)
         end = datetime(2013, 1, 27)
-
         for locale in self.locales:
             with tm.set_locale(locale):
                 panel = web.DataReader("NYSE:F", 'google', start, end)
-            assert panel.Close[-1] == 13.68
+                assert panel.Close[-1] == 13.68
 
-        with pytest.raises(Exception):
-            web.DataReader('NON EXISTENT TICKER', 'google', start, end)
+            with pytest.raises(Exception):
+                web.DataReader('NON EXISTENT TICKER', 'google', start, end)
 
     def assert_option_result(self, df):
         """
@@ -95,12 +101,15 @@ class TestGoogle(object):
         tm.assert_index_equal(df.index, pd.Index(['GOOG', 'AMZN', 'GOOG']))
         self.assert_option_result(df)
 
+    @skip_on_exception(RemoteDataError)
     def test_get_goog_volume(self):
+
         for locale in self.locales:
             with tm.set_locale(locale):
                 df = web.get_data_google('GOOG').sort_index()
             assert df.Volume.loc['JAN-02-2015'] == 1446662
 
+    @skip_on_exception(RemoteDataError)
     def test_get_multi1(self):
         for locale in self.locales:
             sl = ['AAPL', 'AMZN', 'GOOG']
@@ -114,18 +123,18 @@ class TestGoogle(object):
                 with pytest.raises(AttributeError):
                     pan.Close()
 
+    @skip_on_exception(RemoteDataError)
     def test_get_multi_invalid(self):
-        with warnings.catch_warnings(record=True):
-            sl = ['AAPL', 'AMZN', 'INVALID']
-            pan = web.get_data_google(sl, '2012')
-            assert 'INVALID' in pan.minor_axis
+        sl = ['AAPL', 'AMZN', 'INVALID']
+        pan = web.get_data_google(sl, '2012')
+        assert 'INVALID' in pan.minor_axis
 
     def test_get_multi_all_invalid(self):
-        with warnings.catch_warnings(record=True):
-            sl = ['INVALID', 'INVALID2', 'INVALID3']
-            with pytest.raises(RemoteDataError):
-                web.get_data_google(sl, '2012')
+        sl = ['INVALID', 'INVALID2', 'INVALID3']
+        with pytest.raises(RemoteDataError):
+            web.get_data_google(sl, '2012')
 
+    @skip_on_exception(RemoteDataError)
     def test_get_multi2(self):
         with warnings.catch_warnings(record=True) as w:
             for locale in self.locales:
@@ -143,27 +152,32 @@ class TestGoogle(object):
                 assert result.shape == (4, 3)
                 assert_n_failed_equals_n_null_columns(w, result)
 
+    @skip_on_exception(RemoteDataError)
     def test_dtypes(self):
         # see gh-3995, gh-8980
         data = web.get_data_google(
-                'NYSE:F',
-                start='JAN-01-10',
-                end='JAN-27-13')
+            'NYSE:F',
+            start='JAN-01-10',
+            end='JAN-27-13')
         assert np.issubdtype(data.Open.dtype, np.number)
         assert np.issubdtype(data.Close.dtype, np.number)
         assert np.issubdtype(data.Low.dtype, np.number)
         assert np.issubdtype(data.High.dtype, np.number)
         assert np.issubdtype(data.Volume.dtype, np.number)
 
+    @skip_on_exception(RemoteDataError)
     def test_unicode_date(self):
         # see gh-8967
+
         data = web.get_data_google(
-                'NYSE:F',
-                start='JAN-01-10',
-                end='JAN-27-13')
+            'NYSE:F',
+            start='JAN-01-10',
+            end='JAN-27-13')
         assert data.index.name == 'Date'
 
+    @skip_on_exception(RemoteDataError)
     def test_google_reader_class(self):
+
         r = GoogleDailyReader('GOOG')
         df = r.read()
         assert df.Volume.loc['JAN-02-2015'] == 1446662

@@ -29,9 +29,11 @@ extract data from various Internet sources into a pandas DataFrame.
 Currently the following sources are supported:
 
     - :ref:`Google Finance<remote_data.google>`
+    - :ref:`Tiingo<remote_data.tiingo>`
     - :ref:`Morningstar<remote_data.morningstar>`
     - :ref:`IEX<remote_data.iex>`
     - :ref:`Robinhood<remote_data.robinhood>`
+    - :ref:`AlphaVantage<remote_data.alphavantage>`
     - :ref:`Enigma<remote_data.enigma>`
     - :ref:`Quandl<remote_data.quandl>`
     - :ref:`St.Louis FED (FRED)<remote_data.fred>`
@@ -144,6 +146,107 @@ year relative to today.
     from datetime import datetime
     f = web.DataReader('F', 'robinhood')
     f.head()
+
+
+.. _remote_data.alphavantage
+
+AlphaVantage
+============
+
+`AlphaVantage <https://www.alphavantage.co/documentation>`__ provides realtime
+equities and forex data. Free registration is required to get an API key. 
+
+Historical Time Series Data
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Through the 
+`AlphaVantage <https://www.alphavantage.co/documentation>`__ Time Series
+endpoints, it is possible to obtain historical equities data for individual
+symbols. The following endpoints are available:
+
+* ``av-daily`` - Daily Time Series
+* ``av-daily-adjusted`` - Daily Time Series (Adjusted)
+* ``av-weekly`` - Weekly Time Series
+* ``av-weekly-adjusted`` - Weekly Time Series (Adjusted)
+* ``av-monthly`` - Monthly Time Series
+* ``av-monthly-adjusted`` - Monthly Time Series (Adjusted)
+
+.. ipython:: python
+
+    import os
+    from datetime import datetime
+    import pandas_datareader.data as web
+
+    f = web.DataReader("AAPL", "av-daily", start=datetime(2017, 2, 9),
+                       end=datetime(2017, 5, 24),
+                       access_key=os.getenv('ALPHAVANTAGE_API_KEY'))
+    f.loc["2017-02-09"]
+
+The top-level function ``get_data_alphavantage`` is also provided. This
+function will
+return the ``TIME_SERIES_DAILY`` endpoint for the symbol and date range
+provided.
+
+Quotes
+^^^^^^
+
+`AlphaVantage <https://www.alphavantage.co/documentation>`__ Batch Stock Quotes
+endpoint allows the retrieval of realtime stock quotes for up to 100 symbols at
+once. These quotes are accessible through the top-level function
+``get_quote_av``.
+
+.. ipython:: python
+
+    import os
+    from datetime import datetime
+    import pandas_datareader.data as web
+
+    web.get_quote_av(["AAPL", "TSLA"])
+
+
+.. note:: Most quotes are only available during market hours.
+
+Forex
+^^^^^
+
+`AlphaVantage <https://www.alphavantage.co/documentation>`__ provides realtime
+currency exchange rates (for physical and digital currencies). 
+
+To request the exchange rate of physical or digital currencies, simply format
+as "FROM/TO" as in "USD/JPY".
+
+.. ipython:: python
+
+    import os
+    import pandas_datareader.data as web
+
+    f = web.DataReader("USD/JPY", "av-forex", 
+                       access_key=os.getenv('ALPHAVANTAGE_API_KEY'))
+
+Multiple pairs are are allowable:
+
+.. ipython:: python
+
+    import os
+    import pandas_datareader.data as web
+
+    f = web.DataReader(["USD/JPY", "BTC/CNY"], "av-forex",
+                       access_key=os.getenv('ALPHAVANTAGE_API_KEY'))
+
+
+Sector Performance
+^^^^^^^^^^^^^^^^^^
+
+`AlphaVantage <https://www.alphavantage.co/documentation>`__ provides sector
+performances through the top-level function ``get_sector_performance_av``.
+
+.. ipython:: python
+
+    import os
+    import pandas_datareader.data as web
+
+    web.get_sector_performance_av().head()
+
 
 .. _remote_data.enigma:
 
