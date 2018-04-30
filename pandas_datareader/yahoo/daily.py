@@ -5,10 +5,6 @@ import warnings
 from pandas import (DataFrame, to_datetime, concat)
 from pandas_datareader.base import _DailyBaseReader
 from pandas_datareader._utils import (RemoteDataError, SymbolWarning)
-<<<<<<< HEAD
-from pandas.core.indexes.numeric import Int64Index
-=======
->>>>>>> upstream/master
 import pandas.compat as compat
 
 
@@ -117,21 +113,13 @@ class YahooDailyReader(_DailyBaseReader):
                 dfs = self._dl_mult_symbols(self.symbols)
 
             for k in dfs:
-<<<<<<< HEAD
-                if isinstance(dfs[k].index, Int64Index):
-=======
                 if 'Date' in dfs[k]:
->>>>>>> upstream/master
                     dfs[k] = dfs[k].set_index('Date')
                 dfs[k] = dfs[k].sort_index().dropna(how='all')
 
             if self.ret_index:
                 dfs['prices']['Ret_Index'] = \
-<<<<<<< HEAD
-                                _calc_return_index(dfs['prices']['Adj Close'])
-=======
                     _calc_return_index(dfs['prices']['Adj Close'])
->>>>>>> upstream/master
             if self.adjust_price:
                 dfs['prices'] = _adjust_prices(dfs['prices'])
 
@@ -158,7 +146,8 @@ class YahooDailyReader(_DailyBaseReader):
         prices.columns = map(str.capitalize, prices.columns)
         prices['Date'] = to_datetime(prices['Date'], unit='s').dt.date
 
-        prices = prices[prices['Data'].isnull()]
+        if 'Data' in prices.columns:
+            prices = prices[prices['Data'].isnull()]
         prices = prices[['Date', 'High', 'Low', 'Open', 'Close', 'Volume',
                          'Adjclose']]
         prices = prices.rename(columns={'Adjclose': 'Adj Close'})
@@ -166,7 +155,7 @@ class YahooDailyReader(_DailyBaseReader):
         dfs = {'prices': prices}
 
         # dividends & splits data
-        if self.get_actions:
+        if self.get_actions and data['eventsData']:
             actions = DataFrame(data['eventsData'])
             actions.columns = map(str.capitalize, actions.columns)
             actions['Date'] = to_datetime(actions['Date'], unit='s').dt.date
@@ -180,17 +169,14 @@ class YahooDailyReader(_DailyBaseReader):
             if 'SPLIT' in types:
                 splits = actions[actions.Type == 'SPLIT'].copy()
                 splits['SplitRatio'] = splits['Splitratio'].apply(
-<<<<<<< HEAD
-                        lambda x: eval(x))
-=======
                     lambda x: eval(x))
->>>>>>> upstream/master
                 splits = splits[['Date', 'Denominator', 'Numerator',
                                  'SplitRatio']]
                 splits = splits.reset_index(drop=True)
                 dfs['splits'] = splits
-
         return dfs
+            
+            
 
     def _dl_mult_symbols(self, symbols):
         stocks = {}
