@@ -175,6 +175,8 @@ class YahooDailyReader(_DailyBaseReader):
                 splits = splits.reset_index(drop=True)
                 dfs['splits'] = splits
         return dfs
+            
+            
 
     def _dl_mult_symbols(self, symbols):
         stocks = {}
