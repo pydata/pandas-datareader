@@ -5,6 +5,7 @@ import warnings
 from pandas import (DataFrame, to_datetime, concat)
 from pandas_datareader.base import _DailyBaseReader
 from pandas_datareader._utils import (RemoteDataError, SymbolWarning)
+from pandas.core.indexes.numeric import Int64Index
 import pandas.compat as compat
 
 
@@ -43,7 +44,7 @@ class YahooDailyReader(_DailyBaseReader):
         Number of symbols to download consecutively before intiating pause.
     interval : string, default 'd'
         Time interval code, valid values are 'd' for daily, 'w' for weekly,
-        'm' for monthly and 'v' for dividend.
+        'm' for monthly.
     """
 
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
@@ -75,7 +76,7 @@ class YahooDailyReader(_DailyBaseReader):
 
         if self.interval not in ['d', 'wk', 'mo', 'm', 'w']:
             raise ValueError("Invalid interval: valid values are  'd', 'wk' and 'mo'. 'm' and 'w' have been implemented for "  # noqa
-                             "backward compatibility. 'v' has been moved to the yahoo-actions or yahoo-dividends APIs.")  # noqa
+                             "backward compatibility.")  # noqa
         elif self.interval in ['m', 'mo']:
             self.pdinterval = 'm'
             self.interval = 'mo'
@@ -113,13 +114,13 @@ class YahooDailyReader(_DailyBaseReader):
                 dfs = self._dl_mult_symbols(self.symbols)
 
             for k in dfs:
-                if 'Date' in dfs[k]:
+                if isinstance(dfs[k].index, Int64Index):
                     dfs[k] = dfs[k].set_index('Date')
                 dfs[k] = dfs[k].sort_index().dropna(how='all')
 
             if self.ret_index:
                 dfs['prices']['Ret_Index'] = \
-                    _calc_return_index(dfs['prices']['Adj Close'])
+                                _calc_return_index(dfs['prices']['Adj Close'])
             if self.adjust_price:
                 dfs['prices'] = _adjust_prices(dfs['prices'])
 
@@ -131,7 +132,6 @@ class YahooDailyReader(_DailyBaseReader):
         """ read one data from specified symbol """
         url = 'https://finance.yahoo.com/quote/{}/history'.format(symbol)
         params = self._get_params(symbol)
-
         resp = self._get_response(url, params=params)
         ptrn = r'root\.App\.main = (.*?);\n}\(this\)\);'
         try:
@@ -146,7 +146,8 @@ class YahooDailyReader(_DailyBaseReader):
         prices.columns = map(str.capitalize, prices.columns)
         prices['Date'] = to_datetime(prices['Date'], unit='s').dt.date
 
-        prices = prices[prices['Data'].isnull()]
+        if 'Data' in prices.columns:
+            prices = prices[prices['Data'].isnull()]
         prices = prices[['Date', 'High', 'Low', 'Open', 'Close', 'Volume',
                          'Adjclose']]
         prices = prices.rename(columns={'Adjclose': 'Adj Close'})
@@ -154,7 +155,7 @@ class YahooDailyReader(_DailyBaseReader):
         dfs = {'prices': prices}
 
         # dividends & splits data
-        if self.get_actions:
+        if self.get_actions and data['eventsData']:
             actions = DataFrame(data['eventsData'])
             actions.columns = map(str.capitalize, actions.columns)
             actions['Date'] = to_datetime(actions['Date'], unit='s').dt.date
@@ -173,8 +174,9 @@ class YahooDailyReader(_DailyBaseReader):
                                  'SplitRatio']]
                 splits = splits.reset_index(drop=True)
                 dfs['splits'] = splits
-
         return dfs
+            
+            
 
     def _dl_mult_symbols(self, symbols):
         stocks = {}

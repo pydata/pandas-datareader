@@ -5,6 +5,7 @@ from pandas import (DataFrame, Series, to_datetime, concat)
 from pandas_datareader.yahoo.daily import YahooDailyReader
 import pandas.compat as compat
 from pandas_datareader._utils import (RemoteDataError, SymbolWarning)
+from pandas.core.indexes.numeric import Int64Index
 
 
 class YahooFXReader(YahooDailyReader):
@@ -64,7 +65,7 @@ class YahooFXReader(YahooDailyReader):
             else:
                 df = self._dl_mult_symbols(self.symbols)
 
-            if 'Date' in df:
+            if isinstance(df.index, Int64Index):
                 df = df.set_index('Date')
 
             if 'Volume' in df:
