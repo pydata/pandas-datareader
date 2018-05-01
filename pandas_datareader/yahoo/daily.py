@@ -44,7 +44,7 @@ class YahooDailyReader(_DailyBaseReader):
         Number of symbols to download consecutively before intiating pause.
     interval : string, default 'd'
         Time interval code, valid values are 'd' for daily, 'w' for weekly,
-        'm' for monthly and 'v' for dividend.
+        'm' for monthly.
     """
 
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
@@ -76,7 +76,7 @@ class YahooDailyReader(_DailyBaseReader):
 
         if self.interval not in ['d', 'wk', 'mo', 'm', 'w']:
             raise ValueError("Invalid interval: valid values are  'd', 'wk' and 'mo'. 'm' and 'w' have been implemented for "  # noqa
-                             "backward compatibility. 'v' has been moved to the yahoo-actions or yahoo-dividends APIs.")  # noqa
+                             "backward compatibility.")  # noqa
         elif self.interval in ['m', 'mo']:
             self.pdinterval = 'm'
             self.interval = 'mo'
@@ -175,9 +175,6 @@ class YahooDailyReader(_DailyBaseReader):
                 splits = splits.reset_index(drop=True)
                 dfs['splits'] = splits
         return dfs
-            
-            
-
 
     def _dl_mult_symbols(self, symbols):
         stocks = {}
