@@ -1,20 +1,22 @@
-import re
+from __future__ import division
+
 import json
+import re
 import time
 import warnings
-from pandas import (DataFrame, to_datetime, concat)
-from pandas_datareader.base import _DailyBaseReader
-from pandas_datareader._utils import (RemoteDataError, SymbolWarning)
+
+import numpy as np
 import pandas.compat as compat
+from pandas import (Panel, DataFrame, to_datetime, notnull, isnull)
+from pandas_datareader._utils import (RemoteDataError, SymbolWarning)
+from pandas_datareader.base import (_DailyBaseReader, _in_chunks)
 
 
 class YahooDailyReader(_DailyBaseReader):
-
     """
-    Returns a dictionary of DataFrames with historical stock prices, dividends,
-    and splits from symbols, over date range, start to end. To avoid being
-    penalized by Yahoo! Finance servers, pauses between downloading 'chunks' of
-    symbols can be specified.
+    Returns DataFrame/Panel of with historical over date range, start to end.
+    To avoid being penalized by Yahoo! Finance servers, pauses between
+    downloading 'chunks' of symbols can be specified.
 
     Parameters
     ----------
@@ -44,12 +46,16 @@ class YahooDailyReader(_DailyBaseReader):
     interval : string, default 'd'
         Time interval code, valid values are 'd' for daily, 'w' for weekly,
         'm' for monthly.
+    get_actions : bool, default False
+        If True, adds Dividend and Split columns to dataframe.
+    adjust_dividends: bool, default false
+        If True, adjusts dividends for splits.
     """
 
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
                  pause=0.35, session=None, adjust_price=False,
                  ret_index=False, chunksize=1, interval='d',
-                 get_actions=True):
+                 get_actions=False, adjust_dividends=False):
         super(YahooDailyReader, self).__init__(symbols=symbols,
                                                start=start, end=end,
                                                retry_count=retry_count,
@@ -71,7 +77,7 @@ class YahooDailyReader(_DailyBaseReader):
         self.adjust_price = adjust_price
         self.ret_index = ret_index
         self.interval = interval
-        self.get_actions = get_actions
+        self._get_actions = get_actions
 
         if self.interval not in ['d', 'wk', 'mo', 'm', 'w']:
             raise ValueError("Invalid interval: valid values are  'd', 'wk' and 'mo'. 'm' and 'w' have been implemented for "  # noqa
@@ -84,6 +90,11 @@ class YahooDailyReader(_DailyBaseReader):
             self.interval = 'wk'
 
         self.interval = '1' + self.interval
+        self.adjust_dividends = adjust_dividends
+
+    @property
+    def get_actions(self):
+        return self._get_actions
 
     def _get_params(self, symbol):
         unix_start = int(time.mktime(self.start.timetuple()))
@@ -112,17 +123,6 @@ class YahooDailyReader(_DailyBaseReader):
             else:
                 dfs = self._dl_mult_symbols(self.symbols)
 
-            for k in dfs:
-                if 'Date' in dfs[k]:
-                    dfs[k] = dfs[k].set_index('Date')
-                dfs[k] = dfs[k].sort_index().dropna(how='all')
-
-            if self.ret_index:
-                dfs['prices']['Ret_Index'] = \
-                    _calc_return_index(dfs['prices']['Adj Close'])
-            if self.adjust_price:
-                dfs['prices'] = _adjust_prices(dfs['prices'])
-
             return dfs
         finally:
             self.close()
@@ -143,8 +143,9 @@ class YahooDailyReader(_DailyBaseReader):
 
         # price data
         prices = DataFrame(data['prices'])
-        prices.columns = map(str.capitalize, prices.columns)
-        prices['Date'] = to_datetime(prices['Date'], unit='s').dt.date
+        prices.columns = [col.capitalize() for col in prices.columns]
+        prices['Date'] = to_datetime(
+            to_datetime(prices['Date'], unit='s').dt.date)
 
         if 'Data' in prices.columns:
             prices = prices[prices['Data'].isnull()]
@@ -152,56 +153,77 @@ class YahooDailyReader(_DailyBaseReader):
                          'Adjclose']]
         prices = prices.rename(columns={'Adjclose': 'Adj Close'})
 
-        dfs = {'prices': prices}
+        prices = prices.set_index('Date')
+        prices = prices.sort_index().dropna(how='all')
+
+        if self.ret_index:
+            prices['Ret_Index'] = \
+                _calc_return_index(prices['Adj Close'])
+        if self.adjust_price:
+            prices = _adjust_prices(prices)
 
         # dividends & splits data
         if self.get_actions and data['eventsData']:
+
             actions = DataFrame(data['eventsData'])
-            actions.columns = map(str.capitalize, actions.columns)
-            actions['Date'] = to_datetime(actions['Date'], unit='s').dt.date
+            actions.columns = [col.capitalize() for col in actions.columns]
+            actions['Date'] = to_datetime(
+                to_datetime(actions['Date'], unit='s').dt.date)
 
             types = actions['Type'].unique()
             if 'DIVIDEND' in types:
                 divs = actions[actions.Type == 'DIVIDEND'].copy()
                 divs = divs[['Date', 'Amount']].reset_index(drop=True)
-                dfs['dividends'] = divs
+                divs = divs.set_index('Date')
+                divs = divs.rename(columns={'Amount': 'Dividends'})
+                prices = prices.join(divs, how='outer')
 
             if 'SPLIT' in types:
                 splits = actions[actions.Type == 'SPLIT'].copy()
                 splits['SplitRatio'] = splits['Splitratio'].apply(
                     lambda x: eval(x))
-                splits = splits[['Date', 'Denominator', 'Numerator',
-                                 'SplitRatio']]
                 splits = splits.reset_index(drop=True)
-                dfs['splits'] = splits
+                splits = splits.set_index('Date')
+                splits['Splits'] = 1.0 / splits['SplitRatio']
+                prices = prices.join(splits['Splits'], how='outer')
 
-        return dfs
+                if 'DIVIDEND' in types and self.adjust_dividends:
+                    # Adjust dividends to deal with splits
+                    adj = prices['Splits'].sort_index(ascending=False).fillna(
+                        1).cumprod()
+                    prices['Dividends'] = prices['Dividends'] * adj
+
+        return prices
 
     def _dl_mult_symbols(self, symbols):
         stocks = {}
         failed = []
         passed = []
-        for sym in symbols:
-            try:
-                dfs = self._read_one_data(sym)
-                for k in dfs:
-                    dfs[k]['Ticker'] = sym
-                    if k not in stocks:
-                        stocks[k] = []
-                    stocks[k].append(dfs[k])
-                passed.append(sym)
-            except IOError:
-                msg = 'Failed to read symbol: {0!r}, replacing with NaN.'
-                warnings.warn(msg.format(sym), SymbolWarning)
-                failed.append(sym)
+        for sym_group in _in_chunks(symbols, 1):  # ignoring chunksize
+            for sym in sym_group:
+                try:
+                    stocks[sym] = self._read_one_data(sym)
+                    passed.append(sym)
+                except IOError:
+                    msg = 'Failed to read symbol: {0!r}, replacing with NaN.'
+                    warnings.warn(msg.format(sym), SymbolWarning)
+                    failed.append(sym)
 
         if len(passed) == 0:
             msg = "No data fetched using {0!r}"
             raise RemoteDataError(msg.format(self.__class__.__name__))
-        else:
-            for k in stocks:
-                dfs[k] = concat(stocks[k]).set_index(['Ticker', 'Date'])
-            return dfs
+        try:
+            if len(stocks) > 0 and len(failed) > 0 and len(passed) > 0:
+                df_na = stocks[passed[0]].copy()
+                df_na[:] = np.nan
+                for sym in failed:
+                    stocks[sym] = df_na
+            return Panel(stocks).swapaxes('items', 'minor')
+        except AttributeError:
+            # cannot construct a panel with just 1D nans indicating no data
+            msg = "No data fetched using {0!r}"
+            raise RemoteDataError(msg.format(self.__class__.__name__))
+
 
 def _adjust_prices(hist_data, price_list=None):
     """
@@ -226,16 +248,15 @@ def _calc_return_index(price_df):
     (typically NaN) is set to 1.
     """
     df = price_df.pct_change().add(1).cumprod()
-    mask = df.iloc[1].notnull() & df.iloc[0].isnull()
-    df.loc[df.index[0], mask] = 1
+    mask = notnull(df.iloc[1]) & isnull(df.iloc[0])
+    if mask:
+        df.loc[df.index[0]] = 1
 
     # Check for first stock listings after starting date of index in ret_index
     # If True, find first_valid_index and set previous entry to 1.
-    if (~mask).any():
-        for sym in mask.index[~mask]:
-            sym_idx = df.columns.get_loc(sym)
-            tstamp = df[sym].first_valid_index()
-            t_idx = df.index.get_loc(tstamp) - 1
-            df.iloc[t_idx, sym_idx] = 1
+    if not mask:
+        tstamp = df.first_valid_index()
+        t_idx = df.index.get_loc(tstamp) - 1
+        df.iloc[t_idx] = 1
 
     return df
