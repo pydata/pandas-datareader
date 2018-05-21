@@ -1,4 +1,4 @@
-from pandas import (Panel, concat, DataFrame)
+from pandas import (concat, DataFrame, MultiIndex)
 from pandas_datareader.yahoo.daily import YahooDailyReader
 
 
@@ -11,12 +11,12 @@ class YahooActionReader(YahooDailyReader):
 
     def read(self):
         data = super(YahooActionReader, self).read()
-        if isinstance(data, Panel):
-            data = data.swapaxes('minor', 'items')
-            actions = {}
-            for s in data:
+        actions = {}
+        if isinstance(data.columns, MultiIndex):
+            data = data.swaplevel(0, 1, axis=1)
+            for s in data.columns.levels[0]:
                 actions[s] = _get_one_action(data[s])
-            return Panel(actions).swapaxes('items', 'minor')
+            return actions
         else:
             return _get_one_action(data)
 

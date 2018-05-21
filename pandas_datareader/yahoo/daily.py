@@ -3,18 +3,15 @@ from __future__ import division
 import json
 import re
 import time
-import warnings
-
-import numpy as np
-import pandas.compat as compat
-from pandas import (Panel, DataFrame, to_datetime, notnull, isnull)
-from pandas_datareader._utils import (RemoteDataError, SymbolWarning)
-from pandas_datareader.base import (_DailyBaseReader, _in_chunks)
+from pandas import (DataFrame, to_datetime, notnull, isnull)
+from pandas_datareader._utils import RemoteDataError
+from pandas_datareader.base import _DailyBaseReader
 
 
 class YahooDailyReader(_DailyBaseReader):
     """
-    Returns DataFrame/Panel of with historical over date range, start to end.
+    Returns DataFrame of with historical over date range,
+    start to end.
     To avoid being penalized by Yahoo! Finance servers, pauses between
     downloading 'chunks' of symbols can be specified.
 
@@ -96,6 +93,10 @@ class YahooDailyReader(_DailyBaseReader):
     def get_actions(self):
         return self._get_actions
 
+    @property
+    def url(self):
+        return 'https://finance.yahoo.com/quote/{}/history'
+
     def _get_params(self, symbol):
         unix_start = int(time.mktime(self.start.timetuple()))
         day_end = self.end.replace(hour=23, minute=59, second=59)
@@ -106,31 +107,17 @@ class YahooDailyReader(_DailyBaseReader):
             'period2': unix_end,
             'interval': self.interval,
             'frequency': self.interval,
-            'filter': 'history'
+            'filter': 'history',
+            'symbol': symbol
         }
         return params
 
-    def read(self):
-        """Read data"""
-        try:
-            # If a single symbol, (e.g., 'GOOG')
-            if isinstance(self.symbols, (compat.string_types, int)):
-                dfs = self._read_one_data(self.symbols)
-
-            # Or multiple symbols, (e.g., ['GOOG', 'AAPL', 'MSFT'])
-            elif isinstance(self.symbols, DataFrame):
-                dfs = self._dl_mult_symbols(self.symbols.index)
-            else:
-                dfs = self._dl_mult_symbols(self.symbols)
-
-            return dfs
-        finally:
-            self.close()
-
-    def _read_one_data(self, symbol):
+    def _read_one_data(self, url, params):
         """ read one data from specified symbol """
-        url = 'https://finance.yahoo.com/quote/{}/history'.format(symbol)
-        params = self._get_params(symbol)
+
+        symbol = params['symbol']
+        del params['symbol']
+        url = url.format(symbol)
 
         resp = self._get_response(url, params=params)
         ptrn = r'root\.App\.main = (.*?);\n}\(this\)\);'
@@ -195,39 +182,10 @@ class YahooDailyReader(_DailyBaseReader):
 
         return prices
 
-    def _dl_mult_symbols(self, symbols):
-        stocks = {}
-        failed = []
-        passed = []
-        for sym_group in _in_chunks(symbols, 1):  # ignoring chunksize
-            for sym in sym_group:
-                try:
-                    stocks[sym] = self._read_one_data(sym)
-                    passed.append(sym)
-                except IOError:
-                    msg = 'Failed to read symbol: {0!r}, replacing with NaN.'
-                    warnings.warn(msg.format(sym), SymbolWarning)
-                    failed.append(sym)
-
-        if len(passed) == 0:
-            msg = "No data fetched using {0!r}"
-            raise RemoteDataError(msg.format(self.__class__.__name__))
-        try:
-            if len(stocks) > 0 and len(failed) > 0 and len(passed) > 0:
-                df_na = stocks[passed[0]].copy()
-                df_na[:] = np.nan
-                for sym in failed:
-                    stocks[sym] = df_na
-            return Panel(stocks).swapaxes('items', 'minor')
-        except AttributeError:
-            # cannot construct a panel with just 1D nans indicating no data
-            msg = "No data fetched using {0!r}"
-            raise RemoteDataError(msg.format(self.__class__.__name__))
-
 
 def _adjust_prices(hist_data, price_list=None):
     """
-    Return modifed DataFrame or Panel with adjusted prices based on
+    Return modifed DataFrame with adjusted prices based on
     'Adj Close' price. Adds 'Adj_Ratio' column.
     """
     if price_list is None:
