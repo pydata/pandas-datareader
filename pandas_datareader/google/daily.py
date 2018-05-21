@@ -9,9 +9,10 @@ to fail at random. Failure is especially common when bulk downloading.
 
 class GoogleDailyReader(_DailyBaseReader):
     """
-    Returns DataFrame/Panel of historical stock prices from symbols, over date
-    range, start to end. To avoid being penalized by Google Finance servers,
-    pauses between downloading 'chunks' of symbols can be specified.
+    Returns DataFrame of historical stock prices from
+    symbols, over date range, start to end. To avoid being penalized by Google
+    Finance servers, pauses between downloading 'chunks' of symbols can be
+    specified.
 
     Parameters
     ----------

@@ -126,8 +126,8 @@ class TestGoogle(object):
     @skip_on_exception(RemoteDataError)
     def test_get_multi_invalid(self):
         sl = ['AAPL', 'AMZN', 'INVALID']
-        pan = web.get_data_google(sl, '2012')
-        assert 'INVALID' in pan.minor_axis
+        data = web.get_data_google(sl, '2012')
+        assert 'INVALID' in data.columns.levels[1]
 
     def test_get_multi_all_invalid(self):
         sl = ['INVALID', 'INVALID2', 'INVALID3']

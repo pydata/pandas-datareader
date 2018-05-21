@@ -4,8 +4,8 @@ from pandas_datareader.base import _DailyBaseReader
 class StooqDailyReader(_DailyBaseReader):
 
     """
-    Returns DataFrame/Panel of historical stock prices from symbols, over date
-    range, start to end.
+    Returns DataFrame/dict of Dataframes of historical stock prices from
+    symbols, over date range, start to end.
 
     Parameters
     ----------
@@ -18,7 +18,7 @@ class StooqDailyReader(_DailyBaseReader):
         Time, in seconds, to pause between consecutive queries of chunks. If
         single value given for symbol, represents the pause between retries.
     chunksize : int, default 25
-        Number of symbols to download consecutively before intiating pause.
+        Number of symbols to download consecutively before initiating pause.
     session : Session, default None
         requests.sessions.Session instance to be used
 

@@ -171,9 +171,9 @@ class TestYahoo(object):
 
     @skip_on_exception(RemoteDataError)
     def test_get_data_multiple_symbols_two_dates(self):
-        pan = web.get_data_yahoo(['GE', 'MSFT', 'INTC'], 'JAN-01-12',
-                                 'JAN-31-12')
-        result = pan.Close.loc['01-18-12'].T
+        data = web.get_data_yahoo(['GE', 'MSFT', 'INTC'], 'JAN-01-12',
+                                  'JAN-31-12')
+        result = data.Close.loc['01-18-12'].T
         assert result.size == 3
 
         # sanity checking
@@ -183,7 +183,7 @@ class TestYahoo(object):
                              [18.58, 28.31, 25.13],
                              [19.03, 28.16, 25.52],
                              [18.81, 28.82, 25.87]])
-        df = pan.Open
+        df = data.Open
         result = df[(df.index >= 'Jan-15-12') & (df.index <= 'Jan-20-12')]
         assert expected.shape == result.shape
 
@@ -279,4 +279,4 @@ class TestYahoo(object):
         start = datetime(2010, 1, 1)
         end = datetime(2015, 5, 9)
         result = web.DataReader(['AAPL', 'F'], 'yahoo-actions', start, end)
-        assert isinstance(result, pd.Panel)
+        assert isinstance(result, dict)

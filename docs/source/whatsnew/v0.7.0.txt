@@ -42,6 +42,10 @@ Enhancements
 
 Backwards incompatible API changes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- When requesting multiple symbols from a DailyReader (ex: google, yahoo, IEX)
+  a MultiIndex DataFrame is now returned.  Previously Panel or dict of DataFrames
+  were returned. (:issue:`297`).
+
 
 .. _whatsnew_070.bug_fixes:
 
