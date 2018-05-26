@@ -32,6 +32,7 @@ from pandas_datareader.robinhood import RobinhoodHistoricalReader, \
     RobinhoodQuoteReader
 from pandas_datareader.stooq import StooqDailyReader
 from pandas_datareader.tiingo import TiingoDailyReader, TiingoQuoteReader
+from pandas_datareader.yahoo.actions import (YahooActionReader, YahooDivReader)
 from pandas_datareader.yahoo.components import _get_data as \
     get_components_yahoo
 from pandas_datareader.yahoo.daily import YahooDailyReader
@@ -79,11 +80,11 @@ def get_quote_av(*args, **kwargs):
 
 
 def get_data_yahoo_actions(*args, **kwargs):
-    raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Actions'))
+    return YahooActionReader(*args, **kwargs).read()
 
 
 def get_quote_yahoo(*args, **kwargs):
-    raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Actions'))
+    raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Quotes'))
     return YahooQuotesReader(*args, **kwargs).read()
 
 
@@ -305,7 +306,6 @@ def DataReader(name, data_source=None, start=None, end=None,
     ff = DataReader("F-F_ST_Reversal_Factor", "famafrench")
     """
     if data_source == "yahoo":
-        raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Daily'))
         return YahooDailyReader(symbols=name, start=start, end=end,
                                 adjust_price=False, chunksize=25,
                                 retry_count=retry_count, pause=pause,
@@ -401,6 +401,18 @@ def DataReader(name, data_source=None, start=None, end=None,
                                  retry_count=retry_count, pause=pause,
                                  session=session,
                                  api_key=access_key).read()
+
+    elif data_source == "yahoo-actions":
+        return YahooActionReader(symbols=name, start=start, end=end,
+                                 retry_count=retry_count, pause=pause,
+                                 session=session).read()
+
+    elif data_source == "yahoo-dividends":
+        return YahooDivReader(symbols=name, start=start, end=end,
+                              adjust_price=False, chunksize=25,
+                              retry_count=retry_count, pause=pause,
+                              session=session, interval='d').read()
+
     else:
         msg = "data_source=%r is not implemented" % data_source
         raise NotImplementedError(msg)
