@@ -25,7 +25,7 @@ matrix:
       - PYTHON=3.5 PANDAS=0.20.3
   - dist: trusty
     env:
-      - PYTHON=3.6 PANDAS=0.21.1
+      - PYTHON=3.6 PANDAS=0.23.0
   - dist: trusty
     env:
       - PYTHON=3.6 PANDAS=0.22 DOCBUILD=true
