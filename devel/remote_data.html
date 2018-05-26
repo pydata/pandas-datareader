@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Remote Data Access &mdash; pandas-datareader 0.6.0+21.gda18fbd documentation</title>
+  <title>Remote Data Access &mdash; pandas-datareader 0.6.0+28.g1b3592e documentation</title>
   
 
   
@@ -311,10 +311,10 @@ prices are available for up to 5 years:</p>
 
 <span class="gp">In [22]: </span><span class="n">f</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2015-02-09&#39;</span><span class="p">]</span>
 <span class="gh">Out[22]: </span><span class="go"></span>
-<span class="go">open      1.322380e+01</span>
-<span class="go">high      1.345040e+01</span>
-<span class="go">low       1.319030e+01</span>
-<span class="go">close     1.335810e+01</span>
+<span class="go">open      1.304880e+01</span>
+<span class="go">high      1.327230e+01</span>
+<span class="go">low       1.301560e+01</span>
+<span class="go">close     1.318120e+01</span>
 <span class="go">volume    2.028672e+07</span>
 <span class="go">Name: 2015-02-09, dtype: float64</span>
 </pre></div>
@@ -330,7 +330,7 @@ A third interface to the deep API is exposed through
 <span class="gp">In [25]: </span><span class="n">f</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 <span class="gh">Out[25]: </span><span class="go"></span>
 <span class="go">Empty DataFrame</span>
-<span class="go">Columns: [0]</span>
+<span class="go">Columns: []</span>
 <span class="go">Index: []</span>
 </pre></div>
 </div>
@@ -350,19 +350,19 @@ year relative to today.</p>
 <span class="gh">Out[29]: </span><span class="go"></span>
 <span class="go">                  close_price high_price  interpolated low_price open_price  \</span>
 <span class="go">symbol begins_at                                                              </span>
-<span class="go">F      2017-04-17     10.7143    10.7333         False   10.5814    10.6574   </span>
-<span class="go">       2017-04-18     10.7240    10.7625         False   10.6662    10.7336   </span>
-<span class="go">       2017-04-19     10.7721    10.8587         False   10.7529    10.7721   </span>
-<span class="go">       2017-04-20     11.0416    11.0705         False   10.8202    10.8299   </span>
-<span class="go">       2017-04-21     10.9165    11.0513         False   10.8973    11.0320   </span>
+<span class="go">F      2017-05-26     10.2651    10.2792         False   10.1524    10.1900   </span>
+<span class="go">       2017-05-30     10.4060    10.4436         False   10.3215    10.3309   </span>
+<span class="go">       2017-05-31     10.4436    10.4530         False   10.3309    10.4436   </span>
+<span class="go">       2017-06-01     10.7159    10.8380         False   10.4248    10.5657   </span>
+<span class="go">       2017-06-02     10.6596    10.7347         False   10.5563    10.7253   </span>
 
 <span class="go">                  session    volume  </span>
 <span class="go">symbol begins_at                     </span>
-<span class="go">F      2017-04-17     reg  44731735  </span>
-<span class="go">       2017-04-18     reg  35659989  </span>
-<span class="go">       2017-04-19     reg  37524445  </span>
-<span class="go">       2017-04-20     reg  49990191  </span>
-<span class="go">       2017-04-21     reg  26076186  </span>
+<span class="go">F      2017-05-26     reg  28176454  </span>
+<span class="go">       2017-05-30     reg  36082622  </span>
+<span class="go">       2017-05-31     reg  36398667  </span>
+<span class="go">       2017-06-01     reg  76707185  </span>
+<span class="go">       2017-06-02     reg  45924954  </span>
 </pre></div>
 </div>
 </div>
@@ -401,12 +401,12 @@ symbols. The following endpoints are available:</p>
 <span class="g g-Whitespace">      </span><span class="mi">2</span>                    <span class="n">end</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span>
 <span class="ne">----&gt; </span><span class="mi">3</span>                    <span class="n">access_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">))</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+21.gda18fbd-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">DataReader</span><span class="nt">(name, data_source, start, end, retry_count, pause, session, access_key)</span>
-<span class="g g-Whitespace">    </span><span class="mi">404</span>     <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">405</span>         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;data_source=</span><span class="si">%r</span><span class="s2"> is not implemented&quot;</span> <span class="o">%</span> <span class="n">data_source</span>
-<span class="ne">--&gt; </span><span class="mi">406</span>         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">407</span> 
-<span class="g g-Whitespace">    </span><span class="mi">408</span> 
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+28.g1b3592e-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">DataReader</span><span class="nt">(name, data_source, start, end, retry_count, pause, session, access_key)</span>
+<span class="g g-Whitespace">    </span><span class="mi">416</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">417</span>         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;data_source=</span><span class="si">%r</span><span class="s2"> is not implemented&quot;</span> <span class="o">%</span> <span class="n">data_source</span>
+<span class="ne">--&gt; </span><span class="mi">418</span>         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">419</span> 
+<span class="g g-Whitespace">    </span><span class="mi">420</span> 
 
 <span class="ne">NotImplementedError</span>: data_source=&#39;av-daily&#39; is not implemented
 
@@ -485,21 +485,21 @@ once. These quotes are accessible through the top-level function
 <span class="nn">&lt;ipython-input-38-847531af19c1&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">web</span><span class="o">.</span><span class="n">get_quote_av</span><span class="p">([</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="s2">&quot;TSLA&quot;</span><span class="p">])</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+21.gda18fbd-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">get_quote_av</span><span class="nt">(*args, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">76</span> 
-<span class="g g-Whitespace">     </span><span class="mi">77</span> <span class="k">def</span> <span class="nf">get_quote_av</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="ne">---&gt; </span><span class="mi">78</span>     <span class="k">return</span> <span class="n">AVQuotesReader</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">79</span> 
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+28.g1b3592e-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">get_quote_av</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">77</span> 
+<span class="g g-Whitespace">     </span><span class="mi">78</span> <span class="k">def</span> <span class="nf">get_quote_av</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">79</span>     <span class="k">return</span> <span class="n">AVQuotesReader</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="g g-Whitespace">     </span><span class="mi">80</span> 
+<span class="g g-Whitespace">     </span><span class="mi">81</span> 
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+21.gda18fbd-py3.6.egg/pandas_datareader/av/quotes.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, retry_count, pause, session, api_key)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+28.g1b3592e-py3.6.egg/pandas_datareader/av/quotes.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, retry_count, pause, session, api_key)</span>
 <span class="g g-Whitespace">     </span><span class="mi">37</span>                                              <span class="n">pause</span><span class="o">=</span><span class="n">pause</span><span class="p">,</span>
 <span class="g g-Whitespace">     </span><span class="mi">38</span>                                              <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
 <span class="ne">---&gt; </span><span class="mi">39</span>                                              <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">40</span> 
 <span class="g g-Whitespace">     </span><span class="mi">41</span>     <span class="nd">@property</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+21.gda18fbd-py3.6.egg/pandas_datareader/av/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, start, end, retry_count, pause, session, api_key)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+28.g1b3592e-py3.6.egg/pandas_datareader/av/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, start, end, retry_count, pause, session, api_key)</span>
 <span class="g g-Whitespace">     </span><span class="mi">23</span>             <span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">24</span>         <span class="k">if</span> <span class="ow">not</span> <span class="n">api_key</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 <span class="ne">---&gt; </span><span class="mi">25</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The AlphaVantage API key must be provided &#39;</span>
@@ -533,12 +533,12 @@ as “FROM/TO” as in “USD/JPY”.</p>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s2">&quot;USD/JPY&quot;</span><span class="p">,</span> <span class="s2">&quot;av-forex&quot;</span><span class="p">,</span>
 <span class="ne">----&gt; </span><span class="mi">2</span>                    <span class="n">access_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">))</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+21.gda18fbd-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">DataReader</span><span class="nt">(name, data_source, start, end, retry_count, pause, session, access_key)</span>
-<span class="g g-Whitespace">    </span><span class="mi">404</span>     <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">405</span>         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;data_source=</span><span class="si">%r</span><span class="s2"> is not implemented&quot;</span> <span class="o">%</span> <span class="n">data_source</span>
-<span class="ne">--&gt; </span><span class="mi">406</span>         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">407</span> 
-<span class="g g-Whitespace">    </span><span class="mi">408</span> 
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+28.g1b3592e-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">DataReader</span><span class="nt">(name, data_source, start, end, retry_count, pause, session, access_key)</span>
+<span class="g g-Whitespace">    </span><span class="mi">416</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">417</span>         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;data_source=</span><span class="si">%r</span><span class="s2"> is not implemented&quot;</span> <span class="o">%</span> <span class="n">data_source</span>
+<span class="ne">--&gt; </span><span class="mi">418</span>         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">419</span> 
+<span class="g g-Whitespace">    </span><span class="mi">420</span> 
 
 <span class="ne">NotImplementedError</span>: data_source=&#39;av-forex&#39; is not implemented
 </pre></div>
@@ -557,12 +557,12 @@ as “FROM/TO” as in “USD/JPY”.</p>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">([</span><span class="s2">&quot;USD/JPY&quot;</span><span class="p">,</span> <span class="s2">&quot;BTC/CNY&quot;</span><span class="p">],</span> <span class="s2">&quot;av-forex&quot;</span><span class="p">,</span>
 <span class="ne">----&gt; </span><span class="mi">2</span>                    <span class="n">access_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">))</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+21.gda18fbd-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">DataReader</span><span class="nt">(name, data_source, start, end, retry_count, pause, session, access_key)</span>
-<span class="g g-Whitespace">    </span><span class="mi">404</span>     <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">405</span>         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;data_source=</span><span class="si">%r</span><span class="s2"> is not implemented&quot;</span> <span class="o">%</span> <span class="n">data_source</span>
-<span class="ne">--&gt; </span><span class="mi">406</span>         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">407</span> 
-<span class="g g-Whitespace">    </span><span class="mi">408</span> 
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+28.g1b3592e-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">DataReader</span><span class="nt">(name, data_source, start, end, retry_count, pause, session, access_key)</span>
+<span class="g g-Whitespace">    </span><span class="mi">416</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">417</span>         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;data_source=</span><span class="si">%r</span><span class="s2"> is not implemented&quot;</span> <span class="o">%</span> <span class="n">data_source</span>
+<span class="ne">--&gt; </span><span class="mi">418</span>         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">419</span> 
+<span class="g g-Whitespace">    </span><span class="mi">420</span> 
 
 <span class="ne">NotImplementedError</span>: data_source=&#39;av-forex&#39; is not implemented
 </pre></div>
@@ -582,14 +582,14 @@ performances through the top-level function <code class="docutils literal notran
 <span class="nn">&lt;ipython-input-47-76a9513d061d&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">web</span><span class="o">.</span><span class="n">get_sector_performance_av</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+21.gda18fbd-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">get_sector_performance_av</span><span class="nt">(*args, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">138</span> 
-<span class="g g-Whitespace">    </span><span class="mi">139</span> <span class="k">def</span> <span class="nf">get_sector_performance_av</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">140</span>     <span class="k">return</span> <span class="n">AVSectorPerformanceReader</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">141</span> 
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+28.g1b3592e-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">get_sector_performance_av</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">139</span> 
+<span class="g g-Whitespace">    </span><span class="mi">140</span> <span class="k">def</span> <span class="nf">get_sector_performance_av</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">141</span>     <span class="k">return</span> <span class="n">AVSectorPerformanceReader</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="g g-Whitespace">    </span><span class="mi">142</span> 
+<span class="g g-Whitespace">    </span><span class="mi">143</span> 
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+21.gda18fbd-py3.6.egg/pandas_datareader/av/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, start, end, retry_count, pause, session, api_key)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+28.g1b3592e-py3.6.egg/pandas_datareader/av/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, start, end, retry_count, pause, session, api_key)</span>
 <span class="g g-Whitespace">     </span><span class="mi">23</span>             <span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">24</span>         <span class="k">if</span> <span class="ow">not</span> <span class="n">api_key</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 <span class="ne">---&gt; </span><span class="mi">25</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The AlphaVantage API key must be provided &#39;</span>
@@ -619,49 +619,49 @@ For example, the following code downloads from  <a class="reference external" hr
 <span class="nn">&lt;ipython-input-50-f46ac2b42095&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_enigma</span><span class="p">(</span><span class="s1">&#39;292129b0-1275-44c8-a6a3-2a0881f24fe1&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ENIGMA_API_KEY&#39;</span><span class="p">))</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+21.gda18fbd-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">get_data_enigma</span><span class="nt">(*args, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">72</span> 
-<span class="g g-Whitespace">     </span><span class="mi">73</span> <span class="k">def</span> <span class="nf">get_data_enigma</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="ne">---&gt; </span><span class="mi">74</span>     <span class="k">return</span> <span class="n">EnigmaReader</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">75</span> 
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+28.g1b3592e-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">get_data_enigma</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">73</span> 
+<span class="g g-Whitespace">     </span><span class="mi">74</span> <span class="k">def</span> <span class="nf">get_data_enigma</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">75</span>     <span class="k">return</span> <span class="n">EnigmaReader</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="g g-Whitespace">     </span><span class="mi">76</span> 
+<span class="g g-Whitespace">     </span><span class="mi">77</span> 
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+21.gda18fbd-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">read</span><span class="nt">(self)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+28.g1b3592e-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">read</span><span class="nt">(self)</span>
 <span class="g g-Whitespace">     </span><span class="mi">83</span>         <span class="sd">&quot;&quot;&quot;Read data&quot;&quot;&quot;</span>
 <span class="g g-Whitespace">     </span><span class="mi">84</span>         <span class="k">try</span><span class="p">:</span>
 <span class="ne">---&gt; </span><span class="mi">85</span>             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">()</span>
 <span class="g g-Whitespace">     </span><span class="mi">86</span>         <span class="k">finally</span><span class="p">:</span>
 <span class="g g-Whitespace">     </span><span class="mi">87</span>             <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+21.gda18fbd-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_read</span><span class="nt">(self)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+28.g1b3592e-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_read</span><span class="nt">(self)</span>
 <span class="g g-Whitespace">     </span><span class="mi">88</span> 
 <span class="g g-Whitespace">     </span><span class="mi">89</span>     <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="ne">---&gt; </span><span class="mi">90</span>         <span class="n">snapshot_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_snapshot_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">91</span>         <span class="n">exported_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_snapshot_export</span><span class="p">(</span><span class="n">snapshot_id</span><span class="p">)</span>  <span class="c1"># TODO: Retry?</span>
 <span class="g g-Whitespace">     </span><span class="mi">92</span>         <span class="n">decoded_data</span> <span class="o">=</span> <span class="n">exported_data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+21.gda18fbd-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">get_current_snapshot_id</span><span class="nt">(self, dataset_id)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+28.g1b3592e-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">get_current_snapshot_id</span><span class="nt">(self, dataset_id)</span>
 <span class="g g-Whitespace">    </span><span class="mi">112</span>     <span class="k">def</span> <span class="nf">get_current_snapshot_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">):</span>
 <span class="g g-Whitespace">    </span><span class="mi">113</span>         <span class="sd">&quot;&quot;&quot;Get ID of the most current snapshot of a dataset&quot;&quot;&quot;</span>
 <span class="ne">--&gt; </span><span class="mi">114</span>         <span class="n">dataset_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataset_metadata</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">115</span>         <span class="k">return</span> <span class="n">dataset_metadata</span><span class="p">[</span><span class="s1">&#39;current_snapshot&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
 <span class="g g-Whitespace">    </span><span class="mi">116</span> 
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+21.gda18fbd-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">get_dataset_metadata</span><span class="nt">(self, dataset_id)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+28.g1b3592e-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">get_dataset_metadata</span><span class="nt">(self, dataset_id)</span>
 <span class="g g-Whitespace">    </span><span class="mi">120</span>         <span class="s2">&quot;&quot;&quot;</span>
 <span class="g g-Whitespace">    </span><span class="mi">121</span><span class="s2">         url = &quot;datasets/{0}?row_limit=0&quot;.format(dataset_id)</span>
 <span class="ne">--&gt; </span><span class="mi">122</span><span class="s2">         response = self._get(url)</span>
 <span class="g g-Whitespace">    </span><span class="mi">123</span><span class="s2">         return response.json()</span>
 <span class="g g-Whitespace">    </span><span class="mi">124</span><span class="s2"> </span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+21.gda18fbd-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_get</span><span class="nt">(self, url)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+28.g1b3592e-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_get</span><span class="nt">(self, url)</span>
 <span class="g g-Whitespace">    </span><span class="mi">108</span><span class="s2">                     continue</span>
 <span class="g g-Whitespace">    </span><span class="mi">109</span><span class="s2">                 else:</span>
 <span class="ne">--&gt; </span><span class="mi">110</span><span class="s2">                     raise e</span>
 <span class="g g-Whitespace">    </span><span class="mi">111</span><span class="s2"> </span>
 <span class="g g-Whitespace">    </span><span class="mi">112</span><span class="s2">     def get_current_snapshot_id(self, dataset_id):</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+21.gda18fbd-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_get</span><span class="nt">(self, url)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+28.g1b3592e-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_get</span><span class="nt">(self, url)</span>
 <span class="g g-Whitespace">    </span><span class="mi">100</span><span class="s2">             try:</span>
 <span class="g g-Whitespace">    </span><span class="mi">101</span><span class="s2">                 response = self.session.get(url)</span>
 <span class="ne">--&gt; </span><span class="mi">102</span><span class="s2">                 response.raise_for_status()</span>
@@ -765,7 +765,7 @@ The <code class="docutils literal notranslate"><span class="pre">get_available_d
 <span class="gp">In [65]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
 
 <span class="gp">In [66]: </span><span class="nb">len</span><span class="p">(</span><span class="n">get_available_datasets</span><span class="p">())</span>
-<span class="gh">Out[66]: </span><span class="go">262</span>
+<span class="gh">Out[66]: </span><span class="go">286</span>
 
 <span class="gp">In [67]: </span><span class="n">ds</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;5_Industry_Portfolios&#39;</span><span class="p">,</span> <span class="s1">&#39;famafrench&#39;</span><span class="p">)</span>
 
@@ -773,14 +773,14 @@ The <code class="docutils literal notranslate"><span class="pre">get_available_d
 <span class="go">5 Industry Portfolios</span>
 <span class="gt">---------------------</span>
 
-<span class="n">This</span> <span class="nb">file</span> <span class="n">was</span> <span class="n">created</span> <span class="n">by</span> <span class="n">CMPT_IND_RETS</span> <span class="n">using</span> <span class="n">the</span> <span class="mi">201802</span> <span class="n">CRSP</span> <span class="n">database</span><span class="o">.</span> <span class="n">It</span> <span class="n">contains</span> <span class="n">value</span><span class="o">-</span> <span class="ow">and</span> <span class="n">equal</span><span class="o">-</span><span class="n">weighted</span> <span class="n">returns</span> <span class="k">for</span> <span class="mi">5</span> <span class="n">industry</span> <span class="n">portfolios</span><span class="o">.</span> <span class="n">The</span> <span class="n">portfolios</span> <span class="n">are</span> <span class="n">constructed</span> <span class="n">at</span> <span class="n">the</span> <span class="n">end</span> <span class="n">of</span> <span class="n">June</span><span class="o">.</span> <span class="n">The</span> <span class="n">annual</span> <span class="n">returns</span> <span class="n">are</span> <span class="kn">from</span> <span class="nn">January</span> <span class="nn">to</span> <span class="nn">December.</span> <span class="nn">Missing</span> <span class="nn">data</span> <span class="nn">are</span> <span class="nn">indicated</span> <span class="nn">by</span> <span class="o">-</span><span class="mf">99.99</span> <span class="ow">or</span> <span class="o">-</span><span class="mf">999.</span> <span class="n">Copyright</span> <span class="mi">2018</span> <span class="n">Kenneth</span> <span class="n">R</span><span class="o">.</span> <span class="n">French</span>
+<span class="n">This</span> <span class="nb">file</span> <span class="n">was</span> <span class="n">created</span> <span class="n">by</span> <span class="n">CMPT_IND_RETS</span> <span class="n">using</span> <span class="n">the</span> <span class="mi">201803</span> <span class="n">CRSP</span> <span class="n">database</span><span class="o">.</span> <span class="n">It</span> <span class="n">contains</span> <span class="n">value</span><span class="o">-</span> <span class="ow">and</span> <span class="n">equal</span><span class="o">-</span><span class="n">weighted</span> <span class="n">returns</span> <span class="k">for</span> <span class="mi">5</span> <span class="n">industry</span> <span class="n">portfolios</span><span class="o">.</span> <span class="n">The</span> <span class="n">portfolios</span> <span class="n">are</span> <span class="n">constructed</span> <span class="n">at</span> <span class="n">the</span> <span class="n">end</span> <span class="n">of</span> <span class="n">June</span><span class="o">.</span> <span class="n">The</span> <span class="n">annual</span> <span class="n">returns</span> <span class="n">are</span> <span class="kn">from</span> <span class="nn">January</span> <span class="nn">to</span> <span class="nn">December.</span> <span class="nn">Missing</span> <span class="nn">data</span> <span class="nn">are</span> <span class="nn">indicated</span> <span class="nn">by</span> <span class="o">-</span><span class="mf">99.99</span> <span class="ow">or</span> <span class="o">-</span><span class="mf">999.</span> <span class="n">Copyright</span> <span class="mi">2018</span> <span class="n">Kenneth</span> <span class="n">R</span><span class="o">.</span> <span class="n">French</span>
 
-<span class="g g-Whitespace">  </span><span class="mi">0</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Value</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Monthly</span> <span class="p">(</span><span class="mi">98</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
-<span class="g g-Whitespace">  </span><span class="mi">1</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Equal</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Monthly</span> <span class="p">(</span><span class="mi">98</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">0</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Value</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Monthly</span> <span class="p">(</span><span class="mi">99</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">1</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Equal</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Monthly</span> <span class="p">(</span><span class="mi">99</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
 <span class="g g-Whitespace">  </span><span class="mi">2</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Value</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Annual</span> <span class="p">(</span><span class="mi">8</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
 <span class="g g-Whitespace">  </span><span class="mi">3</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Equal</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Annual</span> <span class="p">(</span><span class="mi">8</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
-<span class="nn">  4 : Number of Firms</span> in <span class="ni">Portfolios </span><span class="nt">(98 rows x 5 cols)</span>
-<span class="g g-Whitespace">  </span><span class="mi">5</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Firm</span> <span class="n">Size</span> <span class="p">(</span><span class="mi">98</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="nn">  4 : Number of Firms</span> in <span class="ni">Portfolios </span><span class="nt">(99 rows x 5 cols)</span>
+<span class="g g-Whitespace">  </span><span class="mi">5</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Firm</span> <span class="n">Size</span> <span class="p">(</span><span class="mi">99</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
 <span class="g g-Whitespace">  </span><span class="mi">6</span> <span class="p">:</span> <span class="n">Sum</span> <span class="n">of</span> <span class="n">BE</span> <span class="o">/</span> <span class="n">Sum</span> <span class="n">of</span> <span class="n">ME</span> <span class="p">(</span><span class="mi">8</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
 <span class="g g-Whitespace">  </span><span class="mi">7</span> <span class="p">:</span> <span class="n">Value</span><span class="o">-</span><span class="n">Weighted</span> <span class="n">Average</span> <span class="n">of</span> <span class="n">BE</span><span class="o">/</span><span class="n">ME</span> <span class="p">(</span><span class="mi">8</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
 
@@ -966,9 +966,9 @@ example is to download ‘Trade Union Density’ data which set code is ‘TUD�
 <span class="go">Series                      Union members            Trade union  density   </span>
 <span class="go">Measure    Percentage           Thousands Percentage            Thousands   </span>
 <span class="go">Year                                                                        </span>
-<span class="go">2010-01-01        NaN             12417.5        NaN                  NaN   </span>
-<span class="go">2011-01-01        NaN             12271.9        NaN                  NaN   </span>
-<span class="go">2012-01-01        NaN             12227.1        NaN                  NaN   </span>
+<span class="go">2010-01-01        NaN           12417.527        NaN                  NaN   </span>
+<span class="go">2011-01-01        NaN           12271.909        NaN                  NaN   </span>
+<span class="go">2012-01-01        NaN           12227.073        NaN                  NaN   </span>
 
 <span class="go">Country                  ...            United States                       \</span>
 <span class="go">Frequency                ...                   Annual                        </span>
@@ -976,9 +976,9 @@ example is to download ‘Trade Union Density’ data which set code is ‘TUD�
 <span class="go">Series                   ...     Trade union  density            Employees   </span>
 <span class="go">Measure    Percentage    ...                Thousands Percentage Thousands   </span>
 <span class="go">Year                     ...                                                 </span>
-<span class="go">2010-01-01       28.9    ...                      NaN       17.4   97406.0   </span>
-<span class="go">2011-01-01       27.6    ...                      NaN       16.5  102403.0   </span>
-<span class="go">2012-01-01       25.9    ...                      NaN       15.9  106924.0   </span>
+<span class="go">2010-01-01  28.871256    ...                      NaN  17.448617   97406.0   </span>
+<span class="go">2011-01-01  27.589723    ...                      NaN  16.516118  102403.0   </span>
+<span class="go">2012-01-01  25.899329    ...                      NaN  15.861734  106924.0   </span>
 
 <span class="go">Country                                                                    \</span>
 <span class="go">Frequency                                                                   </span>
@@ -996,9 +996,9 @@ example is to download ‘Trade Union Density’ data which set code is ‘TUD�
 <span class="go">Series                Employees             </span>
 <span class="go">Measure    Percentage Thousands Percentage  </span>
 <span class="go">Year                                        </span>
-<span class="go">2010-01-01        NaN   97406.0        NaN  </span>
-<span class="go">2011-01-01        NaN  102403.0        NaN  </span>
-<span class="go">2012-01-01        NaN  106924.0        NaN  </span>
+<span class="go">2010-01-01        NaN       NaN        NaN  </span>
+<span class="go">2011-01-01        NaN       NaN        NaN  </span>
+<span class="go">2012-01-01        NaN       NaN        NaN  </span>
 
 <span class="go">[3 rows x 24 columns]</span>
 </pre></div>
@@ -1245,7 +1245,7 @@ available. More information on the <a class="reference external" href="http://ww
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.6.0+21.gda18fbd',
+            VERSION:'0.6.0+28.g1b3592e',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -1266,9 +1266,7 @@ available. More information on the <a class="reference external" href="http://ww
 
   <script type="text/javascript">
       jQuery(function () {
-          
-          SphinxRtdTheme.Navigation.enableSticky();
-          
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script> 
 
