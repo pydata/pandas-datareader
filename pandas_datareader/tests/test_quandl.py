@@ -25,6 +25,13 @@ class TestQuandl(object):
         assert expected_cols == act_cols, "unexpected cols: " + str(act_cols)
 
     @pytest.mark.skipif(TEST_API_KEY is None, reason="QUANDL_API_KEY not set")
+    def test_db_wiki_us_nodate(self):
+        df = web.DataReader('SPY', 'quandl', access_key=TEST_API_KEY)
+        self.check_headers(df, ['Open', 'High', 'Low', 'Close', 'Volume',
+                                'ExDividend', 'SplitRatio', 'AdjOpen',
+                                'AdjHigh', 'AdjLow', 'AdjClose', 'AdjVolume'])
+
+    @pytest.mark.skipif(TEST_API_KEY is None, reason="QUANDL_API_KEY not set")
     def test_db_wiki_us(self):
         df = web.DataReader('F', 'quandl', self.start10, self.end10,
                             access_key=TEST_API_KEY)
