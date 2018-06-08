@@ -19,16 +19,13 @@ Remote Data Access
 
 .. warning::
 
-  Yahoo! Finance has been immediately deprecated.  Yahoo! substantially
-  altered their API in late 2017 and the csv endpoint was retired.
-
+  Yahoo! Finance and Google Finance hav been immediately deprecated.  Endpoints from both providers have been retired
 .. _remote_data.data_reader:
 
 Functions from :mod:`pandas_datareader.data` and :mod:`pandas_datareader.wb`
 extract data from various Internet sources into a pandas DataFrame.
 Currently the following sources are supported:
 
-    - :ref:`Google Finance<remote_data.google>`
     - :ref:`Tiingo<remote_data.tiingo>`
     - :ref:`Morningstar<remote_data.morningstar>`
     - :ref:`IEX<remote_data.iex>`
@@ -48,25 +45,6 @@ Currently the following sources are supported:
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
 
-.. _remote_data.google:
-
-Google Finance
-==============
-
-.. warning::
-
-  Google'a API has become less reliable during 2017.  While the google
-  datareader often works as expected, it is not uncommon to experience
-  a range of errors when attempting to read data, especially in bulk.
-
-.. ipython:: python
-
-    import pandas_datareader.data as web
-    import datetime
-    start = datetime.datetime(2010, 1, 1)
-    end = datetime.datetime(2013, 1, 27)
-    f = web.DataReader('F', 'google', start, end)
-    f.ix['2010-01-04']
 
 .. _remote_data.tiingo:
 

@@ -18,6 +18,7 @@ from pandas.util.testing import assert_series_equal
 pytestmark = pytest.mark.filterwarnings(
     'ignore::pandas_datareader.exceptions.UnstableAPIWarning')
 
+
 @pytest.mark.xfail(reason="Deprecated")
 def assert_n_failed_equals_n_null_columns(wngs, obj, cls=SymbolWarning):
     all_nan_cols_dict = {}

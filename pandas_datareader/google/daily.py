@@ -3,7 +3,6 @@ from pandas_datareader.exceptions import ImmediateDeprecationError, \
     DEP_ERROR_MSG
 
 
-
 class GoogleDailyReader(_DailyBaseReader):
     """
     Returns DataFrame of historical stock prices from
