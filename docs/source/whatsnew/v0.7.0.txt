@@ -3,9 +3,14 @@
 v0.7.0 (Xxxxxxx YY, 20ZZ)
 ---------------------------
 
+.. warning::
+
+  Google finance for historical price data has been immediately deprecated.
+
 
 Highlights include:
 
+- Immediate deprecation of Google finance for historical price data, as these API endpoints are no longer supported by the provider. Alternate methods are welcome via pull requests, as PDR would like to restore these features.
 
 .. contents:: What's new in v0.7.0
     :local:
@@ -42,6 +47,8 @@ Enhancements
 
 Backwards incompatible API changes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Deprecation of Google finance daily reader.  Google retired the remaining financial data end point in June 2018.  It is not possible to reliably retrieve historical price data without this endpoint. The Google daily reader will raise an `ImmediateDeprecationError` when called.
 - When requesting multiple symbols from a DailyReader (ex: google, yahoo, IEX)
   a MultiIndex DataFrame is now returned.  Previously Panel or dict of DataFrames
   were returned. (:issue:`297`).

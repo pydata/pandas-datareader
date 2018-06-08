@@ -1,10 +1,7 @@
 from pandas_datareader.base import _DailyBaseReader
-from pandas_datareader.exceptions import UnstableAPIWarning
+from pandas_datareader.exceptions import ImmediateDeprecationError, \
+    DEP_ERROR_MSG
 
-UNSTABLE_WARNING = """
-The Google Finance API has not been stable since late 2017. Requests seem
-to fail at random. Failure is especially common when bulk downloading.
-"""
 
 
 class GoogleDailyReader(_DailyBaseReader):
@@ -37,8 +34,7 @@ class GoogleDailyReader(_DailyBaseReader):
 
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
                  pause=0.001, session=None, chunksize=25):
-        import warnings
-        warnings.warn(UNSTABLE_WARNING, UnstableAPIWarning)
+        raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Google finance'))
         super(GoogleDailyReader, self).__init__(symbols, start, end,
                                                 retry_count, pause, session,
                                                 chunksize)
