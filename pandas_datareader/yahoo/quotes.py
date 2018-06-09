@@ -1,13 +1,18 @@
-from collections import defaultdict
-import csv
+import json
+from collections import OrderedDict
 
 import pandas.compat as compat
 from pandas import DataFrame
 
+
 from pandas_datareader.base import _BaseReader
 
-_yahoo_codes = {'symbol': 's', 'last': 'l1', 'change_pct': 'p2', 'PE': 'r',
-                'time': 't1', 'short_ratio': 's7'}
+
+_DEFAULT_PARAMS = {
+    'lang': 'en-US',
+    'corsDomain': 'finance.yahoo.com',
+    '.tsrc': 'finance',
+}
 
 
 class YahooQuotesReader(_BaseReader):
@@ -16,39 +21,28 @@ class YahooQuotesReader(_BaseReader):
 
     @property
     def url(self):
-        return 'http://finance.yahoo.com/d/quotes.csv'
+        return 'https://query1.finance.yahoo.com/v7/finance/quote'
 
-    @property
-    def params(self):
-        """Parameters to use in API calls"""
+    def read(self):
         if isinstance(self.symbols, compat.string_types):
-            sym_list = self.symbols
+            return self._read_one_data(self.url, self.params(self.symbols))
         else:
-            sym_list = '+'.join(self.symbols)
+            data = OrderedDict()
+            for symbol in self.symbols:
+                data[symbol] = \
+                    self._read_one_data(
+                        self.url, self.params(symbol)).loc[symbol]
+            return DataFrame.from_dict(data, orient='index')
 
-        # For codes see: http://www.gummy-stuff.org/Yahoo-data.htm
-        #
+    def params(self, symbol):
+        """Parameters to use in API calls"""
         # Construct the code request string.
-        request = ''.join(compat.itervalues(_yahoo_codes))
-        params = {'s': sym_list, 'f': request}
+        params = {'symbols': symbol}
+        params.update(_DEFAULT_PARAMS)
         return params
 
     def _read_lines(self, out):
-        data = defaultdict(list)
-        header = list(_yahoo_codes.keys())
-
-        for line in csv.reader(out.readlines()):
-            for i, field in enumerate(line):
-                if field[-2:] == '%"':
-                    v = float(field.strip('"%'))
-                elif field[0] == '"':
-                    v = field.strip('"')
-                else:
-                    try:
-                        v = float(field)
-                    except ValueError:
-                        v = field
-                data[header[i]].append(v)
-
+        data = json.loads(out.read())['quoteResponse']['result'][0]
         idx = data.pop('symbol')
-        return DataFrame(data, index=idx)
+        data['price'] = data['regularMarketPrice']
+        return DataFrame(data, index=[idx])
