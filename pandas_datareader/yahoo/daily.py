@@ -97,14 +97,17 @@ class YahooDailyReader(_DailyBaseReader):
     def url(self):
         return 'https://finance.yahoo.com/quote/{}/history'
 
-    # Test test_get_data_interval() crashed because of this issue, probably whole yahoo part of package wasn't
+    # Test test_get_data_interval() crashed because of this issue, probably
+    # whole yahoo part of package wasn't
     # working properly
     def _get_params(self, symbol):
         # This needed because yahoo returns data shifted by 4 hours ago.
         four_hours_in_seconds = 14400
-        unix_start = int(time.mktime(self.start.timetuple())) + four_hours_in_seconds
+        unix_start = int(time.mktime(self.start.timetuple())) \
+                     + four_hours_in_seconds
         day_end = self.end.replace(hour=23, minute=59, second=59)
-        unix_end = int(time.mktime(day_end.timetuple())) + four_hours_in_seconds
+        unix_end = int(time.mktime(day_end.timetuple())) \
+                   + four_hours_in_seconds
 
         params = {
             'period1': unix_start,
