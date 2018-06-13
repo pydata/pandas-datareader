@@ -103,11 +103,11 @@ class YahooDailyReader(_DailyBaseReader):
     def _get_params(self, symbol):
         # This needed because yahoo returns data shifted by 4 hours ago.
         four_hours_in_seconds = 14400
-        unix_start = int(time.mktime(self.start.timetuple())) \
-                     + four_hours_in_seconds
+        unix_start = int(time.mktime(self.start.timetuple()))
+        unix_start += four_hours_in_seconds
         day_end = self.end.replace(hour=23, minute=59, second=59)
-        unix_end = int(time.mktime(day_end.timetuple())) \
-                   + four_hours_in_seconds
+        unix_end = int(time.mktime(day_end.timetuple()))
+        unix_end += four_hours_in_seconds
 
         params = {
             'period1': unix_start,
