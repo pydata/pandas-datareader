@@ -62,4 +62,4 @@ Bug Fixes
 - Added back support for Yahoo! price, dividends, and splits data for stocks
 	and currency pairs (:issue:`487`).
 - Add `is_list_like` to compatibility layer to avoid failure on pandas >= 0.23 (:issue:`520`)
-
+- Fix Yahoo! quote reader (:issue: `540`)

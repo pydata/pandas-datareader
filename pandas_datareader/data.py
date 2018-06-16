@@ -84,7 +84,6 @@ def get_data_yahoo_actions(*args, **kwargs):
 
 
 def get_quote_yahoo(*args, **kwargs):
-    raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Quotes'))
     return YahooQuotesReader(*args, **kwargs).read()
 
 
