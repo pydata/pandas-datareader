@@ -10,7 +10,6 @@ import pandas.util.testing as tm
 
 import pandas_datareader.data as web
 from pandas_datareader.data import YahooDailyReader
-from pandas_datareader.yahoo.quotes import _yahoo_codes
 from pandas_datareader._utils import RemoteDataError
 from pandas_datareader._testing import skip_on_exception
 
@@ -39,41 +38,39 @@ class TestYahoo(object):
         with pytest.raises(Exception):
             web.DataReader('NON EXISTENT TICKER', 'yahoo', start, end)
 
-    @pytest.mark.skip('Yahoo quotes deprecated')
     def test_get_quote_series(self):
+        stringlist = ['GOOG', 'AAPL']
+        fields = ['exchange', 'sharesOutstanding', 'epsForward']
         try:
-            df = web.get_quote_yahoo(pd.Series(['GOOG', 'AAPL', 'GOOG']))
+            AAPL = web.get_quote_yahoo('AAPL')
+            df = web.get_quote_yahoo(pd.Series(stringlist))
         except ConnectionError:
             pytest.xfail(reason=XFAIL_REASON)
-        tm.assert_series_equal(df.iloc[0], df.iloc[2])
+        tm.assert_series_equal(AAPL.iloc[0][fields], df.loc['AAPL'][fields])
+        assert sorted(stringlist) == sorted(list(df.index.values))
 
-    @pytest.mark.skip('Yahoo quotes deprecated')
     def test_get_quote_string(self):
-        _yahoo_codes.update({'MarketCap': 'j1'})
         try:
             df = web.get_quote_yahoo('GOOG')
         except ConnectionError:
             pytest.xfail(reason=XFAIL_REASON)
 
-        assert not pd.isnull(df['MarketCap'][0])
+        assert not pd.isnull(df['marketCap'][0])
 
-    @pytest.mark.skip('Yahoo quotes deprecated')
     def test_get_quote_stringlist(self):
+        stringlist = ['GOOG', 'AAPL']
         try:
-            df = web.get_quote_yahoo(['GOOG', 'AAPL', 'GOOG'])
+            df = web.get_quote_yahoo(stringlist)
         except ConnectionError:
             pytest.xfail(reason=XFAIL_REASON)
-        tm.assert_series_equal(df.iloc[0], df.iloc[2])
+        assert sorted(stringlist) == sorted(list(df.index.values))
 
-    @pytest.mark.skip('Yahoo quotes deprecated')
     def test_get_quote_comma_name(self):
-        _yahoo_codes.update({'name': 'n'})
         try:
             df = web.get_quote_yahoo(['RGLD'])
         except ConnectionError:
             pytest.xfail(reason=XFAIL_REASON)
-        del _yahoo_codes['name']
-        assert df['name'][0] == 'Royal Gold, Inc.'
+        assert df['longName'][0] == 'Royal Gold, Inc.'
 
     @pytest.mark.skip('Unreliable test, receive partial '
                       'components back for dow_jones')

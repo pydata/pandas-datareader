@@ -84,7 +84,6 @@ def get_data_yahoo_actions(*args, **kwargs):
 
 
 def get_quote_yahoo(*args, **kwargs):
-    raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Quotes'))
     return YahooQuotesReader(*args, **kwargs).read()
 
 
@@ -412,6 +411,53 @@ def DataReader(name, data_source=None, start=None, end=None,
                               adjust_price=False, chunksize=25,
                               retry_count=retry_count, pause=pause,
                               session=session, interval='d').read()
+
+    elif data_source == "av-forex":
+        return AVForexReader(symbols=name, retry_count=retry_count,
+                             pause=pause, session=session,
+                             api_key=access_key).read()
+
+    elif data_source == "av-daily":
+        return AVTimeSeriesReader(symbols=name,
+                                  function="TIME_SERIES_DAILY", start=start,
+                                  end=end, retry_count=retry_count,
+                                  pause=pause, session=session,
+                                  api_key=access_key).read()
+
+    elif data_source == "av-daily-adjusted":
+        return AVTimeSeriesReader(symbols=name,
+                                  function="TIME_SERIES_DAILY_ADJUSTED",
+                                  start=start, end=end,
+                                  retry_count=retry_count, pause=pause,
+                                  session=session, api_key=access_key).read()
+
+    elif data_source == "av-weekly":
+        return AVTimeSeriesReader(symbols=name,
+                                  function="TIME_SERIES_WEEKLY", start=start,
+                                  end=end, retry_count=retry_count,
+                                  pause=pause, session=session,
+                                  api_key=access_key).read()
+
+    elif data_source == "av-weekly-adjusted":
+        return AVTimeSeriesReader(symbols=name,
+                                  function="TIME_SERIES_WEEKLY_ADJUSTED",
+                                  start=start, end=end,
+                                  retry_count=retry_count, pause=pause,
+                                  session=session, api_key=access_key).read()
+
+    elif data_source == "av-monthly":
+        return AVTimeSeriesReader(symbols=name,
+                                  function="TIME_SERIES_MONTHLY", start=start,
+                                  end=end, retry_count=retry_count,
+                                  pause=pause, session=session,
+                                  api_key=access_key).read()
+
+    elif data_source == "av-monthly-adjusted":
+        return AVTimeSeriesReader(symbols=name,
+                                  function="TIME_SERIES_MONTHLY_ADJUSTED",
+                                  start=start, end=end,
+                                  retry_count=retry_count, pause=pause,
+                                  session=session, api_key=access_key).read()
 
     else:
         msg = "data_source=%r is not implemented" % data_source
