@@ -20,6 +20,7 @@ Remote Data Access
 .. warning::
 
   Yahoo! Finance and Google Finance hav been immediately deprecated.  Endpoints from both providers have been retired
+
 .. _remote_data.data_reader:
 
 Functions from :mod:`pandas_datareader.data` and :mod:`pandas_datareader.wb`
@@ -44,7 +45,6 @@ Currently the following sources are supported:
     - :ref:`MOEX<remote_data.moex>`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
-
 
 .. _remote_data.tiingo:
 
