@@ -5,8 +5,8 @@ import numpy as np
 import requests
 
 import pandas.compat as compat
-from pandas import Panel, DataFrame
-from pandas import read_csv
+from pandas import DataFrame
+from pandas import read_csv, concat
 from pandas.io.common import urlencode
 from pandas.compat import StringIO, bytes_to_str
 
@@ -239,7 +239,9 @@ class _DailyBaseReader(_BaseReader):
                 df_na[:] = np.nan
                 for sym in failed:
                     stocks[sym] = df_na
-            return Panel(stocks).swapaxes('items', 'minor')
+            result = concat(stocks).unstack(level=0)
+            result.columns.names = ['Attributes', 'Symbols']
+            return result
         except AttributeError:
             # cannot construct a panel with just 1D nans indicating no data
             msg = "No data fetched using {0!r}"

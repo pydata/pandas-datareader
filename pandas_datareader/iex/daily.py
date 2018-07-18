@@ -16,9 +16,10 @@ from pandas_datareader.base import _DailyBaseReader
 class IEXDailyReader(_DailyBaseReader):
 
     """
-    Returns DataFrame/Panel of historical stock prices from symbols, over date
-    range, start to end. To avoid being penalized by Google Finance servers,
-    pauses between downloading 'chunks' of symbols can be specified.
+    Returns DataFrame of historical stock prices
+    from symbols, over date range, start to end. To avoid being penalized by
+    IEX servers, pauses between downloading 'chunks' of symbols can be
+    specified.
 
     Parameters
     ----------
@@ -110,5 +111,7 @@ class IEXDailyReader(_DailyBaseReader):
             df = df.loc[sstart:send]
             result.update({symbol: df})
         if len(result) > 1:
+            result = pd.concat(result).unstack(level=0)
+            result.columns.names = ['Attributes', 'Symbols']
             return result
         return result[self.symbols]

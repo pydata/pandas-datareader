@@ -9,6 +9,8 @@ import requests
 from pandas_datareader.compat import assert_raises_regex
 from pandas_datareader.wb import (search, download, get_countries,
                                   get_indicators, WorldBankReader)
+from pandas_datareader._utils import RemoteDataError
+from pandas_datareader._testing import skip_on_exception
 
 
 class TestWB(object):
@@ -215,6 +217,7 @@ class TestWB(object):
             assert result.columns.equals(exp_col)
             assert len(result) > 10000
 
+    @skip_on_exception(RemoteDataError)
     def test_wdi_download_monthly(self):
         expected = {'COPPER': {('World', '2012M01'): 8040.47,
                                ('World', '2011M12'): 7565.48,
