@@ -3,13 +3,11 @@ import pytest
 from pandas import DataFrame
 from pandas_datareader.data import DataReader
 from pandas_datareader.exceptions import UnstableAPIWarning
-from pandas_datareader._utils import RemoteDataError
-from pandas_datareader._testing import skip_on_exception
 
 
 class TestDataReader(object):
 
-    @skip_on_exception(RemoteDataError)
+    @pytest.mark.xfail(reason="Deprecated")
     def test_read_google(self):
         with pytest.warns(UnstableAPIWarning):
             gs = DataReader("GS", "google")

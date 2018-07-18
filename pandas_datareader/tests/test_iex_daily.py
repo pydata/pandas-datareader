@@ -1,9 +1,10 @@
 from datetime import datetime
 
+from pandas import DataFrame, MultiIndex
+
 import pytest
 
 import pandas_datareader.data as web
-import pandas.util.testing as tm
 
 
 class TestIEXDaily(object):
@@ -44,36 +45,25 @@ class TestIEXDaily(object):
     def test_multiple_symbols(self):
         syms = ["AAPL", "MSFT", "TSLA"]
         df = web.DataReader(syms, "iex", self.start, self.end)
-        assert sorted(list(df)) == syms
+        assert sorted(list(df.columns.levels[1])) == syms
         for sym in syms:
-            assert len(df[sym] == 578)
+            assert len(df.xs(sym, level='Symbols', axis=1) == 578)
 
     def test_multiple_symbols_2(self):
         syms = ["AAPL", "MSFT", "TSLA"]
         good_start = datetime(2017, 2, 9)
         good_end = datetime(2017, 5, 24)
         df = web.DataReader(syms, "iex", good_start, good_end)
-        assert isinstance(df, dict)
-        assert len(df) == 3
-        assert sorted(list(df)) == syms
+        assert isinstance(df, DataFrame)
+        assert isinstance(df.columns, MultiIndex)
+        assert len(df.columns.levels[1]) == 3
+        assert sorted(list(df.columns.levels[1])) == syms
 
-        a = df["AAPL"]
-        t = df["TSLA"]
+        a = df.xs("AAPL", axis=1, level='Symbols')
+        t = df.xs("TSLA", axis=1, level='Symbols')
 
         assert len(a) == 73
         assert len(t) == 73
-
-        expected1 = a.loc["2017-02-09"]
-        tm.assert_almost_equal(expected1["close"], 130.36,
-                               check_less_precise=True)
-        tm.assert_almost_equal(expected1["high"], 130.38,
-                               check_less_precise=True)
-
-        expected2 = a.loc["2017-05-24"]
-        tm.assert_almost_equal(expected2["close"], 151.57,
-                               check_less_precise=True)
-        tm.assert_almost_equal(expected2["high"], 152.40,
-                               check_less_precise=True)
 
         expected3 = t.loc["2017-02-09"]
         assert expected3["close"] == 269.20

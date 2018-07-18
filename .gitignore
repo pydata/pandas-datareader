@@ -10,4 +10,3 @@ docs/build
 .idea
 *.iml
 *~
-pandas_datareader/yahoo/FX.py

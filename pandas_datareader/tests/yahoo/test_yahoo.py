@@ -10,7 +10,6 @@ import pandas.util.testing as tm
 
 import pandas_datareader.data as web
 from pandas_datareader.data import YahooDailyReader
-from pandas_datareader.yahoo.quotes import _yahoo_codes
 from pandas_datareader._utils import RemoteDataError
 from pandas_datareader._testing import skip_on_exception
 
@@ -21,7 +20,6 @@ class TestYahoo(object):
 
     @classmethod
     def setup_class(cls):
-        pytest.skip('Skip all Yahoo! tests.')
         pytest.importorskip("lxml")
 
     @skip_on_exception(RemoteDataError)
@@ -30,7 +28,8 @@ class TestYahoo(object):
         start = datetime(2010, 1, 1)
         end = datetime(2013, 1, 25)
 
-        assert web.DataReader('F', 'yahoo', start, end)['Close'][-1] == 13.68
+        assert round(web.DataReader('F', 'yahoo', start, end)['Close'][-1],
+                     2) == 13.68
 
     def test_yahoo_fails(self):
         start = datetime(2010, 1, 1)
@@ -40,36 +39,38 @@ class TestYahoo(object):
             web.DataReader('NON EXISTENT TICKER', 'yahoo', start, end)
 
     def test_get_quote_series(self):
+        stringlist = ['GOOG', 'AAPL']
+        fields = ['exchange', 'sharesOutstanding', 'epsForward']
         try:
-            df = web.get_quote_yahoo(pd.Series(['GOOG', 'AAPL', 'GOOG']))
+            AAPL = web.get_quote_yahoo('AAPL')
+            df = web.get_quote_yahoo(pd.Series(stringlist))
         except ConnectionError:
             pytest.xfail(reason=XFAIL_REASON)
-        tm.assert_series_equal(df.iloc[0], df.iloc[2])
+        tm.assert_series_equal(AAPL.iloc[0][fields], df.loc['AAPL'][fields])
+        assert sorted(stringlist) == sorted(list(df.index.values))
 
     def test_get_quote_string(self):
-        _yahoo_codes.update({'MarketCap': 'j1'})
         try:
             df = web.get_quote_yahoo('GOOG')
         except ConnectionError:
             pytest.xfail(reason=XFAIL_REASON)
 
-        assert not pd.isnull(df['MarketCap'][0])
+        assert not pd.isnull(df['marketCap'][0])
 
     def test_get_quote_stringlist(self):
+        stringlist = ['GOOG', 'AAPL']
         try:
-            df = web.get_quote_yahoo(['GOOG', 'AAPL', 'GOOG'])
+            df = web.get_quote_yahoo(stringlist)
         except ConnectionError:
             pytest.xfail(reason=XFAIL_REASON)
-        tm.assert_series_equal(df.iloc[0], df.iloc[2])
+        assert sorted(stringlist) == sorted(list(df.index.values))
 
     def test_get_quote_comma_name(self):
-        _yahoo_codes.update({'name': 'n'})
         try:
             df = web.get_quote_yahoo(['RGLD'])
         except ConnectionError:
             pytest.xfail(reason=XFAIL_REASON)
-        del _yahoo_codes['name']
-        assert df['name'][0] == 'Royal Gold, Inc.'
+        assert df['longName'][0] == 'Royal Gold, Inc.'
 
     @pytest.mark.skip('Unreliable test, receive partial '
                       'components back for dow_jones')
@@ -112,6 +113,10 @@ class TestYahoo(object):
         # http://finance.yahoo.com/q/hp?s=GOOG&a=09&b=08&c=2010&d=09&e=10&f=2010&g=d
         # just test that we succeed
         web.get_data_yahoo('GOOG')
+
+    @skip_on_exception(RemoteDataError)
+    def test_data_with_no_actions(self):
+        web.get_data_yahoo('TSLA')
 
     @skip_on_exception(RemoteDataError)
     def test_get_data_adjust_price(self):
@@ -163,23 +168,22 @@ class TestYahoo(object):
 
     @skip_on_exception(RemoteDataError)
     def test_get_data_multiple_symbols_two_dates(self):
-        pan = web.get_data_yahoo(['GE', 'MSFT', 'INTC'], 'JAN-01-12',
-                                 'JAN-31-12')
-        result = pan.Close['01-18-12'].T
+        data = web.get_data_yahoo(['GE', 'MSFT', 'INTC'], 'JAN-01-12',
+                                  'JAN-31-12')
+        result = data.Close.loc['01-18-12'].T
         assert result.size == 3
 
         # sanity checking
-        assert result.dtypes.all() == np.floating
+        assert result.dtypes == np.floating
 
         expected = np.array([[18.99, 28.4, 25.18],
                              [18.58, 28.31, 25.13],
                              [19.03, 28.16, 25.52],
                              [18.81, 28.82, 25.87]])
-        df = pan.Open
+        df = data.Open
         result = df[(df.index >= 'Jan-15-12') & (df.index <= 'Jan-20-12')]
         assert expected.shape == result.shape
 
-    @pytest.mark.xfail(reason="failing after #355")
     def test_get_date_ret_index(self):
         pan = web.get_data_yahoo(['GE', 'INTC', 'IBM'], '1977', '1987',
                                  ret_index=True)
@@ -193,7 +197,6 @@ class TestYahoo(object):
         # sanity checking
         assert np.issubdtype(pan.values.dtype, np.floating)
 
-    @pytest.mark.xfail(reason="failing after #355")
     def test_get_data_yahoo_actions(self):
         start = datetime(1990, 1, 1)
         end = datetime(2000, 4, 5)
@@ -228,7 +231,6 @@ class TestYahoo(object):
         r = YahooDailyReader('GOOG', session=session)
         assert r.session is session
 
-    @pytest.mark.xfail(reason="failing after #355")
     def test_yahoo_DataReader(self):
         start = datetime(2010, 1, 1)
         end = datetime(2015, 5, 9)
@@ -241,6 +243,22 @@ class TestYahoo(object):
                                     '2013-08-08', '2013-05-09',
                                     '2013-02-07', '2012-11-07',
                                     '2012-08-09'])
+
+        exp = pd.DataFrame({'action': ['DIVIDEND', 'DIVIDEND', 'DIVIDEND',
+                                       'DIVIDEND', 'SPLIT', 'DIVIDEND',
+                                       'DIVIDEND', 'DIVIDEND',
+                                       'DIVIDEND', 'DIVIDEND', 'DIVIDEND',
+                                       'DIVIDEND', 'DIVIDEND'],
+                            'value': [0.52, 0.47, 0.47, 0.47, 0.14285714,
+                                      3.29, 3.05, 3.05, 3.05,
+                                      3.05, 2.65, 2.65, 2.65]},
+                           index=exp_idx)
+        exp.index.name = 'Date'
+        tm.assert_frame_equal(result.reindex_like(exp).round(5), exp.round(5))
+
+        result = web.get_data_yahoo_actions('AAPL', start, end,
+                                            adjust_dividends=True)
+
         exp = pd.DataFrame({'action': ['DIVIDEND', 'DIVIDEND', 'DIVIDEND',
                                        'DIVIDEND', 'SPLIT', 'DIVIDEND',
                                        'DIVIDEND', 'DIVIDEND',
@@ -251,13 +269,11 @@ class TestYahoo(object):
                                       0.43571, 0.37857, 0.37857, 0.37857]},
                            index=exp_idx)
         exp.index.name = 'Date'
-
-        tm.assert_frame_equal(result.reindex_like(exp), exp)
+        tm.assert_frame_equal(result.reindex_like(exp).round(5), exp.round(5))
 
     @skip_on_exception(RemoteDataError)
     def test_yahoo_DataReader_multi(self):
         start = datetime(2010, 1, 1)
         end = datetime(2015, 5, 9)
-
         result = web.DataReader(['AAPL', 'F'], 'yahoo-actions', start, end)
-        assert isinstance(result, pd.Panel)
+        assert isinstance(result, dict)
