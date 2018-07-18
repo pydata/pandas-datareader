@@ -3,14 +3,9 @@
 v0.7.0 (Xxxxxxx YY, 20ZZ)
 ---------------------------
 
-.. warning::
-
-  Google finance for historical price data has been immediately deprecated.
-
 
 Highlights include:
 
-- Immediate deprecation of Google finance for historical price data, as these API endpoints are no longer supported by the provider. Alternate methods are welcome via pull requests, as PDR would like to restore these features.
 
 .. contents:: What's new in v0.7.0
     :local:
@@ -48,12 +43,6 @@ Enhancements
 Backwards incompatible API changes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- Deprecation of Google finance daily reader.  Google retired the remaining financial data end point in June 2018.  It is not possible to reliably retrieve historical price data without this endpoint. The Google daily reader will raise an `ImmediateDeprecationError` when called.
-- When requesting multiple symbols from a DailyReader (ex: google, yahoo, IEX)
-  a MultiIndex DataFrame is now returned.  Previously Panel or dict of DataFrames
-  were returned. (:issue:`297`).
-
-
 .. _whatsnew_070.bug_fixes:
 
 Bug Fixes
@@ -63,12 +52,6 @@ Bug Fixes
   setting the environmental variable QUANDL_API_KEY (:issue:`485`).
 - Handle Morningstar index volume data properly (:issue:`486`).
 <<<<<<< HEAD
-<<<<<<< HEAD
-=======
-- Added back support for Yahoo! price, dividends, and splits data for stocks
-	and currency pairs (:issue:`487`).
-=======
->>>>>>> a1dec00e31489394d2d6caf09eae5a297a5d76dc
 - Added support for optionally passing a custom base_url to the EnigmaReader  (:issue:`499`).
 - Fixed Morningstar 'retry' incrementation (:issue:`513`)
 - Updated Google Daily Price API to functional url (:issue:`502`)
@@ -76,15 +59,7 @@ Bug Fixes
 - Added back support for Yahoo! price, dividends, and splits data for stocks
 	and currency pairs (:issue:`487`).
 - Add `is_list_like` to compatibility layer to avoid failure on pandas >= 0.23 (:issue:`520`)
-<<<<<<< HEAD
-<<<<<<< HEAD
+=======
 - Added back support for Yahoo! price, dividends, and splits data for stocks
 	and currency pairs (:issue:`487`).
-=======
-
->>>>>>> upstream/master
->>>>>>> a1dec00e31489394d2d6caf09eae5a297a5d76dc
-=======
-- Fixed Yahoo! time offset (:issue:`487`).
-- Fix Yahoo! quote reader (:issue: `540`)
->>>>>>> upstream/master
+>>>>>>> Add dividends, splits, and currencies
