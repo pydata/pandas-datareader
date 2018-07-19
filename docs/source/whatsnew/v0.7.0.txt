@@ -71,3 +71,4 @@ Bug Fixes
 - Add `is_list_like` to compatibility layer to avoid failure on pandas >= 0.23 (:issue:`520`)
 - Fixed Yahoo! time offset (:issue:`487`).
 - Fix Yahoo! quote reader (:issue: `540`)
+- Add back Google daily reader (:issue: `551`)
