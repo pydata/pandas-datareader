@@ -78,7 +78,7 @@ class YahooDailyReader(_DailyBaseReader):
 
         if self.interval not in ['d', 'wk', 'mo', 'm', 'w']:
             raise ValueError("Invalid interval: valid values are  'd', 'wk' and 'mo'. 'm' and 'w' have been implemented for "  # noqa
-                             "backward compatibility.")  # noqa
+                             "backward compatibility. 'v' has been moved to the yahoo-actions or yahoo-dividends APIs.")  # noqa
         elif self.interval in ['m', 'mo']:
             self.pdinterval = 'm'
             self.interval = 'mo'
