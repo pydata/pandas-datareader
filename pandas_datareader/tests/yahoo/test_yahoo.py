@@ -203,14 +203,14 @@ class TestYahoo(object):
 
         actions = web.get_data_yahoo_actions('BHP.AX', start, end)
 
-        assert sum(actions['action'] == 'DIVIDEND') == 20
+        assert sum(actions['action'] == 'DIVIDEND') == 21
         assert sum(actions['action'] == 'SPLIT') == 1
 
         assert actions.loc['1995-05-11', 'action'][0] == 'SPLIT'
         assert actions.loc['1995-05-11', 'value'][0] == 1 / 1.1
 
         assert actions.loc['1993-05-10', 'action'][0] == 'DIVIDEND'
-        assert actions.loc['1993-05-10', 'value'][0] == 0.3
+        assert actions.loc['1993-05-10', 'value'][0] == 0.21
 
     def test_get_data_yahoo_actions_invalid_symbol(self):
         start = datetime(1990, 1, 1)
