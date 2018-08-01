@@ -8,6 +8,8 @@ import numpy as np
 
 from pandas_datareader._utils import SymbolWarning
 from pandas_datareader.base import _BaseReader
+from pandas_datareader.exceptions import ImmediateDeprecationError, \
+    DEP_ERROR_MSG
 import pandas as pd
 
 
@@ -52,6 +54,7 @@ class MorningstarDailyReader(_BaseReader):
                  pause=0.1, timeout=30, session=None, freq=None,
                  incl_splits=False, incl_dividends=False, incl_volume=True,
                  currency='usd', interval='d'):
+        raise ImmediateDeprecationError(DEP_ERROR_MSG.format("Morningstar"))
         super(MorningstarDailyReader, self).__init__(symbols, start, end,
                                                      retry_count, pause,
                                                      timeout, session, freq)
