@@ -28,9 +28,7 @@ class TestFred(object):
         assert ts.index[-1] == pd.to_datetime("2013-01-01")
         assert ts.index.name == "DATE"
         assert ts.name == "GDP"
-
-        received = ts.tail(1)[0]
-        assert int(received) == 16475
+        assert len(ts) == 13
 
         with pytest.raises(RemoteDataError):
             web.DataReader("NON EXISTENT SERIES", 'fred', start, end)
