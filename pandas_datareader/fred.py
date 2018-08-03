@@ -1,4 +1,4 @@
-from pandas_datareader.compat import is_list_like
+from pandas.api.types import is_list_like
 
 from pandas import concat, read_csv
 
