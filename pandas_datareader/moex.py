@@ -2,10 +2,11 @@
 
 import datetime as dt
 
-from pandas import read_csv, compat
+import pandas as pd
 from pandas.compat import StringIO
 
 from pandas_datareader.base import _DailyBaseReader
+from pandas_datareader.compat import is_list_like
 
 
 class MoexReader(_DailyBaseReader):
@@ -43,8 +44,9 @@ class MoexReader(_DailyBaseReader):
         self.start = self.start.date()
         self.end_dt = self.end
         self.end = self.end.date()
-        if not isinstance(self.symbols, compat.string_types):
-            raise ValueError("Support for multiple symbols is not yet implemented.")
+        if not is_list_like(self.symbols):
+            self.symbols = [self.symbols]
+        self.__engines, self.__markets = {}, {}  # dicts for engines and markets
 
     __url_metadata = "https://iss.moex.com/iss/securities/{symbol}.csv"
     __url_data = "https://iss.moex.com/iss/history/engines/{engine}/" \
@@ -52,12 +54,16 @@ class MoexReader(_DailyBaseReader):
 
     @property
     def url(self):
-        """API URL"""
-        return self.__url_data.format(
-            engine=self.__engine,
-            market=self.__market,
-            symbol=self.symbols
-        )
+        """Return a list of API URLs per symbol"""
+
+        if not self.__engines or not self.__markets:
+            raise Exception("Accesing url property accessed before "
+                "invocation of read() or _get_metadata() methods")
+
+        return [self.__url_data.format(
+                    engine=self.__engines[s],
+                    market=self.__markets[s],
+                    symbol=s) for s in self.symbols]
 
     def _get_params(self, start):
         params = {
@@ -78,96 +84,107 @@ class MoexReader(_DailyBaseReader):
         return params
 
     def _get_metadata(self):
-        """ get a market and an engine for a given symbol """
-        response = self._get_response(
-            self.__url_metadata.format(symbol=self.symbols)
-        )
-        text = self._sanitize_response(response)
-        if len(text) == 0:
-            service = self.__class__.__name__
-            raise IOError("{} request returned no data; check URL for invalid "
-                          "inputs: {}".format(service, self.__url_metadata))
-        if isinstance(text, compat.binary_type):
-            text = text.decode('windows-1251')
-        else:
-            text = text
+        """Get markets and engines for the given symbols"""
 
-        header_str = 'secid;boardid;'
-        get_data = False
-        for s in text.splitlines():
-            if s.startswith(header_str):
-                get_data = True
-                continue
-            if get_data and s != '':
-                fields = s.split(';')
-                return fields[5], fields[7]
-        service = self.__class__.__name__
-        raise IOError("{} request returned no metadata: {}\n"
-                      "Typo in security symbol `{}`?".format(
-            service,
-            self.__url_metadata.format(symbol=self.symbols),
-            self.symbols
-        )
-        )
+        markets, engines = {}, {}
+
+        for symbol in self.symbols:
+            response = self._get_response(
+                self.__url_metadata.format(symbol=symbol)
+            )
+            text = self._sanitize_response(response)
+            if len(text) == 0:
+                service = self.__class__.__name__
+                raise IOError("{} request returned no data; check URL for invalid "
+                              "inputs: {}".format(service, self.__url_metadata))
+            if isinstance(text, pd.compat.binary_type):
+                text = text.decode('windows-1251')
+
+            header_str = 'secid;boardid;'
+            get_data = False
+            for s in text.splitlines():
+                if s.startswith(header_str):
+                    get_data = True
+                    continue
+                if get_data and s != '':
+                    fields = s.split(';')
+                    markets[symbol], engines[symbol] = fields[5], fields[7]
+                    break
+            if symbol not in markets or symbol not in engines:
+                raise IOError("{} request returned no metadata: {}\n"
+                              "Typo in the security symbol `{}`?".format(
+                                self.__class__.__name__,
+                                self.__url_metadata.format(symbol=symbol),
+                                symbol))
+        return markets, engines
 
     def read(self):
         """Read data"""
+
         try:
-            self.__market, self.__engine = self._get_metadata()
+            self.__markets, self.__engines = self._get_metadata()
+            urls = self.url  # generate urls per symbols
+            dfs = []  # an array of pandas dataframes per symbol to concatenate
 
-            out_list = []
-            date_column = None
-            while True:  # read in loop with small date intervals
-                if len(out_list) > 0:
-                    if date_column is None:
-                        date_column = out_list[0].split(';').index('TRADEDATE')
+            for i, symbol in enumerate(self.symbols):
+                out_list = []
+                date_column = None
 
-                    # get the last downloaded date
-                    start_str = out_list[-1].split(';', 4)[date_column]
-                    start = dt.datetime.strptime(start_str, '%Y-%m-%d').date()
-                else:
-                    start_str = self.start.strftime('%Y-%m-%d')
-                    start = self.start
+                while True:  # read in a loop with small date intervals
+                    if len(out_list) > 0:
+                        if date_column is None:
+                            date_column = out_list[0].split(';').index('TRADEDATE')
 
-                if start >= self.end or start >= dt.date.today():
-                    break
+                        # get the last downloaded date
+                        start_str = out_list[-1].split(';', 4)[date_column]
+                        start = dt.datetime.strptime(start_str, '%Y-%m-%d').date()
+                    else:
+                        start_str = self.start.strftime('%Y-%m-%d')
+                        start = self.start
 
-                params = self._get_params(start_str)
-                strings_out = self._read_url_as_String(self.url, params) \
-                                  .splitlines()[2:]
-                strings_out = list(filter(lambda x: x.strip(), strings_out))
-
-                if len(out_list) == 0:
-                    out_list = strings_out
-                    if len(strings_out) < 101:
+                    if start >= self.end or start >= dt.date.today():
                         break
-                else:
-                    out_list += strings_out[1:]  # remove CSV head line
-                    if len(strings_out) < 100:
-                        break
-            str_io = StringIO('\r\n'.join(out_list))
-            df = self._read_lines(str_io)
-            return df
+
+                    params = self._get_params(start_str)
+                    strings_out = self._read_url_as_String(urls[i], params) \
+                                      .splitlines()[2:]
+                    strings_out = list(filter(lambda x: x.strip(), strings_out))
+
+                    if len(out_list) == 0:
+                        out_list = strings_out
+                        if len(strings_out) < 101:  # all data received - break
+                            break
+                    else:
+                        out_list += strings_out[1:]  # remove a CSV head line
+                        if len(strings_out) < 100:  # all data recevied - break
+                            break
+                str_io = StringIO('\r\n'.join(out_list))
+                dfs.append(self._read_lines(str_io)) # add a new DataFrame
         finally:
             self.close()
 
+        if len(dfs) > 1:
+            return pd.concat(dfs, axis=0, join='outer', sort=True)
+        else:
+            return dfs[0]
+
     def _read_url_as_String(self, url, params=None):
-        """ Open url (and retry) """
+        """ Open an url (and retry) """
+
         response = self._get_response(url, params=params)
         text = self._sanitize_response(response)
         if len(text) == 0:
             service = self.__class__.__name__
             raise IOError("{} request returned no data; check URL for invalid "
                           "inputs: {}".format(service, self.url))
-        if isinstance(text, compat.binary_type):
-            out = text.decode('windows-1251')
-        else:
-            out = text
-        return out
+        if isinstance(text, pd.compat.binary_type):
+            text = text.decode('windows-1251')
+        return text
 
     def _read_lines(self, input):
-        """ return pandas DataFrame from input """
-        rs = read_csv(input, index_col='TRADEDATE', parse_dates=True, sep=';',
+        """ Return a pandas DataFrame from input """
+
+        rs = pd.read_csv(input, index_col='TRADEDATE', parse_dates=True, sep=';',
                       na_values=('-', 'null'))
         # Get rid of unicode characters in index name.
         try:
