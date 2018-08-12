@@ -19,7 +19,7 @@ Remote Data Access
 
 .. warning::
 
-  Yahoo! Finance and Google Finance hav been immediately deprecated.  Endpoints from both providers have been retired
+  Yahoo! Finance, Google Finance, and Morningstar have been immediately deprecated.  Endpoints from these providers have been retired
 
 .. _remote_data.data_reader:
 
@@ -28,7 +28,6 @@ extract data from various Internet sources into a pandas DataFrame.
 Currently the following sources are supported:
 
     - :ref:`Tiingo<remote_data.tiingo>`
-    - :ref:`Morningstar<remote_data.morningstar>`
     - :ref:`IEX<remote_data.iex>`
     - :ref:`Robinhood<remote_data.robinhood>`
     - :ref:`AlphaVantage<remote_data.alphavantage>`
@@ -64,21 +63,6 @@ writing).
     df = pdr.get_data_tiingo('GOOG', api_key=os.getenv('TIINGO_API_KEY'))
     df.head()
 
-.. _remote_data.morningstar:
-
-Morningstar
-===========
-OHLC and Volume data is available from Morningstar using the same API which
-powers their charts.
-
-.. ipython:: python
-
-    import pandas_datareader.data as web
-    from datetime import datetime
-    start = datetime(2015, 2, 9)
-    end = datetime(2017, 5, 24)
-    f = web.DataReader('F', 'morningstar', start, end)
-    f.head()
 
 .. _remote_data.iex:
 
@@ -132,12 +116,12 @@ AlphaVantage
 ============
 
 `AlphaVantage <https://www.alphavantage.co/documentation>`__ provides realtime
-equities and forex data. Free registration is required to get an API key. 
+equities and forex data. Free registration is required to get an API key.
 
 Historical Time Series Data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Through the 
+Through the
 `AlphaVantage <https://www.alphavantage.co/documentation>`__ Time Series
 endpoints, it is possible to obtain historical equities data for individual
 symbols. The following endpoints are available:
@@ -188,7 +172,7 @@ Forex
 ^^^^^
 
 `AlphaVantage <https://www.alphavantage.co/documentation>`__ provides realtime
-currency exchange rates (for physical and digital currencies). 
+currency exchange rates (for physical and digital currencies).
 
 To request the exchange rate of physical or digital currencies, simply format
 as "FROM/TO" as in "USD/JPY".
@@ -198,7 +182,7 @@ as "FROM/TO" as in "USD/JPY".
     import os
     import pandas_datareader.data as web
 
-    f = web.DataReader("USD/JPY", "av-forex", 
+    f = web.DataReader("USD/JPY", "av-forex",
                        access_key=os.getenv('ALPHAVANTAGE_API_KEY'))
 
 Multiple pairs are are allowable:
@@ -233,7 +217,7 @@ Enigma
 
 Access datasets from `Enigma <https://public.enigma.com>`__,
 the world's largest repository of structured public data. Note that the Enigma
-URL has changed from `app.enigma.io <https://app.enigma.io>`__ as of release 
+URL has changed from `app.enigma.io <https://app.enigma.io>`__ as of release
 ``0.6.0``, as the old API deprecated.
 
 Datasets are unique identified by the ``uuid4`` at the end of a dataset's web address.
@@ -568,7 +552,7 @@ available. More information on the `field <http://www.nasdaqtrader.com/trader.as
 
 Stooq Index Data
 ================
-Google finance doesn't provide common index data download. The Stooq site has the data for download. 
+Google finance doesn't provide common index data download. The Stooq site has the data for download.
 
 .. ipython:: python
 

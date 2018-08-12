@@ -6,15 +6,13 @@ import pytest
 import requests
 
 import pandas_datareader.data as web
-from pandas_datareader._testing import skip_on_exception
-from pandas_datareader._utils import RemoteDataError
 from pandas_datareader.data import MorningstarDailyReader
 from pandas_datareader._utils import SymbolWarning
 
 
+@pytest.mark.xfail(reason="Deprecated")
 class TestMorningstarDaily(object):
 
-    @skip_on_exception(RemoteDataError)
     def test_invalid_date(self):
         with pytest.raises(ValueError):
             web.DataReader("MSFT", 'morningstar', start="1990-03-A")
@@ -36,20 +34,17 @@ class TestMorningstarDaily(object):
         with pytest.raises(TypeError):
             web.DataReader([12332], data_source='morningstar', retry_count=0)
 
-    @skip_on_exception(RemoteDataError)
     def test_mstar(self):
         start = datetime(2014, 3, 5)
         end = datetime(2018, 1, 18)
         df = web.DataReader('MSFT', 'morningstar', start=start, end=end)
         assert (df['Open'][-1] == 89.8)
 
-    @skip_on_exception(RemoteDataError)
     def test_get_data_single_symbol(self):
         # single symbol
         # just test that we succeed
         web.get_data_morningstar('GOOG')
 
-    @skip_on_exception(RemoteDataError)
     def test_get_data_interval(self):
         # daily interval data
         pan = web.get_data_morningstar(symbols='XOM', start='2013-01-01',
@@ -70,13 +65,11 @@ class TestMorningstarDaily(object):
         with pytest.raises(ValueError):
             web.get_data_morningstar('XOM', interval='NOT VALID')
 
-    @skip_on_exception(RemoteDataError)
     def test_get_data_multiple_symbols(self):
         # just test that we succeed
         sl = ['AAPL', 'AMZN', 'GOOG']
         web.get_data_morningstar(sl, '2012')
 
-    @skip_on_exception(RemoteDataError)
     def test_get_data_multiple_symbols_two_dates(self):
         df = web.get_data_morningstar(symbols=['XOM', 'MSFT'],
                                       start='2013-01-01',
@@ -112,7 +105,6 @@ class TestMorningstarDaily(object):
                                       end='2013-03-04', incl_volume=False)
         assert ("Volume" not in df.keys())
 
-    @skip_on_exception(RemoteDataError)
     def test_mstar_reader_class(self):
         dr = MorningstarDailyReader(symbols="GOOG", interval="d")
         df = dr.read()
@@ -125,7 +117,6 @@ class TestMorningstarDaily(object):
         dr.read()
         assert dr.session is session
 
-    @skip_on_exception(RemoteDataError)
     def test_mstar_DataReader_multi(self):
         start = datetime(2010, 1, 1)
         end = datetime(2015, 5, 9)

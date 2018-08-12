@@ -21,6 +21,7 @@ class TestDataReader(object):
         vix = DataReader("VIXCLS", "fred")
         assert isinstance(vix, DataFrame)
 
+    @pytest.mark.xfail(reason="Deprecated")
     def test_read_mstar(self):
         gs = DataReader("GS", data_source="morningstar")
         assert isinstance(gs, DataFrame)
