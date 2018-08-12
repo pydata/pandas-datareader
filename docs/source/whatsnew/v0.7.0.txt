@@ -43,6 +43,9 @@ Enhancements
   top-level function ``get_quote_av``.
   (:issue:`389`)
 
+  - MOEX data connector now supports multiple symbols in constructor.
+  (:issue:`562`)
+
 .. _whatsnew_070.api_breaking:
 
 Backwards incompatible API changes
