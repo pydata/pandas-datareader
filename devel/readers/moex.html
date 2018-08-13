@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Moscow Exchange (MOEX) &mdash; pandas-datareader 0.6.0+41.gdcd7a33 documentation</title>
+  <title>Moscow Exchange (MOEX) &mdash; pandas-datareader 0.6.0+42.g4ea2f10 documentation</title>
   
 
   
@@ -178,21 +178,21 @@
 <dl class="class">
 <dt id="pandas_datareader.moex.MoexReader">
 <em class="property">class </em><code class="descclassname">pandas_datareader.moex.</code><code class="descname">MoexReader</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.moex.MoexReader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns DataFrame of historical stock prices from symbols from Moex</p>
+<dd><p>Returns a DataFrame of historical stock prices from symbols from Moex</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>symbols</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>array-like object</em><em> (</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a><em>, </em><em>Series</em><em>)</em><em>, or </em><em>DataFrame</em>) – Single stock symbol (ticker), array-like object of symbols or
-DataFrame with index containing stock symbols.</li>
-<li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>(</em><em>defaults to '1/1/2010'</em><em>)</em>) – Starting date, timestamp. Parses many different kind of date
+<li><strong>symbols</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>an array-like object</em><em> (</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a><em>, </em><em>Series</em><em>)</em><em>, or </em><em>a DataFrame</em>) – A single stock symbol (secid), an array-like object of symbols or
+a DataFrame with an index containing stock symbols.</li>
+<li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>(</em><em>defaults to '1/1/2010'</em><em>)</em>) – The starting date, timestamp. Parses many different kind of date
 representations (e.g., ‘JAN-01-2010’, ‘1/1/10’, ‘Jan, 1, 1980’)</li>
-<li><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>(</em><em>defaults to today</em><em>)</em>) – Ending date, timestamp. Same format as starting date.</li>
-<li><strong>retry_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 3</em>) – Number of times to retry query request.</li>
-<li><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 0</em>) – Time, in seconds, to pause between consecutive queries of chunks. If
+<li><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>(</em><em>defaults to today</em><em>)</em>) – The ending date, timestamp. Same format as starting date.</li>
+<li><strong>retry_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 3</em>) – The number of times to retry query request.</li>
+<li><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 0.1</em>) – Time, in seconds, to pause between consecutive queries of chunks. If
 single value given for symbol, represents the pause between retries.</li>
-<li><strong>chunksize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 25</em>) – Number of symbols to download consecutively before intiating pause.</li>
+<li><strong>chunksize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 25</em>) – The number of symbols to download consecutively before intiating pause.</li>
 <li><strong>session</strong> (<em>Session</em><em>, </em><em>default None</em>) – requests.sessions.Session instance to be used</li>
 </ul>
 </td>
@@ -200,8 +200,8 @@ single value given for symbol, represents the pause between retries.</li>
 </tbody>
 </table>
 <p class="rubric">Notes</p>
-<p>To avoid being penalized by Moex servers, pauses between downloading
-‘chunks’ of symbols can be specified.</p>
+<p>To avoid being penalized by Moex servers, pauses more than 0.1s between
+downloading ‘chunks’ of symbols can be specified.</p>
 <dl class="method">
 <dt id="pandas_datareader.moex.MoexReader.close">
 <code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.moex.MoexReader.close" title="Permalink to this definition">¶</a></dt>
@@ -272,7 +272,7 @@ single value given for symbol, represents the pause between retries.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.6.0+41.gdcd7a33',
+            VERSION:'0.6.0+42.g4ea2f10',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
