@@ -50,17 +50,17 @@ def expiry(month, year):
 
 
 @pytest.fixture
-def json1():
-    dirpath = tm.get_data_path()
+def json1(datapath):
+    dirpath = datapath('yahoo', 'data')
     json1 = 'file://' + os.path.join(
         dirpath, 'yahoo_options1.json')
     return json1
 
 
 @pytest.fixture
-def json2():
+def json2(datapath):
     # see gh-22: empty table
-    dirpath = tm.get_data_path()
+    dirpath = datapath('yahoo', 'data')
     json2 = 'file://' + os.path.join(
         dirpath, 'yahoo_options2.json')
     return json2
