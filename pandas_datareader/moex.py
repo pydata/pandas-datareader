@@ -57,7 +57,7 @@ class MoexReader(_DailyBaseReader):
         """Return a list of API URLs per symbol"""
 
         if not self.__engines or not self.__markets:
-            raise Exception("Accesing url property before invocation "
+            raise Exception("Accessing url property before invocation "
                 "of read() or _get_metadata() methods")
 
         return [self.__url_data.format(
