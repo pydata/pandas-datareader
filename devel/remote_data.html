@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Remote Data Access &mdash; pandas-datareader 0.6.0+40.g5512020 documentation</title>
+  <title>Remote Data Access &mdash; pandas-datareader 0.6.0+41.gdcd7a33 documentation</title>
   
 
   
@@ -268,9 +268,17 @@ A third interface to the deep API is exposed through
 
 <span class="gp">In [13]: </span><span class="n">f</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 <span class="gh">Out[13]: </span><span class="go"></span>
-<span class="go">Empty DataFrame</span>
-<span class="go">Columns: []</span>
-<span class="go">Index: []</span>
+<span class="go">                                   0</span>
+<span class="go">askPrice                           0</span>
+<span class="go">askSize                            0</span>
+<span class="go">bidPrice                           0</span>
+<span class="go">bidSize                            0</span>
+<span class="go">lastSalePrice                      0</span>
+<span class="go">lastSaleSize                       0</span>
+<span class="go">lastSaleTime                       0</span>
+<span class="go">lastUpdated            1534159368986</span>
+<span class="go">marketPercent                      0</span>
+<span class="go">sector         diversifiedfinancials</span>
 </pre></div>
 </div>
 </div>
@@ -340,21 +348,21 @@ symbols. The following endpoints are available:</p>
 <span class="g g-Whitespace">      </span><span class="mi">2</span>                    <span class="n">end</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span>
 <span class="ne">----&gt; </span><span class="mi">3</span>                    <span class="n">access_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">))</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">DataReader</span><span class="nt">(name, data_source, start, end, retry_count, pause, session, access_key)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">DataReader</span><span class="nt">(name, data_source, start, end, retry_count, pause, session, access_key)</span>
 <span class="g g-Whitespace">    </span><span class="mi">423</span>                                   <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span> <span class="n">retry_count</span><span class="o">=</span><span class="n">retry_count</span><span class="p">,</span>
 <span class="g g-Whitespace">    </span><span class="mi">424</span>                                   <span class="n">pause</span><span class="o">=</span><span class="n">pause</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
 <span class="ne">--&gt; </span><span class="mi">425</span>                                   <span class="n">api_key</span><span class="o">=</span><span class="n">access_key</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="g g-Whitespace">    </span><span class="mi">426</span> 
 <span class="g g-Whitespace">    </span><span class="mi">427</span>     <span class="k">elif</span> <span class="n">data_source</span> <span class="o">==</span> <span class="s2">&quot;av-daily-adjusted&quot;</span><span class="p">:</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/av/time_series.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, function, start, end, retry_count, pause, session, chunksize, api_key)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/av/time_series.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, function, start, end, retry_count, pause, session, chunksize, api_key)</span>
 <span class="g g-Whitespace">     </span><span class="mi">46</span>                                                  <span class="n">retry_count</span><span class="o">=</span><span class="n">retry_count</span><span class="p">,</span>
 <span class="g g-Whitespace">     </span><span class="mi">47</span>                                                  <span class="n">pause</span><span class="o">=</span><span class="n">pause</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
 <span class="ne">---&gt; </span><span class="mi">48</span>                                                  <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">49</span> 
 <span class="g g-Whitespace">     </span><span class="mi">50</span>         <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">function</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/av/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, start, end, retry_count, pause, session, api_key)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/av/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, start, end, retry_count, pause, session, api_key)</span>
 <span class="g g-Whitespace">     </span><span class="mi">23</span>             <span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">24</span>         <span class="k">if</span> <span class="ow">not</span> <span class="n">api_key</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 <span class="ne">---&gt; </span><span class="mi">25</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The AlphaVantage API key must be provided &#39;</span>
@@ -438,21 +446,21 @@ once. These quotes are accessible through the top-level function
 <span class="nn">&lt;ipython-input-26-847531af19c1&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">web</span><span class="o">.</span><span class="n">get_quote_av</span><span class="p">([</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="s2">&quot;TSLA&quot;</span><span class="p">])</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">get_quote_av</span><span class="nt">(*args, **kwargs)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">get_quote_av</span><span class="nt">(*args, **kwargs)</span>
 <span class="g g-Whitespace">     </span><span class="mi">77</span> 
 <span class="g g-Whitespace">     </span><span class="mi">78</span> <span class="k">def</span> <span class="nf">get_quote_av</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="ne">---&gt; </span><span class="mi">79</span>     <span class="k">return</span> <span class="n">AVQuotesReader</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="g g-Whitespace">     </span><span class="mi">80</span> 
 <span class="g g-Whitespace">     </span><span class="mi">81</span> 
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/av/quotes.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, retry_count, pause, session, api_key)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/av/quotes.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, retry_count, pause, session, api_key)</span>
 <span class="g g-Whitespace">     </span><span class="mi">37</span>                                              <span class="n">pause</span><span class="o">=</span><span class="n">pause</span><span class="p">,</span>
 <span class="g g-Whitespace">     </span><span class="mi">38</span>                                              <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
 <span class="ne">---&gt; </span><span class="mi">39</span>                                              <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">40</span> 
 <span class="g g-Whitespace">     </span><span class="mi">41</span>     <span class="nd">@property</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/av/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, start, end, retry_count, pause, session, api_key)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/av/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, start, end, retry_count, pause, session, api_key)</span>
 <span class="g g-Whitespace">     </span><span class="mi">23</span>             <span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">24</span>         <span class="k">if</span> <span class="ow">not</span> <span class="n">api_key</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 <span class="ne">---&gt; </span><span class="mi">25</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The AlphaVantage API key must be provided &#39;</span>
@@ -486,21 +494,21 @@ as “FROM/TO” as in “USD/JPY”.</p>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s2">&quot;USD/JPY&quot;</span><span class="p">,</span> <span class="s2">&quot;av-forex&quot;</span><span class="p">,</span>
 <span class="ne">----&gt; </span><span class="mi">2</span>                    <span class="n">access_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">))</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">DataReader</span><span class="nt">(name, data_source, start, end, retry_count, pause, session, access_key)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">DataReader</span><span class="nt">(name, data_source, start, end, retry_count, pause, session, access_key)</span>
 <span class="g g-Whitespace">    </span><span class="mi">416</span>         <span class="k">return</span> <span class="n">AVForexReader</span><span class="p">(</span><span class="n">symbols</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">retry_count</span><span class="o">=</span><span class="n">retry_count</span><span class="p">,</span>
 <span class="g g-Whitespace">    </span><span class="mi">417</span>                              <span class="n">pause</span><span class="o">=</span><span class="n">pause</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
 <span class="ne">--&gt; </span><span class="mi">418</span>                              <span class="n">api_key</span><span class="o">=</span><span class="n">access_key</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="g g-Whitespace">    </span><span class="mi">419</span> 
 <span class="g g-Whitespace">    </span><span class="mi">420</span>     <span class="k">elif</span> <span class="n">data_source</span> <span class="o">==</span> <span class="s2">&quot;av-daily&quot;</span><span class="p">:</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/av/forex.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, retry_count, pause, session, api_key)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/av/forex.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, retry_count, pause, session, api_key)</span>
 <span class="g g-Whitespace">     </span><span class="mi">36</span>                                             <span class="n">pause</span><span class="o">=</span><span class="n">pause</span><span class="p">,</span>
 <span class="g g-Whitespace">     </span><span class="mi">37</span>                                             <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
 <span class="ne">---&gt; </span><span class="mi">38</span>                                             <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">39</span>         <span class="bp">self</span><span class="o">.</span><span class="n">from_curr</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="g g-Whitespace">     </span><span class="mi">40</span>         <span class="bp">self</span><span class="o">.</span><span class="n">to_curr</span> <span class="o">=</span> <span class="p">{}</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/av/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, start, end, retry_count, pause, session, api_key)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/av/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, start, end, retry_count, pause, session, api_key)</span>
 <span class="g g-Whitespace">     </span><span class="mi">23</span>             <span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">24</span>         <span class="k">if</span> <span class="ow">not</span> <span class="n">api_key</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 <span class="ne">---&gt; </span><span class="mi">25</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The AlphaVantage API key must be provided &#39;</span>
@@ -524,21 +532,21 @@ as “FROM/TO” as in “USD/JPY”.</p>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">([</span><span class="s2">&quot;USD/JPY&quot;</span><span class="p">,</span> <span class="s2">&quot;BTC/CNY&quot;</span><span class="p">],</span> <span class="s2">&quot;av-forex&quot;</span><span class="p">,</span>
 <span class="ne">----&gt; </span><span class="mi">2</span>                    <span class="n">access_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">))</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">DataReader</span><span class="nt">(name, data_source, start, end, retry_count, pause, session, access_key)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">DataReader</span><span class="nt">(name, data_source, start, end, retry_count, pause, session, access_key)</span>
 <span class="g g-Whitespace">    </span><span class="mi">416</span>         <span class="k">return</span> <span class="n">AVForexReader</span><span class="p">(</span><span class="n">symbols</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">retry_count</span><span class="o">=</span><span class="n">retry_count</span><span class="p">,</span>
 <span class="g g-Whitespace">    </span><span class="mi">417</span>                              <span class="n">pause</span><span class="o">=</span><span class="n">pause</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
 <span class="ne">--&gt; </span><span class="mi">418</span>                              <span class="n">api_key</span><span class="o">=</span><span class="n">access_key</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="g g-Whitespace">    </span><span class="mi">419</span> 
 <span class="g g-Whitespace">    </span><span class="mi">420</span>     <span class="k">elif</span> <span class="n">data_source</span> <span class="o">==</span> <span class="s2">&quot;av-daily&quot;</span><span class="p">:</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/av/forex.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, retry_count, pause, session, api_key)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/av/forex.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, retry_count, pause, session, api_key)</span>
 <span class="g g-Whitespace">     </span><span class="mi">36</span>                                             <span class="n">pause</span><span class="o">=</span><span class="n">pause</span><span class="p">,</span>
 <span class="g g-Whitespace">     </span><span class="mi">37</span>                                             <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
 <span class="ne">---&gt; </span><span class="mi">38</span>                                             <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">39</span>         <span class="bp">self</span><span class="o">.</span><span class="n">from_curr</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="g g-Whitespace">     </span><span class="mi">40</span>         <span class="bp">self</span><span class="o">.</span><span class="n">to_curr</span> <span class="o">=</span> <span class="p">{}</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/av/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, start, end, retry_count, pause, session, api_key)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/av/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, start, end, retry_count, pause, session, api_key)</span>
 <span class="g g-Whitespace">     </span><span class="mi">23</span>             <span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">24</span>         <span class="k">if</span> <span class="ow">not</span> <span class="n">api_key</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 <span class="ne">---&gt; </span><span class="mi">25</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The AlphaVantage API key must be provided &#39;</span>
@@ -563,14 +571,14 @@ performances through the top-level function <code class="docutils literal notran
 <span class="nn">&lt;ipython-input-35-76a9513d061d&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">web</span><span class="o">.</span><span class="n">get_sector_performance_av</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">get_sector_performance_av</span><span class="nt">(*args, **kwargs)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">get_sector_performance_av</span><span class="nt">(*args, **kwargs)</span>
 <span class="g g-Whitespace">    </span><span class="mi">138</span> 
 <span class="g g-Whitespace">    </span><span class="mi">139</span> <span class="k">def</span> <span class="nf">get_sector_performance_av</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="ne">--&gt; </span><span class="mi">140</span>     <span class="k">return</span> <span class="n">AVSectorPerformanceReader</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="g g-Whitespace">    </span><span class="mi">141</span> 
 <span class="g g-Whitespace">    </span><span class="mi">142</span> 
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/av/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, start, end, retry_count, pause, session, api_key)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/av/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, start, end, retry_count, pause, session, api_key)</span>
 <span class="g g-Whitespace">     </span><span class="mi">23</span>             <span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">24</span>         <span class="k">if</span> <span class="ow">not</span> <span class="n">api_key</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 <span class="ne">---&gt; </span><span class="mi">25</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The AlphaVantage API key must be provided &#39;</span>
@@ -600,49 +608,49 @@ For example, the following code downloads from  <a class="reference external" hr
 <span class="nn">&lt;ipython-input-38-f46ac2b42095&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_enigma</span><span class="p">(</span><span class="s1">&#39;292129b0-1275-44c8-a6a3-2a0881f24fe1&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ENIGMA_API_KEY&#39;</span><span class="p">))</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">get_data_enigma</span><span class="nt">(*args, **kwargs)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">get_data_enigma</span><span class="nt">(*args, **kwargs)</span>
 <span class="g g-Whitespace">     </span><span class="mi">73</span> 
 <span class="g g-Whitespace">     </span><span class="mi">74</span> <span class="k">def</span> <span class="nf">get_data_enigma</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="ne">---&gt; </span><span class="mi">75</span>     <span class="k">return</span> <span class="n">EnigmaReader</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="g g-Whitespace">     </span><span class="mi">76</span> 
 <span class="g g-Whitespace">     </span><span class="mi">77</span> 
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">read</span><span class="nt">(self)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">read</span><span class="nt">(self)</span>
 <span class="g g-Whitespace">     </span><span class="mi">83</span>         <span class="sd">&quot;&quot;&quot;Read data&quot;&quot;&quot;</span>
 <span class="g g-Whitespace">     </span><span class="mi">84</span>         <span class="k">try</span><span class="p">:</span>
 <span class="ne">---&gt; </span><span class="mi">85</span>             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">()</span>
 <span class="g g-Whitespace">     </span><span class="mi">86</span>         <span class="k">finally</span><span class="p">:</span>
 <span class="g g-Whitespace">     </span><span class="mi">87</span>             <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_read</span><span class="nt">(self)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_read</span><span class="nt">(self)</span>
 <span class="g g-Whitespace">     </span><span class="mi">88</span> 
 <span class="g g-Whitespace">     </span><span class="mi">89</span>     <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="ne">---&gt; </span><span class="mi">90</span>         <span class="n">snapshot_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_snapshot_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">91</span>         <span class="n">exported_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_snapshot_export</span><span class="p">(</span><span class="n">snapshot_id</span><span class="p">)</span>  <span class="c1"># TODO: Retry?</span>
 <span class="g g-Whitespace">     </span><span class="mi">92</span>         <span class="n">decoded_data</span> <span class="o">=</span> <span class="n">exported_data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">get_current_snapshot_id</span><span class="nt">(self, dataset_id)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">get_current_snapshot_id</span><span class="nt">(self, dataset_id)</span>
 <span class="g g-Whitespace">    </span><span class="mi">112</span>     <span class="k">def</span> <span class="nf">get_current_snapshot_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">):</span>
 <span class="g g-Whitespace">    </span><span class="mi">113</span>         <span class="sd">&quot;&quot;&quot;Get ID of the most current snapshot of a dataset&quot;&quot;&quot;</span>
 <span class="ne">--&gt; </span><span class="mi">114</span>         <span class="n">dataset_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataset_metadata</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">115</span>         <span class="k">return</span> <span class="n">dataset_metadata</span><span class="p">[</span><span class="s1">&#39;current_snapshot&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
 <span class="g g-Whitespace">    </span><span class="mi">116</span> 
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">get_dataset_metadata</span><span class="nt">(self, dataset_id)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">get_dataset_metadata</span><span class="nt">(self, dataset_id)</span>
 <span class="g g-Whitespace">    </span><span class="mi">120</span>         <span class="s2">&quot;&quot;&quot;</span>
 <span class="g g-Whitespace">    </span><span class="mi">121</span><span class="s2">         url = &quot;datasets/{0}?row_limit=0&quot;.format(dataset_id)</span>
 <span class="ne">--&gt; </span><span class="mi">122</span><span class="s2">         response = self._get(url)</span>
 <span class="g g-Whitespace">    </span><span class="mi">123</span><span class="s2">         return response.json()</span>
 <span class="g g-Whitespace">    </span><span class="mi">124</span><span class="s2"> </span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_get</span><span class="nt">(self, url)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_get</span><span class="nt">(self, url)</span>
 <span class="g g-Whitespace">    </span><span class="mi">108</span><span class="s2">                     continue</span>
 <span class="g g-Whitespace">    </span><span class="mi">109</span><span class="s2">                 else:</span>
 <span class="ne">--&gt; </span><span class="mi">110</span><span class="s2">                     raise e</span>
 <span class="g g-Whitespace">    </span><span class="mi">111</span><span class="s2"> </span>
 <span class="g g-Whitespace">    </span><span class="mi">112</span><span class="s2">     def get_current_snapshot_id(self, dataset_id):</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+40.g5512020-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_get</span><span class="nt">(self, url)</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0+41.gdcd7a33-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_get</span><span class="nt">(self, url)</span>
 <span class="g g-Whitespace">    </span><span class="mi">100</span><span class="s2">             try:</span>
 <span class="g g-Whitespace">    </span><span class="mi">101</span><span class="s2">                 response = self.session.get(url)</span>
 <span class="ne">--&gt; </span><span class="mi">102</span><span class="s2">                 response.raise_for_status()</span>
@@ -1226,7 +1234,7 @@ available. More information on the <a class="reference external" href="http://ww
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.6.0+40.g5512020',
+            VERSION:'0.6.0+41.gdcd7a33',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
