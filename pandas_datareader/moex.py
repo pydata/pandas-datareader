@@ -11,32 +11,32 @@ from pandas_datareader.compat import is_list_like
 
 class MoexReader(_DailyBaseReader):
     """
-    Returns DataFrame of historical stock prices from symbols from Moex
+    Returns a DataFrame of historical stock prices from symbols from Moex
 
     Parameters
     ----------
-    symbols : str, array-like object (list, tuple, Series), or DataFrame
-        Single stock symbol (ticker), array-like object of symbols or
-        DataFrame with index containing stock symbols.
+    symbols : str, an array-like object (list, tuple, Series), or a DataFrame
+        A single stock symbol (secid), an array-like object of symbols or
+        a DataFrame with an index containing stock symbols.
     start : str, (defaults to '1/1/2010')
-        Starting date, timestamp. Parses many different kind of date
+        The starting date, timestamp. Parses many different kind of date
         representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
     end : str, (defaults to today)
-        Ending date, timestamp. Same format as starting date.
+        The ending date, timestamp. Same format as starting date.
     retry_count : int, default 3
-        Number of times to retry query request.
-    pause : int, default 0
+        The number of times to retry query request.
+    pause : int, default 0.1
         Time, in seconds, to pause between consecutive queries of chunks. If
         single value given for symbol, represents the pause between retries.
     chunksize : int, default 25
-        Number of symbols to download consecutively before intiating pause.
+        The number of symbols to download consecutively before intiating pause.
     session : Session, default None
         requests.sessions.Session instance to be used
 
     Notes
     -----
-    To avoid being penalized by Moex servers, pauses between downloading
-    'chunks' of symbols can be specified.
+    To avoid being penalized by Moex servers, pauses more than 0.1s between
+    downloading 'chunks' of symbols can be specified.
     """
 
     def __init__(self, *args, **kwargs):
@@ -44,8 +44,12 @@ class MoexReader(_DailyBaseReader):
         self.start = self.start.date()
         self.end_dt = self.end
         self.end = self.end.date()
-        if not is_list_like(self.symbols):
+
+        if isinstance(self.symbols, pd.DataFrame):
+            self.symbols = self.symbols.index.tolist()
+        elif not is_list_like(self.symbols):
             self.symbols = [self.symbols]
+
         self.__engines, self.__markets = {}, {}  # dicts for engines and markets
 
     __url_metadata = "https://iss.moex.com/iss/securities/{symbol}.csv"
@@ -66,6 +70,8 @@ class MoexReader(_DailyBaseReader):
                     symbol=s) for s in self.symbols]
 
     def _get_params(self, start):
+        """Return a dict for REST API GET request parameters"""
+
         params = {
             'iss.only': 'history',
             'iss.dp': 'point',
@@ -184,13 +190,5 @@ class MoexReader(_DailyBaseReader):
     def _read_lines(self, input):
         """Return a pandas DataFrame from input"""
 
-        rs = pd.read_csv(input, index_col='TRADEDATE', parse_dates=True, sep=';',
-                      na_values=('-', 'null'))
-        # Get rid of unicode characters in index name.
-        try:
-            rs.index.name = rs.index.name.decode(
-                'unicode_escape').encode('ascii', 'ignore')
-        except AttributeError:
-            # Python 3 string has no decode method.
-            rs.index.name = rs.index.name.encode('ascii', 'ignore').decode()
-        return rs
+        return pd.read_csv(input, index_col='TRADEDATE', parse_dates=True,
+                           sep=';', na_values=('-', 'null'))
