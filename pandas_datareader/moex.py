@@ -57,8 +57,8 @@ class MoexReader(_DailyBaseReader):
         """Return a list of API URLs per symbol"""
 
         if not self.__engines or not self.__markets:
-            raise Exception("Accesing url property accessed before "
-                "invocation of read() or _get_metadata() methods")
+            raise Exception("Accesing url property before invocation "
+                "of read() or _get_metadata() methods")
 
         return [self.__url_data.format(
                     engine=self.__engines[s],
@@ -169,7 +169,7 @@ class MoexReader(_DailyBaseReader):
             return dfs[0]
 
     def _read_url_as_String(self, url, params=None):
-        """ Open an url (and retry) """
+        """Open an url (and retry)"""
 
         response = self._get_response(url, params=params)
         text = self._sanitize_response(response)
@@ -182,7 +182,7 @@ class MoexReader(_DailyBaseReader):
         return text
 
     def _read_lines(self, input):
-        """ Return a pandas DataFrame from input """
+        """Return a pandas DataFrame from input"""
 
         rs = pd.read_csv(input, index_col='TRADEDATE', parse_dates=True, sep=';',
                       na_values=('-', 'null'))
