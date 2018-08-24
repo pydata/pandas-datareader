@@ -13,4 +13,4 @@ def test_get_data_stooq_dji():
 
 def test_get_data_stooq_dates():
     f = get_data_stooq('SPY', start='20180101', end='20180115')
-    assert f.shape[0] == 15
+    assert f.shape[0] == 9
