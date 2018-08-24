@@ -50,7 +50,7 @@ class StooqDailyReader(_DailyBaseReader):
             'i': "d"
         }
         if self.start:
-            params['d1'] = self.start
+            params['d1'] = self.start.strftime('%Y%m%d')
         if self.end:
-            params['d2'] = self.end
+            params['d2'] = self.end.strftime('%Y%m%d')
         return params
