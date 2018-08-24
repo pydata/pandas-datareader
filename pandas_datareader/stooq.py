@@ -24,7 +24,7 @@ class StooqDailyReader(_DailyBaseReader):
         Number of symbols to download consecutively before initiating pause.
     session : Session, default None
         requests.sessions.Session instance to be used
-
+    freq: string, d, w, m ,q, y for daily, weekly, monthly, quarterly, yearly
 
     Notes
     -----
@@ -36,21 +36,20 @@ class StooqDailyReader(_DailyBaseReader):
         """API URL"""
         return 'https://stooq.com/q/d/l/'
 
-    def _get_params(self, symbol, country="US"):
+    def _get_params(self, symbol, country='US'):
         symbol_parts = symbol.split(".")
         if len(symbol_parts) == 1:
             symbol = ".".join([symbol, country])
         else:
             if symbol_parts[1].lower() not in ['de', 'hk', 'hu', 'jp',
                                                'pl', 'uk', 'us']:
-                symbol = ".".join([symbol, "US"])
+                symbol = ".".join([symbol, 'US'])
 
         params = {
             's': symbol,
-            'i': "d"
+            'i': self.freq or 'd',
+            'd1': self.start.strftime('%Y%m%d'),
+            'd2': self.end.strftime('%Y%m%d')
         }
-        if self.start:
-            params['d1'] = self.start.strftime('%Y%m%d')
-        if self.end:
-            params['d2'] = self.end.strftime('%Y%m%d')
+
         return params
