@@ -1,3 +1,4 @@
+import pandas as pd
 from pandas_datareader.base import _DailyBaseReader
 
 
@@ -12,6 +13,8 @@ class StooqDailyReader(_DailyBaseReader):
     symbols : string, array-like object (list, tuple, Series), or DataFrame
         Single stock symbol (ticker), array-like object of symbols or
         DataFrame with index containing stock symbols.
+    start: string, date which to start interval at YYYYMMDD.
+    end: string, date which to end interval at YYYYMMDD.
     retry_count : int, default 3
         Number of times to retry query request.
     pause : int, default 0
@@ -46,4 +49,8 @@ class StooqDailyReader(_DailyBaseReader):
             's': symbol,
             'i': "d"
         }
+        if self.start:
+            params['d1'] = self.start
+        if self.end:
+            params['d2'] = self.end
         return params
