@@ -3,7 +3,7 @@ from pandas_datareader.data import get_data_stooq
 
 
 def test_stooq_dji():
-    f = web.DataReader('GS.us', 'stooq')
+    f = web.DataReader('GS', 'stooq')
     assert f.shape[0] > 0
 
 
