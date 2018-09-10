@@ -10,7 +10,11 @@ AV_BASE_URL = 'https://www.alphavantage.co/query'
 
 class AlphaVantage(_BaseReader):
     """
-    Base class for all AlphaVantage queries
+    Base class for all Alpha Vantage queries
+
+    Notes
+    -----
+    See `Alpha Vantage <https://www.alphavantage.co/>`__
     """
     _format = 'json'
 
@@ -42,12 +46,12 @@ class AlphaVantage(_BaseReader):
 
     @property
     def function(self):
-        """ AlphaVantage endpoint function"""
+        """ Alpha Vantage endpoint function"""
         raise NotImplementedError
 
     @property
     def data_key(self):
-        """ Key of data returned from AlphaVantage """
+        """ Key of data returned from Alpha Vantage """
         raise NotImplementedError
 
     def _read_lines(self, out):
@@ -61,6 +65,5 @@ class AlphaVantage(_BaseReader):
             else:
                 raise RemoteDataError()
         df = df[sorted(df.columns)]
-        # df.sort_index(ascending=True, inplace=True)
         df.columns = [id[3:] for id in df.columns]
         return df

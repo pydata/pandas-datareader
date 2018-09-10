@@ -6,7 +6,7 @@ from pandas_datareader._utils import RemoteDataError
 
 class AVSectorPerformanceReader(AlphaVantage):
     """
-    Returns DataFrame of the AlphaVantage Sector Performances SECTOR data.
+    Returns DataFrame of the Alpha Vantage Sector Performances SECTOR data.
 
     .. versionadded:: 0.7.0
 
@@ -22,7 +22,7 @@ class AVSectorPerformanceReader(AlphaVantage):
     session : Session, default None
         requests.sessions.Session instance to be used
     api_key : str, optional
-        AlphaVantage API key . If not provided the environmental variable
+        Alpha Vantage API key . If not provided the environmental variable
         ALPHAVANTAGE_API_KEY is read. The API key is *required*.
     """
     @property

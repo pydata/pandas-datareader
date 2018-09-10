@@ -22,23 +22,23 @@ Enhancements
 ~~~~~~~~~~~~
 
 - A new data connector for data provided by
-  `AlphaVantage <https://www.alphavantage.co/documentation>`__ was
+  `Alpha Vantage <https://www.alphavantage.co/documentation>`__ was
   introduced to obtain Foreign Exchange (FX) data.
   (:issue:`389`)
 
 - A new data connector for data provided by
-  `AlphaVantage <https://www.alphavantage.co/documentation>`__ was
+  `Alpha Vantage <https://www.alphavantage.co/documentation>`__ was
   introduced to obtain historical time series data.
   (:issue:`389`)
 
   - A new data connector for data provided by
-  `AlphaVantage <https://www.alphavantage.co/documentation>`__ was
+  `Alpha Vantage <https://www.alphavantage.co/documentation>`__ was
   introduced to obtain sector performance data, accessed through the
   top-level function ``get_sector_performance_av``.
   (:issue:`389`)
 
   - A new data connector for data provided by
-  `AlphaVantage <https://www.alphavantage.co/documentation>`__ was
+  `Alpha Vantage <https://www.alphavantage.co/documentation>`__ was
   introduced to obtain real-time Batch Stock Quotes through the
   top-level function ``get_quote_av``.
   (:issue:`389`)

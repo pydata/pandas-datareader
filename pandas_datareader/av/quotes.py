@@ -6,7 +6,7 @@ import numpy as np
 
 class AVQuotesReader(AlphaVantage):
     """
-    Returns DataFrame of AlphaVantage Realtime Stock quotes for a symbol or
+    Returns DataFrame of Alpha Vantage Realtime Stock quotes for a symbol or
     list of symbols.
 
     Parameters

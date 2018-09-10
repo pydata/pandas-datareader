@@ -5,7 +5,7 @@ from datetime import datetime
 
 class AVTimeSeriesReader(AlphaVantage):
     """
-    Returns DataFrame of the AlphaVantage Stock Time Series endpoints
+    Returns DataFrame of the Alpha Vantage Stock Time Series endpoints
 
     .. versionadded:: 0.7.0
 
@@ -55,7 +55,7 @@ class AVTimeSeriesReader(AlphaVantage):
 
     @property
     def output_size(self):
-        """ Used to limit the size of the AlphaVantage query when
+        """ Used to limit the size of the Alpha Vantage query when
         possible.
         """
         delta = datetime.now() - self.start

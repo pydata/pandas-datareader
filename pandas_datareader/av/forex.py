@@ -7,7 +7,7 @@ import pandas as pd
 
 class AVForexReader(AlphaVantage):
     """
-    Returns DataFrame of the AlphaVantage Foreign Exchange (FX) Exchange Rates
+    Returns DataFrame of the Alpha Vantage Foreign Exchange (FX) Exchange Rates
     data.
 
     .. versionadded:: 0.7.0
@@ -24,7 +24,7 @@ class AVForexReader(AlphaVantage):
     session : Session, default None
         requests.sessions.Session instance to be used
     api_key : str, optional
-        AlphaVantage API key . If not provided the environmental variable
+        Alpha Vantage API key . If not provided the environmental variable
         ALPHAVANTAGE_API_KEY is read. The API key is *required*.
     """
     def __init__(self, symbols=None, retry_count=3, pause=0.5, session=None,
