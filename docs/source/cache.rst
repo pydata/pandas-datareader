@@ -36,7 +36,7 @@ Below is an example with Yahoo! Finance. The session parameter is implemented fo
     start = datetime.datetime(2010, 1, 1)
     end = datetime.datetime(2013, 1, 27)
     f = web.DataReader("F", 'yahoo', start, end, session=session)
-    f.ix['2010-01-04']
+    f.loc['2010-01-04']
 
 A `SQLite <https://www.sqlite.org/>`_ file named ``cache.sqlite`` will be created in the working
 directory, storing the request until the expiry date.

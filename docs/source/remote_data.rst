@@ -77,10 +77,10 @@ prices are available for up to 5 years:
 
     import pandas_datareader.data as web
     from datetime import datetime
-    start = datetime(2015, 2, 9)
-    end = datetime(2017, 5, 24)
+    start = datetime(2016, 9, 1)
+    end = datetime(2018, 9, 1)
     f = web.DataReader('F', 'iex', start, end)
-    f.loc['2015-02-09']
+    f.loc['2018-08-31']
 
 There are additional interfaces to this API that are
 directly exposed: tops (`'iex-tops'`) and last (`'iex-lasts'`).
@@ -109,8 +109,7 @@ year relative to today.
     f = web.DataReader('F', 'robinhood')
     f.head()
 
-
-.. _remote_data.alphavantage
+.. _remote_data.alphavantage:
 
 Alpha Vantage
 =============
@@ -270,7 +269,7 @@ FRED
     start = datetime.datetime(2010, 1, 1)
     end = datetime.datetime(2013, 1, 27)
     gdp = web.DataReader('GDP', 'fred', start, end)
-    gdp.ix['2013-01-01']
+    gdp.loc['2013-01-01']
 
     # Multiple series:
     inflation = web.DataReader(['CPIAUCSL', 'CPILFESL'], 'fred', start, end)
@@ -305,7 +304,7 @@ World Bank
 by using the ``wb`` I/O functions.
 
 Indicators
-----------
+^^^^^^^^^^
 
 Either from exploring the World Bank site, or using the search function included,
 every world bank indicator is accessible.
@@ -316,7 +315,7 @@ constant dollars in North America, you would use the ``search`` function:
 .. code-block:: python
 
     In [1]: from pandas_datareader import wb
-    In [2]: mathces = wb.search('gdp.*capita.*const')
+    In [2]: matches = wb.search('gdp.*capita.*const')
 
 
 Then you would use the ``download`` function to acquire the data from the World
@@ -417,7 +416,7 @@ populations in rich countries tend to use cellphones at a higher rate:
     ==============================================================================
 
 Country Codes
--------------
+^^^^^^^^^^^^^
 
 The ``country`` argument accepts a string or list of mixed
 `two <http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`__ or `three <http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3>`__ character
@@ -426,7 +425,7 @@ ISO country codes, as well as dynamic `World Bank exceptions <https://datahelpde
 For a list of the the hard-coded country codes (used solely for error handling logic) see ``pandas_datareader.wb.country_codes``.
 
 Problematic Country Codes & Indicators
---------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. note::
 
@@ -533,7 +532,7 @@ available. More information on the `field <http://www.nasdaqtrader.com/trader.as
 
     In [12]: from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
     In [13]: symbols = get_nasdaq_symbols()
-    In [14]: print(symbols.ix['IBM'])
+    In [14]: print(symbols.loc['IBM'])
         Nasdaq Traded                                                    True
         Security Name       International Business Machines Corporation Co...
         Listing Exchange                                                    N
