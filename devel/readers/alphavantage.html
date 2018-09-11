@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>AlphaVantage &mdash; pandas-datareader 0.6.0+42.g4ea2f10 documentation</title>
+  <title>AlphaVantage &mdash; pandas-datareader 0.6.0+50.g8eb5655 documentation</title>
   
 
   
@@ -177,8 +177,8 @@
 <span id="alphavantage"></span><h1>AlphaVantage<a class="headerlink" href="#module-pandas_datareader.av.forex" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pandas_datareader.av.forex.AVForexReader">
-<em class="property">class </em><code class="descclassname">pandas_datareader.av.forex.</code><code class="descname">AVForexReader</code><span class="sig-paren">(</span><em>symbols=None</em>, <em>retry_count=3</em>, <em>pause=0.5</em>, <em>session=None</em>, <em>api_key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns DataFrame of the AlphaVantage Foreign Exchange (FX) Exchange Rates
+<em class="property">class </em><code class="descclassname">pandas_datareader.av.forex.</code><code class="descname">AVForexReader</code><span class="sig-paren">(</span><em>symbols=None</em>, <em>retry_count=3</em>, <em>pause=0.1</em>, <em>session=None</em>, <em>api_key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns DataFrame of the Alpha Vantage Foreign Exchange (FX) Exchange Rates
 data.</p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 0.7.0.</span></p>
@@ -190,10 +190,10 @@ data.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>symbols</strong> (<em>string</em><em>, </em><em>array-like object</em><em> (</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a><em>, </em><em>Series</em><em>)</em>) – Single currency pair (formatted ‘FROM/TO’) or list of the same.</li>
 <li><strong>retry_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 3</em>) – Number of times to retry query request.</li>
-<li><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 0.5</em>) – Time, in seconds, to pause between consecutive queries of chunks. If
+<li><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 0.1</em>) – Time, in seconds, to pause between consecutive queries of chunks. If
 single value given for symbol, represents the pause between retries.</li>
 <li><strong>session</strong> (<em>Session</em><em>, </em><em>default None</em>) – requests.sessions.Session instance to be used</li>
-<li><strong>api_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – AlphaVantage API key . If not provided the environmental variable
+<li><strong>api_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Alpha Vantage API key . If not provided the environmental variable
 ALPHAVANTAGE_API_KEY is read. The API key is <em>required</em>.</li>
 </ul>
 </td>
@@ -209,13 +209,13 @@ ALPHAVANTAGE_API_KEY is read. The API key is <em>required</em>.</li>
 <dl class="attribute">
 <dt id="pandas_datareader.av.forex.AVForexReader.data_key">
 <code class="descname">data_key</code><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader.data_key" title="Permalink to this definition">¶</a></dt>
-<dd><p>Key of data returned from AlphaVantage</p>
+<dd><p>Key of data returned from Alpha Vantage</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pandas_datareader.av.forex.AVForexReader.function">
 <code class="descname">function</code><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader.function" title="Permalink to this definition">¶</a></dt>
-<dd><p>AlphaVantage endpoint function</p>
+<dd><p>Alpha Vantage endpoint function</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -240,8 +240,8 @@ ALPHAVANTAGE_API_KEY is read. The API key is <em>required</em>.</li>
 
 <span class="target" id="module-pandas_datareader.av.time_series"></span><dl class="class">
 <dt id="pandas_datareader.av.time_series.AVTimeSeriesReader">
-<em class="property">class </em><code class="descclassname">pandas_datareader.av.time_series.</code><code class="descname">AVTimeSeriesReader</code><span class="sig-paren">(</span><em>symbols=None</em>, <em>function='TIME_SERIES_DAILY'</em>, <em>start=None</em>, <em>end=None</em>, <em>retry_count=3</em>, <em>pause=0.35</em>, <em>session=None</em>, <em>chunksize=25</em>, <em>api_key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns DataFrame of the AlphaVantage Stock Time Series endpoints</p>
+<em class="property">class </em><code class="descclassname">pandas_datareader.av.time_series.</code><code class="descname">AVTimeSeriesReader</code><span class="sig-paren">(</span><em>symbols=None</em>, <em>function='TIME_SERIES_DAILY'</em>, <em>start=None</em>, <em>end=None</em>, <em>retry_count=3</em>, <em>pause=0.1</em>, <em>session=None</em>, <em>chunksize=25</em>, <em>api_key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns DataFrame of the Alpha Vantage Stock Time Series endpoints</p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 0.7.0.</span></p>
 </div>
@@ -255,7 +255,7 @@ ALPHAVANTAGE_API_KEY is read. The API key is <em>required</em>.</li>
 representations (e.g., ‘JAN-01-2010’, ‘1/1/10’, ‘Jan, 1, 1980’)</li>
 <li><strong>end</strong> (<em>string</em><em>, </em><em>(</em><em>defaults to today</em><em>)</em>) – Ending date, timestamp. Same format as starting date.</li>
 <li><strong>retry_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 3</em>) – Number of times to retry query request.</li>
-<li><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 0.5</em>) – Time, in seconds, to pause between consecutive queries of chunks. If
+<li><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 0.1</em>) – Time, in seconds, to pause between consecutive queries of chunks. If
 single value given for symbol, represents the pause between retries.</li>
 <li><strong>session</strong> (<em>Session</em><em>, </em><em>default None</em>) – requests.sessions.Session instance to be used</li>
 <li><strong>api_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – AlphaVantage API key . If not provided the environmental variable
@@ -274,19 +274,19 @@ ALPHAVANTAGE_API_KEY is read. The API key is <em>required</em>.</li>
 <dl class="attribute">
 <dt id="pandas_datareader.av.time_series.AVTimeSeriesReader.data_key">
 <code class="descname">data_key</code><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.data_key" title="Permalink to this definition">¶</a></dt>
-<dd><p>Key of data returned from AlphaVantage</p>
+<dd><p>Key of data returned from Alpha Vantage</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pandas_datareader.av.time_series.AVTimeSeriesReader.function">
 <code class="descname">function</code><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.function" title="Permalink to this definition">¶</a></dt>
-<dd><p>AlphaVantage endpoint function</p>
+<dd><p>Alpha Vantage endpoint function</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pandas_datareader.av.time_series.AVTimeSeriesReader.output_size">
 <code class="descname">output_size</code><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.output_size" title="Permalink to this definition">¶</a></dt>
-<dd><p>Used to limit the size of the AlphaVantage query when
+<dd><p>Used to limit the size of the Alpha Vantage query when
 possible.</p>
 </dd></dl>
 
@@ -312,8 +312,8 @@ possible.</p>
 
 <span class="target" id="module-pandas_datareader.av.sector"></span><dl class="class">
 <dt id="pandas_datareader.av.sector.AVSectorPerformanceReader">
-<em class="property">class </em><code class="descclassname">pandas_datareader.av.sector.</code><code class="descname">AVSectorPerformanceReader</code><span class="sig-paren">(</span><em>symbols=None</em>, <em>start=None</em>, <em>end=None</em>, <em>retry_count=3</em>, <em>pause=0.001</em>, <em>session=None</em>, <em>api_key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns DataFrame of the AlphaVantage Sector Performances SECTOR data.</p>
+<em class="property">class </em><code class="descclassname">pandas_datareader.av.sector.</code><code class="descname">AVSectorPerformanceReader</code><span class="sig-paren">(</span><em>symbols=None</em>, <em>start=None</em>, <em>end=None</em>, <em>retry_count=3</em>, <em>pause=0.1</em>, <em>session=None</em>, <em>api_key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns DataFrame of the Alpha Vantage Sector Performances SECTOR data.</p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 0.7.0.</span></p>
 </div>
@@ -324,10 +324,10 @@ possible.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>symbols</strong> (<em>string</em><em>, </em><em>array-like object</em><em> (</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a><em>, </em><em>Series</em><em>)</em>) – Single currency pair (formatted ‘FROM/TO’) or list of the same.</li>
 <li><strong>retry_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 3</em>) – Number of times to retry query request.</li>
-<li><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 0.5</em>) – Time, in seconds, to pause between consecutive queries of chunks. If
+<li><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 0.1</em>) – Time, in seconds, to pause between consecutive queries of chunks. If
 single value given for symbol, represents the pause between retries.</li>
 <li><strong>session</strong> (<em>Session</em><em>, </em><em>default None</em>) – requests.sessions.Session instance to be used</li>
-<li><strong>api_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – AlphaVantage API key . If not provided the environmental variable
+<li><strong>api_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Alpha Vantage API key . If not provided the environmental variable
 ALPHAVANTAGE_API_KEY is read. The API key is <em>required</em>.</li>
 </ul>
 </td>
@@ -343,13 +343,13 @@ ALPHAVANTAGE_API_KEY is read. The API key is <em>required</em>.</li>
 <dl class="attribute">
 <dt id="pandas_datareader.av.sector.AVSectorPerformanceReader.data_key">
 <code class="descname">data_key</code><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader.data_key" title="Permalink to this definition">¶</a></dt>
-<dd><p>Key of data returned from AlphaVantage</p>
+<dd><p>Key of data returned from Alpha Vantage</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pandas_datareader.av.sector.AVSectorPerformanceReader.function">
 <code class="descname">function</code><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader.function" title="Permalink to this definition">¶</a></dt>
-<dd><p>AlphaVantage endpoint function</p>
+<dd><p>Alpha Vantage endpoint function</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -374,8 +374,8 @@ ALPHAVANTAGE_API_KEY is read. The API key is <em>required</em>.</li>
 
 <span class="target" id="module-pandas_datareader.av.quotes"></span><dl class="class">
 <dt id="pandas_datareader.av.quotes.AVQuotesReader">
-<em class="property">class </em><code class="descclassname">pandas_datareader.av.quotes.</code><code class="descname">AVQuotesReader</code><span class="sig-paren">(</span><em>symbols=None</em>, <em>retry_count=3</em>, <em>pause=0.5</em>, <em>session=None</em>, <em>api_key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns DataFrame of AlphaVantage Realtime Stock quotes for a symbol or
+<em class="property">class </em><code class="descclassname">pandas_datareader.av.quotes.</code><code class="descname">AVQuotesReader</code><span class="sig-paren">(</span><em>symbols=None</em>, <em>retry_count=3</em>, <em>pause=0.1</em>, <em>session=None</em>, <em>api_key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns DataFrame of Alpha Vantage Realtime Stock quotes for a symbol or
 list of symbols.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -385,7 +385,7 @@ list of symbols.</p>
 <li><strong>symbols</strong> (<em>string</em><em>, </em><em>array-like object</em><em> (</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a><em>, </em><em>Series</em><em>)</em><em>, or </em><em>DataFrame</em>) – Single stock symbol (ticker), array-like object of symbols or
 DataFrame with index containing stock symbols.</li>
 <li><strong>retry_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 3</em>) – Number of times to retry query request.</li>
-<li><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 0</em>) – Time, in seconds, to pause between consecutive queries of chunks. If
+<li><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 0.1</em>) – Time, in seconds, to pause between consecutive queries of chunks. If
 single value given for symbol, represents the pause between retries.</li>
 <li><strong>session</strong> (<em>Session</em><em>, </em><em>default None</em>) – requests.sessions.Session instance to be used</li>
 </ul>
@@ -402,13 +402,13 @@ single value given for symbol, represents the pause between retries.</li>
 <dl class="attribute">
 <dt id="pandas_datareader.av.quotes.AVQuotesReader.data_key">
 <code class="descname">data_key</code><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader.data_key" title="Permalink to this definition">¶</a></dt>
-<dd><p>Key of data returned from AlphaVantage</p>
+<dd><p>Key of data returned from Alpha Vantage</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pandas_datareader.av.quotes.AVQuotesReader.function">
 <code class="descname">function</code><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader.function" title="Permalink to this definition">¶</a></dt>
-<dd><p>AlphaVantage endpoint function</p>
+<dd><p>Alpha Vantage endpoint function</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -475,7 +475,7 @@ single value given for symbol, represents the pause between retries.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.6.0+42.g4ea2f10',
+            VERSION:'0.6.0+50.g8eb5655',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

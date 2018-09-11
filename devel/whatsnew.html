@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>What’s New &mdash; pandas-datareader 0.6.0+42.g4ea2f10 documentation</title>
+  <title>What’s New &mdash; pandas-datareader 0.6.0+50.g8eb5655 documentation</title>
   
 
   
@@ -209,6 +209,7 @@
 <p>Highlights include:</p>
 <ul class="simple">
 <li>Immediate deprecation of Google finance and Morningstar for historical price data, as these API endpoints are no longer supported by their respective providers. Alternate methods are welcome via pull requests, as PDR would like to restore these features.</li>
+<li>Removal of EDGAR, which was deprecated in v0.6.0.</li>
 </ul>
 <div class="contents local topic" id="what-s-new-in-v0-7-0">
 <p class="topic-title first">What’s new in v0.7.0</p>
@@ -222,25 +223,25 @@
 <span id="whatsnew-070-enhancements"></span><h3>Enhancements<a class="headerlink" href="#enhancements" title="Permalink to this headline">¶</a></h3>
 <ul>
 <li><p class="first">A new data connector for data provided by
-<a class="reference external" href="https://www.alphavantage.co/documentation">AlphaVantage</a> was
+<a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> was
 introduced to obtain Foreign Exchange (FX) data.
 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH389</a>)</p>
 </li>
 <li><p class="first">A new data connector for data provided by
-<a class="reference external" href="https://www.alphavantage.co/documentation">AlphaVantage</a> was
+<a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> was
 introduced to obtain historical time series data.
 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH389</a>)</p>
 <ul class="simple">
 <li>A new data connector for data provided by</li>
 </ul>
-<p><a class="reference external" href="https://www.alphavantage.co/documentation">AlphaVantage</a> was
+<p><a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> was
 introduced to obtain sector performance data, accessed through the
 top-level function <code class="docutils literal notranslate"><span class="pre">get_sector_performance_av</span></code>.
 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH389</a>)</p>
 <ul class="simple">
 <li>A new data connector for data provided by</li>
 </ul>
-<p><a class="reference external" href="https://www.alphavantage.co/documentation">AlphaVantage</a> was
+<p><a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> was
 introduced to obtain real-time Batch Stock Quotes through the
 top-level function <code class="docutils literal notranslate"><span class="pre">get_quote_av</span></code>.
 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH389</a>)</p>
@@ -266,10 +267,7 @@ were returned. (<a class="reference external" href="https://github.com/pydata/pa
 <ul class="simple">
 <li>Added support for passing the API KEY to QuandlReader either directly or by
 setting the environmental variable QUANDL_API_KEY (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/485">GH485</a>).</li>
-<li>Handle Morningstar index volume data properly (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/486">GH486</a>).</li>
 <li>Added support for optionally passing a custom base_url to the EnigmaReader  (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/499">GH499</a>).</li>
-<li>Fixed Morningstar ‘retry’ incrementation (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/513">GH513</a>)</li>
-<li>Updated Google Daily Price API to functional url (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/502">GH502</a>)</li>
 <li>Fix Yahoo! price data (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/498">GH498</a>)</li>
 <li>Added back support for Yahoo! price, dividends, and splits data for stocks
 and currency pairs (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/487">GH487</a>).</li>
@@ -277,6 +275,7 @@ and currency pairs (<a class="reference external" href="https://github.com/pydat
 <li>Fixed Yahoo! time offset (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/487">GH487</a>).</li>
 <li>Fix Yahoo! quote reader (:issue: <cite>540</cite>)</li>
 <li>Remove import of deprecated <cite>tm.get_data_path</cite> (:issue: <cite>566</cite>)</li>
+<li>Removed unused requests-file and requests-ftp dependencies</li>
 </ul>
 </div>
 </div>
@@ -602,7 +601,7 @@ pandas.DatetimeIndex otherwise (<a class="reference external" href="https://gith
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.6.0+42.g4ea2f10',
+            VERSION:'0.6.0+50.g8eb5655',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
