@@ -39,7 +39,7 @@ class AVTimeSeriesReader(AlphaVantage):
     }
 
     def __init__(self, symbols=None, function="TIME_SERIES_DAILY",
-                 start=None, end=None, retry_count=3, pause=0.35,
+                 start=None, end=None, retry_count=3, pause=0.1,
                  session=None, chunksize=25, api_key=None):
         super(AVTimeSeriesReader, self).__init__(symbols=symbols, start=start,
                                                  end=end,

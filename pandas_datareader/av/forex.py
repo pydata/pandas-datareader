@@ -27,7 +27,7 @@ class AVForexReader(AlphaVantage):
         Alpha Vantage API key . If not provided the environmental variable
         ALPHAVANTAGE_API_KEY is read. The API key is *required*.
     """
-    def __init__(self, symbols=None, retry_count=3, pause=0.5, session=None,
+    def __init__(self, symbols=None, retry_count=3, pause=0.1, session=None,
                  api_key=None):
 
         super(AVForexReader, self).__init__(symbols=symbols,

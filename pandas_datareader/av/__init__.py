@@ -19,7 +19,7 @@ class AlphaVantage(_BaseReader):
     _format = 'json'
 
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.001, session=None, api_key=None):
+                 pause=0.1, session=None, api_key=None):
         super(AlphaVantage, self).__init__(symbols=symbols, start=start,
                                            end=end, retry_count=retry_count,
                                            pause=pause, session=session)

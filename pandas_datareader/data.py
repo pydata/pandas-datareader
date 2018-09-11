@@ -9,7 +9,6 @@ from pandas_datareader.av.quotes import AVQuotesReader
 from pandas_datareader.av.sector import AVSectorPerformanceReader
 from pandas_datareader.av.time_series import AVTimeSeriesReader
 from pandas_datareader.bankofcanada import BankOfCanadaReader
-from pandas_datareader.edgar import EdgarIndexReader
 from pandas_datareader.enigma import EnigmaReader
 from pandas_datareader.eurostat import EurostatReader
 from pandas_datareader.exceptions import DEP_ERROR_MSG, \
@@ -255,7 +254,7 @@ def get_iex_book(*args, **kwargs):
 
 
 def DataReader(name, data_source=None, start=None, end=None,
-               retry_count=3, pause=0.001, session=None, access_key=None):
+               retry_count=3, pause=0.1, session=None, access_key=None):
     """
     Imports data from a number of online sources.
 
@@ -368,11 +367,6 @@ def DataReader(name, data_source=None, start=None, end=None,
         return EurostatReader(symbols=name, start=start, end=end,
                               retry_count=retry_count, pause=pause,
                               session=session).read()
-    elif data_source == "edgar-index":
-        raise ImmediateDeprecationError(DEP_ERROR_MSG.format('EDGAR'))
-        return EdgarIndexReader(symbols=name, start=start, end=end,
-                                retry_count=retry_count, pause=pause,
-                                session=session).read()
     elif data_source == 'nasdaq':
         if name != 'symbols':
             raise ValueError("Only the string 'symbols' is supported for "

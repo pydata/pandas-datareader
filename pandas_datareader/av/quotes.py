@@ -22,7 +22,7 @@ class AVQuotesReader(AlphaVantage):
     session : Session, default None
         requests.sessions.Session instance to be used
     """
-    def __init__(self, symbols=None, retry_count=3, pause=0.5, session=None,
+    def __init__(self, symbols=None, retry_count=3, pause=0.1, session=None,
                  api_key=None):
         if isinstance(symbols, str):
             syms = [symbols]

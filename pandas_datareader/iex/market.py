@@ -17,7 +17,7 @@ class MarketReader(IEX):
     and 5:15 p.m. ET.
     """
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.001, session=None):
+                 pause=0.1, session=None):
         super(MarketReader, self).__init__(symbols=symbols,
                                            start=start, end=end,
                                            retry_count=retry_count,

@@ -18,7 +18,7 @@ class TopsReader(IEX):
     """
 
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.001, session=None):
+                 pause=0.1, session=None):
         super(TopsReader, self).__init__(symbols=symbols,
                                          start=start, end=end,
                                          retry_count=retry_count,
@@ -41,7 +41,7 @@ class LastReader(IEX):
     """
     # todo: Eventually we'll want to implement WebSockets as an option.
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.001, session=None):
+                 pause=0.1, session=None):
         super(LastReader, self).__init__(symbols=symbols,
                                          start=start, end=end,
                                          retry_count=retry_count,
