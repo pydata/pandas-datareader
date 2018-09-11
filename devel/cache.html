@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Caching queries &mdash; pandas-datareader 0.6.0+53.g6c17cf7 documentation</title>
+  <title>Caching queries &mdash; pandas-datareader 0.6.0+57.g44ee8c8 documentation</title>
   
 
   
@@ -194,11 +194,11 @@ passing a <code class="docutils literal notranslate"><span class="pre">requests_
 
 <span class="ne">NameError</span>: name &#39;session&#39; is not defined
 
-<span class="gp">In [9]: </span><span class="n">f</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="s1">&#39;2010-01-04&#39;</span><span class="p">]</span>
+<span class="gp">In [9]: </span><span class="n">f</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2010-01-04&#39;</span><span class="p">]</span>
 <span class="go">                                                                                                                                                                                                                                                                                                                     ---------------------------------------------------------------------------</span>
 <span class="go">NameError                                 Traceback (most recent call last)</span>
-<span class="go">&lt;ipython-input-9-f76d00c0d565&gt; in &lt;module&gt;()</span>
-<span class="go">----&gt; 1 f.ix[&#39;2010-01-04&#39;]</span>
+<span class="go">&lt;ipython-input-9-cce2e1722359&gt; in &lt;module&gt;()</span>
+<span class="go">----&gt; 1 f.loc[&#39;2010-01-04&#39;]</span>
 
 <span class="go">NameError: name &#39;f&#39; is not defined</span>
 </pre></div>
@@ -251,7 +251,7 @@ directory, storing the request until the expiry date.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.6.0+53.g6c17cf7',
+            VERSION:'0.6.0+57.g44ee8c8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

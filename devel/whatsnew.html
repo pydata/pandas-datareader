@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>What’s New &mdash; pandas-datareader 0.6.0+53.g6c17cf7 documentation</title>
+  <title>What’s New &mdash; pandas-datareader 0.6.0+57.g44ee8c8 documentation</title>
   
 
   
@@ -84,7 +84,7 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">What’s New</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#v0-7-0-xxxxxxx-yy-20zz">v0.7.0 (Xxxxxxx YY, 20ZZ)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#v0-7-0-september-11-2018">v0.7.0 (September 11, 2018)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#enhancements">Enhancements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#backwards-incompatible-api-changes">Backwards incompatible API changes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bug-fixes">Bug Fixes</a></li>
@@ -200,8 +200,8 @@
   <div class="section" id="what-s-new">
 <span id="whatsnew"></span><h1>What’s New<a class="headerlink" href="#what-s-new" title="Permalink to this headline">¶</a></h1>
 <p>These are new features and improvements of note in each release.</p>
-<div class="section" id="v0-7-0-xxxxxxx-yy-20zz">
-<span id="whatsnew-070"></span><h2>v0.7.0 (Xxxxxxx YY, 20ZZ)<a class="headerlink" href="#v0-7-0-xxxxxxx-yy-20zz" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="v0-7-0-september-11-2018">
+<span id="whatsnew-070"></span><h2>v0.7.0 (September 11, 2018)<a class="headerlink" href="#v0-7-0-september-11-2018" title="Permalink to this headline">¶</a></h2>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">Google finance and Morningstar for historical price data have been immediately deprecated.</p>
@@ -221,35 +221,30 @@
 </div>
 <div class="section" id="enhancements">
 <span id="whatsnew-070-enhancements"></span><h3>Enhancements<a class="headerlink" href="#enhancements" title="Permalink to this headline">¶</a></h3>
-<ul>
-<li><p class="first">A new data connector for data provided by
+<ul class="simple">
+<li>A new data connector for data provided by
 <a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> was
 introduced to obtain Foreign Exchange (FX) data.
-(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH389</a>)</p>
-</li>
-<li><p class="first">A new data connector for data provided by
+(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH389</a>)</li>
+<li>A new data connector for data provided by
 <a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> was
 introduced to obtain historical time series data.
-(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH389</a>)</p>
-<ul class="simple">
-<li>A new data connector for data provided by</li>
-</ul>
-<p><a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> was
+(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH389</a>)</li>
+<li><dl class="first docutils">
+<dt>A new data connector for data provided by</dt>
+<dd><a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> was
 introduced to obtain sector performance data, accessed through the
 top-level function <code class="docutils literal notranslate"><span class="pre">get_sector_performance_av</span></code>.
-(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH389</a>)</p>
-<ul class="simple">
-<li>A new data connector for data provided by</li>
-</ul>
-<p><a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> was
+(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH389</a>)</dd>
+</dl>
+</li>
+<li>A new data connector for data provided by
+<a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> was
 introduced to obtain real-time Batch Stock Quotes through the
 top-level function <code class="docutils literal notranslate"><span class="pre">get_quote_av</span></code>.
-(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH389</a>)</p>
-<ul class="simple">
-<li>MOEX data connector now supports multiple symbols in constructor.</li>
-</ul>
-<p>(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/562">GH562</a>)</p>
-</li>
+(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH389</a>)</li>
+<li>MOEX data connector now supports multiple symbols in constructor.
+(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/562">GH562</a>)</li>
 </ul>
 </div>
 <div class="section" id="backwards-incompatible-api-changes">
@@ -268,15 +263,18 @@ were returned. (<a class="reference external" href="https://github.com/pydata/pa
 <li>Added support for passing the API KEY to QuandlReader either directly or by
 setting the environmental variable QUANDL_API_KEY (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/485">GH485</a>).</li>
 <li>Added support for optionally passing a custom base_url to the EnigmaReader  (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/499">GH499</a>).</li>
-<li>Fix Yahoo! price data (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/498">GH498</a>)</li>
+<li>Fix Yahoo! price data (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/498">GH498</a>).</li>
 <li>Added back support for Yahoo! price, dividends, and splits data for stocks
 and currency pairs (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/487">GH487</a>).</li>
-<li>Add <cite>is_list_like</cite> to compatibility layer to avoid failure on pandas &gt;= 0.23 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/520">GH520</a>)</li>
+<li>Add <cite>is_list_like</cite> to compatibility layer to avoid failure on pandas &gt;= 0.23 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/520">GH520</a>).</li>
 <li>Fixed Yahoo! time offset (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/487">GH487</a>).</li>
-<li>Fix Yahoo! quote reader (:issue: <cite>540</cite>)</li>
+<li>Fix Yahoo! quote reader (:issue: <cite>540</cite>).</li>
 <li>Remove import of deprecated <cite>tm.get_data_path</cite> (:issue: <cite>566</cite>)</li>
-<li>Allow full usage of stooq url parameters</li>
-<li>Removed unused requests-file and requests-ftp dependencies</li>
+<li>Allow full usage of stooq url parameters.</li>
+<li>Removed unused requests-file and requests-ftp dependencies.</li>
+<li>Fix Yahoo! actions issue where the default reporting adjusts dividends. The unadjusted
+dividends may lack precision due to accumulated numerical error when converting adjusted
+to the original dividend amount. (:issue: <cite>495</cite>)</li>
 </ul>
 </div>
 </div>
@@ -602,7 +600,7 @@ pandas.DatetimeIndex otherwise (<a class="reference external" href="https://gith
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.6.0+53.g6c17cf7',
+            VERSION:'0.6.0+57.g44ee8c8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
