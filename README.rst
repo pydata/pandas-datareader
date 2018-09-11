@@ -21,15 +21,9 @@ Up to date remote data access for pandas, works for multiple versions of pandas.
 
 .. warning::
 
-  As of v0.6.0 Yahoo!, Google Options, Google Quotes and EDGAR have
-  been immediately deprecated due to large changes in their API and
-  no stable replacement.
+   As of v0.7.0 Google finance and Morningstar have been been immediately deprecated due to
+   large changes in their API and no stable replacement.
 
-.. note::
-
-  As of v0.6.0 Google finance is still functioning for historical price data,
-  although there are frequent reports of failures.  Failure is frequently
-  encountered when bulk downloading historical price data.
 
 Usage
 -----
