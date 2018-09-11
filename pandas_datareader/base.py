@@ -192,7 +192,7 @@ class _DailyBaseReader(_BaseReader):
     """ Base class for Google / Yahoo daily reader """
 
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.001, session=None, chunksize=25):
+                 pause=0.1, session=None, chunksize=25):
         super(_DailyBaseReader, self).__init__(symbols=symbols,
                                                start=start, end=end,
                                                retry_count=retry_count,

@@ -106,7 +106,7 @@ class WorldBankReader(_BaseReader):
 
     def __init__(self, symbols=None, countries=None,
                  start=None, end=None, freq=None,
-                 retry_count=3, pause=0.001, session=None, errors='warn'):
+                 retry_count=3, pause=0.1, session=None, errors='warn'):
 
         if symbols is None:
             symbols = ['NY.GDP.MKTP.CD', 'NY.GNS.ICTR.ZS']

@@ -7,7 +7,7 @@ import pandas as pd
 
 class AVForexReader(AlphaVantage):
     """
-    Returns DataFrame of the AlphaVantage Foreign Exchange (FX) Exchange Rates
+    Returns DataFrame of the Alpha Vantage Foreign Exchange (FX) Exchange Rates
     data.
 
     .. versionadded:: 0.7.0
@@ -18,16 +18,16 @@ class AVForexReader(AlphaVantage):
         Single currency pair (formatted 'FROM/TO') or list of the same.
     retry_count : int, default 3
         Number of times to retry query request.
-    pause : int, default 0.5
+    pause : int, default 0.1
         Time, in seconds, to pause between consecutive queries of chunks. If
         single value given for symbol, represents the pause between retries.
     session : Session, default None
         requests.sessions.Session instance to be used
     api_key : str, optional
-        AlphaVantage API key . If not provided the environmental variable
+        Alpha Vantage API key . If not provided the environmental variable
         ALPHAVANTAGE_API_KEY is read. The API key is *required*.
     """
-    def __init__(self, symbols=None, retry_count=3, pause=0.5, session=None,
+    def __init__(self, symbols=None, retry_count=3, pause=0.1, session=None,
                  api_key=None):
 
         super(AVForexReader, self).__init__(symbols=symbols,

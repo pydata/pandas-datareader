@@ -18,7 +18,7 @@ class DailySummaryReader(IEX):
     Daily statistics from IEX for a day or month
     """
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.001, session=None):
+                 pause=0.1, session=None):
         import warnings
         warnings.warn('Daily statistics is not working due to issues with the '
                       'IEX API', UnstableAPIWarning)
@@ -60,7 +60,7 @@ class DailySummaryReader(IEX):
 class MonthlySummaryReader(IEX):
     """Monthly statistics from IEX"""
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.001, session=None):
+                 pause=0.1, session=None):
         self.curr_date = start
         self.date_format = '%Y%m'
 
@@ -121,7 +121,7 @@ class RecordsReader(IEX):
     Total matched volume information from IEX
     """
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.001, session=None):
+                 pause=0.1, session=None):
         super(RecordsReader, self).__init__(symbols=symbols,
                                             start=start, end=end,
                                             retry_count=retry_count,
@@ -156,7 +156,7 @@ class RecentReader(IEX):
         (single-counted).
     """
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.001, session=None):
+                 pause=0.1, session=None):
         super(RecentReader, self).__init__(symbols=symbols,
                                            start=start, end=end,
                                            retry_count=retry_count,
