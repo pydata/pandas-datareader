@@ -201,7 +201,8 @@ class TestYahoo(object):
         start = datetime(1990, 1, 1)
         end = datetime(2000, 4, 5)
 
-        actions = web.get_data_yahoo_actions('BHP.AX', start, end)
+        actions = web.get_data_yahoo_actions('BHP.AX', start, end,
+                                             adjust_dividends=True)
 
         assert sum(actions['action'] == 'DIVIDEND') == 21
         assert sum(actions['action'] == 'SPLIT') == 1
@@ -254,7 +255,7 @@ class TestYahoo(object):
                                       3.05, 2.65, 2.65, 2.65]},
                            index=exp_idx)
         exp.index.name = 'Date'
-        tm.assert_frame_equal(result.reindex_like(exp).round(5), exp.round(5))
+        tm.assert_frame_equal(result.reindex_like(exp).round(2), exp.round(2))
 
         result = web.get_data_yahoo_actions('AAPL', start, end,
                                             adjust_dividends=True)
