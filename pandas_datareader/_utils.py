@@ -3,8 +3,6 @@ import datetime as dt
 import requests
 from pandas import to_datetime
 from pandas_datareader.compat import is_number
-from requests_file import FileAdapter
-from requests_ftp import FTPAdapter
 
 
 class SymbolWarning(UserWarning):
@@ -42,7 +40,5 @@ def _sanitize_dates(start, end):
 def _init_session(session, retry_count=3):
     if session is None:
         session = requests.Session()
-        session.mount('file://', FileAdapter())
-        session.mount('ftp://', FTPAdapter())
         # do not set requests max_retries here to support arbitrary pause
     return session
