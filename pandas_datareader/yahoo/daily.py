@@ -27,7 +27,7 @@ class YahooDailyReader(_DailyBaseReader):
         Ending date, timestamp. Same format as starting date.
     retry_count : int, default 3
         Number of times to retry query request.
-    pause : int, default 0
+    pause : int, default 0.1
         Time, in seconds, to pause between consecutive queries of chunks. If
         single value given for symbol, represents the pause between retries.
     session : Session, default None
