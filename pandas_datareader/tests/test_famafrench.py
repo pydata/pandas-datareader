@@ -48,7 +48,7 @@ class TestFamaFrench(object):
                            index=pd.period_range('2010-01-01', '2010-12-01',
                                                  freq='M', name='Date'),
                            columns=['Mkt-RF', 'SMB', 'HML', 'RF'])
-        tm.assert_frame_equal(results[0], exp)
+        tm.assert_frame_equal(results[0], exp, check_less_precise=0)
 
     def test_me_breakpoints(self):
         results = web.DataReader("ME_Breakpoints", "famafrench",
