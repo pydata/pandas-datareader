@@ -74,4 +74,5 @@ Bug Fixes
 - Fixed Yahoo! time offset (:issue:`487`).
 - Fix Yahoo! quote reader (:issue: `540`)
 - Remove import of deprecated `tm.get_data_path` (:issue: `566`)
+- Allow full usage of stooq url parameters
 - Removed unused requests-file and requests-ftp dependencies
