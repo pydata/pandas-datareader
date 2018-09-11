@@ -181,10 +181,11 @@ class YahooDailyReader(_DailyBaseReader):
                 splits['Splits'] = 1.0 / splits['SplitRatio']
                 prices = prices.join(splits['Splits'], how='outer')
 
-                if 'DIVIDEND' in types and self.adjust_dividends:
+                if 'DIVIDEND' in types and not self.adjust_dividends:
                     # Adjust dividends to deal with splits
                     adj = prices['Splits'].sort_index(ascending=False).fillna(
                         1).cumprod()
+                    adj = 1.0 / adj
                     prices['Dividends'] = prices['Dividends'] * adj
 
         return prices
