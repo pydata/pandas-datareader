@@ -30,7 +30,7 @@ Currently the following sources are supported:
     - :ref:`Tiingo<remote_data.tiingo>`
     - :ref:`IEX<remote_data.iex>`
     - :ref:`Robinhood<remote_data.robinhood>`
-    - :ref:`AlphaVantage<remote_data.alphavantage>`
+    - :ref:`Alpha Vantage<remote_data.alphavantage>`
     - :ref:`Enigma<remote_data.enigma>`
     - :ref:`Quandl<remote_data.quandl>`
     - :ref:`St.Louis FED (FRED)<remote_data.fred>`
@@ -112,17 +112,17 @@ year relative to today.
 
 .. _remote_data.alphavantage
 
-AlphaVantage
-============
+Alpha Vantage
+=============
 
-`AlphaVantage <https://www.alphavantage.co/documentation>`__ provides realtime
+`Alpha Vantage <https://www.alphavantage.co/documentation>`__ provides realtime
 equities and forex data. Free registration is required to get an API key.
 
 Historical Time Series Data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Through the
-`AlphaVantage <https://www.alphavantage.co/documentation>`__ Time Series
+`Alpha Vantage <https://www.alphavantage.co/documentation>`__ Time Series
 endpoints, it is possible to obtain historical equities data for individual
 symbols. The following endpoints are available:
 
@@ -152,7 +152,7 @@ provided.
 Quotes
 ^^^^^^
 
-`AlphaVantage <https://www.alphavantage.co/documentation>`__ Batch Stock Quotes
+`Alpha Vantage <https://www.alphavantage.co/documentation>`__ Batch Stock Quotes
 endpoint allows the retrieval of realtime stock quotes for up to 100 symbols at
 once. These quotes are accessible through the top-level function
 ``get_quote_av``.
@@ -171,7 +171,7 @@ once. These quotes are accessible through the top-level function
 Forex
 ^^^^^
 
-`AlphaVantage <https://www.alphavantage.co/documentation>`__ provides realtime
+`Alpha Vantage <https://www.alphavantage.co/documentation>`__ provides realtime
 currency exchange rates (for physical and digital currencies).
 
 To request the exchange rate of physical or digital currencies, simply format
@@ -199,7 +199,7 @@ Multiple pairs are are allowable:
 Sector Performance
 ^^^^^^^^^^^^^^^^^^
 
-`AlphaVantage <https://www.alphavantage.co/documentation>`__ provides sector
+`Alpha Vantage <https://www.alphavantage.co/documentation>`__ provides sector
 performances through the top-level function ``get_sector_performance_av``.
 
 .. ipython:: python

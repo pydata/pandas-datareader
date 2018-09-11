@@ -19,7 +19,7 @@ class TSPReader(_BaseReader):
         Ending date, timestamp. Same format as starting date.
     retry_count : int, default 3
         Number of times to retry query request.
-    pause : int, default 0
+    pause : int, default 0.1
         Time, in seconds, to pause between consecutive queries of chunks. If
         single value given for symbol, represents the pause between retries.
     session : Session, default None
@@ -29,7 +29,7 @@ class TSPReader(_BaseReader):
     def __init__(self,
                  symbols=('Linc', 'L2020', 'L2030', 'L2040',
                           'L2050', 'G', 'F', 'C', 'S', 'I'),
-                 start=None, end=None, retry_count=3, pause=0.001,
+                 start=None, end=None, retry_count=3, pause=0.1,
                  session=None):
         super(TSPReader, self).__init__(symbols=symbols,
                                         start=start, end=end,

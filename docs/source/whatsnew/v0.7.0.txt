@@ -11,6 +11,7 @@ v0.7.0 (Xxxxxxx YY, 20ZZ)
 Highlights include:
 
 - Immediate deprecation of Google finance and Morningstar for historical price data, as these API endpoints are no longer supported by their respective providers. Alternate methods are welcome via pull requests, as PDR would like to restore these features.
+- Removal of EDGAR, which was deprecated in v0.6.0.
 
 .. contents:: What's new in v0.7.0
     :local:
@@ -22,23 +23,23 @@ Enhancements
 ~~~~~~~~~~~~
 
 - A new data connector for data provided by
-  `AlphaVantage <https://www.alphavantage.co/documentation>`__ was
+  `Alpha Vantage <https://www.alphavantage.co/documentation>`__ was
   introduced to obtain Foreign Exchange (FX) data.
   (:issue:`389`)
 
 - A new data connector for data provided by
-  `AlphaVantage <https://www.alphavantage.co/documentation>`__ was
+  `Alpha Vantage <https://www.alphavantage.co/documentation>`__ was
   introduced to obtain historical time series data.
   (:issue:`389`)
 
   - A new data connector for data provided by
-  `AlphaVantage <https://www.alphavantage.co/documentation>`__ was
+  `Alpha Vantage <https://www.alphavantage.co/documentation>`__ was
   introduced to obtain sector performance data, accessed through the
   top-level function ``get_sector_performance_av``.
   (:issue:`389`)
 
   - A new data connector for data provided by
-  `AlphaVantage <https://www.alphavantage.co/documentation>`__ was
+  `Alpha Vantage <https://www.alphavantage.co/documentation>`__ was
   introduced to obtain real-time Batch Stock Quotes through the
   top-level function ``get_quote_av``.
   (:issue:`389`)
@@ -65,10 +66,7 @@ Bug Fixes
 
 - Added support for passing the API KEY to QuandlReader either directly or by
   setting the environmental variable QUANDL_API_KEY (:issue:`485`).
-- Handle Morningstar index volume data properly (:issue:`486`).
 - Added support for optionally passing a custom base_url to the EnigmaReader  (:issue:`499`).
-- Fixed Morningstar 'retry' incrementation (:issue:`513`)
-- Updated Google Daily Price API to functional url (:issue:`502`)
 - Fix Yahoo! price data (:issue:`498`)
 - Added back support for Yahoo! price, dividends, and splits data for stocks
   and currency pairs (:issue:`487`).
@@ -77,3 +75,4 @@ Bug Fixes
 - Fix Yahoo! quote reader (:issue: `540`)
 - Remove import of deprecated `tm.get_data_path` (:issue: `566`)
 - Allow full usage of stooq url parameters
+- Removed unused requests-file and requests-ftp dependencies

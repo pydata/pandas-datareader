@@ -6,7 +6,7 @@ import numpy as np
 
 class AVQuotesReader(AlphaVantage):
     """
-    Returns DataFrame of AlphaVantage Realtime Stock quotes for a symbol or
+    Returns DataFrame of Alpha Vantage Realtime Stock quotes for a symbol or
     list of symbols.
 
     Parameters
@@ -16,13 +16,13 @@ class AVQuotesReader(AlphaVantage):
         DataFrame with index containing stock symbols.
     retry_count : int, default 3
         Number of times to retry query request.
-    pause : int, default 0
+    pause : int, default 0.1
         Time, in seconds, to pause between consecutive queries of chunks. If
         single value given for symbol, represents the pause between retries.
     session : Session, default None
         requests.sessions.Session instance to be used
     """
-    def __init__(self, symbols=None, retry_count=3, pause=0.5, session=None,
+    def __init__(self, symbols=None, retry_count=3, pause=0.1, session=None,
                  api_key=None):
         if isinstance(symbols, str):
             syms = [symbols]

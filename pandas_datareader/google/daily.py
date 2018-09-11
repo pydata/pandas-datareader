@@ -32,7 +32,7 @@ class GoogleDailyReader(_DailyBaseReader):
     """
 
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.001, session=None, chunksize=25):
+                 pause=0.1, session=None, chunksize=25):
         raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Google finance'))
         super(GoogleDailyReader, self).__init__(symbols, start, end,
                                                 retry_count, pause, session,

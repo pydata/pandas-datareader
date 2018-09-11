@@ -5,7 +5,7 @@ from datetime import datetime
 
 class AVTimeSeriesReader(AlphaVantage):
     """
-    Returns DataFrame of the AlphaVantage Stock Time Series endpoints
+    Returns DataFrame of the Alpha Vantage Stock Time Series endpoints
 
     .. versionadded:: 0.7.0
 
@@ -20,7 +20,7 @@ class AVTimeSeriesReader(AlphaVantage):
         Ending date, timestamp. Same format as starting date.
     retry_count : int, default 3
         Number of times to retry query request.
-    pause : int, default 0.5
+    pause : int, default 0.1
         Time, in seconds, to pause between consecutive queries of chunks. If
         single value given for symbol, represents the pause between retries.
     session : Session, default None
@@ -39,7 +39,7 @@ class AVTimeSeriesReader(AlphaVantage):
     }
 
     def __init__(self, symbols=None, function="TIME_SERIES_DAILY",
-                 start=None, end=None, retry_count=3, pause=0.35,
+                 start=None, end=None, retry_count=3, pause=0.1,
                  session=None, chunksize=25, api_key=None):
         super(AVTimeSeriesReader, self).__init__(symbols=symbols, start=start,
                                                  end=end,
@@ -55,7 +55,7 @@ class AVTimeSeriesReader(AlphaVantage):
 
     @property
     def output_size(self):
-        """ Used to limit the size of the AlphaVantage query when
+        """ Used to limit the size of the Alpha Vantage query when
         possible.
         """
         delta = datetime.now() - self.start

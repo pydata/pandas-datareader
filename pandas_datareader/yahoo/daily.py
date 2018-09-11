@@ -27,7 +27,7 @@ class YahooDailyReader(_DailyBaseReader):
         Ending date, timestamp. Same format as starting date.
     retry_count : int, default 3
         Number of times to retry query request.
-    pause : int, default 0
+    pause : int, default 0.1
         Time, in seconds, to pause between consecutive queries of chunks. If
         single value given for symbol, represents the pause between retries.
     session : Session, default None
@@ -50,7 +50,7 @@ class YahooDailyReader(_DailyBaseReader):
     """
 
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.35, session=None, adjust_price=False,
+                 pause=0.1, session=None, adjust_price=False,
                  ret_index=False, chunksize=1, interval='d',
                  get_actions=False, adjust_dividends=False):
         super(YahooDailyReader, self).__init__(symbols=symbols,
