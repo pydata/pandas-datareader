@@ -1,6 +1,6 @@
 .. _whatsnew_070:
 
-v0.7.0 (Xxxxxxx YY, 20ZZ)
+v0.7.0 (September 11, 2018)
 ---------------------------
 
 .. warning::
@@ -32,19 +32,19 @@ Enhancements
   introduced to obtain historical time series data.
   (:issue:`389`)
 
-  - A new data connector for data provided by
-  `Alpha Vantage <https://www.alphavantage.co/documentation>`__ was
-  introduced to obtain sector performance data, accessed through the
-  top-level function ``get_sector_performance_av``.
-  (:issue:`389`)
+- A new data connector for data provided by
+    `Alpha Vantage <https://www.alphavantage.co/documentation>`__ was
+    introduced to obtain sector performance data, accessed through the
+    top-level function ``get_sector_performance_av``.
+    (:issue:`389`)
 
-  - A new data connector for data provided by
+- A new data connector for data provided by
   `Alpha Vantage <https://www.alphavantage.co/documentation>`__ was
   introduced to obtain real-time Batch Stock Quotes through the
   top-level function ``get_quote_av``.
   (:issue:`389`)
 
-  - MOEX data connector now supports multiple symbols in constructor.
+- MOEX data connector now supports multiple symbols in constructor.
   (:issue:`562`)
 
 .. _whatsnew_070.api_breaking:
