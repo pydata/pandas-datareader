@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Stooq.com &mdash; pandas-datareader 0.6.0 documentation</title>
+  <title>Stooq.com &mdash; pandas-datareader 0.7.0 documentation</title>
   
 
   
@@ -24,28 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="pandas-datareader 0.6.0 documentation" href="../index.html"/>
-        <link rel="up" title="Data Readers" href="index.html"/>
-        <link rel="next" title="Tiingo" href="tiingo.html"/>
-        <link rel="prev" title="Robinhood" href="robinhood.html"/> 
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tiingo" href="tiingo.html" />
+    <link rel="prev" title="Robinhood" href="robinhood.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -67,7 +58,7 @@
             
             
               <div class="version">
-                0.6.0
+                0.7.0
               </div>
             
           
@@ -97,6 +88,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../cache.html">Caching queries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../see-also.html">Other Data Sources</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Data Readers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="alphavantage.html">AlphaVantage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="fred.html">Federal Reserve Economic Data (FRED)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="famafrench.html">Fama-French Data (Ken French’s Data Library)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bank-of-canada.html">Bank of Canada</a></li>
@@ -126,7 +118,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">pandas-datareader</a>
@@ -134,9 +126,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -184,22 +177,24 @@
 <span id="stooq-com"></span><h1>Stooq.com<a class="headerlink" href="#module-pandas_datareader.stooq" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pandas_datareader.stooq.StooqDailyReader">
-<em class="property">class </em><code class="descclassname">pandas_datareader.stooq.</code><code class="descname">StooqDailyReader</code><span class="sig-paren">(</span><em>symbols=None</em>, <em>start=None</em>, <em>end=None</em>, <em>retry_count=3</em>, <em>pause=0.001</em>, <em>session=None</em>, <em>chunksize=25</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.stooq.StooqDailyReader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns DataFrame/Panel of historical stock prices from symbols, over date
-range, start to end. To avoid being penalized by Google Finance servers,
-pauses between downloading ‘chunks’ of symbols can be specified.</p>
+<em class="property">class </em><code class="descclassname">pandas_datareader.stooq.</code><code class="descname">StooqDailyReader</code><span class="sig-paren">(</span><em>symbols=None</em>, <em>start=None</em>, <em>end=None</em>, <em>retry_count=3</em>, <em>pause=0.1</em>, <em>session=None</em>, <em>chunksize=25</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.stooq.StooqDailyReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns DataFrame/dict of Dataframes of historical stock prices from
+symbols, over date range, start to end.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>symbols</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a><em>, </em><em>array-like object</em><em> (</em><em>list</em><em>, </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a><em>, </em><em>Series</em><em>)</em><em>, or </em><em>DataFrame</em>) – Single stock symbol (ticker), array-like object of symbols or
+<li><strong>symbols</strong> (<em>string</em><em>, </em><em>array-like object</em><em> (</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a><em>, </em><em>Series</em><em>)</em><em>, or </em><em>DataFrame</em>) – Single stock symbol (ticker), array-like object of symbols or
 DataFrame with index containing stock symbols.</li>
-<li><strong>retry_count</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a><em>, </em><em>default 3</em>) – Number of times to retry query request.</li>
-<li><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a><em>, </em><em>default 0</em>) – Time, in seconds, to pause between consecutive queries of chunks. If
+<li><strong>start</strong> (<em>string</em><em>, </em><em>date which to start interval at YYYYMMDD.</em>) – </li>
+<li><strong>end</strong> (<em>string</em><em>, </em><em>date which to end interval at YYYYMMDD.</em>) – </li>
+<li><strong>retry_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 3</em>) – Number of times to retry query request.</li>
+<li><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 0.1</em>) – Time, in seconds, to pause between consecutive queries of chunks. If
 single value given for symbol, represents the pause between retries.</li>
-<li><strong>chunksize</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a><em>, </em><em>default 25</em>) – Number of symbols to download consecutively before intiating pause.</li>
+<li><strong>chunksize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 25</em>) – Number of symbols to download consecutively before initiating pause.</li>
 <li><strong>session</strong> (<em>Session</em><em>, </em><em>default None</em>) – requests.sessions.Session instance to be used</li>
+<li><strong>freq</strong> (<em>string</em><em>, </em><em>d</em><em>, </em><em>w</em><em>, </em><em>m</em><em> ,</em><em>q</em><em>, </em><em>y for daily</em><em>, </em><em>weekly</em><em>, </em><em>monthly</em><em>, </em><em>quarterly</em><em>, </em><em>yearly</em>) – </li>
 </ul>
 </td>
 </tr>
@@ -237,9 +232,7 @@ single value given for symbol, represents the pause between retries.</li>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -261,7 +254,7 @@ single value given for symbol, represents the pause between retries.</li>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -279,7 +272,8 @@ single value given for symbol, represents the pause between retries.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.6.0',
+            VERSION:'0.7.0',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -292,19 +286,13 @@ single value given for symbol, represents the pause between retries.</li>
 
   
 
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

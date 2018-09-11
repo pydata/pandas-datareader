@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Engima &mdash; pandas-datareader 0.6.0 documentation</title>
+  <title>Engima &mdash; pandas-datareader 0.7.0 documentation</title>
   
 
   
@@ -24,28 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="pandas-datareader 0.6.0 documentation" href="../index.html"/>
-        <link rel="up" title="Data Readers" href="index.html"/>
-        <link rel="next" title="Eurostat" href="eurostat.html"/>
-        <link rel="prev" title="Bank of Canada" href="bank-of-canada.html"/> 
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Eurostat" href="eurostat.html" />
+    <link rel="prev" title="Bank of Canada" href="bank-of-canada.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -67,7 +58,7 @@
             
             
               <div class="version">
-                0.6.0
+                0.7.0
               </div>
             
           
@@ -97,6 +88,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../cache.html">Caching queries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../see-also.html">Other Data Sources</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Data Readers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="alphavantage.html">AlphaVantage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="fred.html">Federal Reserve Economic Data (FRED)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="famafrench.html">Fama-French Data (Ken French’s Data Library)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bank-of-canada.html">Bank of Canada</a></li>
@@ -126,7 +118,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">pandas-datareader</a>
@@ -134,9 +126,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -184,19 +177,36 @@
 <span id="engima"></span><h1>Engima<a class="headerlink" href="#module-pandas_datareader.enigma" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pandas_datareader.enigma.EnigmaReader">
-<em class="property">class </em><code class="descclassname">pandas_datareader.enigma.</code><code class="descname">EnigmaReader</code><span class="sig-paren">(</span><em>dataset_id=None</em>, <em>api_key=None</em>, <em>retry_count=5</em>, <em>pause=0.75</em>, <em>session=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pandas_datareader.enigma.</code><code class="descname">EnigmaReader</code><span class="sig-paren">(</span><em>dataset_id=None</em>, <em>api_key=None</em>, <em>retry_count=5</em>, <em>pause=0.75</em>, <em>session=None</em>, <em>base_url='https://public.enigma.com/api'</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Collects current snapshot of Enigma data located at the specified
 data set ID and returns a pandas DataFrame.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dataset_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Enigma dataset UUID.</li>
+<li><strong>api_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Enigma API key. If not provided, the environmental variable
+ENIGMA_API_KEY is read.</li>
+<li><strong>retry_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 5</em>) – Number of times to retry query request.</li>
+<li><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>default 0.1</em>) – Time, in seconds, of the pause between retries.</li>
+<li><strong>session</strong> (<em>Session</em><em>, </em><em>default None</em>) – requests.sessions.Session instance to be used.</li>
+<li><strong>base_url</strong> (str, optional (defaults to <a class="reference external" href="https://public.enigma.com/api">https://public.enigma.com/api</a>)) – Alternative Enigma endpoint to be used.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Examples</p>
 <p>Download current snapshot for the following Florida Inspections Dataset:
 <a class="reference external" href="https://public.enigma.com/datasets/bedaf052-5fcd-4758-8d27-048ce8746c6a">https://public.enigma.com/datasets/bedaf052-5fcd-4758-8d27-048ce8746c6a</a></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="k">as</span> <span class="nn">pdr</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="k">as</span> <span class="nn">pdr</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_enigma</span><span class="p">(</span><span class="s1">&#39;bedaf052-5fcd-4758-8d27-048ce8746c6a&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>In the event that ENIGMA_API_KEY does not exist in your env, the key can
 be supplied as the second argument or as the keyword argument <cite>api_key</cite></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">EnigmaReader</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="s1">&#39;bedaf052-5fcd-4758-8d27-048ce8746c6a&#39;</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">EnigmaReader</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="s1">&#39;bedaf052-5fcd-4758-8d27-048ce8746c6a&#39;</span><span class="p">,</span>
 <span class="gp">... </span>                  <span class="n">api_key</span><span class="o">=</span><span class="s1">&#39;INSERT_API_KEY&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -249,9 +259,7 @@ be supplied as the second argument or as the keyword argument <cite>api_key</cit
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -273,7 +281,7 @@ be supplied as the second argument or as the keyword argument <cite>api_key</cit
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -291,7 +299,8 @@ be supplied as the second argument or as the keyword argument <cite>api_key</cit
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.6.0',
+            VERSION:'0.7.0',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -304,19 +313,13 @@ be supplied as the second argument or as the keyword argument <cite>api_key</cit
 
   
 
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

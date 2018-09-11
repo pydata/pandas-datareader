@@ -19,8 +19,7 @@ Remote Data Access
 
 .. warning::
 
-  Yahoo! Finance has been immediately deprecated.  Yahoo! substantially
-  altered their API in late 2017 and the csv endpoint was retired.
+  Yahoo! Finance, Google Finance, and Morningstar have been immediately deprecated.  Endpoints from these providers have been retired
 
 .. _remote_data.data_reader:
 
@@ -28,10 +27,10 @@ Functions from :mod:`pandas_datareader.data` and :mod:`pandas_datareader.wb`
 extract data from various Internet sources into a pandas DataFrame.
 Currently the following sources are supported:
 
-    - :ref:`Google Finance<remote_data.google>`
-    - :ref:`Morningstar<remote_data.morningstar>`
+    - :ref:`Tiingo<remote_data.tiingo>`
     - :ref:`IEX<remote_data.iex>`
     - :ref:`Robinhood<remote_data.robinhood>`
+    - :ref:`Alpha Vantage<remote_data.alphavantage>`
     - :ref:`Enigma<remote_data.enigma>`
     - :ref:`Quandl<remote_data.quandl>`
     - :ref:`St.Louis FED (FRED)<remote_data.fred>`
@@ -45,26 +44,6 @@ Currently the following sources are supported:
     - :ref:`MOEX<remote_data.moex>`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
-
-.. _remote_data.google:
-
-Google Finance
-==============
-
-.. warning::
-
-  Google'a API has become less reliable during 2017.  While the google
-  datareader often works as expected, it is not uncommon to experience
-  a range of errors when attempting to read data, especially in bulk.
-
-.. ipython:: python
-
-    import pandas_datareader.data as web
-    import datetime
-    start = datetime.datetime(2010, 1, 1)
-    end = datetime.datetime(2013, 1, 27)
-    f = web.DataReader('F', 'google', start, end)
-    f.ix['2010-01-04']
 
 .. _remote_data.tiingo:
 
@@ -84,21 +63,6 @@ writing).
     df = pdr.get_data_tiingo('GOOG', api_key=os.getenv('TIINGO_API_KEY'))
     df.head()
 
-.. _remote_data.morningstar:
-
-Morningstar
-===========
-OHLC and Volume data is available from Morningstar using the same API which
-powers their charts.
-
-.. ipython:: python
-
-    import pandas_datareader.data as web
-    from datetime import datetime
-    start = datetime(2015, 2, 9)
-    end = datetime(2017, 5, 24)
-    f = web.DataReader('F', 'morningstar', start, end)
-    f.head()
 
 .. _remote_data.iex:
 
@@ -113,10 +77,10 @@ prices are available for up to 5 years:
 
     import pandas_datareader.data as web
     from datetime import datetime
-    start = datetime(2015, 2, 9)
-    end = datetime(2017, 5, 24)
+    start = datetime(2016, 9, 1)
+    end = datetime(2018, 9, 1)
     f = web.DataReader('F', 'iex', start, end)
-    f.loc['2015-02-09']
+    f.loc['2018-08-31']
 
 There are additional interfaces to this API that are
 directly exposed: tops (`'iex-tops'`) and last (`'iex-lasts'`).
@@ -145,6 +109,106 @@ year relative to today.
     f = web.DataReader('F', 'robinhood')
     f.head()
 
+.. _remote_data.alphavantage:
+
+Alpha Vantage
+=============
+
+`Alpha Vantage <https://www.alphavantage.co/documentation>`__ provides realtime
+equities and forex data. Free registration is required to get an API key.
+
+Historical Time Series Data
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Through the
+`Alpha Vantage <https://www.alphavantage.co/documentation>`__ Time Series
+endpoints, it is possible to obtain historical equities data for individual
+symbols. The following endpoints are available:
+
+* ``av-daily`` - Daily Time Series
+* ``av-daily-adjusted`` - Daily Time Series (Adjusted)
+* ``av-weekly`` - Weekly Time Series
+* ``av-weekly-adjusted`` - Weekly Time Series (Adjusted)
+* ``av-monthly`` - Monthly Time Series
+* ``av-monthly-adjusted`` - Monthly Time Series (Adjusted)
+
+.. ipython:: python
+
+    import os
+    from datetime import datetime
+    import pandas_datareader.data as web
+
+    f = web.DataReader("AAPL", "av-daily", start=datetime(2017, 2, 9),
+                       end=datetime(2017, 5, 24),
+                       access_key=os.getenv('ALPHAVANTAGE_API_KEY'))
+    f.loc["2017-02-09"]
+
+The top-level function ``get_data_alphavantage`` is also provided. This
+function will
+return the ``TIME_SERIES_DAILY`` endpoint for the symbol and date range
+provided.
+
+Quotes
+^^^^^^
+
+`Alpha Vantage <https://www.alphavantage.co/documentation>`__ Batch Stock Quotes
+endpoint allows the retrieval of realtime stock quotes for up to 100 symbols at
+once. These quotes are accessible through the top-level function
+``get_quote_av``.
+
+.. ipython:: python
+
+    import os
+    from datetime import datetime
+    import pandas_datareader.data as web
+
+    web.get_quote_av(["AAPL", "TSLA"])
+
+
+.. note:: Most quotes are only available during market hours.
+
+Forex
+^^^^^
+
+`Alpha Vantage <https://www.alphavantage.co/documentation>`__ provides realtime
+currency exchange rates (for physical and digital currencies).
+
+To request the exchange rate of physical or digital currencies, simply format
+as "FROM/TO" as in "USD/JPY".
+
+.. ipython:: python
+
+    import os
+    import pandas_datareader.data as web
+
+    f = web.DataReader("USD/JPY", "av-forex",
+                       access_key=os.getenv('ALPHAVANTAGE_API_KEY'))
+
+Multiple pairs are are allowable:
+
+.. ipython:: python
+
+    import os
+    import pandas_datareader.data as web
+
+    f = web.DataReader(["USD/JPY", "BTC/CNY"], "av-forex",
+                       access_key=os.getenv('ALPHAVANTAGE_API_KEY'))
+
+
+Sector Performance
+^^^^^^^^^^^^^^^^^^
+
+`Alpha Vantage <https://www.alphavantage.co/documentation>`__ provides sector
+performances through the top-level function ``get_sector_performance_av``.
+
+.. ipython:: python
+
+    import os
+    import pandas_datareader.data as web
+
+    web.get_sector_performance_av().head()
+
+
 .. _remote_data.enigma:
 
 Enigma
@@ -152,7 +216,7 @@ Enigma
 
 Access datasets from `Enigma <https://public.enigma.com>`__,
 the world's largest repository of structured public data. Note that the Enigma
-URL has changed from `app.enigma.io <https://app.enigma.io>`__ as of release 
+URL has changed from `app.enigma.io <https://app.enigma.io>`__ as of release
 ``0.6.0``, as the old API deprecated.
 
 Datasets are unique identified by the ``uuid4`` at the end of a dataset's web address.
@@ -205,7 +269,7 @@ FRED
     start = datetime.datetime(2010, 1, 1)
     end = datetime.datetime(2013, 1, 27)
     gdp = web.DataReader('GDP', 'fred', start, end)
-    gdp.ix['2013-01-01']
+    gdp.loc['2013-01-01']
 
     # Multiple series:
     inflation = web.DataReader(['CPIAUCSL', 'CPILFESL'], 'fred', start, end)
@@ -240,7 +304,7 @@ World Bank
 by using the ``wb`` I/O functions.
 
 Indicators
-----------
+^^^^^^^^^^
 
 Either from exploring the World Bank site, or using the search function included,
 every world bank indicator is accessible.
@@ -251,7 +315,7 @@ constant dollars in North America, you would use the ``search`` function:
 .. code-block:: python
 
     In [1]: from pandas_datareader import wb
-    In [2]: mathces = wb.search('gdp.*capita.*const')
+    In [2]: matches = wb.search('gdp.*capita.*const')
 
 
 Then you would use the ``download`` function to acquire the data from the World
@@ -352,7 +416,7 @@ populations in rich countries tend to use cellphones at a higher rate:
     ==============================================================================
 
 Country Codes
--------------
+^^^^^^^^^^^^^
 
 The ``country`` argument accepts a string or list of mixed
 `two <http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`__ or `three <http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3>`__ character
@@ -361,7 +425,7 @@ ISO country codes, as well as dynamic `World Bank exceptions <https://datahelpde
 For a list of the the hard-coded country codes (used solely for error handling logic) see ``pandas_datareader.wb.country_codes``.
 
 Problematic Country Codes & Indicators
---------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. note::
 
@@ -468,7 +532,7 @@ available. More information on the `field <http://www.nasdaqtrader.com/trader.as
 
     In [12]: from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
     In [13]: symbols = get_nasdaq_symbols()
-    In [14]: print(symbols.ix['IBM'])
+    In [14]: print(symbols.loc['IBM'])
         Nasdaq Traded                                                    True
         Security Name       International Business Machines Corporation Co...
         Listing Exchange                                                    N
@@ -487,7 +551,7 @@ available. More information on the `field <http://www.nasdaqtrader.com/trader.as
 
 Stooq Index Data
 ================
-Google finance doesn't provide common index data download. The Stooq site has the data for download. 
+Google finance doesn't provide common index data download. The Stooq site has the data for download.
 
 .. ipython:: python
 

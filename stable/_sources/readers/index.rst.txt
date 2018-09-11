@@ -4,6 +4,7 @@ Data Readers
 .. toctree::
    :maxdepth: 2
 
+   alphavantage
    fred
    famafrench
    bank-of-canada

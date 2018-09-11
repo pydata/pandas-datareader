@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Remote Data Access &mdash; pandas-datareader 0.6.0 documentation</title>
+  <title>Remote Data Access &mdash; pandas-datareader 0.7.0 documentation</title>
   
 
   
@@ -24,27 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="pandas-datareader 0.6.0 documentation" href="index.html"/>
-        <link rel="next" title="Caching queries" href="cache.html"/>
-        <link rel="prev" title="What’s New" href="whatsnew.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Caching queries" href="cache.html" />
+    <link rel="prev" title="What’s New" href="whatsnew.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -66,7 +58,7 @@
             
             
               <div class="version">
-                0.6.0
+                0.7.0
               </div>
             
           
@@ -93,11 +85,16 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="whatsnew.html">What’s New</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Remote Data Access</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#google-finance">Google Finance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tiingo">Tiingo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#morningstar">Morningstar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#iex">IEX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#robinhood">Robinhood</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#alpha-vantage">Alpha Vantage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#historical-time-series-data">Historical Time Series Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#quotes">Quotes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#forex">Forex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sector-performance">Sector Performance</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#enigma">Enigma</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#quandl">Quandl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#fred">FRED</a></li>
@@ -130,7 +127,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">pandas-datareader</a>
@@ -138,9 +135,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -186,18 +184,17 @@
 <span id="remote-data"></span><h1>Remote Data Access<a class="headerlink" href="#remote-data-access" title="Permalink to this headline">¶</a></h1>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">Yahoo! Finance has been immediately deprecated.  Yahoo! substantially
-altered their API in late 2017 and the csv endpoint was retired.</p>
+<p class="last">Yahoo! Finance, Google Finance, and Morningstar have been immediately deprecated.  Endpoints from these providers have been retired</p>
 </div>
-<p id="remote-data-data-reader">Functions from <code class="xref py py-mod docutils literal"><span class="pre">pandas_datareader.data</span></code> and <a class="reference internal" href="readers/world-bank.html#module-pandas_datareader.wb" title="pandas_datareader.wb"><code class="xref py py-mod docutils literal"><span class="pre">pandas_datareader.wb</span></code></a>
+<p id="remote-data-data-reader">Functions from <code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas_datareader.data</span></code> and <a class="reference internal" href="readers/world-bank.html#module-pandas_datareader.wb" title="pandas_datareader.wb"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas_datareader.wb</span></code></a>
 extract data from various Internet sources into a pandas DataFrame.
 Currently the following sources are supported:</p>
 <blockquote>
 <div><ul class="simple">
-<li><a class="reference internal" href="#remote-data-google"><span class="std std-ref">Google Finance</span></a></li>
-<li><a class="reference internal" href="#remote-data-morningstar"><span class="std std-ref">Morningstar</span></a></li>
+<li><a class="reference internal" href="#remote-data-tiingo"><span class="std std-ref">Tiingo</span></a></li>
 <li><a class="reference internal" href="#remote-data-iex"><span class="std std-ref">IEX</span></a></li>
 <li><a class="reference internal" href="#remote-data-robinhood"><span class="std std-ref">Robinhood</span></a></li>
+<li><a class="reference internal" href="#remote-data-alphavantage"><span class="std std-ref">Alpha Vantage</span></a></li>
 <li><a class="reference internal" href="#remote-data-enigma"><span class="std std-ref">Enigma</span></a></li>
 <li><a class="reference internal" href="#remote-data-quandl"><span class="std std-ref">Quandl</span></a></li>
 <li><a class="reference internal" href="#remote-data-fred"><span class="std std-ref">St.Louis FED (FRED)</span></a></li>
@@ -212,35 +209,6 @@ Currently the following sources are supported:</p>
 </ul>
 </div></blockquote>
 <p>It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.</p>
-<div class="section" id="google-finance">
-<span id="remote-data-google"></span><h2>Google Finance<a class="headerlink" href="#google-finance" title="Permalink to this headline">¶</a></h2>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Google’a API has become less reliable during 2017.  While the google
-datareader often works as expected, it is not uncommon to experience
-a range of errors when attempting to read data, especially in bulk.</p>
-</div>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
-
-<span class="gp">In [2]: </span><span class="kn">import</span> <span class="nn">datetime</span>
-
-<span class="gp">In [3]: </span><span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-
-<span class="gp">In [4]: </span><span class="n">end</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">27</span><span class="p">)</span>
-
-<span class="gp">In [5]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;google&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
-
-<span class="gp">In [6]: </span><span class="n">f</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="s1">&#39;2010-01-04&#39;</span><span class="p">]</span>
-<span class="go">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      Out[6]: </span>
-<span class="go">Open            10.17</span>
-<span class="go">High            10.28</span>
-<span class="go">Low             10.05</span>
-<span class="go">Close           10.28</span>
-<span class="go">Volume    60855796.00</span>
-<span class="go">Name: 2010-01-04 00:00:00, dtype: float64</span>
-</pre></div>
-</div>
-</div>
 <div class="section" id="tiingo">
 <span id="remote-data-tiingo"></span><h2>Tiingo<a class="headerlink" href="#tiingo" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://www.tiingo.com">Tiingo</a> is a tracing platform that provides a data
@@ -248,51 +216,29 @@ api with historical end-of-day prices on equities, mutual funds and ETFs.
 Free registration is required to get an API key.  Free accounts are rate
 limited and can access a limited number of symbols (500 at the time of
 writing).</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [7]: </span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">os</span>
 
-<span class="gp">In [8]: </span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="kn">as</span> <span class="nn">pdr</span>
+<span class="gp">In [2]: </span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="kn">as</span> <span class="nn">pdr</span>
 
-<span class="gp">In [9]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_tiingo</span><span class="p">(</span><span class="s1">&#39;GOOG&#39;</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;TIINGO_API_KEY&#39;</span><span class="p">))</span>
-<span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="nn">&lt;ipython-input-9-c390cc1bcafe&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_tiingo</span><span class="p">(</span><span class="s1">&#39;GOOG&#39;</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;TIINGO_API_KEY&#39;</span><span class="p">))</span>
+<span class="gp">In [3]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_tiingo</span><span class="p">(</span><span class="s1">&#39;GOOG&#39;</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;TIINGO_API_KEY&#39;</span><span class="p">))</span>
 
-<span class="ne">AttributeError</span>: module &#39;pandas_datareader&#39; has no attribute &#39;get_data_tiingo&#39;
+<span class="gp">In [4]: </span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[4]: </span><span class="go"></span>
+<span class="go">                   adjClose  adjHigh  adjLow  adjOpen  adjVolume   close  \</span>
+<span class="go">symbol date                                                                </span>
+<span class="go">GOOG   2014-03-27    558.46   568.00  552.92  568.000      13100  558.46   </span>
+<span class="go">       2014-03-28    559.99   566.43  558.67  561.200      41100  559.99   </span>
+<span class="go">       2014-03-31    556.97   567.00  556.93  566.890      10800  556.97   </span>
+<span class="go">       2014-04-01    567.16   568.45  558.71  558.710       7900  567.16   </span>
+<span class="go">       2014-04-02    567.00   604.83  562.19  565.106     146700  567.00   </span>
 
-<span class="gp">In [10]: </span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="go">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ---------------------------------------------------------------------------</span>
-<span class="go">NameError                                 Traceback (most recent call last)</span>
-<span class="go">&lt;ipython-input-10-c42a15b2c7cf&gt; in &lt;module&gt;()</span>
-<span class="go">----&gt; 1 df.head()</span>
-
-<span class="go">NameError: name &#39;df&#39; is not defined</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="morningstar">
-<span id="remote-data-morningstar"></span><h2>Morningstar<a class="headerlink" href="#morningstar" title="Permalink to this headline">¶</a></h2>
-<p>OHLC and Volume data is available from Morningstar using the same API which
-powers their charts.</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [11]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
-
-<span class="gp">In [12]: </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-
-<span class="gp">In [13]: </span><span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2015</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
-
-<span class="gp">In [14]: </span><span class="n">end</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">24</span><span class="p">)</span>
-
-<span class="gp">In [15]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;morningstar&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
-
-<span class="gp">In [16]: </span><span class="n">f</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="gh">Out[16]: </span><span class="go"></span>
-<span class="go">                   Close   High    Low   Open    Volume</span>
-<span class="go">Symbol Date                                            </span>
-<span class="go">F      2015-02-09  15.92  16.03  15.72  15.76  20286720</span>
-<span class="go">       2015-02-10  16.09  16.14  15.91  16.05  27928530</span>
-<span class="go">       2015-02-11  16.25  16.31  16.01  16.08  34285331</span>
-<span class="go">       2015-02-12  16.36  16.45  16.30  16.34  23738806</span>
-<span class="go">       2015-02-13  16.30  16.36  16.19  16.33  19954568</span>
+<span class="go">                   divCash    high     low     open  splitFactor  volume  </span>
+<span class="go">symbol date                                                               </span>
+<span class="go">GOOG   2014-03-27      0.0  568.00  552.92  568.000          1.0   13100  </span>
+<span class="go">       2014-03-28      0.0  566.43  558.67  561.200          1.0   41100  </span>
+<span class="go">       2014-03-31      0.0  567.00  556.93  566.890          1.0   10800  </span>
+<span class="go">       2014-04-01      0.0  568.45  558.71  558.710          1.0    7900  </span>
+<span class="go">       2014-04-02      0.0  604.83  562.19  565.106          1.0  146700  </span>
 </pre></div>
 </div>
 </div>
@@ -301,40 +247,47 @@ powers their charts.</p>
 <p>The Investors Exchange (IEX) provides a wide range of data through an
 <a class="reference external" href="https://iextrading.com/developer/docs/">API</a>.  Historical stock
 prices are available for up to 5 years:</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [17]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [5]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
 
-<span class="gp">In [18]: </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="gp">In [6]: </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
-<span class="gp">In [19]: </span><span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2015</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+<span class="gp">In [7]: </span><span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-<span class="gp">In [20]: </span><span class="n">end</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">24</span><span class="p">)</span>
+<span class="gp">In [8]: </span><span class="n">end</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-<span class="gp">In [21]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;iex&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
-<span class="go">5y</span>
+<span class="gp">In [9]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;iex&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
 
-<span class="gp">In [22]: </span><span class="n">f</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2015-02-09&#39;</span><span class="p">]</span>
-<span class="go">   Out[22]: </span>
-<span class="go">open            15.76</span>
-<span class="go">high            16.03</span>
-<span class="go">low             15.72</span>
-<span class="go">close           15.92</span>
-<span class="go">volume    20286720.00</span>
-<span class="go">Name: 2015-02-09, dtype: float64</span>
+<span class="gp">In [10]: </span><span class="n">f</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2018-08-31&#39;</span><span class="p">]</span>
+<span class="gh">Out[10]: </span><span class="go"></span>
+<span class="go">open             9.64</span>
+<span class="go">high             9.68</span>
+<span class="go">low              9.40</span>
+<span class="go">close            9.48</span>
+<span class="go">volume    76424884.00</span>
+<span class="go">Name: 2018-08-31, dtype: float64</span>
 </pre></div>
 </div>
 <p>There are additional interfaces to this API that are
 directly exposed: tops (<cite>‘iex-tops’</cite>) and last (<cite>‘iex-lasts’</cite>).
 A third interface to the deep API is exposed through
 <cite>Deep</cite> class or the <cite>get_iex_book</cite> function.</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [23]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [11]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
 
-<span class="gp">In [24]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;gs&#39;</span><span class="p">,</span> <span class="s1">&#39;iex-tops&#39;</span><span class="p">)</span>
+<span class="gp">In [12]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;gs&#39;</span><span class="p">,</span> <span class="s1">&#39;iex-tops&#39;</span><span class="p">)</span>
 
-<span class="gp">In [25]: </span><span class="n">f</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
-<span class="gh">Out[25]: </span><span class="go"></span>
-<span class="go">Empty DataFrame</span>
-<span class="go">Columns: [0]</span>
-<span class="go">Index: []</span>
+<span class="gp">In [13]: </span><span class="n">f</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="gh">Out[13]: </span><span class="go"></span>
+<span class="go">                                   0</span>
+<span class="go">askPrice                           0</span>
+<span class="go">askSize                            0</span>
+<span class="go">bidPrice                           0</span>
+<span class="go">bidSize                            0</span>
+<span class="go">lastSalePrice                 230.22</span>
+<span class="go">lastSaleSize                     100</span>
+<span class="go">lastSaleTime           1536695998263</span>
+<span class="go">lastUpdated            1536696010951</span>
+<span class="go">marketPercent                0.03393</span>
+<span class="go">sector         diversifiedfinancials</span>
 </pre></div>
 </div>
 </div>
@@ -343,30 +296,307 @@ A third interface to the deep API is exposed through
 <p><a class="reference external" href="https://www.robinhood.com">Robinhood</a> is a stock trading platform with an
 API that provides a limited set of data. Historical daily data is limited to 1
 year relative to today.</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [26]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [14]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
 
-<span class="gp">In [27]: </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="gp">In [15]: </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
-<span class="gp">In [28]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;robinhood&#39;</span><span class="p">)</span>
+<span class="gp">In [16]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;robinhood&#39;</span><span class="p">)</span>
 
-<span class="gp">In [29]: </span><span class="n">f</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="gh">Out[29]: </span><span class="go"></span>
-<span class="go">                  close_price high_price  interpolated low_price open_price  \</span>
-<span class="go">symbol begins_at                                                              </span>
-<span class="go">F      2017-01-30     11.9029    11.9895         False   11.8163    11.9895   </span>
-<span class="go">       2017-01-31     11.8933    11.9222         False   11.7297    11.8452   </span>
-<span class="go">       2017-02-01     11.8548    12.1050         False   11.7586    11.9799   </span>
-<span class="go">       2017-02-02     11.8163    11.9029         False   11.7682    11.8356   </span>
-<span class="go">       2017-02-03     12.0858    12.1435         False   11.9222    11.9511   </span>
+<span class="gp">In [17]: </span><span class="n">f</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[17]: </span><span class="go"></span>
+<span class="go">                  close_price high_price  interpolated  low_price open_price  \</span>
+<span class="go">symbol begins_at                                                               </span>
+<span class="go">F      2017-09-11   10.703100  10.740600         False  10.675000  10.693700   </span>
+<span class="go">       2017-09-12   10.872000  10.947000         False  10.684300  10.721900   </span>
+<span class="go">       2017-09-13   10.900100  10.909500         False  10.806300  10.881300   </span>
+<span class="go">       2017-09-14   10.843800  10.956400         False  10.768800  10.881300   </span>
+<span class="go">       2017-09-15   10.900100  10.909500         False  10.778100  10.825000   </span>
 
 <span class="go">                  session    volume  </span>
 <span class="go">symbol begins_at                     </span>
-<span class="go">F      2017-01-30     reg  39254173  </span>
-<span class="go">       2017-01-31     reg  46974479  </span>
-<span class="go">       2017-02-01     reg  44396812  </span>
-<span class="go">       2017-02-02     reg  29035383  </span>
-<span class="go">       2017-02-03     reg  38245251  </span>
+<span class="go">F      2017-09-11     reg  43375019  </span>
+<span class="go">       2017-09-12     reg  41386669  </span>
+<span class="go">       2017-09-13     reg  23302152  </span>
+<span class="go">       2017-09-14     reg  31696274  </span>
+<span class="go">       2017-09-15     reg  30865470  </span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="alpha-vantage">
+<span id="remote-data-alphavantage"></span><h2>Alpha Vantage<a class="headerlink" href="#alpha-vantage" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> provides realtime
+equities and forex data. Free registration is required to get an API key.</p>
+<div class="section" id="historical-time-series-data">
+<h3>Historical Time Series Data<a class="headerlink" href="#historical-time-series-data" title="Permalink to this headline">¶</a></h3>
+<p>Through the
+<a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> Time Series
+endpoints, it is possible to obtain historical equities data for individual
+symbols. The following endpoints are available:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">av-daily</span></code> - Daily Time Series</li>
+<li><code class="docutils literal notranslate"><span class="pre">av-daily-adjusted</span></code> - Daily Time Series (Adjusted)</li>
+<li><code class="docutils literal notranslate"><span class="pre">av-weekly</span></code> - Weekly Time Series</li>
+<li><code class="docutils literal notranslate"><span class="pre">av-weekly-adjusted</span></code> - Weekly Time Series (Adjusted)</li>
+<li><code class="docutils literal notranslate"><span class="pre">av-monthly</span></code> - Monthly Time Series</li>
+<li><code class="docutils literal notranslate"><span class="pre">av-monthly-adjusted</span></code> - Monthly Time Series (Adjusted)</li>
+</ul>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [18]: </span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="gp">In [19]: </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="gp">In [20]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+
+<span class="gp">In [21]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="s2">&quot;av-daily&quot;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span>
+<span class="gp">   ....: </span>                   <span class="n">end</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span>
+<span class="gp">   ....: </span>                   <span class="n">access_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">))</span>
+<span class="gp">   ....: </span>
+<span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="nn">&lt;ipython-input-21-2b7291097315&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="s2">&quot;av-daily&quot;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span>                    <span class="n">end</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span>
+<span class="ne">----&gt; </span><span class="mi">3</span>                    <span class="n">access_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">))</span>
+
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.7.0-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">DataReader</span><span class="nt">(name, data_source, start, end, retry_count, pause, session, access_key)</span>
+<span class="g g-Whitespace">    </span><span class="mi">417</span>                                   <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span> <span class="n">retry_count</span><span class="o">=</span><span class="n">retry_count</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">418</span>                                   <span class="n">pause</span><span class="o">=</span><span class="n">pause</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+<span class="ne">--&gt; </span><span class="mi">419</span>                                   <span class="n">api_key</span><span class="o">=</span><span class="n">access_key</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">420</span> 
+<span class="g g-Whitespace">    </span><span class="mi">421</span>     <span class="k">elif</span> <span class="n">data_source</span> <span class="o">==</span> <span class="s2">&quot;av-daily-adjusted&quot;</span><span class="p">:</span>
+
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.7.0-py3.6.egg/pandas_datareader/av/time_series.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, function, start, end, retry_count, pause, session, chunksize, api_key)</span>
+<span class="g g-Whitespace">     </span><span class="mi">46</span>                                                  <span class="n">retry_count</span><span class="o">=</span><span class="n">retry_count</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">47</span>                                                  <span class="n">pause</span><span class="o">=</span><span class="n">pause</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+<span class="ne">---&gt; </span><span class="mi">48</span>                                                  <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">49</span> 
+<span class="g g-Whitespace">     </span><span class="mi">50</span>         <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">function</span>
+
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.7.0-py3.6.egg/pandas_datareader/av/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, start, end, retry_count, pause, session, api_key)</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span>             <span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">28</span>         <span class="k">if</span> <span class="ow">not</span> <span class="n">api_key</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">29</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The AlphaVantage API key must be provided &#39;</span>
+<span class="g g-Whitespace">     </span><span class="mi">30</span>                              <span class="s1">&#39;either through the api_key variable or &#39;</span>
+<span class="g g-Whitespace">     </span><span class="mi">31</span>                              <span class="s1">&#39;through the environment varaible &#39;</span>
+
+<span class="ne">ValueError</span>: The AlphaVantage API key must be provided either through the api_key variable or through the environment varaible ALPHAVANTAGE_API_KEY
+
+<span class="gp">In [22]: </span><span class="n">f</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;2017-02-09&quot;</span><span class="p">]</span>
+<span class="go">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ---------------------------------------------------------------------------</span>
+<span class="go">KeyError                                  Traceback (most recent call last)</span>
+<span class="go">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas/core/indexing.py in _has_valid_type(self, key, axis)</span>
+<span class="go">   1505                 if not ax.contains(key):</span>
+<span class="go">-&gt; 1506                     error()</span>
+<span class="go">   1507             except TypeError as e:</span>
+
+<span class="go">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas/core/indexing.py in error()</span>
+<span class="go">   1500                                .format(key=key,</span>
+<span class="go">-&gt; 1501                                        axis=self.obj._get_axis_name(axis)))</span>
+<span class="go">   1502 </span>
+
+<span class="go">KeyError: &#39;the label [2017-02-09] is not in the [index]&#39;</span>
+
+<span class="go">During handling of the above exception, another exception occurred:</span>
+
+<span class="go">KeyError                                  Traceback (most recent call last)</span>
+<span class="go">&lt;ipython-input-22-fa4709e90513&gt; in &lt;module&gt;()</span>
+<span class="go">----&gt; 1 f.loc[&quot;2017-02-09&quot;]</span>
+
+<span class="go">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas/core/indexing.py in __getitem__(self, key)</span>
+<span class="go">   1371 </span>
+<span class="go">   1372             maybe_callable = com._apply_if_callable(key, self.obj)</span>
+<span class="go">-&gt; 1373             return self._getitem_axis(maybe_callable, axis=axis)</span>
+<span class="go">   1374 </span>
+<span class="go">   1375     def _is_scalar_access(self, key):</span>
+
+<span class="go">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas/core/indexing.py in _getitem_axis(self, key, axis)</span>
+<span class="go">   1624 </span>
+<span class="go">   1625         # fall thru to straight lookup</span>
+<span class="go">-&gt; 1626         self._has_valid_type(key, axis)</span>
+<span class="go">   1627         return self._get_label(key, axis=axis)</span>
+<span class="go">   1628 </span>
+
+<span class="go">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas/core/indexing.py in _has_valid_type(self, key, axis)</span>
+<span class="go">   1512                 raise</span>
+<span class="go">   1513             except:</span>
+<span class="go">-&gt; 1514                 error()</span>
+<span class="go">   1515 </span>
+<span class="go">   1516         return True</span>
+
+<span class="go">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas/core/indexing.py in error()</span>
+<span class="go">   1499                 raise KeyError(u&quot;the label [{key}] is not in the [{axis}]&quot;</span>
+<span class="go">   1500                                .format(key=key,</span>
+<span class="go">-&gt; 1501                                        axis=self.obj._get_axis_name(axis)))</span>
+<span class="go">   1502 </span>
+<span class="go">   1503             try:</span>
+
+<span class="go">KeyError: &#39;the label [2017-02-09] is not in the [index]&#39;</span>
+</pre></div>
+</div>
+<p>The top-level function <code class="docutils literal notranslate"><span class="pre">get_data_alphavantage</span></code> is also provided. This
+function will
+return the <code class="docutils literal notranslate"><span class="pre">TIME_SERIES_DAILY</span></code> endpoint for the symbol and date range
+provided.</p>
+</div>
+<div class="section" id="quotes">
+<h3>Quotes<a class="headerlink" href="#quotes" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> Batch Stock Quotes
+endpoint allows the retrieval of realtime stock quotes for up to 100 symbols at
+once. These quotes are accessible through the top-level function
+<code class="docutils literal notranslate"><span class="pre">get_quote_av</span></code>.</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [23]: </span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="gp">In [24]: </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="gp">In [25]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+
+<span class="gp">In [26]: </span><span class="n">web</span><span class="o">.</span><span class="n">get_quote_av</span><span class="p">([</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="s2">&quot;TSLA&quot;</span><span class="p">])</span>
+<span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="nn">&lt;ipython-input-26-847531af19c1&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">web</span><span class="o">.</span><span class="n">get_quote_av</span><span class="p">([</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="s2">&quot;TSLA&quot;</span><span class="p">])</span>
+
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.7.0-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">get_quote_av</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">76</span> 
+<span class="g g-Whitespace">     </span><span class="mi">77</span> <span class="k">def</span> <span class="nf">get_quote_av</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">78</span>     <span class="k">return</span> <span class="n">AVQuotesReader</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">79</span> 
+<span class="g g-Whitespace">     </span><span class="mi">80</span> 
+
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.7.0-py3.6.egg/pandas_datareader/av/quotes.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, retry_count, pause, session, api_key)</span>
+<span class="g g-Whitespace">     </span><span class="mi">37</span>                                              <span class="n">pause</span><span class="o">=</span><span class="n">pause</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">38</span>                                              <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+<span class="ne">---&gt; </span><span class="mi">39</span>                                              <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">40</span> 
+<span class="g g-Whitespace">     </span><span class="mi">41</span>     <span class="nd">@property</span>
+
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.7.0-py3.6.egg/pandas_datareader/av/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, start, end, retry_count, pause, session, api_key)</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span>             <span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">28</span>         <span class="k">if</span> <span class="ow">not</span> <span class="n">api_key</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">29</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The AlphaVantage API key must be provided &#39;</span>
+<span class="g g-Whitespace">     </span><span class="mi">30</span>                              <span class="s1">&#39;either through the api_key variable or &#39;</span>
+<span class="g g-Whitespace">     </span><span class="mi">31</span>                              <span class="s1">&#39;through the environment varaible &#39;</span>
+
+<span class="ne">ValueError</span>: The AlphaVantage API key must be provided either through the api_key variable or through the environment varaible ALPHAVANTAGE_API_KEY
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Most quotes are only available during market hours.</p>
+</div>
+</div>
+<div class="section" id="forex">
+<h3>Forex<a class="headerlink" href="#forex" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> provides realtime
+currency exchange rates (for physical and digital currencies).</p>
+<p>To request the exchange rate of physical or digital currencies, simply format
+as “FROM/TO” as in “USD/JPY”.</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [27]: </span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="gp">In [28]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+
+<span class="gp">In [29]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s2">&quot;USD/JPY&quot;</span><span class="p">,</span> <span class="s2">&quot;av-forex&quot;</span><span class="p">,</span>
+<span class="gp">   ....: </span>                   <span class="n">access_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">))</span>
+<span class="gp">   ....: </span>
+<span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="nn">&lt;ipython-input-29-0d76ca594e3f&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s2">&quot;USD/JPY&quot;</span><span class="p">,</span> <span class="s2">&quot;av-forex&quot;</span><span class="p">,</span>
+<span class="ne">----&gt; </span><span class="mi">2</span>                    <span class="n">access_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">))</span>
+
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.7.0-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">DataReader</span><span class="nt">(name, data_source, start, end, retry_count, pause, session, access_key)</span>
+<span class="g g-Whitespace">    </span><span class="mi">410</span>         <span class="k">return</span> <span class="n">AVForexReader</span><span class="p">(</span><span class="n">symbols</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">retry_count</span><span class="o">=</span><span class="n">retry_count</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">411</span>                              <span class="n">pause</span><span class="o">=</span><span class="n">pause</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+<span class="ne">--&gt; </span><span class="mi">412</span>                              <span class="n">api_key</span><span class="o">=</span><span class="n">access_key</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">413</span> 
+<span class="g g-Whitespace">    </span><span class="mi">414</span>     <span class="k">elif</span> <span class="n">data_source</span> <span class="o">==</span> <span class="s2">&quot;av-daily&quot;</span><span class="p">:</span>
+
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.7.0-py3.6.egg/pandas_datareader/av/forex.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, retry_count, pause, session, api_key)</span>
+<span class="g g-Whitespace">     </span><span class="mi">36</span>                                             <span class="n">pause</span><span class="o">=</span><span class="n">pause</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">37</span>                                             <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+<span class="ne">---&gt; </span><span class="mi">38</span>                                             <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">39</span>         <span class="bp">self</span><span class="o">.</span><span class="n">from_curr</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="g g-Whitespace">     </span><span class="mi">40</span>         <span class="bp">self</span><span class="o">.</span><span class="n">to_curr</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.7.0-py3.6.egg/pandas_datareader/av/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, start, end, retry_count, pause, session, api_key)</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span>             <span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">28</span>         <span class="k">if</span> <span class="ow">not</span> <span class="n">api_key</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">29</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The AlphaVantage API key must be provided &#39;</span>
+<span class="g g-Whitespace">     </span><span class="mi">30</span>                              <span class="s1">&#39;either through the api_key variable or &#39;</span>
+<span class="g g-Whitespace">     </span><span class="mi">31</span>                              <span class="s1">&#39;through the environment varaible &#39;</span>
+
+<span class="ne">ValueError</span>: The AlphaVantage API key must be provided either through the api_key variable or through the environment varaible ALPHAVANTAGE_API_KEY
+</pre></div>
+</div>
+<p>Multiple pairs are are allowable:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [30]: </span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="gp">In [31]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+
+<span class="gp">In [32]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">([</span><span class="s2">&quot;USD/JPY&quot;</span><span class="p">,</span> <span class="s2">&quot;BTC/CNY&quot;</span><span class="p">],</span> <span class="s2">&quot;av-forex&quot;</span><span class="p">,</span>
+<span class="gp">   ....: </span>                   <span class="n">access_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">))</span>
+<span class="gp">   ....: </span>
+<span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="nn">&lt;ipython-input-32-6abbec7d5fab&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">([</span><span class="s2">&quot;USD/JPY&quot;</span><span class="p">,</span> <span class="s2">&quot;BTC/CNY&quot;</span><span class="p">],</span> <span class="s2">&quot;av-forex&quot;</span><span class="p">,</span>
+<span class="ne">----&gt; </span><span class="mi">2</span>                    <span class="n">access_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">))</span>
+
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.7.0-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">DataReader</span><span class="nt">(name, data_source, start, end, retry_count, pause, session, access_key)</span>
+<span class="g g-Whitespace">    </span><span class="mi">410</span>         <span class="k">return</span> <span class="n">AVForexReader</span><span class="p">(</span><span class="n">symbols</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">retry_count</span><span class="o">=</span><span class="n">retry_count</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">411</span>                              <span class="n">pause</span><span class="o">=</span><span class="n">pause</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+<span class="ne">--&gt; </span><span class="mi">412</span>                              <span class="n">api_key</span><span class="o">=</span><span class="n">access_key</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">413</span> 
+<span class="g g-Whitespace">    </span><span class="mi">414</span>     <span class="k">elif</span> <span class="n">data_source</span> <span class="o">==</span> <span class="s2">&quot;av-daily&quot;</span><span class="p">:</span>
+
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.7.0-py3.6.egg/pandas_datareader/av/forex.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, retry_count, pause, session, api_key)</span>
+<span class="g g-Whitespace">     </span><span class="mi">36</span>                                             <span class="n">pause</span><span class="o">=</span><span class="n">pause</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">37</span>                                             <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+<span class="ne">---&gt; </span><span class="mi">38</span>                                             <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">39</span>         <span class="bp">self</span><span class="o">.</span><span class="n">from_curr</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="g g-Whitespace">     </span><span class="mi">40</span>         <span class="bp">self</span><span class="o">.</span><span class="n">to_curr</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.7.0-py3.6.egg/pandas_datareader/av/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, start, end, retry_count, pause, session, api_key)</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span>             <span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">28</span>         <span class="k">if</span> <span class="ow">not</span> <span class="n">api_key</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">29</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The AlphaVantage API key must be provided &#39;</span>
+<span class="g g-Whitespace">     </span><span class="mi">30</span>                              <span class="s1">&#39;either through the api_key variable or &#39;</span>
+<span class="g g-Whitespace">     </span><span class="mi">31</span>                              <span class="s1">&#39;through the environment varaible &#39;</span>
+
+<span class="ne">ValueError</span>: The AlphaVantage API key must be provided either through the api_key variable or through the environment varaible ALPHAVANTAGE_API_KEY
+</pre></div>
+</div>
+</div>
+<div class="section" id="sector-performance">
+<h3>Sector Performance<a class="headerlink" href="#sector-performance" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> provides sector
+performances through the top-level function <code class="docutils literal notranslate"><span class="pre">get_sector_performance_av</span></code>.</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [33]: </span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="gp">In [34]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+
+<span class="gp">In [35]: </span><span class="n">web</span><span class="o">.</span><span class="n">get_sector_performance_av</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="nn">&lt;ipython-input-35-76a9513d061d&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">web</span><span class="o">.</span><span class="n">get_sector_performance_av</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.7.0-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">get_sector_performance_av</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">137</span> 
+<span class="g g-Whitespace">    </span><span class="mi">138</span> <span class="k">def</span> <span class="nf">get_sector_performance_av</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">139</span>     <span class="k">return</span> <span class="n">AVSectorPerformanceReader</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">140</span> 
+<span class="g g-Whitespace">    </span><span class="mi">141</span> 
+
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.7.0-py3.6.egg/pandas_datareader/av/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, symbols, start, end, retry_count, pause, session, api_key)</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span>             <span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">28</span>         <span class="k">if</span> <span class="ow">not</span> <span class="n">api_key</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">29</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The AlphaVantage API key must be provided &#39;</span>
+<span class="g g-Whitespace">     </span><span class="mi">30</span>                              <span class="s1">&#39;either through the api_key variable or &#39;</span>
+<span class="g g-Whitespace">     </span><span class="mi">31</span>                              <span class="s1">&#39;through the environment varaible &#39;</span>
+
+<span class="ne">ValueError</span>: The AlphaVantage API key must be provided either through the api_key variable or through the environment varaible ALPHAVANTAGE_API_KEY
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="enigma">
@@ -374,76 +604,74 @@ year relative to today.</p>
 <p>Access datasets from <a class="reference external" href="https://public.enigma.com">Enigma</a>,
 the world’s largest repository of structured public data. Note that the Enigma
 URL has changed from <a class="reference external" href="https://app.enigma.io">app.enigma.io</a> as of release
-<code class="docutils literal"><span class="pre">0.6.0</span></code>, as the old API deprecated.</p>
-<p>Datasets are unique identified by the <code class="docutils literal"><span class="pre">uuid4</span></code> at the end of a dataset’s web address.
+<code class="docutils literal notranslate"><span class="pre">0.6.0</span></code>, as the old API deprecated.</p>
+<p>Datasets are unique identified by the <code class="docutils literal notranslate"><span class="pre">uuid4</span></code> at the end of a dataset’s web address.
 For example, the following code downloads from  <a class="reference external" href="https://public.enigma.com/datasets/292129b0-1275-44c8-a6a3-2a0881f24fe1">USDA Food Recalls 1996 Data</a>.</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [30]: </span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [36]: </span><span class="kn">import</span> <span class="nn">os</span>
 
-<span class="gp">In [31]: </span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="kn">as</span> <span class="nn">pdr</span>
+<span class="gp">In [37]: </span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="kn">as</span> <span class="nn">pdr</span>
 
-<span class="gp">In [32]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_enigma</span><span class="p">(</span><span class="s1">&#39;292129b0-1275-44c8-a6a3-2a0881f24fe1&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ENIGMA_API_KEY&#39;</span><span class="p">))</span>
+<span class="gp">In [38]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_enigma</span><span class="p">(</span><span class="s1">&#39;292129b0-1275-44c8-a6a3-2a0881f24fe1&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ENIGMA_API_KEY&#39;</span><span class="p">))</span>
 <span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">HTTPError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="nn">&lt;ipython-input-32-f46ac2b42095&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
+<span class="nn">&lt;ipython-input-38-f46ac2b42095&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_enigma</span><span class="p">(</span><span class="s1">&#39;292129b0-1275-44c8-a6a3-2a0881f24fe1&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ENIGMA_API_KEY&#39;</span><span class="p">))</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">get_data_enigma</span><span class="nt">(*args, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">66</span> 
-<span class="g g-Whitespace">     </span><span class="mi">67</span> <span class="k">def</span> <span class="nf">get_data_enigma</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="ne">---&gt; </span><span class="mi">68</span>     <span class="k">return</span> <span class="n">EnigmaReader</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">69</span> 
-<span class="g g-Whitespace">     </span><span class="mi">70</span> 
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.7.0-py3.6.egg/pandas_datareader/data.py</span> in <span class="ni">get_data_enigma</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">72</span> 
+<span class="g g-Whitespace">     </span><span class="mi">73</span> <span class="k">def</span> <span class="nf">get_data_enigma</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">74</span>     <span class="k">return</span> <span class="n">EnigmaReader</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">75</span> 
+<span class="g g-Whitespace">     </span><span class="mi">76</span> 
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">read</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">     </span><span class="mi">66</span>         <span class="sd">&quot;&quot;&quot;Read data&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">67</span>         <span class="k">try</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">68</span>             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">69</span>         <span class="k">finally</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">70</span>             <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.7.0-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">read</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">     </span><span class="mi">83</span>         <span class="sd">&quot;&quot;&quot;Read data&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">84</span>         <span class="k">try</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">85</span>             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">86</span>         <span class="k">finally</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">87</span>             <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_read</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">     </span><span class="mi">72</span>     <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="g g-Whitespace">     </span><span class="mi">73</span>         <span class="n">snapshot_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_snapshot_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">74</span>         <span class="n">exported_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_snapshot_export</span><span class="p">(</span><span class="n">snapshot_id</span><span class="p">)</span>  <span class="c1"># TODO: Retry?</span>
-<span class="g g-Whitespace">     </span><span class="mi">75</span>         <span class="n">decoded_data</span> <span class="o">=</span> <span class="n">exported_data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">76</span>         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">StringIO</span><span class="p">(</span><span class="n">decoded_data</span><span class="p">))</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.7.0-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_read</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">     </span><span class="mi">89</span>     <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">90</span>         <span class="n">snapshot_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_snapshot_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">91</span>         <span class="n">exported_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_snapshot_export</span><span class="p">(</span><span class="n">snapshot_id</span><span class="p">)</span>  <span class="c1"># TODO: Retry?</span>
+<span class="g g-Whitespace">     </span><span class="mi">92</span>         <span class="n">decoded_data</span> <span class="o">=</span> <span class="n">exported_data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">93</span>         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">StringIO</span><span class="p">(</span><span class="n">decoded_data</span><span class="p">))</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">get_snapshot_export</span><span class="nt">(self, snapshot_id)</span>
-<span class="g g-Whitespace">    </span><span class="mi">109</span>         <span class="sd">&quot;&quot;&quot;Return raw CSV of a dataset&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">110</span>         <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;export/{0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">snapshot_id</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">111</span>         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">112</span>         <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.7.0-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">get_snapshot_export</span><span class="nt">(self, snapshot_id)</span>
+<span class="g g-Whitespace">    </span><span class="mi">126</span>         <span class="sd">&quot;&quot;&quot;Return raw CSV of a dataset&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">127</span>         <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;export/{0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">snapshot_id</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">128</span>         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">129</span>         <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_get</span><span class="nt">(self, url)</span>
-<span class="g g-Whitespace">     </span><span class="mi">91</span>                     <span class="k">continue</span>
-<span class="g g-Whitespace">     </span><span class="mi">92</span>                 <span class="k">else</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">93</span>                     <span class="k">raise</span> <span class="n">e</span>
-<span class="g g-Whitespace">     </span><span class="mi">94</span> 
-<span class="g g-Whitespace">     </span><span class="mi">95</span>     <span class="k">def</span> <span class="nf">get_current_snapshot_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">):</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.7.0-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_get</span><span class="nt">(self, url)</span>
+<span class="g g-Whitespace">    </span><span class="mi">108</span>                     <span class="k">continue</span>
+<span class="g g-Whitespace">    </span><span class="mi">109</span>                 <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">110</span>                     <span class="k">raise</span> <span class="n">e</span>
+<span class="g g-Whitespace">    </span><span class="mi">111</span> 
+<span class="g g-Whitespace">    </span><span class="mi">112</span>     <span class="k">def</span> <span class="nf">get_current_snapshot_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">):</span>
 
-<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.6.0-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_get</span><span class="nt">(self, url)</span>
-<span class="g g-Whitespace">     </span><span class="mi">83</span>             <span class="k">try</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">84</span>                 <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">85</span>                 <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">86</span>                 <span class="k">return</span> <span class="n">response</span>
-<span class="g g-Whitespace">     </span><span class="mi">87</span>             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/pandas_datareader-0.7.0-py3.6.egg/pandas_datareader/enigma.py</span> in <span class="ni">_get</span><span class="nt">(self, url)</span>
+<span class="g g-Whitespace">    </span><span class="mi">100</span>             <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">101</span>                 <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">102</span>                 <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">103</span>                 <span class="k">return</span> <span class="n">response</span>
+<span class="g g-Whitespace">    </span><span class="mi">104</span>             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 
 <span class="nn">~/miniconda/envs/test-environment/lib/python3.6/site-packages/requests/models.py</span> in <span class="ni">raise_for_status</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">933</span> 
-<span class="g g-Whitespace">    </span><span class="mi">934</span>         <span class="k">if</span> <span class="n">http_error_msg</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">935</span>             <span class="k">raise</span> <span class="n">HTTPError</span><span class="p">(</span><span class="n">http_error_msg</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">936</span> 
-<span class="g g-Whitespace">    </span><span class="mi">937</span>     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">937</span> 
+<span class="g g-Whitespace">    </span><span class="mi">938</span>         <span class="k">if</span> <span class="n">http_error_msg</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">939</span>             <span class="k">raise</span> <span class="n">HTTPError</span><span class="p">(</span><span class="n">http_error_msg</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">940</span> 
+<span class="g g-Whitespace">    </span><span class="mi">941</span>     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="ne">HTTPError</span>: 429 Client Error: TOO MANY REQUESTS for url: https://public.enigma.com/api/export/29746625-6fbc-4594-8a43-27bf1f1bcfb3
+<span class="ne">HTTPError</span>: 403 Client Error: FORBIDDEN for url: https://public.enigma.com/api/export/29746625-6fbc-4594-8a43-27bf1f1bcfb3
 
-<span class="gp">In [33]: </span><span class="n">df</span><span class="o">.</span><span class="n">columns</span>
-<span class="go">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ---------------------------------------------------------------------------</span>
-<span class="go">NameError                                 Traceback (most recent call last)</span>
-<span class="go">&lt;ipython-input-33-b666bf274d0a&gt; in &lt;module&gt;()</span>
-<span class="go">----&gt; 1 df.columns</span>
-
-<span class="go">NameError: name &#39;df&#39; is not defined</span>
+<span class="gp">In [39]: </span><span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<span class="go">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Out[39]: </span>
+<span class="go">Index([&#39;adjClose&#39;, &#39;adjHigh&#39;, &#39;adjLow&#39;, &#39;adjOpen&#39;, &#39;adjVolume&#39;, &#39;close&#39;,</span>
+<span class="go">       &#39;divCash&#39;, &#39;high&#39;, &#39;low&#39;, &#39;open&#39;, &#39;splitFactor&#39;, &#39;volume&#39;],</span>
+<span class="go">      dtype=&#39;object&#39;)</span>
 </pre></div>
 </div>
 </div>
@@ -462,14 +690,14 @@ style shown above, currently available for
 <p>As of June 2017, each DB has a different data schema,
 the coverage in terms of time range is sometimes surprisingly small, and
 the data quality is not always good.</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [34]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [40]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
 
-<span class="gp">In [35]: </span><span class="n">symbol</span> <span class="o">=</span> <span class="s1">&#39;WIKI/AAPL&#39;</span>  <span class="c1"># or &#39;AAPL.US&#39;</span>
+<span class="gp">In [41]: </span><span class="n">symbol</span> <span class="o">=</span> <span class="s1">&#39;WIKI/AAPL&#39;</span>  <span class="c1"># or &#39;AAPL.US&#39;</span>
 
-<span class="gp">In [36]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="s1">&#39;quandl&#39;</span><span class="p">,</span> <span class="s1">&#39;2015-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2015-01-05&#39;</span><span class="p">)</span>
+<span class="gp">In [42]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="s1">&#39;quandl&#39;</span><span class="p">,</span> <span class="s1">&#39;2015-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2015-01-05&#39;</span><span class="p">)</span>
 
-<span class="gp">In [37]: </span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2015-01-02&#39;</span><span class="p">]</span>
-<span class="gh">Out[37]: </span><span class="go"></span>
+<span class="gp">In [43]: </span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2015-01-02&#39;</span><span class="p">]</span>
+<span class="gh">Out[43]: </span><span class="go"></span>
 <span class="go">              Open    High     Low   Close      Volume  ExDividend  \</span>
 <span class="go">Date                                                                 </span>
 <span class="go">2015-01-02  111.39  111.44  107.35  109.33  53204626.0         0.0   </span>
@@ -486,26 +714,26 @@ the data quality is not always good.</p>
 </div>
 <div class="section" id="fred">
 <span id="remote-data-fred"></span><h2>FRED<a class="headerlink" href="#fred" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [38]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [44]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
 
-<span class="gp">In [39]: </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">In [45]: </span><span class="kn">import</span> <span class="nn">datetime</span>
 
-<span class="gp">In [40]: </span><span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">In [46]: </span><span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-<span class="gp">In [41]: </span><span class="n">end</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">27</span><span class="p">)</span>
+<span class="gp">In [47]: </span><span class="n">end</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">27</span><span class="p">)</span>
 
-<span class="gp">In [42]: </span><span class="n">gdp</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;GDP&#39;</span><span class="p">,</span> <span class="s1">&#39;fred&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+<span class="gp">In [48]: </span><span class="n">gdp</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;GDP&#39;</span><span class="p">,</span> <span class="s1">&#39;fred&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
 
-<span class="gp">In [43]: </span><span class="n">gdp</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="s1">&#39;2013-01-01&#39;</span><span class="p">]</span>
-<span class="gh">Out[43]: </span><span class="go"></span>
-<span class="go">GDP    16475.44</span>
+<span class="gp">In [49]: </span><span class="n">gdp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2013-01-01&#39;</span><span class="p">]</span>
+<span class="gh">Out[49]: </span><span class="go"></span>
+<span class="go">GDP    16569.591</span>
 <span class="go">Name: 2013-01-01 00:00:00, dtype: float64</span>
 
 <span class="go"># Multiple series:</span>
-<span class="gp">In [44]: </span><span class="n">inflation</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">([</span><span class="s1">&#39;CPIAUCSL&#39;</span><span class="p">,</span> <span class="s1">&#39;CPILFESL&#39;</span><span class="p">],</span> <span class="s1">&#39;fred&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+<span class="gp">In [50]: </span><span class="n">inflation</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">([</span><span class="s1">&#39;CPIAUCSL&#39;</span><span class="p">,</span> <span class="s1">&#39;CPILFESL&#39;</span><span class="p">],</span> <span class="s1">&#39;fred&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
 
-<span class="gp">In [45]: </span><span class="n">inflation</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="gh">Out[45]: </span><span class="go"></span>
+<span class="gp">In [51]: </span><span class="n">inflation</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[51]: </span><span class="go"></span>
 <span class="go">            CPIAUCSL  CPILFESL</span>
 <span class="go">DATE                          </span>
 <span class="go">2010-01-01   217.488   220.633</span>
@@ -519,61 +747,61 @@ the data quality is not always good.</p>
 <div class="section" id="fama-french">
 <span id="remote-data-ff"></span><h2>Fama/French<a class="headerlink" href="#fama-french" title="Permalink to this headline">¶</a></h2>
 <p>Access datasets from the <a class="reference external" href="http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html">Fama/French Data Library</a>.
-The <code class="docutils literal"><span class="pre">get_available_datasets</span></code> function returns a list of all available datasets.</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [46]: </span><span class="kn">from</span> <span class="nn">pandas_datareader.famafrench</span> <span class="kn">import</span> <span class="n">get_available_datasets</span>
+The <code class="docutils literal notranslate"><span class="pre">get_available_datasets</span></code> function returns a list of all available datasets.</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [52]: </span><span class="kn">from</span> <span class="nn">pandas_datareader.famafrench</span> <span class="kn">import</span> <span class="n">get_available_datasets</span>
 
-<span class="gp">In [47]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<span class="gp">In [53]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
 
-<span class="gp">In [48]: </span><span class="nb">len</span><span class="p">(</span><span class="n">get_available_datasets</span><span class="p">())</span>
-<span class="gh">Out[48]: </span><span class="go">262</span>
+<span class="gp">In [54]: </span><span class="nb">len</span><span class="p">(</span><span class="n">get_available_datasets</span><span class="p">())</span>
+<span class="gh">Out[54]: </span><span class="go">286</span>
 
-<span class="gp">In [49]: </span><span class="n">ds</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;5_Industry_Portfolios&#39;</span><span class="p">,</span> <span class="s1">&#39;famafrench&#39;</span><span class="p">)</span>
+<span class="gp">In [55]: </span><span class="n">ds</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;5_Industry_Portfolios&#39;</span><span class="p">,</span> <span class="s1">&#39;famafrench&#39;</span><span class="p">)</span>
 
-<span class="gp">In [50]: </span><span class="k">print</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;DESCR&#39;</span><span class="p">])</span>
+<span class="gp">In [56]: </span><span class="k">print</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;DESCR&#39;</span><span class="p">])</span>
 <span class="go">5 Industry Portfolios</span>
 <span class="gt">---------------------</span>
 
-<span class="n">This</span> <span class="nb">file</span> <span class="n">was</span> <span class="n">created</span> <span class="n">by</span> <span class="n">CMPT_IND_RETS</span> <span class="n">using</span> <span class="n">the</span> <span class="mi">201712</span> <span class="n">CRSP</span> <span class="n">database</span><span class="o">.</span> <span class="n">It</span> <span class="n">contains</span> <span class="n">value</span><span class="o">-</span> <span class="ow">and</span> <span class="n">equal</span><span class="o">-</span><span class="n">weighted</span> <span class="n">returns</span> <span class="k">for</span> <span class="mi">5</span> <span class="n">industry</span> <span class="n">portfolios</span><span class="o">.</span> <span class="n">The</span> <span class="n">portfolios</span> <span class="n">are</span> <span class="n">constructed</span> <span class="n">at</span> <span class="n">the</span> <span class="n">end</span> <span class="n">of</span> <span class="n">June</span><span class="o">.</span> <span class="n">The</span> <span class="n">annual</span> <span class="n">returns</span> <span class="n">are</span> <span class="kn">from</span> <span class="nn">January</span> <span class="nn">to</span> <span class="nn">December.</span> <span class="nn">Missing</span> <span class="nn">data</span> <span class="nn">are</span> <span class="nn">indicated</span> <span class="nn">by</span> <span class="o">-</span><span class="mf">99.99</span> <span class="ow">or</span> <span class="o">-</span><span class="mf">999.</span> <span class="n">Copyright</span> <span class="mi">2017</span> <span class="n">Kenneth</span> <span class="n">R</span><span class="o">.</span> <span class="n">French</span>
+<span class="n">This</span> <span class="nb">file</span> <span class="n">was</span> <span class="n">created</span> <span class="n">by</span> <span class="n">CMPT_IND_RETS</span> <span class="n">using</span> <span class="n">the</span> <span class="mi">201807</span> <span class="n">CRSP</span> <span class="n">database</span><span class="o">.</span> <span class="n">It</span> <span class="n">contains</span> <span class="n">value</span><span class="o">-</span> <span class="ow">and</span> <span class="n">equal</span><span class="o">-</span><span class="n">weighted</span> <span class="n">returns</span> <span class="k">for</span> <span class="mi">5</span> <span class="n">industry</span> <span class="n">portfolios</span><span class="o">.</span> <span class="n">The</span> <span class="n">portfolios</span> <span class="n">are</span> <span class="n">constructed</span> <span class="n">at</span> <span class="n">the</span> <span class="n">end</span> <span class="n">of</span> <span class="n">June</span><span class="o">.</span> <span class="n">The</span> <span class="n">annual</span> <span class="n">returns</span> <span class="n">are</span> <span class="kn">from</span> <span class="nn">January</span> <span class="nn">to</span> <span class="nn">December.</span> <span class="nn">Missing</span> <span class="nn">data</span> <span class="nn">are</span> <span class="nn">indicated</span> <span class="nn">by</span> <span class="o">-</span><span class="mf">99.99</span> <span class="ow">or</span> <span class="o">-</span><span class="mf">999.</span> <span class="n">Copyright</span> <span class="mi">2018</span> <span class="n">Kenneth</span> <span class="n">R</span><span class="o">.</span> <span class="n">French</span>
 
-<span class="g g-Whitespace">  </span><span class="mi">0</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Value</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Monthly</span> <span class="p">(</span><span class="mi">96</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
-<span class="g g-Whitespace">  </span><span class="mi">1</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Equal</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Monthly</span> <span class="p">(</span><span class="mi">96</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">0</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Value</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Monthly</span> <span class="p">(</span><span class="mi">103</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">1</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Equal</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Monthly</span> <span class="p">(</span><span class="mi">103</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
 <span class="g g-Whitespace">  </span><span class="mi">2</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Value</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Annual</span> <span class="p">(</span><span class="mi">8</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
 <span class="g g-Whitespace">  </span><span class="mi">3</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Equal</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Annual</span> <span class="p">(</span><span class="mi">8</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
-<span class="nn">  4 : Number of Firms</span> in <span class="ni">Portfolios </span><span class="nt">(96 rows x 5 cols)</span>
-<span class="g g-Whitespace">  </span><span class="mi">5</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Firm</span> <span class="n">Size</span> <span class="p">(</span><span class="mi">96</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
-<span class="g g-Whitespace">  </span><span class="mi">6</span> <span class="p">:</span> <span class="n">Sum</span> <span class="n">of</span> <span class="n">BE</span> <span class="o">/</span> <span class="n">Sum</span> <span class="n">of</span> <span class="n">ME</span> <span class="p">(</span><span class="mi">8</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
-<span class="g g-Whitespace">  </span><span class="mi">7</span> <span class="p">:</span> <span class="n">Value</span><span class="o">-</span><span class="n">Weighted</span> <span class="n">Average</span> <span class="n">of</span> <span class="n">BE</span><span class="o">/</span><span class="n">ME</span> <span class="p">(</span><span class="mi">8</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="nn">  4 : Number of Firms</span> in <span class="ni">Portfolios </span><span class="nt">(103 rows x 5 cols)</span>
+<span class="g g-Whitespace">  </span><span class="mi">5</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Firm</span> <span class="n">Size</span> <span class="p">(</span><span class="mi">103</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">6</span> <span class="p">:</span> <span class="n">Sum</span> <span class="n">of</span> <span class="n">BE</span> <span class="o">/</span> <span class="n">Sum</span> <span class="n">of</span> <span class="n">ME</span> <span class="p">(</span><span class="mi">9</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">7</span> <span class="p">:</span> <span class="n">Value</span><span class="o">-</span><span class="n">Weighted</span> <span class="n">Average</span> <span class="n">of</span> <span class="n">BE</span><span class="o">/</span><span class="n">ME</span> <span class="p">(</span><span class="mi">9</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
 
-<span class="gp">In [51]: </span><span class="n">ds</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="go">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Out[51]: </span>
+<span class="gp">In [57]: </span><span class="n">ds</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="go">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     Out[57]: </span>
 <span class="go">         Cnsmr  Manuf  HiTec  Hlth   Other</span>
 <span class="go">Date                                      </span>
-<span class="go">2010-01    622    737    830    467   1232</span>
-<span class="go">2010-02    620    734    821    464   1221</span>
-<span class="go">2010-03    614    729    818    458   1215</span>
-<span class="go">2010-04    614    726    807    458   1203</span>
-<span class="go">2010-05    611    723    804    457   1195</span>
+<span class="go">2010-01    623    736    831    468   1232</span>
+<span class="go">2010-02    621    733    822    465   1221</span>
+<span class="go">2010-03    615    728    819    459   1215</span>
+<span class="go">2010-04    615    725    808    459   1203</span>
+<span class="go">2010-05    612    722    805    458   1195</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="world-bank">
 <span id="remote-data-wb"></span><h2>World Bank<a class="headerlink" href="#world-bank" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal"><span class="pre">pandas</span></code> users can easily access thousands of panel data series from the
+<p><code class="docutils literal notranslate"><span class="pre">pandas</span></code> users can easily access thousands of panel data series from the
 <a class="reference external" href="http://data.worldbank.org">World Bank’s World Development Indicators</a>
-by using the <code class="docutils literal"><span class="pre">wb</span></code> I/O functions.</p>
+by using the <code class="docutils literal notranslate"><span class="pre">wb</span></code> I/O functions.</p>
 <div class="section" id="indicators">
 <h3>Indicators<a class="headerlink" href="#indicators" title="Permalink to this headline">¶</a></h3>
 <p>Either from exploring the World Bank site, or using the search function included,
 every world bank indicator is accessible.</p>
 <p>For example, if you wanted to compare the Gross Domestic Products per capita in
-constant dollars in North America, you would use the <code class="docutils literal"><span class="pre">search</span></code> function:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">pandas_datareader</span> <span class="kn">import</span> <span class="n">wb</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">mathces</span> <span class="o">=</span> <span class="n">wb</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;gdp.*capita.*const&#39;</span><span class="p">)</span>
+constant dollars in North America, you would use the <code class="docutils literal notranslate"><span class="pre">search</span></code> function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">pandas_datareader</span> <span class="kn">import</span> <span class="n">wb</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">matches</span> <span class="o">=</span> <span class="n">wb</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;gdp.*capita.*const&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Then you would use the <code class="docutils literal"><span class="pre">download</span></code> function to acquire the data from the World
+<p>Then you would use the <code class="docutils literal notranslate"><span class="pre">download</span></code> function to acquire the data from the World
 Bank’s servers:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">dat</span> <span class="o">=</span> <span class="n">wb</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">indicator</span><span class="o">=</span><span class="s1">&#39;NY.GDP.PCAP.KD&#39;</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;US&#39;</span><span class="p">,</span> <span class="s1">&#39;CA&#39;</span><span class="p">,</span> <span class="s1">&#39;MX&#39;</span><span class="p">],</span> <span class="n">start</span><span class="o">=</span><span class="mi">2005</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">2008</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">dat</span> <span class="o">=</span> <span class="n">wb</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">indicator</span><span class="o">=</span><span class="s1">&#39;NY.GDP.PCAP.KD&#39;</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;US&#39;</span><span class="p">,</span> <span class="s1">&#39;CA&#39;</span><span class="p">,</span> <span class="s1">&#39;MX&#39;</span><span class="p">],</span> <span class="n">start</span><span class="o">=</span><span class="mi">2005</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">2008</span><span class="p">)</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="k">print</span><span class="p">(</span><span class="n">dat</span><span class="p">)</span>
                       <span class="n">NY</span><span class="o">.</span><span class="n">GDP</span><span class="o">.</span><span class="n">PCAP</span><span class="o">.</span><span class="n">KD</span>
@@ -592,9 +820,9 @@ Bank’s servers:</p>
               <span class="mi">2005</span>  <span class="mf">42516.3934699993</span>
 </pre></div>
 </div>
-<p>The resulting dataset is a properly formatted <code class="docutils literal"><span class="pre">DataFrame</span></code> with a hierarchical
-index, so it is easy to apply <code class="docutils literal"><span class="pre">.groupby</span></code> transformations to it:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">dat</span><span class="p">[</span><span class="s1">&#39;NY.GDP.PCAP.KD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<p>The resulting dataset is a properly formatted <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> with a hierarchical
+index, so it is easy to apply <code class="docutils literal notranslate"><span class="pre">.groupby</span></code> transformations to it:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">dat</span><span class="p">[</span><span class="s1">&#39;NY.GDP.PCAP.KD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span>
 <span class="n">country</span>
 <span class="n">Canada</span>           <span class="mf">35765.569188</span>
@@ -605,7 +833,7 @@ index, so it is easy to apply <code class="docutils literal"><span class="pre">.
 </div>
 <p>Now imagine you want to compare GDP to the share of people with cellphone
 contracts around the world.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]:</span> <span class="n">wb</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;cell.*%&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]:</span> <span class="n">wb</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;cell.*%&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">]</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">7</span><span class="p">]:</span>
                      <span class="nb">id</span>                                               <span class="n">name</span>
 <span class="mi">3990</span>  <span class="n">IT</span><span class="o">.</span><span class="n">CEL</span><span class="o">.</span><span class="n">SETS</span><span class="o">.</span><span class="n">FE</span><span class="o">.</span><span class="n">ZS</span>  <span class="n">Mobile</span> <span class="n">cellular</span> <span class="n">telephone</span> <span class="n">users</span><span class="p">,</span> <span class="n">female</span> <span class="p">(</span><span class="o">%</span> <span class="n">of</span> <span class="o">...</span>
@@ -614,8 +842,8 @@ contracts around the world.</p>
 </pre></div>
 </div>
 <p>Notice that this second search was much faster than the first one because
-<code class="docutils literal"><span class="pre">pandas</span></code> now has a cached list of available data series.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]:</span> <span class="n">ind</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NY.GDP.PCAP.KD&#39;</span><span class="p">,</span> <span class="s1">&#39;IT.MOB.COV.ZS&#39;</span><span class="p">]</span>
+<code class="docutils literal notranslate"><span class="pre">pandas</span></code> now has a cached list of available data series.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]:</span> <span class="n">ind</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NY.GDP.PCAP.KD&#39;</span><span class="p">,</span> <span class="s1">&#39;IT.MOB.COV.ZS&#39;</span><span class="p">]</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="n">dat</span> <span class="o">=</span> <span class="n">wb</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">indicator</span><span class="o">=</span><span class="n">ind</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">2011</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">2011</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">15</span><span class="p">]:</span> <span class="n">dat</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;gdp&#39;</span><span class="p">,</span> <span class="s1">&#39;cellphone&#39;</span><span class="p">]</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">16</span><span class="p">]:</span> <span class="k">print</span><span class="p">(</span><span class="n">dat</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
@@ -628,10 +856,10 @@ contracts around the world.</p>
 <span class="n">Zimbabwe</span>  <span class="mi">2011</span>   <span class="mf">419.236086</span>       <span class="mf">72.4</span>
 </pre></div>
 </div>
-<p>Finally, we use the <code class="docutils literal"><span class="pre">statsmodels</span></code> package to assess the relationship between
+<p>Finally, we use the <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> package to assess the relationship between
 our two variables using ordinary least squares regression. Unsurprisingly,
 populations in rich countries tend to use cellphones at a higher rate:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">17</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">17</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">18</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="kn">as</span> <span class="nn">smf</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">19</span><span class="p">]:</span> <span class="n">mod</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="s1">&#39;cellphone ~ np.log(gdp)&#39;</span><span class="p">,</span> <span class="n">dat</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="k">print</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
@@ -661,17 +889,17 @@ populations in rich countries tend to use cellphones at a higher rate:</p>
 </div>
 <div class="section" id="country-codes">
 <h3>Country Codes<a class="headerlink" href="#country-codes" title="Permalink to this headline">¶</a></h3>
-<p>The <code class="docutils literal"><span class="pre">country</span></code> argument accepts a string or list of mixed
+<p>The <code class="docutils literal notranslate"><span class="pre">country</span></code> argument accepts a string or list of mixed
 <a class="reference external" href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">two</a> or <a class="reference external" href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3">three</a> character
 ISO country codes, as well as dynamic <a class="reference external" href="https://datahelpdesk.worldbank.org/knowledgebase/articles/898590-api-country-queries">World Bank exceptions</a> to the ISO standards.</p>
-<p>For a list of the the hard-coded country codes (used solely for error handling logic) see <code class="docutils literal"><span class="pre">pandas_datareader.wb.country_codes</span></code>.</p>
+<p>For a list of the the hard-coded country codes (used solely for error handling logic) see <code class="docutils literal notranslate"><span class="pre">pandas_datareader.wb.country_codes</span></code>.</p>
 </div>
 <div class="section" id="problematic-country-codes-indicators">
 <h3>Problematic Country Codes &amp; Indicators<a class="headerlink" href="#problematic-country-codes-indicators" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The World Bank’s country list and indicators are dynamic. As of 0.15.1,
-<a class="reference internal" href="readers/world-bank.html#pandas_datareader.wb.download" title="pandas_datareader.wb.download"><code class="xref py py-func docutils literal"><span class="pre">wb.download()</span></code></a> is more flexible.  To achieve this, the warning
+<a class="reference internal" href="readers/world-bank.html#pandas_datareader.wb.download" title="pandas_datareader.wb.download"><code class="xref py py-func docutils literal notranslate"><span class="pre">wb.download()</span></code></a> is more flexible.  To achieve this, the warning
 and exception logic changed.</p>
 </div>
 <p>The world bank converts some country codes,
@@ -693,7 +921,7 @@ may be necessary for fringe cases.</p>
 <li>Retired - Appears in search results, yet won’t return data.</li>
 <li>Bad - Will not return data.</li>
 </ol>
-<p>Use the <code class="docutils literal"><span class="pre">errors</span></code> argument to control warnings and exceptions.  Setting
+<p>Use the <code class="docutils literal notranslate"><span class="pre">errors</span></code> argument to control warnings and exceptions.  Setting
 errors to ignore or warn, won’t stop failed responses.  (ie, 100% bad
 indicators, or a single ‘bad’ (#4 above) country code).</p>
 <p>See docstrings for more info.</p>
@@ -701,24 +929,24 @@ indicators, or a single ‘bad’ (#4 above) country code).</p>
 </div>
 <div class="section" id="oecd">
 <span id="remote-data-oecd"></span><h2>OECD<a class="headerlink" href="#oecd" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="http://stats.oecd.org/">OECD Statistics</a> are available via <code class="docutils literal"><span class="pre">DataReader</span></code>.
+<p><a class="reference external" href="http://stats.oecd.org/">OECD Statistics</a> are available via <code class="docutils literal notranslate"><span class="pre">DataReader</span></code>.
 You have to specify OECD’s data set code.</p>
-<p>To confirm data set code, access to <code class="docutils literal"><span class="pre">each</span> <span class="pre">data</span> <span class="pre">-&gt;</span> <span class="pre">Export</span> <span class="pre">-&gt;</span> <span class="pre">SDMX</span> <span class="pre">Query</span></code>. Following
+<p>To confirm data set code, access to <code class="docutils literal notranslate"><span class="pre">each</span> <span class="pre">data</span> <span class="pre">-&gt;</span> <span class="pre">Export</span> <span class="pre">-&gt;</span> <span class="pre">SDMX</span> <span class="pre">Query</span></code>. Following
 example is to download ‘Trade Union Density’ data which set code is ‘TUD’.</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [52]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [58]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
 
-<span class="gp">In [53]: </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">In [59]: </span><span class="kn">import</span> <span class="nn">datetime</span>
 
-<span class="gp">In [54]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;TUD&#39;</span><span class="p">,</span> <span class="s1">&#39;oecd&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="gp">In [60]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;TUD&#39;</span><span class="p">,</span> <span class="s1">&#39;oecd&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
-<span class="gp">In [55]: </span><span class="n">df</span><span class="o">.</span><span class="n">columns</span>
-<span class="gh">Out[55]: </span><span class="go"></span>
+<span class="gp">In [61]: </span><span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<span class="gh">Out[61]: </span><span class="go"></span>
 <span class="go">MultiIndex(levels=[[&#39;Australia&#39;, &#39;Austria&#39;, &#39;Belgium&#39;, &#39;Canada&#39;, &#39;Chile&#39;, &#39;Czech Republic&#39;, &#39;Denmark&#39;, &#39;Estonia&#39;, &#39;Finland&#39;, &#39;France&#39;, &#39;Germany&#39;, &#39;Greece&#39;, &#39;Hungary&#39;, &#39;Iceland&#39;, &#39;Ireland&#39;, &#39;Israel&#39;, &#39;Italy&#39;, &#39;Japan&#39;, &#39;Korea&#39;, &#39;Latvia&#39;, &#39;Lithuania&#39;, &#39;Luxembourg&#39;, &#39;Mexico&#39;, &#39;Netherlands&#39;, &#39;New Zealand&#39;, &#39;Norway&#39;, &#39;Poland&#39;, &#39;Portugal&#39;, &#39;Slovak Republic&#39;, &#39;Slovenia&#39;, &#39;Spain&#39;, &#39;Sweden&#39;, &#39;Switzerland&#39;, &#39;Turkey&#39;, &#39;United Kingdom&#39;, &#39;United States&#39;], [&#39;Annual&#39;], [&#39;Administrative data&#39;, &#39;Survey data&#39;], [&#39;Employees&#39;, &#39;Trade union  density&#39;, &#39;Union members&#39;], [&#39;Percentage&#39;, &#39;Thousands&#39;]],</span>
 <span class="go">           labels=[[13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0, 2, 2, 1, 1, 0, 0], [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]],</span>
 <span class="go">           names=[&#39;Country&#39;, &#39;Frequency&#39;, &#39;Source&#39;, &#39;Series&#39;, &#39;Measure&#39;])</span>
 
-<span class="gp">In [56]: </span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Japan&#39;</span><span class="p">,</span> <span class="s1">&#39;United States&#39;</span><span class="p">]]</span>
-<span class="go">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  Out[56]: </span>
+<span class="gp">In [62]: </span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Japan&#39;</span><span class="p">,</span> <span class="s1">&#39;United States&#39;</span><span class="p">]]</span>
+<span class="go">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  Out[62]: </span>
 <span class="go">Country            Japan                                                       \</span>
 <span class="go">Frequency         Annual                                                        </span>
 <span class="go">Source       Survey data                                                        </span>
@@ -735,9 +963,9 @@ example is to download ‘Trade Union Density’ data which set code is ‘TUD�
 <span class="go">Series                      Union members            Trade union  density   </span>
 <span class="go">Measure    Percentage           Thousands Percentage            Thousands   </span>
 <span class="go">Year                                                                        </span>
-<span class="go">2010-01-01        NaN             12417.5        NaN                  NaN   </span>
-<span class="go">2011-01-01        NaN             12271.9        NaN                  NaN   </span>
-<span class="go">2012-01-01        NaN             12227.1        NaN                  NaN   </span>
+<span class="go">2010-01-01        NaN           12417.527        NaN                  NaN   </span>
+<span class="go">2011-01-01        NaN           12271.909        NaN                  NaN   </span>
+<span class="go">2012-01-01        NaN           12227.073        NaN                  NaN   </span>
 
 <span class="go">Country                  ...            United States                       \</span>
 <span class="go">Frequency                ...                   Annual                        </span>
@@ -745,9 +973,9 @@ example is to download ‘Trade Union Density’ data which set code is ‘TUD�
 <span class="go">Series                   ...     Trade union  density            Employees   </span>
 <span class="go">Measure    Percentage    ...                Thousands Percentage Thousands   </span>
 <span class="go">Year                     ...                                                 </span>
-<span class="go">2010-01-01       28.9    ...                      NaN       17.4   97406.0   </span>
-<span class="go">2011-01-01       27.6    ...                      NaN       16.5  102403.0   </span>
-<span class="go">2012-01-01       25.9    ...                      NaN       15.9  106924.0   </span>
+<span class="go">2010-01-01  28.871256    ...                      NaN  17.448617   97406.0   </span>
+<span class="go">2011-01-01  27.589723    ...                      NaN  16.516118  102403.0   </span>
+<span class="go">2012-01-01  25.899329    ...                      NaN  15.861734  106924.0   </span>
 
 <span class="go">Country                                                                    \</span>
 <span class="go">Frequency                                                                   </span>
@@ -765,9 +993,9 @@ example is to download ‘Trade Union Density’ data which set code is ‘TUD�
 <span class="go">Series                Employees             </span>
 <span class="go">Measure    Percentage Thousands Percentage  </span>
 <span class="go">Year                                        </span>
-<span class="go">2010-01-01        NaN   97406.0        NaN  </span>
-<span class="go">2011-01-01        NaN  102403.0        NaN  </span>
-<span class="go">2012-01-01        NaN  106924.0        NaN  </span>
+<span class="go">2010-01-01        NaN       NaN        NaN  </span>
+<span class="go">2011-01-01        NaN       NaN        NaN  </span>
+<span class="go">2012-01-01        NaN       NaN        NaN  </span>
 
 <span class="go">[3 rows x 24 columns]</span>
 </pre></div>
@@ -775,18 +1003,18 @@ example is to download ‘Trade Union Density’ data which set code is ‘TUD�
 </div>
 <div class="section" id="eurostat">
 <span id="remote-data-eurostat"></span><h2>Eurostat<a class="headerlink" href="#eurostat" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="http://ec.europa.eu/eurostat/">Eurostat</a> are available via <code class="docutils literal"><span class="pre">DataReader</span></code>.</p>
-<p>Get <a class="reference external" href="http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=tran_sf_railac&amp;lang=en">Rail accidents by type of accident (ERA data)</a> data. The result will be a <code class="docutils literal"><span class="pre">DataFrame</span></code> which has <code class="docutils literal"><span class="pre">DatetimeIndex</span></code> as index and <code class="docutils literal"><span class="pre">MultiIndex</span></code> of attributes or countries as column. The target URL is:</p>
+<p><a class="reference external" href="http://ec.europa.eu/eurostat/">Eurostat</a> are available via <code class="docutils literal notranslate"><span class="pre">DataReader</span></code>.</p>
+<p>Get <a class="reference external" href="http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=tran_sf_railac&amp;lang=en">Rail accidents by type of accident (ERA data)</a> data. The result will be a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> which has <code class="docutils literal notranslate"><span class="pre">DatetimeIndex</span></code> as index and <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code> of attributes or countries as column. The target URL is:</p>
 <ul class="simple">
 <li><a class="reference external" href="http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=tran_sf_railac&amp;lang=en">http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=tran_sf_railac&amp;lang=en</a></li>
 </ul>
-<p>You can specify dataset ID ‘tran_sf_railac’ to get corresponding data via <code class="docutils literal"><span class="pre">DataReader</span></code>.</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [57]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<p>You can specify dataset ID ‘tran_sf_railac’ to get corresponding data via <code class="docutils literal notranslate"><span class="pre">DataReader</span></code>.</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [63]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
 
-<span class="gp">In [58]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;tran_sf_railac&#39;</span><span class="p">,</span> <span class="s1">&#39;eurostat&#39;</span><span class="p">)</span>
+<span class="gp">In [64]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;tran_sf_railac&#39;</span><span class="p">,</span> <span class="s1">&#39;eurostat&#39;</span><span class="p">)</span>
 
-<span class="gp">In [59]: </span><span class="n">df</span>
-<span class="gh">Out[59]: </span><span class="go"></span>
+<span class="gp">In [65]: </span><span class="n">df</span>
+<span class="gh">Out[65]: </span><span class="go"></span>
 <span class="go">ACCIDENT    Collisions of trains, including collisions with obstacles within the clearance gauge  \</span>
 <span class="go">UNIT                                                                                      Number   </span>
 <span class="go">GEO                                                                                      Austria   </span>
@@ -859,12 +1087,12 @@ example is to download ‘Trade Union Density’ data which set code is ‘TUD�
 <div class="section" id="tsp-fund-data">
 <span id="remote-data-tsp"></span><h2>TSP Fund Data<a class="headerlink" href="#tsp-fund-data" title="Permalink to this headline">¶</a></h2>
 <p>Download mutual fund index prices for the TSP.</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [60]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.tsp</span> <span class="kn">as</span> <span class="nn">tsp</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [66]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.tsp</span> <span class="kn">as</span> <span class="nn">tsp</span>
 
-<span class="gp">In [61]: </span><span class="n">tspreader</span> <span class="o">=</span> <span class="n">tsp</span><span class="o">.</span><span class="n">TSPReader</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s1">&#39;2015-10-1&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2015-12-31&#39;</span><span class="p">)</span>
+<span class="gp">In [67]: </span><span class="n">tspreader</span> <span class="o">=</span> <span class="n">tsp</span><span class="o">.</span><span class="n">TSPReader</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s1">&#39;2015-10-1&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2015-12-31&#39;</span><span class="p">)</span>
 
-<span class="gp">In [62]: </span><span class="n">tspreader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="gh">Out[62]: </span><span class="go"></span>
+<span class="gp">In [68]: </span><span class="n">tspreader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gh">Out[68]: </span><span class="go"></span>
 <span class="go">            L Income   L 2020   L 2030   L 2040   L 2050   G Fund   F Fund  \</span>
 <span class="go">date                                                                         </span>
 <span class="go">2015-10-01   17.5164  22.5789  24.2159  25.5690  14.4009  14.8380  17.0467   </span>
@@ -910,9 +1138,9 @@ example is to download ‘Trade Union Density’ data which set code is ‘TUD�
 <p>Download the latest symbols from <a class="reference external" href="ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqtraded.txt">Nasdaq</a>.</p>
 <p>Note that Nasdaq updates this file daily, and historical versions are not
 available. More information on the <a class="reference external" href="http://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs/">field</a> definitions.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">pandas_datareader.nasdaq_trader</span> <span class="kn">import</span> <span class="n">get_nasdaq_symbols</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">pandas_datareader.nasdaq_trader</span> <span class="kn">import</span> <span class="n">get_nasdaq_symbols</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]:</span> <span class="n">symbols</span> <span class="o">=</span> <span class="n">get_nasdaq_symbols</span><span class="p">()</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="k">print</span><span class="p">(</span><span class="n">symbols</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="s1">&#39;IBM&#39;</span><span class="p">])</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="k">print</span><span class="p">(</span><span class="n">symbols</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;IBM&#39;</span><span class="p">])</span>
     <span class="n">Nasdaq</span> <span class="n">Traded</span>                                                    <span class="bp">True</span>
     <span class="n">Security</span> <span class="n">Name</span>       <span class="n">International</span> <span class="n">Business</span> <span class="n">Machines</span> <span class="n">Corporation</span> <span class="n">Co</span><span class="o">...</span>
     <span class="n">Listing</span> <span class="n">Exchange</span>                                                    <span class="n">N</span>
@@ -931,36 +1159,27 @@ available. More information on the <a class="reference external" href="http://ww
 <div class="section" id="stooq-index-data">
 <span id="remote-data-stooq"></span><h2>Stooq Index Data<a class="headerlink" href="#stooq-index-data" title="Permalink to this headline">¶</a></h2>
 <p>Google finance doesn’t provide common index data download. The Stooq site has the data for download.</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [63]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [69]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
 
-<span class="gp">In [64]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;^DJI&#39;</span><span class="p">,</span> <span class="s1">&#39;stooq&#39;</span><span class="p">)</span>
+<span class="gp">In [70]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;^DJI&#39;</span><span class="p">,</span> <span class="s1">&#39;stooq&#39;</span><span class="p">)</span>
 
-<span class="gp">In [65]: </span><span class="n">f</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
-<span class="gh">Out[65]: </span><span class="go"></span>
-<span class="go">                Open      High       Low     Close       Volume</span>
-<span class="go">Date                                                           </span>
-<span class="go">2018-01-26  26466.74  26616.71  26425.35  26616.71          NaN</span>
-<span class="go">2018-01-25  26313.06  26458.25  26259.72  26392.79   95732448.0</span>
-<span class="go">2018-01-24  26282.07  26392.80  26106.94  26252.12  123271104.0</span>
-<span class="go">2018-01-23  26214.87  26246.19  26143.90  26210.81  109272288.0</span>
-<span class="go">2018-01-22  26025.32  26215.23  25974.65  26214.60  126357768.0</span>
-<span class="go">2018-01-19  25987.35  26071.72  25942.83  26071.72  171541424.0</span>
-<span class="go">2018-01-18  26149.55  26153.42  25947.32  26017.81  122449616.0</span>
-<span class="go">2018-01-17  25910.78  26130.45  25865.02  26115.65  133700112.0</span>
-<span class="go">2018-01-16  25987.62  26086.12  25702.99  25792.86  171084224.0</span>
-<span class="go">2018-01-12  25638.39  25810.43  25633.08  25803.19  103878720.0</span>
+<span class="gp">In [71]: </span><span class="n">f</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="gh">Out[71]: </span><span class="go"></span>
+<span class="go">Empty DataFrame</span>
+<span class="go">Columns: []</span>
+<span class="go">Index: []</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="moex-data">
 <span id="remote-data-moex"></span><h2>MOEX Data<a class="headerlink" href="#moex-data" title="Permalink to this headline">¶</a></h2>
 <p>The Moscow Exchange (MOEX) provides historical data.</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [66]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [72]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
 
-<span class="gp">In [67]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;USD000UTSTOM&#39;</span><span class="p">,</span> <span class="s1">&#39;moex&#39;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s1">&#39;2017-07-01&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2017-07-31&#39;</span><span class="p">)</span>
+<span class="gp">In [73]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;USD000UTSTOM&#39;</span><span class="p">,</span> <span class="s1">&#39;moex&#39;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s1">&#39;2017-07-01&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2017-07-31&#39;</span><span class="p">)</span>
 
-<span class="gp">In [68]: </span><span class="n">f</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="gh">Out[68]: </span><span class="go"></span>
+<span class="gp">In [74]: </span><span class="n">f</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[74]: </span><span class="go"></span>
 <span class="go">           BOARDID   SHORTNAME         SECID   OPEN     LOW     HIGH    CLOSE  \</span>
 <span class="go">TRADEDATE                                                                       </span>
 <span class="go">2017-07-03    CNGD  USDRUB_TOM  USD000UTSTOM  58.98  58.840  59.4250  59.3600   </span>
@@ -983,9 +1202,7 @@ available. More information on the <a class="reference external" href="http://ww
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -1007,7 +1224,7 @@ available. More information on the <a class="reference external" href="http://ww
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -1025,7 +1242,8 @@ available. More information on the <a class="reference external" href="http://ww
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.6.0',
+            VERSION:'0.7.0',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -1038,19 +1256,13 @@ available. More information on the <a class="reference external" href="http://ww
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

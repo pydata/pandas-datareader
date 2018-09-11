@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Caching queries &mdash; pandas-datareader 0.6.0 documentation</title>
+  <title>Caching queries &mdash; pandas-datareader 0.7.0 documentation</title>
   
 
   
@@ -24,27 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="pandas-datareader 0.6.0 documentation" href="index.html"/>
-        <link rel="next" title="Other Data Sources" href="see-also.html"/>
-        <link rel="prev" title="Remote Data Access" href="remote_data.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Other Data Sources" href="see-also.html" />
+    <link rel="prev" title="Remote Data Access" href="remote_data.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -66,7 +58,7 @@
             
             
               <div class="version">
-                0.6.0
+                0.7.0
               </div>
             
           
@@ -107,7 +99,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">pandas-datareader</a>
@@ -115,9 +107,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -163,11 +156,11 @@
 <span id="cache"></span><h1>Caching queries<a class="headerlink" href="#caching-queries" title="Permalink to this headline">¶</a></h1>
 <p>Making the same request repeatedly can use a lot of bandwidth, slow down your
 code and may result in your IP being banned.</p>
-<p><code class="docutils literal"><span class="pre">pandas-datareader</span></code> allows you to cache queries using <code class="docutils literal"><span class="pre">requests_cache</span></code> by
-passing a <code class="docutils literal"><span class="pre">requests_cache.Session</span></code> to <code class="docutils literal"><span class="pre">DataReader</span></code> or <code class="docutils literal"><span class="pre">Options</span></code> using the
-<code class="docutils literal"><span class="pre">session</span></code> parameter.</p>
+<p><code class="docutils literal notranslate"><span class="pre">pandas-datareader</span></code> allows you to cache queries using <code class="docutils literal notranslate"><span class="pre">requests_cache</span></code> by
+passing a <code class="docutils literal notranslate"><span class="pre">requests_cache.Session</span></code> to <code class="docutils literal notranslate"><span class="pre">DataReader</span></code> or <code class="docutils literal notranslate"><span class="pre">Options</span></code> using the
+<code class="docutils literal notranslate"><span class="pre">session</span></code> parameter.</p>
 <p>Below is an example with Yahoo! Finance. The session parameter is implemented for all datareaders.</p>
-<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
 
 <span class="gp">In [2]: </span><span class="kn">import</span> <span class="nn">datetime</span>
 
@@ -201,16 +194,16 @@ passing a <code class="docutils literal"><span class="pre">requests_cache.Sessio
 
 <span class="ne">NameError</span>: name &#39;session&#39; is not defined
 
-<span class="gp">In [9]: </span><span class="n">f</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="s1">&#39;2010-01-04&#39;</span><span class="p">]</span>
-<span class="go">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ---------------------------------------------------------------------------</span>
+<span class="gp">In [9]: </span><span class="n">f</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2010-01-04&#39;</span><span class="p">]</span>
+<span class="go">                                                                                                                                                                                                                                                                                                                     ---------------------------------------------------------------------------</span>
 <span class="go">NameError                                 Traceback (most recent call last)</span>
-<span class="go">&lt;ipython-input-9-f76d00c0d565&gt; in &lt;module&gt;()</span>
-<span class="go">----&gt; 1 f.ix[&#39;2010-01-04&#39;]</span>
+<span class="go">&lt;ipython-input-9-cce2e1722359&gt; in &lt;module&gt;()</span>
+<span class="go">----&gt; 1 f.loc[&#39;2010-01-04&#39;]</span>
 
 <span class="go">NameError: name &#39;f&#39; is not defined</span>
 </pre></div>
 </div>
-<p>A <a class="reference external" href="https://www.sqlite.org/">SQLite</a> file named <code class="docutils literal"><span class="pre">cache.sqlite</span></code> will be created in the working
+<p>A <a class="reference external" href="https://www.sqlite.org/">SQLite</a> file named <code class="docutils literal notranslate"><span class="pre">cache.sqlite</span></code> will be created in the working
 directory, storing the request until the expiry date.</p>
 <p>For additional information on using requests-cache, see the
 <a class="reference external" href="https://requests-cache.readthedocs.io/">documentation</a>.</p>
@@ -218,9 +211,7 @@ directory, storing the request until the expiry date.</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -242,7 +233,7 @@ directory, storing the request until the expiry date.</p>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -260,7 +251,8 @@ directory, storing the request until the expiry date.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.6.0',
+            VERSION:'0.7.0',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -273,19 +265,13 @@ directory, storing the request until the expiry date.</p>
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

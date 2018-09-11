@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>What’s New &mdash; pandas-datareader 0.6.0 documentation</title>
+  <title>What’s New &mdash; pandas-datareader 0.7.0 documentation</title>
   
 
   
@@ -24,27 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="pandas-datareader 0.6.0 documentation" href="index.html"/>
-        <link rel="next" title="Remote Data Access" href="remote_data.html"/>
-        <link rel="prev" title="pandas-datareader" href="index.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Remote Data Access" href="remote_data.html" />
+    <link rel="prev" title="pandas-datareader" href="index.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -66,7 +58,7 @@
             
             
               <div class="version">
-                0.6.0
+                0.7.0
               </div>
             
           
@@ -92,10 +84,16 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">What’s New</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#v0-6-0-january-24-2018">v0.6.0 (January 24, 2018)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#v0-7-0-september-11-2018">v0.7.0 (September 11, 2018)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#enhancements">Enhancements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#backwards-incompatible-api-changes">Backwards incompatible API changes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bug-fixes">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-6-0-january-24-2018">v0.6.0 (January 24, 2018)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#whatsnew-060-enhancements">Enhancements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whatsnew-060-api-breaking">Backwards incompatible API changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whatsnew-060-bug-fixes">Bug Fixes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#other-changes">Other Changes</a></li>
 </ul>
 </li>
@@ -146,7 +144,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">pandas-datareader</a>
@@ -154,9 +152,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -201,6 +200,84 @@
   <div class="section" id="what-s-new">
 <span id="whatsnew"></span><h1>What’s New<a class="headerlink" href="#what-s-new" title="Permalink to this headline">¶</a></h1>
 <p>These are new features and improvements of note in each release.</p>
+<div class="section" id="v0-7-0-september-11-2018">
+<span id="whatsnew-070"></span><h2>v0.7.0 (September 11, 2018)<a class="headerlink" href="#v0-7-0-september-11-2018" title="Permalink to this headline">¶</a></h2>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Google finance and Morningstar for historical price data have been immediately deprecated.</p>
+</div>
+<p>Highlights include:</p>
+<ul class="simple">
+<li>Immediate deprecation of Google finance and Morningstar for historical price data, as these API endpoints are no longer supported by their respective providers. Alternate methods are welcome via pull requests, as PDR would like to restore these features.</li>
+<li>Removal of EDGAR, which was deprecated in v0.6.0.</li>
+</ul>
+<div class="contents local topic" id="what-s-new-in-v0-7-0">
+<p class="topic-title first">What’s new in v0.7.0</p>
+<ul class="simple">
+<li><a class="reference internal" href="#enhancements" id="id15">Enhancements</a></li>
+<li><a class="reference internal" href="#backwards-incompatible-api-changes" id="id16">Backwards incompatible API changes</a></li>
+<li><a class="reference internal" href="#bug-fixes" id="id17">Bug Fixes</a></li>
+</ul>
+</div>
+<div class="section" id="enhancements">
+<span id="whatsnew-070-enhancements"></span><h3>Enhancements<a class="headerlink" href="#enhancements" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>A new data connector for data provided by
+<a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> was
+introduced to obtain Foreign Exchange (FX) data.
+(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH389</a>)</li>
+<li>A new data connector for data provided by
+<a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> was
+introduced to obtain historical time series data.
+(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH389</a>)</li>
+<li><dl class="first docutils">
+<dt>A new data connector for data provided by</dt>
+<dd><a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> was
+introduced to obtain sector performance data, accessed through the
+top-level function <code class="docutils literal notranslate"><span class="pre">get_sector_performance_av</span></code>.
+(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH389</a>)</dd>
+</dl>
+</li>
+<li>A new data connector for data provided by
+<a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> was
+introduced to obtain real-time Batch Stock Quotes through the
+top-level function <code class="docutils literal notranslate"><span class="pre">get_quote_av</span></code>.
+(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH389</a>)</li>
+<li>MOEX data connector now supports multiple symbols in constructor.
+(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/562">GH562</a>)</li>
+</ul>
+</div>
+<div class="section" id="backwards-incompatible-api-changes">
+<span id="whatsnew-070-api-breaking"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#backwards-incompatible-api-changes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Deprecation of Google finance daily reader.  Google retired the remaining financial data end point in June 2018.  It is not possible to reliably retrieve historical price data without this endpoint. The Google daily reader will raise an <cite>ImmediateDeprecationError</cite> when called.</li>
+<li>Deprecation of Morningstar daily reader. Morningstar ended support for the historical price data endpoint in July 2018. It is not possible to retrieve historical price data without this endpoint. The Morningstar daily reader will raise an <cite>ImmediateDeprecationError</cite> when called.</li>
+<li>When requesting multiple symbols from a DailyReader (ex: google, yahoo, IEX)
+a MultiIndex DataFrame is now returned.  Previously Panel or dict of DataFrames
+were returned. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/297">GH297</a>).</li>
+</ul>
+</div>
+<div class="section" id="bug-fixes">
+<span id="whatsnew-070-bug-fixes"></span><h3>Bug Fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Added support for passing the API KEY to QuandlReader either directly or by
+setting the environmental variable QUANDL_API_KEY (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/485">GH485</a>).</li>
+<li>Added support for optionally passing a custom base_url to the EnigmaReader  (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/499">GH499</a>).</li>
+<li>Fix Yahoo! price data (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/498">GH498</a>).</li>
+<li>Added back support for Yahoo! price, dividends, and splits data for stocks
+and currency pairs (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/487">GH487</a>).</li>
+<li>Add <cite>is_list_like</cite> to compatibility layer to avoid failure on pandas &gt;= 0.23 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/520">GH520</a>).</li>
+<li>Fixed Yahoo! time offset (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/487">GH487</a>).</li>
+<li>Fix Yahoo! quote reader (:issue: <cite>540</cite>).</li>
+<li>Remove import of deprecated <cite>tm.get_data_path</cite> (:issue: <cite>566</cite>)</li>
+<li>Allow full usage of stooq url parameters.</li>
+<li>Removed unused requests-file and requests-ftp dependencies.</li>
+<li>Fix Yahoo! actions issue where the default reporting adjusts dividends. The unadjusted
+dividends may lack precision due to accumulated numerical error when converting adjusted
+to the original dividend amount. (:issue: <cite>495</cite>)</li>
+</ul>
+</div>
+</div>
 <div class="section" id="v0-6-0-january-24-2018">
 <span id="whatsnew-060"></span><h2>v0.6.0 (January 24, 2018)<a class="headerlink" href="#v0-6-0-january-24-2018" title="Permalink to this headline">¶</a></h2>
 <p>This is a major release from 0.5.0. We recommend that all users upgrade.</p>
@@ -237,18 +314,20 @@ introduced (<a class="reference external" href="https://github.com/pydata/pandas
 introduced (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/447">GH447</a>).</li>
 <li>A new data connector for data provided by the Bank of Canada was
 introduced (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/440">GH440</a>).</li>
+<li>A new data connector for data provided by Moscow Exchange (MOEX)
+introduced (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/381">GH381</a>).</li>
 </ul>
 <div class="contents local topic" id="what-s-new-in-v0-6-0">
 <p class="topic-title first">What’s new in v0.6.0</p>
 <ul class="simple">
-<li><a class="reference internal" href="#enhancements" id="id12">Enhancements</a></li>
-<li><a class="reference internal" href="#backwards-incompatible-api-changes" id="id13">Backwards incompatible API changes</a></li>
-<li><a class="reference internal" href="#bug-fixes" id="id14">Bug Fixes</a></li>
-<li><a class="reference internal" href="#other-changes" id="id15">Other Changes</a></li>
+<li><a class="reference internal" href="#whatsnew-060-enhancements" id="id18">Enhancements</a></li>
+<li><a class="reference internal" href="#whatsnew-060-api-breaking" id="id19">Backwards incompatible API changes</a></li>
+<li><a class="reference internal" href="#whatsnew-060-bug-fixes" id="id20">Bug Fixes</a></li>
+<li><a class="reference internal" href="#other-changes" id="id21">Other Changes</a></li>
 </ul>
 </div>
-<div class="section" id="enhancements">
-<span id="whatsnew-060-enhancements"></span><h3>Enhancements<a class="headerlink" href="#enhancements" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="whatsnew-060-enhancements">
+<span id="id1"></span><h3>Enhancements<a class="headerlink" href="#whatsnew-060-enhancements" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>A new data connector for data provided by the
 <a class="reference external" href="https://www.bankofcanada.ca/rates/">Bank of Canada</a> was introduced.
@@ -267,10 +346,13 @@ introduced (<a class="reference external" href="https://github.com/pydata/pandas
 <a class="reference external" href="https://www.robinhood.com">Robinhood</a> was introduced. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/477">GH477</a>)</li>
 <li>A new data connector for stock pricing data provided by
 <a class="reference external" href="https://api.tiingo.com/docs">Tiingo</a> was introduced. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/478">GH478</a>)</li>
+<li>A new data connector for data provided by
+<a class="reference external" href="https://iss.moex.com/iss/reference/?lang=en">Moscow Exchange</a>
+was introduced. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/381">GH381</a>).</li>
 </ul>
 </div>
-<div class="section" id="backwards-incompatible-api-changes">
-<span id="whatsnew-060-api-breaking"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#backwards-incompatible-api-changes" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="whatsnew-060-api-breaking">
+<span id="id2"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-060-api-breaking" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Deprecation of Yahoo readers.  Yahoo! retired the financial data end points in
 late 2017.  It is not possible to reliably retrieve data from Yahoo! without
@@ -286,8 +368,8 @@ especially when used for bulk downloading. Google may be removed in the
 future.</li>
 </ul>
 </div>
-<div class="section" id="bug-fixes">
-<span id="whatsnew-060-bug-fixes"></span><h3>Bug Fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="whatsnew-060-bug-fixes">
+<span id="id3"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-060-bug-fixes" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><cite>freq</cite> parameter was added to the WorldBank connector to address a limitation (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/198">GH198</a>, <a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/449">GH449</a>).</li>
 <li>The Enigma data connector was updated to the latest API (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/380">GH380</a>).</li>
@@ -315,32 +397,32 @@ future.</li>
 <div class="contents local topic" id="what-s-new-in-v0-5-0">
 <p class="topic-title first">What’s new in v0.5.0</p>
 <ul class="simple">
-<li><a class="reference internal" href="#whatsnew-050-enhancements" id="id16">Enhancements</a></li>
-<li><a class="reference internal" href="#whatsnew-050-api-breaking" id="id17">Backwards incompatible API changes</a></li>
-<li><a class="reference internal" href="#whatsnew-050-bug-fixes" id="id18">Bug Fixes</a></li>
+<li><a class="reference internal" href="#whatsnew-050-enhancements" id="id22">Enhancements</a></li>
+<li><a class="reference internal" href="#whatsnew-050-api-breaking" id="id23">Backwards incompatible API changes</a></li>
+<li><a class="reference internal" href="#whatsnew-050-bug-fixes" id="id24">Bug Fixes</a></li>
 </ul>
 </div>
 <div class="section" id="whatsnew-050-enhancements">
-<span id="id1"></span><h3>Enhancements<a class="headerlink" href="#whatsnew-050-enhancements" title="Permalink to this headline">¶</a></h3>
+<span id="id4"></span><h3>Enhancements<a class="headerlink" href="#whatsnew-050-enhancements" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">DataReader</span></code> now supports Quandl, see <a class="reference internal" href="remote_data.html#remote-data-quandl"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/361">GH361</a>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports Quandl, see <a class="reference internal" href="remote_data.html#remote-data-quandl"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/361">GH361</a>).</li>
 </ul>
 </div>
 <div class="section" id="whatsnew-050-api-breaking">
-<span id="id2"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-050-api-breaking" title="Permalink to this headline">¶</a></h3>
+<span id="id5"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-050-api-breaking" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Removed Oanda as it became subscription only (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/296">GH296</a>).</li>
 </ul>
 </div>
 <div class="section" id="whatsnew-050-bug-fixes">
-<span id="id3"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-050-bug-fixes" title="Permalink to this headline">¶</a></h3>
+<span id="id6"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-050-bug-fixes" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>web sessions are closed properly at the end of use (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/355">GH355</a>)</li>
 <li>Handle commas in large price quotes (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/345">GH345</a>)</li>
 <li>Test suite fixes for test_get_options_data (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/352">GH352</a>)</li>
 <li>Test suite fixes for test_wdi_download (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/350">GH350</a>)</li>
 <li>avoid monkey patching requests.Session (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/301">GH301</a>)</li>
-<li><code class="xref py py-func docutils literal"><span class="pre">get_data_yahoo()</span></code> now treats <code class="docutils literal"><span class="pre">'null'</span></code> strings as missing values  (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/342">GH342</a>)</li>
+<li><code class="xref py py-func docutils literal notranslate"><span class="pre">get_data_yahoo()</span></code> now treats <code class="docutils literal notranslate"><span class="pre">'null'</span></code> strings as missing values  (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/342">GH342</a>)</li>
 </ul>
 </div>
 </div>
@@ -351,19 +433,19 @@ future.</li>
 <div class="contents local topic" id="what-s-new-in-v0-4-0">
 <p class="topic-title first">What’s new in v0.4.0</p>
 <ul class="simple">
-<li><a class="reference internal" href="#whatsnew-040-enhancements" id="id19">Enhancements</a></li>
-<li><a class="reference internal" href="#whatsnew-040-api-breaking" id="id20">Backwards incompatible API changes</a></li>
+<li><a class="reference internal" href="#whatsnew-040-enhancements" id="id25">Enhancements</a></li>
+<li><a class="reference internal" href="#whatsnew-040-api-breaking" id="id26">Backwards incompatible API changes</a></li>
 </ul>
 </div>
 <div class="section" id="whatsnew-040-enhancements">
-<span id="id4"></span><h3>Enhancements<a class="headerlink" href="#whatsnew-040-enhancements" title="Permalink to this headline">¶</a></h3>
+<span id="id7"></span><h3>Enhancements<a class="headerlink" href="#whatsnew-040-enhancements" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Compat with pandas 0.20.1 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/304">GH304</a>, <a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/320">GH320</a>)</li>
-<li>Switched test framework to use <code class="docutils literal"><span class="pre">pytest</span></code> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/310">GH310</a>, <a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/312">GH312</a>)</li>
+<li>Switched test framework to use <code class="docutils literal notranslate"><span class="pre">pytest</span></code> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/310">GH310</a>, <a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/312">GH312</a>)</li>
 </ul>
 </div>
 <div class="section" id="whatsnew-040-api-breaking">
-<span id="id5"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-040-api-breaking" title="Permalink to this headline">¶</a></h3>
+<span id="id8"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-040-api-breaking" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Support has been dropped for Python 2.6 and 3.4 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/313">GH313</a>)</li>
 <li>Support has been dropped for <cite>pandas</cite> versions before 0.17.0 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/313">GH313</a>)</li>
@@ -377,22 +459,22 @@ future.</li>
 <div class="contents local topic" id="what-s-new-in-v0-3-0">
 <p class="topic-title first">What’s new in v0.3.0</p>
 <ul class="simple">
-<li><a class="reference internal" href="#new-features" id="id21">New features</a><ul>
-<li><a class="reference internal" href="#other-enhancements" id="id22">Other enhancements</a></li>
+<li><a class="reference internal" href="#new-features" id="id27">New features</a><ul>
+<li><a class="reference internal" href="#other-enhancements" id="id28">Other enhancements</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#whatsnew-030-bug-fixes" id="id23">Bug Fixes</a></li>
+<li><a class="reference internal" href="#whatsnew-030-bug-fixes" id="id29">Bug Fixes</a></li>
 </ul>
 </div>
 <div class="section" id="new-features">
 <span id="whatsnew-030-enhancements"></span><h3>New features<a class="headerlink" href="#new-features" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">DataReader</span></code> now supports dividend only pulls from Yahoo! Finance (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/138">GH138</a>).</li>
-<li><code class="docutils literal"><span class="pre">DataReader</span></code> now supports downloading mutual fund prices from the Thrift Savings Plan, see <a class="reference internal" href="remote_data.html#remote-data-tsp"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/157">GH157</a>).</li>
-<li><code class="docutils literal"><span class="pre">DataReader</span></code> now supports Google options data source (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/148">GH148</a>).</li>
-<li><code class="docutils literal"><span class="pre">DataReader</span></code> now supports Google quotes (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/188">GH188</a>).</li>
-<li><code class="docutils literal"><span class="pre">DataReader</span></code> now supports Enigma dataset.  see <a class="reference internal" href="remote_data.html#remote-data-enigma"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/245">GH245</a>).</li>
-<li><code class="docutils literal"><span class="pre">DataReader</span></code> now supports downloading a full list of NASDAQ listed symbols.  see <a class="reference internal" href="remote_data.html#remote-data-nasdaq-symbols"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/254">GH254</a>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports dividend only pulls from Yahoo! Finance (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/138">GH138</a>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports downloading mutual fund prices from the Thrift Savings Plan, see <a class="reference internal" href="remote_data.html#remote-data-tsp"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/157">GH157</a>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports Google options data source (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/148">GH148</a>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports Google quotes (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/188">GH188</a>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports Enigma dataset.  see <a class="reference internal" href="remote_data.html#remote-data-enigma"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/245">GH245</a>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports downloading a full list of NASDAQ listed symbols.  see <a class="reference internal" href="remote_data.html#remote-data-nasdaq-symbols"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/254">GH254</a>).</li>
 </ul>
 <div class="section" id="other-enhancements">
 <h4>Other enhancements<a class="headerlink" href="#other-enhancements" title="Permalink to this headline">¶</a></h4>
@@ -404,10 +486,10 @@ future.</li>
 </div>
 </div>
 <div class="section" id="whatsnew-030-bug-fixes">
-<span id="id6"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-030-bug-fixes" title="Permalink to this headline">¶</a></h3>
+<span id="id9"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-030-bug-fixes" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Fixed bug that caused <code class="docutils literal"><span class="pre">DataReader</span></code> to fail if company name has a comma. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/85">GH85</a>).</li>
-<li>Fixed bug in <code class="docutils literal"><span class="pre">YahooOptions</span></code> caused as a result of change in yahoo website format. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/244">GH244</a>).</li>
+<li>Fixed bug that caused <code class="docutils literal notranslate"><span class="pre">DataReader</span></code> to fail if company name has a comma. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/85">GH85</a>).</li>
+<li>Fixed bug in <code class="docutils literal notranslate"><span class="pre">YahooOptions</span></code> caused as a result of change in yahoo website format. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/244">GH244</a>).</li>
 </ul>
 </div>
 </div>
@@ -418,22 +500,22 @@ future.</li>
 <div class="contents local topic" id="what-s-new-in-v0-2-1">
 <p class="topic-title first">What’s new in v0.2.1</p>
 <ul class="simple">
-<li><a class="reference internal" href="#whatsnew-021-enhancements" id="id24">New features</a></li>
-<li><a class="reference internal" href="#whatsnew-021-api-breaking" id="id25">Backwards incompatible API changes</a></li>
+<li><a class="reference internal" href="#whatsnew-021-enhancements" id="id30">New features</a></li>
+<li><a class="reference internal" href="#whatsnew-021-api-breaking" id="id31">Backwards incompatible API changes</a></li>
 </ul>
 </div>
 <div class="section" id="whatsnew-021-enhancements">
-<span id="id7"></span><h3>New features<a class="headerlink" href="#whatsnew-021-enhancements" title="Permalink to this headline">¶</a></h3>
+<span id="id10"></span><h3>New features<a class="headerlink" href="#whatsnew-021-enhancements" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">DataReader</span></code> now supports Eurostat data sources, see <a class="reference internal" href="remote_data.html#remote-data-eurostat"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/101">GH101</a>).</li>
-<li><code class="docutils literal"><span class="pre">Options</span></code> downloading is approximately 4x faster as a result of a rewrite of the parsing function. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/122">GH122</a>)</li>
-<li><code class="docutils literal"><span class="pre">DataReader</span></code> and <code class="docutils literal"><span class="pre">Options</span></code> now support caching, see <a class="reference internal" href="cache.html#cache"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/110">GH110</a>),(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/116">GH116</a>),(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/121">GH121</a>), (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/122">GH122</a>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports Eurostat data sources, see <a class="reference internal" href="remote_data.html#remote-data-eurostat"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/101">GH101</a>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">Options</span></code> downloading is approximately 4x faster as a result of a rewrite of the parsing function. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/122">GH122</a>)</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> and <code class="docutils literal notranslate"><span class="pre">Options</span></code> now support caching, see <a class="reference internal" href="cache.html#cache"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/110">GH110</a>),(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/116">GH116</a>),(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/121">GH121</a>), (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/122">GH122</a>).</li>
 </ul>
 </div>
 <div class="section" id="whatsnew-021-api-breaking">
-<span id="id8"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-021-api-breaking" title="Permalink to this headline">¶</a></h3>
+<span id="id11"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-021-api-breaking" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">Options</span></code> columns <code class="docutils literal"><span class="pre">PctChg</span></code> and <code class="docutils literal"><span class="pre">IV</span></code> (Implied Volatility) are now type float
+<li><code class="docutils literal notranslate"><span class="pre">Options</span></code> columns <code class="docutils literal notranslate"><span class="pre">PctChg</span></code> and <code class="docutils literal notranslate"><span class="pre">IV</span></code> (Implied Volatility) are now type float
 rather than string. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/122">GH122</a>)</li>
 </ul>
 </div>
@@ -445,29 +527,29 @@ rather than string. (<a class="reference external" href="https://github.com/pyda
 <div class="contents local topic" id="what-s-new-in-v0-2-0">
 <p class="topic-title first">What’s new in v0.2.0</p>
 <ul class="simple">
-<li><a class="reference internal" href="#whatsnew-020-enhancements" id="id26">New features</a></li>
-<li><a class="reference internal" href="#whatsnew-020-api-breaking" id="id27">Backwards incompatible API changes</a></li>
-<li><a class="reference internal" href="#whatsnew-020-bug-fixes" id="id28">Bug Fixes</a></li>
+<li><a class="reference internal" href="#whatsnew-020-enhancements" id="id32">New features</a></li>
+<li><a class="reference internal" href="#whatsnew-020-api-breaking" id="id33">Backwards incompatible API changes</a></li>
+<li><a class="reference internal" href="#whatsnew-020-bug-fixes" id="id34">Bug Fixes</a></li>
 </ul>
 </div>
 <div class="section" id="whatsnew-020-enhancements">
-<span id="id9"></span><h3>New features<a class="headerlink" href="#whatsnew-020-enhancements" title="Permalink to this headline">¶</a></h3>
+<span id="id12"></span><h3>New features<a class="headerlink" href="#whatsnew-020-enhancements" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Added latitude and longitude to output of wb.get_countries (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/47">GH47</a>).</li>
 <li>Extended DataReader to fetch dividends and stock splits from Yahoo (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/45">GH45</a>).</li>
 <li>Added get_available_datasets to famafrench (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/56">GH56</a>).</li>
-<li><code class="docutils literal"><span class="pre">DataReader</span></code> now supports OECD data sources, see <a class="reference internal" href="remote_data.html#remote-data-oecd"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/101">GH101</a>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports OECD data sources, see <a class="reference internal" href="remote_data.html#remote-data-oecd"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/101">GH101</a>).</li>
 </ul>
 </div>
 <div class="section" id="whatsnew-020-api-breaking">
-<span id="id10"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-020-api-breaking" title="Permalink to this headline">¶</a></h3>
+<span id="id13"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-020-api-breaking" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Fama French indexes are not Pandas.PeriodIndex for annual and monthly data, and
 pandas.DatetimeIndex otherwise (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/56">GH56</a>).</li>
 </ul>
 </div>
 <div class="section" id="whatsnew-020-bug-fixes">
-<span id="id11"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-020-bug-fixes" title="Permalink to this headline">¶</a></h3>
+<span id="id14"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-020-bug-fixes" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Update Fama-French URL (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/53">GH53</a>)</li>
 <li>Fixed bug where get_quote_yahoo would fail if a company name had a comma (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/85">GH85</a>)</li>
@@ -478,9 +560,7 @@ pandas.DatetimeIndex otherwise (<a class="reference external" href="https://gith
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -502,7 +582,7 @@ pandas.DatetimeIndex otherwise (<a class="reference external" href="https://gith
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -520,7 +600,8 @@ pandas.DatetimeIndex otherwise (<a class="reference external" href="https://gith
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.6.0',
+            VERSION:'0.7.0',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -533,19 +614,13 @@ pandas.DatetimeIndex otherwise (<a class="reference external" href="https://gith
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

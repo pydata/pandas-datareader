@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pandas-datareader &mdash; pandas-datareader 0.6.0 documentation</title>
+  <title>pandas-datareader &mdash; pandas-datareader 0.7.0 documentation</title>
   
 
   
@@ -24,26 +24,18 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="pandas-datareader 0.6.0 documentation" href="#"/>
-        <link rel="next" title="What’s New" href="whatsnew.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="What’s New" href="whatsnew.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -65,7 +57,7 @@
             
             
               <div class="version">
-                0.6.0
+                0.7.0
               </div>
             
           
@@ -106,7 +98,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="#">pandas-datareader</a>
@@ -114,9 +106,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -168,26 +161,19 @@
 <a class="reference external image-reference" href="https://landscape.io/github/pydata/pandas-datareader/master"><img alt="Code Health" src="https://landscape.io/github/pydata/pandas-datareader/master/landscape.svg?style=flat" /></a>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">As of v0.6.0 Yahoo!, Google Options, Google Quotes and EDGAR have
-been immediately deprecated due to large changes in their API and
-no stable replacement.</p>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">As of v0.6.0 Google finance is still functioning for historical price data,
-although there are frequent reports of failures.  Failure is frequently
-encountered when bulk downloading historical price data.</p>
+<p class="last">As of v0.7.0 Google finance and Morningstar have been been immediately deprecated due to
+large changes in their API and no stable replacement.</p>
 </div>
 <div class="section" id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<p>Starting in 0.19.0, pandas no longer supports <code class="docutils literal"><span class="pre">pandas.io.data</span></code> or <code class="docutils literal"><span class="pre">pandas.io.wb</span></code>, so
-you must replace your imports from <code class="docutils literal"><span class="pre">pandas.io</span></code> with those from <code class="docutils literal"><span class="pre">pandas_datareader</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandas.io</span> <span class="kn">import</span> <span class="n">data</span><span class="p">,</span> <span class="n">wb</span> <span class="c1"># becomes</span>
+<p>Starting in 0.19.0, pandas no longer supports <code class="docutils literal notranslate"><span class="pre">pandas.io.data</span></code> or <code class="docutils literal notranslate"><span class="pre">pandas.io.wb</span></code>, so
+you must replace your imports from <code class="docutils literal notranslate"><span class="pre">pandas.io</span></code> with those from <code class="docutils literal notranslate"><span class="pre">pandas_datareader</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandas.io</span> <span class="kn">import</span> <span class="n">data</span><span class="p">,</span> <span class="n">wb</span> <span class="c1"># becomes</span>
 <span class="kn">from</span> <span class="nn">pandas_datareader</span> <span class="kn">import</span> <span class="n">data</span><span class="p">,</span> <span class="n">wb</span>
 </pre></div>
 </div>
 <p>Many functions from the data module have been included in the top level API.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="kn">as</span> <span class="nn">pdr</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="kn">as</span> <span class="nn">pdr</span>
 <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_fred</span><span class="p">(</span><span class="s1">&#39;GS10&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -211,8 +197,6 @@ is available for the latest changes in master.</p>
 <li>pandas&gt;=0.19.2</li>
 <li>lxml</li>
 <li>requests&gt;=2.3.0</li>
-<li>requests-file</li>
-<li>requests-ftp</li>
 <li>wrapt</li>
 </ul>
 <p>Building the documentation additionally requires:</p>
@@ -226,17 +210,17 @@ is available for the latest changes in master.</p>
 </div>
 <div class="section" id="install-latest-release-version-via-pip">
 <h3>Install latest release version via pip<a class="headerlink" href="#install-latest-release-version-via-pip" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-shell"><div class="highlight"><pre><span></span>$ pip install pandas-datareader
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install pandas-datareader
 </pre></div>
 </div>
 </div>
 <div class="section" id="install-latest-development-version">
 <h3>Install latest development version<a class="headerlink" href="#install-latest-development-version" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-shell"><div class="highlight"><pre><span></span>$ pip install git+https://github.com/pydata/pandas-datareader.git
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install git+https://github.com/pydata/pandas-datareader.git
 </pre></div>
 </div>
 <p>or</p>
-<div class="highlight-shell"><div class="highlight"><pre><span></span>$ git clone https://github.com/pydata/pandas-datareader.git
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/pydata/pandas-datareader.git
 $ python setup.py install
 </pre></div>
 </div>
@@ -248,6 +232,7 @@ $ python setup.py install
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="whatsnew.html">What’s New</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-7-0-september-11-2018">v0.7.0 (September 11, 2018)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-6-0-january-24-2018">v0.6.0 (January 24, 2018)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-5-0-july-25-2017">v0.5.0 (July 25, 2017)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-4-0-may-15-2017">v0.4.0 (May 15, 2017)</a></li>
@@ -257,11 +242,10 @@ $ python setup.py install
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="remote_data.html">Remote Data Access</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="remote_data.html#google-finance">Google Finance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="remote_data.html#tiingo">Tiingo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="remote_data.html#morningstar">Morningstar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="remote_data.html#iex">IEX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="remote_data.html#robinhood">Robinhood</a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote_data.html#alpha-vantage">Alpha Vantage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="remote_data.html#enigma">Enigma</a></li>
 <li class="toctree-l2"><a class="reference internal" href="remote_data.html#quandl">Quandl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="remote_data.html#fred">FRED</a></li>
@@ -284,6 +268,7 @@ $ python setup.py install
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="readers/index.html">Data Readers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readers/alphavantage.html">AlphaVantage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="readers/fred.html">Federal Reserve Economic Data (FRED)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="readers/famafrench.html">Fama-French Data (Ken French’s Data Library)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="readers/bank-of-canada.html">Bank of Canada</a></li>
@@ -317,9 +302,7 @@ $ python setup.py install
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -339,7 +322,7 @@ $ python setup.py install
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -357,7 +340,8 @@ $ python setup.py install
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.6.0',
+            VERSION:'0.7.0',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -370,19 +354,13 @@ $ python setup.py install
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>
