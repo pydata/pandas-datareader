@@ -199,19 +199,25 @@ class TestYahoo(object):
 
     def test_get_data_yahoo_actions(self):
         start = datetime(1990, 1, 1)
-        end = datetime(2000, 4, 5)
+        end = datetime(2018, 4, 5)
 
-        actions = web.get_data_yahoo_actions('BHP.AX', start, end,
+        actions = web.get_data_yahoo_actions('AAPL', start, end,
+                                             adjust_dividends=False)
+
+        assert sum(actions['action'] == 'DIVIDEND') == 47
+        assert sum(actions['action'] == 'SPLIT') == 3
+
+        assert actions.loc['2005-02-28', 'action'][0] == 'SPLIT'
+        assert actions.loc['2005-02-28', 'value'][0] == 1/2.0
+
+        assert actions.loc['1995-11-21', 'action'][0] == 'DIVIDEND'
+        assert round(actions.loc['1995-11-21', 'value'][0], 3) == 0.120
+
+        actions = web.get_data_yahoo_actions('AAPL', start, end,
                                              adjust_dividends=True)
 
-        assert sum(actions['action'] == 'DIVIDEND') == 21
-        assert sum(actions['action'] == 'SPLIT') == 1
-
-        assert actions.loc['1995-05-11', 'action'][0] == 'SPLIT'
-        assert actions.loc['1995-05-11', 'value'][0] == 1 / 1.1
-
-        assert actions.loc['1993-05-10', 'action'][0] == 'DIVIDEND'
-        assert actions.loc['1993-05-10', 'value'][0] == 0.21
+        assert actions.loc['1995-11-21', 'action'][0] == 'DIVIDEND'
+        assert round(actions.loc['1995-11-21', 'value'][0], 4) == 0.0043
 
     def test_get_data_yahoo_actions_invalid_symbol(self):
         start = datetime(1990, 1, 1)
