@@ -1,0 +1,31 @@
+.. _whatsnew_080:
+
+v0.8.0 (TBD)
+---------------------------
+
+Highlights include:
+
+.. contents:: What's new in v0.8.0
+    :local:
+    :backlinks: none
+
+.. _whatsnew_080.enhancements:
+
+Enhancements
+~~~~~~~~~~~~
+
+
+.. _whatsnew_080.api_breaking:
+
+Backwards incompatible API changes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+.. _whatsnew_080.bug_fixes:
+
+Bug Fixes
+~~~~~~~~~
+
+- Fix Yahoo! actions issue where dividends are adjusted twice as a result of a
+  change to the Yahoo! API. (:issue: `583`)
