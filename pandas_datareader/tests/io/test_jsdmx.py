@@ -86,3 +86,18 @@ def test_land_use(dirpath):
     values = np.array(values)
     expected = pd.DataFrame(values, index=exp_idx, columns=exp_col)
     tm.assert_frame_equal(result[exp_col], expected)
+
+
+@pytest.mark.skipif(not PANDAS_0210, reason='Broken on old pandas')
+def test_quartervalue(dirpath):
+    # https://stats.oecd.org/sdmx-json/data/QNA/AUS+AUT+BEL+CAN+CHL.GDP+B1_GE.CUR+VOBARSA.Q/all?startTime=2009-Q1&endTime=2011-Q4
+    result = read_jsdmx(os.path.join(dirpath, 'jsdmx',
+                                     'oecd1.json'))
+    assert isinstance(result, pd.DataFrame)
+    expected = pd.DatetimeIndex(['2009-01-01', '2009-04-01', '2009-07-01',
+                                 '2009-10-01', '2010-01-01', '2010-04-01',
+                                 '2010-07-01', '2010-10-01', '2011-01-01',
+                                 '2011-04-01', '2011-07-01', '2011-10-01'],
+                                dtype='datetime64[ns]', name=u'Period',
+                                freq=None)
+    tm.assert_index_equal(result.index, expected)
