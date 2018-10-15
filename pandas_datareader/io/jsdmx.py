@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 import itertools
+import re
 import sys
 
 import numpy as np
@@ -63,6 +64,16 @@ def _get_indexer(index):
         return [':'.join(map(str, i)) for i in it]
 
 
+def _fix_quarter_values(value):
+    """Make raw quarter values Pandas-friendly (e.g. 'Q4-2018' -> '2018Q4')."""
+    m = re.match(r'Q([1-4])-(\d\d\d\d)', value)
+    if not m:
+        return value
+    quarter, year = m.groups()
+    value = '%sQ%s' % (quarter, year)
+    return value
+
+
 def _parse_values(dataset, index, columns):
     size = len(index)
     series = dataset['series']
@@ -94,6 +105,7 @@ def _parse_dimensions(dimensions):
 
         role = key.get('role', None)
         if role in ('time', 'TIME_PERIOD'):
+            values = [_fix_quarter_values(v) for v in values]
             values = pd.DatetimeIndex(values)
 
         arrays.append(values)
