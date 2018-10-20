@@ -15,3 +15,13 @@ def test_get_data_stooq_dji():
 def test_get_data_stooq_dates():
     f = get_data_stooq('SPY', start='20180101', end='20180115')
     assert f.shape[0] == 9
+
+
+def test_stooq_sp500():
+    f = get_data_stooq('^SPX')
+    assert f.shape[0] > 0
+
+
+def test_get_data_stooq_dax():
+    f = get_data_stooq('^DAX')
+    assert f.shape[0] > 0
