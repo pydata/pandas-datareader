@@ -303,6 +303,19 @@ def DataReader(name, data_source=None, start=None, end=None,
     ff = DataReader("6_Portfolios_2x3", "famafrench")
     ff = DataReader("F-F_ST_Reversal_Factor", "famafrench")
     """
+    expected_source = ["yahoo", "google", "iex", "iex-tops", "iex-last",
+                       "iex-last", "bankofcanada", "stooq", "iex-book",
+                       "enigma", "fred", "famafrench", "oecd", "eurostat",
+                       "nasdaq", "quandl", "moex", "morningstar", 'robinhood',
+                       "tiingo", "yahoo-actions", "yahoo-dividends",
+                       "av-forex", "av-daily", "av-daily-adjusted",
+                       "av-weekly", "av-weekly-adjusted", "av-monthly",
+                       "av-monthly-adjusted"]
+
+    if data_source not in expected_source:
+        msg = "data_source=%r is not implemented" % data_source
+        raise NotImplementedError(msg)
+
     if data_source == "yahoo":
         return YahooDailyReader(symbols=name, start=start, end=end,
                                 adjust_price=False, chunksize=25,
