@@ -2,8 +2,10 @@ from __future__ import division
 
 import json
 import re
+import requests
 import time
-from pandas import (DataFrame, to_datetime, notnull, isnull)
+from io import StringIO
+from pandas import (DataFrame, to_datetime, notnull, isnull, read_csv)
 from pandas_datareader._utils import RemoteDataError
 from pandas_datareader.base import _DailyBaseReader
 
@@ -89,13 +91,31 @@ class YahooDailyReader(_DailyBaseReader):
         self.interval = '1' + self.interval
         self.adjust_dividends = adjust_dividends
 
+        self._get_crumb()
+
     @property
     def get_actions(self):
         return self._get_actions
 
     @property
     def url(self):
-        return 'https://finance.yahoo.com/quote/{}/history'
+        return 'https://query1.finance.yahoo.com/v7/finance/download/{}'
+
+    def _get_crumb(self):
+        """Grab the cookies and crumb from the Yahoo! Finance page."""
+
+        # Note that the page for Google (GOOG) is used here, but any ticker
+        # symbol should be just fine.  This symbol does not affect what data is
+        # ultimately requested by the user.
+        initial_url = "https://finance.yahoo.com/quote/GOOG?p=GOOG"
+        request = requests.get(initial_url)
+        self._cookies = request.cookies
+        crumb_store_begin = request.text.find("CrumbStore")
+        crumb_store_end = request.text.find("}", crumb_store_begin) - 1
+        crumb_store = request.text[crumb_store_begin:crumb_store_end]
+        crumb_begin = crumb_store.rfind("\"") + 1
+        self._crumb = crumb_store[crumb_begin:]
+        return self._crumb
 
     # Test test_get_data_interval() crashed because of this issue, probably
     # whole yahoo part of package wasn't
@@ -114,8 +134,10 @@ class YahooDailyReader(_DailyBaseReader):
             'period2': unix_end,
             'interval': self.interval,
             'frequency': self.interval,
-            'filter': 'history',
-            'symbol': symbol
+            'events': 'history',
+            'symbol': symbol,
+            'crumb': self._crumb,
+            'cookies': self._cookies
         }
         return params
 
@@ -126,26 +148,14 @@ class YahooDailyReader(_DailyBaseReader):
         del params['symbol']
         url = url.format(symbol)
 
-        resp = self._get_response(url, params=params)
-        ptrn = r'root\.App\.main = (.*?);\n}\(this\)\);'
-        try:
-            j = json.loads(re.search(ptrn, resp.text, re.DOTALL).group(1))
-            data = j['context']['dispatcher']['stores']['HistoricalPriceStore']
-        except KeyError:
+        resp = self._get_response(url, params=params, cookies=self._cookies)
+        if 'Invalid cookie' in resp.text:
             msg = 'No data fetched for symbol {} using {}'
             raise RemoteDataError(msg.format(symbol, self.__class__.__name__))
 
         # price data
-        prices = DataFrame(data['prices'])
-        prices.columns = [col.capitalize() for col in prices.columns]
-        prices['Date'] = to_datetime(
-            to_datetime(prices['Date'], unit='s').dt.date)
-
-        if 'Data' in prices.columns:
-            prices = prices[prices['Data'].isnull()]
-        prices = prices[['Date', 'High', 'Low', 'Open', 'Close', 'Volume',
-                         'Adjclose']]
-        prices = prices.rename(columns={'Adjclose': 'Adj Close'})
+        prices = read_csv(StringIO(resp.text))
+        prices['Date'] = to_datetime(prices['Date'])
 
         prices = prices.set_index('Date')
         prices = prices.sort_index().dropna(how='all')
