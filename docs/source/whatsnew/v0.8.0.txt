@@ -14,6 +14,8 @@ Highlights include:
 Enhancements
 ~~~~~~~~~~~~
 
+- Fix Yahoo! daily reader for historical price data.  Note that no action
+  information is available.
 
 .. _whatsnew_080.api_breaking:
 
