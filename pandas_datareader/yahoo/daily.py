@@ -166,36 +166,36 @@ class YahooDailyReader(_DailyBaseReader):
         if self.adjust_price:
             prices = _adjust_prices(prices)
 
-        # dividends & splits data
-        if self.get_actions and data['eventsData']:
-
-            actions = DataFrame(data['eventsData'])
-            actions.columns = [col.capitalize() for col in actions.columns]
-            actions['Date'] = to_datetime(
-                to_datetime(actions['Date'], unit='s').dt.date)
-
-            types = actions['Type'].unique()
-            if 'DIVIDEND' in types:
-                divs = actions[actions.Type == 'DIVIDEND'].copy()
-                divs = divs[['Date', 'Amount']].reset_index(drop=True)
-                divs = divs.set_index('Date')
-                divs = divs.rename(columns={'Amount': 'Dividends'})
-                prices = prices.join(divs, how='outer')
-
-            if 'SPLIT' in types:
-                splits = actions[actions.Type == 'SPLIT'].copy()
-                splits['SplitRatio'] = splits['Splitratio'].apply(
-                    lambda x: eval(x))
-                splits = splits.reset_index(drop=True)
-                splits = splits.set_index('Date')
-                splits['Splits'] = 1.0 / splits['SplitRatio']
-                prices = prices.join(splits['Splits'], how='outer')
-
-                if 'DIVIDEND' in types and self.adjust_dividends:
-                    # Adjust dividends to deal with splits
-                    adj = prices['Splits'].sort_index(ascending=False).fillna(
-                        1).cumprod()
-                    prices['Dividends'] = prices['Dividends'] * adj
+#        # dividends & splits data
+#        if self.get_actions and data['eventsData']:
+#
+#            actions = DataFrame(data['eventsData'])
+#            actions.columns = [col.capitalize() for col in actions.columns]
+#            actions['Date'] = to_datetime(
+#                to_datetime(actions['Date'], unit='s').dt.date)
+#
+#            types = actions['Type'].unique()
+#            if 'DIVIDEND' in types:
+#                divs = actions[actions.Type == 'DIVIDEND'].copy()
+#                divs = divs[['Date', 'Amount']].reset_index(drop=True)
+#                divs = divs.set_index('Date')
+#                divs = divs.rename(columns={'Amount': 'Dividends'})
+#                prices = prices.join(divs, how='outer')
+#
+#            if 'SPLIT' in types:
+#                splits = actions[actions.Type == 'SPLIT'].copy()
+#                splits['SplitRatio'] = splits['Splitratio'].apply(
+#                    lambda x: eval(x))
+#                splits = splits.reset_index(drop=True)
+#                splits = splits.set_index('Date')
+#                splits['Splits'] = 1.0 / splits['SplitRatio']
+#                prices = prices.join(splits['Splits'], how='outer')
+#
+#                if 'DIVIDEND' in types and self.adjust_dividends:
+#                    # Adjust dividends to deal with splits
+#                    adj = prices['Splits'].sort_index(ascending=False).fillna(
+#                        1).cumprod()
+#                    prices['Dividends'] = prices['Dividends'] * adj
 
         return prices
 
