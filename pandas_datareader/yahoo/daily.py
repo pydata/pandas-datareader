@@ -1,11 +1,10 @@
 from __future__ import division
 
-import json
-import re
 import requests
 import time
 from io import StringIO
-from pandas import (DataFrame, to_datetime, notnull, isnull, read_csv)
+# from pandas import DataFrame
+from pandas import (to_datetime, notnull, isnull, read_csv)
 from pandas_datareader._utils import RemoteDataError
 from pandas_datareader.base import _DailyBaseReader
 
