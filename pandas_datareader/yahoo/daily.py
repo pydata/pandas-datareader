@@ -174,11 +174,16 @@ class YahooDailyReader(_DailyBaseReader):
 
             if 'SPLIT' in types:
                 splits = actions[actions.Type == 'SPLIT'].copy()
-                splits['SplitRatio'] = splits['Splitratio'].apply(
-                    lambda x: eval(x))
+#                splits['SplitRatio'] = splits['Splitratio'].apply(
+#                    lambda x: eval(x))
+
+                splits['SplitRatio'] = splits.apply(
+                    lambda row: eval(row['Splitratio']) if float(row['Numerator'])>0 else 1, axis = 1 )
+
                 splits = splits.reset_index(drop=True)
                 splits = splits.set_index('Date')
-                splits['Splits'] = 1.0 / splits['SplitRatio']
+#                splits['Splits'] = 1.0 / splits['SplitRatio']
+                splits['Splits'] = splits['SplitRatio']
                 prices = prices.join(splits['Splits'], how='outer')
 
                 if 'DIVIDEND' in types and self.adjust_dividends:
