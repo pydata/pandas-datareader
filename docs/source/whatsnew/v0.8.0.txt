@@ -5,9 +5,13 @@ v0.8.0 (TBD)
 
 Highlights include:
 
+
+- Removal of Google finance and Morningstar, which were deprecated in 0.7.0.
+
 .. contents:: What's new in v0.8.0
     :local:
     :backlinks: none
+
 
 .. _whatsnew_080.enhancements:
 
