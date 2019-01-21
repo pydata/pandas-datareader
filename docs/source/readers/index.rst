@@ -12,7 +12,6 @@ Data Readers
    eurostat
    iex
    moex
-   morningstar
    nasdaq-trader
    oecd
    quandl

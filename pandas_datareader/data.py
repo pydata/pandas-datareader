@@ -20,7 +20,6 @@ from pandas_datareader.iex.deep import Deep as IEXDeep
 from pandas_datareader.iex.tops import LastReader as IEXLasts, \
     TopsReader as IEXTops
 from pandas_datareader.moex import MoexReader
-from pandas_datareader.mstar.daily import MorningstarDailyReader
 from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
 from pandas_datareader.oecd import OECDReader
 from pandas_datareader.quandl import QuandlReader
@@ -42,7 +41,7 @@ __all__ = ['get_components_yahoo', 'get_data_enigma', 'get_data_famafrench',
            'get_tops_iex', 'get_summary_iex', 'get_records_iex',
            'get_recent_iex', 'get_markets_iex', 'get_last_iex',
            'get_iex_symbols', 'get_iex_book', 'get_dailysummary_iex',
-           'get_data_morningstar', 'get_data_stooq','get_data_robinhood',
+           'get_data_stooq', 'get_data_robinhood',
            'get_quotes_robinhood', 'DataReader']
 
 
@@ -96,10 +95,6 @@ def get_tops_iex(*args, **kwargs):
 
 def get_last_iex(*args, **kwargs):
     return IEXLasts(*args, **kwargs).read()
-
-
-def get_data_morningstar(*args, **kwargs):
-    return MorningstarDailyReader(*args, **kwargs).read()
 
 
 def get_data_robinhood(*args, **kwargs):
@@ -293,7 +288,7 @@ def DataReader(name, data_source=None, start=None, end=None,
     expected_source = ["yahoo", "iex", "iex-tops", "iex-last",
                        "iex-last", "bankofcanada", "stooq", "iex-book",
                        "enigma", "fred", "famafrench", "oecd", "eurostat",
-                       "nasdaq", "quandl", "moex", "morningstar", 'robinhood',
+                       "nasdaq", "quandl", "moex", 'robinhood',
                        "tiingo", "yahoo-actions", "yahoo-dividends",
                        "av-forex", "av-daily", "av-daily-adjusted",
                        "av-weekly", "av-weekly-adjusted", "av-monthly",
@@ -375,10 +370,6 @@ def DataReader(name, data_source=None, start=None, end=None,
         return MoexReader(symbols=name, start=start, end=end,
                           retry_count=retry_count, pause=pause,
                           session=session).read()
-    elif data_source == "morningstar":
-        return MorningstarDailyReader(symbols=name, start=start, end=end,
-                                      retry_count=retry_count, pause=pause,
-                                      session=session, interval="d").read()
     elif data_source == 'robinhood':
         return RobinhoodHistoricalReader(symbols=name, start=start, end=end,
                                          retry_count=retry_count, pause=pause,
