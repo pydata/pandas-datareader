@@ -1,11 +1,16 @@
 import pandas as pd
 
 from pandas_datareader.base import _BaseReader
+from pandas_datareader.exceptions import (ImmediateDeprecationError,
+                                          DEP_ERROR_MSG)
 
 
 class RobinhoodQuoteReader(_BaseReader):
     """
     Read quotes from Robinhood
+
+    DEPRECATED 1/2019 - Robinhood ended support for the endpoints used by this
+    reader
 
     Parameters
     ----------
@@ -28,6 +33,7 @@ class RobinhoodQuoteReader(_BaseReader):
 
     def __init__(self, symbols, start=None, end=None, retry_count=3, pause=.1,
                  timeout=30, session=None, freq=None):
+        raise ImmediateDeprecationError(DEP_ERROR_MSG.format("Robinhood"))
         super(RobinhoodQuoteReader, self).__init__(symbols, start, end,
                                                    retry_count, pause,
                                                    timeout, session, freq)
@@ -110,6 +116,7 @@ class RobinhoodHistoricalReader(RobinhoodQuoteReader):
     def __init__(self, symbols, start=None, end=None, retry_count=3, pause=.1,
                  timeout=30, session=None, freq=None, interval='day',
                  span='year'):
+        raise ImmediateDeprecationError(DEP_ERROR_MSG.format("Robinhood"))
         super(RobinhoodHistoricalReader, self).__init__(symbols, start, end,
                                                         retry_count, pause,
                                                         timeout, session, freq)

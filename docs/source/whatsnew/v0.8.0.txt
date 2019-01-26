@@ -5,6 +5,9 @@ v0.8.0 (TBD)
 
 Highlights include:
 
+- Immediate deprecation of Robinhood for quotes and historical data. Robinhood
+  ended support for these endpoints in 1/2019
+
 .. contents:: What's new in v0.8.0
     :local:
     :backlinks: none
@@ -20,6 +23,9 @@ Enhancements
 Backwards incompatible API changes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+- Immediate deprecation of Robinhood for quotes and historical data. Robinhood
+  ended support for these endpoints in 1/2019. The Robinhood quotes and daily
+  readers will raise an ``ImmediateDeprecationError`` when called.
 
 
 .. _whatsnew_080.bug_fixes:
