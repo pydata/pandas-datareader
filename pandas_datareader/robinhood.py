@@ -78,6 +78,9 @@ class RobinhoodHistoricalReader(RobinhoodQuoteReader):
     """
     Read historical values from Robinhood
 
+    DEPRECATED 1/2019 - Robinhood ended support for the endpoints used by this
+    reader
+
     Parameters
     ----------
     symbols : {str, List[str]}
