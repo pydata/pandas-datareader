@@ -5,7 +5,7 @@ import pytest
 
 from pandas_datareader.compat import PY3
 from pandas_datareader.tiingo import TiingoDailyReader, TiingoMetaDataReader, \
-    TiingoQuoteReader, get_tiingo_symbols
+    TiingoQuoteReader, TiingoIEXHistoricalReader, get_tiingo_symbols
 
 TEST_API_KEY = os.getenv('TIINGO_API_KEY')
 # Ensure blank TEST_API_KEY not used in pull request
@@ -32,6 +32,16 @@ def test_tiingo_quote(symbols):
 @pytest.mark.skipif(TEST_API_KEY is None, reason="TIINGO_API_KEY not set")
 def test_tiingo_historical(symbols):
     df = TiingoDailyReader(symbols=symbols).read()
+    assert isinstance(df, pd.DataFrame)
+    if isinstance(symbols, str):
+        symbols = [symbols]
+    assert df.index.levels[0].shape[0] == len(symbols)
+
+
+@pytest.mark.skipif(TEST_API_KEY is None, reason="TIINGO_API_KEY not set")
+def test_tiingo_iex_historical(symbols):
+    df = TiingoIEXHistoricalReader(symbols=symbols).read()
+    df.head()
     assert isinstance(df, pd.DataFrame)
     if isinstance(symbols, str):
         symbols = [symbols]
