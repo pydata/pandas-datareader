@@ -25,9 +25,10 @@ def get_tiingo_symbols():
 
 class TiingoIEXHistoricalReader(_BaseReader):
     """
-        Historical data from Tiingo on equities, ETFs and mutual funds, with re-sampling capability.
-        This query is limited to the last 1,000 bars based in the endDate. So the startDate is moved
-        if it goes past the limit.
+        Historical data from Tiingo on equities, ETFs and mutual funds,
+        with re-sampling capability. This query is limited to the last
+        1,000 bars based in the endDate. So the startDate is moved if
+        it goes past the limit.
 
         Parameters
         ----------
@@ -45,16 +46,18 @@ class TiingoIEXHistoricalReader(_BaseReader):
         session : Session, default None
             requests.sessions.Session instance to be used
         freq : {str, None}
-        Re-sample frequency. Format is # + (min/hour); e.g. "15min" or "4hour". If no value is provided,
-            defaults to 5min. The minimum value is "1min". Units in minutes (min) and hours (hour) are accepted.
+        Re-sample frequency. Format is # + (min/hour); e.g. "15min" or "4hour".
+        If no value is provided, defaults to 5min. The minimum value is "1min".
+        Units in minutes (min) and hours (hour) are accepted.
         api_key : str, optional
             Tiingo API key . If not provided the environmental variable
             TIINGO_API_KEY is read. The API key is *required*.
     """
 
-    def __init__(self, symbols, start=None, end=None, retry_count=3, pause=0.1, timeout=30, session=None, freq=None,
-                 api_key=None):
-        super().__init__(symbols, start, end, retry_count, pause, timeout, session, freq)
+    def __init__(self, symbols, start=None, end=None, retry_count=3, pause=0.1,
+                 timeout=30, session=None, freq=None, api_key=None):
+        super().__init__(symbols, start, end, retry_count, pause, timeout,
+                         session, freq)
 
         if isinstance(self.symbols, str):
             self.symbols = [self.symbols]
