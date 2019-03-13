@@ -200,6 +200,23 @@ performances through the top-level function ``get_sector_performance_av``.
 
 .. _remote_data.enigma:
 
+Econdb
+======
+
+`Econdb <https://www.econdb.com>`__ provides economic data from 90+
+official statistical agencies. Free API allows access to the complete
+Econdb database of time series aggregated into datasets.
+
+.. ipython:: python
+
+    import os
+    import pandas_datareader.data as web
+
+    f = web.DataReader('ticker=RGDPQNO', 'econdb')
+    f.head()
+
+.. _remote_data.econdb:
+
 Enigma
 ======
 

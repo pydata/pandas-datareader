@@ -9,6 +9,7 @@ from pandas_datareader.av.quotes import AVQuotesReader
 from pandas_datareader.av.sector import AVSectorPerformanceReader
 from pandas_datareader.av.time_series import AVTimeSeriesReader
 from pandas_datareader.bankofcanada import BankOfCanadaReader
+from pandas_datareader.econdb import EcondbReader
 from pandas_datareader.enigma import EnigmaReader
 from pandas_datareader.eurostat import EurostatReader
 from pandas_datareader.exceptions import DEP_ERROR_MSG, \
@@ -310,7 +311,7 @@ def DataReader(name, data_source=None, start=None, end=None,
                        "tiingo", "yahoo-actions", "yahoo-dividends",
                        "av-forex", "av-daily", "av-daily-adjusted",
                        "av-weekly", "av-weekly-adjusted", "av-monthly",
-                       "av-monthly-adjusted"]
+                       "av-monthly-adjusted", "econdb"]
 
     if data_source not in expected_source:
         msg = "data_source=%r is not implemented" % data_source
@@ -465,6 +466,11 @@ def DataReader(name, data_source=None, start=None, end=None,
                                   start=start, end=end,
                                   retry_count=retry_count, pause=pause,
                                   session=session, api_key=access_key).read()
+
+    elif data_source == "econdb":
+        return EcondbReader(symbols=name, start=start, end=end,
+                            retry_count=retry_count, pause=pause,
+                            session=session).read()
 
     else:
         msg = "data_source=%r is not implemented" % data_source

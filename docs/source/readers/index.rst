@@ -8,6 +8,7 @@ Data Readers
    fred
    famafrench
    bank-of-canada
+   econdb
    enigma
    eurostat
    iex
