@@ -17,9 +17,6 @@
 Remote Data Access
 ******************
 
-.. warning::
-
-  Yahoo! Finance, Google Finance, and Morningstar have been immediately deprecated.  Endpoints from these providers have been retired
 
 .. warning::
 
