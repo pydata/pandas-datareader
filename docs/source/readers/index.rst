@@ -8,15 +8,14 @@ Data Readers
    fred
    famafrench
    bank-of-canada
+   econdb
    enigma
    eurostat
    iex
    moex
-   morningstar
    nasdaq-trader
    oecd
    quandl
-   robinhood
    stooq
    tiingo
    tsp

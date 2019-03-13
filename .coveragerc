@@ -6,9 +6,6 @@ include = */pandas_datareader/*
 omit =
     */_version.py
     */yahoo/*
-    */google/options.py
-    */google/quotes.py
-    */tests/google/test_options.py
 
 
 [report]
@@ -25,7 +22,4 @@ include = */pandas_datareader/*
 omit =
     */_version.py
     */yahoo/*
-    */google/options.py
-    */google/quotes.py
-    */tests/google/test_options.py
 ignore_errors = True

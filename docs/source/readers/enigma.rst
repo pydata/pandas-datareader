@@ -1,4 +1,4 @@
-Engima
+Enigma
 ------
 
 .. py:module:: pandas_datareader.enigma

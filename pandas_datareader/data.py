@@ -9,21 +9,18 @@ from pandas_datareader.av.quotes import AVQuotesReader
 from pandas_datareader.av.sector import AVSectorPerformanceReader
 from pandas_datareader.av.time_series import AVTimeSeriesReader
 from pandas_datareader.bankofcanada import BankOfCanadaReader
+from pandas_datareader.econdb import EcondbReader
 from pandas_datareader.enigma import EnigmaReader
 from pandas_datareader.eurostat import EurostatReader
 from pandas_datareader.exceptions import DEP_ERROR_MSG, \
     ImmediateDeprecationError
 from pandas_datareader.famafrench import FamaFrenchReader
 from pandas_datareader.fred import FredReader
-from pandas_datareader.google.daily import GoogleDailyReader
-from pandas_datareader.google.options import Options as GoogleOptions
-from pandas_datareader.google.quotes import GoogleQuotesReader
 from pandas_datareader.iex.daily import IEXDailyReader
 from pandas_datareader.iex.deep import Deep as IEXDeep
 from pandas_datareader.iex.tops import LastReader as IEXLasts, \
     TopsReader as IEXTops
 from pandas_datareader.moex import MoexReader
-from pandas_datareader.mstar.daily import MorningstarDailyReader
 from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
 from pandas_datareader.oecd import OECDReader
 from pandas_datareader.quandl import QuandlReader
@@ -39,15 +36,14 @@ from pandas_datareader.yahoo.options import Options as YahooOptions
 from pandas_datareader.yahoo.quotes import YahooQuotesReader
 
 __all__ = ['get_components_yahoo', 'get_data_enigma', 'get_data_famafrench',
-           'get_data_fred', 'get_data_google', 'get_data_moex',
+           'get_data_fred', 'get_data_moex',
            'get_data_quandl', 'get_data_yahoo', 'get_data_yahoo_actions',
-           'get_nasdaq_symbols', 'get_quote_google', 'get_quote_yahoo',
+           'get_nasdaq_symbols', 'get_quote_yahoo',
            'get_tops_iex', 'get_summary_iex', 'get_records_iex',
            'get_recent_iex', 'get_markets_iex', 'get_last_iex',
            'get_iex_symbols', 'get_iex_book', 'get_dailysummary_iex',
-           'get_data_morningstar', 'get_data_stooq',
-           'get_data_stooq', 'get_data_robinhood', 'get_quotes_robinhood',
-           'DataReader']
+           'get_data_stooq', 'get_data_robinhood',
+           'get_quotes_robinhood', 'DataReader']
 
 
 def get_data_alphavantage(*args, **kwargs):
@@ -60,10 +56,6 @@ def get_data_fred(*args, **kwargs):
 
 def get_data_famafrench(*args, **kwargs):
     return FamaFrenchReader(*args, **kwargs).read()
-
-
-def get_data_google(*args, **kwargs):
-    return GoogleDailyReader(*args, **kwargs).read()
 
 
 def get_data_yahoo(*args, **kwargs):
@@ -86,11 +78,6 @@ def get_quote_yahoo(*args, **kwargs):
     return YahooQuotesReader(*args, **kwargs).read()
 
 
-def get_quote_google(*args, **kwargs):
-    raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Google Quotes'))
-    return GoogleQuotesReader(*args, **kwargs).read()
-
-
 def get_data_quandl(*args, **kwargs):
     return QuandlReader(*args, **kwargs).read()
 
@@ -109,10 +96,6 @@ def get_tops_iex(*args, **kwargs):
 
 def get_last_iex(*args, **kwargs):
     return IEXLasts(*args, **kwargs).read()
-
-
-def get_data_morningstar(*args, **kwargs):
-    return MorningstarDailyReader(*args, **kwargs).read()
 
 
 def get_data_robinhood(*args, **kwargs):
@@ -268,10 +251,10 @@ def DataReader(name, data_source=None, start=None, end=None,
     Parameters
     ----------
     name : str or list of strs
-        the name of the dataset. Some data sources (google, fred) will
+        the name of the dataset. Some data sources (IEX, fred) will
         accept a list of names.
     data_source: {str, None}
-        the data source ("google", "fred", "ff")
+        the data source ("iex", "fred", "ff")
     start : {datetime, None}
         left boundary for range (defaults to 1/1/2010)
     end : {datetime, None}
@@ -289,7 +272,7 @@ def DataReader(name, data_source=None, start=None, end=None,
     Examples
     ----------
     # Data from Google Finance
-    aapl = DataReader("AAPL", "google")
+    aapl = DataReader("AAPL", "iex")
 
     # Price and volume data from IEX
     tops = DataReader(["GS", "AAPL"], "iex-tops")
@@ -307,14 +290,14 @@ def DataReader(name, data_source=None, start=None, end=None,
     ff = DataReader("6_Portfolios_2x3", "famafrench")
     ff = DataReader("F-F_ST_Reversal_Factor", "famafrench")
     """
-    expected_source = ["yahoo", "google", "iex", "iex-tops", "iex-last",
+    expected_source = ["yahoo", "iex", "iex-tops", "iex-last",
                        "iex-last", "bankofcanada", "stooq", "iex-book",
                        "enigma", "fred", "famafrench", "oecd", "eurostat",
-                       "nasdaq", "quandl", "moex", "morningstar", 'robinhood',
+                       "nasdaq", "quandl", "moex", 'robinhood',
                        "tiingo", "yahoo-actions", "yahoo-dividends",
                        "av-forex", "av-daily", "av-daily-adjusted",
                        "av-weekly", "av-weekly-adjusted", "av-monthly",
-                       "av-monthly-adjusted"]
+                       "av-monthly-adjusted", "econdb"]
 
     if data_source not in expected_source:
         msg = "data_source=%r is not implemented" % data_source
@@ -325,12 +308,6 @@ def DataReader(name, data_source=None, start=None, end=None,
                                 adjust_price=False, chunksize=25,
                                 retry_count=retry_count, pause=pause,
                                 session=session).read()
-
-    elif data_source == "google":
-        return GoogleDailyReader(symbols=name, start=start, end=end,
-                                 chunksize=25,
-                                 retry_count=retry_count, pause=pause,
-                                 session=session).read()
 
     elif data_source == "iex":
         return IEXDailyReader(symbols=name, start=start, end=end,
@@ -398,10 +375,6 @@ def DataReader(name, data_source=None, start=None, end=None,
         return MoexReader(symbols=name, start=start, end=end,
                           retry_count=retry_count, pause=pause,
                           session=session).read()
-    elif data_source == "morningstar":
-        return MorningstarDailyReader(symbols=name, start=start, end=end,
-                                      retry_count=retry_count, pause=pause,
-                                      session=session, interval="d").read()
     elif data_source == 'robinhood':
         return RobinhoodHistoricalReader(symbols=name, start=start, end=end,
                                          retry_count=retry_count, pause=pause,
@@ -470,6 +443,11 @@ def DataReader(name, data_source=None, start=None, end=None,
                                   retry_count=retry_count, pause=pause,
                                   session=session, api_key=access_key).read()
 
+    elif data_source == "econdb":
+        return EcondbReader(symbols=name, start=start, end=end,
+                            retry_count=retry_count, pause=pause,
+                            session=session).read()
+
     else:
         msg = "data_source=%r is not implemented" % data_source
         raise NotImplementedError(msg)
@@ -483,8 +461,5 @@ def Options(symbol, data_source=None, session=None):
     if data_source == "yahoo":
         raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Options'))
         return YahooOptions(symbol, session=session)
-    elif data_source == "google":
-        raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Google Options'))
-        return GoogleOptions(symbol, session=session)
     else:
-        raise NotImplementedError("currently only yahoo and google supported")
+        raise NotImplementedError("currently only yahoo supported")
