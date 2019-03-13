@@ -278,6 +278,24 @@ class TestYahoo(object):
         exp.index.name = 'Date'
         tm.assert_frame_equal(result.reindex_like(exp).round(5), exp.round(5))
 
+
+        # test cases with "1/0" split ratio in actions- no split, just chnage symbol from POT to NTR
+        start = datetime(2017, 12, 30)
+        end = datetime(2018, 12, 30)
+
+        result = web.DataReader('NTR', 'yahoo-actions', start, end)
+
+        exp_idx = pd.DatetimeIndex(['2018-12-28', '2018-09-27',
+                                    '2018-06-28', '2018-03-28',
+                                    '2018-01-02'])
+
+        exp = pd.DataFrame({'action': ['DIVIDEND', 'DIVIDEND', 'DIVIDEND',
+                                       'DIVIDEND', 'SPLIT'],
+                            'value': [0.43, 0.40, 0.40, 0.40, 1.00]},
+                           index=exp_idx)
+        exp.index.name = 'Date'
+        tm.assert_frame_equal(result.reindex_like(exp).round(2), exp.round(2))
+
     @skip_on_exception(RemoteDataError)
     def test_yahoo_DataReader_multi(self):
         start = datetime(2010, 1, 1)
