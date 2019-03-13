@@ -17,9 +17,11 @@
 Remote Data Access
 ******************
 
+
 .. warning::
 
-  Yahoo! Finance, Google Finance, and Morningstar have been immediately deprecated.  Endpoints from these providers have been retired
+    Robinhood has been immediately deprecated. Endpoints from this provider
+    have been retired.
 
 .. _remote_data.data_reader:
 
@@ -29,7 +31,6 @@ Currently the following sources are supported:
 
     - :ref:`Tiingo<remote_data.tiingo>`
     - :ref:`IEX<remote_data.iex>`
-    - :ref:`Robinhood<remote_data.robinhood>`
     - :ref:`Alpha Vantage<remote_data.alphavantage>`
     - :ref:`Enigma<remote_data.enigma>`
     - :ref:`Quandl<remote_data.quandl>`
@@ -93,21 +94,6 @@ A third interface to the deep API is exposed through
     f = web.DataReader('gs', 'iex-tops')
     f[:10]
 
-
-.. _remote_data.robinhood:
-
-Robinhood
-=========
-`Robinhood <https://www.robinhood.com>`__ is a stock trading platform with an
-API that provides a limited set of data. Historical daily data is limited to 1
-year relative to today.
-
-.. ipython:: python
-
-    import pandas_datareader.data as web
-    from datetime import datetime
-    f = web.DataReader('F', 'robinhood')
-    f.head()
 
 .. _remote_data.alphavantage:
 
@@ -210,6 +196,23 @@ performances through the top-level function ``get_sector_performance_av``.
 
 
 .. _remote_data.enigma:
+
+Econdb
+======
+
+`Econdb <https://www.econdb.com>`__ provides economic data from 90+
+official statistical agencies. Free API allows access to the complete
+Econdb database of time series aggregated into datasets.
+
+.. ipython:: python
+
+    import os
+    import pandas_datareader.data as web
+
+    f = web.DataReader('ticker=RGDPQNO', 'econdb')
+    f.head()
+
+.. _remote_data.econdb:
 
 Enigma
 ======

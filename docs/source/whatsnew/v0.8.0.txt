@@ -5,9 +5,18 @@ v0.8.0 (TBD)
 
 Highlights include:
 
+- A new connector for Econdb was introduced.  Econdb provides
+  aggregated economic data from 90+ official statistical agencies
+  (:issue:`615`)
+- Removal of Google finance and Morningstar, which were deprecated in 0.7.0.
+- Immediate deprecation of Robinhood for quotes and historical data. Robinhood
+  ended support for these endpoints in 1/2019
+
+
 .. contents:: What's new in v0.8.0
     :local:
     :backlinks: none
+
 
 .. _whatsnew_080.enhancements:
 
@@ -20,6 +29,9 @@ Enhancements
 Backwards incompatible API changes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+- Immediate deprecation of Robinhood for quotes and historical data. Robinhood
+  ended support for these endpoints in 1/2019. The Robinhood quotes and daily
+  readers will raise an ``ImmediateDeprecationError`` when called.
 
 
 .. _whatsnew_080.bug_fixes:

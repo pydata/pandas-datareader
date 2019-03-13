@@ -37,14 +37,15 @@ class StooqDailyReader(_DailyBaseReader):
 
     def _get_params(self, symbol, country='US'):
         symbol_parts = symbol.split(".")
-        if len(symbol_parts) == 1:
-            symbol = ".".join([symbol, country])
-        elif symbol_parts[1].lower() == 'pl:
-            symbol = symbol_parts[0]
-        else:
-            if symbol_parts[1].lower() not in ['de', 'hk', 'hu', 'jp',
-                                               'uk', 'us']:
-                symbol = ".".join([symbol, 'US'])
+        if not symbol.startswith('^'):
+            if len(symbol_parts) == 1:
+                symbol = ".".join([symbol, country])
+            elif symbol_parts[1].lower() == 'pl:
+                symbol = symbol_parts[0]
+            else:
+                if symbol_parts[1].lower() not in ['de', 'hk', 'hu', 'jp',
+                                                   'uk', 'us']:
+                    symbol = ".".join([symbol, 'US'])
 
         params = {
             's': symbol,
