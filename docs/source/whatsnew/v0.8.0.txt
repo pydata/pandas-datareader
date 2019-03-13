@@ -23,6 +23,7 @@ Highlights include:
 Enhancements
 ~~~~~~~~~~~~
 
+- Added Tiingo IEX Historical reader.
 
 .. _whatsnew_080.api_breaking:
 
