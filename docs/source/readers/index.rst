@@ -8,6 +8,7 @@ Data Readers
    fred
    famafrench
    bank-of-canada
+   econdb
    enigma
    eurostat
    iex
@@ -15,7 +16,6 @@ Data Readers
    nasdaq-trader
    oecd
    quandl
-   robinhood
    stooq
    tiingo
    tsp
