@@ -28,7 +28,7 @@ class AlphaVantage(_BaseReader):
         if not api_key or not isinstance(api_key, str):
             raise ValueError('The AlphaVantage API key must be provided '
                              'either through the api_key variable or '
-                             'through the environment varaible '
+                             'through the environment variable '
                              'ALPHAVANTAGE_API_KEY')
         self.api_key = api_key
 

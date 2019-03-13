@@ -21,6 +21,11 @@ Remote Data Access
 
   Yahoo! Finance, Google Finance, and Morningstar have been immediately deprecated.  Endpoints from these providers have been retired
 
+.. warning::
+
+    Robinhood has been immediately deprecated. Endpoints from this provider
+    have been retired.
+
 .. _remote_data.data_reader:
 
 Functions from :mod:`pandas_datareader.data` and :mod:`pandas_datareader.wb`
@@ -29,7 +34,6 @@ Currently the following sources are supported:
 
     - :ref:`Tiingo<remote_data.tiingo>`
     - :ref:`IEX<remote_data.iex>`
-    - :ref:`Robinhood<remote_data.robinhood>`
     - :ref:`Alpha Vantage<remote_data.alphavantage>`
     - :ref:`Enigma<remote_data.enigma>`
     - :ref:`Quandl<remote_data.quandl>`
@@ -93,21 +97,6 @@ A third interface to the deep API is exposed through
     f = web.DataReader('gs', 'iex-tops')
     f[:10]
 
-
-.. _remote_data.robinhood:
-
-Robinhood
-=========
-`Robinhood <https://www.robinhood.com>`__ is a stock trading platform with an
-API that provides a limited set of data. Historical daily data is limited to 1
-year relative to today.
-
-.. ipython:: python
-
-    import pandas_datareader.data as web
-    from datetime import datetime
-    f = web.DataReader('F', 'robinhood')
-    f.head()
 
 .. _remote_data.alphavantage:
 
