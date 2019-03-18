@@ -106,7 +106,7 @@ class FamaFrenchReader(_BaseReader):
 
         datasets, table_desc = {}, []
         for i, src in enumerate(tables):
-            match = re.search('^\s*,', src, re.M)  # the table starts there
+            match = re.search(r'^\s*,', src, re.M)  # the table starts there
             start = 0 if not match else match.start()
 
             df = read_csv(StringIO('Date' + src[start:]), **params)

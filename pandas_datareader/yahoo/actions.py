@@ -1,4 +1,6 @@
-from pandas import (concat, DataFrame, MultiIndex)
+from pandas import DataFrame, MultiIndex
+
+from pandas_datareader.compat import concat
 from pandas_datareader.yahoo.daily import YahooDailyReader
 
 

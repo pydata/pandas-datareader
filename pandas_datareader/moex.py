@@ -6,7 +6,7 @@ import pandas as pd
 from pandas.compat import StringIO
 
 from pandas_datareader.base import _DailyBaseReader
-from pandas_datareader.compat import is_list_like
+from pandas_datareader.compat import is_list_like, concat
 
 
 class MoexReader(_DailyBaseReader):
@@ -170,7 +170,7 @@ class MoexReader(_DailyBaseReader):
             self.close()
 
         if len(dfs) > 1:
-            return pd.concat(dfs, axis=0, join='outer', sort=True)
+            return concat(dfs, axis=0, join='outer', sort=True)
         else:
             return dfs[0]
 

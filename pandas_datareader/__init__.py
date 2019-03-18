@@ -6,7 +6,7 @@ from .data import (DataReader, Options, get_components_yahoo,
                    get_iex_book, get_iex_symbols, get_last_iex,
                    get_markets_iex, get_nasdaq_symbols, get_quote_yahoo,
                    get_recent_iex, get_records_iex, get_summary_iex,
-                   get_tops_iex, get_data_tiingo, get_iex_data_tiingo, 
+                   get_tops_iex, get_data_tiingo, get_iex_data_tiingo,
                    get_data_alphavantage)
 
 __version__ = get_versions()['version']

@@ -40,8 +40,8 @@ else:
     from pandas.util.testing import assertRaisesRegexp as assert_raises_regex
     get_filepath_or_buffer = com.get_filepath_or_buffer
 
-if PANDAS_0230:
-    from pandas.core.dtypes.common import is_list_like
+if PANDAS_0190:
+    from pandas.api.types import is_list_like
 else:
     from pandas.core.common import is_list_like
 
@@ -50,3 +50,12 @@ if compat.PY3:
     from urllib.error import HTTPError
 else:
     from urllib2 import HTTPError
+
+
+def concat(*args, **kwargs):
+    """
+    Shim to wokr around sort keyword
+    """
+    if not PANDAS_0230 and 'sort' in kwargs:
+        del kwargs['sort']
+    return pd.concat(*args, **kwargs)
