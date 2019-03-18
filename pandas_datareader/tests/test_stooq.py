@@ -26,6 +26,7 @@ def test_get_data_stooq_dax():
     f = get_data_stooq('^DAX')
     assert f.shape[0] > 0
 
+
 def test_stooq_googl():
     f = get_data_stooq('GOOGL.US')
     assert f.shape[0] > 0

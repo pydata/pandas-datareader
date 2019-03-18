@@ -27,7 +27,8 @@ from pandas_datareader.quandl import QuandlReader
 from pandas_datareader.robinhood import RobinhoodHistoricalReader, \
     RobinhoodQuoteReader
 from pandas_datareader.stooq import StooqDailyReader
-from pandas_datareader.tiingo import TiingoDailyReader, TiingoQuoteReader, TiingoIEXHistoricalReader
+from pandas_datareader.tiingo import (TiingoDailyReader, TiingoQuoteReader,
+                                      TiingoIEXHistoricalReader)
 from pandas_datareader.yahoo.actions import (YahooActionReader, YahooDivReader)
 from pandas_datareader.yahoo.components import _get_data as \
     get_components_yahoo

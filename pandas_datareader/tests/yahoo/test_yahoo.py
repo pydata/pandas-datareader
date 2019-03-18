@@ -278,8 +278,8 @@ class TestYahoo(object):
         exp.index.name = 'Date'
         tm.assert_frame_equal(result.reindex_like(exp).round(5), exp.round(5))
 
-
-        # test cases with "1/0" split ratio in actions- no split, just chnage symbol from POT to NTR
+        # test cases with "1/0" split ratio in actions -
+        # no split, just chnage symbol from POT to NTR
         start = datetime(2017, 12, 30)
         end = datetime(2018, 12, 30)
 

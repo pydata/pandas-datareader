@@ -173,9 +173,15 @@ class YahooDailyReader(_DailyBaseReader):
                 prices = prices.join(divs, how='outer')
 
             if 'SPLIT' in types:
+
+                def split_ratio(row):
+                    if float(row['Numerator']) > 0:
+                        return eval(row['Splitratio'])
+                    else:
+                        return 1
+
                 splits = actions[actions.Type == 'SPLIT'].copy()
-                splits['SplitRatio'] = splits.apply(
-                    lambda row: eval(row['Splitratio']) if float(row['Numerator'])>0 else 1, axis = 1 )
+                splits['SplitRatio'] = splits.apply(split_ratio, axis=1)
                 splits = splits.reset_index(drop=True)
                 splits = splits.set_index('Date')
                 splits['Splits'] = splits['SplitRatio']
