@@ -26,6 +26,7 @@ Enhancements
 ~~~~~~~~~~~~
 
 - Added Tiingo IEX Historical reader.
+- Added support for Alpha Vantage intraday time series prices (:issue: `631`)
 - Up to 15 years of historical prices from IEX with new platform, IEX Cloud
 
 .. _whatsnew_080.api_breaking:

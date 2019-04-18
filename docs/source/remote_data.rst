@@ -114,6 +114,7 @@ Through the
 endpoints, it is possible to obtain historical equities data for individual
 symbols. The following endpoints are available:
 
+* ``av-intraday`` - Intraday Time Series
 * ``av-daily`` - Daily Time Series
 * ``av-daily-adjusted`` - Daily Time Series (Adjusted)
 * ``av-weekly`` - Weekly Time Series

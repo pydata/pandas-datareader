@@ -35,7 +35,8 @@ class AVTimeSeriesReader(AlphaVantage):
             "TIME_SERIES_WEEKLY": "Weekly Time Series",
             "TIME_SERIES_WEEKLY_ADJUSTED": "Weekly Adjusted Time Series",
             "TIME_SERIES_MONTHLY": "Monthly Time Series",
-            "TIME_SERIES_MONTHLY_ADJUSTED": "Monthly Adjusted Time Series"
+            "TIME_SERIES_MONTHLY_ADJUSTED": "Monthly Adjusted Time Series",
+            "TIME_SERIES_INTRADAY": "Time Series (1min)"
     }
 
     def __init__(self, symbols=None, function="TIME_SERIES_DAILY",
@@ -47,11 +48,11 @@ class AVTimeSeriesReader(AlphaVantage):
                                                  pause=pause, session=session,
                                                  api_key=api_key)
 
-        self.func = function
+        self._func = function
 
     @property
     def function(self):
-        return self.func
+        return self._func
 
     @property
     def output_size(self):
@@ -67,12 +68,15 @@ class AVTimeSeriesReader(AlphaVantage):
 
     @property
     def params(self):
-        return {
+        p = {
             "symbol": self.symbols,
             "function": self.function,
             "apikey": self.api_key,
             "outputsize": self.output_size
         }
+        if self.function == "TIME_SERIES_INTRADAY":
+            p.update({"interval": "1min"})
+        return p
 
     def _read_lines(self, out):
         data = super(AVTimeSeriesReader, self)._read_lines(out)
