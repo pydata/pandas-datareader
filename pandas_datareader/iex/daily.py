@@ -53,6 +53,11 @@ class IEXDailyReader(_DailyBaseReader):
             raise ValueError('The IEX Cloud API key must be provided either '
                              'through the api_key variable or through the '
                              ' environment variable IEX_API_KEY')
+        # Support for sandbox environment (testing purposes)
+        if os.getenv("IEX_SANDBOX") == "enable":
+            self.sandbox = True
+        else:
+            self.sandbox = False
         self.api_key = api_key
         super(IEXDailyReader, self).__init__(symbols=symbols, start=start,
                                              end=end, retry_count=retry_count,
@@ -62,7 +67,10 @@ class IEXDailyReader(_DailyBaseReader):
     @property
     def url(self):
         """API URL"""
-        return 'https://sandbox.iexapis.com/stable/stock/market/batch'
+        if self.sandbox is True:
+            return 'https://sandbox.iexapis.com/stable/stock/market/batch'
+        else:
+            return 'https://cloud.iexapis.com/stable/stock/market/batch'
 
     @property
     def endpoint(self):
