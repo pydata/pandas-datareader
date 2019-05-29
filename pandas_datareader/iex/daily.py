@@ -1,5 +1,6 @@
 import datetime
 import json
+import os
 
 import pandas as pd
 
@@ -40,10 +41,19 @@ class IEXDailyReader(_DailyBaseReader):
         Number of symbols to download consecutively before intiating pause.
     session : Session, default None
         requests.sessions.Session instance to be used
+    api_key: str
+        IEX Cloud Secret Token
     """
 
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.1, session=None, chunksize=25):
+                 pause=0.1, session=None, chunksize=25, api_key=None):
+        if api_key is None:
+            api_key = os.getenv('IEX_API_KEY')
+        if not api_key or not isinstance(api_key, str):
+            raise ValueError('The IEX Cloud API key must be provided either '
+                             'through the api_key variable or through the '
+                             ' environment variable IEX_API_KEY')
+        self.api_key = api_key
         super(IEXDailyReader, self).__init__(symbols=symbols, start=start,
                                              end=end, retry_count=retry_count,
                                              pause=pause, session=session,
@@ -52,7 +62,7 @@ class IEXDailyReader(_DailyBaseReader):
     @property
     def url(self):
         """API URL"""
-        return 'https://api.iextrading.com/1.0/stock/market/batch'
+        return 'https://sandbox.iexapis.com/stable/stock/market/batch'
 
     @property
     def endpoint(self):
@@ -69,20 +79,24 @@ class IEXDailyReader(_DailyBaseReader):
             "symbols": symbolList,
             "types": self.endpoint,
             "range": chart_range,
+            "token": self.api_key
         }
         return params
 
     def _range_string_from_date(self):
         delta = relativedelta(self.start, datetime.datetime.now())
-        if 2 <= (delta.years * -1) <= 5:
+        years = (delta.years * -1)
+        if 5 <= years <= 15:
+            return "max"
+        if 2 <= years < 5:
             return "5y"
-        elif 1 <= (delta.years * -1) <= 2:
+        elif 1 <= years < 2:
             return "2y"
-        elif 0 <= (delta.years * -1) < 1:
+        elif 0 <= years < 1:
             return "1y"
         else:
             raise ValueError(
-                "Invalid date specified. Must be within past 5 years.")
+                "Invalid date specified. Must be within past 15 years.")
 
     def read(self):
         """Read data"""

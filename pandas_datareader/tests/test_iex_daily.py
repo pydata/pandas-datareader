@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 
 from pandas import DataFrame, MultiIndex
 
@@ -7,6 +8,8 @@ import pytest
 import pandas_datareader.data as web
 
 
+@pytest.mark.skipif(os.getenv("IEX_SANDBOX") != 'enable',
+                    reason='All tests must be run in sandbox mode')
 class TestIEXDaily(object):
 
     @classmethod
@@ -31,7 +34,7 @@ class TestIEXDaily(object):
                            self.start, self.end)
 
     def test_daily_invalid_date(self):
-        start = datetime(2010, 1, 5)
+        start = datetime(2000, 1, 5)
         end = datetime(2017, 5, 24)
         with pytest.raises(Exception):
             web.DataReader(["AAPL", "TSLA"], "iex", start, end)
@@ -40,7 +43,6 @@ class TestIEXDaily(object):
         df = web.DataReader("AAPL", "iex", self.start, self.end)
         assert list(df) == ["open", "high", "low", "close", "volume"]
         assert len(df) == 578
-        assert df["volume"][-1] == 19219154
 
     def test_multiple_symbols(self):
         syms = ["AAPL", "MSFT", "TSLA"]
@@ -64,11 +66,3 @@ class TestIEXDaily(object):
 
         assert len(a) == 73
         assert len(t) == 73
-
-        expected3 = t.loc["2017-02-09"]
-        assert expected3["close"] == 269.20
-        assert expected3["high"] == 271.18
-
-        expected4 = t.loc["2017-05-24"]
-        assert expected4["close"] == 310.22
-        assert expected4["high"] == 311.0
