@@ -70,9 +70,12 @@ writing).
 IEX
 ===
 
+.. warning:: Usage of all IEX readers now requries an API key. See
+             below for additional information.
+
 The Investors Exchange (IEX) provides a wide range of data through an
-`API <https://iextrading.com/developer/docs/>`__.  Historical stock
-prices are available for up to 5 years:
+`API <https://iexcloud.io/api/docs/>`__.  Historical stock
+prices are available for up to 15 years. The usage of these readers requires an API key, which can be stored in the ``IEX_API_TOKEN`` environment variable.
 
 .. ipython:: python
 

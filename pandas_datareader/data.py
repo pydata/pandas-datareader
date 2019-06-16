@@ -312,7 +312,7 @@ def DataReader(name, data_source=None, start=None, end=None,
 
     elif data_source == "iex":
         return IEXDailyReader(symbols=name, start=start, end=end,
-                              chunksize=25,
+                              chunksize=25, api_key=access_key,
                               retry_count=retry_count, pause=pause,
                               session=session).read()
 

@@ -8,6 +8,8 @@ Highlights include:
 - A new connector for Econdb was introduced.  Econdb provides
   aggregated economic data from 90+ official statistical agencies
   (:issue:`615`)
+- Migrated IEX readers to `IEX Cloud <https://iexcloud.io>`__. All
+  readers now require an API token (``IEX_API_TOKEN``)
 - Removal of Google finance and Morningstar, which were deprecated in 0.7.0.
 - Immediate deprecation of Robinhood for quotes and historical data. Robinhood
   ended support for these endpoints in 1/2019
@@ -24,6 +26,7 @@ Enhancements
 ~~~~~~~~~~~~
 
 - Added Tiingo IEX Historical reader.
+- Up to 15 years of historical prices from IEX with new platform, IEX Cloud
 
 .. _whatsnew_080.api_breaking:
 
@@ -33,7 +36,9 @@ Backwards incompatible API changes
 - Immediate deprecation of Robinhood for quotes and historical data. Robinhood
   ended support for these endpoints in 1/2019. The Robinhood quotes and daily
   readers will raise an ``ImmediateDeprecationError`` when called.
-
+- Usage of all IEX readers requires an IEX Cloud API token, which can
+  be passed as a parameter or stored in the environment variable
+  ``IEX_API_TOKEN``
 
 .. _whatsnew_080.bug_fixes:
 
