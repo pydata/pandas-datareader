@@ -101,7 +101,7 @@ class IEXDailyReader(_DailyBaseReader):
         elif 1 <= years < 2:
             return "2y"
         elif 0 <= years < 1:
-             estimated_days = ((365 * delta.years) + (30 * delta.months) + (delta.days)) * -1
+            estimated_days = ((365 * delta.years) + (30 * delta.months) + (delta.days)) * -1
             if 0 <= estimated_days < 6:
                 return "5d"
             elif 6 <= estimated_days < 28:
