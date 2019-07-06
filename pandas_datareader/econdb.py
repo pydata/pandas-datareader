@@ -25,19 +25,21 @@ class EcondbReader(_BaseReader):
         """ read one data from specified URL """
         results = requests.get(self.url).json()['results']
         df = pd.DataFrame({'dates': []}).set_index('dates')
+        
+        if self._show == 'labels':
+            def show_func(x): return x.split(':')[1]
+        elif self._show == 'codes':
+            def show_func(x): return x.split(':')[0]
 
         for entry in results:
-            head = entry['additional_metadata']
             series = (pd.DataFrame(entry['data'])[['dates', 'values']]
                       .set_index('dates'))
-            if self._show == 'labels':
-                def show_func(x): return x.split(':')[1]
-            elif self._show == 'codes':
-                def show_func(x): return x.split(':')[0]
 
-            series.columns = pd.MultiIndex.from_tuples(
-                [[show_func(x) for x in head.values()]],
-                names=[show_func(x) for x in head.keys()])
+            head = entry['additional_metadata']
+            if head != "":  # this additional metadata is not blank
+                series.columns = pd.MultiIndex.from_tuples(
+                    [[show_func(x) for x in head.values()]],
+                    names=[show_func(x) for x in head.keys()])
 
             if not df.empty:
                 df = df.join(series, how='outer')
