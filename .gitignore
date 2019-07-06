@@ -10,3 +10,4 @@ docs/build
 .idea
 *.iml
 *~
+env/
