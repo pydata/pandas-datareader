@@ -18,14 +18,14 @@ class TestEcondb(object):
         assert isinstance(df, pd.DataFrame)
         assert df.shape == (2, 4)
 
-        df = df['Natural sciences']['Annual'][
+        df = df['Annual']['Natural sciences'][
                 ['Norway', 'Poland', 'Portugal', 'Russia']]
 
         exp_col = pd.MultiIndex.from_product(
             [['Norway', 'Poland', 'Portugal', 'Russia'],
-             ['Percentage'], ['Total']],
-            names=['Geopolitical entity (reporting)', 'Unit of measure',
-                   'Year of graduation'])
+             ['Total'], ['Percentage']],
+            names=['Geopolitical entity (reporting)',
+                   'Year of graduation', 'Unit of measure'])
         exp_idx = pd.DatetimeIndex(['2006-01-01', '2009-01-01'],
                                    name='TIME_PERIOD')
 
