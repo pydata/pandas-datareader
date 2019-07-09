@@ -8,27 +8,21 @@ from pandas_datareader.compat import assert_raises_regex
 
 class TestEurostat(object):
 
-    def test_get_cdh_e_fos(self):
-        # Employed doctorate holders in non managerial and non professional
-        # occupations by fields of science (%)
-        df = web.DataReader('cdh_e_fos', 'eurostat',
-                            start=pd.Timestamp('2005-01-01'),
+    def test_get_ert_h_eur_a(self):
+        # Former euro area national currencies vs. euro/ECU - annual data (ert_h_eur_a)
+        df = web.DataReader('ert_h_eur_a', 'eurostat',
+                            start=pd.Timestamp('2009-01-01'),
                             end=pd.Timestamp('2010-01-01'))
-
         assert isinstance(df, pd.DataFrame)
-        assert df.shape == (2, 336)
 
-        df = df['Percentage']['Total']['Natural sciences']
-        df = df[['Norway', 'Poland', 'Portugal', 'Russia']]
+        df = df["National currency (former currencies of the euro area countries)"]
+        df = df["Average"][["Italian lira", "Lithuanian litas"]]
 
-        exp_col = pd.MultiIndex.from_product([['Norway', 'Poland', 'Portugal',
-                                             'Russia'], ['Annual']],
-                                             names=['GEO', 'FREQ'])
-        exp_idx = pd.DatetimeIndex(['2006-01-01', '2009-01-01'],
-                                   name='TIME_PERIOD')
-
-        values = np.array([[25.49, np.nan, 39.05, np.nan],
-                           [20.38, 25.1, 27.77, 38.1]])
+        exp_col = pd.MultiIndex.from_product([['Italian lira', 'Lithuanian litas'], ['Annual']],
+                                            names=['CURRENCY', 'FREQ'])
+        exp_idx = pd.DatetimeIndex(['2009-01-01', '2010-01-01'], name='TIME_PERIOD')
+        values = np.array([[1936.27, 3.4528],
+                        [1936.27, 3.4528]])
         expected = pd.DataFrame(values, index=exp_idx, columns=exp_col)
         tm.assert_frame_equal(df, expected)
 
