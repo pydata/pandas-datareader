@@ -45,14 +45,14 @@ class YahooDailyReader(_DailyBaseReader):
         'm' for monthly.
     get_actions : bool, default False
         If True, adds Dividend and Split columns to dataframe.
-    adjust_dividends: bool, default false
+    adjust_dividends: bool, default true
         If True, adjusts dividends for splits.
     """
 
     def __init__(self, symbols=None, start=None, end=None, retry_count=3,
                  pause=0.1, session=None, adjust_price=False,
                  ret_index=False, chunksize=1, interval='d',
-                 get_actions=False, adjust_dividends=False):
+                 get_actions=False, adjust_dividends=True):
         super(YahooDailyReader, self).__init__(symbols=symbols,
                                                start=start, end=end,
                                                retry_count=retry_count,
@@ -187,11 +187,11 @@ class YahooDailyReader(_DailyBaseReader):
                 splits['Splits'] = splits['SplitRatio']
                 prices = prices.join(splits['Splits'], how='outer')
 
-                if 'DIVIDEND' in types and self.adjust_dividends:
-                    # Adjust dividends to deal with splits
+                if 'DIVIDEND' in types and not self.adjust_dividends:
+                    # dividends are adjusted automatically by Yahoo
                     adj = prices['Splits'].sort_index(ascending=False).fillna(
                         1).cumprod()
-                    prices['Dividends'] = prices['Dividends'] * adj
+                    prices['Dividends'] = prices['Dividends'] / adj
 
         return prices
 
