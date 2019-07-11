@@ -1,5 +1,0 @@
-[
-  "pandas_datareader/tests/test_econdb.py::TestEcondb::test_get_cdh_e_fos",
-  "pandas_datareader/tests/test_econdb.py::TestEcondb::test_get_tourism",
-  "pandas_datareader/tests/test_econdb.py::TestEcondb::test_bls"
-]
