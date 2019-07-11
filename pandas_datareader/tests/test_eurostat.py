@@ -9,20 +9,24 @@ from pandas_datareader.compat import assert_raises_regex
 class TestEurostat(object):
 
     def test_get_ert_h_eur_a(self):
-        # Former euro area national currencies vs. euro/ECU - annual data (ert_h_eur_a)
+        # Former euro area national currencies vs. euro/ECU
+        # annual data (ert_h_eur_a)
         df = web.DataReader('ert_h_eur_a', 'eurostat',
                             start=pd.Timestamp('2009-01-01'),
                             end=pd.Timestamp('2010-01-01'))
         assert isinstance(df, pd.DataFrame)
 
-        df = df["National currency (former currencies of the euro area countries)"]
-        df = df["Average"][["Italian lira", "Lithuanian litas"]]
+        header = df.columns.levels[0][0]
+        currencies = ["Italian lira", "Lithuanian litas"]
+        df = df[header]
+        df = df["Average"][currencies]
 
-        exp_col = pd.MultiIndex.from_product([['Italian lira', 'Lithuanian litas'], ['Annual']],
-                                            names=['CURRENCY', 'FREQ'])
-        exp_idx = pd.DatetimeIndex(['2009-01-01', '2010-01-01'], name='TIME_PERIOD')
+        exp_col = pd.MultiIndex.from_product([currencies, ['Annual']],
+                                             names=['CURRENCY', 'FREQ'])
+        exp_idx = pd.DatetimeIndex(['2009-01-01', '2010-01-01'],
+                                   name='TIME_PERIOD')
         values = np.array([[1936.27, 3.4528],
-                        [1936.27, 3.4528]])
+                           [1936.27, 3.4528]])
         expected = pd.DataFrame(values, index=exp_idx, columns=exp_col)
         tm.assert_frame_equal(df, expected)
 

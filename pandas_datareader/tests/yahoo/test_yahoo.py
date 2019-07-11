@@ -241,7 +241,7 @@ class TestYahoo(object):
     def test_yahoo_DataReader(self):
         start = datetime(2010, 1, 1)
         end = datetime(2015, 5, 9)
-        # yahoo will adjust for dividends by default 
+        # yahoo will adjust for dividends by default
         result = web.DataReader('AAPL', 'yahoo-actions', start, end)
 
         exp_idx = pd.DatetimeIndex(['2015-05-07', '2015-02-05',
@@ -264,8 +264,9 @@ class TestYahoo(object):
         exp.index.name = 'Date'
         tm.assert_frame_equal(result.reindex_like(exp).round(2), exp.round(2))
 
-        # where adjust_dividends = True
-        result = web.get_data_yahoo_actions('AAPL', start, end, adjust_dividends=False)
+        # where dividends are not adjusted for splits
+        result = web.get_data_yahoo_actions('AAPL', start, end,
+                                            adjust_dividends=False)
 
         exp = pd.DataFrame({'action': ['DIVIDEND', 'DIVIDEND', 'DIVIDEND',
                                        'DIVIDEND', 'SPLIT', 'DIVIDEND',

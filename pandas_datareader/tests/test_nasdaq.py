@@ -1,4 +1,3 @@
-import pandas_datareader
 import pandas_datareader.data as web
 from pandas_datareader._utils import RemoteDataError
 from pandas_datareader._testing import skip_on_exception

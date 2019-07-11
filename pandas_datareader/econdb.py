@@ -25,7 +25,7 @@ class EcondbReader(_BaseReader):
         """ read one data from specified URL """
         results = requests.get(self.url).json()['results']
         df = pd.DataFrame({'dates': []}).set_index('dates')
-        
+
         if self._show == 'labels':
             def show_func(x): return x.split(':')[1]
         elif self._show == 'codes':
