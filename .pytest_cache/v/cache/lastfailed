@@ -1,0 +1,3 @@
+{
+  "pandas_datareader/tests/test_econdb.py::TestEcondb::()::test_get_cdh_e_fos": true
+}

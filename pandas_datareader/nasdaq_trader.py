@@ -106,6 +106,4 @@ def get_nasdaq_symbols(retry_count=3, timeout=30, pause=None):
                     retry_count -= 1
                     time.sleep(pause)
 
-    if _ticker_cache is None:
-        raise RemoteDataError # no data collected
     return _ticker_cache
