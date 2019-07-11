@@ -18,14 +18,11 @@ class TestEcondb(object):
         assert isinstance(df, pd.DataFrame)
         assert df.shape == (2, 4)
 
-        df = df['Annual']['Natural sciences'][
-                ['Norway', 'Poland', 'Portugal', 'Russia']]
+        # the levels and not returned consistently for econdb
+        names = list(df.columns.names)
+        levels = [lvl.values.tolist() for lvl in list(df.columns.levels)]
 
-        exp_col = pd.MultiIndex.from_product(
-            [['Norway', 'Poland', 'Portugal', 'Russia'],
-             ['Total'], ['Percentage']],
-            names=['Geopolitical entity (reporting)',
-                   'Year of graduation', 'Unit of measure'])
+        exp_col = pd.MultiIndex.from_product(levels, names=names)
         exp_idx = pd.DatetimeIndex(['2006-01-01', '2009-01-01'],
                                    name='TIME_PERIOD')
 
@@ -49,6 +46,11 @@ class TestEcondb(object):
                        171320408], dtype=float)
         index = pd.date_range('2008-01-01', '2012-01-01', freq='AS',
                               name='TIME_PERIOD')
+
+        # sometimes the country and variable columns are swapped
+        lvl1 = df.columns.levels[0][0]
+        if lvl1 == "Total international arrivals":
+            df = df.swaplevel(0, 1, axis=1)
         for label, values in [('Japan', jp), ('United States', us)]:
             expected = pd.Series(values, index=index,
                                  name='Total international arrivals')
