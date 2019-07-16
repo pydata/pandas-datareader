@@ -5,10 +5,11 @@ import numpy as np
 import requests
 
 import pandas.compat as compat
+from io import StringIO
 from pandas import DataFrame
 from pandas import read_csv, concat
 from pandas.io.common import urlencode
-from pandas.compat import StringIO, bytes_to_str
+from pandas.compat import bytes_to_str
 
 from pandas_datareader._utils import (RemoteDataError, SymbolWarning,
                                       _sanitize_dates, _init_session)
