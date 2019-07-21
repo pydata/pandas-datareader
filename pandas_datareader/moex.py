@@ -3,8 +3,8 @@
 import datetime as dt
 
 import pandas as pd
-from pandas.compat import StringIO
 
+from io import StringIO
 from pandas_datareader.base import _DailyBaseReader
 from pandas_datareader.compat import is_list_like, concat
 

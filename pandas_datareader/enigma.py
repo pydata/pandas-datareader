@@ -1,7 +1,7 @@
 import os
 import time
 
-from pandas.compat import StringIO
+from io import StringIO
 import pandas.compat as compat
 import pandas as pd
 
