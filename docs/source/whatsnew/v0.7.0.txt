@@ -64,6 +64,7 @@ Backwards incompatible API changes
 Bug Fixes
 ~~~~~~~~~
 
+- Fixed import of pandas.compat (:issue:`657`)
 - Added support for passing the API KEY to QuandlReader either directly or by
   setting the environmental variable QUANDL_API_KEY (:issue:`485`).
 - Added support for optionally passing a custom base_url to the EnigmaReader  (:issue:`499`).

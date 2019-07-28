@@ -1,8 +1,8 @@
 import pandas as pd
-import pandas.compat as compat
 
 from pandas_datareader.io import read_jsdmx
 from pandas_datareader.base import _BaseReader
+from pandas_datareader.compat import string_types
 
 
 class OECDReader(_BaseReader):
@@ -15,7 +15,7 @@ class OECDReader(_BaseReader):
         """API URL"""
         url = 'http://stats.oecd.org/SDMX-JSON/data'
 
-        if not isinstance(self.symbols, compat.string_types):
+        if not isinstance(self.symbols, string_types):
             raise ValueError('data name must be string')
 
         # API: https://data.oecd.org/api/sdmx-json-documentation/

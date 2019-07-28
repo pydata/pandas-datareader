@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-import pandas.compat as compat
+from pandas_datareader.compat import string_types
 
 from pandas_datareader.base import _BaseReader
 
@@ -17,7 +17,7 @@ class BankOfCanadaReader(_BaseReader):
     @property
     def url(self):
         """API URL"""
-        if not isinstance(self.symbols, compat.string_types):
+        if not isinstance(self.symbols, string_types):
             raise ValueError('data name must be string')
 
         return '{0}/{1}/csv'.format(self._URL, self.symbols)
