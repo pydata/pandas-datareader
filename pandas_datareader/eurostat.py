@@ -1,9 +1,9 @@
 from __future__ import unicode_literals
 
 import pandas as pd
-import pandas.compat as compat
 
 from pandas_datareader.io.sdmx import read_sdmx, _read_sdmx_dsd
+from pandas_datareader.compat import string_types
 from pandas_datareader.base import _BaseReader
 
 
@@ -15,7 +15,7 @@ class EurostatReader(_BaseReader):
     @property
     def url(self):
         """API URL"""
-        if not isinstance(self.symbols, compat.string_types):
+        if not isinstance(self.symbols, string_types):
             raise ValueError('data name must be string')
 
         q = '{0}/data/{1}/?startperiod={2}&endperiod={3}'
@@ -25,7 +25,7 @@ class EurostatReader(_BaseReader):
     @property
     def dsd_url(self):
         """API DSD URL"""
-        if not isinstance(self.symbols, compat.string_types):
+        if not isinstance(self.symbols, string_types):
             raise ValueError('data name must be string')
 
         return '{0}/datastructure/ESTAT/DSD_{1}'.format(

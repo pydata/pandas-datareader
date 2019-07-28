@@ -3,8 +3,8 @@ import json
 import warnings
 from pandas import (DataFrame, Series, to_datetime, concat)
 from pandas_datareader.yahoo.daily import YahooDailyReader
-import pandas.compat as compat
 from pandas_datareader._utils import (RemoteDataError, SymbolWarning)
+from pandas_datareader.compat import string_types
 
 
 class YahooFXReader(YahooDailyReader):
@@ -55,7 +55,7 @@ class YahooFXReader(YahooDailyReader):
         """Read data"""
         try:
             # If a single symbol, (e.g., 'GOOG')
-            if isinstance(self.symbols, (compat.string_types, int)):
+            if isinstance(self.symbols, (string_types, int)):
                 df = self._read_one_data(self.symbols)
 
             # Or multiple symbols, (e.g., ['GOOG', 'AAPL', 'MSFT'])
