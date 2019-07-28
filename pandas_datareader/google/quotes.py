@@ -1,10 +1,11 @@
-import pandas as pd
-from dateutil.parser import parse
+import json
 import numpy as np
+import pandas as pd
+import re
+from dateutil.parser import parse
 
 from pandas_datareader.base import _BaseReader
-import json
-import re
+from pandas_datareader.compat import string_types
 
 
 class GoogleQuotesReader(_BaseReader):
@@ -20,7 +21,7 @@ class GoogleQuotesReader(_BaseReader):
     @property
     def params(self):
         """Parameters to use in API calls"""
-        if isinstance(self.symbols, pd.compat.string_types):
+        if isinstance(self.symbols, string_types):
             sym_list = self.symbols
         else:
             sym_list = ','.join(self.symbols)

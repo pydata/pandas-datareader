@@ -3,12 +3,12 @@ from __future__ import unicode_literals
 import collections
 import time
 import zipfile
+from io import BytesIO
 
 import pandas as pd
-import pandas.compat as compat
 
 from pandas_datareader.io.util import _read_content
-from pandas_datareader.compat import HTTPError
+from pandas_datareader.compat import HTTPError, str_to_bytes
 
 
 _STRUCTURE = '{http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure}'
@@ -235,8 +235,8 @@ def _read_zipped_sdmx(path_or_buf):
     """ Unzipp data contains SDMX-XML """
     data = _read_content(path_or_buf)
 
-    zp = compat.BytesIO()
-    zp.write(compat.str_to_bytes(data))
+    zp = BytesIO()
+    zp.write(str_to_bytes(data))
     f = zipfile.ZipFile(zp)
     files = f.namelist()
     assert len(files) == 1

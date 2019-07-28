@@ -5,7 +5,7 @@ from io import StringIO
 from zipfile import ZipFile
 
 from pandas import read_csv, to_datetime
-from pandas.compat import lmap
+from pandas_datareader.compat import lmap
 
 from pandas_datareader.base import _BaseReader
 
@@ -107,7 +107,7 @@ class FamaFrenchReader(_BaseReader):
 
         datasets, table_desc = {}, []
         for i, src in enumerate(tables):
-            match = re.search('^\s*,', src, re.M)  # the table starts there
+            match = re.search(r'^\s*,', src, re.M)  # the table starts there
             start = 0 if not match else match.start()
 
             df = read_csv(StringIO('Date' + src[start:]), **params)

@@ -2,8 +2,7 @@ from __future__ import unicode_literals
 
 import os
 
-import pandas.compat as compat
-from pandas_datareader.compat import get_filepath_or_buffer
+from pandas_datareader.compat import get_filepath_or_buffer, string_types
 
 
 def _read_content(path_or_buf):
@@ -13,7 +12,7 @@ def _read_content(path_or_buf):
 
     filepath_or_buffer = get_filepath_or_buffer(path_or_buf)[0]
 
-    if isinstance(filepath_or_buffer, compat.string_types):
+    if isinstance(filepath_or_buffer, string_types):
         try:
             exists = os.path.exists(filepath_or_buffer)
         except (TypeError, ValueError):
