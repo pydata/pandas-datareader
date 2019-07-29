@@ -1,7 +1,8 @@
 from ftplib import FTP, all_errors
-from io import StringIO
+
 from pandas import read_csv
 from pandas_datareader._utils import RemoteDataError
+from pandas_datareader.compat import StringIO
 
 import time
 import warnings
