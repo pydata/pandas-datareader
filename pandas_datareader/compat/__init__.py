@@ -3,7 +3,6 @@ import pandas as pd
 import pandas.io.common as com
 import sys
 from distutils.version import LooseVersion
-from io import BytesIO
 
 PY3 = sys.version_info >= (3, 0)
 
@@ -49,7 +48,7 @@ if PY3:
 
     string_types = str,
     binary_type = bytes
-
+    from io import StringIO
 
     def str_to_bytes(s, encoding=None):
         return s.encode(encoding or 'ascii')
@@ -59,7 +58,7 @@ if PY3:
         return b.decode(encoding or 'utf-8')
 else:
     from urllib2 import HTTPError
-
+    from cStringIO import StringIO
     reduce = reduce
     binary_type = str
     string_types = basestring,

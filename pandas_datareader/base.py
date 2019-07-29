@@ -3,12 +3,12 @@ import warnings
 import numpy as np
 
 import requests
-from io import StringIO
 
 from pandas import DataFrame
 from pandas import read_csv, concat
 from pandas.io.common import urlencode
-from pandas_datareader.compat import bytes_to_str, string_types, binary_type
+from pandas_datareader.compat import bytes_to_str, string_types, binary_type, \
+    StringIO
 
 from pandas_datareader._utils import (RemoteDataError, SymbolWarning,
                                       _sanitize_dates, _init_session)
