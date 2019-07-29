@@ -1,10 +1,10 @@
 import os
 import time
 
-from io import StringIO
 import pandas as pd
 
 from pandas_datareader.base import _BaseReader, string_types
+from pandas_datareader.compat import StringIO
 
 
 class EnigmaReader(_BaseReader):
