@@ -3,9 +3,3 @@ pandas>=0.19.2
 pytest>=3
 requests>=2.3.0
 wrapt
-# Documentation Only
-matplotlib
-ipython
-sphinx
-sphinx_rtd_theme
-requests-cache
