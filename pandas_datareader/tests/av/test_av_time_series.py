@@ -4,6 +4,7 @@ import pytest
 import pandas as pd
 
 from pandas_datareader import data as web
+from pandas_datareader._utils import RemoteDataError
 
 from datetime import datetime
 
@@ -32,7 +33,7 @@ class TestAVTimeSeries(object):
     @pytest.mark.skipif(TEST_API_KEY is None,
                         reason="ALPHAVANTAGE_API_KEY not set")
     def test_av_bad_symbol(self):
-        with pytest.raises(ValueError):
+        with pytest.raises((ValueError, RemoteDataError)):
             web.DataReader("BADTICKER", "av-daily", start=self.start,
                            end=self.end)
 
@@ -42,7 +43,7 @@ class TestAVTimeSeries(object):
         df = web.DataReader("AAPL", "av-daily", start=self.start, end=self.end)
         assert df.columns.equals(self.col_index)
         assert len(df) == 578
-        assert df["volume"][-1] == 19118319
+        assert df["volume"][-1] == 19178000
 
         expected1 = df.loc["2017-02-09"]
         assert expected1["close"] == 132.42
@@ -62,19 +63,17 @@ class TestAVTimeSeries(object):
                                            "dividend amount",
                                            "split coefficient"]))
         assert len(df) == 578
-        assert df["volume"][-1] == 19118319
+        assert df["volume"][-1] == 19178000
 
         expected1 = df.loc["2017-02-09"]
         assert expected1["close"] == 132.42
         assert expected1["high"] == 132.445
-        assert expected1["adjusted close"] == 130.3505
         assert expected1["dividend amount"] == 0.57
         assert expected1["split coefficient"] == 1.0
 
         expected2 = df.loc["2017-05-24"]
         assert expected2["close"] == 153.34
         assert expected2["high"] == 154.17
-        assert expected2["adjusted close"] == 151.5612
         assert expected2["dividend amount"] == 0.00
         assert expected2["split coefficient"] == 1.0
 
@@ -84,15 +83,10 @@ class TestAVTimeSeries(object):
         expected1 = df.loc["2015-02-27"]
         assert expected1["close"] == 128.46
         assert expected1["high"] == 133.60
-        if adj:
-            assert expected1["adjusted close"] == 121.5859
 
         expected2 = df.loc["2017-03-31"]
         assert expected2["close"] == 143.66
         assert expected2["high"] == 144.5
-        if adj:
-            assert expected2["adjusted close"] == 141.4148
-            assert expected2["dividend amount"] == 0.00
 
     @pytest.mark.skipif(TEST_API_KEY is None,
                         reason="ALPHAVANTAGE_API_KEY not set")

@@ -47,3 +47,5 @@ Bug Fixes
 
 - Fix Yahoo! actions issue where dividends are adjusted twice as a result of a
   change to the Yahoo! API. (:issue: `583`)
+- Fix AlphaVantage time series data ordering after provider switch to
+  descending order (maintains ascending order for consistency) (:issue: `662`)
