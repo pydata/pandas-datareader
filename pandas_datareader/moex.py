@@ -5,7 +5,9 @@ import datetime as dt
 import pandas as pd
 
 from pandas_datareader.base import _DailyBaseReader
-from pandas_datareader.compat import is_list_like, concat, StringIO
+from pandas_datareader.compat import (binary_type, concat, is_list_like,
+                                      StringIO)
+
 
 
 class MoexReader(_DailyBaseReader):
@@ -102,7 +104,7 @@ class MoexReader(_DailyBaseReader):
                 service = self.__class__.__name__
                 raise IOError("{} request returned no data; check URL for invalid "
                               "inputs: {}".format(service, self.__url_metadata))
-            if isinstance(text, pd.compat.binary_type):
+            if isinstance(text, binary_type):
                 text = text.decode('windows-1251')
 
             header_str = 'secid;boardid;'
@@ -182,7 +184,7 @@ class MoexReader(_DailyBaseReader):
             service = self.__class__.__name__
             raise IOError("{} request returned no data; check URL for invalid "
                           "inputs: {}".format(service, self.url))
-        if isinstance(text, pd.compat.binary_type):
+        if isinstance(text, binary_type):
             text = text.decode('windows-1251')
         return text
 
