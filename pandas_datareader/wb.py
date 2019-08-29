@@ -2,7 +2,7 @@
 
 import warnings
 
-from pandas.compat import reduce, lrange, string_types
+from pandas_datareader.compat import reduce, lrange, string_types
 import pandas as pd
 import numpy as np
 

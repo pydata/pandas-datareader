@@ -1,12 +1,9 @@
 import json
 from collections import OrderedDict
-
-import pandas.compat as compat
 from pandas import DataFrame
 
-
 from pandas_datareader.base import _BaseReader
-
+from pandas_datareader.compat import string_types
 
 _DEFAULT_PARAMS = {
     'lang': 'en-US',
@@ -24,7 +21,7 @@ class YahooQuotesReader(_BaseReader):
         return 'https://query1.finance.yahoo.com/v7/finance/quote'
 
     def read(self):
-        if isinstance(self.symbols, compat.string_types):
+        if isinstance(self.symbols, string_types):
             return self._read_one_data(self.url, self.params(self.symbols))
         else:
             data = OrderedDict()

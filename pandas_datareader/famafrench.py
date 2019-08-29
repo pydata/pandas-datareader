@@ -1,11 +1,11 @@
 import datetime as dt
 import re
 import tempfile
-from io import StringIO
+
 from zipfile import ZipFile
 
 from pandas import read_csv, to_datetime
-from pandas.compat import lmap
+from pandas_datareader.compat import lmap, StringIO
 
 from pandas_datareader.base import _BaseReader
 
