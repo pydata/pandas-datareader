@@ -106,11 +106,11 @@ class IEXDailyReader(_DailyBaseReader):
                 return "5d"
             elif 6 <= delta_days < 28:
                 return "1m"
-            elif  28 <= delta_days < 84:
+            elif 28 <= delta_days < 84:
                 return "3m"
             elif 84 <= delta_days < 168:
                 return "6m"
-           
+
             return "1y"
         else:
             raise ValueError(
