@@ -9,7 +9,7 @@ Highlights include:
   aggregated economic data from 90+ official statistical agencies
   (:issue:`615`)
 - Migrated IEX readers to `IEX Cloud <https://iexcloud.io>`__. All
-  readers now require an API token (``IEX_API_TOKEN``)
+  readers now require an API token (``IEX_API_KEY``)
 - Removal of Google finance and Morningstar, which were deprecated in 0.7.0.
 - Immediate deprecation of Robinhood for quotes and historical data. Robinhood
   ended support for these endpoints in 1/2019
