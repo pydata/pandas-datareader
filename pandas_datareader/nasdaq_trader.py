@@ -101,10 +101,10 @@ def get_nasdaq_symbols(retry_count=3, timeout=30, pause=None):
                 retry_count = -1
             except RemoteDataError:
                 # retry on any exception
+                retry_count -= 1
                 if retry_count <= 0:
                     raise
                 else:
-                    retry_count -= 1
                     time.sleep(pause)
 
     return _ticker_cache

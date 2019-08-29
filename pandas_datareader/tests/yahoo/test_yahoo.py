@@ -125,7 +125,7 @@ class TestYahoo(object):
         assert 'Adj Close' not in goog_adj.columns
         assert (goog['Open'] * goog_adj['Adj_Ratio']).equals(goog_adj['Open'])
 
-    @skip_on_exception(RemoteDataError)
+    @pytest.mark.xfail(reason="Yahoo are returning an extra day 31st Dec 2012")
     def test_get_data_interval(self):
         # daily interval data
         pan = web.get_data_yahoo('XOM', '2013-01-01',
@@ -231,7 +231,7 @@ class TestYahoo(object):
         r = YahooDailyReader('GOOG')
         df = r.read()
 
-        assert df.Volume.loc['JAN-02-2015'] == 1447600
+        assert df.Volume.loc['JAN-02-2015'] == 1447500
 
         session = requests.Session()
 
@@ -241,6 +241,7 @@ class TestYahoo(object):
     def test_yahoo_DataReader(self):
         start = datetime(2010, 1, 1)
         end = datetime(2015, 5, 9)
+        # yahoo will adjust for dividends by default
         result = web.DataReader('AAPL', 'yahoo-actions', start, end)
 
         exp_idx = pd.DatetimeIndex(['2015-05-07', '2015-02-05',
@@ -257,14 +258,15 @@ class TestYahoo(object):
                                        'DIVIDEND', 'DIVIDEND', 'DIVIDEND',
                                        'DIVIDEND', 'DIVIDEND'],
                             'value': [0.52, 0.47, 0.47, 0.47, 0.14285714,
-                                      3.29, 3.05, 3.05, 3.05,
-                                      3.05, 2.65, 2.65, 2.65]},
+                                      0.47, 0.43571, 0.43571, 0.43571,
+                                      0.43571, 0.37857, 0.37857, 0.37857]},
                            index=exp_idx)
         exp.index.name = 'Date'
         tm.assert_frame_equal(result.reindex_like(exp).round(2), exp.round(2))
 
+        # where dividends are not adjusted for splits
         result = web.get_data_yahoo_actions('AAPL', start, end,
-                                            adjust_dividends=True)
+                                            adjust_dividends=False)
 
         exp = pd.DataFrame({'action': ['DIVIDEND', 'DIVIDEND', 'DIVIDEND',
                                        'DIVIDEND', 'SPLIT', 'DIVIDEND',
@@ -272,11 +274,11 @@ class TestYahoo(object):
                                        'DIVIDEND', 'DIVIDEND', 'DIVIDEND',
                                        'DIVIDEND', 'DIVIDEND'],
                             'value': [0.52, 0.47, 0.47, 0.47, 0.14285714,
-                                      0.47, 0.43571, 0.43571, 0.43571,
-                                      0.43571, 0.37857, 0.37857, 0.37857]},
+                                      3.29, 3.05, 3.05, 3.05,
+                                      3.05, 2.65, 2.65, 2.65]},
                            index=exp_idx)
         exp.index.name = 'Date'
-        tm.assert_frame_equal(result.reindex_like(exp).round(5), exp.round(5))
+        tm.assert_frame_equal(result.reindex_like(exp).round(4), exp.round(4))
 
         # test cases with "1/0" split ratio in actions -
         # no split, just chnage symbol from POT to NTR

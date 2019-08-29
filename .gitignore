@@ -10,3 +10,6 @@ docs/build
 .idea
 *.iml
 *~
+env/
+.pytest_cache/
+.vscode/

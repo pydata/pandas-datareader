@@ -63,7 +63,7 @@ class TestWB(object):
                                        ('Mexico', '2004'): 7000.0,
                                        ('Mexico', '2003'): 7000.0,
                                        ('United States', '2004'): 42000.0,
-                                       ('United States', '2003'): 40000.0}}
+                                       ('United States', '2003'): 39000.0}}
         expected = pd.DataFrame(expected)
         expected = expected.sort_index()
 
