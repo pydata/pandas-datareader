@@ -1,4 +1,5 @@
-from datetime import datetime
+from datetime import date, datetime, timedelta
+
 import os
 
 from pandas import DataFrame, MultiIndex
@@ -6,7 +7,7 @@ from pandas import DataFrame, MultiIndex
 import pytest
 
 import pandas_datareader.data as web
-
+from pandas_datareader.iex.daily import IEXDailyReader
 
 @pytest.mark.skipif(os.getenv("IEX_SANDBOX") != 'enable',
                     reason='All tests must be run in sandbox mode')
@@ -66,3 +67,39 @@ class TestIEXDaily(object):
 
         assert len(a) == 73
         assert len(t) == 73
+
+    def test_range_string_from_date(self):
+        syms = ["AAPL"]
+
+        assert IEXDailyReader(symbols=syms,
+                              start=date.today() - timedelta(days=5),
+                              end=date.today()
+                              )._range_string_from_date() == '5d'
+        assert IEXDailyReader(symbols=syms,
+                              start=date.today() - timedelta(days=27),
+                              end=date.today()
+                              )._range_string_from_date() == '1m'
+        assert IEXDailyReader(symbols=syms,
+                              start=date.today() - timedelta(days=83),
+                              end=date.today()
+                              )._range_string_from_date() == '3m'
+        assert IEXDailyReader(symbols=syms,
+                              start=date.today() - timedelta(days=167),
+                              end=date.today()
+                              )._range_string_from_date() == '6m'
+        assert IEXDailyReader(symbols=syms,
+                              start=date.today() - timedelta(days=170),
+                              end=date.today()
+                              )._range_string_from_date() == '1y'
+        assert IEXDailyReader(symbols=syms,
+                              start=date.today() - timedelta(days=365),
+                              end=date.today()
+                              )._range_string_from_date() == '2y'
+        assert IEXDailyReader(symbols=syms,
+                              start=date.today() - timedelta(days=730),
+                              end=date.today()
+                              )._range_string_from_date() == '5y'
+        assert IEXDailyReader(symbols=syms,
+                              start=date.today() - timedelta(days=1826),
+                              end=date.today()
+                              )._range_string_from_date() == 'max'
