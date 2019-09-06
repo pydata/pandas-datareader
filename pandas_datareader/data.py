@@ -298,7 +298,7 @@ def DataReader(name, data_source=None, start=None, end=None,
                        "tiingo", "yahoo-actions", "yahoo-dividends",
                        "av-forex", "av-daily", "av-daily-adjusted",
                        "av-weekly", "av-weekly-adjusted", "av-monthly",
-                       "av-monthly-adjusted", "econdb"]
+                       "av-monthly-adjusted", "av-intraday", "econdb"]
 
     if data_source not in expected_source:
         msg = "data_source=%r is not implemented" % data_source
@@ -440,6 +440,13 @@ def DataReader(name, data_source=None, start=None, end=None,
     elif data_source == "av-monthly-adjusted":
         return AVTimeSeriesReader(symbols=name,
                                   function="TIME_SERIES_MONTHLY_ADJUSTED",
+                                  start=start, end=end,
+                                  retry_count=retry_count, pause=pause,
+                                  session=session, api_key=access_key).read()
+
+    elif data_source == "av-intraday":
+        return AVTimeSeriesReader(symbols=name,
+                                  function="TIME_SERIES_INTRADAY",
                                   start=start, end=end,
                                   retry_count=retry_count, pause=pause,
                                   session=session, api_key=access_key).read()

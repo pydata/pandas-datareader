@@ -4,11 +4,11 @@ import numpy as np
 
 import requests
 
-import pandas.compat as compat
 from pandas import DataFrame
 from pandas import read_csv, concat
 from pandas.io.common import urlencode
-from pandas.compat import StringIO, bytes_to_str
+from pandas_datareader.compat import bytes_to_str, string_types, binary_type, \
+    StringIO
 
 from pandas_datareader._utils import (RemoteDataError, SymbolWarning,
                                       _sanitize_dates, _init_session)
@@ -99,7 +99,7 @@ class _BaseReader(object):
             service = self.__class__.__name__
             raise IOError("{} request returned no data; check URL for invalid "
                           "inputs: {}".format(service, self.url))
-        if isinstance(text, compat.binary_type):
+        if isinstance(text, binary_type):
             out.write(bytes_to_str(text))
         else:
             out.write(text)
@@ -205,7 +205,7 @@ class _DailyBaseReader(_BaseReader):
     def read(self):
         """Read data"""
         # If a single symbol, (e.g., 'GOOG')
-        if isinstance(self.symbols, (compat.string_types, int)):
+        if isinstance(self.symbols, (string_types, int)):
             df = self._read_one_data(self.url,
                                      params=self._get_params(self.symbols))
         # Or multiple symbols, (e.g., ['GOOG', 'AAPL', 'MSFT'])

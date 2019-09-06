@@ -4,6 +4,7 @@ import pytest
 import pandas as pd
 
 from pandas_datareader import data as web
+from pandas_datareader._utils import RemoteDataError
 
 from datetime import datetime
 
@@ -11,6 +12,8 @@ TEST_API_KEY = os.getenv('ALPHAVANTAGE_API_KEY')
 TEST_API_KEY = None if not TEST_API_KEY else TEST_API_KEY
 
 
+@pytest.mark.skipif(TEST_API_KEY is None,
+                    reason="ALPHAVANTAGE_API_KEY not set")
 class TestAVTimeSeries(object):
 
     @classmethod
@@ -29,20 +32,16 @@ class TestAVTimeSeries(object):
     def end(self):
         return datetime(2017, 5, 24)
 
-    @pytest.mark.skipif(TEST_API_KEY is None,
-                        reason="ALPHAVANTAGE_API_KEY not set")
     def test_av_bad_symbol(self):
-        with pytest.raises(ValueError):
+        with pytest.raises((ValueError, RemoteDataError)):
             web.DataReader("BADTICKER", "av-daily", start=self.start,
                            end=self.end)
 
-    @pytest.mark.skipif(TEST_API_KEY is None,
-                        reason="ALPHAVANTAGE_API_KEY not set")
     def test_av_daily(self):
         df = web.DataReader("AAPL", "av-daily", start=self.start, end=self.end)
         assert df.columns.equals(self.col_index)
         assert len(df) == 578
-        assert df["volume"][-1] == 19118319
+        assert df["volume"][-1] == 19178000
 
         expected1 = df.loc["2017-02-09"]
         assert expected1["close"] == 132.42
@@ -52,8 +51,6 @@ class TestAVTimeSeries(object):
         assert expected2["close"] == 153.34
         assert expected2["high"] == 154.17
 
-    @pytest.mark.skipif(TEST_API_KEY is None,
-                        reason="ALPHAVANTAGE_API_KEY not set")
     def test_av_daily_adjusted(self):
         df = web.DataReader("AAPL", "av-daily-adjusted", start=self.start,
                             end=self.end)
@@ -62,19 +59,17 @@ class TestAVTimeSeries(object):
                                            "dividend amount",
                                            "split coefficient"]))
         assert len(df) == 578
-        assert df["volume"][-1] == 19118319
+        assert df["volume"][-1] == 19178000
 
         expected1 = df.loc["2017-02-09"]
         assert expected1["close"] == 132.42
         assert expected1["high"] == 132.445
-        assert expected1["adjusted close"] == 130.3505
         assert expected1["dividend amount"] == 0.57
         assert expected1["split coefficient"] == 1.0
 
         expected2 = df.loc["2017-05-24"]
         assert expected2["close"] == 153.34
         assert expected2["high"] == 154.17
-        assert expected2["adjusted close"] == 151.5612
         assert expected2["dividend amount"] == 0.00
         assert expected2["split coefficient"] == 1.0
 
@@ -84,18 +79,11 @@ class TestAVTimeSeries(object):
         expected1 = df.loc["2015-02-27"]
         assert expected1["close"] == 128.46
         assert expected1["high"] == 133.60
-        if adj:
-            assert expected1["adjusted close"] == 121.5859
 
         expected2 = df.loc["2017-03-31"]
         assert expected2["close"] == 143.66
         assert expected2["high"] == 144.5
-        if adj:
-            assert expected2["adjusted close"] == 141.4148
-            assert expected2["dividend amount"] == 0.00
 
-    @pytest.mark.skipif(TEST_API_KEY is None,
-                        reason="ALPHAVANTAGE_API_KEY not set")
     def test_av_weekly(self):
         df = web.DataReader("AAPL", "av-weekly", start=self.start,
                             end=self.end)
@@ -106,8 +94,6 @@ class TestAVTimeSeries(object):
         assert df.columns.equals(self.col_index)
         self._helper_df_weekly_monthly(df, adj=False)
 
-    @pytest.mark.skipif(TEST_API_KEY is None,
-                        reason="ALPHAVANTAGE_API_KEY not set")
     def test_av_weekly_adjusted(self):
         df = web.DataReader("AAPL", "av-weekly-adjusted", start=self.start,
                             end=self.end)
@@ -118,8 +104,6 @@ class TestAVTimeSeries(object):
         assert df.columns.equals(self.col_index_adj)
         self._helper_df_weekly_monthly(df, adj=True)
 
-    @pytest.mark.skipif(TEST_API_KEY is None,
-                        reason="ALPHAVANTAGE_API_KEY not set")
     def test_av_monthly(self):
         df = web.DataReader("AAPL", "av-monthly", start=self.start,
                             end=self.end)
@@ -130,8 +114,6 @@ class TestAVTimeSeries(object):
         assert df.columns.equals(self.col_index)
         self._helper_df_weekly_monthly(df, adj=False)
 
-    @pytest.mark.skipif(TEST_API_KEY is None,
-                        reason="ALPHAVANTAGE_API_KEY not set")
     def test_av_monthly_adjusted(self):
         df = web.DataReader("AAPL", "av-monthly-adjusted", start=self.start,
                             end=self.end)
@@ -141,3 +123,11 @@ class TestAVTimeSeries(object):
         assert df.iloc[0].name == '2015-02-27'
         assert df.iloc[-1].name == '2017-04-28'
         self._helper_df_weekly_monthly(df, adj=True)
+
+    def test_av_intraday(self):
+        # Not much available to test, but ensure close in length
+        df = web.DataReader("AAPL", "av-intraday")
+
+        assert len(df) > 1000
+        assert 'open' in df.columns
+        assert 'close' in df.columns

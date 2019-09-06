@@ -1,13 +1,13 @@
 # pylint: disable-msg=E1101,W0613,W0603
 
 from __future__ import unicode_literals
+from collections import OrderedDict
 
 import itertools
 import sys
 
 import numpy as np
 import pandas as pd
-import pandas.compat as compat
 
 from pandas_datareader.io.util import _read_content
 
@@ -38,7 +38,7 @@ def read_jsdmx(path_or_buf):
     if isinstance(jdata, dict):
         data = jdata
     else:
-        data = json.loads(jdata, object_pairs_hook=compat.OrderedDict)
+        data = json.loads(jdata, object_pairs_hook=OrderedDict)
 
     structure = data['structure']
     index = _parse_dimensions(structure['dimensions']['observation'])
@@ -56,9 +56,9 @@ def read_jsdmx(path_or_buf):
 
 def _get_indexer(index):
     if index.nlevels == 1:
-        return [str(i) for i in compat.range(len(index))]
+        return [str(i) for i in range(len(index))]
     else:
-        it = itertools.product(*[compat.range(
+        it = itertools.product(*[range(
             len(level)) for level in index.levels])
         return [':'.join(map(str, i)) for i in it]
 
@@ -68,7 +68,7 @@ def _parse_values(dataset, index, columns):
     series = dataset['series']
 
     values = []
-    # for s_key, s_value in compat.iteritems(series):
+    # for s_key, s_value in iteritems(series):
     for s_key in _get_indexer(columns):
         try:
             observations = series[s_key]['observations']

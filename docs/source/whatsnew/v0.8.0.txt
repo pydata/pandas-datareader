@@ -9,7 +9,7 @@ Highlights include:
   aggregated economic data from 90+ official statistical agencies
   (:issue:`615`)
 - Migrated IEX readers to `IEX Cloud <https://iexcloud.io>`__. All
-  readers now require an API token (``IEX_API_TOKEN``)
+  readers now require an API token (``IEX_API_KEY``)
 - Removal of Google finance and Morningstar, which were deprecated in 0.7.0.
 - Immediate deprecation of Robinhood for quotes and historical data. Robinhood
   ended support for these endpoints in 1/2019
@@ -26,7 +26,9 @@ Enhancements
 ~~~~~~~~~~~~
 
 - Added Tiingo IEX Historical reader.
+- Added support for Alpha Vantage intraday time series prices (:issue: `631`)
 - Up to 15 years of historical prices from IEX with new platform, IEX Cloud
+- Added testing on Python 3.7 (:issue:`667`)
 
 .. _whatsnew_080.api_breaking:
 
@@ -47,3 +49,5 @@ Bug Fixes
 
 - Fix Yahoo! actions issue where dividends are adjusted twice as a result of a
   change to the Yahoo! API. (:issue: `583`)
+- Fix AlphaVantage time series data ordering after provider switch to
+  descending order (maintains ascending order for consistency) (:issue: `662`)

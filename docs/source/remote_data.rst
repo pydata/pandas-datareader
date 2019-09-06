@@ -75,10 +75,11 @@ IEX
 
 The Investors Exchange (IEX) provides a wide range of data through an
 `API <https://iexcloud.io/api/docs/>`__.  Historical stock
-prices are available for up to 15 years. The usage of these readers requires an API key, which can be stored in the ``IEX_API_TOKEN`` environment variable.
+prices are available for up to 15 years. The usage of these readers requires the publishable API key from IEX Cloud Console, which can be stored in the ``IEX_API_KEY`` environment variable.
 
 .. ipython:: python
-
+    
+    os.environ["IEX_API_KEY"] = "pk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     import pandas_datareader.data as web
     from datetime import datetime
     start = datetime(2016, 9, 1)
@@ -114,6 +115,7 @@ Through the
 endpoints, it is possible to obtain historical equities data for individual
 symbols. The following endpoints are available:
 
+* ``av-intraday`` - Intraday Time Series
 * ``av-daily`` - Daily Time Series
 * ``av-daily-adjusted`` - Daily Time Series (Adjusted)
 * ``av-weekly`` - Weekly Time Series
