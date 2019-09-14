@@ -70,7 +70,7 @@ class TestEurostat(object):
                             end=pd.Timestamp('2013-01-01'))
 
         name = ('All taxes and levies included',
-                'Gigajoules (gross calorific value - GCV)',
+                'Gigajoule (gross calorific value - GCV)',
                 'Euro',
                 'Band D1 : Consumption < 20 GJ',
                 'Natural gas', 'Denmark', 'Semi-annual')
