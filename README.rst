@@ -18,10 +18,6 @@ Up to date remote data access for pandas, works for multiple versions of pandas.
 .. image:: https://readthedocs.org/projects/pandas-datareader/badge/?version=latest
     :target: https://pandas-datareader.readthedocs.io/en/latest/
 
-.. image:: https://landscape.io/github/pydata/pandas-datareader/master/landscape.svg?style=flat
-   :target: https://landscape.io/github/pydata/pandas-datareader/master
-   :alt: Code Health
-
 .. warning::
 
    As of v0.7.0 Google finance and Morningstar have been been immediately deprecated due to
