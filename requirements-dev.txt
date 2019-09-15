@@ -2,3 +2,5 @@ ipython
 requests_cache
 sphinx
 sphinx_rtd_theme
+black
+isort
