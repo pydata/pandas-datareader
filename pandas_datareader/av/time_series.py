@@ -80,11 +80,13 @@ class AVTimeSeriesReader(AlphaVantage):
 
     def _read_lines(self, out):
         data = super(AVTimeSeriesReader, self)._read_lines(out)
-        # reverse since alphavantage returns descending by date
-        data = data[::-1]
         start_str = self.start.strftime('%Y-%m-%d')
         end_str = self.end.strftime('%Y-%m-%d')
         data = data.loc[start_str:end_str]
+
+        # reverse since alphavantage returns descending by date
+        data = data[::-1]
+
         if data.empty:
             raise ValueError("Please input a valid date range")
         else:
