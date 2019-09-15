@@ -5,7 +5,6 @@ import pandas as pd
 from pandas_datareader.exceptions import UnstableAPIWarning
 from pandas_datareader.iex import IEX
 
-
 # Data provided for free by IEX
 # Data is furnished in compliance with the guidelines promulgated in the IEX
 # API terms of service and manual
@@ -17,16 +16,25 @@ class DailySummaryReader(IEX):
     """
     Daily statistics from IEX for a day or month
     """
-    def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.1, session=None):
+
+    def __init__(
+        self, symbols=None, start=None, end=None, retry_count=3, pause=0.1, session=None
+    ):
         import warnings
-        warnings.warn('Daily statistics is not working due to issues with the '
-                      'IEX API', UnstableAPIWarning)
+
+        warnings.warn(
+            "Daily statistics is not working due to issues with the " "IEX API",
+            UnstableAPIWarning,
+        )
         self.curr_date = start
-        super(DailySummaryReader, self).__init__(symbols=symbols,
-                                                 start=start, end=end,
-                                                 retry_count=retry_count,
-                                                 pause=pause, session=session)
+        super(DailySummaryReader, self).__init__(
+            symbols=symbols,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        )
 
     @property
     def service(self):
@@ -37,7 +45,7 @@ class DailySummaryReader(IEX):
         p = {}
 
         if self.curr_date is not None:
-            p['date'] = self.curr_date.strftime('%Y%m%d')
+            p["date"] = self.curr_date.strftime("%Y%m%d")
 
         return p
 
@@ -59,16 +67,21 @@ class DailySummaryReader(IEX):
 
 class MonthlySummaryReader(IEX):
     """Monthly statistics from IEX"""
-    def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.1, session=None):
-        self.curr_date = start
-        self.date_format = '%Y%m'
 
-        super(MonthlySummaryReader, self).__init__(symbols=symbols,
-                                                   start=start, end=end,
-                                                   retry_count=retry_count,
-                                                   pause=pause,
-                                                   session=session)
+    def __init__(
+        self, symbols=None, start=None, end=None, retry_count=3, pause=0.1, session=None
+    ):
+        self.curr_date = start
+        self.date_format = "%Y%m"
+
+        super(MonthlySummaryReader, self).__init__(
+            symbols=symbols,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        )
 
     @property
     def service(self):
@@ -79,7 +92,7 @@ class MonthlySummaryReader(IEX):
         p = {}
 
         if self.curr_date is not None:
-            p['date'] = self.curr_date.strftime(self.date_format)
+            p["date"] = self.curr_date.strftime(self.date_format)
 
         return p
 
@@ -94,8 +107,7 @@ class MonthlySummaryReader(IEX):
         dfs = []
 
         # Build list of all dates within the given range
-        lrange = [x for x in (self.start + timedelta(n)
-                              for n in range(tlen.days))]
+        lrange = [x for x in (self.start + timedelta(n) for n in range(tlen.days))]
 
         mrange = []
         for dt in lrange:
@@ -109,7 +121,7 @@ class MonthlySummaryReader(IEX):
 
             # We may not return data if this was a weekend/holiday:
             if not tdf.empty:
-                tdf['date'] = date.strftime(self.date_format)
+                tdf["date"] = date.strftime(self.date_format)
                 dfs.append(tdf)
 
         # We may not return any data if we failed to specify useful parameters:
@@ -120,12 +132,18 @@ class RecordsReader(IEX):
     """
     Total matched volume information from IEX
     """
-    def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.1, session=None):
-        super(RecordsReader, self).__init__(symbols=symbols,
-                                            start=start, end=end,
-                                            retry_count=retry_count,
-                                            pause=pause, session=session)
+
+    def __init__(
+        self, symbols=None, start=None, end=None, retry_count=3, pause=0.1, session=None
+    ):
+        super(RecordsReader, self).__init__(
+            symbols=symbols,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        )
 
     @property
     def service(self):
@@ -155,12 +173,18 @@ class RecentReader(IEX):
       * litVolume: refers to the number of lit shares traded on IEX
         (single-counted).
     """
-    def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.1, session=None):
-        super(RecentReader, self).__init__(symbols=symbols,
-                                           start=start, end=end,
-                                           retry_count=retry_count,
-                                           pause=pause, session=session)
+
+    def __init__(
+        self, symbols=None, start=None, end=None, retry_count=3, pause=0.1, session=None
+    ):
+        super(RecentReader, self).__init__(
+            symbols=symbols,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        )
 
     @property
     def service(self):

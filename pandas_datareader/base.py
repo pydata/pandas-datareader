@@ -1,17 +1,18 @@
 import time
 import warnings
-import numpy as np
 
+import numpy as np
+from pandas import DataFrame, concat, read_csv
+from pandas.io.common import urlencode
 import requests
 
-from pandas import DataFrame
-from pandas import read_csv, concat
-from pandas.io.common import urlencode
-from pandas_datareader.compat import bytes_to_str, string_types, binary_type, \
-    StringIO
-
-from pandas_datareader._utils import (RemoteDataError, SymbolWarning,
-                                      _sanitize_dates, _init_session)
+from pandas_datareader._utils import (
+    RemoteDataError,
+    SymbolWarning,
+    _init_session,
+    _sanitize_dates,
+)
+from pandas_datareader.compat import StringIO, binary_type, bytes_to_str, string_types
 
 
 class _BaseReader(object):
@@ -36,10 +37,19 @@ class _BaseReader(object):
     """
 
     _chunk_size = 1024 * 1024
-    _format = 'string'
+    _format = "string"
 
-    def __init__(self, symbols, start=None, end=None,  retry_count=3,
-                 pause=0.1, timeout=30, session=None, freq=None):
+    def __init__(
+        self,
+        symbols,
+        start=None,
+        end=None,
+        retry_count=3,
+        pause=0.1,
+        timeout=30,
+        session=None,
+        freq=None,
+    ):
 
         self.symbols = symbols
 
@@ -80,9 +90,9 @@ class _BaseReader(object):
 
     def _read_one_data(self, url, params):
         """ read one data from specified URL """
-        if self._format == 'string':
+        if self._format == "string":
             out = self._read_url_as_StringIO(url, params=params)
-        elif self._format == 'json':
+        elif self._format == "json":
             out = self._get_response(url, params=params).json()
         else:
             raise NotImplementedError(self._format)
@@ -97,8 +107,10 @@ class _BaseReader(object):
         out = StringIO()
         if len(text) == 0:
             service = self.__class__.__name__
-            raise IOError("{} request returned no data; check URL for invalid "
-                          "inputs: {}".format(service, self.url))
+            raise IOError(
+                "{} request returned no data; check URL for invalid "
+                "inputs: {}".format(service, self.url)
+            )
         if isinstance(text, binary_type):
             out.write(bytes_to_str(text))
         else:
@@ -125,11 +137,9 @@ class _BaseReader(object):
 
         # initial attempt + retry
         pause = self.pause
-        last_response_text = ''
+        last_response_text = ""
         for i in range(self.retry_count + 1):
-            response = self.session.get(url,
-                                        params=params,
-                                        headers=headers)
+            response = self.session.get(url, params=params, headers=headers)
             if response.status_code == requests.codes.ok:
                 return response
 
@@ -140,8 +150,8 @@ class _BaseReader(object):
             # Increase time between subsequent requests, per subclass.
             pause *= self.pause_multiplier
             # Get a new breadcrumb if necessary, in case ours is invalidated
-            if isinstance(params, list) and 'crumb' in params:
-                params['crumb'] = self._get_crumb(self.retry_count)
+            if isinstance(params, list) and "crumb" in params:
+                params["crumb"] = self._get_crumb(self.retry_count)
 
             # If our output error function returns True, exit the loop.
             if self._output_error(response):
@@ -149,9 +159,9 @@ class _BaseReader(object):
 
         if params is not None and len(params) > 0:
             url = url + "?" + urlencode(params)
-        msg = 'Unable to read URL: {0}'.format(url)
+        msg = "Unable to read URL: {0}".format(url)
         if last_response_text:
-            msg += '\nResponse Text:\n{0}'.format(last_response_text)
+            msg += "\nResponse Text:\n{0}".format(last_response_text)
 
         raise RemoteDataError(msg)
 
@@ -169,8 +179,7 @@ class _BaseReader(object):
         return False
 
     def _read_lines(self, out):
-        rs = read_csv(out, index_col=0, parse_dates=True,
-                      na_values=('-', 'null'))[::-1]
+        rs = read_csv(out, index_col=0, parse_dates=True, na_values=("-", "null"))[::-1]
         # Needed to remove blank space character in header names
         rs.columns = list(map(lambda x: x.strip(), rs.columns.values.tolist()))
 
@@ -180,11 +189,12 @@ class _BaseReader(object):
             rs = rs[:-1]
         # Get rid of unicode characters in index name.
         try:
-            rs.index.name = rs.index.name.decode(
-                'unicode_escape').encode('ascii', 'ignore')
+            rs.index.name = rs.index.name.decode("unicode_escape").encode(
+                "ascii", "ignore"
+            )
         except AttributeError:
             # Python 3 string has no decode method.
-            rs.index.name = rs.index.name.encode('ascii', 'ignore').decode()
+            rs.index.name = rs.index.name.encode("ascii", "ignore").decode()
 
         return rs
 
@@ -192,12 +202,24 @@ class _BaseReader(object):
 class _DailyBaseReader(_BaseReader):
     """ Base class for Google / Yahoo daily reader """
 
-    def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.1, session=None, chunksize=25):
-        super(_DailyBaseReader, self).__init__(symbols=symbols,
-                                               start=start, end=end,
-                                               retry_count=retry_count,
-                                               pause=pause, session=session)
+    def __init__(
+        self,
+        symbols=None,
+        start=None,
+        end=None,
+        retry_count=3,
+        pause=0.1,
+        session=None,
+        chunksize=25,
+    ):
+        super(_DailyBaseReader, self).__init__(
+            symbols=symbols,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        )
         self.chunksize = chunksize
 
     def _get_params(self, *args, **kwargs):
@@ -207,8 +229,7 @@ class _DailyBaseReader(_BaseReader):
         """Read data"""
         # If a single symbol, (e.g., 'GOOG')
         if isinstance(self.symbols, (string_types, int)):
-            df = self._read_one_data(self.url,
-                                     params=self._get_params(self.symbols))
+            df = self._read_one_data(self.url, params=self._get_params(self.symbols))
         # Or multiple symbols, (e.g., ['GOOG', 'AAPL', 'MSFT'])
         elif isinstance(self.symbols, DataFrame):
             df = self._dl_mult_symbols(self.symbols.index)
@@ -223,11 +244,10 @@ class _DailyBaseReader(_BaseReader):
         for sym_group in _in_chunks(symbols, self.chunksize):
             for sym in sym_group:
                 try:
-                    stocks[sym] = self._read_one_data(self.url,
-                                                      self._get_params(sym))
+                    stocks[sym] = self._read_one_data(self.url, self._get_params(sym))
                     passed.append(sym)
                 except IOError:
-                    msg = 'Failed to read symbol: {0!r}, replacing with NaN.'
+                    msg = "Failed to read symbol: {0!r}, replacing with NaN."
                     warnings.warn(msg.format(sym), SymbolWarning)
                     failed.append(sym)
 
@@ -241,7 +261,7 @@ class _DailyBaseReader(_BaseReader):
                 for sym in failed:
                     stocks[sym] = df_na
             result = concat(stocks).unstack(level=0)
-            result.columns.names = ['Attributes', 'Symbols']
+            result.columns.names = ["Attributes", "Symbols"]
             return result
         except AttributeError:
             # cannot construct a panel with just 1D nans indicating no data
@@ -253,16 +273,14 @@ def _in_chunks(seq, size):
     """
     Return sequence in 'chunks' of size defined by size
     """
-    return (seq[pos:pos + size] for pos in range(0, len(seq), size))
+    return (seq[pos : pos + size] for pos in range(0, len(seq), size))
 
 
 class _OptionBaseReader(_BaseReader):
-
     def __init__(self, symbol, session=None):
         """ Instantiates options_data with a ticker saved as symbol """
         self.symbol = symbol.upper()
-        super(_OptionBaseReader, self).__init__(symbols=symbol,
-                                                session=session)
+        super(_OptionBaseReader, self).__init__(symbols=symbol, session=session)
 
     def get_options_data(self, month=None, year=None, expiry=None):
         """
@@ -288,16 +306,18 @@ class _OptionBaseReader(_BaseReader):
         """
         raise NotImplementedError
 
-    def get_near_stock_price(self, above_below=2, call=True, put=False,
-                             month=None, year=None, expiry=None):
+    def get_near_stock_price(
+        self, above_below=2, call=True, put=False, month=None, year=None, expiry=None
+    ):
         """
         ***Experimental***
         Returns a data frame of options that are near the current stock price.
         """
         raise NotImplementedError
 
-    def get_forward_data(self, months, call=True, put=False, near=False,
-                         above_below=2):  # pragma: no cover
+    def get_forward_data(
+        self, months, call=True, put=False, near=False, above_below=2
+    ):  # pragma: no cover
         """
         ***Experimental***
         Gets either call, put, or both data for months starting in the current

@@ -1,13 +1,12 @@
+from pandas import DataFrame
 import pytest
 
-from pandas import DataFrame
 from pandas_datareader.data import DataReader
 
 pytestmark = pytest.mark.stable
 
 
 class TestDataReader(object):
-
     def test_read_iex(self):
         gs = DataReader("GS", "iex-last")
         assert isinstance(gs, DataFrame)

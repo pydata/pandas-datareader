@@ -1,7 +1,8 @@
 import datetime as dt
 
-import requests
 from pandas import to_datetime
+import requests
+
 from pandas_datareader.compat import is_number
 
 
@@ -33,7 +34,7 @@ def _sanitize_dates(start, end):
     if end is None:
         end = dt.datetime.today()
     if start > end:
-        raise ValueError('start must be an earlier date than end')
+        raise ValueError("start must be an earlier date than end")
     return start, end
 
 
