@@ -10,7 +10,7 @@ from pandas_datareader.base import _BaseReader
 class EurostatReader(_BaseReader):
     """Get data for the given name from Eurostat."""
 
-    _URL = 'http://www.ec.europa.eu/eurostat/SDMX/diss-web/rest'
+    _URL = 'http://ec.europa.eu/eurostat/SDMX/diss-web/rest'
 
     @property
     def url(self):

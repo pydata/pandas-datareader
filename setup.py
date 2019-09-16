@@ -13,9 +13,11 @@ def readme():
         return f.read()
 
 
-INSTALL_REQUIRES = (
-    ['pandas>=0.19.2', 'requests>=2.3.0', 'wrapt', 'lxml']
-)
+install_requires = []
+with open("./requirements.txt") as f:
+    install_requires = f.read().splitlines()
+with open("./requirements-dev.txt") as f:
+    tests_require = f.read().splitlines()
 
 setup(
     name=NAME,
@@ -40,11 +42,13 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Topic :: Scientific/Engineering',
     ],
     keywords='data',
-    install_requires=INSTALL_REQUIRES,
+    install_requires=install_requires,
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     test_suite='tests',
+    tests_require=tests_require,
     zip_safe=False,
 )

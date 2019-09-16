@@ -133,7 +133,8 @@ class _BaseReader(object):
             if response.status_code == requests.codes.ok:
                 return response
 
-            last_response_text = response.text.encode(response.encoding)
+            if response.encoding:
+                last_response_text = response.text.encode(response.encoding)
             time.sleep(pause)
 
             # Increase time between subsequent requests, per subclass.

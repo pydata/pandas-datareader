@@ -1,3 +1,5 @@
+from pandas_datareader.compat import string_types
+
 import requests
 import pandas as pd
 
