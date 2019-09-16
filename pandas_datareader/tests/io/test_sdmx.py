@@ -9,6 +9,8 @@ import pytest
 
 from pandas_datareader.io.sdmx import read_sdmx, _read_sdmx_dsd
 
+pytestmark = pytest.mark.stable
+
 
 @pytest.fixture
 def dirpath(datapath):

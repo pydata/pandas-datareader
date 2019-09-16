@@ -6,6 +6,8 @@ import pandas.util.testing as tm
 import pandas_datareader.data as web
 from pandas_datareader.famafrench import get_available_datasets
 
+pytestmark = pytest.mark.stable
+
 
 class TestFamaFrench(object):
 

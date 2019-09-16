@@ -1,6 +1,10 @@
 import datetime as dt
 
+import pytest
+
 import pandas_datareader.tsp as tsp
+
+pytestmark = pytest.mark.stable
 
 
 class TestTSPFunds(object):

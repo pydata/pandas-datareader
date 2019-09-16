@@ -7,6 +7,8 @@ from pandas_datareader.compat import PY3
 from pandas_datareader.tiingo import TiingoDailyReader, TiingoMetaDataReader, \
     TiingoQuoteReader, TiingoIEXHistoricalReader, get_tiingo_symbols
 
+pytestmark = pytest.mark.requires_api_key
+
 TEST_API_KEY = os.getenv('TIINGO_API_KEY')
 # Ensure blank TEST_API_KEY not used in pull request
 TEST_API_KEY = None if not TEST_API_KEY else TEST_API_KEY

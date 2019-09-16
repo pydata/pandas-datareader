@@ -5,6 +5,8 @@ import pandas as pd
 
 from pandas_datareader import data as web
 
+pytestmark = pytest.mark.requires_api_key
+
 TEST_API_KEY = os.getenv('ALPHAVANTAGE_API_KEY')
 TEST_API_KEY = None if not TEST_API_KEY else TEST_API_KEY
 
