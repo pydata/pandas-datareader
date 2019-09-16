@@ -3,6 +3,8 @@ import pytest
 from requests.exceptions import HTTPError
 import pandas_datareader.data as web
 
+pytestmark = pytest.mark.stable
+
 
 class TestMoex(object):
     def test_moex_datareader(self):

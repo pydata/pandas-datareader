@@ -2,6 +2,9 @@ import numpy as np
 import pandas as pd
 import pandas.util.testing as tm
 import pandas_datareader.data as web
+import pytest
+
+pytestmark = pytest.mark.stable
 
 
 class TestEcondb(object):
