@@ -1,8 +1,9 @@
 # flake8: noqa
+from distutils.version import LooseVersion
+import sys
+
 import pandas as pd
 import pandas.io.common as com
-import sys
-from distutils.version import LooseVersion
 
 PY3 = sys.version_info >= (3, 0)
 

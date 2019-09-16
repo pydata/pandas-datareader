@@ -1,9 +1,9 @@
 import os
+
+import pandas as pd
 import pytest
 
 from pandas_datareader.data import get_sector_performance_av
-
-import pandas as pd
 
 pytestmark = pytest.mark.requires_api_key
 

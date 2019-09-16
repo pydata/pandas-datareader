@@ -1,8 +1,10 @@
 from pandas import DataFrame
 from pandas.io.common import urlopen
 
-from pandas_datareader.exceptions import ImmediateDeprecationError, \
-    DEP_ERROR_MSG
+from pandas_datareader.exceptions import (
+    DEP_ERROR_MSG,
+    ImmediateDeprecationError,
+)
 
 _URL = 'http://download.finance.yahoo.com/d/quotes.csv?'
 

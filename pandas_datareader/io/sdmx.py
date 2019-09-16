@@ -1,15 +1,14 @@
 from __future__ import unicode_literals
 
 import collections
+from io import BytesIO
 import time
 import zipfile
-from io import BytesIO
 
 import pandas as pd
 
-from pandas_datareader.io.util import _read_content
 from pandas_datareader.compat import HTTPError, str_to_bytes
-
+from pandas_datareader.io.util import _read_content
 
 _STRUCTURE = '{http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure}'
 _MESSAGE = '{http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message}'

@@ -1,8 +1,8 @@
 import pandas as pd
 
-from pandas_datareader.io import read_jsdmx
 from pandas_datareader.base import _BaseReader
 from pandas_datareader.compat import string_types
+from pandas_datareader.io import read_jsdmx
 
 
 class OECDReader(_BaseReader):

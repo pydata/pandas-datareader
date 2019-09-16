@@ -5,7 +5,6 @@ import pandas as pd
 from pandas_datareader.exceptions import UnstableAPIWarning
 from pandas_datareader.iex import IEX
 
-
 # Data provided for free by IEX
 # Data is furnished in compliance with the guidelines promulgated in the IEX
 # API terms of service and manual

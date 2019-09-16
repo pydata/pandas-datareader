@@ -1,6 +1,6 @@
-from pandas_datareader.av import AlphaVantage
-
 from datetime import datetime
+
+from pandas_datareader.av import AlphaVantage
 
 
 class AVTimeSeriesReader(AlphaVantage):

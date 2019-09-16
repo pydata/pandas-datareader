@@ -1,5 +1,5 @@
-import requests
 import pandas as pd
+import requests
 
 from pandas_datareader.base import _BaseReader
 

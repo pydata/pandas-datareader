@@ -1,5 +1,6 @@
-import json
 from collections import OrderedDict
+import json
+
 from pandas import DataFrame
 
 from pandas_datareader.base import _BaseReader

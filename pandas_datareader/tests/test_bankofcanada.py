@@ -2,8 +2,8 @@ from datetime import date, timedelta
 
 import pytest
 
-import pandas_datareader.data as web
 from pandas_datareader._utils import RemoteDataError
+import pandas_datareader.data as web
 
 pytestmark = pytest.mark.stable
 

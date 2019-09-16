@@ -7,7 +7,7 @@ import pandas as pd
 import pandas.util.testing as tm
 import pytest
 
-from pandas_datareader.io.sdmx import read_sdmx, _read_sdmx_dsd
+from pandas_datareader.io.sdmx import _read_sdmx_dsd, read_sdmx
 
 pytestmark = pytest.mark.stable
 

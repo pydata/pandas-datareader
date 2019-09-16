@@ -1,12 +1,11 @@
+from datetime import datetime
 import os
-import pytest
 
 import pandas as pd
+import pytest
 
 from pandas_datareader import data as web
 from pandas_datareader._utils import RemoteDataError
-
-from datetime import datetime
 
 pytestmark = pytest.mark.requires_api_key
 

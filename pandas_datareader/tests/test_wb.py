@@ -6,11 +6,16 @@ import pandas.util.testing as tm
 import pytest
 import requests
 
-from pandas_datareader.compat import assert_raises_regex
-from pandas_datareader.wb import (search, download, get_countries,
-                                  get_indicators, WorldBankReader)
-from pandas_datareader._utils import RemoteDataError
 from pandas_datareader._testing import skip_on_exception
+from pandas_datareader._utils import RemoteDataError
+from pandas_datareader.compat import assert_raises_regex
+from pandas_datareader.wb import (
+    WorldBankReader,
+    download,
+    get_countries,
+    get_indicators,
+    search,
+)
 
 
 class TestWB(object):

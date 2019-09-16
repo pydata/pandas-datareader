@@ -1,17 +1,17 @@
 from datetime import datetime
-import requests
 
 import numpy as np
 import pandas as pd
 from pandas import DataFrame
-from requests.exceptions import ConnectionError
-import pytest
 import pandas.util.testing as tm
+import pytest
+import requests
+from requests.exceptions import ConnectionError
 
+from pandas_datareader._testing import skip_on_exception
+from pandas_datareader._utils import RemoteDataError
 import pandas_datareader.data as web
 from pandas_datareader.data import YahooDailyReader
-from pandas_datareader._utils import RemoteDataError
-from pandas_datareader._testing import skip_on_exception
 
 XFAIL_REASON = 'Known connection failures on Yahoo when testing!'
 

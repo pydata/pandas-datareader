@@ -1,10 +1,10 @@
 import os
+
+import numpy as np
+import pandas as pd
 import pytest
 
 import pandas_datareader.data as web
-import pandas as pd
-
-import numpy as np
 
 pytestmark = pytest.mark.requires_api_key
 

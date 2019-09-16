@@ -5,8 +5,8 @@ import pandas as pd
 import pandas.util.testing as tm
 import pytest
 
-import pandas_datareader.data as web
 from pandas_datareader._utils import RemoteDataError
+import pandas_datareader.data as web
 
 
 class TestOECD(object):

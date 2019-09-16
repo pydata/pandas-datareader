@@ -2,9 +2,9 @@ import datetime
 import json
 import os
 
+from dateutil.relativedelta import relativedelta
 import pandas as pd
 
-from dateutil.relativedelta import relativedelta
 from pandas_datareader.base import _DailyBaseReader
 
 # Data provided for free by IEX

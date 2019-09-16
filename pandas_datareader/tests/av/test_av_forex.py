@@ -1,7 +1,7 @@
 import os
-import pytest
 
 import pandas as pd
+import pytest
 
 from pandas_datareader import data as web
 

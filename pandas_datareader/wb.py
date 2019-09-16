@@ -2,11 +2,11 @@
 
 import warnings
 
-from pandas_datareader.compat import reduce, lrange, string_types
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 from pandas_datareader.base import _BaseReader
+from pandas_datareader.compat import lrange, reduce, string_types
 
 # This list of country codes was pulled from wikipedia during October 2014.
 # While some exceptions do exist, it is the best proxy for countries supported

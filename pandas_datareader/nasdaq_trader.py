@@ -1,11 +1,11 @@
 from ftplib import FTP, all_errors
-
-from pandas import read_csv
-from pandas_datareader._utils import RemoteDataError
-from pandas_datareader.compat import StringIO
-
 import time
 import warnings
+
+from pandas import read_csv
+
+from pandas_datareader._utils import RemoteDataError
+from pandas_datareader.compat import StringIO
 
 _NASDAQ_TICKER_LOC = '/SymbolDirectory/nasdaqtraded.txt'
 _NASDAQ_FTP_SERVER = 'ftp.nasdaqtrader.com'

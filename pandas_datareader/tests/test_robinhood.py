@@ -2,8 +2,10 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from pandas_datareader.robinhood import RobinhoodQuoteReader, \
-    RobinhoodHistoricalReader
+from pandas_datareader.robinhood import (
+    RobinhoodHistoricalReader,
+    RobinhoodQuoteReader,
+)
 
 syms = ['GOOG', ['GOOG', 'AAPL']]
 ids = list(map(str, syms))

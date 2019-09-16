@@ -1,13 +1,12 @@
 from datetime import date, datetime, timedelta
-
 import os
 
 from pandas import DataFrame, MultiIndex
-
 import pytest
 
 import pandas_datareader.data as web
 from pandas_datareader.iex.daily import IEXDailyReader
+
 
 @pytest.mark.skipif(os.getenv("IEX_SANDBOX") != 'enable',
                     reason='All tests must be run in sandbox mode')

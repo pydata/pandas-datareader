@@ -1,8 +1,7 @@
-from pandas_datareader.av import AlphaVantage
+import pandas as pd
 
 from pandas_datareader._utils import RemoteDataError
-
-import pandas as pd
+from pandas_datareader.av import AlphaVantage
 
 
 class AVForexReader(AlphaVantage):
