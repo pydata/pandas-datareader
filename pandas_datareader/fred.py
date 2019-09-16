@@ -1,8 +1,7 @@
-from pandas_datareader.compat import is_list_like
-
 from pandas import concat, read_csv
 
 from pandas_datareader.base import _BaseReader
+from pandas_datareader.compat import is_list_like
 
 
 class FredReader(_BaseReader):

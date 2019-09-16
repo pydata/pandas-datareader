@@ -1,8 +1,8 @@
 # pylint: disable-msg=E1101,W0613,W0603
 
 from __future__ import unicode_literals
-from collections import OrderedDict
 
+from collections import OrderedDict
 import itertools
 import sys
 

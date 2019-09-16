@@ -1,7 +1,8 @@
 import datetime as dt
 
-import requests
 from pandas import to_datetime
+import requests
+
 from pandas_datareader.compat import is_number
 
 

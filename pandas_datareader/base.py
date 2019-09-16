@@ -1,17 +1,23 @@
 import time
 import warnings
-import numpy as np
 
+import numpy as np
+from pandas import DataFrame, concat, read_csv
+from pandas.io.common import urlencode
 import requests
 
-from pandas import DataFrame
-from pandas import read_csv, concat
-from pandas.io.common import urlencode
-from pandas_datareader.compat import bytes_to_str, string_types, binary_type, \
-    StringIO
-
-from pandas_datareader._utils import (RemoteDataError, SymbolWarning,
-                                      _sanitize_dates, _init_session)
+from pandas_datareader._utils import (
+    RemoteDataError,
+    SymbolWarning,
+    _init_session,
+    _sanitize_dates,
+)
+from pandas_datareader.compat import (
+    StringIO,
+    binary_type,
+    bytes_to_str,
+    string_types,
+)
 
 
 class _BaseReader(object):

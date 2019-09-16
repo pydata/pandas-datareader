@@ -2,9 +2,9 @@ from __future__ import unicode_literals
 
 import pandas as pd
 
-from pandas_datareader.io.sdmx import read_sdmx, _read_sdmx_dsd
-from pandas_datareader.compat import string_types
 from pandas_datareader.base import _BaseReader
+from pandas_datareader.compat import string_types
+from pandas_datareader.io.sdmx import _read_sdmx_dsd, read_sdmx
 
 
 class EurostatReader(_BaseReader):

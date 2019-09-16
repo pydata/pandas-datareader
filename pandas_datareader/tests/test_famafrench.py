@@ -1,7 +1,6 @@
-import pytest
-
 import pandas as pd
 import pandas.util.testing as tm
+import pytest
 
 import pandas_datareader.data as web
 from pandas_datareader.famafrench import get_available_datasets

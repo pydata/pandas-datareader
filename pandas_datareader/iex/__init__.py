@@ -2,8 +2,8 @@ import json
 
 import pandas as pd
 from pandas.io.common import urlencode
-from pandas_datareader.base import _BaseReader
 
+from pandas_datareader.base import _BaseReader
 
 # Data provided for free by IEX
 # Data is furnished in compliance with the guidelines promulgated in the IEX

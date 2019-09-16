@@ -1,10 +1,12 @@
-import time
 import json
+import time
 import warnings
-from pandas import (DataFrame, Series, to_datetime, concat)
-from pandas_datareader.yahoo.daily import YahooDailyReader
-from pandas_datareader._utils import (RemoteDataError, SymbolWarning)
+
+from pandas import DataFrame, Series, concat, to_datetime
+
+from pandas_datareader._utils import RemoteDataError, SymbolWarning
 from pandas_datareader.compat import string_types
+from pandas_datareader.yahoo.daily import YahooDailyReader
 
 
 class YahooFXReader(YahooDailyReader):

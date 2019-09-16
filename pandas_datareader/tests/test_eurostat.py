@@ -1,11 +1,10 @@
 import numpy as np
 import pandas as pd
 import pandas.util.testing as tm
-import pandas_datareader.data as web
 import pytest
 
 from pandas_datareader.compat import assert_raises_regex
-
+import pandas_datareader.data as web
 
 pytestmark = pytest.mark.stable
 

@@ -1,11 +1,10 @@
-import os
 from datetime import datetime
+import os
 
 import numpy as np
 import pandas as pd
-
-import pytest
 import pandas.util.testing as tm
+import pytest
 
 import pandas_datareader.data as web
 

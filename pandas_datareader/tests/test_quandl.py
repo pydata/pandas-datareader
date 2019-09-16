@@ -2,8 +2,8 @@ import os
 
 import pytest
 
-import pandas_datareader.data as web
 from pandas_datareader.compat import assert_frame_equal
+import pandas_datareader.data as web
 
 pytestmark = pytest.mark.requires_api_key
 

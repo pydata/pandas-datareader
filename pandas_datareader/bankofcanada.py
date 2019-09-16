@@ -1,8 +1,7 @@
 from __future__ import unicode_literals
 
-from pandas_datareader.compat import string_types
-
 from pandas_datareader.base import _BaseReader
+from pandas_datareader.compat import string_types
 
 
 class BankOfCanadaReader(_BaseReader):

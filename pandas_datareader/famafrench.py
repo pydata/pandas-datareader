@@ -1,13 +1,12 @@
 import datetime as dt
 import re
 import tempfile
-
 from zipfile import ZipFile
 
 from pandas import read_csv, to_datetime
-from pandas_datareader.compat import lmap, StringIO
 
 from pandas_datareader.base import _BaseReader
+from pandas_datareader.compat import StringIO, lmap
 
 _URL = 'http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/'
 _URL_PREFIX = 'ftp/'

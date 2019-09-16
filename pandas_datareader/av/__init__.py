@@ -1,9 +1,9 @@
 import os
 
-from pandas_datareader.base import _BaseReader
-from pandas_datareader._utils import RemoteDataError
-
 import pandas as pd
+
+from pandas_datareader._utils import RemoteDataError
+from pandas_datareader.base import _BaseReader
 
 AV_BASE_URL = 'https://www.alphavantage.co/query'
 

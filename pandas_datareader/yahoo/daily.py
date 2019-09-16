@@ -3,7 +3,9 @@ from __future__ import division
 import json
 import re
 import time
-from pandas import (DataFrame, to_datetime, notnull, isnull)
+
+from pandas import DataFrame, isnull, notnull, to_datetime
+
 from pandas_datareader._utils import RemoteDataError
 from pandas_datareader.base import _DailyBaseReader
 

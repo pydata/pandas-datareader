@@ -4,8 +4,13 @@ import pandas as pd
 import pytest
 
 from pandas_datareader.compat import PY3
-from pandas_datareader.tiingo import TiingoDailyReader, TiingoMetaDataReader, \
-    TiingoQuoteReader, TiingoIEXHistoricalReader, get_tiingo_symbols
+from pandas_datareader.tiingo import (
+    TiingoDailyReader,
+    TiingoIEXHistoricalReader,
+    TiingoMetaDataReader,
+    TiingoQuoteReader,
+    get_tiingo_symbols,
+)
 
 pytestmark = pytest.mark.requires_api_key
 

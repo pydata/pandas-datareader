@@ -1,11 +1,16 @@
 from datetime import datetime
 
-import pytest
 from pandas import DataFrame
+import pytest
 
-from pandas_datareader.data import (DataReader, get_summary_iex, get_last_iex,
-                                    get_dailysummary_iex, get_iex_symbols,
-                                    get_iex_book)
+from pandas_datareader.data import (
+    DataReader,
+    get_dailysummary_iex,
+    get_iex_book,
+    get_iex_symbols,
+    get_last_iex,
+    get_summary_iex,
+)
 from pandas_datareader.exceptions import UnstableAPIWarning
 
 

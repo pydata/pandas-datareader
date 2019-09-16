@@ -1,7 +1,7 @@
 import pandas as pd
 
-from pandas_datareader.av import AlphaVantage
 from pandas_datareader._utils import RemoteDataError
+from pandas_datareader.av import AlphaVantage
 
 
 class AVSectorPerformanceReader(AlphaVantage):

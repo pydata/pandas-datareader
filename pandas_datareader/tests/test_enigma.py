@@ -1,7 +1,8 @@
 import os
-import pytest
 
+import pytest
 from requests.exceptions import HTTPError
+
 import pandas_datareader as pdr
 import pandas_datareader.data as web
 

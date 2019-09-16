@@ -1,13 +1,18 @@
-import warnings
 import datetime as dt
-import numpy as np
 import json
+import warnings
 
-from pandas import to_datetime
-from pandas import concat, DatetimeIndex, Series, MultiIndex
+import numpy as np
+from pandas import (
+    DataFrame,
+    DatetimeIndex,
+    MultiIndex,
+    Series,
+    concat,
+    to_datetime,
+)
 from pandas.io.json import read_json
 from pandas.tseries.offsets import MonthEnd
-from pandas import DataFrame
 
 from pandas_datareader._utils import RemoteDataError
 from pandas_datareader.base import _OptionBaseReader
