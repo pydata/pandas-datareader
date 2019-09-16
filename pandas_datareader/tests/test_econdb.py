@@ -42,8 +42,8 @@ class TestEcondb(object):
         df = df.astype(np.float)
         jp = np.array([8351000, 6790000, 8611000, 6219000,
                        8368000], dtype=float)
-        us = np.array([175702309, 160507417, 164079732, 167600277,
-                       171320408], dtype=float)
+        us = np.array([175702304, 160507424, 164079728, 167600272,
+                       171320416], dtype=float)
         index = pd.date_range('2008-01-01', '2012-01-01', freq='AS',
                               name='TIME_PERIOD')
 

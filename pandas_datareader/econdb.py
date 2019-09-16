@@ -3,7 +3,6 @@ from pandas_datareader.compat import string_types
 import requests
 import pandas as pd
 
-
 from pandas_datareader.base import _BaseReader
 
 
@@ -17,10 +16,10 @@ class EcondbReader(_BaseReader):
     @property
     def url(self):
         """API URL"""
-        if not isinstance(self.symbols, string_types):
+        if not isinstance(self.symbols, str):
             raise ValueError('data name must be string')
 
-        return ('{0}?{1}&format=json&page_size=500&expand=meta'
+        return ('{0}?{1}&format=json&page_size=500&expand=both'
                 .format(self._URL, self.symbols))
 
     def read(self):
