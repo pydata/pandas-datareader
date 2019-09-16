@@ -3,6 +3,8 @@ import requests
 
 import pandas_datareader.base as base
 
+pytestmark = pytest.mark.stable
+
 
 class TestBaseReader(object):
     def test_requests_not_monkey_patched(self):

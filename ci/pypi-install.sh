@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-set +x
 echo "PyPI install"
 
 pip install pip --upgrade

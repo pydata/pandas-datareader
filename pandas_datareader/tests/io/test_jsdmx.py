@@ -10,6 +10,8 @@ import pytest
 from pandas_datareader.compat import PANDAS_0210
 from pandas_datareader.io import read_jsdmx
 
+pytestmark = pytest.mark.stable
+
 
 @pytest.fixture
 def dirpath(datapath):

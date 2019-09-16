@@ -10,6 +10,8 @@ import pandas_datareader.data as web
 from pandas import DataFrame
 from pandas_datareader._utils import RemoteDataError
 
+pytestmark = pytest.mark.stable
+
 
 class TestFred(object):
 

@@ -15,6 +15,8 @@ from pandas_datareader._testing import skip_on_exception
 
 XFAIL_REASON = 'Known connection failures on Yahoo when testing!'
 
+pytestmark = pytest.mark.stable
+
 
 class TestYahoo(object):
 

@@ -1,5 +1,5 @@
 lxml
 pandas>=0.19.2
-pytest>=3
+pytest>=4.0.2
 requests>=2.3.0
 wrapt

@@ -5,6 +5,8 @@ import pytest
 import pandas_datareader.data as web
 from pandas_datareader._utils import RemoteDataError
 
+pytestmark = pytest.mark.stable
+
 
 class TestBankOfCanada(object):
 

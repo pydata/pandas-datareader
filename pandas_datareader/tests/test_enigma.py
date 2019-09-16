@@ -5,6 +5,8 @@ from requests.exceptions import HTTPError
 import pandas_datareader as pdr
 import pandas_datareader.data as web
 
+pytestmark = pytest.mark.requires_api_key
+
 TEST_API_KEY = os.getenv('ENIGMA_API_KEY')
 
 
