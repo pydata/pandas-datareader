@@ -42,24 +42,29 @@ class EnigmaReader(_BaseReader):
     >>> df = EnigmaReader(dataset_id='bedaf052-5fcd-4758-8d27-048ce8746c6a',
     ...                   api_key='INSERT_API_KEY').read()
     """
-    def __init__(self,
-                 dataset_id=None,
-                 api_key=None,
-                 retry_count=5,
-                 pause=.75,
-                 session=None,
-                 base_url="https://public.enigma.com/api"):
 
-        super(EnigmaReader, self).__init__(symbols=[],
-                                           retry_count=retry_count,
-                                           pause=pause, session=session)
+    def __init__(
+        self,
+        dataset_id=None,
+        api_key=None,
+        retry_count=5,
+        pause=0.75,
+        session=None,
+        base_url="https://public.enigma.com/api",
+    ):
+
+        super(EnigmaReader, self).__init__(
+            symbols=[], retry_count=retry_count, pause=pause, session=session
+        )
         if api_key is None:
-            self._api_key = os.getenv('ENIGMA_API_KEY')
+            self._api_key = os.getenv("ENIGMA_API_KEY")
             if self._api_key is None:
-                raise ValueError("Please provide an Enigma API key or set "
-                                 "the ENIGMA_API_KEY environment variable\n"
-                                 "If you do not have an API key, you can get "
-                                 "one here: http://public.enigma.com/signup")
+                raise ValueError(
+                    "Please provide an Enigma API key or set "
+                    "the ENIGMA_API_KEY environment variable\n"
+                    "If you do not have an API key, you can get "
+                    "one here: http://public.enigma.com/signup"
+                )
         else:
             self._api_key = api_key
 
@@ -67,11 +72,12 @@ class EnigmaReader(_BaseReader):
         if not isinstance(self._dataset_id, string_types):
             raise ValueError(
                 "The Enigma dataset_id must be a string (ex: "
-                "'bedaf052-5fcd-4758-8d27-048ce8746c6a')")
+                "'bedaf052-5fcd-4758-8d27-048ce8746c6a')"
+            )
 
         headers = {
-            'Authorization': 'Bearer {0}'.format(self._api_key),
-            'User-Agent': 'pandas-datareader',
+            "Authorization": "Bearer {0}".format(self._api_key),
+            "User-Agent": "pandas-datareader",
         }
         self.session.headers.update(headers)
         self._base_url = base_url
@@ -111,7 +117,7 @@ class EnigmaReader(_BaseReader):
     def get_current_snapshot_id(self, dataset_id):
         """Get ID of the most current snapshot of a dataset"""
         dataset_metadata = self.get_dataset_metadata(dataset_id)
-        return dataset_metadata['current_snapshot']['id']
+        return dataset_metadata["current_snapshot"]["id"]
 
     def get_dataset_metadata(self, dataset_id):
         """Get the Dataset Model of this EnigmaReader's dataset

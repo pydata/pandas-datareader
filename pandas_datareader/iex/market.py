@@ -16,12 +16,18 @@ class MarketReader(IEX):
     Market data is captured by the IEX system between approximately 7:45 a.m.
     and 5:15 p.m. ET.
     """
-    def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.1, session=None):
-        super(MarketReader, self).__init__(symbols=symbols,
-                                           start=start, end=end,
-                                           retry_count=retry_count,
-                                           pause=pause, session=session)
+
+    def __init__(
+        self, symbols=None, start=None, end=None, retry_count=3, pause=0.1, session=None
+    ):
+        super(MarketReader, self).__init__(
+            symbols=symbols,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        )
 
     @property
     def service(self):

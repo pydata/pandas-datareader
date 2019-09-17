@@ -43,13 +43,13 @@ class YahooFXReader(YahooDailyReader):
         unix_end = int(time.mktime(day_end.timetuple()))
 
         params = {
-            'symbol': symbol + '=X',
-            'period1': unix_start,
-            'period2': unix_end,
-            'interval': self.interval,    # deal with this
-            'includePrePost': 'true',
-            'events': 'div|split|earn',
-            'corsDomain': 'finance.yahoo.com'
+            "symbol": symbol + "=X",
+            "period1": unix_start,
+            "period2": unix_end,
+            "interval": self.interval,  # deal with this
+            "includePrePost": "true",
+            "events": "div|split|earn",
+            "corsDomain": "finance.yahoo.com",
         }
         return params
 
@@ -66,29 +66,27 @@ class YahooFXReader(YahooDailyReader):
             else:
                 df = self._dl_mult_symbols(self.symbols)
 
-            if 'Date' in df:
-                df = df.set_index('Date')
+            if "Date" in df:
+                df = df.set_index("Date")
 
-            if 'Volume' in df:
-                df = df.drop('Volume', axis=1)
+            if "Volume" in df:
+                df = df.drop("Volume", axis=1)
 
-            return df.sort_index().dropna(how='all')
+            return df.sort_index().dropna(how="all")
         finally:
             self.close()
 
     def _read_one_data(self, symbol):
         """ read one data from specified URL """
-        url = 'https://query1.finance.yahoo.com/v8/finance/chart/{}=X'\
-            .format(symbol)
+        url = "https://query1.finance.yahoo.com/v8/finance/chart/{}=X".format(symbol)
         params = self._get_params(symbol)
 
         resp = self._get_response(url, params=params)
         jsn = json.loads(resp.text)
 
-        data = jsn['chart']['result'][0]
-        df = DataFrame(data['indicators']['quote'][0])
-        df.insert(0, 'date', to_datetime(Series(data['timestamp']),
-                                         unit='s').dt.date)
+        data = jsn["chart"]["result"][0]
+        df = DataFrame(data["indicators"]["quote"][0])
+        df.insert(0, "date", to_datetime(Series(data["timestamp"]), unit="s").dt.date)
         df.columns = map(str.capitalize, df.columns)
         return df
 
@@ -99,11 +97,11 @@ class YahooFXReader(YahooDailyReader):
         for sym in symbols:
             try:
                 df = self._read_one_data(sym)
-                df['PairCode'] = sym
+                df["PairCode"] = sym
                 stocks[sym] = df
                 passed.append(sym)
             except IOError:
-                msg = 'Failed to read symbol: {0!r}, replacing with NaN.'
+                msg = "Failed to read symbol: {0!r}, replacing with NaN."
                 warnings.warn(msg.format(sym), SymbolWarning)
                 failed.append(sym)
 
@@ -111,4 +109,4 @@ class YahooFXReader(YahooDailyReader):
             msg = "No data fetched using {0!r}"
             raise RemoteDataError(msg.format(self.__class__.__name__))
         else:
-            return concat(stocks).set_index(['PairCode', 'Date'])
+            return concat(stocks).set_index(["PairCode", "Date"])
