@@ -12,7 +12,13 @@ from pandas_datareader._utils import (
     _init_session,
     _sanitize_dates,
 )
-from pandas_datareader.compat import StringIO, binary_type, bytes_to_str, string_types
+from pandas_datareader.compat import (
+    PANDAS_0230,
+    StringIO,
+    binary_type,
+    bytes_to_str,
+    string_types,
+)
 
 
 class _BaseReader(object):
@@ -260,7 +266,10 @@ class _DailyBaseReader(_BaseReader):
                 df_na[:] = np.nan
                 for sym in failed:
                     stocks[sym] = df_na
-            result = concat(stocks).unstack(level=0)
+            if PANDAS_0230:
+                result = concat(stocks, sort=True).unstack(level=0)
+            else:
+                result = concat(stocks).unstack(level=0)
             result.columns.names = ["Attributes", "Symbols"]
             return result
         except AttributeError:

@@ -3,7 +3,6 @@ import pandas as pd
 import pandas.util.testing as tm
 import pytest
 
-from pandas_datareader.compat import assert_raises_regex
 import pandas_datareader.data as web
 
 pytestmark = pytest.mark.stable
@@ -146,7 +145,7 @@ class TestEurostat(object):
     def test_get_prc_hicp_manr_exceeds_limit(self):
         # see gh-149
         msg = "Query size exceeds maximum limit"
-        with assert_raises_regex(ValueError, msg):
+        with pytest.raises(ValueError, match=msg):
             web.DataReader(
                 "prc_hicp_manr",
                 "eurostat",
