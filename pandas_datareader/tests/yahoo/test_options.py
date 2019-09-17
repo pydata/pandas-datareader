@@ -69,6 +69,7 @@ def data1(aapl, json1):
 
 
 class TestYahooOptions(object):
+    @classmethod
     def setup_class(cls):
         pytest.skip("Skip all Yahoo! tests.")
 

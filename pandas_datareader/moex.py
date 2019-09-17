@@ -138,7 +138,7 @@ class MoexReader(_DailyBaseReader):
             urls = self.url  # generate urls per symbols
             dfs = []  # an array of pandas dataframes per symbol to concatenate
 
-            for i, symbol in enumerate(self.symbols):
+            for i in range(len(self.symbols)):
                 out_list = []
                 date_column = None
 

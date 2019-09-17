@@ -85,7 +85,10 @@ class YahooDailyReader(_DailyBaseReader):
             "Expires": str(-1),
             "Upgrade-Insecure-Requests": str(1),
             # Google Chrome:
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36",  # noqa
+            "User-Agent": (
+                "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36"
+            ),
         }
 
         self.adjust_price = adjust_price
@@ -95,9 +98,10 @@ class YahooDailyReader(_DailyBaseReader):
 
         if self.interval not in ["d", "wk", "mo", "m", "w"]:
             raise ValueError(
-                "Invalid interval: valid values are  'd', 'wk' and 'mo'. 'm' and 'w' have been implemented for "  # noqa
-                "backward compatibility. 'v' has been moved to the yahoo-actions or yahoo-dividends APIs."
-            )  # noqa
+                "Invalid interval: valid values are  'd', 'wk' and 'mo'. 'm' and 'w' "
+                "have been implemented for backward compatibility. 'v' has been moved "
+                "to the yahoo-actions or yahoo-dividends APIs."
+            )
         elif self.interval in ["m", "mo"]:
             self.pdinterval = "m"
             self.interval = "mo"
