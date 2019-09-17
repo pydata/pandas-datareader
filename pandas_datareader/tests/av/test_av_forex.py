@@ -32,7 +32,7 @@ class TestAlphaVantageForex(object):
     @pytest.mark.skipif(TEST_API_KEY is None,
                         reason="ALPHAVANTAGE_API_KEY not set")
     def test_one_pair(self):
-        df = web.DataReader("USD/EUR", "av-forex")
+        df = web.DataReader("USD/EUR", "av-forex", retry_count=6, pause=20.5)
         assert isinstance(df, pd.DataFrame)
         assert df.loc["To_Currency Name"][0] == "Euro"
         assert df.loc["Time Zone"][0] == 'UTC'
@@ -41,6 +41,6 @@ class TestAlphaVantageForex(object):
                         reason="ALPHAVANTAGE_API_KEY not set")
     def test_multiple_pairs(self):
         pairs = ["USD/JPY", "EUR/JPY"]
-        df = web.DataReader(pairs, "av-forex")
+        df = web.DataReader(pairs, "av-forex", retry_count=6, pause=20.5)
         assert isinstance(df, pd.DataFrame)
         assert df.columns.equals(pd.Index(pairs))
