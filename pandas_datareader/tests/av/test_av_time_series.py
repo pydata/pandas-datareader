@@ -36,10 +36,11 @@ class TestAVTimeSeries(object):
     def test_av_bad_symbol(self):
         with pytest.raises((ValueError, RemoteDataError)):
             web.DataReader("BADTICKER", "av-daily", start=self.start,
-                           end=self.end)
+                           end=self.end, retry_count=6, pause=20.5)
 
     def test_av_daily(self):
-        df = web.DataReader("AAPL", "av-daily", start=self.start, end=self.end)
+        df = web.DataReader("AAPL", "av-daily", start=self.start,
+                            end=self.end, retry_count=6, pause=20.5)
         assert df.columns.equals(self.col_index)
         assert len(df) == 578
         assert df["volume"][-1] == 19178000
@@ -54,7 +55,7 @@ class TestAVTimeSeries(object):
 
     def test_av_daily_adjusted(self):
         df = web.DataReader("AAPL", "av-daily-adjusted", start=self.start,
-                            end=self.end)
+                            end=self.end, retry_count=6, pause=20.5)
         assert df.columns.equals(pd.Index(["open", "high", "low", "close",
                                            "adjusted close", "volume",
                                            "dividend amount",
@@ -87,7 +88,7 @@ class TestAVTimeSeries(object):
 
     def test_av_weekly(self):
         df = web.DataReader("AAPL", "av-weekly", start=self.start,
-                            end=self.end)
+                            end=self.end, retry_count=6, pause=20.5)
 
         assert len(df) == 119
         assert df.iloc[0].name == '2015-02-13'
@@ -97,7 +98,7 @@ class TestAVTimeSeries(object):
 
     def test_av_weekly_adjusted(self):
         df = web.DataReader("AAPL", "av-weekly-adjusted", start=self.start,
-                            end=self.end)
+                            end=self.end, retry_count=6, pause=20.5)
 
         assert len(df) == 119
         assert df.iloc[0].name == '2015-02-13'
@@ -107,7 +108,7 @@ class TestAVTimeSeries(object):
 
     def test_av_monthly(self):
         df = web.DataReader("AAPL", "av-monthly", start=self.start,
-                            end=self.end)
+                            end=self.end, retry_count=6, pause=20.5)
 
         assert len(df) == 27
         assert df.iloc[0].name == '2015-02-27'
@@ -117,7 +118,7 @@ class TestAVTimeSeries(object):
 
     def test_av_monthly_adjusted(self):
         df = web.DataReader("AAPL", "av-monthly-adjusted", start=self.start,
-                            end=self.end)
+                            end=self.end, retry_count=6, pause=20.5)
 
         assert df.columns.equals(self.col_index_adj)
         assert len(df) == 27
@@ -127,7 +128,7 @@ class TestAVTimeSeries(object):
 
     def test_av_intraday(self):
         # Not much available to test, but ensure close in length
-        df = web.DataReader("AAPL", "av-intraday")
+        df = web.DataReader("AAPL", "av-intraday", retry_count=6, pause=20.5)
 
         assert len(df) > 1000
         assert 'open' in df.columns

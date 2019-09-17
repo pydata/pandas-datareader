@@ -33,7 +33,7 @@ class TestAVQuotes(object):
     @pytest.mark.skipif(TEST_API_KEY is None,
                         reason="ALPHAVANTAGE_API_KEY not set")
     def test_single_symbol(self):
-        df = web.get_quote_av("AAPL")
+        df = web.get_quote_av("AAPL", retry_count=6, pause=20.5)
         assert len(df) == 1
 
         expected = pd.Index(["price", "volume", "timestamp"])
@@ -42,7 +42,7 @@ class TestAVQuotes(object):
     @pytest.mark.skipif(TEST_API_KEY is None,
                         reason="ALPHAVANTAGE_API_KEY not set")
     def test_multi_symbol(self):
-        df = web.get_quote_av(["AAPL", "TSLA"])
+        df = web.get_quote_av(["AAPL", "TSLA"], retry_count=6, pause=20.5)
         assert len(df) == 2
 
         expected = pd.Index(["price", "volume", "timestamp"])
@@ -52,7 +52,7 @@ class TestAVQuotes(object):
                         reason="ALPHAVANTAGE_API_KEY not set")
     @pytest.mark.xfail(reason="May return NaN outside of market hours")
     def test_return_types(self):
-        df = web.get_quote_av("AAPL")
+        df = web.get_quote_av("AAPL", retry_count=6, pause=20.5)
 
         assert isinstance(df["AAPL"]["price"], np.int64)
         assert isinstance(df["AAPL"]["volume"], np.float64)

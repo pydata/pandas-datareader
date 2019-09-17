@@ -60,7 +60,7 @@ class AlphaVantage(_BaseReader):
         except KeyError:
             if "Error Message" in out:
                 raise ValueError("The requested symbol {} could not be "
-                                 "retrived. Check valid ticker"
+                                 "retrieved. Check valid ticker"
                                  ".".format(self.symbols))
             else:
                 raise RemoteDataError()

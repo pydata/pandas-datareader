@@ -20,7 +20,7 @@ class TestAVSector(object):
     @pytest.mark.skipif(TEST_API_KEY is None,
                         reason="ALPHAVANTAGE_API_KEY not set")
     def test_sector(self):
-        df = get_sector_performance_av()
+        df = get_sector_performance_av(retry_count=6, pause=20.5)
 
         cols = pd.Index(["RT", "1D", "5D", "1M", "3M", "YTD", "1Y", "3Y", "5Y",
                          "10Y"])
