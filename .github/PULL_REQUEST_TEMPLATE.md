@@ -1,4 +1,4 @@
 - [ ] closes #xxxx
 - [ ] tests added / passed
-- [ ] passes `git diff upstream/master -u -- "*.py" | flake8 --diff`
+- [ ] passes `black --check pandas_datareader`
 - [ ] added entry to docs/source/whatsnew/vLATEST.txt

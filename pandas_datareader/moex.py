@@ -1,16 +1,9 @@
-# flake8: noqa
-
 import datetime as dt
 
 import pandas as pd
 
 from pandas_datareader.base import _DailyBaseReader
-from pandas_datareader.compat import (
-    StringIO,
-    binary_type,
-    concat,
-    is_list_like,
-)
+from pandas_datareader.compat import StringIO, binary_type, concat, is_list_like
 
 
 class MoexReader(_DailyBaseReader):
@@ -57,39 +50,45 @@ class MoexReader(_DailyBaseReader):
         self.__engines, self.__markets = {}, {}  # dicts for engines and markets
 
     __url_metadata = "https://iss.moex.com/iss/securities/{symbol}.csv"
-    __url_data = "https://iss.moex.com/iss/history/engines/{engine}/" \
-                 "markets/{market}/securities/{symbol}.csv"
+    __url_data = (
+        "https://iss.moex.com/iss/history/engines/{engine}/"
+        "markets/{market}/securities/{symbol}.csv"
+    )
 
     @property
     def url(self):
         """Return a list of API URLs per symbol"""
 
         if not self.__engines or not self.__markets:
-            raise Exception("Accessing url property before invocation "
-                "of read() or _get_metadata() methods")
+            raise Exception(
+                "Accessing url property before invocation "
+                "of read() or _get_metadata() methods"
+            )
 
-        return [self.__url_data.format(
-                    engine=self.__engines[s],
-                    market=self.__markets[s],
-                    symbol=s) for s in self.symbols]
+        return [
+            self.__url_data.format(
+                engine=self.__engines[s], market=self.__markets[s], symbol=s
+            )
+            for s in self.symbols
+        ]
 
     def _get_params(self, start):
         """Return a dict for REST API GET request parameters"""
 
         params = {
-            'iss.only': 'history',
-            'iss.dp': 'point',
-            'iss.df': '%Y-%m-%d',
-            'iss.tf': '%H:%M:%S',
-            'iss.dft': '%Y-%m-%d %H:%M:%S',
-            'iss.json': 'extended',
-            'callback': 'JSON_CALLBACK',
-            'from': start,
-            'till': self.end_dt.strftime('%Y-%m-%d'),
-            'limit': 100,
-            'start': 1,
-            'sort_order': 'TRADEDATE',
-            'sort_order_desc': 'asc'
+            "iss.only": "history",
+            "iss.dp": "point",
+            "iss.df": "%Y-%m-%d",
+            "iss.tf": "%H:%M:%S",
+            "iss.dft": "%Y-%m-%d %H:%M:%S",
+            "iss.json": "extended",
+            "callback": "JSON_CALLBACK",
+            "from": start,
+            "till": self.end_dt.strftime("%Y-%m-%d"),
+            "limit": 100,
+            "start": 1,
+            "sort_order": "TRADEDATE",
+            "sort_order_desc": "asc",
         }
         return params
 
@@ -99,33 +98,36 @@ class MoexReader(_DailyBaseReader):
         markets, engines = {}, {}
 
         for symbol in self.symbols:
-            response = self._get_response(
-                self.__url_metadata.format(symbol=symbol)
-            )
+            response = self._get_response(self.__url_metadata.format(symbol=symbol))
             text = self._sanitize_response(response)
             if len(text) == 0:
                 service = self.__class__.__name__
-                raise IOError("{} request returned no data; check URL for invalid "
-                              "inputs: {}".format(service, self.__url_metadata))
+                raise IOError(
+                    "{} request returned no data; check URL for invalid "
+                    "inputs: {}".format(service, self.__url_metadata)
+                )
             if isinstance(text, binary_type):
-                text = text.decode('windows-1251')
+                text = text.decode("windows-1251")
 
-            header_str = 'secid;boardid;'
+            header_str = "secid;boardid;"
             get_data = False
             for s in text.splitlines():
                 if s.startswith(header_str):
                     get_data = True
                     continue
-                if get_data and s != '':
-                    fields = s.split(';')
+                if get_data and s != "":
+                    fields = s.split(";")
                     markets[symbol], engines[symbol] = fields[5], fields[7]
                     break
             if symbol not in markets or symbol not in engines:
-                raise IOError("{} request returned no metadata: {}\n"
-                              "Typo in the security symbol `{}`?".format(
-                                self.__class__.__name__,
-                                self.__url_metadata.format(symbol=symbol),
-                                symbol))
+                raise IOError(
+                    "{} request returned no metadata: {}\n"
+                    "Typo in the security symbol `{}`?".format(
+                        self.__class__.__name__,
+                        self.__url_metadata.format(symbol=symbol),
+                        symbol,
+                    )
+                )
         return markets, engines
 
     def read(self):
@@ -143,21 +145,22 @@ class MoexReader(_DailyBaseReader):
                 while True:  # read in a loop with small date intervals
                     if len(out_list) > 0:
                         if date_column is None:
-                            date_column = out_list[0].split(';').index('TRADEDATE')
+                            date_column = out_list[0].split(";").index("TRADEDATE")
 
                         # get the last downloaded date
-                        start_str = out_list[-1].split(';', 4)[date_column]
-                        start = dt.datetime.strptime(start_str, '%Y-%m-%d').date()
+                        start_str = out_list[-1].split(";", 4)[date_column]
+                        start = dt.datetime.strptime(start_str, "%Y-%m-%d").date()
                     else:
-                        start_str = self.start.strftime('%Y-%m-%d')
+                        start_str = self.start.strftime("%Y-%m-%d")
                         start = self.start
 
                     if start >= self.end or start >= dt.date.today():
                         break
 
                     params = self._get_params(start_str)
-                    strings_out = self._read_url_as_String(urls[i], params) \
-                                      .splitlines()[2:]
+                    strings_out = self._read_url_as_String(
+                        urls[i], params
+                    ).splitlines()[2:]
                     strings_out = list(filter(lambda x: x.strip(), strings_out))
 
                     if len(out_list) == 0:
@@ -168,13 +171,13 @@ class MoexReader(_DailyBaseReader):
                         out_list += strings_out[1:]  # remove a CSV head line
                         if len(strings_out) < 100:  # all data recevied - break
                             break
-                str_io = StringIO('\r\n'.join(out_list))
-                dfs.append(self._read_lines(str_io)) # add a new DataFrame
+                str_io = StringIO("\r\n".join(out_list))
+                dfs.append(self._read_lines(str_io))  # add a new DataFrame
         finally:
             self.close()
 
         if len(dfs) > 1:
-            return concat(dfs, axis=0, join='outer', sort=True)
+            return concat(dfs, axis=0, join="outer", sort=True)
         else:
             return dfs[0]
 
@@ -185,14 +188,21 @@ class MoexReader(_DailyBaseReader):
         text = self._sanitize_response(response)
         if len(text) == 0:
             service = self.__class__.__name__
-            raise IOError("{} request returned no data; check URL for invalid "
-                          "inputs: {}".format(service, self.url))
+            raise IOError(
+                "{} request returned no data; check URL for invalid "
+                "inputs: {}".format(service, self.url)
+            )
         if isinstance(text, binary_type):
-            text = text.decode('windows-1251')
+            text = text.decode("windows-1251")
         return text
 
     def _read_lines(self, input):
         """Return a pandas DataFrame from input"""
 
-        return pd.read_csv(input, index_col='TRADEDATE', parse_dates=True,
-                           sep=';', na_values=('-', 'null'))
+        return pd.read_csv(
+            input,
+            index_col="TRADEDATE",
+            parse_dates=True,
+            sep=";",
+            na_values=("-", "null"),
+        )

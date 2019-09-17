@@ -12,26 +12,17 @@ from pandas_datareader.bankofcanada import BankOfCanadaReader
 from pandas_datareader.econdb import EcondbReader
 from pandas_datareader.enigma import EnigmaReader
 from pandas_datareader.eurostat import EurostatReader
-from pandas_datareader.exceptions import (
-    DEP_ERROR_MSG,
-    ImmediateDeprecationError,
-)
+from pandas_datareader.exceptions import DEP_ERROR_MSG, ImmediateDeprecationError
 from pandas_datareader.famafrench import FamaFrenchReader
 from pandas_datareader.fred import FredReader
 from pandas_datareader.iex.daily import IEXDailyReader
 from pandas_datareader.iex.deep import Deep as IEXDeep
-from pandas_datareader.iex.tops import (
-    LastReader as IEXLasts,
-    TopsReader as IEXTops,
-)
+from pandas_datareader.iex.tops import LastReader as IEXLasts, TopsReader as IEXTops
 from pandas_datareader.moex import MoexReader
 from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
 from pandas_datareader.oecd import OECDReader
 from pandas_datareader.quandl import QuandlReader
-from pandas_datareader.robinhood import (
-    RobinhoodHistoricalReader,
-    RobinhoodQuoteReader,
-)
+from pandas_datareader.robinhood import RobinhoodHistoricalReader, RobinhoodQuoteReader
 from pandas_datareader.stooq import StooqDailyReader
 from pandas_datareader.tiingo import (
     TiingoDailyReader,
@@ -39,22 +30,36 @@ from pandas_datareader.tiingo import (
     TiingoQuoteReader,
 )
 from pandas_datareader.yahoo.actions import YahooActionReader, YahooDivReader
-from pandas_datareader.yahoo.components import (
-    _get_data as get_components_yahoo,
-)
+from pandas_datareader.yahoo.components import _get_data as get_components_yahoo
 from pandas_datareader.yahoo.daily import YahooDailyReader
 from pandas_datareader.yahoo.options import Options as YahooOptions
 from pandas_datareader.yahoo.quotes import YahooQuotesReader
 
-__all__ = ['get_components_yahoo', 'get_data_enigma', 'get_data_famafrench',
-           'get_data_fred', 'get_data_moex',
-           'get_data_quandl', 'get_data_yahoo', 'get_data_yahoo_actions',
-           'get_nasdaq_symbols', 'get_quote_yahoo',
-           'get_tops_iex', 'get_summary_iex', 'get_records_iex',
-           'get_recent_iex', 'get_markets_iex', 'get_last_iex',
-           'get_iex_symbols', 'get_iex_book', 'get_dailysummary_iex',
-           'get_data_stooq', 'get_data_robinhood',
-           'get_quotes_robinhood', 'DataReader']
+__all__ = [
+    "get_components_yahoo",
+    "get_data_enigma",
+    "get_data_famafrench",
+    "get_data_fred",
+    "get_data_moex",
+    "get_data_quandl",
+    "get_data_yahoo",
+    "get_data_yahoo_actions",
+    "get_nasdaq_symbols",
+    "get_quote_yahoo",
+    "get_tops_iex",
+    "get_summary_iex",
+    "get_records_iex",
+    "get_recent_iex",
+    "get_markets_iex",
+    "get_last_iex",
+    "get_iex_symbols",
+    "get_iex_book",
+    "get_dailysummary_iex",
+    "get_data_stooq",
+    "get_data_robinhood",
+    "get_quotes_robinhood",
+    "DataReader",
+]
 
 
 def get_data_alphavantage(*args, **kwargs):
@@ -149,6 +154,7 @@ def get_markets_iex(*args, **kwargs):
     :return: DataFrame
     """
     from pandas_datareader.iex.market import MarketReader
+
     return MarketReader(*args, **kwargs).read()
 
 
@@ -167,6 +173,7 @@ def get_dailysummary_iex(*args, **kwargs):
     :return: DataFrame
     """
     from pandas_datareader.iex.stats import DailySummaryReader
+
     return DailySummaryReader(*args, **kwargs).read()
 
 
@@ -185,6 +192,7 @@ def get_summary_iex(*args, **kwargs):
     :return: DataFrame
     """
     from pandas_datareader.iex.stats import MonthlySummaryReader
+
     return MonthlySummaryReader(*args, **kwargs).read()
 
 
@@ -199,6 +207,7 @@ def get_records_iex(*args, **kwargs):
     :return: DataFrame
     """
     from pandas_datareader.iex.stats import RecordsReader
+
     return RecordsReader(*args, **kwargs).read()
 
 
@@ -213,6 +222,7 @@ def get_recent_iex(*args, **kwargs):
     :return: DataFrame
     """
     from pandas_datareader.iex.stats import RecentReader
+
     return RecentReader(*args, **kwargs).read()
 
 
@@ -226,6 +236,7 @@ def get_iex_symbols(*args, **kwargs):
     :return: DataFrame
     """
     from pandas_datareader.iex.ref import SymbolsReader
+
     return SymbolsReader(*args, **kwargs).read()
 
 
@@ -251,8 +262,16 @@ def get_iex_book(*args, **kwargs):
     return IEXDeep(*args, **kwargs).read()
 
 
-def DataReader(name, data_source=None, start=None, end=None,
-               retry_count=3, pause=0.1, session=None, access_key=None):
+def DataReader(
+    name,
+    data_source=None,
+    start=None,
+    end=None,
+    retry_count=3,
+    pause=0.1,
+    session=None,
+    access_key=None,
+):
     """
     Imports data from a number of online sources.
 
@@ -301,170 +320,327 @@ def DataReader(name, data_source=None, start=None, end=None,
     ff = DataReader("6_Portfolios_2x3", "famafrench")
     ff = DataReader("F-F_ST_Reversal_Factor", "famafrench")
     """
-    expected_source = ["yahoo", "iex", "iex-tops", "iex-last",
-                       "iex-last", "bankofcanada", "stooq", "iex-book",
-                       "enigma", "fred", "famafrench", "oecd", "eurostat",
-                       "nasdaq", "quandl", "moex", 'robinhood',
-                       "tiingo", "yahoo-actions", "yahoo-dividends",
-                       "av-forex", "av-daily", "av-daily-adjusted",
-                       "av-weekly", "av-weekly-adjusted", "av-monthly",
-                       "av-monthly-adjusted", "av-intraday", "econdb"]
+    expected_source = [
+        "yahoo",
+        "iex",
+        "iex-tops",
+        "iex-last",
+        "iex-last",
+        "bankofcanada",
+        "stooq",
+        "iex-book",
+        "enigma",
+        "fred",
+        "famafrench",
+        "oecd",
+        "eurostat",
+        "nasdaq",
+        "quandl",
+        "moex",
+        "robinhood",
+        "tiingo",
+        "yahoo-actions",
+        "yahoo-dividends",
+        "av-forex",
+        "av-daily",
+        "av-daily-adjusted",
+        "av-weekly",
+        "av-weekly-adjusted",
+        "av-monthly",
+        "av-monthly-adjusted",
+        "av-intraday",
+        "econdb",
+    ]
 
     if data_source not in expected_source:
         msg = "data_source=%r is not implemented" % data_source
         raise NotImplementedError(msg)
 
     if data_source == "yahoo":
-        return YahooDailyReader(symbols=name, start=start, end=end,
-                                adjust_price=False, chunksize=25,
-                                retry_count=retry_count, pause=pause,
-                                session=session).read()
+        return YahooDailyReader(
+            symbols=name,
+            start=start,
+            end=end,
+            adjust_price=False,
+            chunksize=25,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        ).read()
 
     elif data_source == "iex":
-        return IEXDailyReader(symbols=name, start=start, end=end,
-                              chunksize=25, api_key=access_key,
-                              retry_count=retry_count, pause=pause,
-                              session=session).read()
+        return IEXDailyReader(
+            symbols=name,
+            start=start,
+            end=end,
+            chunksize=25,
+            api_key=access_key,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        ).read()
 
     elif data_source == "iex-tops":
-        return IEXTops(symbols=name, start=start, end=end,
-                       retry_count=retry_count, pause=pause,
-                       session=session).read()
+        return IEXTops(
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        ).read()
 
     elif data_source == "iex-last":
-        return IEXLasts(symbols=name, start=start, end=end,
-                        retry_count=retry_count, pause=pause,
-                        session=session).read()
+        return IEXLasts(
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        ).read()
 
     elif data_source == "bankofcanada":
-        return BankOfCanadaReader(symbols=name, start=start, end=end,
-                                  retry_count=retry_count, pause=pause,
-                                  session=session).read()
+        return BankOfCanadaReader(
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        ).read()
     elif data_source == "stooq":
-        return StooqDailyReader(symbols=name,
-                                chunksize=25,
-                                retry_count=retry_count, pause=pause,
-                                session=session).read()
+        return StooqDailyReader(
+            symbols=name,
+            chunksize=25,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        ).read()
 
     elif data_source == "iex-book":
-        return IEXDeep(symbols=name, service="book", start=start, end=end,
-                       retry_count=retry_count, pause=pause,
-                       session=session).read()
+        return IEXDeep(
+            symbols=name,
+            service="book",
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        ).read()
 
     elif data_source == "enigma":
         return EnigmaReader(dataset_id=name, api_key=access_key).read()
 
     elif data_source == "fred":
-        return FredReader(symbols=name, start=start, end=end,
-                          retry_count=retry_count, pause=pause,
-                          session=session).read()
+        return FredReader(
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        ).read()
 
     elif data_source == "famafrench":
-        return FamaFrenchReader(symbols=name, start=start, end=end,
-                                retry_count=retry_count, pause=pause,
-                                session=session).read()
+        return FamaFrenchReader(
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        ).read()
 
     elif data_source == "oecd":
-        return OECDReader(symbols=name, start=start, end=end,
-                          retry_count=retry_count, pause=pause,
-                          session=session).read()
+        return OECDReader(
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        ).read()
     elif data_source == "eurostat":
-        return EurostatReader(symbols=name, start=start, end=end,
-                              retry_count=retry_count, pause=pause,
-                              session=session).read()
-    elif data_source == 'nasdaq':
-        if name != 'symbols':
-            raise ValueError("Only the string 'symbols' is supported for "
-                             "Nasdaq, not %r" % (name,))
+        return EurostatReader(
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        ).read()
+    elif data_source == "nasdaq":
+        if name != "symbols":
+            raise ValueError(
+                "Only the string 'symbols' is supported for " "Nasdaq, not %r" % (name,)
+            )
         return get_nasdaq_symbols(retry_count=retry_count, pause=pause)
 
     elif data_source == "quandl":
-        return QuandlReader(symbols=name, start=start, end=end,
-                            retry_count=retry_count, pause=pause,
-                            session=session, api_key=access_key).read()
+        return QuandlReader(
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+            api_key=access_key,
+        ).read()
     elif data_source == "moex":
-        return MoexReader(symbols=name, start=start, end=end,
-                          retry_count=retry_count, pause=pause,
-                          session=session).read()
-    elif data_source == 'robinhood':
-        return RobinhoodHistoricalReader(symbols=name, start=start, end=end,
-                                         retry_count=retry_count, pause=pause,
-                                         session=session).read()
-    elif data_source == 'tiingo':
-        return TiingoDailyReader(symbols=name, start=start, end=end,
-                                 retry_count=retry_count, pause=pause,
-                                 session=session,
-                                 api_key=access_key).read()
+        return MoexReader(
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        ).read()
+    elif data_source == "robinhood":
+        return RobinhoodHistoricalReader(
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        ).read()
+    elif data_source == "tiingo":
+        return TiingoDailyReader(
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+            api_key=access_key,
+        ).read()
 
     elif data_source == "yahoo-actions":
-        return YahooActionReader(symbols=name, start=start, end=end,
-                                 retry_count=retry_count, pause=pause,
-                                 session=session).read()
+        return YahooActionReader(
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        ).read()
 
     elif data_source == "yahoo-dividends":
-        return YahooDivReader(symbols=name, start=start, end=end,
-                              adjust_price=False, chunksize=25,
-                              retry_count=retry_count, pause=pause,
-                              session=session, interval='d').read()
+        return YahooDivReader(
+            symbols=name,
+            start=start,
+            end=end,
+            adjust_price=False,
+            chunksize=25,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+            interval="d",
+        ).read()
 
     elif data_source == "av-forex":
-        return AVForexReader(symbols=name, retry_count=retry_count,
-                             pause=pause, session=session,
-                             api_key=access_key).read()
+        return AVForexReader(
+            symbols=name,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+            api_key=access_key,
+        ).read()
 
     elif data_source == "av-daily":
-        return AVTimeSeriesReader(symbols=name,
-                                  function="TIME_SERIES_DAILY", start=start,
-                                  end=end, retry_count=retry_count,
-                                  pause=pause, session=session,
-                                  api_key=access_key).read()
+        return AVTimeSeriesReader(
+            symbols=name,
+            function="TIME_SERIES_DAILY",
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+            api_key=access_key,
+        ).read()
 
     elif data_source == "av-daily-adjusted":
-        return AVTimeSeriesReader(symbols=name,
-                                  function="TIME_SERIES_DAILY_ADJUSTED",
-                                  start=start, end=end,
-                                  retry_count=retry_count, pause=pause,
-                                  session=session, api_key=access_key).read()
+        return AVTimeSeriesReader(
+            symbols=name,
+            function="TIME_SERIES_DAILY_ADJUSTED",
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+            api_key=access_key,
+        ).read()
 
     elif data_source == "av-weekly":
-        return AVTimeSeriesReader(symbols=name,
-                                  function="TIME_SERIES_WEEKLY", start=start,
-                                  end=end, retry_count=retry_count,
-                                  pause=pause, session=session,
-                                  api_key=access_key).read()
+        return AVTimeSeriesReader(
+            symbols=name,
+            function="TIME_SERIES_WEEKLY",
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+            api_key=access_key,
+        ).read()
 
     elif data_source == "av-weekly-adjusted":
-        return AVTimeSeriesReader(symbols=name,
-                                  function="TIME_SERIES_WEEKLY_ADJUSTED",
-                                  start=start, end=end,
-                                  retry_count=retry_count, pause=pause,
-                                  session=session, api_key=access_key).read()
+        return AVTimeSeriesReader(
+            symbols=name,
+            function="TIME_SERIES_WEEKLY_ADJUSTED",
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+            api_key=access_key,
+        ).read()
 
     elif data_source == "av-monthly":
-        return AVTimeSeriesReader(symbols=name,
-                                  function="TIME_SERIES_MONTHLY", start=start,
-                                  end=end, retry_count=retry_count,
-                                  pause=pause, session=session,
-                                  api_key=access_key).read()
+        return AVTimeSeriesReader(
+            symbols=name,
+            function="TIME_SERIES_MONTHLY",
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+            api_key=access_key,
+        ).read()
 
     elif data_source == "av-monthly-adjusted":
-        return AVTimeSeriesReader(symbols=name,
-                                  function="TIME_SERIES_MONTHLY_ADJUSTED",
-                                  start=start, end=end,
-                                  retry_count=retry_count, pause=pause,
-                                  session=session, api_key=access_key).read()
+        return AVTimeSeriesReader(
+            symbols=name,
+            function="TIME_SERIES_MONTHLY_ADJUSTED",
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+            api_key=access_key,
+        ).read()
 
     elif data_source == "av-intraday":
-        return AVTimeSeriesReader(symbols=name,
-                                  function="TIME_SERIES_INTRADAY",
-                                  start=start, end=end,
-                                  retry_count=retry_count, pause=pause,
-                                  session=session, api_key=access_key).read()
+        return AVTimeSeriesReader(
+            symbols=name,
+            function="TIME_SERIES_INTRADAY",
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+            api_key=access_key,
+        ).read()
 
     elif data_source == "econdb":
-        return EcondbReader(symbols=name, start=start, end=end,
-                            retry_count=retry_count, pause=pause,
-                            session=session).read()
+        return EcondbReader(
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        ).read()
 
     else:
         msg = "data_source=%r is not implemented" % data_source
@@ -473,11 +649,15 @@ def DataReader(name, data_source=None, start=None, end=None,
 
 def Options(symbol, data_source=None, session=None):
     if data_source is None:
-        warnings.warn("Options(symbol) is deprecated, use Options(symbol,"
-                      " data_source) instead", FutureWarning, stacklevel=2)
+        warnings.warn(
+            "Options(symbol) is deprecated, use Options(symbol,"
+            " data_source) instead",
+            FutureWarning,
+            stacklevel=2,
+        )
         data_source = "yahoo"
     if data_source == "yahoo":
-        raise ImmediateDeprecationError(DEP_ERROR_MSG.format('Yahoo Options'))
+        raise ImmediateDeprecationError(DEP_ERROR_MSG.format("Yahoo Options"))
         return YahooOptions(symbol, session=session)
     else:
         raise NotImplementedError("currently only yahoo supported")

@@ -2,16 +2,13 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from pandas_datareader.robinhood import (
-    RobinhoodHistoricalReader,
-    RobinhoodQuoteReader,
-)
+from pandas_datareader.robinhood import RobinhoodHistoricalReader, RobinhoodQuoteReader
 
-syms = ['GOOG', ['GOOG', 'AAPL']]
+syms = ["GOOG", ["GOOG", "AAPL"]]
 ids = list(map(str, syms))
 
 
-@pytest.fixture(params=['GOOG', ['GOOG', 'AAPL']], ids=ids)
+@pytest.fixture(params=["GOOG", ["GOOG", "AAPL"]], ids=ids)
 def symbols(request):
     return request.param
 
@@ -28,7 +25,7 @@ def test_robinhood_quote(symbols):
 @pytest.mark.xfail(reason="Deprecated")
 def test_robinhood_quote_too_many():
     syms = np.random.randint(65, 90, size=(10000, 4)).tolist()
-    syms = list(map(lambda r: ''.join(map(chr, r)), syms))
+    syms = list(map(lambda r: "".join(map(chr, r)), syms))
     syms = list(set(syms))
     with pytest.raises(ValueError):
         RobinhoodQuoteReader(symbols=syms)
@@ -37,7 +34,7 @@ def test_robinhood_quote_too_many():
 @pytest.mark.xfail(reason="Deprecated")
 def test_robinhood_historical_too_many():
     syms = np.random.randint(65, 90, size=(10000, 4)).tolist()
-    syms = list(map(lambda r: ''.join(map(chr, r)), syms))
+    syms = list(map(lambda r: "".join(map(chr, r)), syms))
     syms = list(set(syms))
     with pytest.raises(ValueError):
         RobinhoodHistoricalReader(symbols=syms)

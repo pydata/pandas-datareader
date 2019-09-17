@@ -10,24 +10,24 @@ import pandas as pd
 from pandas_datareader.compat import HTTPError, str_to_bytes
 from pandas_datareader.io.util import _read_content
 
-_STRUCTURE = '{http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure}'
-_MESSAGE = '{http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message}'
-_GENERIC = '{http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic}'
-_COMMON = '{http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common}'
-_XML = '{http://www.w3.org/XML/1998/namespace}'
+_STRUCTURE = "{http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure}"
+_MESSAGE = "{http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message}"
+_GENERIC = "{http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic}"
+_COMMON = "{http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common}"
+_XML = "{http://www.w3.org/XML/1998/namespace}"
 
-_DATASET = _MESSAGE + 'DataSet'
-_SERIES = _GENERIC + 'Series'
-_SERIES_KEY = _GENERIC + 'SeriesKey'
-_OBSERVATION = _GENERIC + 'Obs'
-_VALUE = _GENERIC + 'Value'
-_OBSDIMENSION = _GENERIC + 'ObsDimension'
-_OBSVALUE = _GENERIC + 'ObsValue'
-_CODE = _STRUCTURE + 'Code'
-_TIMEDIMENSION = _STRUCTURE + 'TimeDimension'
+_DATASET = _MESSAGE + "DataSet"
+_SERIES = _GENERIC + "Series"
+_SERIES_KEY = _GENERIC + "SeriesKey"
+_OBSERVATION = _GENERIC + "Obs"
+_VALUE = _GENERIC + "Value"
+_OBSDIMENSION = _GENERIC + "ObsDimension"
+_OBSVALUE = _GENERIC + "ObsValue"
+_CODE = _STRUCTURE + "Code"
+_TIMEDIMENSION = _STRUCTURE + "TimeDimension"
 
 
-def read_sdmx(path_or_buf, dtype='float64', dsd=None):
+def read_sdmx(path_or_buf, dtype="float64", dsd=None):
     """
     Convert a SDMX-XML string to pandas object
 
@@ -48,14 +48,15 @@ def read_sdmx(path_or_buf, dtype='float64', dsd=None):
     xdata = _read_content(path_or_buf)
 
     import xml.etree.ElementTree as ET
+
     root = ET.fromstring(xdata)
 
     try:
-        structure = _get_child(root, _MESSAGE + 'Structure')
+        structure = _get_child(root, _MESSAGE + "Structure")
     except ValueError:
         # get zipped path
-        result = list(root.iter(_COMMON + 'Text'))[1].text
-        if not result.startswith('http'):
+        result = list(root.iter(_COMMON + "Text"))[1].text
+        if not result.startswith("http"):
             raise ValueError(result)
 
         for _ in range(60):
@@ -67,11 +68,13 @@ def read_sdmx(path_or_buf, dtype='float64', dsd=None):
                 time.sleep(1)
                 continue
 
-        msg = ('Unable to download zipped data within 60 secs, '
-               'please download it manually from: {0}')
+        msg = (
+            "Unable to download zipped data within 60 secs, "
+            "please download it manually from: {0}"
+        )
         raise ValueError(msg.format(result))
 
-    idx_name = structure.get('dimensionAtObservation')
+    idx_name = structure.get("dimensionAtObservation")
     dataset = _get_child(root, _DATASET)
 
     keys = []
@@ -140,8 +143,7 @@ def _construct_index(keys, dsd=None):
             except KeyError:
                 values[name] = [value]
 
-    midx = pd.MultiIndex.from_arrays([values[name] for name in names],
-                                     names=names)
+    midx = pd.MultiIndex.from_arrays([values[name] for name in names], names=names)
     return midx
 
 
@@ -150,7 +152,7 @@ def _parse_observations(observations):
     for observation in observations:
         obsdimension = _get_child(observation, _OBSDIMENSION)
         obsvalue = _get_child(observation, _OBSVALUE)
-        results.append((obsdimension.get('value'), obsvalue.get('value')))
+        results.append((obsdimension.get("value"), obsvalue.get("value")))
     # return list of key/value tuple, eg: [(key, value), ...]
     return results
 
@@ -158,7 +160,7 @@ def _parse_observations(observations):
 def _parse_series_key(series):
     serieskey = _get_child(series, _SERIES_KEY)
     key_values = serieskey.iter(_VALUE)
-    keys = [(key.get('id'), key.get('value')) for key in key_values]
+    keys = [(key.get("id"), key.get("value")) for key in key_values]
     # return list of key/value tuple, eg: [(key, value), ...]
     return keys
 
@@ -168,11 +170,11 @@ def _get_child(element, key):
     if len(elements) == 1:
         return elements[0]
     elif len(elements) == 0:
-        raise ValueError("Element {0} contains "
-                         "no {1}".format(element.tag, key))
+        raise ValueError("Element {0} contains " "no {1}".format(element.tag, key))
     else:
-        raise ValueError("Element {0} contains "
-                         "multiple {1}".format(element.tag, key))
+        raise ValueError(
+            "Element {0} contains " "multiple {1}".format(element.tag, key)
+        )
 
 
 _NAME_EN = ".//{0}Name[@{1}lang='en']".format(_COMMON, _XML)
@@ -183,7 +185,7 @@ def _get_english_name(element):
     return name
 
 
-SDMXCode = collections.namedtuple('SDMXCode', ['codes', 'ts'])
+SDMXCode = collections.namedtuple("SDMXCode", ["codes", "ts"])
 
 
 def _read_sdmx_dsd(path_or_buf):
@@ -203,12 +205,13 @@ def _read_sdmx_dsd(path_or_buf):
     xdata = _read_content(path_or_buf)
 
     import xml.etree.cElementTree as ET
+
     root = ET.fromstring(xdata)
 
-    structure = _get_child(root, _MESSAGE + 'Structures')
-    codes = _get_child(structure, _STRUCTURE + 'Codelists')
+    structure = _get_child(root, _MESSAGE + "Structures")
+    codes = _get_child(structure, _STRUCTURE + "Codelists")
     # concepts = _get_child(structure, _STRUCTURE + 'Concepts')
-    datastructures = _get_child(structure, _STRUCTURE + 'DataStructures')
+    datastructures = _get_child(structure, _STRUCTURE + "DataStructures")
 
     code_results = {}
     for codelist in codes:
@@ -216,7 +219,7 @@ def _read_sdmx_dsd(path_or_buf):
         codelist_name = _get_english_name(codelist)
         mapper = {}
         for code in codelist.iter(_CODE):
-            code_id = code.get('id')
+            code_id = code.get("id")
             name = _get_english_name(code)
             mapper[code_id] = name
         # codeobj = SDMXCode(id=codelist_id, name=codelist_name, mapper=mapper)
@@ -224,7 +227,7 @@ def _read_sdmx_dsd(path_or_buf):
         code_results[codelist_name] = mapper
 
     times = list(datastructures.iter(_TIMEDIMENSION))
-    times = [t.get('id') for t in times]
+    times = [t.get("id") for t in times]
 
     result = SDMXCode(codes=code_results, ts=times)
     return result

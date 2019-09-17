@@ -45,32 +45,48 @@ class IEXDailyReader(_DailyBaseReader):
         IEX Cloud Secret Token
     """
 
-    def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.1, session=None, chunksize=25, api_key=None):
+    def __init__(
+        self,
+        symbols=None,
+        start=None,
+        end=None,
+        retry_count=3,
+        pause=0.1,
+        session=None,
+        chunksize=25,
+        api_key=None,
+    ):
         if api_key is None:
-            api_key = os.getenv('IEX_API_KEY')
+            api_key = os.getenv("IEX_API_KEY")
         if not api_key or not isinstance(api_key, str):
-            raise ValueError('The IEX Cloud API key must be provided either '
-                             'through the api_key variable or through the '
-                             ' environment variable IEX_API_KEY')
+            raise ValueError(
+                "The IEX Cloud API key must be provided either "
+                "through the api_key variable or through the "
+                " environment variable IEX_API_KEY"
+            )
         # Support for sandbox environment (testing purposes)
         if os.getenv("IEX_SANDBOX") == "enable":
             self.sandbox = True
         else:
             self.sandbox = False
         self.api_key = api_key
-        super(IEXDailyReader, self).__init__(symbols=symbols, start=start,
-                                             end=end, retry_count=retry_count,
-                                             pause=pause, session=session,
-                                             chunksize=chunksize)
+        super(IEXDailyReader, self).__init__(
+            symbols=symbols,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+            chunksize=chunksize,
+        )
 
     @property
     def url(self):
         """API URL"""
         if self.sandbox is True:
-            return 'https://sandbox.iexapis.com/stable/stock/market/batch'
+            return "https://sandbox.iexapis.com/stable/stock/market/batch"
         else:
-            return 'https://cloud.iexapis.com/stable/stock/market/batch'
+            return "https://cloud.iexapis.com/stable/stock/market/batch"
 
     @property
     def endpoint(self):
@@ -80,20 +96,20 @@ class IEXDailyReader(_DailyBaseReader):
     def _get_params(self, symbol):
         chart_range = self._range_string_from_date()
         if isinstance(symbol, list):
-            symbolList = ','.join(symbol)
+            symbolList = ",".join(symbol)
         else:
             symbolList = symbol
         params = {
             "symbols": symbolList,
             "types": self.endpoint,
             "range": chart_range,
-            "token": self.api_key
+            "token": self.api_key,
         }
         return params
 
     def _range_string_from_date(self):
         delta = relativedelta(self.start, datetime.datetime.now())
-        years = (delta.years * -1)
+        years = delta.years * -1
         if 5 <= years <= 15:
             return "max"
         if 2 <= years < 5:
@@ -113,14 +129,12 @@ class IEXDailyReader(_DailyBaseReader):
 
             return "1y"
         else:
-            raise ValueError(
-                "Invalid date specified. Must be within past 15 years.")
+            raise ValueError("Invalid date specified. Must be within past 15 years.")
 
     def read(self):
         """Read data"""
         try:
-            return self._read_one_data(self.url,
-                                       self._get_params(self.symbols))
+            return self._read_one_data(self.url, self._get_params(self.symbols))
         finally:
             self.close()
 
@@ -138,12 +152,12 @@ class IEXDailyReader(_DailyBaseReader):
             df.set_index("date", inplace=True)
             values = ["open", "high", "low", "close", "volume"]
             df = df[values]
-            sstart = self.start.strftime('%Y-%m-%d')
-            send = self.end.strftime('%Y-%m-%d')
+            sstart = self.start.strftime("%Y-%m-%d")
+            send = self.end.strftime("%Y-%m-%d")
             df = df.loc[sstart:send]
             result.update({symbol: df})
         if len(result) > 1:
             result = pd.concat(result).unstack(level=0)
-            result.columns.names = ['Attributes', 'Symbols']
+            result.columns.names = ["Attributes", "Symbols"]
             return result
         return result[self.symbols]
