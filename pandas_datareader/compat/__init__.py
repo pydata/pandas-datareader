@@ -15,6 +15,24 @@ PANDAS_0220 = PANDAS_VERSION >= LooseVersion("0.22.0")
 PANDAS_0230 = PANDAS_VERSION >= LooseVersion("0.23.0")
 
 
+__all__ = [
+    "HTTPError",
+    "StringIO",
+    "PANDAS_0210",
+    "PANDAS_0220",
+    "PANDAS_0230",
+    "get_filepath_or_buffer",
+    "str_to_bytes",
+    "string_types",
+    "assert_frame_equal",
+    "is_list_like",
+    "is_number",
+    "lmap",
+    "lrange",
+    "concat",
+]
+
+
 def get_filepath_or_buffer(filepath_or_buffer, encoding=None, compression=None):
 
     # Dictionaries are no longer considered valid inputs
@@ -48,7 +66,7 @@ else:
 
     reduce = reduce
     binary_type = str
-    string_types = (basestring,)
+    string_types = (basestring,)  # noqa: F821
 
     def bytes_to_str(b, encoding=None):
         return b

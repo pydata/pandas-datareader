@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 pip install pip --upgrade
-pip install numpy=="$NUMPY" pytz python-dateutil coverage setuptools html5lib lxml pytest pytest-cov wrapt codecov coveralls beautifulsoup4 isort
+pip install numpy=="$NUMPY" pytz python-dateutil coverage setuptools html5lib lxml pytest pytest-cov wrapt codecov coveralls beautifulsoup4 isort flake8
 
-if [[ "$TRAVIS_PYTHON_VERSION" != 2.7 ]]; then
-  pip install black
+if (( $(echo "$TRAVIS_PYTHON_VERSION > 3.5" | bc -l) ));  then
+  pip install black flake8-bugbear
 fi
 
 if [[ "$PANDAS" == "MASTER" ]]; then

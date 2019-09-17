@@ -2,6 +2,8 @@
 Module contains tools for collecting data from various remote sources
 """
 
+# flake8: noqa
+
 import warnings
 
 from pandas_datareader.av.forex import AVForexReader

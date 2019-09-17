@@ -48,9 +48,11 @@ script:
   - if [[ -n "${TEST_TYPE+x}" ]]; then export MARKERS="-m ${TEST_TYPE}"; fi
   - pytest -v -s -r xX "${MARKERS}" --cov-config .coveragerc --cov=pandas_datareader --cov-report xml:/tmp/cov-datareader.xml --junitxml=/tmp/datareader.xml
   - |
-    if [[ "$TRAVIS_PYTHON_VERSION" -gt 3.5 ]]; then
+    if (( $(echo "$TRAVIS_PYTHON_VERSION > 3.5" | bc -l) )); then
       black --check pandas_datareader
     fi
+  - flake8 --version
+  - flake8 pandas_datareader
 
 after_script:
   - |
