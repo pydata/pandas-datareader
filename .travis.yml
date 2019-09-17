@@ -46,7 +46,7 @@ install:
 
 script:
   - if [[ -n "${TEST_TYPE+x}" ]]; then export MARKERS="-m ${TEST_TYPE}"; fi
-  - pytest -s -r xX "${MARKERS}" --cov-config .coveragerc --cov=pandas_datareader --cov-report xml:/tmp/cov-datareader.xml --junitxml=/tmp/datareader.xml
+  - pytest -v -s -r xX "${MARKERS}" --cov-config .coveragerc --cov=pandas_datareader --cov-report xml:/tmp/cov-datareader.xml --junitxml=/tmp/datareader.xml
   - |
     if [[ "$TRAVIS_PYTHON_VERSION" -gt 3.5 ]]; then
       black --check pandas_datareader

@@ -8,7 +8,6 @@ import requests
 
 from pandas_datareader._testing import skip_on_exception
 from pandas_datareader._utils import RemoteDataError
-from pandas_datareader.compat import assert_raises_regex
 from pandas_datareader.wb import (
     WorldBankReader,
     download,
@@ -16,6 +15,8 @@ from pandas_datareader.wb import (
     get_indicators,
     search,
 )
+
+pytestmark = pytest.mark.stable
 
 
 class TestWB(object):
@@ -138,7 +139,7 @@ class TestWB(object):
         inds = "NY.GDP.PCAP.CD"
 
         msg = "Invalid Country Code\\(s\\): XX"
-        with assert_raises_regex(ValueError, msg):
+        with pytest.raises(ValueError, match=msg):
             download(
                 country=cntry_codes,
                 indicator=inds,
@@ -158,7 +159,7 @@ class TestWB(object):
         inds = ["NY.GDP.PCAP.CD", "BAD_INDICATOR"]
 
         msg = "The provided parameter value is not valid\\. " "Indicator: BAD_INDICATOR"
-        with assert_raises_regex(ValueError, msg):
+        with pytest.raises(ValueError, match=msg):
             download(
                 country=cntry_codes,
                 indicator=inds,
@@ -262,8 +263,8 @@ class TestWB(object):
                     "topics",
                 ]
             )
-            # assert_index_equal doesn't exists
-            assert result.columns.equals(exp_col)
+            # Column order is version dependent, so check columns are present
+            assert sorted(result.columns) == sorted(exp_col)
             assert len(result) > 10000
 
     @skip_on_exception(RemoteDataError)
