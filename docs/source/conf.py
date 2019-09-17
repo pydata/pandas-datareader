@@ -43,6 +43,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.extlinks",
     "sphinx.ext.napoleon",
+    "sphinx.ext.todo",
     "IPython.sphinxext.ipython_directive",
     "IPython.sphinxext.ipython_console_highlighting",
 ]
@@ -70,6 +71,12 @@ author = "The PyData Development Team"
 #
 # The short X.Y version.
 version = pdr.__version__.split("+")[0]
+if "+" in pdr.__version__:
+    commit = pdr.__version__.split("+")[1]
+    commits_since_tag, commit_hash = commit.split(".")[:2]
+    commit_hash = commit_hash[1:]
+    commit = " (+" + commits_since_tag + ", " + commit_hash + ")"
+    version += commit
 # The full version, including alpha/beta/rc tags.
 release = pdr.__version__
 
@@ -86,7 +93,7 @@ language = None
 exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = "sphinx"
+pygments_style = "default"
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True

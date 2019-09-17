@@ -50,7 +50,8 @@ class EcondbReader(_BaseReader):
                 df = df.join(series, how="outer")
             else:
                 df = series
-        df.index = pd.to_datetime(df.index, errors="ignore")
+        if df.shape[0] > 0:
+            df.index = pd.to_datetime(df.index, errors="ignore")
         df.index.name = "TIME_PERIOD"
         df = df.truncate(self.start, self.end)
         return df
