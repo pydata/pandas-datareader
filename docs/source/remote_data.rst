@@ -158,7 +158,7 @@ symbols. The following endpoints are available:
 
     In [4]: f = web.DataReader("AAPL", "av-daily", start=datetime(2017, 2, 9),
        ...:                    end=datetime(2017, 5, 24),
-       ...:                    access_key=os.getenv('ALPHAVANTAGE_API_KEY'))
+       ...:                    api_key=os.getenv('ALPHAVANTAGE_API_KEY'))
 
     In [5]: f.loc["2017-02-09"]
     Out[5]:
@@ -218,7 +218,7 @@ as "FROM/TO" as in "USD/JPY".
     In [2]: import pandas_datareader.data as web
 
     In [3]: f = web.DataReader("USD/JPY", "av-forex",
-        ...:                    access_key=os.getenv('ALPHAVANTAGE_API_KEY'))
+        ...:                    api_key=os.getenv('ALPHAVANTAGE_API_KEY'))
 
     In [4]: f
     Out[4]:
@@ -243,7 +243,7 @@ Multiple pairs are are allowable:
     In [2]: import pandas_datareader.data as web
 
     In [3]: f = web.DataReader(["USD/JPY", "BTC/CNY"], "av-forex",
-       ...:                    access_key=os.getenv('ALPHAVANTAGE_API_KEY'))
+       ...:                    api_key=os.getenv('ALPHAVANTAGE_API_KEY'))
 
 
     In [4]: f
