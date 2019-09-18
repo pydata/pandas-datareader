@@ -6,6 +6,8 @@ Module contains tools for collecting data from various remote sources
 
 import warnings
 
+from pandas.util._decorators import deprecate_kwarg
+
 from pandas_datareader.av.forex import AVForexReader
 from pandas_datareader.av.quotes import AVQuotesReader
 from pandas_datareader.av.sector import AVSectorPerformanceReader
@@ -264,6 +266,7 @@ def get_iex_book(*args, **kwargs):
     return IEXDeep(*args, **kwargs).read()
 
 
+@deprecate_kwarg("access_key", "api_key")
 def DataReader(
     name,
     data_source=None,
@@ -272,7 +275,7 @@ def DataReader(
     retry_count=3,
     pause=0.1,
     session=None,
-    access_key=None,
+    api_key=None,
 ):
     """
     Imports data from a number of online sources.
@@ -298,7 +301,7 @@ def DataReader(
         single value given for symbol, represents the pause between retries.
     session : Session, default None
         requests.sessions.Session instance to be used
-    access_key : (str, None)
+    api_key : (str, None)
         Optional parameter to specify an API key for certain data sources.
 
     Examples
@@ -376,7 +379,7 @@ def DataReader(
             start=start,
             end=end,
             chunksize=25,
-            api_key=access_key,
+            api_key=api_key,
             retry_count=retry_count,
             pause=pause,
             session=session,
@@ -432,7 +435,7 @@ def DataReader(
         ).read()
 
     elif data_source == "enigma":
-        return EnigmaReader(dataset_id=name, api_key=access_key).read()
+        return EnigmaReader(dataset_id=name, api_key=api_key).read()
 
     elif data_source == "fred":
         return FredReader(
@@ -487,7 +490,7 @@ def DataReader(
             retry_count=retry_count,
             pause=pause,
             session=session,
-            api_key=access_key,
+            api_key=api_key,
         ).read()
     elif data_source == "moex":
         return MoexReader(
@@ -515,7 +518,7 @@ def DataReader(
             retry_count=retry_count,
             pause=pause,
             session=session,
-            api_key=access_key,
+            api_key=api_key,
         ).read()
 
     elif data_source == "yahoo-actions":
@@ -547,7 +550,7 @@ def DataReader(
             retry_count=retry_count,
             pause=pause,
             session=session,
-            api_key=access_key,
+            api_key=api_key,
         ).read()
 
     elif data_source == "av-daily":
@@ -559,7 +562,7 @@ def DataReader(
             retry_count=retry_count,
             pause=pause,
             session=session,
-            api_key=access_key,
+            api_key=api_key,
         ).read()
 
     elif data_source == "av-daily-adjusted":
@@ -571,7 +574,7 @@ def DataReader(
             retry_count=retry_count,
             pause=pause,
             session=session,
-            api_key=access_key,
+            api_key=api_key,
         ).read()
 
     elif data_source == "av-weekly":
@@ -583,7 +586,7 @@ def DataReader(
             retry_count=retry_count,
             pause=pause,
             session=session,
-            api_key=access_key,
+            api_key=api_key,
         ).read()
 
     elif data_source == "av-weekly-adjusted":
@@ -595,7 +598,7 @@ def DataReader(
             retry_count=retry_count,
             pause=pause,
             session=session,
-            api_key=access_key,
+            api_key=api_key,
         ).read()
 
     elif data_source == "av-monthly":
@@ -607,7 +610,7 @@ def DataReader(
             retry_count=retry_count,
             pause=pause,
             session=session,
-            api_key=access_key,
+            api_key=api_key,
         ).read()
 
     elif data_source == "av-monthly-adjusted":
@@ -619,7 +622,7 @@ def DataReader(
             retry_count=retry_count,
             pause=pause,
             session=session,
-            api_key=access_key,
+            api_key=api_key,
         ).read()
 
     elif data_source == "av-intraday":
@@ -631,7 +634,7 @@ def DataReader(
             retry_count=retry_count,
             pause=pause,
             session=session,
-            api_key=access_key,
+            api_key=api_key,
         ).read()
 
     elif data_source == "econdb":
