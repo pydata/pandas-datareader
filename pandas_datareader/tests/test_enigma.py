@@ -28,7 +28,7 @@ class TestEnigma(object):
 
     def test_enigma_datareader(self):
         try:
-            df = web.DataReader(self.dataset_id, "enigma", access_key=TEST_API_KEY)
+            df = web.DataReader(self.dataset_id, "enigma", api_key=TEST_API_KEY)
             assert "case_number" in df.columns
         except HTTPError as e:
             pytest.skip(e)
@@ -42,10 +42,10 @@ class TestEnigma(object):
 
     def test_bad_key(self):
         with pytest.raises(HTTPError):
-            web.DataReader(self.dataset_id, "enigma", access_key=TEST_API_KEY + "xxx")
+            web.DataReader(self.dataset_id, "enigma", api_key=TEST_API_KEY + "xxx")
 
     def test_bad_dataset_id(self):
         with pytest.raises(HTTPError):
             web.DataReader(
-                "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzz", "enigma", access_key=TEST_API_KEY
+                "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzz", "enigma", api_key=TEST_API_KEY
             )

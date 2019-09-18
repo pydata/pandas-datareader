@@ -32,7 +32,7 @@ class TestQuandl(object):
 
     def test_db_wiki_us(self):
         df = web.DataReader(
-            "F", "quandl", self.start10, self.end10, access_key=TEST_API_KEY
+            "F", "quandl", self.start10, self.end10, api_key=TEST_API_KEY
         )
         self.check_headers(
             df,
@@ -56,7 +56,7 @@ class TestQuandl(object):
     def test_db_fse_frankfurt(self):
         # ALV_X: Allianz SE
         df = web.DataReader(
-            "FSE/ALV_X", "quandl", self.start10, self.end10, access_key=TEST_API_KEY
+            "FSE/ALV_X", "quandl", self.start10, self.end10, api_key=TEST_API_KEY
         )
         self.check_headers(
             df,
@@ -78,7 +78,7 @@ class TestQuandl(object):
     def test_fse_eon(self):
         # EON_X: E.on Se
         df = web.DataReader(
-            "FSE/EON_X", "quandl", self.start2, self.end2, access_key=TEST_API_KEY
+            "FSE/EON_X", "quandl", self.start2, self.end2, api_key=TEST_API_KEY
         )
         self.check_headers(
             df,
@@ -102,7 +102,7 @@ class TestQuandl(object):
         # as of 2017-06-11, some datasets end a few months after their start,
         # e.g. ALVD, BASD
         df = web.DataReader(
-            "EURONEXT/FP", "quandl", self.start2, self.end2, access_key=TEST_API_KEY
+            "EURONEXT/FP", "quandl", self.start2, self.end2, api_key=TEST_API_KEY
         )
         self.check_headers(df, ["Open", "High", "Low", "Last", "Turnover", "Volume"])
         assert df.Last.at[self.day2] == 42.525
@@ -112,7 +112,7 @@ class TestQuandl(object):
     def test_hk_hsbc_uk(self):
         # 00005: HSBC
         df = web.DataReader(
-            "HKEX/00005", "quandl", self.start2, self.end2, access_key=TEST_API_KEY
+            "HKEX/00005", "quandl", self.start2, self.end2, api_key=TEST_API_KEY
         )
         self.check_headers(
             df,
@@ -137,7 +137,7 @@ class TestQuandl(object):
     def test_db_nse_in(self):
         # TCS: Tata Consutancy Services
         df = web.DataReader(
-            "NSE/TCS", "quandl", self.start10, self.end10, access_key=TEST_API_KEY
+            "NSE/TCS", "quandl", self.start10, self.end10, api_key=TEST_API_KEY
         )
         self.check_headers(
             df,
@@ -156,7 +156,7 @@ class TestQuandl(object):
     def test_db_tse_jp(self):
         # TSE/6758: Sony Corp.
         df = web.DataReader(
-            "TSE/6758", "quandl", self.start10, self.end10, access_key=TEST_API_KEY
+            "TSE/6758", "quandl", self.start10, self.end10, api_key=TEST_API_KEY
         )
         self.check_headers(df, ["Open", "High", "Low", "Close", "Volume"])
         assert df.Close.at[self.day10] == 5190.0
@@ -169,7 +169,7 @@ class TestQuandl(object):
     def test_db_hkex_cn(self):
         # HKEX/00941: China Mobile
         df = web.DataReader(
-            "HKEX/00941", "quandl", self.start2, self.end2, access_key=TEST_API_KEY
+            "HKEX/00941", "quandl", self.start2, self.end2, api_key=TEST_API_KEY
         )
         self.check_headers(
             df,
