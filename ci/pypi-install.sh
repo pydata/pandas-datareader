@@ -15,5 +15,5 @@ else
 fi
 
 if [[ "$DOCBUILD" ]]; then
-  pip install sphinx ipython matplotlib sphinx_rtd_theme doctr
+  pip install sphinx ipython matplotlib sphinx_rtd_theme doctr requests_cache
 fi
