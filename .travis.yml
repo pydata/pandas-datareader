@@ -59,9 +59,8 @@ script:
       cd docs
       make html
       cd ..
-      doctr deploy devel --build-tags
       if [[ -z "$TRAVIS_TAG" ]]; then
-        echo "Not a tagged build."
+        doctr deploy devel --build-tags
       else
         doctr deploy . --build-tags
       fi
