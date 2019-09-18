@@ -1,0 +1,425 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>World Bank &mdash; pandas-datareader 0.8.0rc0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Thrift Savings Plan (TSP)" href="tsp.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pandas-datareader
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.8.0rc0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../whatsnew.html">What’s New</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../remote_data.html">Remote Data Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cache.html">Caching queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../see-also.html">Other Data Sources</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Data Readers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="alphavantage.html">AlphaVantage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fred.html">Federal Reserve Economic Data (FRED)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="famafrench.html">Fama-French Data (Ken French’s Data Library)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bank-of-canada.html">Bank of Canada</a></li>
+<li class="toctree-l2"><a class="reference internal" href="econdb.html">Econdb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enigma.html">Enigma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eurostat.html">Eurostat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iex.html">The Investors Exchange (IEX)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moex.html">Moscow Exchange (MOEX)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nasdaq-trader.html">NASDAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oecd.html">Organisation for Economic Co-operation and Development (OECD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quandl.html">Quandl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stooq.html">Stooq.com</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tiingo.html">Tiingo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tsp.html">Thrift Savings Plan (TSP)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">World Bank</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pandas-datareader</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Data Readers</a> &raquo;</li>
+        
+      <li>World Bank</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/readers/world-bank.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pandas_datareader.wb">
+<span id="world-bank"></span><h1>World Bank<a class="headerlink" href="#module-pandas_datareader.wb" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pandas_datareader.wb.WorldBankReader">
+<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.wb.</code><code class="sig-name descname">WorldBankReader</code><span class="sig-paren">(</span><em class="sig-param">symbols=None</em>, <em class="sig-param">countries=None</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em>, <em class="sig-param">freq=None</em>, <em class="sig-param">retry_count=3</em>, <em class="sig-param">pause=0.1</em>, <em class="sig-param">session=None</em>, <em class="sig-param">errors='warn'</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download data series from the World Bank’s World Development Indicators</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>symbols</strong> (<em>WorldBank indicator string</em><em> or </em><em>list of strings</em>) – taken from the <code class="docutils literal notranslate"><span class="pre">id</span></code> field in <code class="docutils literal notranslate"><span class="pre">WDIsearch()</span></code></p></li>
+<li><p><strong>countries</strong> (<em>string</em><em> or </em><em>list of strings.</em>) – <code class="docutils literal notranslate"><span class="pre">all</span></code> downloads data for all countries
+2 or 3 character ISO country codes select individual
+countries (e.g.``US``,``CA``) or (e.g.``USA``,``CAN``).  The codes
+can be mixed.
+The two ISO lists of countries, provided by wikipedia, are hardcoded
+into pandas as of 11/10/2014.</p></li>
+<li><p><strong>start</strong> (<em>Timestamp</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – First year of the data series. Month and day are ignored.</p></li>
+<li><p><strong>end</strong> (<em>Timestamp</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Last year of the data series (inclusive). Month and day are ignored.</p></li>
+<li><p><strong>errors</strong> (<em>str {'ignore'</em><em>, </em><em>'warn'</em><em>, </em><em>'raise'}</em><em>, </em><em>default 'warn'</em>) – Country codes are validated against a hardcoded list.  This controls
+the outcome of that validation, and attempts to also apply
+to the results from world bank.
+errors=’raise’, will raise a ValueError on a bad country code.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="pandas_datareader.wb.WorldBankReader.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close network session</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pandas_datareader.wb.WorldBankReader.get_countries">
+<code class="sig-name descname">get_countries</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.get_countries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query information about countries</p>
+<p class="rubric">Notes</p>
+<p>Provides information such as:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>country code</p></li>
+<li><p>region</p></li>
+<li><p>income level</p></li>
+<li><p>capital city</p></li>
+<li><p>latitude</p></li>
+<li><p>and longitude</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="pandas_datareader.wb.WorldBankReader.get_indicators">
+<code class="sig-name descname">get_indicators</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.get_indicators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download information about all World Bank data series</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pandas_datareader.wb.WorldBankReader.params">
+<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameters to use in API calls</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pandas_datareader.wb.WorldBankReader.read">
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pandas_datareader.wb.WorldBankReader.search">
+<code class="sig-name descname">search</code><span class="sig-paren">(</span><em class="sig-param">string='gdp.*capi'</em>, <em class="sig-param">field='name'</em>, <em class="sig-param">case=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search available data series from the world bank</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string</strong> (<em>string</em>) – regular expression</p></li>
+<li><p><strong>field</strong> (<em>string</em>) – id, name, source, sourceNote, sourceOrganization, topics
+See notes below</p></li>
+<li><p><strong>case</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – case sensitive search?</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The first time this function is run it will download and cache the full
+list of available series. Depending on the speed of your network
+connection, this can take time. Subsequent searches will use the cached
+copy, so they should be much faster.</p>
+<p>id : Data series indicator (for use with the <code class="docutils literal notranslate"><span class="pre">indicator</span></code> argument of
+<code class="docutils literal notranslate"><span class="pre">WDI()</span></code>) e.g. NY.GNS.ICTR.GN.ZS”
+name: Short description of the data series
+source: Data collection project
+sourceOrganization: Data collection organization
+note:
+sourceNote:
+topics:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pandas_datareader.wb.WorldBankReader.url">
+<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>API URL</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pandas_datareader.wb.download">
+<code class="sig-prename descclassname">pandas_datareader.wb.</code><code class="sig-name descname">download</code><span class="sig-paren">(</span><em class="sig-param">country=None</em>, <em class="sig-param">indicator=None</em>, <em class="sig-param">start=2003</em>, <em class="sig-param">end=2005</em>, <em class="sig-param">freq=None</em>, <em class="sig-param">errors='warn'</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download data series from the World Bank’s World Development Indicators</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>indicator</strong> (<em>string</em><em> or </em><em>list of strings</em>) – taken from the <code class="docutils literal notranslate"><span class="pre">id</span></code> field in <code class="docutils literal notranslate"><span class="pre">WDIsearch()</span></code></p></li>
+<li><p><strong>country</strong> (<em>string</em><em> or </em><em>list of strings.</em>) – <p><code class="docutils literal notranslate"><span class="pre">all</span></code> downloads data for all countries
+2 or 3 character ISO country codes select individual
+countries (e.g.``US``,``CA``) or (e.g.``USA``,``CAN``).  The codes
+can be mixed.</p>
+<p>The two ISO lists of countries, provided by wikipedia, are hardcoded
+into pandas as of 11/10/2014.</p>
+</p></li>
+<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – First year of the data series</p></li>
+<li><p><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Last year of the data series (inclusive)</p></li>
+<li><p><strong>freq</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – frequency or periodicity of the data to be retrieved (e.g. ‘M’ for
+monthly, ‘Q’ for quarterly, and ‘A’ for annual). None defaults to
+annual.</p></li>
+<li><p><strong>errors</strong> (<em>str {'ignore'</em><em>, </em><em>'warn'</em><em>, </em><em>'raise'}</em><em>, </em><em>default 'warn'</em>) – Country codes are validated against a hardcoded list.  This controls
+the outcome of that validation, and attempts to also apply
+to the results from world bank.
+errors=’raise’, will raise a ValueError on a bad country code.</p></li>
+<li><p><strong>kwargs</strong> – keywords passed to WorldBankReader</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>data</strong> – DataFrame with columns country, iso_code, year, indicator value</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pandas_datareader.wb.get_countries">
+<code class="sig-prename descclassname">pandas_datareader.wb.</code><code class="sig-name descname">get_countries</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.get_countries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query information about countries</p>
+<dl class="simple">
+<dt>Provides information such as:</dt><dd><p>country code, region, income level,
+capital city, latitude, and longitude</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – keywords passed to WorldBankReader</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pandas_datareader.wb.get_indicators">
+<code class="sig-prename descclassname">pandas_datareader.wb.</code><code class="sig-name descname">get_indicators</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.get_indicators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download information about all World Bank data series</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – keywords passed to WorldBankReader</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pandas_datareader.wb.search">
+<code class="sig-prename descclassname">pandas_datareader.wb.</code><code class="sig-name descname">search</code><span class="sig-paren">(</span><em class="sig-param">string='gdp.*capi'</em>, <em class="sig-param">field='name'</em>, <em class="sig-param">case=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search available data series from the world bank</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string</strong> (<em>string</em>) – regular expression</p></li>
+<li><p><strong>field</strong> (<em>string</em>) – id, name, source, sourceNote, sourceOrganization, topics. See notes</p></li>
+<li><p><strong>case</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – case sensitive search?</p></li>
+<li><p><strong>kwargs</strong> – keywords passed to WorldBankReader</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The first time this function is run it will download and cache the full
+list of available series. Depending on the speed of your network
+connection, this can take time. Subsequent searches will use the cached
+copy, so they should be much faster.</p>
+<p>id : Data series indicator (for use with the <code class="docutils literal notranslate"><span class="pre">indicator</span></code> argument of
+<code class="docutils literal notranslate"><span class="pre">WDI()</span></code>) e.g. NY.GNS.ICTR.GN.ZS”</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>name: Short description of the data series</p></li>
+<li><p>source: Data collection project</p></li>
+<li><p>sourceOrganization: Data collection organization</p></li>
+<li><p>note:</p></li>
+<li><p>sourceNote:</p></li>
+<li><p>topics:</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="tsp.html" class="btn btn-neutral float-left" title="Thrift Savings Plan (TSP)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, The PyData Development Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
