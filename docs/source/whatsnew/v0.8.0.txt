@@ -62,6 +62,7 @@ Bug Fixes
 - Fix eurostat URL. (:issue:`669`)
 - Adjust Alphavantage time series reader to account for descending ordering. (:issue:`666`)
 - Fix bug in downloading index historical constituents. (:issue:`591`)
+- Fix a bug that occurs when an endpoint returns has no data for a date range. (:issue:`640`)
 
 Contributors
 ~~~~~~~~~~~~
