@@ -1,7 +1,5 @@
-lxml
-pandas>=0.21
-requests>=2.3.0
-wrapt
-ipython
-requests_cache
 sphinx
+ipython
+matplotlib
+sphinx_rtd_theme
+requests_cache
