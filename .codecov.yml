@@ -1,0 +1,2 @@
+ignore:
+  - "pandas_datareader/tests/**/*"
