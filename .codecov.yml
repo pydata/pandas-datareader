@@ -1,2 +1,2 @@
 ignore:
-  - "pandas_datareader/tests/**/*"
+  - "pandas_datareader/tests/.*"
