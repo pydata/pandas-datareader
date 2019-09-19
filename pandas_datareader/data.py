@@ -38,6 +38,8 @@ from pandas_datareader.yahoo.components import _get_data as get_components_yahoo
 from pandas_datareader.yahoo.daily import YahooDailyReader
 from pandas_datareader.yahoo.options import Options as YahooOptions
 from pandas_datareader.yahoo.quotes import YahooQuotesReader
+from pandas_datareader.binance import BinanceReader
+
 
 __all__ = [
     "get_components_yahoo",
@@ -62,9 +64,12 @@ __all__ = [
     "get_data_stooq",
     "get_data_robinhood",
     "get_quotes_robinhood",
+    "get_data_binance",
     "DataReader",
 ]
 
+def get_data_binance(*args, **kwargs):
+    return BinanceReader(*args, **kwargs).read()
 
 def get_data_alphavantage(*args, **kwargs):
     return AVTimeSeriesReader(*args, **kwargs).read()
