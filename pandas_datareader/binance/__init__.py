@@ -1,8 +1,9 @@
 import pandas as pd
-from pandas_datareader.base import _BaseReader, _DailyBaseReader
+from pandas_datareader.base import _BaseReader
 import requests
 
 BINANCE_BASE_URL = "https://api.binance.com"
+
 
 class BinanceReader(_BaseReader):
     """Get data for the given name from Binance."""
@@ -26,7 +27,6 @@ class BinanceReader(_BaseReader):
         "ONEMONTH" : "1M"
     }
 
-
     def __init__(
         self,
         symbols=None,
@@ -35,8 +35,8 @@ class BinanceReader(_BaseReader):
         retry_count=3,
         pause=0.1,
         session=None,
-        interval = "ONEDAY",
-        limit = 500
+        interval="ONEDAY",
+        limit=500
     ):
         super(BinanceReader, self).__init__(
             symbols=symbols,
@@ -45,7 +45,7 @@ class BinanceReader(_BaseReader):
             retry_count=retry_count,
             pause=pause,
             session=session,
-        )   
+        )
         self._interval = interval
         self._limit = limit
 
@@ -55,18 +55,7 @@ class BinanceReader(_BaseReader):
         return BINANCE_BASE_URL + "/api/v1/klines"
 
     def clean_data(self, data):
-        dataFrame = pd.DataFrame(data.json(), columns=['Open time',
-                                         'Open',
-                                         'High',
-                                         'Low',
-                                         'Close',
-                                         'Volume',
-                                         'Close time',
-                                         'Quote asset volume',
-                                         'Number of trades',
-                                         'Taker buy base asset volume',
-                                         'Taker buy quote asset volume',
-                                         'ignore'])
+        dataFrame = pd.DataFrame(data.json(), columns=['Open time', 'Open', 'High', 'Low', 'Close', 'Volume', 'Close time', 'Quote asset volume', 'Number of trades', 'Taker buy base asset volume', 'Taker buy quote asset volume', 'ignore'])
         dataFrame.drop(columns="ignore")
         return dataFrame
 
@@ -83,14 +72,14 @@ class BinanceReader(_BaseReader):
             "interval" : self._intervals[self._interval],
             "limit" : self._limit
         }
-        if not self.start is None:
+        if self.start is not None:
             p["startTime"] = self.convert_time_to_miliseconds(self.start)
-        if not self.end is None:
+        if self.end is not None:
             p["endTime"] = self.convert_time_to_miliseconds(self.end)
-        
+
         return p
 
     def read(self):
-        data = requests.get(url = self.url, params=self.params)
+        data = requests.get(url=self.url, params=self.params)
         data = self.clean_data(data)
         return data
