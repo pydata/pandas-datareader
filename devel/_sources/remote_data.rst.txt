@@ -17,11 +17,13 @@
 Remote Data Access
 ******************
 
+.. warning::
+
+    The ``access_key`` keyword argument of ``DataReader`` has been deprecated in favor of ``api_key``.
 
 .. warning::
 
-    Robinhood has been immediately deprecated. Endpoints from this provider
-    have been retired.
+    Robinhood has been immediately deprecated. Endpoints from this provider have been retired.
 
 .. _remote_data.data_reader:
 
@@ -84,7 +86,7 @@ The Investors Exchange (IEX) provides a wide range of data through an
 prices are available for up to 15 years. The usage of these readers requires the publishable API key from IEX Cloud Console, which can be stored in the ``IEX_API_KEY`` environment variable.
 
 .. code-block:: ipython
-    
+
     In [1]: import pandas_datareader.data as web
 
     In [2]: from datetime import datetime

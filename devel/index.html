@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pandas-datareader &mdash; pandas-datareader 0.8.0rc0+2.gad27478 documentation</title>
+  <title>pandas-datareader &mdash; pandas-datareader 0.8.0rc0+4.gb74b1e8 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.8.0rc0 (+2, ad27478)
+                0.8.0rc0 (+4, b74b1e8)
               </div>
             
           
@@ -164,7 +164,11 @@
 <a class="reference external image-reference" href="https://github.com/psf/black"><img alt="https://img.shields.io/badge/code%20style-black-000000.svg" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>As of v0.7.0 Google finance and Morningstar have been been immediately deprecated due to
+<p>v0.8.0 is the last version which officially supports Python 2.7. Future versions of <code class="docutils literal notranslate"><span class="pre">pandas_datareader</span></code> will end support for Python 2.x.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>As of v0.8.0 Robinhood has been immediately deprecated due to
 large changes in their API and no stable replacement.</p>
 </div>
 <div class="section" id="usage">
@@ -200,16 +204,26 @@ is available for the latest changes in master.</p>
 <li><p>pandas&gt;=0.19.2</p></li>
 <li><p>lxml</p></li>
 <li><p>requests&gt;=2.3.0</p></li>
-<li><p>wrapt</p></li>
 </ul>
 <p>Building the documentation additionally requires:</p>
 <ul class="simple">
 <li><p>matplotlib</p></li>
 <li><p>ipython</p></li>
+<li><p>requests_cache</p></li>
 <li><p>sphinx</p></li>
 <li><p>sphinx_rtd_theme</p></li>
 </ul>
-<p>Testing requires pytest.</p>
+<p>Development and testing additionally requires:</p>
+<ul class="simple">
+<li><p>black</p></li>
+<li><p>coverage</p></li>
+<li><p>codecov</p></li>
+<li><p>coveralls</p></li>
+<li><p>flake8</p></li>
+<li><p>pytest</p></li>
+<li><p>pytest-cov</p></li>
+<li><p>wrapt</p></li>
+</ul>
 </div>
 <div class="section" id="install-latest-release-version-via-pip">
 <h3>Install latest release version via pip<a class="headerlink" href="#install-latest-release-version-via-pip" title="Permalink to this headline">¶</a></h3>
