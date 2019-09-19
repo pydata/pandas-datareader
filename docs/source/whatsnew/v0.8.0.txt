@@ -10,7 +10,7 @@ Highlights include:
   (:issue:`615`)
 - Migrated IEX readers to `IEX Cloud <https://iexcloud.io>`__. All
   readers now require an API token (``IEX_API_KEY``) (:issue:`638`)
-- Removal of Google finance and Morningstar, which were deprecated in 0.7.0.
+- Removal of Google Finance and Morningstar, which were deprecated in 0.7.0
 - Immediate deprecation of Robinhood for quotes and historical data. Robinhood
   ended support for these endpoints in 1/2019
 

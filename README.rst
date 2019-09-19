@@ -24,8 +24,12 @@ Up to date remote data access for pandas, works for multiple versions of pandas.
 
 .. warning::
 
-   As of v0.7.0 Google finance and Morningstar have been been immediately deprecated due to
-   large changes in their API and no stable replacement.
+  v0.8.0 is the last version which officially supports Python 2.7. Future versions of ``pandas_datareader`` will end support for Python 2.x.
+
+.. warning::
+
+  As of v0.8.0 Robinhood has been immediately deprecated due to
+  large changes in their API and no stable replacement.
 
 
 Usage
@@ -69,16 +73,25 @@ Using pandas datareader requires the following packages:
 * pandas>=0.19.2
 * lxml
 * requests>=2.3.0
-* wrapt
 
 Building the documentation additionally requires:
 
 * matplotlib
 * ipython
+* requests_cache
 * sphinx
 * sphinx_rtd_theme
 
-Testing requires pytest.
+Development and testing additionally requires:
+
+* black
+* coverage
+* codecov
+* coveralls
+* flake8
+* pytest
+* pytest-cov
+* wrapt
 
 Install latest release version via pip
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
