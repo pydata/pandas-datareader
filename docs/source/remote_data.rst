@@ -593,7 +593,7 @@ example is to download 'Trade Union Density' data which set code is 'TUD'.
     import pandas_datareader.data as web
     import datetime
 
-    df = web.DataReader('TUD', 'oecd', end=datetime.datetime(2012, 1, 1))
+    df = web.DataReader('TUD', 'oecd')
 
     df.columns
 
