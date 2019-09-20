@@ -25,7 +25,7 @@ class YahooDailyReader(_DailyBaseReader):
     start : string, int, date, datetime, timestamp
         Starting date. Parses many different kind of date
         representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980'). Defaults to
-        15 years before current date.
+        5 years before current date.
     end : string, int, date, datetime, timestamp
         Ending date
     retry_count : int, default 3
