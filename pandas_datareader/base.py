@@ -1,3 +1,4 @@
+import datetime
 import time
 import warnings
 
@@ -27,7 +28,7 @@ class _BaseReader(object):
     ----------
     symbols : {str, List[str]}
         String symbol of like of symbols
-    start : string, (defaults to '1/1/2010')
+    start : string, (defaults to 5 years before current date)
         Starting date, timestamp. Parses many different kind of date
         representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
     end : string, (defaults to today)
@@ -59,7 +60,7 @@ class _BaseReader(object):
 
         self.symbols = symbols
 
-        start, end = _sanitize_dates(start, end)
+        start, end = _sanitize_dates(start or self.default_start_date, end)
         self.start = start
         self.end = end
 
@@ -75,6 +76,12 @@ class _BaseReader(object):
     def close(self):
         """Close network session"""
         self.session.close()
+
+    @property
+    def default_start_date(self):
+        """Default start date for reader. Defaults to 5 years before current date"""
+        today = datetime.date.today()
+        return today - datetime.timedelta(days=365 * 5)
 
     @property
     def url(self):
