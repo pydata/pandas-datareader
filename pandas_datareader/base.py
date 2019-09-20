@@ -28,11 +28,11 @@ class _BaseReader(object):
     ----------
     symbols : {str, List[str]}
         String symbol of like of symbols
-    start : string, (defaults to 5 years before current date)
-        Starting date, timestamp. Parses many different kind of date
+    start : string, int, date, datetime, timestamp
+        Starting date. Parses many different kind of date
         representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
-    end : string, (defaults to today)
-        Ending date, timestamp. Same format as starting date.
+    end : string, int, date, datetime, timestamp
+        Ending date
     retry_count : int, default 3
         Number of times to retry query request.
     pause : float, default 0.1
