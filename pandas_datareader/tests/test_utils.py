@@ -7,8 +7,13 @@ from pandas_datareader._utils import _sanitize_dates
 
 class TestUtils(object):
     @pytest.mark.parametrize(
-        "input_date", ["2019-01-01", dt.datetime(2019, 1, 1), dt.date(2019, 1, 1),
-                       pd.Timestamp(2019, 1, 1)]
+        "input_date",
+        [
+            "2019-01-01",
+            dt.datetime(2019, 1, 1),
+            dt.date(2019, 1, 1),
+            pd.Timestamp(2019, 1, 1),
+        ],
     )
     def test_sanitize_dates(self, input_date):
         expected_start = pd.to_datetime(input_date)
