@@ -10,6 +10,7 @@ class TestUtils(object):
         "input_date",
         [
             "2019-01-01",
+            "JAN-01-2010",
             dt.datetime(2019, 1, 1),
             dt.date(2019, 1, 1),
             pd.Timestamp(2019, 1, 1),

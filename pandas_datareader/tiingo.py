@@ -34,11 +34,12 @@ class TiingoIEXHistoricalReader(_BaseReader):
         ----------
         symbols : {str, List[str]}
             String symbol of like of symbols
-        start : str, (defaults to '1/1/2010')
-            Starting date, timestamp. Parses many different kind of date
-            representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
-        end : str, (defaults to today)
-            Ending date, timestamp. Same format as starting date.
+        start : string, int, date, datetime, timestamp
+            Starting date. Parses many different kind of date
+            representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980'). Defaults to
+            20 years before current date.
+        end : string, int, date, datetime, timestamp
+            Ending date
         retry_count : int, default 3
             Number of times to retry query request.
         pause : float, default 0.1
