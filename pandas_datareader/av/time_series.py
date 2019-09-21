@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime as dt
 
 from pandas_datareader.av import AlphaVantage
 
@@ -13,11 +13,12 @@ class AVTimeSeriesReader(AlphaVantage):
     ----------
     symbols : string
         Single stock symbol (ticker)
-    start : string, (defaults to '1/1/2010')
-        Starting date, timestamp. Parses many different kind of date
-        representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
-    end : string, (defaults to today)
-        Ending date, timestamp. Same format as starting date.
+    start : string, int, date, datetime, timestamp
+        Starting date. Parses many different kind of date
+        representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980'). Defaults to
+        20 years before current date.
+    end : string, int, date, datetime, timestamp
+        Ending date
     retry_count : int, default 3
         Number of times to retry query request.
     pause : int, default 0.1
@@ -52,6 +53,7 @@ class AVTimeSeriesReader(AlphaVantage):
         chunksize=25,
         api_key=None,
     ):
+        self._func = function
         super(AVTimeSeriesReader, self).__init__(
             symbols=symbols,
             start=start,
@@ -62,19 +64,26 @@ class AVTimeSeriesReader(AlphaVantage):
             api_key=api_key,
         )
 
-        self._func = function
+    @property
+    def default_start_date(self):
+        d_days = 3 if self.intraday else 365 * 20
+        return dt.datetime.today() - dt.timedelta(days=d_days)
 
     @property
     def function(self):
         return self._func
 
     @property
+    def intraday(self):
+        return True if self.function == "TIME_SERIES_INTRADAY" else False
+
+    @property
     def output_size(self):
         """ Used to limit the size of the Alpha Vantage query when
         possible.
         """
-        delta = datetime.now() - self.start
-        return "full" if delta.days > 80 else "compact"
+        delta = dt.datetime.now() - self.start
+        return "compact" if delta.days < 80 and not self.intraday else "full"
 
     @property
     def data_key(self):
@@ -88,7 +97,7 @@ class AVTimeSeriesReader(AlphaVantage):
             "apikey": self.api_key,
             "outputsize": self.output_size,
         }
-        if self.function == "TIME_SERIES_INTRADAY":
+        if self.intraday:
             p.update({"interval": "1min"})
         return p
 

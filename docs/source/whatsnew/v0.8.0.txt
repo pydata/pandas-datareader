@@ -31,6 +31,7 @@ Enhancements
 - Added testing on Python 3.7 (:issue:`667`)
 - Allow IEX to read less than 1 year of data (:issue:`649`)
 - Allow data download from Poland using stooq (:issue:`597`)
+- All time series readers now use a rolling default starting date (most are 5 years before the current date. Intraday readers are 3-5 days from the current date)
 
 .. _whatsnew_080.api_breaking:
 

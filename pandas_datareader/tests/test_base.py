@@ -1,3 +1,4 @@
+import datetime as dt
 import pytest
 import requests
 
@@ -25,6 +26,10 @@ class TestBaseReader(object):
             b = base._BaseReader([])
             b._format = "IM_NOT_AN_IMPLEMENTED_TYPE"
             b._read_one_data("a", None)
+
+    def test_default_start_date(self):
+        b = base._BaseReader([])
+        assert b.default_start_date == dt.date.today() - dt.timedelta(days=365 * 5)
 
 
 class TestDailyBaseReader(object):
