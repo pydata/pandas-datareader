@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>What’s New &mdash; pandas-datareader 0.8.0rc0+12.gbdd4104 documentation</title>
+  <title>What’s New &mdash; pandas-datareader 0.8.0rc0+20.g7af4731 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.8.0rc0 (+12, bdd4104)
+                0.8.0rc0 (+20, 7af4731)
               </div>
             
           
@@ -240,6 +240,7 @@ ended support for these endpoints in 1/2019</p></li>
 <li><p>Added testing on Python 3.7 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/667">GH667</a>)</p></li>
 <li><p>Allow IEX to read less than 1 year of data (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/649">GH649</a>)</p></li>
 <li><p>Allow data download from Poland using stooq (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/597">GH597</a>)</p></li>
+<li><p>All time series readers now use a rolling default starting date (most are 5 years before the current date. Intraday readers are 3-5 days from the current date)</p></li>
 </ul>
 </div>
 <div class="section" id="backwards-incompatible-api-changes">

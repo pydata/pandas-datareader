@@ -140,7 +140,9 @@ Historical Time Series Data
 Through the
 `Alpha Vantage <https://www.alphavantage.co/documentation>`__ Time Series
 endpoints, it is possible to obtain historical equities data for individual
-symbols. The following endpoints are available:
+symbols. For daily, weekly, and monthly frequencies, 20+ years of historical data is available. The past 3-5 days of intraday data is also available.
+
+The following endpoints are available:
 
 * ``av-intraday`` - Intraday Time Series
 * ``av-daily`` - Daily Time Series
@@ -591,7 +593,7 @@ example is to download 'Trade Union Density' data which set code is 'TUD'.
     import pandas_datareader.data as web
     import datetime
 
-    df = web.DataReader('TUD', 'oecd', end=datetime.datetime(2012, 1, 1))
+    df = web.DataReader('TUD', 'oecd')
 
     df.columns
 
