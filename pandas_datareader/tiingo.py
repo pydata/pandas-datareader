@@ -34,11 +34,11 @@ class TiingoIEXHistoricalReader(_BaseReader):
         ----------
         symbols : {str, List[str]}
             String symbol of like of symbols
-        start : string, int, date, datetime, timestamp
+        start : string, int, date, datetime, Timestamp
             Starting date. Parses many different kind of date
             representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980'). Defaults to
             20 years before current date.
-        end : string, int, date, datetime, timestamp
+        end : string, int, date, datetime, Timestamp
             Ending date
         retry_count : int, default 3
             Number of times to retry query request.
@@ -140,10 +140,11 @@ class TiingoDailyReader(_BaseReader):
     ----------
     symbols : {str, List[str]}
         String symbol of like of symbols
-    start : str, (defaults to '1/1/2010')
+    start : string, int, date, datetime, Timestamp
         Starting date, timestamp. Parses many different kind of date
-        representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
-    end : str, (defaults to today)
+        representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980').
+        Default is '1/1/2010'.
+    end : string, int, date, datetime, Timestamp
         Ending date, timestamp. Same format as starting date.
     retry_count : int, default 3
         Number of times to retry query request.
@@ -241,9 +242,9 @@ class TiingoMetaDataReader(TiingoDailyReader):
     ----------
     symbols : {str, List[str]}
         String symbol of like of symbols
-    start : str, (defaults to '1/1/2010')
+    start : string, int, date, datetime, Timestamp
         Not used.
-    end : str, (defaults to today)
+    end : string, int, date, datetime, Timestamp
         Not used.
     retry_count : int, default 3
         Number of times to retry query request.
@@ -299,9 +300,9 @@ class TiingoQuoteReader(TiingoDailyReader):
     ----------
     symbols : {str, List[str]}
         String symbol of like of symbols
-    start : str, (defaults to '1/1/2010')
+    start : string, int, date, datetime, Timestamp
         Not used.
-    end : str, (defaults to today)
+    end : string, int, date, datetime, Timestamp
         Not used.
     retry_count : int, default 3
         Number of times to retry query request.

@@ -22,9 +22,9 @@ def _sanitize_dates(start, end):
 
     Parameters
     ----------
-    start: str, int, date, datetime, timestamp
+    start : str, int, date, datetime, Timestamp
         Desired start date
-    end: str, int, date, datetime, timestamp
+    end : str, int, date, datetime, Timestamp
         Desired end date
     """
     if is_number(start):

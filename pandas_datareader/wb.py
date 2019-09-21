@@ -537,9 +537,9 @@ class WorldBankReader(_BaseReader):
         can be mixed.
         The two ISO lists of countries, provided by wikipedia, are hardcoded
         into pandas as of 11/10/2014.
-    start: Timestamp or int
+    start : string, int, date, datetime, Timestamp
         First year of the data series. Month and day are ignored.
-    end: Timestamp or int
+    end : string, int, date, datetime, Timestamp
         Last year of the data series (inclusive). Month and day are ignored.
     errors: str {'ignore', 'warn', 'raise'}, default 'warn'
         Country codes are validated against a hardcoded list.  This controls

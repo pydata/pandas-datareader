@@ -64,7 +64,10 @@ class IEX(_BaseReader):
         """If IEX returns a non-200 status code, we need to notify the user of
         the error returned.
 
-        :param out: Raw HTTP Output
+        Parameters
+        ----------
+        out: bytes
+            The raw output from an HTTP request
         """
         try:
             content = json.loads(out.text)
@@ -80,8 +83,14 @@ class IEX(_BaseReader):
         """IEX's output does not need anything complex, so we're overriding to
         use Pandas' default interpreter
 
-        :param out: Raw HTTP Output
-        :return: DataFrame
+        Parameters
+        ----------
+        out: bytes
+            The raw output from an HTTP request
+
+        Returns
+        -------
+        DataFrame
         """
 
         # IEX will return a blank line for invalid tickers:
