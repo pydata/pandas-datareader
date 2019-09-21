@@ -59,8 +59,14 @@ class Deep(IEX):
         """
         IEX depth of book data varies and shouldn't always be returned in a DF
 
-        :param out: Raw HTTP Output
-        :return: DataFrame
+        Parameters
+        ----------
+        out: bytes
+            The raw output from an HTTP request
+
+        Returns
+        -------
+        DataFrame
         """
 
         # Runs appropriate output functions per the service being accessed.

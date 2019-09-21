@@ -15,11 +15,11 @@ class MoexReader(_DailyBaseReader):
     symbols : str, an array-like object (list, tuple, Series), or a DataFrame
         A single stock symbol (secid), an array-like object of symbols or
         a DataFrame with an index containing stock symbols.
-    start : string, int, date, datetime, timestamp
+    start : string, int, date, datetime, Timestamp
         Starting date. Parses many different kind of date
         representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980'). Defaults to
         20 years before current date.
-    end : string, int, date, datetime, timestamp
+    end : string, int, date, datetime, Timestamp
         Ending date
     retry_count : int, default 3
         The number of times to retry query request.

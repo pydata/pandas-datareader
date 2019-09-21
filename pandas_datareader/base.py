@@ -28,10 +28,10 @@ class _BaseReader(object):
     ----------
     symbols : {str, List[str]}
         String symbol of like of symbols
-    start : string, int, date, datetime, timestamp
+    start : string, int, date, datetime, Timestamp
         Starting date. Parses many different kind of date
         representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
-    end : string, int, date, datetime, timestamp
+    end : string, int, date, datetime, Timestamp
         Ending date
     retry_count : int, default 3
         Number of times to retry query request.
@@ -186,8 +186,14 @@ class _BaseReader(object):
         """If necessary, a service can implement an interpreter for any non-200
          HTTP responses.
 
-        :param out: raw output from an HTTP request
-        :return: boolean
+        Parameters
+        ----------
+        out: bytes
+            The raw output from an HTTP request
+
+        Returns
+        -------
+        boolean
         """
         return False
 

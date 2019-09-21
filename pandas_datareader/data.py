@@ -155,7 +155,9 @@ def get_markets_iex(*args, **kwargs):
 
     Reference: https://www.iextrading.com/developer/docs/#markets
 
-    :return: DataFrame
+    Returns
+    -------
+    DataFrame
     """
     from pandas_datareader.iex.market import MarketReader
 
@@ -167,10 +169,12 @@ def get_dailysummary_iex(*args, **kwargs):
     Returns a summary of daily market volume statistics. Without parameters,
     this will return the most recent trading session by default.
 
-    :param start:
-        A datetime object - the beginning of the date range.
-    :param end:
-        A datetime object - the end of the date range.
+    Parameters
+    ----------
+    start : string, int, date, datetime, Timestamp
+        The beginning of the date range.
+    end : string, int, date, datetime, Timestamp
+        The end of the date range.
 
     Reference: https://www.iextrading.com/developer/docs/#historical-daily
 
@@ -188,12 +192,14 @@ def get_summary_iex(*args, **kwargs):
     In the absence of parameters, this will return month-to-date statistics.
     For ranges spanning multiple months, this will return one row per month.
 
-    :param start:
+    start : string, int, date, datetime, Timestamp
         A datetime object - the beginning of the date range.
-    :param end:
+    end : string, int, date, datetime, Timestamp
         A datetime object - the end of the date range.
 
-    :return: DataFrame
+    Returns
+    -------
+    DataFrame
     """
     from pandas_datareader.iex.stats import MonthlySummaryReader
 
@@ -223,7 +229,9 @@ def get_recent_iex(*args, **kwargs):
 
     Reference: https://www.iextrading.com/developer/docs/#recent
 
-    :return: DataFrame
+    Returns
+    -------
+    DataFrame
     """
     from pandas_datareader.iex.stats import RecentReader
 
@@ -249,19 +257,25 @@ def get_iex_book(*args, **kwargs):
     Returns an array of dictionaries with depth of book data from IEX for up to
     10 securities at a time. Returns a dictionary of the bid and ask books.
 
-    :param symbols:
+    Parameters
+    ----------
+    symbols : str, List[str]
         A string or list of strings of valid tickers
-    :param service:
-        'book': Live depth of book data
-        'op-halt-status': Checks to see if the exchange has instituted a halt
-        'security-event': Denotes individual security related event
-        'ssr-status': Short Sale Price Test restrictions, per reg 201 of SHO
-        'system-event': Relays current feed status (i.e. market open)
-        'trades': Retrieves recent executions, trade size/price and flags
-        'trade-breaks': Lists execution breaks for the current trading session
-        'trading-status': Returns status and cause codes for securities
+    service : str
+        One of:
 
-    :return: Object
+        - 'book': Live depth of book data
+        - 'op-halt-status': Checks to see if the exchange has instituted a halt
+        - 'security-event': Denotes individual security related event
+        - 'ssr-status': Short Sale Price Test restrictions, per reg 201 of SHO
+        - 'system-event': Relays current feed status (i.e. market open)
+        - 'trades': Retrieves recent executions, trade size/price and flags
+        - 'trade-breaks': Lists execution breaks for the current trading session
+        - 'trading-status': Returns status and cause codes for securities
+
+    Returns
+    -------
+    DataFrame
     """
     return IEXDeep(*args, **kwargs).read()
 
@@ -290,9 +304,9 @@ def DataReader(
         accept a list of names.
     data_source: {str, None}
         the data source ("iex", "fred", "ff")
-    start : {datetime, None}
+    start : string, int, date, datetime, Timestamp
         left boundary for range (defaults to 1/1/2010)
-    end : {datetime, None}
+    end : string, int, date, datetime, Timestamp
         right boundary for range (defaults to today)
     retry_count : {int, 3}
         Number of times to retry query request.
