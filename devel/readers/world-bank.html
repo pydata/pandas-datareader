@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>World Bank &mdash; pandas-datareader 0.8.0rc0+22.g4694147 documentation</title>
+  <title>World Bank &mdash; pandas-datareader 0.8.0rc0+24.gd6bbc55 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.8.0rc0 (+22, 4694147)
+                0.8.0rc0 (+24, d6bbc55)
               </div>
             
           
@@ -189,8 +189,8 @@ countries (e.g.``US``,``CA``) or (e.g.``USA``,``CAN``).  The codes
 can be mixed.
 The two ISO lists of countries, provided by wikipedia, are hardcoded
 into pandas as of 11/10/2014.</p></li>
-<li><p><strong>start</strong> (<em>Timestamp</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – First year of the data series. Month and day are ignored.</p></li>
-<li><p><strong>end</strong> (<em>Timestamp</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Last year of the data series (inclusive). Month and day are ignored.</p></li>
+<li><p><strong>start</strong> (<em>string</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>date</em><em>, </em><em>datetime</em><em>, </em><em>Timestamp</em>) – First year of the data series. Month and day are ignored.</p></li>
+<li><p><strong>end</strong> (<em>string</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>date</em><em>, </em><em>datetime</em><em>, </em><em>Timestamp</em>) – Last year of the data series (inclusive). Month and day are ignored.</p></li>
 <li><p><strong>errors</strong> (<em>str {'ignore'</em><em>, </em><em>'warn'</em><em>, </em><em>'raise'}</em><em>, </em><em>default 'warn'</em>) – Country codes are validated against a hardcoded list.  This controls
 the outcome of that validation, and attempts to also apply
 to the results from world bank.
