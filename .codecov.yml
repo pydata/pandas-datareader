@@ -1,2 +1,11 @@
-ignore:
-  - "pandas_datareader/tests/.*"
+codecov:
+  notify:
+    require_ci_to_pass: no
+coverage:
+  status:
+    project:
+      default:
+        # Require 1% coverage, i.e., always succeed
+        target: 1
+    patch: false
+    changes: false
