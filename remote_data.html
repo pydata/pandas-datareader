@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Remote Data Access &mdash; pandas-datareader 0.8.0rc0 documentation</title>
+  <title>Remote Data Access &mdash; pandas-datareader 0.8.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.8.0rc0
+                0.8.0
               </div>
             
           
@@ -186,8 +186,11 @@
 <span id="remote-data"></span><h1>Remote Data Access<a class="headerlink" href="#remote-data-access" title="Permalink to this headline">¶</a></h1>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Robinhood has been immediately deprecated. Endpoints from this provider
-have been retired.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">access_key</span></code> keyword argument of <code class="docutils literal notranslate"><span class="pre">DataReader</span></code> has been deprecated in favor of <code class="docutils literal notranslate"><span class="pre">api_key</span></code>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Robinhood has been immediately deprecated. Endpoints from this provider have been retired.</p>
 </div>
 <p id="remote-data-data-reader">Functions from <code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas_datareader.data</span></code> and <a class="reference internal" href="readers/world-bank.html#module-pandas_datareader.wb" title="pandas_datareader.wb"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas_datareader.wb</span></code></a>
 extract data from various Internet sources into a pandas DataFrame.
@@ -292,7 +295,8 @@ equities and forex data. Free registration is required to get an API key.</p>
 <p>Through the
 <a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> Time Series
 endpoints, it is possible to obtain historical equities data for individual
-symbols. The following endpoints are available:</p>
+symbols. For daily, weekly, and monthly frequencies, 20+ years of historical data is available. The past 3-5 days of intraday data is also available.</p>
+<p>The following endpoints are available:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">av-intraday</span></code> - Intraday Time Series</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">av-daily</span></code> - Daily Time Series</p></li>
@@ -438,11 +442,11 @@ Econdb database of time series aggregated into datasets.</p>
 <span class="gh">Out[4]: </span><span class="go"></span>
 <span class="go">               values</span>
 <span class="go">TIME_PERIOD          </span>
-<span class="go">2010-01-01   15415145</span>
-<span class="go">2010-04-01   15557277</span>
-<span class="go">2010-07-01   15671967</span>
-<span class="go">2010-10-01   15750625</span>
-<span class="go">2011-01-01   15712754</span>
+<span class="go">2014-10-01   17143038</span>
+<span class="go">2015-01-01   17277580</span>
+<span class="go">2015-04-01   17405668</span>
+<span class="go">2015-07-01   17463222</span>
+<span class="go">2015-10-01   17468902</span>
 </pre></div>
 </div>
 </div>
@@ -552,24 +556,24 @@ In [17]: print(ds['DESCR'])
 
 This file was created by CMPT_IND_RETS using the 201907 CRSP database. It contains value- and equal-weighted returns for 5 industry portfolios. The portfolios are constructed at the end of June. The annual returns are from January to December. Missing data are indicated by -99.99 or -999. Copyright 2019 Kenneth R. French
 
-  0 : Average Value Weighted Returns -- Monthly (115 rows x 5 cols)
-  1 : Average Equal Weighted Returns -- Monthly (115 rows x 5 cols)
-  2 : Average Value Weighted Returns -- Annual (9 rows x 5 cols)
-  3 : Average Equal Weighted Returns -- Annual (9 rows x 5 cols)
-  4 : Number of Firms in Portfolios (115 rows x 5 cols)
-  5 : Average Firm Size (115 rows x 5 cols)
-  6 : Sum of BE / Sum of ME (10 rows x 5 cols)
-  7 : Value-Weighted Average of BE/ME (10 rows x 5 cols)
+  0 : Average Value Weighted Returns -- Monthly (59 rows x 5 cols)
+  1 : Average Equal Weighted Returns -- Monthly (59 rows x 5 cols)
+  2 : Average Value Weighted Returns -- Annual (5 rows x 5 cols)
+  3 : Average Equal Weighted Returns -- Annual (5 rows x 5 cols)
+  4 : Number of Firms in Portfolios (59 rows x 5 cols)
+  5 : Average Firm Size (59 rows x 5 cols)
+  6 : Sum of BE / Sum of ME (6 rows x 5 cols)
+  7 : Value-Weighted Average of BE/ME (6 rows x 5 cols)
 
 In [18]: ds[4].head()
 Out[18]: 
          Cnsmr  Manuf  HiTec  Hlth   Other
 Date                                      
-2010-01    623    736    831    469   1232
-2010-02    621    733    822    466   1221
-2010-03    615    728    819    460   1215
-2010-04    615    725    808    460   1203
-2010-05    612    722    805    459   1195</pre>
+2014-09    566    677    764    531   1111
+2014-10    562    675    758    530   1107
+2014-11    560    673    755    525   1101
+2014-12    556    671    747    524   1094
+2015-01    553    669    741    521   1090</pre>
 </div>
 <div class="section" id="world-bank">
 <span id="remote-data-wb"></span><h2>World Bank<a class="headerlink" href="#world-bank" title="Permalink to this headline">¶</a></h2>
@@ -724,7 +728,7 @@ example is to download ‘Trade Union Density’ data which set code is ‘TUD�
 
 In [20]: import datetime
 
-In [21]: df = web.DataReader('TUD', 'oecd', end=datetime.datetime(2012, 1, 1))
+In [21]: df = web.DataReader('TUD', 'oecd')
 
 In [22]: df.columns
 Out[22]: 
@@ -757,11 +761,10 @@ Country                  Japan                ... United States
 Source     Administrative data                ...   Survey data                     
 Series               Employees Union members  ... Union members Trade union  density
 Year                                          ...                                   
-2010-01-01             38990.0     12308.756  ...       20986.1               23.403
-2011-01-01             40120.0     12369.262  ...       20095.3               22.341
-2012-01-01             41020.0     12525.529  ...           NaN                  NaN
+2015-01-01             44480.0     12271.909  ...       16913.0               16.516
+2016-01-01             45650.0     12227.223  ...       17002.0               16.248
 
-[3 rows x 12 columns]</pre>
+[2 rows x 12 columns]</pre>
 </div>
 <div class="section" id="eurostat">
 <span id="remote-data-eurostat"></span><h2>Eurostat<a class="headerlink" href="#eurostat" title="Permalink to this headline">¶</a></h2>
@@ -782,16 +785,11 @@ Year                                          ...
 <span class="go">GEO                                                                                      Austria  ... United Kingdom</span>
 <span class="go">FREQ                                                                                      Annual  ...         Annual</span>
 <span class="go">TIME_PERIOD                                                                                       ...               </span>
-<span class="go">2010-01-01                                                 3.0                                    ...            NaN</span>
-<span class="go">2011-01-01                                                 2.0                                    ...            NaN</span>
-<span class="go">2012-01-01                                                 1.0                                    ...            NaN</span>
-<span class="go">2013-01-01                                                 4.0                                    ...            NaN</span>
-<span class="go">2014-01-01                                                 1.0                                    ...            NaN</span>
 <span class="go">2015-01-01                                                 7.0                                    ...            NaN</span>
 <span class="go">2016-01-01                                                 7.0                                    ...            NaN</span>
 <span class="go">2017-01-01                                                 7.0                                    ...            NaN</span>
 
-<span class="go">[8 rows x 264 columns]</span>
+<span class="go">[3 rows x 264 columns]</span>
 </pre></div>
 </div>
 </div>
@@ -856,16 +854,16 @@ available. More information on the <a class="reference external" href="http://ww
 <span class="gh">Out[32]: </span><span class="go"></span>
 <span class="go">                Open      High       Low     Close      Volume</span>
 <span class="go">Date                                                          </span>
-<span class="go">2019-09-17  27010.12  27110.80  26984.14  27110.80         NaN</span>
+<span class="go">2019-09-20  27102.18  27194.75  26926.68  26935.07         NaN</span>
+<span class="go">2019-09-19  27186.05  27272.17  27064.21  27094.79  68699381.0</span>
+<span class="go">2019-09-18  27075.39  27161.93  26899.15  27147.08  70454821.0</span>
+<span class="go">2019-09-17  27010.12  27110.80  26984.14  27110.80  67020055.0</span>
 <span class="go">2019-09-16  27146.06  27172.87  27032.56  27076.82  72079672.0</span>
 <span class="go">2019-09-13  27216.67  27277.55  27193.95  27219.52  72147749.0</span>
 <span class="go">2019-09-12  27197.32  27306.73  27105.01  27182.45  80090206.0</span>
 <span class="go">2019-09-11  26928.05  27137.04  26885.48  27137.04  80088953.0</span>
 <span class="go">2019-09-10  26805.83  26909.43  26717.05  26909.43  87146222.0</span>
 <span class="go">2019-09-09  26866.23  26900.83  26762.18  26835.51  78395202.0</span>
-<span class="go">2019-09-06  26790.25  26860.87  26708.39  26797.46  61308111.0</span>
-<span class="go">2019-09-05  26603.15  26836.30  26603.15  26728.15  76681653.0</span>
-<span class="go">2019-09-04  26301.99  26362.35  26244.44  26355.47  60316520.0</span>
 </pre></div>
 </div>
 </div>

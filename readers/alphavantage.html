@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>AlphaVantage &mdash; pandas-datareader 0.8.0rc0 documentation</title>
+  <title>AlphaVantage &mdash; pandas-datareader 0.8.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.8.0rc0
+                0.8.0
               </div>
             
           
@@ -210,6 +210,12 @@ ALPHAVANTAGE_API_KEY is read. The API key is <em>required</em>.</p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="pandas_datareader.av.forex.AVForexReader.default_start_date">
+<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default start date for reader. Defaults to 5 years before current date</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pandas_datareader.av.forex.AVForexReader.function">
 <em class="property">property </em><code class="sig-name descname">function</code><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader.function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alpha Vantage endpoint function</p>
@@ -246,9 +252,10 @@ ALPHAVANTAGE_API_KEY is read. The API key is <em>required</em>.</p></li>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>symbols</strong> (<em>string</em>) – Single stock symbol (ticker)</p></li>
-<li><p><strong>start</strong> (<em>string</em><em>, </em><em>(</em><em>defaults to '1/1/2010'</em><em>)</em>) – Starting date, timestamp. Parses many different kind of date
-representations (e.g., ‘JAN-01-2010’, ‘1/1/10’, ‘Jan, 1, 1980’)</p></li>
-<li><p><strong>end</strong> (<em>string</em><em>, </em><em>(</em><em>defaults to today</em><em>)</em>) – Ending date, timestamp. Same format as starting date.</p></li>
+<li><p><strong>start</strong> (<em>string</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>date</em><em>, </em><em>datetime</em><em>, </em><em>Timestamp</em>) – Starting date. Parses many different kind of date
+representations (e.g., ‘JAN-01-2010’, ‘1/1/10’, ‘Jan, 1, 1980’). Defaults to
+20 years before current date.</p></li>
+<li><p><strong>end</strong> (<em>string</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>date</em><em>, </em><em>datetime</em><em>, </em><em>Timestamp</em>) – Ending date</p></li>
 <li><p><strong>retry_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 3</em>) – Number of times to retry query request.</p></li>
 <li><p><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 0.1</em>) – Time, in seconds, to pause between consecutive queries of chunks. If
 single value given for symbol, represents the pause between retries.</p></li>
@@ -268,6 +275,12 @@ ALPHAVANTAGE_API_KEY is read. The API key is <em>required</em>.</p></li>
 <dt id="pandas_datareader.av.time_series.AVTimeSeriesReader.data_key">
 <em class="property">property </em><code class="sig-name descname">data_key</code><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.data_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Key of data returned from Alpha Vantage</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pandas_datareader.av.time_series.AVTimeSeriesReader.default_start_date">
+<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
 <dl class="method">
@@ -336,6 +349,12 @@ ALPHAVANTAGE_API_KEY is read. The API key is <em>required</em>.</p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="pandas_datareader.av.sector.AVSectorPerformanceReader.default_start_date">
+<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default start date for reader. Defaults to 5 years before current date</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pandas_datareader.av.sector.AVSectorPerformanceReader.function">
 <em class="property">property </em><code class="sig-name descname">function</code><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader.function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alpha Vantage endpoint function</p>
@@ -388,6 +407,12 @@ single value given for symbol, represents the pause between retries.</p></li>
 <dt id="pandas_datareader.av.quotes.AVQuotesReader.data_key">
 <em class="property">property </em><code class="sig-name descname">data_key</code><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader.data_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Key of data returned from Alpha Vantage</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pandas_datareader.av.quotes.AVQuotesReader.default_start_date">
+<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
 <dl class="method">

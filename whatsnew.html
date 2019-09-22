@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>What’s New &mdash; pandas-datareader 0.8.0rc0 documentation</title>
+  <title>What’s New &mdash; pandas-datareader 0.8.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.8.0rc0
+                0.8.0
               </div>
             
           
@@ -218,7 +218,7 @@ aggregated economic data from 90+ official statistical agencies
 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/615">GH615</a>)</p></li>
 <li><p>Migrated IEX readers to <a class="reference external" href="https://iexcloud.io">IEX Cloud</a>. All
 readers now require an API token (<code class="docutils literal notranslate"><span class="pre">IEX_API_KEY</span></code>) (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/638">GH638</a>)</p></li>
-<li><p>Removal of Google finance and Morningstar, which were deprecated in 0.7.0.</p></li>
+<li><p>Removal of Google Finance and Morningstar, which were deprecated in 0.7.0</p></li>
 <li><p>Immediate deprecation of Robinhood for quotes and historical data. Robinhood
 ended support for these endpoints in 1/2019</p></li>
 </ul>
@@ -240,6 +240,7 @@ ended support for these endpoints in 1/2019</p></li>
 <li><p>Added testing on Python 3.7 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/667">GH667</a>)</p></li>
 <li><p>Allow IEX to read less than 1 year of data (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/649">GH649</a>)</p></li>
 <li><p>Allow data download from Poland using stooq (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/597">GH597</a>)</p></li>
+<li><p>All time series readers now use a rolling default starting date (most are 5 years before the current date. Intraday readers are 3-5 days from the current date)</p></li>
 </ul>
 </div>
 <div class="section" id="backwards-incompatible-api-changes">
@@ -269,6 +270,7 @@ is <code class="docutils literal notranslate"><span class="pre">None</span></cod
 <li><p>Fix eurostat URL. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/669">GH669</a>)</p></li>
 <li><p>Adjust Alphavantage time series reader to account for descending ordering. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/666">GH666</a>)</p></li>
 <li><p>Fix bug in downloading index historical constituents. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/591">GH591</a>)</p></li>
+<li><p>Fix a bug that occurs when an endpoint returns has no data for a date range. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/640">GH640</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="contributors">

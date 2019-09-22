@@ -17,11 +17,13 @@
 Remote Data Access
 ******************
 
+.. warning::
+
+    The ``access_key`` keyword argument of ``DataReader`` has been deprecated in favor of ``api_key``.
 
 .. warning::
 
-    Robinhood has been immediately deprecated. Endpoints from this provider
-    have been retired.
+    Robinhood has been immediately deprecated. Endpoints from this provider have been retired.
 
 .. _remote_data.data_reader:
 
@@ -84,7 +86,7 @@ The Investors Exchange (IEX) provides a wide range of data through an
 prices are available for up to 15 years. The usage of these readers requires the publishable API key from IEX Cloud Console, which can be stored in the ``IEX_API_KEY`` environment variable.
 
 .. code-block:: ipython
-    
+
     In [1]: import pandas_datareader.data as web
 
     In [2]: from datetime import datetime
@@ -138,7 +140,9 @@ Historical Time Series Data
 Through the
 `Alpha Vantage <https://www.alphavantage.co/documentation>`__ Time Series
 endpoints, it is possible to obtain historical equities data for individual
-symbols. The following endpoints are available:
+symbols. For daily, weekly, and monthly frequencies, 20+ years of historical data is available. The past 3-5 days of intraday data is also available.
+
+The following endpoints are available:
 
 * ``av-intraday`` - Intraday Time Series
 * ``av-daily`` - Daily Time Series
@@ -589,7 +593,7 @@ example is to download 'Trade Union Density' data which set code is 'TUD'.
     import pandas_datareader.data as web
     import datetime
 
-    df = web.DataReader('TUD', 'oecd', end=datetime.datetime(2012, 1, 1))
+    df = web.DataReader('TUD', 'oecd')
 
     df.columns
 

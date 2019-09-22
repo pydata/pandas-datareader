@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>World Bank &mdash; pandas-datareader 0.8.0rc0 documentation</title>
+  <title>World Bank &mdash; pandas-datareader 0.8.0 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.8.0rc0
+                0.8.0
               </div>
             
           
@@ -189,8 +189,8 @@ countries (e.g.``US``,``CA``) or (e.g.``USA``,``CAN``).  The codes
 can be mixed.
 The two ISO lists of countries, provided by wikipedia, are hardcoded
 into pandas as of 11/10/2014.</p></li>
-<li><p><strong>start</strong> (<em>Timestamp</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – First year of the data series. Month and day are ignored.</p></li>
-<li><p><strong>end</strong> (<em>Timestamp</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Last year of the data series (inclusive). Month and day are ignored.</p></li>
+<li><p><strong>start</strong> (<em>string</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>date</em><em>, </em><em>datetime</em><em>, </em><em>Timestamp</em>) – First year of the data series. Month and day are ignored.</p></li>
+<li><p><strong>end</strong> (<em>string</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>date</em><em>, </em><em>datetime</em><em>, </em><em>Timestamp</em>) – Last year of the data series (inclusive). Month and day are ignored.</p></li>
 <li><p><strong>errors</strong> (<em>str {'ignore'</em><em>, </em><em>'warn'</em><em>, </em><em>'raise'}</em><em>, </em><em>default 'warn'</em>) – Country codes are validated against a hardcoded list.  This controls
 the outcome of that validation, and attempts to also apply
 to the results from world bank.
@@ -202,6 +202,12 @@ errors=’raise’, will raise a ValueError on a bad country code.</p></li>
 <dt id="pandas_datareader.wb.WorldBankReader.close">
 <code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pandas_datareader.wb.WorldBankReader.default_start_date">
+<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
 <dl class="method">
