@@ -856,7 +856,7 @@ def download(
     Returns
     -------
     data : DataFrame
-        DataFrame with columns country, iso_code, year, indicator value
+        DataFrame with columns country, year, indicator value
     """
     return WorldBankReader(
         symbols=indicator,
