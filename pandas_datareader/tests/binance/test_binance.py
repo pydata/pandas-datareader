@@ -1,4 +1,5 @@
 import datetime
+
 import pandas as pd
 import pytest
 
@@ -40,11 +41,23 @@ class TestBinance(object):
             assert col in self.columns_should_be_present, (
                 "Column" + col + "should not be present in the response"
             )
-    
+
     def test_object_values(self):
         start = datetime.datetime(2018, 5, 17)
         end = datetime.datetime(2018, 5, 18)
         binance_reader = pdr.get_data_binance(symbols="BNBBTC", start=start, end=end)
-        expected_values = [1526515200000,'0.00147300','0.00158900','0.00147100','0.00153670','1729643.47000000',1526601599999,'2630.46769190',68061,'968945.36000000','1472.76577070']
+        expected_values = [
+            1526515200000,
+            "0.00147300",
+            "0.00158900",
+            "0.00147100",
+            "0.00153670",
+            "1729643.47000000",
+            1526601599999,
+            "2630.46769190",
+            68061,
+            "968945.36000000",
+            "1472.76577070",
+        ]
         actual_values = binance_reader.values.tolist()[0]
         assert expected_values == actual_values
