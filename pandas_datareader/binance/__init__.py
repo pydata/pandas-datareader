@@ -56,7 +56,7 @@ class BinanceReader(_BaseReader):
 
     def clean_data(self, data):
         dataFrame = pd.DataFrame(data.json(), columns=['Open time', 'Open', 'High', 'Low', 'Close', 'Volume', 'Close time', 'Quote asset volume', 'Number of trades', 'Taker buy base asset volume', 'Taker buy quote asset volume', 'ignore'])
-        dataFrame.drop(columns="ignore")
+        dataFrame = dataFrame.drop(columns="ignore")
         return dataFrame
 
     def get_interval(self):
