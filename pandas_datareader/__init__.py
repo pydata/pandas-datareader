@@ -58,5 +58,5 @@ __all__ = [
     "get_data_tiingo",
     "get_iex_data_tiingo",
     "get_data_alphavantage",
-    "get_data_binance"
+    "get_data_binance",
 ]

@@ -68,8 +68,10 @@ __all__ = [
     "DataReader",
 ]
 
+
 def get_data_binance(*args, **kwargs):
     return BinanceReader(*args, **kwargs).read()
+
 
 def get_data_alphavantage(*args, **kwargs):
     return AVTimeSeriesReader(*args, **kwargs).read()
