@@ -1,6 +1,9 @@
+import time
+
 import pandas as pd
-from pandas_datareader.base import _BaseReader
 import requests
+
+from pandas_datareader.base import _BaseReader
 
 BINANCE_BASE_URL = "https://api.binance.com"
 
@@ -55,7 +58,7 @@ class BinanceReader(_BaseReader):
         """API URL"""
         return BINANCE_BASE_URL + "/api/v1/klines"
 
-    def clean_data(self, data):
+    def _clean_data(self, data):
         dataFrame = pd.DataFrame(
             data.json(),
             columns=[
@@ -79,8 +82,8 @@ class BinanceReader(_BaseReader):
     def get_interval(self):
         return self._interval
 
-    def convert_time_to_miliseconds(self, dt):
-        return int(round(dt.timestamp() * 1000))
+    def _convert_time_to_miliseconds(self, dt):
+        return int(time.mktime(dt.timetuple()) * 1000)
 
     @property
     def params(self):
@@ -90,13 +93,13 @@ class BinanceReader(_BaseReader):
             "limit": self._limit,
         }
         if self.start is not None:
-            p["startTime"] = self.convert_time_to_miliseconds(self.start)
+            p["startTime"] = self._convert_time_to_miliseconds(self.start)
         if self.end is not None:
-            p["endTime"] = self.convert_time_to_miliseconds(self.end)
+            p["endTime"] = self._convert_time_to_miliseconds(self.end)
 
         return p
 
     def read(self):
         data = requests.get(url=self.url, params=self.params)
-        data = self.clean_data(data)
+        data = self._clean_data(data)
         return data
