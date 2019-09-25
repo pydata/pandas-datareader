@@ -1,5 +1,7 @@
 include README.md
 include LICENSE.md
+include requirements.txt
+include requirements-dev.txt
 include pandas_datareader/*.py
 
 include pandas_datareader/tests/*.py
