@@ -641,7 +641,7 @@ Nasdaq Trader Symbol Definitions
 Download the latest symbols from `Nasdaq <ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqtraded.txt>`_.
 
 Note that Nasdaq updates this file daily, and historical versions are not
-available. More information on the `field <http://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs/>`_ definitions.
+available. More information on the `field <http://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs>`_ definitions.
 
 .. code-block:: python
 
