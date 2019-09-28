@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Remote Data Access &mdash; pandas-datareader 0.9.0dev0+5.g97482e6 documentation</title>
+  <title>Remote Data Access &mdash; pandas-datareader 0.9.0dev0+7.g48a538c documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.9.0dev0 (+5, 97482e6)
+                0.9.0dev0 (+7, 48a538c)
               </div>
             
           
@@ -824,7 +824,7 @@ Year                                          ...
 <span id="remote-data-nasdaq-symbols"></span><h2>Nasdaq Trader Symbol Definitions<a class="headerlink" href="#nasdaq-trader-symbol-definitions" title="Permalink to this headline">¶</a></h2>
 <p>Download the latest symbols from <a class="reference external" href="ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqtraded.txt">Nasdaq</a>.</p>
 <p>Note that Nasdaq updates this file daily, and historical versions are not
-available. More information on the <a class="reference external" href="http://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs/">field</a> definitions.</p>
+available. More information on the <a class="reference external" href="http://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs">field</a> definitions.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">pandas_datareader.nasdaq_trader</span> <span class="kn">import</span> <span class="n">get_nasdaq_symbols</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]:</span> <span class="n">symbols</span> <span class="o">=</span> <span class="n">get_nasdaq_symbols</span><span class="p">()</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="k">print</span><span class="p">(</span><span class="n">symbols</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;IBM&#39;</span><span class="p">])</span>
@@ -852,18 +852,18 @@ available. More information on the <a class="reference external" href="http://ww
 
 <span class="gp">In [32]: </span><span class="n">f</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 <span class="gh">Out[32]: </span><span class="go"></span>
-<span class="go">                Open      High       Low     Close     Volume</span>
-<span class="go">Date                                                         </span>
-<span class="go">2019-09-24  27034.07  27079.68  26704.96  26807.77  102301132</span>
-<span class="go">2019-09-23  26851.45  27011.07  26831.34  26949.99   69351291</span>
-<span class="go">2019-09-20  27102.18  27194.75  26926.68  26935.07  269740303</span>
-<span class="go">2019-09-19  27186.05  27272.17  27064.21  27094.79   68699381</span>
-<span class="go">2019-09-18  27075.39  27161.93  26899.15  27147.08   70454821</span>
-<span class="go">2019-09-17  27010.12  27110.80  26984.14  27110.80   67020055</span>
-<span class="go">2019-09-16  27146.06  27172.87  27032.56  27076.82   72079672</span>
-<span class="go">2019-09-13  27216.67  27277.55  27193.95  27219.52   72147749</span>
-<span class="go">2019-09-12  27197.32  27306.73  27105.01  27182.45   80090206</span>
-<span class="go">2019-09-11  26928.05  27137.04  26885.48  27137.04   80088953</span>
+<span class="go">                Open      High       Low     Close       Volume</span>
+<span class="go">Date                                                           </span>
+<span class="go">2019-09-27  26987.26  27012.54  26715.82  26820.25          NaN</span>
+<span class="go">2019-09-26  27004.11  27015.07  26803.84  26891.12   72942157.0</span>
+<span class="go">2019-09-25  26866.71  27016.56  26755.86  26970.71   75153042.0</span>
+<span class="go">2019-09-24  27034.07  27079.68  26704.96  26807.77  102325907.0</span>
+<span class="go">2019-09-23  26851.45  27011.07  26831.34  26949.99   69351291.0</span>
+<span class="go">2019-09-20  27102.18  27194.75  26926.68  26935.07  269740303.0</span>
+<span class="go">2019-09-19  27186.05  27272.17  27064.21  27094.79   68699381.0</span>
+<span class="go">2019-09-18  27075.39  27161.93  26899.15  27147.08   70454821.0</span>
+<span class="go">2019-09-17  27010.12  27110.80  26984.14  27110.80   67020055.0</span>
+<span class="go">2019-09-16  27146.06  27172.87  27032.56  27076.82   72079672.0</span>
 </pre></div>
 </div>
 </div>
