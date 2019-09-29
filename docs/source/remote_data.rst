@@ -688,72 +688,17 @@ Binance Data
 The Binance API provides the recent Kline/Candlestick data for cryptocurrency.
 
 
-
 .. code:: ipython3
 
     import pandas_datareader as pdr
-
-.. code:: ipython3
-
     data_binance = pdr.get_data_binance("BNBBTC", limit = 2, interval="ONEMINUTE")
-
-.. code:: ipython3
-
     data_binance
 
+.. container::
 
-
-
-.. raw:: html
-
-    <div>
-   
-    <table border="1" class="dataframe">
-      <thead>
-        <tr style="text-align: right;">
-          <th></th>
-          <th>Open time</th>
-          <th>Open</th>
-          <th>High</th>
-          <th>Low</th>
-          <th>Close</th>
-          <th>Volume</th>
-          <th>Close time</th>
-          <th>Quote asset volume</th>
-          <th>Number of trades</th>
-          <th>Taker buy base asset volume</th>
-          <th>Taker buy quote asset volume</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>0</td>
-          <td>1500004800000</td>
-          <td>0.00005000</td>
-          <td>0.00005300</td>
-          <td>0.00001000</td>
-          <td>0.00004790</td>
-          <td>663152.00000000</td>
-          <td>1500004859999</td>
-          <td>30.55108144</td>
-          <td>43</td>
-          <td>559224.00000000</td>
-          <td>25.65468144</td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>1500004860000</td>
-          <td>0.00004000</td>
-          <td>0.00004600</td>
-          <td>0.00003500</td>
-          <td>0.00003503</td>
-          <td>391775.00000000</td>
-          <td>1500004919999</td>
-          <td>17.31214051</td>
-          <td>45</td>
-          <td>389275.00000000</td>
-          <td>17.22462551</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
+   == ============= ========== ========== ========== ========== =============== ============= ================== ================ =========================== ============================
+   \  Open time     Open       High       Low        Close      Volume          Close time    Quote asset volume Number of trades Taker buy base asset volume Taker buy quote asset volume
+   == ============= ========== ========== ========== ========== =============== ============= ================== ================ =========================== ============================
+   0  1500004800000 0.00005000 0.00005300 0.00001000 0.00004790 663152.00000000 1500004859999 30.55108144        43               559224.00000000             25.65468144
+   1  1500004860000 0.00004000 0.00004600 0.00003500 0.00003503 391775.00000000 1500004919999 17.31214051        45               389275.00000000             17.22462551
+   == ============= ========== ========== ========== ========== =============== ============= ================== ================ =========================== ============================
