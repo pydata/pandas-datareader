@@ -47,7 +47,7 @@ class StooqDailyReader(_DailyBaseReader):
             elif symbol_parts[1].lower() == "pl":
                 symbol = symbol_parts[0]
             else:
-                if symbol_parts[1].lower() not in ["de", "hk", "hu", "jp", "uk", "us"]:
+                if symbol_parts[1].lower() not in ["de", "hk", "hu", "jp", "uk", "us", "f"]:
                     symbol = ".".join([symbol, "US"])
 
         params = {
