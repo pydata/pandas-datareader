@@ -442,11 +442,11 @@ Econdb database of time series aggregated into datasets.</p>
 <span class="gh">Out[4]: </span><span class="go"></span>
 <span class="go">               values</span>
 <span class="go">TIME_PERIOD          </span>
-<span class="go">2014-10-01   17143038</span>
 <span class="go">2015-01-01   17277580</span>
 <span class="go">2015-04-01   17405668</span>
 <span class="go">2015-07-01   17463222</span>
 <span class="go">2015-10-01   17468902</span>
+<span class="go">2016-01-01   17556840</span>
 </pre></div>
 </div>
 </div>
@@ -554,7 +554,7 @@ In [17]: print(ds['DESCR'])
 5 Industry Portfolios
 ---------------------
 
-This file was created by CMPT_IND_RETS using the 201907 CRSP database. It contains value- and equal-weighted returns for 5 industry portfolios. The portfolios are constructed at the end of June. The annual returns are from January to December. Missing data are indicated by -99.99 or -999. Copyright 2019 Kenneth R. French
+This file was created by CMPT_IND_RETS using the 201908 CRSP database. It contains value- and equal-weighted returns for 5 industry portfolios. The portfolios are constructed at the end of June. The annual returns are from January to December. Missing data are indicated by -99.99 or -999. Copyright 2019 Kenneth R. French
 
   0 : Average Value Weighted Returns -- Monthly (59 rows x 5 cols)
   1 : Average Equal Weighted Returns -- Monthly (59 rows x 5 cols)
@@ -569,11 +569,11 @@ In [18]: ds[4].head()
 Out[18]: 
          Cnsmr  Manuf  HiTec  Hlth   Other
 Date                                      
-2014-09    566    677    764    531   1111
 2014-10    562    675    758    530   1107
 2014-11    560    673    755    525   1101
 2014-12    556    671    747    524   1094
-2015-01    553    669    741    521   1090</pre>
+2015-01    553    669    741    521   1090
+2015-02    549    665    736    518   1085</pre>
 </div>
 <div class="section" id="world-bank">
 <span id="remote-data-wb"></span><h2>World Bank<a class="headerlink" href="#world-bank" title="Permalink to this headline">¶</a></h2>
@@ -854,7 +854,9 @@ available. More information on the <a class="reference external" href="http://ww
 <span class="gh">Out[32]: </span><span class="go"></span>
 <span class="go">                Open      High       Low     Close       Volume</span>
 <span class="go">Date                                                           </span>
-<span class="go">2019-09-27  26987.26  27012.54  26715.82  26820.25          NaN</span>
+<span class="go">2019-10-01  26962.54  27046.21  26562.22  26573.04          NaN</span>
+<span class="go">2019-09-30  26852.33  26998.86  26852.33  26916.83   75169726.0</span>
+<span class="go">2019-09-27  26987.26  27012.54  26715.82  26820.25   67977490.0</span>
 <span class="go">2019-09-26  27004.11  27015.07  26803.84  26891.12   72942157.0</span>
 <span class="go">2019-09-25  26866.71  27016.56  26755.86  26970.71   75153042.0</span>
 <span class="go">2019-09-24  27034.07  27079.68  26704.96  26807.77  102325907.0</span>
@@ -862,8 +864,6 @@ available. More information on the <a class="reference external" href="http://ww
 <span class="go">2019-09-20  27102.18  27194.75  26926.68  26935.07  269740303.0</span>
 <span class="go">2019-09-19  27186.05  27272.17  27064.21  27094.79   68699381.0</span>
 <span class="go">2019-09-18  27075.39  27161.93  26899.15  27147.08   70454821.0</span>
-<span class="go">2019-09-17  27010.12  27110.80  26984.14  27110.80   67020055.0</span>
-<span class="go">2019-09-16  27146.06  27172.87  27032.56  27076.82   72079672.0</span>
 </pre></div>
 </div>
 </div>
