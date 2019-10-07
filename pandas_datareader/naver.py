@@ -33,8 +33,8 @@ class NaverDailyReader(_DailyBaseReader):
 
         self.headers = {
             "Sec-Fetch-Mode": "no-cors",
-            "Referer": "https://finance.naver.com/item/fchart.nhn?code={}".format(symbols),
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36",
+            "Referer": "https://finance.naver.com/item/fchart.nhn?code={}".format(symbols),  # noqa
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36",  # noqa
         }
 
     @property
@@ -61,7 +61,8 @@ class NaverDailyReader(_DailyBaseReader):
         """
         resp = self._get_response(url, params=params)
         parsed = self._parse_xml_response(resp.text)
-        prices = DataFrame(parsed, columns=['Date', 'Open', 'High', 'Low', 'Close', 'Volume'])
+        prices = DataFrame(
+            parsed, columns=['Date', 'Open', 'High', 'Low', 'Close', 'Volume'])
         prices["Date"] = to_datetime(prices["Date"])
 
         return prices
@@ -73,7 +74,8 @@ class NaverDailyReader(_DailyBaseReader):
 
             <?xml version="1.0" encoding="EUC-KR" ?>
             <protocol>
-                <chartdata symbol="005930" name="삼성전자" count="500" timeframe="day" precision="0" origintime="19900103">
+                <chartdata symbol="005930" name="삼성전자" count="500"
+                        timeframe="day" precision="0" origintime="19900103">
                     <item data="20170918|218500|222000|217000|220500|72124" />
                     <item data="20170919|218000|221000|217500|219000|62753" />
                     ...
