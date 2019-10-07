@@ -74,7 +74,7 @@ class NaverDailyReader(_DailyBaseReader):
 
             <?xml version="1.0" encoding="EUC-KR" ?>
             <protocol>
-                <chartdata symbol="005930" name="삼성전자" count="500"
+                <chartdata symbol="005930" name="Samsung Elctronics" count="500"
                         timeframe="day" precision="0" origintime="19900103">
                     <item data="20170918|218500|222000|217000|220500|72124" />
                     <item data="20170919|218000|221000|217500|219000|62753" />
