@@ -26,6 +26,11 @@ def test_stooq_sp500():
     assert f.shape[0] > 0
 
 
+def test_stooq_clx19f():
+    f = get_data_stooq("CLX19.F", start="20190101", end="20190115")
+    assert f.shape[0] > 0
+
+
 def test_get_data_stooq_dax():
     f = get_data_stooq("^DAX")
     assert f.shape[0] > 0
