@@ -1,7 +1,8 @@
 from xml.etree import ElementTree
 
-from pandas import DataFrame
+from pandas import DataFrame, to_datetime
 from pandas_datareader.base import _DailyBaseReader
+
 
 class NaverDailyReader(_DailyBaseReader):
 
@@ -61,6 +62,7 @@ class NaverDailyReader(_DailyBaseReader):
         resp = self._get_response(url, params=params)
         parsed = self._parse_xml_response(resp.text)
         prices = DataFrame(parsed, columns=['Date', 'Open', 'High', 'Low', 'Close', 'Volume'])
+        prices["Date"] = to_datetime(prices["Date"])
 
         return prices
 
