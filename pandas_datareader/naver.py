@@ -54,10 +54,10 @@ class NaverDailyReader(_DailyBaseReader):
 
     def _get_params(self, symbol):
         # NOTE: The server does not take start, end dates as inputs; it only
-        # takes the number of past days as an input. To circumvent this
+        # takes the number of trading days as an input. To circumvent this
         # pitfall, we calculate the number of business days between self.start
-        # and the current date. And then before returning the final result
-        # (from _read_one_data()) we filter by self.end.
+        # and the current date. And then we filter by self.end before returning
+        # the final result (in _read_one_data()).
         days = np.busday_count(self.start.date(), datetime.now().date())
         params = {"symbol": symbol, "timeframe": "day", "count": days, "requestType": 0}
         return params
