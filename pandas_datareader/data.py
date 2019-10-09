@@ -24,6 +24,7 @@ from pandas_datareader.iex.deep import Deep as IEXDeep
 from pandas_datareader.iex.tops import LastReader as IEXLasts, TopsReader as IEXTops
 from pandas_datareader.moex import MoexReader
 from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
+from pandas_datareader.naver import NaverDailyReader
 from pandas_datareader.oecd import OECDReader
 from pandas_datareader.quandl import QuandlReader
 from pandas_datareader.robinhood import RobinhoodHistoricalReader, RobinhoodQuoteReader
@@ -39,7 +40,6 @@ from pandas_datareader.yahoo.daily import YahooDailyReader
 from pandas_datareader.yahoo.options import Options as YahooOptions
 from pandas_datareader.yahoo.quotes import YahooQuotesReader
 
-from pandas_datareader.naver import NaverDailyReader
 
 __all__ = [
     "get_components_yahoo",
