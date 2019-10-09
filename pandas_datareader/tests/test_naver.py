@@ -21,3 +21,7 @@ class TestNaver(object):
         assert reader.shape[1] == 6
         assert reader["Date"].min() >= start
         assert reader["Date"].max() <= end
+
+    def test_bulk_fetch(self):
+        with pytest.raises(NotImplementedError):
+            DataReader(["005930", "000660"])

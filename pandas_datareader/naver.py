@@ -4,6 +4,7 @@ from xml.etree import ElementTree
 import numpy as np
 from pandas import DataFrame, to_datetime
 from pandas_datareader.base import _DailyBaseReader
+from six import string_types
 
 
 class NaverDailyReader(_DailyBaseReader):
@@ -22,6 +23,9 @@ class NaverDailyReader(_DailyBaseReader):
         get_actions=False,
         adjust_dividends=True,
     ):
+        if not isinstance(symbols, string_types):
+            raise NotImplementedError("Bulk-fetching is not implemented")
+
         super(NaverDailyReader, self).__init__(
             symbols=symbols,
             start=start,
