@@ -1,5 +1,7 @@
+from datetime import datetime
 from xml.etree import ElementTree
 
+import numpy as np
 from pandas import DataFrame, to_datetime
 from pandas_datareader.base import _DailyBaseReader
 
@@ -47,7 +49,13 @@ class NaverDailyReader(_DailyBaseReader):
         return "https://fchart.stock.naver.com/sise.nhn"
 
     def _get_params(self, symbol):
-        params = {"symbol": symbol, "timeframe": "day", "count": 500, "requestType": 0}
+        # NOTE: The server does not take start, end dates as inputs; it only
+        # takes the number of past days as an input. To circumvent this
+        # pitfall, we calculate the number of business days between self.start
+        # and the current date. And then before returning the final result
+        # (from _read_one_data()) we filter by self.end.
+        days = np.busday_count(self.start.date(), datetime.now().date())
+        params = {"symbol": symbol, "timeframe": "day", "count": days, "requestType": 0}
         return params
 
     def _read_one_data(self, url, params):
@@ -62,7 +70,8 @@ class NaverDailyReader(_DailyBaseReader):
         )
         prices["Date"] = to_datetime(prices["Date"])
 
-        return prices
+        # NOTE: See _get_params() for explanations.
+        return prices[(prices["Date"] >= self.start) & (prices["Date"] <= self.end)]
 
     def _parse_xml_response(self, xml_content):
         """Parses XML response from the server.
