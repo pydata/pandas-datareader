@@ -15,6 +15,7 @@ class NaverDailyReader(_DailyBaseReader):
     :param interval: Not implemented
     :param adjust_dividends: Not implemented
     """
+
     def __init__(
         self,
         symbols=None,
@@ -80,9 +81,10 @@ class NaverDailyReader(_DailyBaseReader):
             parsed, columns=["Date", "Open", "High", "Low", "Close", "Volume"]
         )
         prices["Date"] = to_datetime(prices["Date"])
+        prices = prices.set_index("Date")
 
         # NOTE: See _get_params() for explanations.
-        return prices[(prices["Date"] >= self.start) & (prices["Date"] <= self.end)]
+        return prices[(prices.index >= self.start) & (prices.index <= self.end)]
 
     def _parse_xml_response(self, xml_content):
         """Parses XML response from the server.

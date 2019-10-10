@@ -18,9 +18,9 @@ class TestNaver(object):
         end = datetime(*end)
         reader = DataReader(symbol, "naver", start, end)
 
-        assert reader.shape[1] == 6
-        assert reader["Date"].min() >= start
-        assert reader["Date"].max() <= end
+        assert reader.shape[1] == 5
+        assert reader.index.min() >= start
+        assert reader.index.max() <= end
 
     def test_bulk_fetch(self):
         with pytest.raises(NotImplementedError):
