@@ -45,6 +45,7 @@ Currently the following sources are supported:
     - :ref:`Nasdaq Trader symbol definitions<remote_data.nasdaq_symbols>`
     - :ref:`Stooq<remote_data.stooq>`
     - :ref:`MOEX<remote_data.moex>`
+    - :ref:`Naver Finance<remote_data.naver>`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
 
@@ -686,3 +687,19 @@ The Moscow Exchange (MOEX) provides historical data.
    import pandas_datareader.data as web
    f = web.DataReader('USD000UTSTOM', 'moex', start='2017-07-01', end='2017-07-31')
    f.head()
+
+.. _remote_data.naver:
+
+Naver Finance Data
+==================
+`Naver Finance <https://finance.naver.com>`_ provides Korean stock market
+(`KOSPI`_, `KOSDAQ`_) historical data.
+
+.. ipython:: python
+
+   import pandas_datareader.data as web
+   df = web.DataReader('005930', 'naver', start='2019-09-10', end='2019-10-09')
+   df.head()
+
+.. _KOSPI: https://en.wikipedia.org/wiki/KOSPI
+.. _KOSDAQ: https://en.wikipedia.org/wiki/KOSDAQ

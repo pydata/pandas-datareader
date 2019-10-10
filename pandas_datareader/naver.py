@@ -8,6 +8,13 @@ from six import string_types
 
 
 class NaverDailyReader(_DailyBaseReader):
+    """Fetches daily historical data from Naver Finance.
+
+    :param symbols: A single symbol; multiple symbols are not currently supported.
+    :param adjust_price: Not implemented
+    :param interval: Not implemented
+    :param adjust_dividends: Not implemented
+    """
     def __init__(
         self,
         symbols=None,
