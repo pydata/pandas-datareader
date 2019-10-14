@@ -621,10 +621,10 @@ You can specify dataset ID 'tran_sf_railac' to get corresponding data via ``Data
 
 .. _remote_data.tsp:
 
-TSP Fund Data
+Thrift Savings Plan (TSP) Fund Data
 =============
 
-Download mutual fund index prices for the TSP.
+Download mutual fund index prices for the Thrift Savings Plan (TSP).
 
 .. ipython:: python
 
