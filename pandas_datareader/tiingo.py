@@ -33,7 +33,7 @@ class TiingoIEXHistoricalReader(_BaseReader):
         Parameters
         ----------
         symbols : {str, List[str]}
-            String symbol of like of symbols
+            String symbol or list of symbols
         start : string, int, date, datetime, Timestamp
             Starting date. Parses many different kind of date
             representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980'). Defaults to
@@ -139,7 +139,7 @@ class TiingoDailyReader(_BaseReader):
     Parameters
     ----------
     symbols : {str, List[str]}
-        String symbol of like of symbols
+        String symbol or list of symbols
     start : string, int, date, datetime, Timestamp
         Starting date, timestamp. Parses many different kind of date
         representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980').
@@ -241,7 +241,7 @@ class TiingoMetaDataReader(TiingoDailyReader):
     Parameters
     ----------
     symbols : {str, List[str]}
-        String symbol of like of symbols
+        String symbol or list of symbols
     start : string, int, date, datetime, Timestamp
         Not used.
     end : string, int, date, datetime, Timestamp
@@ -299,7 +299,7 @@ class TiingoQuoteReader(TiingoDailyReader):
     Parameters
     ----------
     symbols : {str, List[str]}
-        String symbol of like of symbols
+        String symbol or list of symbols
     start : string, int, date, datetime, Timestamp
         Not used.
     end : string, int, date, datetime, Timestamp
