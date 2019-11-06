@@ -1,5 +1,3 @@
 lxml
-pandas>=0.19.2
-pytest>=3
+pandas>=0.21
 requests>=2.3.0
-wrapt

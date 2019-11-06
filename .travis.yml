@@ -1,98 +1,72 @@
-sudo: false
-
+dist: bionic
 language: python
 
 env:
   global:
+    - TEST_TYPE="stable and not requires_api_key"
     # Doctr deploy key for pydata/pandas-datareader
     - secure: "iGbOAbBSV5y0TKDh2CifRSk6OpLA9GbEEL/hscHFLSDDUCWcdfvYXda3SWJFWyoQ5QUxSigXWd+ukr4u92d7lmB7m3TWj6BAMNuRpatTgnejLNwLvNeYdvLAxPvx39Cq85frd1Rx1beBLn3h/4wm4Ah+dR5W9NH8+x3OuZMH3Eo="
-
 
 matrix:
   fast_finish: true
   include:
-  - dist: bionic
-    env:
-      - PYTHON=2.7 PANDAS=0.19.2
-  - dist: bionic
-    env:
-      - PYTHON=2.7 PANDAS=0.22
-  - dist: bionic
-    env:
-      - PYTHON=3.5 PANDAS=0.19.2
-  - dist: bionic
-    env:
-      - PYTHON=3.5 PANDAS=0.20.3
-  - dist: bionic
-    env:
-      - PYTHON=3.6 PANDAS=0.23.0
-  - dist: bionic
-    env:
-      - PYTHON=3.7 PANDAS=0.25 DOCBUILD=true
-  # In allow failures
-  - dist: bionic
-    env:
-      - PYTHON=3.6 PANDAS="MASTER"
+  - python: 2.7
+    env: PANDAS=0.24 NUMPY=1.16
+  - python: 3.5
+    env: PANDAS=0.21 NUMPY=1.13
+  - python: 3.5
+    env: PANDAS=0.22 NUMPY=1.13
+  - python: 3.6
+    env: PANDAS=0.23 NUMPY=1.14
+  - python: 3.7
+    env: PANDAS=0.25 NUMPY=1.17 DOCBUILD=true
+  - python: 3.7
+    env: PANDAS=0.25 NUMPY=1.17
+  - python: 3.7
+    env: TEST_TYPE="quandl" PANDAS=0.25 NUMPY=1.17
+    # In allow failures
+  - python: 3.7
+    env: TEST_TYPE="alpha_vantage" PANDAS=0.25 NUMPY=1.17
+  - python: 3.7
+    env: TEST_TYPE="not stable and not alpha_vantage and not quandl" PANDAS=0.25 NUMPY=1.17
+  - python: 3.7
+    env: PANDAS="MASTER" NUMPY=1.17
   allow_failures:
-    - dist: bionic
-      env:
-        - PYTHON=3.6 PANDAS="MASTER"
+    - python: 3.7
+      env: PANDAS="MASTER" NUMPY=1.17
+    - python: 3.7
+      env: TEST_TYPE="alpha_vantage" PANDAS=0.25 NUMPY=1.17
+    - python: 3.7
+      env: TEST_TYPE="not stable and not alpha_vantage and not quandl" PANDAS=0.25 NUMPY=1.17
 
 install:
-  - pip install -qq flake8
-  # You may want to periodically update this, although the conda update
-  # conda line below will keep everything up-to-date.  We do this
-  # conditionally because it saves us some downloading if the version is
-  # the same.
-  - if [[ "$PYTHON" == "2.7" ]]; then
-      wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
-    else
-      wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
-    fi
-  - bash miniconda.sh -b -p $HOME/miniconda
-  - export PATH="$HOME/miniconda/bin:$PATH"
-  - hash -r
-  - conda config --set always_yes yes --set changeps1 no
-  - conda config --add channels pandas
-  - conda update -q conda
-  # Useful for debugging any issues with conda
-  - conda info -a
-  - conda create -q -n test-environment python=$PYTHON coverage setuptools html5lib lxml pytest pytest-cov wrapt
-  - source activate test-environment
-  - if [[ "$PANDAS" == "MASTER" ]]; then
-      conda install numpy pytz python-dateutil;
-      PRE_WHEELS="https://7933911d6844c6c53a7d-47bd50c35cd79bd838daf386af554a83.ssl.cf2.rackcdn.com";
-      pip install --pre --upgrade --timeout=60 -f $PRE_WHEELS pandas;
-    else
-      conda install pandas=$PANDAS;
-    fi
-  - if [[ $DOCBUILD ]]; then
-      conda install sphinx ipython matplotlib;
-      pip install sphinx_rtd_theme doctr;
-    fi
-  - pip install pip --upgrade
-  - pip install codecov coveralls beautifulsoup4
-  - conda list
+  - source ci/pypi-install.sh;
+  - pip list
   - python setup.py install
 
 script:
-    - export ENIGMA_API_KEY=$ENIGMA_API_KEY
-    - pytest -s -r xX --cov-config .coveragerc --cov=pandas_datareader --cov-report xml:/tmp/cov-datareader.xml --junitxml=/tmp/datareader.xml
-    - flake8 --version
-    - flake8 pandas_datareader
+  - if [[ -n "${TEST_TYPE+x}" ]]; then export MARKERS="-m ${TEST_TYPE}"; fi
+  - pytest -v -s -r xX "${MARKERS}" --cov-config .coveragerc --cov=pandas_datareader --cov-report xml:/tmp/cov-datareader.xml --junitxml=/tmp/datareader.xml
+  - |
+    if (( $(echo "$TRAVIS_PYTHON_VERSION > 3.5" | bc -l) )); then
+      black --check pandas_datareader
+    fi
+  - flake8 --version
+  - flake8 pandas_datareader
+  - |
+    if [[ "$DOCBUILD" ]]; then
+      set -e
+      cd docs
+      make html
+      cd ..
+      if [[ -z "$TRAVIS_TAG" ]]; then
+        doctr deploy devel --build-tags
+      else
+        doctr deploy . --build-tags
+      fi
+      set +e
+    fi
 
 after_script:
-  - |
-    if [[ ${DOCBUILD} ]]; then
-      cd docs
-      make html && make html
-      cd ..
-      doctr deploy devel --build-tags
-      if [[ -z ${TRAVIS_TAG} ]]; then
-        echo "Not a tagged build."
-      else
-        doctr deploy stable --build-tags
-      fi
-    fi
   - coveralls
   - codecov

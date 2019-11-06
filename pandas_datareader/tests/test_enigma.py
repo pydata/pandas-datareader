@@ -1,16 +1,18 @@
 import os
-import pytest
 
+import pytest
 from requests.exceptions import HTTPError
+
 import pandas_datareader as pdr
 import pandas_datareader.data as web
 
-TEST_API_KEY = os.getenv('ENIGMA_API_KEY')
+pytestmark = pytest.mark.requires_api_key
+
+TEST_API_KEY = os.getenv("ENIGMA_API_KEY")
 
 
 @pytest.mark.skipif(TEST_API_KEY is None, reason="no enigma_api_key")
 class TestEnigma(object):
-
     @property
     def dataset_id(self):
         """
@@ -26,25 +28,24 @@ class TestEnigma(object):
 
     def test_enigma_datareader(self):
         try:
-            df = web.DataReader(self.dataset_id,
-                                'enigma', access_key=TEST_API_KEY)
-            assert 'case_number' in df.columns
+            df = web.DataReader(self.dataset_id, "enigma", api_key=TEST_API_KEY)
+            assert "case_number" in df.columns
         except HTTPError as e:
             pytest.skip(e)
 
     def test_enigma_get_data_enigma(self):
         try:
             df = pdr.get_data_enigma(self.dataset_id, TEST_API_KEY)
-            assert 'case_number' in df.columns
+            assert "case_number" in df.columns
         except HTTPError as e:
             pytest.skip(e)
 
     def test_bad_key(self):
         with pytest.raises(HTTPError):
-            web.DataReader(self.dataset_id,
-                           'enigma', access_key=TEST_API_KEY + 'xxx')
+            web.DataReader(self.dataset_id, "enigma", api_key=TEST_API_KEY + "xxx")
 
     def test_bad_dataset_id(self):
         with pytest.raises(HTTPError):
-            web.DataReader('zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzz',
-                           'enigma', access_key=TEST_API_KEY)
+            web.DataReader(
+                "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzz", "enigma", api_key=TEST_API_KEY
+            )

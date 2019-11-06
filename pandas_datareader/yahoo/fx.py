@@ -1,10 +1,12 @@
-import time
 import json
+import time
 import warnings
-from pandas import (DataFrame, Series, to_datetime, concat)
-from pandas_datareader.yahoo.daily import YahooDailyReader
-from pandas_datareader._utils import (RemoteDataError, SymbolWarning)
+
+from pandas import DataFrame, Series, concat, to_datetime
+
+from pandas_datareader._utils import RemoteDataError, SymbolWarning
 from pandas_datareader.compat import string_types
+from pandas_datareader.yahoo.daily import YahooDailyReader
 
 
 class YahooFXReader(YahooDailyReader):
@@ -16,11 +18,12 @@ class YahooFXReader(YahooDailyReader):
     symbols : string, array-like object (list, tuple, Series), or DataFrame
         Single stock symbol (ticker), array-like object of symbols or
         DataFrame with index containing stock symbols.
-    start : string, (defaults to '1/1/2010')
+    start : string, int, date, datetime, Timestamp
         Starting date, timestamp. Parses many different kind of date
-        representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
-    end : string, (defaults to today)
-        Ending date, timestamp. Same format as starting date.
+        representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980').
+        Defaults to '1/1/2010'.
+    end : string, int, date, datetime, Timestamp
+        Ending date, timestamp. Same format as starting date. Defaults to today.
     retry_count : int, default 3
         Number of times to retry query request.
     pause : int, default 0.1
@@ -41,13 +44,13 @@ class YahooFXReader(YahooDailyReader):
         unix_end = int(time.mktime(day_end.timetuple()))
 
         params = {
-            'symbol': symbol + '=X',
-            'period1': unix_start,
-            'period2': unix_end,
-            'interval': self.interval,    # deal with this
-            'includePrePost': 'true',
-            'events': 'div|split|earn',
-            'corsDomain': 'finance.yahoo.com'
+            "symbol": symbol + "=X",
+            "period1": unix_start,
+            "period2": unix_end,
+            "interval": self.interval,  # deal with this
+            "includePrePost": "true",
+            "events": "div|split|earn",
+            "corsDomain": "finance.yahoo.com",
         }
         return params
 
@@ -64,29 +67,27 @@ class YahooFXReader(YahooDailyReader):
             else:
                 df = self._dl_mult_symbols(self.symbols)
 
-            if 'Date' in df:
-                df = df.set_index('Date')
+            if "Date" in df:
+                df = df.set_index("Date")
 
-            if 'Volume' in df:
-                df = df.drop('Volume', axis=1)
+            if "Volume" in df:
+                df = df.drop("Volume", axis=1)
 
-            return df.sort_index().dropna(how='all')
+            return df.sort_index().dropna(how="all")
         finally:
             self.close()
 
     def _read_one_data(self, symbol):
         """ read one data from specified URL """
-        url = 'https://query1.finance.yahoo.com/v8/finance/chart/{}=X'\
-            .format(symbol)
+        url = "https://query1.finance.yahoo.com/v8/finance/chart/{}=X".format(symbol)
         params = self._get_params(symbol)
 
         resp = self._get_response(url, params=params)
         jsn = json.loads(resp.text)
 
-        data = jsn['chart']['result'][0]
-        df = DataFrame(data['indicators']['quote'][0])
-        df.insert(0, 'date', to_datetime(Series(data['timestamp']),
-                                         unit='s').dt.date)
+        data = jsn["chart"]["result"][0]
+        df = DataFrame(data["indicators"]["quote"][0])
+        df.insert(0, "date", to_datetime(Series(data["timestamp"]), unit="s").dt.date)
         df.columns = map(str.capitalize, df.columns)
         return df
 
@@ -97,11 +98,11 @@ class YahooFXReader(YahooDailyReader):
         for sym in symbols:
             try:
                 df = self._read_one_data(sym)
-                df['PairCode'] = sym
+                df["PairCode"] = sym
                 stocks[sym] = df
                 passed.append(sym)
             except IOError:
-                msg = 'Failed to read symbol: {0!r}, replacing with NaN.'
+                msg = "Failed to read symbol: {0!r}, replacing with NaN."
                 warnings.warn(msg.format(sym), SymbolWarning)
                 failed.append(sym)
 
@@ -109,4 +110,4 @@ class YahooFXReader(YahooDailyReader):
             msg = "No data fetched using {0!r}"
             raise RemoteDataError(msg.format(self.__class__.__name__))
         else:
-            return concat(stocks).set_index(['PairCode', 'Date'])
+            return concat(stocks).set_index(["PairCode", "Date"])

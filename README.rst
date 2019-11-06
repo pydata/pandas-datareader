@@ -18,14 +18,18 @@ Up to date remote data access for pandas, works for multiple versions of pandas.
 .. image:: https://readthedocs.org/projects/pandas-datareader/badge/?version=latest
     :target: https://pandas-datareader.readthedocs.io/en/latest/
 
-.. image:: https://landscape.io/github/pydata/pandas-datareader/master/landscape.svg?style=flat
-   :target: https://landscape.io/github/pydata/pandas-datareader/master
-   :alt: Code Health
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+     :target: https://github.com/psf/black
+
 
 .. warning::
 
-   As of v0.7.0 Google finance and Morningstar have been been immediately deprecated due to
-   large changes in their API and no stable replacement.
+  v0.8.0 is the last version which officially supports Python 2.7. Future versions of ``pandas_datareader`` will end support for Python 2.x.
+
+.. warning::
+
+  As of v0.8.0 Robinhood has been immediately deprecated due to
+  large changes in their API and no stable replacement.
 
 
 Usage
@@ -49,9 +53,9 @@ Many functions from the data module have been included in the top level API.
 Documentation
 -------------
 
-`Stable documentation <https://pydata.github.io/pandas-datareader/stable/>`__
+`Stable documentation <https://pydata.github.io/pandas-datareader/>`__
 is available on
-`github.io <https://pydata.github.io/pandas-datareader/stable/>`__.
+`github.io <https://pydata.github.io/pandas-datareader/>`__.
 A second copy of the stable documentation is hosted on
 `read the docs <https://pandas-datareader.readthedocs.io/>`_ for more details.
 
@@ -69,16 +73,25 @@ Using pandas datareader requires the following packages:
 * pandas>=0.19.2
 * lxml
 * requests>=2.3.0
-* wrapt
 
 Building the documentation additionally requires:
 
 * matplotlib
 * ipython
+* requests_cache
 * sphinx
 * sphinx_rtd_theme
 
-Testing requires pytest.
+Development and testing additionally requires:
+
+* black
+* coverage
+* codecov
+* coveralls
+* flake8
+* pytest
+* pytest-cov
+* wrapt
 
 Install latest release version via pip
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -21,7 +21,7 @@ def datapath(request):
     ValueError
         If the path doesn't exist and the --strict-data-files option is set.
     """
-    BASE_PATH = os.path.join(os.path.dirname(__file__), 'tests')
+    BASE_PATH = os.path.join(os.path.dirname(__file__), "tests")
 
     def deco(*args):
         path = os.path.join(BASE_PATH, *args)
@@ -33,4 +33,5 @@ def datapath(request):
                 msg = "Could not find {}."
                 pytest.skip(msg.format(path))
         return path
+
     return deco

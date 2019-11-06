@@ -17,11 +17,13 @@
 Remote Data Access
 ******************
 
+.. warning::
+
+    The ``access_key`` keyword argument of ``DataReader`` has been deprecated in favor of ``api_key``.
 
 .. warning::
 
-    Robinhood has been immediately deprecated. Endpoints from this provider
-    have been retired.
+    Robinhood has been immediately deprecated. Endpoints from this provider have been retired.
 
 .. _remote_data.data_reader:
 
@@ -56,43 +58,68 @@ Free registration is required to get an API key.  Free accounts are rate
 limited and can access a limited number of symbols (500 at the time of
 writing).
 
-.. ipython:: python
+.. code-block:: ipython
 
-    import os
-    import pandas_datareader as pdr
+   In [1]: import os
+   In [2]: import pandas_datareader as pdr
 
-    df = pdr.get_data_tiingo('GOOG', api_key=os.getenv('TIINGO_API_KEY'))
-    df.head()
-
+   In [3]: df = pdr.get_data_tiingo('GOOG', api_key=os.getenv('TIINGO_API_KEY'))
+   In [4]: df.head()
+                                   close    high     low     open  volume  adjClose  adjHigh  adjLow  adjOpen  adjVolume  divCash  splitFactor
+   symbol date
+   GOOG   2014-03-27 00:00:00+00:00  558.46  568.00  552.92  568.000   13100    558.46   568.00  552.92  568.000      13100      0.0          1.0
+          2014-03-28 00:00:00+00:00  559.99  566.43  558.67  561.200   41100    559.99   566.43  558.67  561.200      41100      0.0          1.0
+          2014-03-31 00:00:00+00:00  556.97  567.00  556.93  566.890   10800    556.97   567.00  556.93  566.890      10800      0.0          1.0
+          2014-04-01 00:00:00+00:00  567.16  568.45  558.71  558.710    7900    567.16   568.45  558.71  558.710       7900      0.0          1.0
+          2014-04-02 00:00:00+00:00  567.00  604.83  562.19  565.106  146700    567.00   604.83  562.19  565.106     146700      0.0          1.0
 
 .. _remote_data.iex:
 
 IEX
 ===
 
-.. warning:: Usage of all IEX readers now requries an API key. See
+.. warning:: Usage of all IEX readers now requires an API key. See
              below for additional information.
 
 The Investors Exchange (IEX) provides a wide range of data through an
 `API <https://iexcloud.io/api/docs/>`__.  Historical stock
 prices are available for up to 15 years. The usage of these readers requires the publishable API key from IEX Cloud Console, which can be stored in the ``IEX_API_KEY`` environment variable.
 
-.. ipython:: python
-    
-    os.environ["IEX_API_KEY"] = "pk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-    import pandas_datareader.data as web
-    from datetime import datetime
-    start = datetime(2016, 9, 1)
-    end = datetime(2018, 9, 1)
-    f = web.DataReader('F', 'iex', start, end)
-    f.loc['2018-08-31']
+.. code-block:: ipython
+
+    In [1]: import pandas_datareader.data as web
+
+    In [2]: from datetime import datetime
+
+    In [3]: start = datetime(2016, 9, 1)
+
+    In [4]: end = datetime(2018, 9, 1)
+
+    In [5]: f = web.DataReader('F', 'iex', start, end)
+
+    In [6]: f.loc['2018-08-31']
+    Out[6]:
+    open             9.64
+    high             9.68
+    low              9.40
+    close            9.48
+    volume    76424884.00
+    Name: 2018-08-31, dtype: float64
+
+.. note::
+
+   You must provide an API Key when using IEX. You can do this using
+   ``os.environ["IEX_API_KEY"] = "pk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"``
+   or by exporting the key before starting the IPython session.
 
 There are additional interfaces to this API that are
 directly exposed: tops (`'iex-tops'`) and last (`'iex-lasts'`).
 A third interface to the deep API is exposed through
 `Deep` class or the `get_iex_book` function.
 
-.. ipython:: python
+.. todo:: Execute block when markets are open
+
+.. code-block:: ipython
 
     import pandas_datareader.data as web
     f = web.DataReader('gs', 'iex-tops')
@@ -113,7 +140,9 @@ Historical Time Series Data
 Through the
 `Alpha Vantage <https://www.alphavantage.co/documentation>`__ Time Series
 endpoints, it is possible to obtain historical equities data for individual
-symbols. The following endpoints are available:
+symbols. For daily, weekly, and monthly frequencies, 20+ years of historical data is available. The past 3-5 days of intraday data is also available.
+
+The following endpoints are available:
 
 * ``av-intraday`` - Intraday Time Series
 * ``av-daily`` - Daily Time Series
@@ -123,16 +152,27 @@ symbols. The following endpoints are available:
 * ``av-monthly`` - Monthly Time Series
 * ``av-monthly-adjusted`` - Monthly Time Series (Adjusted)
 
-.. ipython:: python
+.. code-block:: ipython
 
-    import os
-    from datetime import datetime
-    import pandas_datareader.data as web
+    In [1]: import os
 
-    f = web.DataReader("AAPL", "av-daily", start=datetime(2017, 2, 9),
-                       end=datetime(2017, 5, 24),
-                       access_key=os.getenv('ALPHAVANTAGE_API_KEY'))
-    f.loc["2017-02-09"]
+    In [2]: from datetime import datetime
+
+    In [3]: import pandas_datareader.data as web
+
+    In [4]: f = web.DataReader("AAPL", "av-daily", start=datetime(2017, 2, 9),
+       ...:                    end=datetime(2017, 5, 24),
+       ...:                    api_key=os.getenv('ALPHAVANTAGE_API_KEY'))
+
+    In [5]: f.loc["2017-02-09"]
+    Out[5]:
+    open      1.316500e+02
+    high      1.324450e+02
+    low       1.311200e+02
+    close     1.324200e+02
+    volume    2.834990e+07
+    Name: 2017-02-09, dtype: float64
+
 
 The top-level function ``get_data_alphavantage`` is also provided. This
 function will
@@ -147,13 +187,21 @@ endpoint allows the retrieval of realtime stock quotes for up to 100 symbols at
 once. These quotes are accessible through the top-level function
 ``get_quote_av``.
 
-.. ipython:: python
+.. code-block:: ipython
 
-    import os
-    from datetime import datetime
-    import pandas_datareader.data as web
+    In [1]: import os
 
-    web.get_quote_av(["AAPL", "TSLA"])
+    In [2]: from datetime import datetime
+
+    In [3]: import pandas_datareader.data as web
+
+    In [4]: web.get_quote_av(["AAPL", "TSLA"])
+    Out[4]:
+             price  volume            timestamp
+    symbol
+    AAPL    219.87     NaN  2019-09-16 15:59:59
+    TSLA    242.80     NaN  2019-09-16 15:59:57
+
 
 
 .. note:: Most quotes are only available during market hours.
@@ -167,23 +215,54 @@ currency exchange rates (for physical and digital currencies).
 To request the exchange rate of physical or digital currencies, simply format
 as "FROM/TO" as in "USD/JPY".
 
-.. ipython:: python
+.. code-block:: ipython
 
-    import os
-    import pandas_datareader.data as web
+    In [1]: import os
 
-    f = web.DataReader("USD/JPY", "av-forex",
-                       access_key=os.getenv('ALPHAVANTAGE_API_KEY'))
+    In [2]: import pandas_datareader.data as web
+
+    In [3]: f = web.DataReader("USD/JPY", "av-forex",
+        ...:                    api_key=os.getenv('ALPHAVANTAGE_API_KEY'))
+
+    In [4]: f
+    Out[4]:
+                                     USD/JPY
+    From_Currency Code                   USD
+    From_Currency Name  United States Dollar
+    To_Currency Code                     JPY
+    To_Currency Name            Japanese Yen
+    Exchange Rate               108.17000000
+    Last Refreshed       2019-09-17 10:43:36
+    Time Zone                            UTC
+    Bid Price                   108.17000000
+    Ask Price                   108.17000000
+
 
 Multiple pairs are are allowable:
 
-.. ipython:: python
+.. code-block:: ipython
 
-    import os
-    import pandas_datareader.data as web
+    In [1]: import os
 
-    f = web.DataReader(["USD/JPY", "BTC/CNY"], "av-forex",
-                       access_key=os.getenv('ALPHAVANTAGE_API_KEY'))
+    In [2]: import pandas_datareader.data as web
+
+    In [3]: f = web.DataReader(["USD/JPY", "BTC/CNY"], "av-forex",
+       ...:                    api_key=os.getenv('ALPHAVANTAGE_API_KEY'))
+
+
+    In [4]: f
+    Out[4]:
+                                     USD/JPY              BTC/CNY
+    From_Currency Code                   USD                  BTC
+    From_Currency Name  United States Dollar              Bitcoin
+    To_Currency Code                     JPY                  CNY
+    To_Currency Name            Japanese Yen         Chinese Yuan
+    Exchange Rate               108.17000000       72230.38039500
+    Last Refreshed       2019-09-17 10:44:35  2019-09-17 10:44:01
+    Time Zone                            UTC                  UTC
+    Bid Price                   108.17000000       72226.26407700
+    Ask Price                   108.17000000       72230.02554000
+
 
 
 Sector Performance
@@ -192,12 +271,21 @@ Sector Performance
 `Alpha Vantage <https://www.alphavantage.co/documentation>`__ provides sector
 performances through the top-level function ``get_sector_performance_av``.
 
-.. ipython:: python
+.. code-block:: ipython
 
-    import os
-    import pandas_datareader.data as web
+    In [1]: import os
 
-    web.get_sector_performance_av().head()
+    In [2]: import pandas_datareader.data as web
+
+    In [3]: web.get_sector_performance_av().head()
+    Out[4]:
+                     RT      1D      5D      1M     3M     YTD       1Y      3Y       5Y      10Y
+    Energy        3.29%   3.29%   4.82%  11.69%  3.37%   9.07%  -15.26%  -7.69%  -32.31%   12.15%
+    Real Estate   1.02%   1.02%  -1.39%   1.26%  3.49%  24.95%   16.55%     NaN      NaN      NaN
+    Utilities     0.08%   0.08%   0.72%   2.77%  3.72%  18.16%   16.09%  27.95%   48.41%  113.09%
+    Industrials  -0.15%  -0.15%   2.42%   8.59%  5.10%  22.70%    0.50%  34.50%   43.53%  183.47%
+    Health Care  -0.23%  -0.23%   0.88%   1.91%  0.09%   5.20%   -2.38%  26.37%   43.43%  216.01%
+
 
 
 .. _remote_data.enigma:
@@ -214,7 +302,7 @@ Econdb database of time series aggregated into datasets.
     import os
     import pandas_datareader.data as web
 
-    f = web.DataReader('ticker=RGDPQNO', 'econdb')
+    f = web.DataReader('ticker=RGDPUS', 'econdb')
     f.head()
 
 .. _remote_data.econdb:
@@ -230,13 +318,24 @@ URL has changed from `app.enigma.io <https://app.enigma.io>`__ as of release
 Datasets are unique identified by the ``uuid4`` at the end of a dataset's web address.
 For example, the following code downloads from  `USDA Food Recalls 1996 Data <https://public.enigma.com/datasets/292129b0-1275-44c8-a6a3-2a0881f24fe1>`__.
 
-.. ipython:: python
+.. code-block:: ipython
 
-    import os
-    import pandas_datareader as pdr
+    In [1]: import os
 
-    df = pdr.get_data_enigma('292129b0-1275-44c8-a6a3-2a0881f24fe1', os.getenv('ENIGMA_API_KEY'))
-    df.columns
+    In [2]: import pandas_datareader as pdr
+
+    In [3]: df = pdr.get_data_enigma('292129b0-1275-44c8-a6a3-2a0881f24fe1', os.getenv('ENIGMA_API_KEY'))
+
+    In [4]: df.columns
+    Out[4]:
+    Index(['case_number', 'recall_notification_report_number',
+           'recall_notification_report_url', 'date_opened', 'date_closed',
+           'recall_class', 'press_release', 'domestic_est_number', 'company_name',
+           'imported_product', 'foreign_estab_number', 'city', 'state', 'country',
+           'product', 'problem', 'description', 'total_pounds_recalled',
+           'pounds_recovered'],
+          dtype='object')
+
 
 .. _remote_data.quandl:
 
@@ -258,12 +357,20 @@ As of June 2017, each DB has a different data schema,
 the coverage in terms of time range is sometimes surprisingly small, and
 the data quality is not always good.
 
-.. ipython:: python
+.. code-block:: ipython
 
-    import pandas_datareader.data as web
-    symbol = 'WIKI/AAPL'  # or 'AAPL.US'
-    df = web.DataReader(symbol, 'quandl', '2015-01-01', '2015-01-05')
-    df.loc['2015-01-02']
+    In [1]: import pandas_datareader.data as web
+
+    In [2]: symbol = 'WIKI/AAPL'  # or 'AAPL.US'
+
+    In [3]: df = web.DataReader(symbol, 'quandl', '2015-01-01', '2015-01-05')
+
+    In [4]: df.loc['2015-01-02']
+    Out[4]:
+                  Open    High     Low   Close      Volume  ...     AdjOpen     AdjHigh      AdjLow    AdjClose   AdjVolume
+    Date                                                    ...
+    2015-01-02  111.39  111.44  107.35  109.33  53204626.0  ...  105.820966  105.868466  101.982949  103.863957  53204626.0
+
 
 .. _remote_data.fred:
 
@@ -486,7 +593,7 @@ example is to download 'Trade Union Density' data which set code is 'TUD'.
     import pandas_datareader.data as web
     import datetime
 
-    df = web.DataReader('TUD', 'oecd', end=datetime.datetime(2012, 1, 1))
+    df = web.DataReader('TUD', 'oecd')
 
     df.columns
 
@@ -534,7 +641,7 @@ Nasdaq Trader Symbol Definitions
 Download the latest symbols from `Nasdaq <ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqtraded.txt>`_.
 
 Note that Nasdaq updates this file daily, and historical versions are not
-available. More information on the `field <http://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs/>`_ definitions.
+available. More information on the `field <http://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs>`_ definitions.
 
 .. code-block:: python
 

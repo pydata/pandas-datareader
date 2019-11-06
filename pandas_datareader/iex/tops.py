@@ -17,12 +17,17 @@ class TopsReader(IEX):
     on IEX's displayed limit order book.
     """
 
-    def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.1, session=None):
-        super(TopsReader, self).__init__(symbols=symbols,
-                                         start=start, end=end,
-                                         retry_count=retry_count,
-                                         pause=pause, session=session)
+    def __init__(
+        self, symbols=None, start=None, end=None, retry_count=3, pause=0.1, session=None
+    ):
+        super(TopsReader, self).__init__(
+            symbols=symbols,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        )
 
     @property
     def service(self):
@@ -39,13 +44,19 @@ class LastReader(IEX):
     Last provides trade data for executions on IEX. Provides last sale price,
     size and time.
     """
+
     # todo: Eventually we'll want to implement WebSockets as an option.
-    def __init__(self, symbols=None, start=None, end=None, retry_count=3,
-                 pause=0.1, session=None):
-        super(LastReader, self).__init__(symbols=symbols,
-                                         start=start, end=end,
-                                         retry_count=retry_count,
-                                         pause=pause, session=session)
+    def __init__(
+        self, symbols=None, start=None, end=None, retry_count=3, pause=0.1, session=None
+    ):
+        super(LastReader, self).__init__(
+            symbols=symbols,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        )
 
     @property
     def service(self):
