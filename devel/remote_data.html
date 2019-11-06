@@ -556,12 +556,12 @@ In [17]: print(ds['DESCR'])
 
 This file was created by CMPT_IND_RETS using the 201909 CRSP database. It contains value- and equal-weighted returns for 5 industry portfolios. The portfolios are constructed at the end of June. The annual returns are from January to December. Missing data are indicated by -99.99 or -999. Copyright 2019 Kenneth R. French
 
-  0 : Average Value Weighted Returns -- Monthly (60 rows x 5 cols)
-  1 : Average Equal Weighted Returns -- Monthly (60 rows x 5 cols)
+  0 : Average Value Weighted Returns -- Monthly (59 rows x 5 cols)
+  1 : Average Equal Weighted Returns -- Monthly (59 rows x 5 cols)
   2 : Average Value Weighted Returns -- Annual (5 rows x 5 cols)
   3 : Average Equal Weighted Returns -- Annual (5 rows x 5 cols)
-  4 : Number of Firms in Portfolios (60 rows x 5 cols)
-  5 : Average Firm Size (60 rows x 5 cols)
+  4 : Number of Firms in Portfolios (59 rows x 5 cols)
+  5 : Average Firm Size (59 rows x 5 cols)
   6 : Sum of BE / Sum of ME (6 rows x 5 cols)
   7 : Value-Weighted Average of BE/ME (6 rows x 5 cols)
 
@@ -569,11 +569,11 @@ In [18]: ds[4].head()
 Out[18]: 
          Cnsmr  Manuf  HiTec  Hlth   Other
 Date                                      
-2014-10    562    675    758    530   1107
 2014-11    560    673    755    525   1101
 2014-12    556    671    747    524   1094
 2015-01    553    669    741    521   1090
-2015-02    549    665    736    518   1085</pre>
+2015-02    549    665    736    518   1085
+2015-03    546    662    732    515   1078</pre>
 </div>
 <div class="section" id="world-bank">
 <span id="remote-data-wb"></span><h2>World Bank<a class="headerlink" href="#world-bank" title="Permalink to this headline">¶</a></h2>
@@ -762,9 +762,9 @@ Source     Administrative data                ...   Survey data
 Series               Employees Union members  ... Union members Trade union  density
 Year                                          ...                                   
 2015-01-01             42090.0       12520.0  ...       17717.0                 19.5
-2016-01-01             43830.0       12343.0  ...       16975.0                 17.0
-2017-01-01             45650.0       12227.0  ...       17002.0                 16.2
-2018-01-01             50620.0       12397.0  ...       16612.0                 15.5
+2016-01-01             43010.0       12418.0  ...       16996.0                 17.4
+2017-01-01             43830.0       12343.0  ...       16975.0                 17.0
+2018-01-01             45650.0       12227.0  ...       17002.0                 16.2
 
 [4 rows x 12 columns]</pre>
 </div>
@@ -854,18 +854,18 @@ available. More information on the <a class="reference external" href="http://ww
 
 <span class="gp">In [32]: </span><span class="n">f</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 <span class="gh">Out[32]: </span><span class="go"></span>
-<span class="go">                Open      High       Low     Close       Volume</span>
-<span class="go">Date                                                           </span>
-<span class="go">2019-10-29  27061.07  27165.94  27039.76  27071.42          NaN</span>
-<span class="go">2019-10-28  27040.33  27167.88  27028.71  27090.72   78295883.0</span>
-<span class="go">2019-10-25  26789.61  27015.37  26765.68  26958.06   73977629.0</span>
-<span class="go">2019-10-24  26893.93  26931.78  26714.34  26805.53   68094274.0</span>
-<span class="go">2019-10-23  26835.24  26896.89  26745.00  26833.95   68707611.0</span>
-<span class="go">2019-10-22  26850.43  26946.64  26782.61  26788.10   68996426.0</span>
-<span class="go">2019-10-21  26852.67  26852.67  26747.62  26827.64   70094324.0</span>
-<span class="go">2019-10-18  27004.49  27018.25  26770.13  26770.20  102551310.0</span>
-<span class="go">2019-10-17  27032.38  27112.16  26970.29  27025.88   63847946.0</span>
-<span class="go">2019-10-16  26972.31  27058.34  26943.29  27001.98   65964319.0</span>
+<span class="go">                Open      High       Low     Close      Volume</span>
+<span class="go">Date                                                          </span>
+<span class="go">2019-11-05  27500.23  27560.36  27453.55  27492.63         NaN</span>
+<span class="go">2019-11-04  27402.06  27517.58  27402.06  27462.11  73896756.0</span>
+<span class="go">2019-11-01  27142.95  27347.43  27142.95  27347.36  78432580.0</span>
+<span class="go">2019-10-31  27188.37  27188.37  26918.29  27046.23  88293040.0</span>
+<span class="go">2019-10-30  27110.71  27204.36  26999.64  27186.69  61089711.0</span>
+<span class="go">2019-10-29  27061.07  27165.94  27039.76  27071.42  69014560.0</span>
+<span class="go">2019-10-28  27040.33  27167.88  27028.71  27090.72  78310383.0</span>
+<span class="go">2019-10-25  26789.61  27015.37  26765.68  26958.06  73977629.0</span>
+<span class="go">2019-10-24  26893.93  26931.78  26714.34  26805.53  68094274.0</span>
+<span class="go">2019-10-23  26835.24  26896.89  26745.00  26833.95  68707611.0</span>
 </pre></div>
 </div>
 </div>
