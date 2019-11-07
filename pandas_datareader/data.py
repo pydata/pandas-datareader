@@ -428,9 +428,12 @@ def DataReader(
             pause=pause,
             session=session,
         ).read()
+
     elif data_source == "stooq":
         return StooqDailyReader(
             symbols=name,
+            start=start,
+            end=end,  
             chunksize=25,
             retry_count=retry_count,
             pause=pause,
