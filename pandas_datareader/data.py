@@ -433,7 +433,7 @@ def DataReader(
         return StooqDailyReader(
             symbols=name,
             start=start,
-            end=end,  
+            end=end,
             chunksize=25,
             retry_count=retry_count,
             pause=pause,
