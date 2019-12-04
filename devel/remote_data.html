@@ -541,39 +541,41 @@ the data quality is not always good.</p>
 <span id="remote-data-ff"></span><h2>Fama/French<a class="headerlink" href="#fama-french" title="Permalink to this headline">¶</a></h2>
 <p>Access datasets from the <a class="reference external" href="http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html">Fama/French Data Library</a>.
 The <code class="docutils literal notranslate"><span class="pre">get_available_datasets</span></code> function returns a list of all available datasets.</p>
-<pre class="literal-block">In [13]: from pandas_datareader.famafrench import get_available_datasets
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [13]: </span><span class="kn">from</span> <span class="nn">pandas_datareader.famafrench</span> <span class="kn">import</span> <span class="n">get_available_datasets</span>
 
-In [14]: import pandas_datareader.data as web
+<span class="gp">In [14]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
-In [15]: len(get_available_datasets())
-Out[15]: 295
+<span class="gp">In [15]: </span><span class="nb">len</span><span class="p">(</span><span class="n">get_available_datasets</span><span class="p">())</span>
+<span class="gh">Out[15]: </span><span class="go">295</span>
 
-In [16]: ds = web.DataReader('5_Industry_Portfolios', 'famafrench')
+<span class="gp">In [16]: </span><span class="n">ds</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;5_Industry_Portfolios&#39;</span><span class="p">,</span> <span class="s1">&#39;famafrench&#39;</span><span class="p">)</span>
 
-In [17]: print(ds['DESCR'])
-5 Industry Portfolios
----------------------
+<span class="gp">In [17]: </span><span class="nb">print</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;DESCR&#39;</span><span class="p">])</span>
+<span class="go">5 Industry Portfolios</span>
+<span class="gt">---------------------</span>
 
-This file was created by CMPT_IND_RETS using the 201909 CRSP database. It contains value- and equal-weighted returns for 5 industry portfolios. The portfolios are constructed at the end of June. The annual returns are from January to December. Missing data are indicated by -99.99 or -999. Copyright 2019 Kenneth R. French
+<span class="n">This</span> <span class="n">file</span> <span class="n">was</span> <span class="n">created</span> <span class="n">by</span> <span class="n">CMPT_IND_RETS</span> <span class="n">using</span> <span class="n">the</span> <span class="mi">201910</span> <span class="n">CRSP</span> <span class="n">database</span><span class="o">.</span> <span class="n">It</span> <span class="n">contains</span> <span class="n">value</span><span class="o">-</span> <span class="ow">and</span> <span class="n">equal</span><span class="o">-</span><span class="n">weighted</span> <span class="n">returns</span> <span class="k">for</span> <span class="mi">5</span> <span class="n">industry</span> <span class="n">portfolios</span><span class="o">.</span> <span class="n">The</span> <span class="n">portfolios</span> <span class="n">are</span> <span class="n">constructed</span> <span class="n">at</span> <span class="n">the</span> <span class="n">end</span> <span class="n">of</span> <span class="n">June</span><span class="o">.</span> <span class="n">The</span> <span class="n">annual</span> <span class="n">returns</span> <span class="n">are</span> <span class="kn">from</span> <span class="nn">January</span> <span class="n">to</span> <span class="n">December</span><span class="o">.</span> <span class="n">Missing</span> <span class="n">data</span> <span class="n">are</span> <span class="n">indicated</span> <span class="n">by</span> <span class="o">-</span><span class="mf">99.99</span> <span class="ow">or</span> <span class="o">-</span><span class="mf">999.</span> <span class="n">Copyright</span> <span class="mi">2019</span> <span class="n">Kenneth</span> <span class="n">R</span><span class="o">.</span> <span class="n">French</span>
 
-  0 : Average Value Weighted Returns -- Monthly (59 rows x 5 cols)
-  1 : Average Equal Weighted Returns -- Monthly (59 rows x 5 cols)
-  2 : Average Value Weighted Returns -- Annual (5 rows x 5 cols)
-  3 : Average Equal Weighted Returns -- Annual (5 rows x 5 cols)
-  4 : Number of Firms in Portfolios (59 rows x 5 cols)
-  5 : Average Firm Size (59 rows x 5 cols)
-  6 : Sum of BE / Sum of ME (6 rows x 5 cols)
-  7 : Value-Weighted Average of BE/ME (6 rows x 5 cols)
+<span class="g g-Whitespace">  </span><span class="mi">0</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Value</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Monthly</span> <span class="p">(</span><span class="mi">59</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">1</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Equal</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Monthly</span> <span class="p">(</span><span class="mi">59</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">2</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Value</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Annual</span> <span class="p">(</span><span class="mi">5</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">3</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Equal</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Annual</span> <span class="p">(</span><span class="mi">5</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="nn">  4 : Number of Firms</span> in <span class="ni">Portfolios </span><span class="nt">(59 rows x 5 cols)</span>
+<span class="g g-Whitespace">  </span><span class="mi">5</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Firm</span> <span class="n">Size</span> <span class="p">(</span><span class="mi">59</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">6</span> <span class="p">:</span> <span class="n">Sum</span> <span class="n">of</span> <span class="n">BE</span> <span class="o">/</span> <span class="n">Sum</span> <span class="n">of</span> <span class="n">ME</span> <span class="p">(</span><span class="mi">6</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">7</span> <span class="p">:</span> <span class="n">Value</span><span class="o">-</span><span class="n">Weighted</span> <span class="n">Average</span> <span class="n">of</span> <span class="n">BE</span><span class="o">/</span><span class="n">ME</span> <span class="p">(</span><span class="mi">6</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
 
-In [18]: ds[4].head()
-Out[18]: 
-         Cnsmr  Manuf  HiTec  Hlth   Other
-Date                                      
-2014-11    560    673    755    525   1101
-2014-12    556    671    747    524   1094
-2015-01    553    669    741    521   1090
-2015-02    549    665    736    518   1085
-2015-03    546    662    732    515   1078</pre>
+<span class="gp">In [18]: </span><span class="n">ds</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[18]: </span><span class="go"></span>
+<span class="go">         Cnsmr  Manuf  HiTec  Hlth   Other</span>
+<span class="go">Date                                      </span>
+<span class="go">2014-12    556    671    747    524   1094</span>
+<span class="go">2015-01    553    669    741    521   1090</span>
+<span class="go">2015-02    549    665    736    518   1085</span>
+<span class="go">2015-03    546    662    732    515   1078</span>
+<span class="go">2015-04    545    662    727    512   1071</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="world-bank">
 <span id="remote-data-wb"></span><h2>World Bank<a class="headerlink" href="#world-bank" title="Permalink to this headline">¶</a></h2>
@@ -724,49 +726,51 @@ indicators, or a single ‘bad’ (#4 above) country code).</p>
 You have to specify OECD’s data set code.</p>
 <p>To confirm data set code, access to <code class="docutils literal notranslate"><span class="pre">each</span> <span class="pre">data</span> <span class="pre">-&gt;</span> <span class="pre">Export</span> <span class="pre">-&gt;</span> <span class="pre">SDMX</span> <span class="pre">Query</span></code>. Following
 example is to download ‘Trade Union Density’ data which set code is ‘TUD’.</p>
-<pre class="literal-block">In [19]: import pandas_datareader.data as web
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [19]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
-In [20]: import datetime
+<span class="gp">In [20]: </span><span class="kn">import</span> <span class="nn">datetime</span>
 
-In [21]: df = web.DataReader('TUD', 'oecd')
+<span class="gp">In [21]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;TUD&#39;</span><span class="p">,</span> <span class="s1">&#39;oecd&#39;</span><span class="p">)</span>
 
-In [22]: df.columns
-Out[22]: 
-MultiIndex([( 'Hungary', 'Administrative data',            'Employees'),
-            ( 'Hungary', 'Administrative data',        'Union members'),
-            ( 'Hungary', 'Administrative data', 'Trade union  density'),
-            ( 'Hungary',         'Survey data',            'Employees'),
-            ( 'Hungary',         'Survey data',        'Union members'),
-            ( 'Hungary',         'Survey data', 'Trade union  density'),
-            (  'Mexico', 'Administrative data',            'Employees'),
-            (  'Mexico', 'Administrative data',        'Union members'),
-            (  'Mexico', 'Administrative data', 'Trade union  density'),
-            (  'Mexico',         'Survey data',            'Employees'),
-            ...
-            ('Portugal', 'Administrative data', 'Trade union  density'),
-            ('Portugal',         'Survey data',            'Employees'),
-            ('Portugal',         'Survey data',        'Union members'),
-            ('Portugal',         'Survey data', 'Trade union  density'),
-            ( 'Germany', 'Administrative data',            'Employees'),
-            ( 'Germany', 'Administrative data',        'Union members'),
-            ( 'Germany', 'Administrative data', 'Trade union  density'),
-            ( 'Germany',         'Survey data',            'Employees'),
-            ( 'Germany',         'Survey data',        'Union members'),
-            ( 'Germany',         'Survey data', 'Trade union  density')],
-           names=['Country', 'Source', 'Series'], length=216)
+<span class="gp">In [22]: </span><span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<span class="gh">Out[22]: </span><span class="go"></span>
+<span class="go">MultiIndex([( &#39;Hungary&#39;, &#39;Administrative data&#39;,            &#39;Employees&#39;),</span>
+<span class="go">            ( &#39;Hungary&#39;, &#39;Administrative data&#39;,        &#39;Union members&#39;),</span>
+<span class="go">            ( &#39;Hungary&#39;, &#39;Administrative data&#39;, &#39;Trade union  density&#39;),</span>
+<span class="go">            ( &#39;Hungary&#39;,         &#39;Survey data&#39;,            &#39;Employees&#39;),</span>
+<span class="go">            ( &#39;Hungary&#39;,         &#39;Survey data&#39;,        &#39;Union members&#39;),</span>
+<span class="go">            ( &#39;Hungary&#39;,         &#39;Survey data&#39;, &#39;Trade union  density&#39;),</span>
+<span class="go">            (  &#39;Mexico&#39;, &#39;Administrative data&#39;,            &#39;Employees&#39;),</span>
+<span class="go">            (  &#39;Mexico&#39;, &#39;Administrative data&#39;,        &#39;Union members&#39;),</span>
+<span class="go">            (  &#39;Mexico&#39;, &#39;Administrative data&#39;, &#39;Trade union  density&#39;),</span>
+<span class="go">            (  &#39;Mexico&#39;,         &#39;Survey data&#39;,            &#39;Employees&#39;),</span>
+<span class="go">            ...</span>
+<span class="go">            (&#39;Portugal&#39;, &#39;Administrative data&#39;, &#39;Trade union  density&#39;),</span>
+<span class="go">            (&#39;Portugal&#39;,         &#39;Survey data&#39;,            &#39;Employees&#39;),</span>
+<span class="go">            (&#39;Portugal&#39;,         &#39;Survey data&#39;,        &#39;Union members&#39;),</span>
+<span class="go">            (&#39;Portugal&#39;,         &#39;Survey data&#39;, &#39;Trade union  density&#39;),</span>
+<span class="go">            ( &#39;Germany&#39;, &#39;Administrative data&#39;,            &#39;Employees&#39;),</span>
+<span class="go">            ( &#39;Germany&#39;, &#39;Administrative data&#39;,        &#39;Union members&#39;),</span>
+<span class="go">            ( &#39;Germany&#39;, &#39;Administrative data&#39;, &#39;Trade union  density&#39;),</span>
+<span class="go">            ( &#39;Germany&#39;,         &#39;Survey data&#39;,            &#39;Employees&#39;),</span>
+<span class="go">            ( &#39;Germany&#39;,         &#39;Survey data&#39;,        &#39;Union members&#39;),</span>
+<span class="go">            ( &#39;Germany&#39;,         &#39;Survey data&#39;, &#39;Trade union  density&#39;)],</span>
+<span class="go">           names=[&#39;Country&#39;, &#39;Source&#39;, &#39;Series&#39;], length=216)</span>
 
-In [23]: df[['Japan', 'United States']]
-Out[23]: 
-Country                  Japan                ... United States                     
-Source     Administrative data                ...   Survey data                     
-Series               Employees Union members  ... Union members Trade union  density
-Year                                          ...                                   
-2015-01-01             42090.0       12520.0  ...       17717.0                 19.5
-2016-01-01             43010.0       12418.0  ...       16996.0                 17.4
-2017-01-01             43830.0       12343.0  ...       16975.0                 17.0
-2018-01-01             45650.0       12227.0  ...       17002.0                 16.2
+<span class="gp">In [23]: </span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Japan&#39;</span><span class="p">,</span> <span class="s1">&#39;United States&#39;</span><span class="p">]]</span>
+<span class="gh">Out[23]: </span><span class="go"></span>
+<span class="go">Country                  Japan                ... United States                     </span>
+<span class="go">Source     Administrative data                ...   Survey data                     </span>
+<span class="go">Series               Employees Union members  ... Union members Trade union  density</span>
+<span class="go">Year                                          ...                                   </span>
+<span class="go">2015-01-01             42090.0       12520.0  ...       17717.0                 19.5</span>
+<span class="go">2016-01-01             43010.0       12418.0  ...       16996.0                 17.4</span>
+<span class="go">2017-01-01             43830.0       12343.0  ...       16975.0                 17.0</span>
+<span class="go">2018-01-01             45650.0       12227.0  ...       17002.0                 16.2</span>
 
-[4 rows x 12 columns]</pre>
+<span class="go">[4 rows x 12 columns]</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="eurostat">
 <span id="remote-data-eurostat"></span><h2>Eurostat<a class="headerlink" href="#eurostat" title="Permalink to this headline">¶</a></h2>
@@ -855,18 +859,18 @@ available. More information on the <a class="reference external" href="http://ww
 
 <span class="gp">In [32]: </span><span class="n">f</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 <span class="gh">Out[32]: </span><span class="go"></span>
-<span class="go">                Open      High       Low     Close      Volume</span>
-<span class="go">Date                                                          </span>
-<span class="go">2019-11-26  28080.75  28146.02  28042.21  28121.68         NaN</span>
-<span class="go">2019-11-25  27917.77  28068.69  27917.77  28066.47  73254149.0</span>
-<span class="go">2019-11-22  27831.23  27898.46  27773.98  27875.62  62664563.0</span>
-<span class="go">2019-11-21  27820.28  27828.33  27708.34  27766.29  64367510.0</span>
-<span class="go">2019-11-20  27879.55  27897.28  27675.28  27821.09  78681691.0</span>
-<span class="go">2019-11-19  28079.76  28090.21  27894.52  27934.02  73002435.0</span>
-<span class="go">2019-11-18  27993.22  28040.97  27969.24  28036.22  70233796.0</span>
-<span class="go">2019-11-15  27843.54  28004.89  27843.54  28004.89  91951930.0</span>
-<span class="go">2019-11-14  27757.20  27800.71  27676.97  27781.96  72440967.0</span>
-<span class="go">2019-11-13  27622.04  27806.40  27587.20  27783.59  74583182.0</span>
+<span class="go">                Open      High       Low     Close       Volume</span>
+<span class="go">Date                                                           </span>
+<span class="go">2019-12-03  27501.98  27524.74  27325.13  27502.81          NaN</span>
+<span class="go">2019-12-02  28109.74  28109.84  27782.35  27783.04   73186531.0</span>
+<span class="go">2019-11-29  28103.16  28119.51  28042.53  28051.41   45565528.0</span>
+<span class="go">2019-11-27  28156.47  28174.97  28075.23  28164.00   60320818.0</span>
+<span class="go">2019-11-26  28080.75  28146.02  28042.21  28121.68  125691057.0</span>
+<span class="go">2019-11-25  27917.77  28068.69  27917.77  28066.47   73254149.0</span>
+<span class="go">2019-11-22  27831.23  27898.46  27773.98  27875.62   62664563.0</span>
+<span class="go">2019-11-21  27820.28  27828.33  27708.34  27766.29   64367510.0</span>
+<span class="go">2019-11-20  27879.55  27897.28  27675.28  27821.09   78681691.0</span>
+<span class="go">2019-11-19  28079.76  28090.21  27894.52  27934.02   73002435.0</span>
 </pre></div>
 </div>
 </div>
