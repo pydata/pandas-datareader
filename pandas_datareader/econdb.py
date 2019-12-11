@@ -23,7 +23,7 @@ class EcondbReader(_BaseReader):
 
     def read(self):
         """ read one data from specified URL """
-        results = requests.get(self.url).json()["results"]
+        results = self.session.get(self.url).json()["results"]
         df = pd.DataFrame({"dates": []}).set_index("dates")
 
         if self._show == "labels":
