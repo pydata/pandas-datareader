@@ -197,13 +197,13 @@ ENIGMA_API_KEY is read.</p></li>
 <p class="rubric">Examples</p>
 <p>Download current snapshot for the following Florida Inspections Dataset:
 <a class="reference external" href="https://public.enigma.com/datasets/bedaf052-5fcd-4758-8d27-048ce8746c6a">https://public.enigma.com/datasets/bedaf052-5fcd-4758-8d27-048ce8746c6a</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="k">as</span> <span class="nn">pdr</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="k">as</span> <span class="nn">pdr</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_enigma</span><span class="p">(</span><span class="s1">&#39;bedaf052-5fcd-4758-8d27-048ce8746c6a&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>In the event that ENIGMA_API_KEY does not exist in your env, the key can
 be supplied as the second argument or as the keyword argument <cite>api_key</cite></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">EnigmaReader</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="s1">&#39;bedaf052-5fcd-4758-8d27-048ce8746c6a&#39;</span><span class="p">,</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">EnigmaReader</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="s1">&#39;bedaf052-5fcd-4758-8d27-048ce8746c6a&#39;</span><span class="p">,</span>
 <span class="gp">... </span>                  <span class="n">api_key</span><span class="o">=</span><span class="s1">&#39;INSERT_API_KEY&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 </pre></div>
 </div>
