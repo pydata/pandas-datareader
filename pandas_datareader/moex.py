@@ -3,7 +3,7 @@ import datetime as dt
 import pandas as pd
 
 from pandas_datareader.base import _DailyBaseReader
-from pandas_datareader.compat import StringIO, binary_type, concat, is_list_like
+from pandas_datareader.compat import StringIO, binary_type, concat, is_list_like, PY3
 
 
 class MoexReader(_DailyBaseReader):
@@ -181,7 +181,11 @@ class MoexReader(_DailyBaseReader):
                             break
 
                 if len(out_list) > 0:
-                    str_io = StringIO("\r\n".join(out_list))
+                    if PY3:
+                        str_io = StringIO("\r\n".join(out_list))
+                    else:
+                        str_io = StringIO("\r\n".join(out_list).encode('utf-8'))
+
                     dfs.append(self._read_lines(str_io))  # add a new DataFrame
         finally:
             self.close()
