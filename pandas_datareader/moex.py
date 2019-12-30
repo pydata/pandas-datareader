@@ -48,7 +48,7 @@ class MoexReader(_DailyBaseReader):
         elif not is_list_like(self.symbols):
             self.symbols = [self.symbols]
 
-        self.__engines, self.__markets = {}, {}  # dicts for engines and markets
+        self.__markets_n_engines = {}  # dicts for tuples of engines and markets
 
     __url_metadata = "https://iss.moex.com/iss/securities/{symbol}.csv"
     __url_data = (
@@ -60,7 +60,7 @@ class MoexReader(_DailyBaseReader):
     def url(self):
         """Return a list of API URLs per symbol"""
 
-        if not self.__engines or not self.__markets:
+        if not self.__markets_n_engines:
             raise Exception(
                 "Accessing url property before invocation "
                 "of read() or _get_metadata() methods"
@@ -68,9 +68,8 @@ class MoexReader(_DailyBaseReader):
 
         return [
             self.__url_data.format(
-                engine=self.__engines[s], market=self.__markets[s], symbol=s
-            )
-            for s in self.symbols
+                engine=engine, market=market, symbol=s
+            ) for s in self.symbols if s in self.__markets_n_engines for market, engine in self.__markets_n_engines[s]
         ]
 
     def _get_params(self, start):
@@ -81,13 +80,13 @@ class MoexReader(_DailyBaseReader):
             "iss.dp": "point",
             "iss.df": "%Y-%m-%d",
             "iss.tf": "%H:%M:%S",
-            "iss.dft": "%Y-%m-%d %H:%M:%S",
+            "iss.dtf": "%Y-%m-%d %H:%M:%S",
             "iss.json": "extended",
             "callback": "JSON_CALLBACK",
             "from": start,
             "till": self.end_dt.strftime("%Y-%m-%d"),
             "limit": 100,
-            "start": 1,
+            "start": 0,
             "sort_order": "TRADEDATE",
             "sort_order_desc": "asc",
         }
@@ -96,7 +95,7 @@ class MoexReader(_DailyBaseReader):
     def _get_metadata(self):
         """Get markets and engines for the given symbols"""
 
-        markets, engines = {}, {}
+        markets_n_engines = {}
 
         for symbol in self.symbols:
             response = self._get_response(self.__url_metadata.format(symbol=symbol))
@@ -118,9 +117,14 @@ class MoexReader(_DailyBaseReader):
                     continue
                 if get_data and s != "":
                     fields = s.split(";")
-                    markets[symbol], engines[symbol] = fields[5], fields[7]
-                    break
-            if symbol not in markets or symbol not in engines:
+
+                    if symbol not in markets_n_engines:
+                        markets_n_engines[symbol] = list()
+
+                    markets_n_engines[symbol].append(
+                        (fields[5], fields[7])
+                    )  # market and engine
+            if symbol not in markets_n_engines:
                 raise IOError(
                     "{} request returned no metadata: {}\n"
                     "Typo in the security symbol `{}`?".format(
@@ -129,17 +133,20 @@ class MoexReader(_DailyBaseReader):
                         symbol,
                     )
                 )
-        return markets, engines
+            if symbol in markets_n_engines:
+                markets_n_engines[symbol] = list(set(markets_n_engines[symbol]))
+        return markets_n_engines
 
     def read(self):
         """Read data"""
 
         try:
-            self.__markets, self.__engines = self._get_metadata()
+            self.__markets_n_engines = self._get_metadata()
+
             urls = self.url  # generate urls per symbols
             dfs = []  # an array of pandas dataframes per symbol to concatenate
 
-            for i in range(len(self.symbols)):
+            for i in range(len(urls)):
                 out_list = []
                 date_column = None
 
@@ -155,7 +162,7 @@ class MoexReader(_DailyBaseReader):
                         start_str = self.start.strftime("%Y-%m-%d")
                         start = self.start
 
-                    if start >= self.end or start >= dt.date.today():
+                    if start > self.end or start > dt.date.today():
                         break
 
                     params = self._get_params(start_str)
@@ -172,12 +179,16 @@ class MoexReader(_DailyBaseReader):
                         out_list += strings_out[1:]  # remove a CSV head line
                         if len(strings_out) < 100:  # all data recevied - break
                             break
-                str_io = StringIO("\r\n".join(out_list))
-                dfs.append(self._read_lines(str_io))  # add a new DataFrame
+
+                if len(out_list) > 0:
+                    str_io = StringIO("\r\n".join(out_list))
+                    dfs.append(self._read_lines(str_io))  # add a new DataFrame
         finally:
             self.close()
 
-        if len(dfs) > 1:
+        if len(dfs) == 0:
+            raise IOError("{} returned no data; check URL for invalid or correct a date interval".format(self.__class__.__name__))
+        elif len(dfs) > 1:
             return concat(dfs, axis=0, join="outer", sort=True)
         else:
             return dfs[0]
