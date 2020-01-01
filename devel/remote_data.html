@@ -442,11 +442,11 @@ Econdb database of time series aggregated into datasets.</p>
 <span class="gh">Out[4]: </span><span class="go"></span>
 <span class="go">               values</span>
 <span class="go">TIME_PERIOD          </span>
-<span class="go">2015-01-01   17277580</span>
 <span class="go">2015-04-01   17405668</span>
 <span class="go">2015-07-01   17463222</span>
 <span class="go">2015-10-01   17468902</span>
 <span class="go">2016-01-01   17556840</span>
+<span class="go">2016-04-01   17639416</span>
 </pre></div>
 </div>
 </div>
@@ -556,24 +556,24 @@ The <code class="docutils literal notranslate"><span class="pre">get_available_d
 
 <span class="n">This</span> <span class="n">file</span> <span class="n">was</span> <span class="n">created</span> <span class="n">by</span> <span class="n">CMPT_IND_RETS</span> <span class="n">using</span> <span class="n">the</span> <span class="mi">201911</span> <span class="n">CRSP</span> <span class="n">database</span><span class="o">.</span> <span class="n">It</span> <span class="n">contains</span> <span class="n">value</span><span class="o">-</span> <span class="ow">and</span> <span class="n">equal</span><span class="o">-</span><span class="n">weighted</span> <span class="n">returns</span> <span class="k">for</span> <span class="mi">5</span> <span class="n">industry</span> <span class="n">portfolios</span><span class="o">.</span> <span class="n">The</span> <span class="n">portfolios</span> <span class="n">are</span> <span class="n">constructed</span> <span class="n">at</span> <span class="n">the</span> <span class="n">end</span> <span class="n">of</span> <span class="n">June</span><span class="o">.</span> <span class="n">The</span> <span class="n">annual</span> <span class="n">returns</span> <span class="n">are</span> <span class="kn">from</span> <span class="nn">January</span> <span class="n">to</span> <span class="n">December</span><span class="o">.</span> <span class="n">Missing</span> <span class="n">data</span> <span class="n">are</span> <span class="n">indicated</span> <span class="n">by</span> <span class="o">-</span><span class="mf">99.99</span> <span class="ow">or</span> <span class="o">-</span><span class="mf">999.</span> <span class="n">Copyright</span> <span class="mi">2019</span> <span class="n">Kenneth</span> <span class="n">R</span><span class="o">.</span> <span class="n">French</span>
 
-<span class="g g-Whitespace">  </span><span class="mi">0</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Value</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Monthly</span> <span class="p">(</span><span class="mi">60</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
-<span class="g g-Whitespace">  </span><span class="mi">1</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Equal</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Monthly</span> <span class="p">(</span><span class="mi">60</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
-<span class="g g-Whitespace">  </span><span class="mi">2</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Value</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Annual</span> <span class="p">(</span><span class="mi">5</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
-<span class="g g-Whitespace">  </span><span class="mi">3</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Equal</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Annual</span> <span class="p">(</span><span class="mi">5</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
-<span class="nn">  4 : Number of Firms</span> in <span class="ni">Portfolios </span><span class="nt">(60 rows x 5 cols)</span>
-<span class="g g-Whitespace">  </span><span class="mi">5</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Firm</span> <span class="n">Size</span> <span class="p">(</span><span class="mi">60</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
-<span class="g g-Whitespace">  </span><span class="mi">6</span> <span class="p">:</span> <span class="n">Sum</span> <span class="n">of</span> <span class="n">BE</span> <span class="o">/</span> <span class="n">Sum</span> <span class="n">of</span> <span class="n">ME</span> <span class="p">(</span><span class="mi">6</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
-<span class="g g-Whitespace">  </span><span class="mi">7</span> <span class="p">:</span> <span class="n">Value</span><span class="o">-</span><span class="n">Weighted</span> <span class="n">Average</span> <span class="n">of</span> <span class="n">BE</span><span class="o">/</span><span class="n">ME</span> <span class="p">(</span><span class="mi">6</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">0</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Value</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Monthly</span> <span class="p">(</span><span class="mi">59</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">1</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Equal</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Monthly</span> <span class="p">(</span><span class="mi">59</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">2</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Value</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Annual</span> <span class="p">(</span><span class="mi">4</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">3</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Equal</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Annual</span> <span class="p">(</span><span class="mi">4</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="nn">  4 : Number of Firms</span> in <span class="ni">Portfolios </span><span class="nt">(59 rows x 5 cols)</span>
+<span class="g g-Whitespace">  </span><span class="mi">5</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Firm</span> <span class="n">Size</span> <span class="p">(</span><span class="mi">59</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">6</span> <span class="p">:</span> <span class="n">Sum</span> <span class="n">of</span> <span class="n">BE</span> <span class="o">/</span> <span class="n">Sum</span> <span class="n">of</span> <span class="n">ME</span> <span class="p">(</span><span class="mi">5</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">7</span> <span class="p">:</span> <span class="n">Value</span><span class="o">-</span><span class="n">Weighted</span> <span class="n">Average</span> <span class="n">of</span> <span class="n">BE</span><span class="o">/</span><span class="n">ME</span> <span class="p">(</span><span class="mi">5</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
 
 <span class="gp">In [18]: </span><span class="n">ds</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 <span class="gh">Out[18]: </span><span class="go"></span>
 <span class="go">         Cnsmr  Manuf  HiTec  Hlth   Other</span>
 <span class="go">Date                                      </span>
-<span class="go">2014-12    555    671    747    524   1094</span>
 <span class="go">2015-01    552    669    741    521   1090</span>
 <span class="go">2015-02    548    665    736    518   1085</span>
 <span class="go">2015-03    545    662    732    515   1078</span>
 <span class="go">2015-04    544    662    727    512   1071</span>
+<span class="go">2015-05    542    661    722    508   1070</span>
 </pre></div>
 </div>
 </div>
@@ -763,12 +763,11 @@ example is to download ‘Trade Union Density’ data which set code is ‘TUD�
 <span class="go">Source     Administrative data                ...   Survey data                     </span>
 <span class="go">Series               Employees Union members  ... Union members Trade union  density</span>
 <span class="go">Year                                          ...                                   </span>
-<span class="go">2015-01-01             42090.0       12520.0  ...       17717.0                 19.5</span>
 <span class="go">2016-01-01             43010.0       12418.0  ...       16996.0                 17.4</span>
 <span class="go">2017-01-01             43830.0       12343.0  ...       16975.0                 17.0</span>
 <span class="go">2018-01-01             45650.0       12227.0  ...       17002.0                 16.2</span>
 
-<span class="go">[4 rows x 12 columns]</span>
+<span class="go">[3 rows x 12 columns]</span>
 </pre></div>
 </div>
 </div>
@@ -791,12 +790,11 @@ example is to download ‘Trade Union Density’ data which set code is ‘TUD�
 <span class="go">GEO                                                                                      Austria  ... United Kingdom</span>
 <span class="go">FREQ                                                                                      Annual  ...         Annual</span>
 <span class="go">TIME_PERIOD                                                                                       ...               </span>
-<span class="go">2015-01-01                                                 7.0                                    ...            NaN</span>
 <span class="go">2016-01-01                                                 7.0                                    ...            NaN</span>
 <span class="go">2017-01-01                                                 7.0                                    ...            NaN</span>
 <span class="go">2018-01-01                                                 4.0                                    ...            NaN</span>
 
-<span class="go">[4 rows x 264 columns]</span>
+<span class="go">[3 rows x 264 columns]</span>
 </pre></div>
 </div>
 </div>
@@ -861,16 +859,16 @@ available. More information on the <a class="reference external" href="http://ww
 <span class="gh">Out[32]: </span><span class="go"></span>
 <span class="go">                Open      High       Low     Close       Volume</span>
 <span class="go">Date                                                           </span>
-<span class="go">2019-12-24  28572.57  28576.80  28503.21  28515.45          NaN</span>
-<span class="go">2019-12-23  28491.78  28582.49  28491.78  28551.53   67936623.0</span>
+<span class="go">2019-12-31  28414.64  28547.35  28376.49  28538.44          NaN</span>
+<span class="go">2019-12-30  28654.76  28664.69  28428.98  28462.14   55204426.0</span>
+<span class="go">2019-12-27  28675.34  28701.66  28608.98  28645.26   59172869.0</span>
+<span class="go">2019-12-26  28539.46  28624.10  28535.15  28621.39   49393283.0</span>
+<span class="go">2019-12-24  28572.57  28576.80  28503.21  28515.45   25123910.0</span>
+<span class="go">2019-12-23  28491.78  28582.49  28491.78  28551.53   67955055.0</span>
 <span class="go">2019-12-20  28608.64  28608.64  28445.60  28455.09  284861411.0</span>
 <span class="go">2019-12-19  28278.31  28381.48  28278.24  28376.96   89718975.0</span>
 <span class="go">2019-12-18  28291.44  28323.25  28239.28  28239.28   87293380.0</span>
 <span class="go">2019-12-17  28221.75  28328.63  28220.56  28267.16   85978034.0</span>
-<span class="go">2019-12-16  28191.67  28337.49  28191.67  28235.89   91802249.0</span>
-<span class="go">2019-12-13  28123.64  28290.73  28028.32  28135.38   72738142.0</span>
-<span class="go">2019-12-12  27898.34  28224.95  27859.87  28132.05   80090242.0</span>
-<span class="go">2019-12-11  27867.31  27925.50  27801.80  27911.30   63653881.0</span>
 </pre></div>
 </div>
 </div>
