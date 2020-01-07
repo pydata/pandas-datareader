@@ -3,7 +3,7 @@ import datetime as dt
 import pandas as pd
 
 from pandas_datareader.base import _DailyBaseReader
-from pandas_datareader.compat import StringIO, binary_type, concat, is_list_like, PY3
+from pandas_datareader.compat import StringIO, binary_type, concat, is_list_like
 
 
 class MoexReader(_DailyBaseReader):
@@ -69,7 +69,8 @@ class MoexReader(_DailyBaseReader):
         return [
             self.__url_data.format(
                 engine=engine, market=market, symbol=s
-            ) for s in self.symbols if s in self.__markets_n_engines for market, engine in self.__markets_n_engines[s]
+            ) for s in self.symbols if s in self.__markets_n_engines
+            for market, engine in self.__markets_n_engines[s]
         ]
 
     def _get_params(self, start):
@@ -181,17 +182,16 @@ class MoexReader(_DailyBaseReader):
                             break
 
                 if len(out_list) > 0:
-                    if PY3:
-                        str_io = StringIO("\r\n".join(out_list))
-                    else:
-                        str_io = StringIO("\r\n".join(out_list).encode('utf-8'))
-
+                    str_io = StringIO("\r\n".join(out_list))
                     dfs.append(self._read_lines(str_io))  # add a new DataFrame
         finally:
             self.close()
 
         if len(dfs) == 0:
-            raise IOError("{} returned no data; check URL for invalid or correct a date interval".format(self.__class__.__name__))
+            raise IOError(
+                "{} returned no data; "
+                "check URL or correct a date".format(self.__class__.__name__)
+            )
         elif len(dfs) > 1:
             return concat(dfs, axis=0, join="outer", sort=True)
         else:
