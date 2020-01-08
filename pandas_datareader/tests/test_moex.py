@@ -15,3 +15,12 @@ class TestMoex(object):
             assert "SECID" in df.columns
         except HTTPError as e:
             pytest.skip(e)
+
+    def test_moex_stock_datareader(self):
+        try:
+            df = web.DataReader(
+                ["GAZP", "SIBN"], "moex", start="2019-12-26", end="2019-12-26"
+            )
+            assert df.size == 720
+        except HTTPError as e:
+            pytest.skip(e)
