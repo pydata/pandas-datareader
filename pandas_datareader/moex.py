@@ -67,9 +67,9 @@ class MoexReader(_DailyBaseReader):
             )
 
         return [
-            self.__url_data.format(
-                engine=engine, market=market, symbol=s
-            ) for s in self.symbols if s in self.__markets_n_engines
+            self.__url_data.format(engine=engine, market=market, symbol=s)
+            for s in self.symbols
+            if s in self.__markets_n_engines
             for market, engine in self.__markets_n_engines[s]
         ]
 

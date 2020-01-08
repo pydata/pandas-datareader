@@ -1,5 +1,7 @@
 from distutils.version import LooseVersion
-import sys
+from functools import reduce
+from io import StringIO
+from urllib.error import HTTPError
 
 import pandas as pd
 from pandas.api.types import is_list_like, is_number
@@ -28,6 +30,7 @@ __all__ = [
     "lmap",
     "lrange",
     "concat",
+    "reduce",
 ]
 
 
@@ -43,12 +46,8 @@ def get_filepath_or_buffer(filepath_or_buffer, encoding=None, compression=None):
     )
 
 
-from urllib.error import HTTPError
-from functools import reduce
-
 string_types = (str,)
 binary_type = bytes
-from io import StringIO
 
 
 def str_to_bytes(s, encoding=None):
