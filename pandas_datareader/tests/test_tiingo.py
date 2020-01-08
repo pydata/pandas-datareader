@@ -3,7 +3,6 @@ import os
 import pandas as pd
 import pytest
 
-from pandas_datareader.compat import PY3
 from pandas_datareader.tiingo import (
     TiingoDailyReader,
     TiingoIEXHistoricalReader,
@@ -64,7 +63,6 @@ def test_tiingo_metadata(symbols):
     assert df.shape[1] == len(symbols)
 
 
-@pytest.mark.skipif(not PY3, reason="test.support missing on Python 2")
 def test_tiingo_no_api_key(symbols):
     from test.support import EnvironmentVarGuard
 
