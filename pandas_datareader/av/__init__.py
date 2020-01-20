@@ -78,7 +78,7 @@ class AlphaVantage(_BaseReader):
                     ".".format(self.symbols)
                 )
             else:
-                raise RemoteDataError()
+                raise RemoteDataError(out)
         df = df[sorted(df.columns)]
         df.columns = [id[3:] for id in df.columns]
         return df
