@@ -108,7 +108,8 @@ class FamaFrenchReader(_BaseReader):
 
         datasets, table_desc = {}, []
         for i, src in enumerate(tables):
-            match = re.search(r"^\s*,", src, re.M)  # the table starts there
+            # Since ",," is sometimes used to mark a comment, we exclude it in this search
+            match = re.search(r"^\s*,[^,]", src, re.M)  # the table starts there
             start = 0 if not match else match.start()
 
             df = read_csv(StringIO("Date" + src[start:]), **params)
