@@ -10,8 +10,6 @@ env:
 matrix:
   fast_finish: true
   include:
-  - python: 2.7
-    env: PANDAS=0.24 NUMPY=1.16
   - python: 3.5
     env: PANDAS=0.21 NUMPY=1.13
   - python: 3.5
@@ -24,6 +22,8 @@ matrix:
     env: PANDAS=0.25 NUMPY=1.17
   - python: 3.7
     env: TEST_TYPE="quandl" PANDAS=0.25 NUMPY=1.17
+  - python: 3.8
+    env: PANDAS=0.25 NUMPY=1.18
     # In allow failures
   - python: 3.7
     env: TEST_TYPE="alpha_vantage" PANDAS=0.25 NUMPY=1.17
