@@ -686,3 +686,23 @@ The Moscow Exchange (MOEX) provides historical data.
    import pandas_datareader.data as web
    f = web.DataReader('USD000UTSTOM', 'moex', start='2017-07-01', end='2017-07-31')
    f.head()
+
+Binance Data
+=========
+The Binance API provides the recent Kline/Candlestick data for cryptocurrency.
+
+
+.. code:: ipython3
+
+    import pandas_datareader as pdr
+    data_binance = pdr.get_data_binance("BNBBTC", limit = 2, interval="ONEMINUTE")
+    data_binance
+
+.. container::
+
+   == ============= ========== ========== ========== ========== =============== ============= ================== ================ =========================== ============================
+   \  Open time     Open       High       Low        Close      Volume          Close time    Quote asset volume Number of trades Taker buy base asset volume Taker buy quote asset volume
+   == ============= ========== ========== ========== ========== =============== ============= ================== ================ =========================== ============================
+   0  1500004800000 0.00005000 0.00005300 0.00001000 0.00004790 663152.00000000 1500004859999 30.55108144        43               559224.00000000             25.65468144
+   1  1500004860000 0.00004000 0.00004600 0.00003500 0.00003503 391775.00000000 1500004919999 17.31214051        45               389275.00000000             17.22462551
+   == ============= ========== ========== ========== ========== =============== ============= ================== ================ =========================== ============================
