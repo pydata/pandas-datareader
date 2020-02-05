@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Remote Data Access &mdash; pandas-datareader 0.9.0dev0+29.g8f10b42 documentation</title>
+  <title>Remote Data Access &mdash; pandas-datareader 0.9.0dev0+32.gcbdd55d documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.9.0dev0 (+29, 8f10b42)
+                0.9.0dev0 (+32, cbdd55d)
               </div>
             
           
@@ -109,7 +109,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#oecd">OECD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#eurostat">Eurostat</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tsp-fund-data">TSP Fund Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#thrift-savings-plan-tsp-fund-data">Thrift Savings Plan (TSP) Fund Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nasdaq-trader-symbol-definitions">Nasdaq Trader Symbol Definitions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#stooq-index-data">Stooq Index Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#moex-data">MOEX Data</a></li>
@@ -794,13 +794,13 @@ example is to download ‘Trade Union Density’ data which set code is ‘TUD�
 <span class="go">2017-01-01                                                 7.0                                    ...            NaN</span>
 <span class="go">2018-01-01                                                 4.0                                    ...            NaN</span>
 
-<span class="go">[3 rows x 264 columns]</span>
+<span class="go">[3 rows x 272 columns]</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="tsp-fund-data">
-<span id="remote-data-tsp"></span><h2>TSP Fund Data<a class="headerlink" href="#tsp-fund-data" title="Permalink to this headline">¶</a></h2>
-<p>Download mutual fund index prices for the TSP.</p>
+<div class="section" id="thrift-savings-plan-tsp-fund-data">
+<span id="remote-data-tsp"></span><h2>Thrift Savings Plan (TSP) Fund Data<a class="headerlink" href="#thrift-savings-plan-tsp-fund-data" title="Permalink to this headline">¶</a></h2>
+<p>Download mutual fund index prices for the Thrift Savings Plan (TSP).</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [27]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.tsp</span> <span class="k">as</span> <span class="nn">tsp</span>
 
 <span class="gp">In [28]: </span><span class="n">tspreader</span> <span class="o">=</span> <span class="n">tsp</span><span class="o">.</span><span class="n">TSPReader</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s1">&#39;2015-10-1&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2015-12-31&#39;</span><span class="p">)</span>
@@ -859,16 +859,16 @@ available. More information on the <a class="reference external" href="http://ww
 <span class="gh">Out[32]: </span><span class="go"></span>
 <span class="go">                Open      High       Low     Close       Volume</span>
 <span class="go">Date                                                           </span>
-<span class="go">2020-01-31  28813.04  28813.04  28169.53  28256.03          NaN</span>
-<span class="go">2020-01-30  28640.16  28879.71  28489.76  28859.44   84829801.0</span>
+<span class="go">2020-02-04  28696.74  28904.88  28696.74  28807.63          NaN</span>
+<span class="go">2020-02-03  28319.65  28630.39  28319.65  28399.81   87651222.0</span>
+<span class="go">2020-01-31  28813.04  28813.04  28169.53  28256.03  118882160.0</span>
+<span class="go">2020-01-30  28640.16  28879.71  28489.76  28859.44   84876065.0</span>
 <span class="go">2020-01-29  28820.53  28944.24  28728.19  28734.45   80738981.0</span>
 <span class="go">2020-01-28  28594.28  28823.23  28575.75  28722.85   86666750.0</span>
 <span class="go">2020-01-27  28542.49  28671.79  28440.47  28535.80   99290901.0</span>
 <span class="go">2020-01-24  29230.39  29288.79  28843.31  28989.73   97900285.0</span>
 <span class="go">2020-01-23  29111.02  29190.47  28966.98  29160.09   84967865.0</span>
 <span class="go">2020-01-22  29263.63  29320.20  29172.26  29186.27   78523146.0</span>
-<span class="go">2020-01-21  29269.05  29341.21  29146.47  29196.04  100433330.0</span>
-<span class="go">2020-01-17  29313.31  29373.62  29289.91  29348.10  119226506.0</span>
 </pre></div>
 </div>
 </div>
