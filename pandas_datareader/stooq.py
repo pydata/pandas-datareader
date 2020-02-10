@@ -55,6 +55,7 @@ class StooqDailyReader(_DailyBaseReader):
                     "uk",
                     "us",
                     "f",
+                    "b",
                 ]:
                     symbol = ".".join([symbol, "US"])
 
