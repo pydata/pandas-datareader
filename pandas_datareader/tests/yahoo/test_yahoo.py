@@ -224,7 +224,7 @@ class TestYahoo(object):
 
     @skip_on_exception(RemoteDataError)
     def test_yahoo_reader_class(self):
-        r = YahooDailyReader("GOOG")
+        r = YahooDailyReader("GOOG", start="JAN-01-2015")
         df = r.read()
 
         assert df.Volume.loc["JAN-02-2015"] == 1447500
