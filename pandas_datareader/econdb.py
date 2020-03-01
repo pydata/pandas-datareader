@@ -37,15 +37,16 @@ class EcondbReader(_BaseReader):
 
         for entry in results:
             series = pd.DataFrame(entry["data"])[["dates", "values"]].set_index("dates")
-
             head = entry["additional_metadata"]
+
             if head != "":  # this additional metadata is not blank
                 series.columns = pd.MultiIndex.from_tuples(
                     [[show_func(x) for x in head.values()]],
                     names=[show_func(x) for x in head.keys()],
                 )
             else:
-                series.rename({"values": entry['ticker']}, inplace=True)
+                series.rename(
+                        columns={"values": entry['ticker']}, inplace=True)
 
             if not df.empty:
                 df = df.join(series, how="outer")
