@@ -14,7 +14,6 @@ PANDAS_0210 = PANDAS_VERSION >= LooseVersion("0.21.0")
 PANDAS_0220 = PANDAS_VERSION >= LooseVersion("0.22.0")
 PANDAS_0230 = PANDAS_VERSION >= LooseVersion("0.23.0")
 
-
 __all__ = [
     "HTTPError",
     "StringIO",

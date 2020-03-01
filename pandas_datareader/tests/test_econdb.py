@@ -48,10 +48,21 @@ class TestEcondb(object):
         us = np.array(
             [175702304, 160507424, 164079728, 167600272, 171320416], dtype=float
         )
+        index = pd.date_range("2008-01-01", "2012-01-01", freq="AS", name="TIME_PERIOD")
+
 
         # check the values coming back are equal
         np.testing.assert_array_equal(df.values[:, 0], jp)
         np.testing.assert_array_equal(df.values[:, 1], us)
+
+        # sometimes the country and variable columns are swapped
+        df = df.swaplevel(2, 1, axis=1)
+        for label, values in [("Japan", jp), ("United States", us)]:
+            expected = pd.Series(
+                values, index=index, name="Total international arrivals"
+            )
+            tm.assert_series_equal(
+                df[label]['Tourism demand surveys']["Total international arrivals"], expected)
 
     def test_bls(self):
         # BLS
@@ -64,3 +75,14 @@ class TestEcondb(object):
         )
 
         assert df.loc["2010-05-01"][0] == 217.3
+
+
+    def test_australia_gdp(self):
+
+        df = web.DataReader(
+            'dataset=ABS_GDP&to=2019-09-01&from=1959-09-01&h=TIME&v=Indicator',
+            'econdb')
+        assert df.loc[
+            '2017-10-01',
+            ('GDP per capita: Current prices - National Accounts',
+             'Seasonally Adjusted', 'AUD')]  == 18329
