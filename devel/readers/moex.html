@@ -176,9 +176,9 @@
             
   <div class="section" id="module-pandas_datareader.moex">
 <span id="moscow-exchange-moex"></span><h1>Moscow Exchange (MOEX)<a class="headerlink" href="#module-pandas_datareader.moex" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="pandas_datareader.moex.MoexReader">
-<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.moex.</code><code class="sig-name descname">MoexReader</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.moex.MoexReader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.moex.</code><code class="sig-name descname">MoexReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.moex.MoexReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a DataFrame of historical stock prices from symbols from Moex</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -200,31 +200,31 @@ single value given for symbol, represents the pause between retries.</p></li>
 <p class="rubric">Notes</p>
 <p>To avoid being penalized by Moex servers, pauses more than 0.1s between
 downloading ‘chunks’ of symbols can be specified.</p>
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.moex.MoexReader.close">
 <code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.moex.MoexReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.moex.MoexReader.default_start_date">
 <em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.moex.MoexReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.moex.MoexReader.params">
 <em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.moex.MoexReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.moex.MoexReader.read">
 <code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.moex.MoexReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.moex.MoexReader.url">
 <em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.moex.MoexReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of API URLs per symbol</p>

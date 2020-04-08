@@ -176,9 +176,9 @@
             
   <div class="section" id="module-pandas_datareader.quandl">
 <span id="quandl"></span><h1>Quandl<a class="headerlink" href="#module-pandas_datareader.quandl" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="pandas_datareader.quandl.QuandlReader">
-<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.quandl.</code><code class="sig-name descname">QuandlReader</code><span class="sig-paren">(</span><em class="sig-param">symbols</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em>, <em class="sig-param">retry_count=3</em>, <em class="sig-param">pause=0.1</em>, <em class="sig-param">session=None</em>, <em class="sig-param">chunksize=25</em>, <em class="sig-param">api_key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.quandl.QuandlReader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.quandl.</code><code class="sig-name descname">QuandlReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">chunksize</span><span class="o">=</span><span class="default_value">25</span></em>, <em class="sig-param"><span class="n">api_key</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.quandl.QuandlReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns DataFrame of historical stock prices from symbol, over date
 range, start to end.</p>
 <div class="versionadded">
@@ -210,31 +210,31 @@ QUANDL_API_KEY is read. The API key is <em>required</em>.</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.quandl.QuandlReader.close">
 <code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.quandl.QuandlReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.quandl.QuandlReader.default_start_date">
 <em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.quandl.QuandlReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.quandl.QuandlReader.params">
 <em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.quandl.QuandlReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.quandl.QuandlReader.read">
 <code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.quandl.QuandlReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.quandl.QuandlReader.url">
 <em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.quandl.QuandlReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>

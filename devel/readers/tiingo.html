@@ -176,9 +176,9 @@
             
   <div class="section" id="module-pandas_datareader.tiingo">
 <span id="tiingo"></span><h1>Tiingo<a class="headerlink" href="#module-pandas_datareader.tiingo" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="pandas_datareader.tiingo.TiingoDailyReader">
-<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.tiingo.</code><code class="sig-name descname">TiingoDailyReader</code><span class="sig-paren">(</span><em class="sig-param">symbols</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em>, <em class="sig-param">retry_count=3</em>, <em class="sig-param">pause=0.1</em>, <em class="sig-param">timeout=30</em>, <em class="sig-param">session=None</em>, <em class="sig-param">freq=None</em>, <em class="sig-param">api_key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.tiingo.TiingoDailyReader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.tiingo.</code><code class="sig-name descname">TiingoDailyReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="o">=</span><span class="default_value">30</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">freq</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">api_key</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.tiingo.TiingoDailyReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Historical daily data from Tiingo on equities, ETFs and mutual funds</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -197,31 +197,31 @@ TIINGO_API_KEY is read. The API key is <em>required</em>.</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.tiingo.TiingoDailyReader.close">
 <code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.tiingo.TiingoDailyReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.tiingo.TiingoDailyReader.default_start_date">
 <em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.tiingo.TiingoDailyReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.tiingo.TiingoDailyReader.params">
 <em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.tiingo.TiingoDailyReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.tiingo.TiingoDailyReader.read">
 <code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.tiingo.TiingoDailyReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data from connector</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.tiingo.TiingoDailyReader.url">
 <em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.tiingo.TiingoDailyReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
@@ -229,9 +229,9 @@ TIINGO_API_KEY is read. The API key is <em>required</em>.</p></li>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="pandas_datareader.tiingo.TiingoQuoteReader">
-<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.tiingo.</code><code class="sig-name descname">TiingoQuoteReader</code><span class="sig-paren">(</span><em class="sig-param">symbols</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em>, <em class="sig-param">retry_count=3</em>, <em class="sig-param">pause=0.1</em>, <em class="sig-param">timeout=30</em>, <em class="sig-param">session=None</em>, <em class="sig-param">freq=None</em>, <em class="sig-param">api_key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.tiingo.TiingoQuoteReader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.tiingo.</code><code class="sig-name descname">TiingoQuoteReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="o">=</span><span class="default_value">30</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">freq</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">api_key</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.tiingo.TiingoQuoteReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read quotes (latest prices) from Tiingo</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -251,31 +251,31 @@ TIINGO_API_KEY is read. The API key is <em>required</em>.</p></li>
 <p class="rubric">Notes</p>
 <p>This is a special case of the daily reader which automatically selected
 the latest data available for each symbol.</p>
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.tiingo.TiingoQuoteReader.close">
 <code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.tiingo.TiingoQuoteReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.tiingo.TiingoQuoteReader.default_start_date">
 <em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.tiingo.TiingoQuoteReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.tiingo.TiingoQuoteReader.params">
 <em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.tiingo.TiingoQuoteReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.tiingo.TiingoQuoteReader.read">
 <code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.tiingo.TiingoQuoteReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data from connector</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.tiingo.TiingoQuoteReader.url">
 <em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.tiingo.TiingoQuoteReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
@@ -283,9 +283,9 @@ the latest data available for each symbol.</p>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="pandas_datareader.tiingo.TiingoMetaDataReader">
-<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.tiingo.</code><code class="sig-name descname">TiingoMetaDataReader</code><span class="sig-paren">(</span><em class="sig-param">symbols</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em>, <em class="sig-param">retry_count=3</em>, <em class="sig-param">pause=0.1</em>, <em class="sig-param">timeout=30</em>, <em class="sig-param">session=None</em>, <em class="sig-param">freq=None</em>, <em class="sig-param">api_key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.tiingo.TiingoMetaDataReader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.tiingo.</code><code class="sig-name descname">TiingoMetaDataReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="o">=</span><span class="default_value">30</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">freq</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">api_key</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.tiingo.TiingoMetaDataReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read metadata about symbols from Tiingo</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -302,31 +302,31 @@ TIINGO_API_KEY is read. The API key is <em>required</em>.</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.tiingo.TiingoMetaDataReader.close">
 <code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.tiingo.TiingoMetaDataReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.tiingo.TiingoMetaDataReader.default_start_date">
 <em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.tiingo.TiingoMetaDataReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.tiingo.TiingoMetaDataReader.params">
 <em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.tiingo.TiingoMetaDataReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.tiingo.TiingoMetaDataReader.read">
 <code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.tiingo.TiingoMetaDataReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data from connector</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.tiingo.TiingoMetaDataReader.url">
 <em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.tiingo.TiingoMetaDataReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
@@ -334,7 +334,7 @@ TIINGO_API_KEY is read. The API key is <em>required</em>.</p></li>
 
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="pandas_datareader.tiingo.get_tiingo_symbols">
 <code class="sig-prename descclassname">pandas_datareader.tiingo.</code><code class="sig-name descname">get_tiingo_symbols</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.tiingo.get_tiingo_symbols" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the set of stock symbols supported by Tiingo</p>

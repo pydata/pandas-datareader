@@ -176,29 +176,29 @@
             
   <div class="section" id="module-pandas_datareader.fred">
 <span id="federal-reserve-economic-data-fred"></span><h1>Federal Reserve Economic Data (FRED)<a class="headerlink" href="#module-pandas_datareader.fred" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="pandas_datareader.fred.FredReader">
-<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.fred.</code><code class="sig-name descname">FredReader</code><span class="sig-paren">(</span><em class="sig-param">symbols</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em>, <em class="sig-param">retry_count=3</em>, <em class="sig-param">pause=0.1</em>, <em class="sig-param">timeout=30</em>, <em class="sig-param">session=None</em>, <em class="sig-param">freq=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.fred.FredReader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.fred.</code><code class="sig-name descname">FredReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="o">=</span><span class="default_value">30</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">freq</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.fred.FredReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get data for the given name from the St. Louis FED (FRED).</p>
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.fred.FredReader.close">
 <code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.fred.FredReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.fred.FredReader.default_start_date">
 <em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.fred.FredReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.fred.FredReader.params">
 <em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.fred.FredReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.fred.FredReader.read">
 <code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.fred.FredReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data</p>
@@ -213,7 +213,7 @@ DataFrame is the outer join of the indicies of each series.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.fred.FredReader.url">
 <em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.fred.FredReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
