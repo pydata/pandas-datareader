@@ -139,7 +139,7 @@ Historical Time Series Data
 
 Through the
 `Alpha Vantage <https://www.alphavantage.co/documentation>`__ Time Series
-endpoints, it is possible to obtain historical equities data for individual
+endpoints, it is possible to obtain historical equities and currency rate data for individual
 symbols. For daily, weekly, and monthly frequencies, 20+ years of historical data is available. The past 3-5 days of intraday data is also available.
 
 The following endpoints are available:
@@ -151,6 +151,7 @@ The following endpoints are available:
 * ``av-weekly-adjusted`` - Weekly Time Series (Adjusted)
 * ``av-monthly`` - Monthly Time Series
 * ``av-monthly-adjusted`` - Monthly Time Series (Adjusted)
+* ``av-forex-daily`` - Daily Time Series
 
 .. code-block:: ipython
 
@@ -173,6 +174,8 @@ The following endpoints are available:
     volume    2.834990e+07
     Name: 2017-02-09, dtype: float64
 
+To request the historical exchange rate of physical or digital currencies, use
+``av-forex-daily`` and format the symbol as "FROM/TO", for example "USD/JPY".
 
 The top-level function ``get_data_alphavantage`` is also provided. This
 function will
