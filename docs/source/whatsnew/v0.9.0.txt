@@ -16,6 +16,7 @@ Highlights include:
 Enhancements
 ~~~~~~~~~~~~
 
+- Added AlphaVantage endpoint to get historical currency exchange rates.
 
 .. _whatsnew_090.api_breaking:
 
@@ -33,3 +34,4 @@ Bug Fixes
 Contributors
 ~~~~~~~~~~~~
 - David Stephens
+- Matthew Hall
