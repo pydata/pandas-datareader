@@ -204,7 +204,7 @@ class TestAVTimeSeries(object):
             retry_count=6,
             pause=20.5,
         )
-        assert df.columns.equals(self.col_index[:4]) # No volume col for forex
+        assert df.columns.equals(self.col_index[:4])  # No volume col for forex
         assert len(df) == 718
         assert df.loc["2015-02-09"]["close"] == 118.6390
         assert df.loc["2017-05-24"]["high"] == 112.1290
