@@ -29,6 +29,7 @@ Bug Fixes
 ~~~~~~~~~
 
 - Fix Yahoo! actions bug due to change in split format. (:issue: `755`)
+- Fix FutureWarning from pandas import. (:issue: `762`)
 
 Contributors
 ~~~~~~~~~~~~
