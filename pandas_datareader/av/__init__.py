@@ -78,7 +78,10 @@ class AlphaVantage(_BaseReader):
                     ".".format(self.symbols)
                 )
             else:
-                raise RemoteDataError()
+                raise RemoteDataError(
+                    " Their was an issue from the data vendor "
+                    "side, here is their response: {}".format(out)
+                )
         df = df[sorted(df.columns)]
         df.columns = [id[3:] for id in df.columns]
         return df
