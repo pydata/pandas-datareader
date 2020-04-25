@@ -199,7 +199,7 @@ class YahooDailyReader(_DailyBaseReader):
                 def split_ratio(row):
                     if float(row["Numerator"]) > 0:
                         if ":" in row["Splitratio"]:
-                            n, m = row["Splitratio"].split(':')
+                            n, m = row["Splitratio"].split(":")
                             return float(m) / float(n)
                         else:
                             return eval(row["Splitratio"])
