@@ -56,9 +56,12 @@ class TestEcondb(object):
             df = df.swaplevel(0, 1, axis=1)
         for label, values in [("Japan", jp), ("United States", us)]:
             expected = pd.Series(
-                values, index=index, name="Total international arrivals"
+                values, index=index, name="Tourism demand surveys"
             )
-            tm.assert_series_equal(df[label]["Total international arrivals"], expected)
+            tm.assert_series_equal(
+                df[label]["Total international arrivals"]["Tourism demand surveys"],
+                expected
+            )
 
     def test_bls(self):
         # BLS
