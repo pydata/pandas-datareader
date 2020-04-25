@@ -51,6 +51,8 @@ binary_type = bytes
 
 
 def str_to_bytes(s, encoding=None):
+    if isinstance(s, bytes):
+        return s
     return s.encode(encoding or "ascii")
 
 
