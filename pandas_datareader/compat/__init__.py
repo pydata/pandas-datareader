@@ -1,12 +1,12 @@
 from distutils.version import LooseVersion
-import sys
+from functools import reduce
+from io import StringIO
+from urllib.error import HTTPError
 
 import pandas as pd
 from pandas.api.types import is_list_like, is_number
 import pandas.io.common as com
-from pandas.util.testing import assert_frame_equal
-
-PY3 = sys.version_info >= (3, 0)
+from pandas.testing import assert_frame_equal
 
 PANDAS_VERSION = LooseVersion(pd.__version__)
 
@@ -30,6 +30,7 @@ __all__ = [
     "lmap",
     "lrange",
     "concat",
+    "reduce",
 ]
 
 
@@ -45,34 +46,16 @@ def get_filepath_or_buffer(filepath_or_buffer, encoding=None, compression=None):
     )
 
 
-if PY3:
-    from urllib.error import HTTPError
-    from functools import reduce
-
-    string_types = (str,)
-    binary_type = bytes
-    from io import StringIO
-
-    def str_to_bytes(s, encoding=None):
-        return s.encode(encoding or "ascii")
-
-    def bytes_to_str(b, encoding=None):
-        return b.decode(encoding or "utf-8")
+string_types = (str,)
+binary_type = bytes
 
 
-else:
-    from urllib2 import HTTPError
-    from cStringIO import StringIO
+def str_to_bytes(s, encoding=None):
+    return s.encode(encoding or "ascii")
 
-    reduce = reduce
-    binary_type = str
-    string_types = (basestring,)  # noqa: F821
 
-    def bytes_to_str(b, encoding=None):
-        return b
-
-    def str_to_bytes(s, encoding=None):
-        return s
+def bytes_to_str(b, encoding=None):
+    return b.decode(encoding or "utf-8")
 
 
 def lmap(*args, **kwargs):

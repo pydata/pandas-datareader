@@ -24,7 +24,8 @@ Up to date remote data access for pandas, works for multiple versions of pandas.
 
 .. warning::
 
-  v0.8.0 is the last version which officially supports Python 2.7. Future versions of ``pandas_datareader`` will end support for Python 2.x.
+  v0.8.0 is the last version which officially supports Python 2.7. Future versions of
+  ``pandas_datareader`` will end support for Python 2.x.
 
 .. warning::
 

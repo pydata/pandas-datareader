@@ -50,4 +50,5 @@ setup(
     test_suite="tests",
     tests_require=tests_require,
     zip_safe=False,
+    python_requires=">=3.5",
 )

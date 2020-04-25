@@ -143,7 +143,7 @@ class TiingoDailyReader(_BaseReader):
     start : string, int, date, datetime, Timestamp
         Starting date, timestamp. Parses many different kind of date
         representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980').
-        Default is '1/1/2010'.
+        Default starting date is 5 years before current date.
     end : string, int, date, datetime, Timestamp
         Ending date, timestamp. Same format as starting date.
     retry_count : int, default 3
