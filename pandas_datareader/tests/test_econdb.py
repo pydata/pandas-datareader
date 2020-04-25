@@ -48,20 +48,10 @@ class TestEcondb(object):
         us = np.array(
             [175702304, 160507424, 164079728, 167600272, 171320416], dtype=float
         )
-        index = pd.date_range("2008-01-01", "2012-01-01", freq="AS", name="TIME_PERIOD")
 
-        # sometimes the country and variable columns are swapped
-        lvl1 = df.columns.levels[0][0]
-        if lvl1 == "Total international arrivals":
-            df = df.swaplevel(0, 1, axis=1)
-        for label, values in [("Japan", jp), ("United States", us)]:
-            expected = pd.Series(
-                values, index=index, name="Tourism demand surveys"
-            )
-            tm.assert_series_equal(
-                df[label]["Total international arrivals"]["Tourism demand surveys"],
-                expected
-            )
+        # check the values coming back are equal
+        tm.assert_numpy_array_equal(df.values[:, 0], jp)
+        tm.assert_numpy_array_equal(df.values[:, 1], us)
 
     def test_bls(self):
         # BLS
