@@ -4,7 +4,7 @@ import warnings
 
 import numpy as np
 from pandas import DataFrame, concat, read_csv
-from pandas.io.common import urlencode
+from urllib.parse import urlencode
 import requests
 
 from pandas_datareader._utils import (
