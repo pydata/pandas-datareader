@@ -551,7 +551,7 @@ The <code class="docutils literal notranslate"><span class="pre">get_available_d
 <span class="gp">In [14]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
 <span class="gp">In [15]: </span><span class="nb">len</span><span class="p">(</span><span class="n">get_available_datasets</span><span class="p">())</span>
-<span class="gh">Out[15]: </span><span class="go">295</span>
+<span class="gh">Out[15]: </span><span class="go">297</span>
 
 <span class="gp">In [16]: </span><span class="n">ds</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;5_Industry_Portfolios&#39;</span><span class="p">,</span> <span class="s1">&#39;famafrench&#39;</span><span class="p">)</span>
 
@@ -559,7 +559,7 @@ The <code class="docutils literal notranslate"><span class="pre">get_available_d
 <span class="go">5 Industry Portfolios</span>
 <span class="gt">---------------------</span>
 
-<span class="n">This</span> <span class="n">file</span> <span class="n">was</span> <span class="n">created</span> <span class="n">by</span> <span class="n">CMPT_IND_RETS</span> <span class="n">using</span> <span class="n">the</span> <span class="mi">202003</span> <span class="n">CRSP</span> <span class="n">database</span><span class="o">.</span> <span class="n">It</span> <span class="n">contains</span> <span class="n">value</span><span class="o">-</span> <span class="ow">and</span> <span class="n">equal</span><span class="o">-</span><span class="n">weighted</span> <span class="n">returns</span> <span class="k">for</span> <span class="mi">5</span> <span class="n">industry</span> <span class="n">portfolios</span><span class="o">.</span> <span class="n">The</span> <span class="n">portfolios</span> <span class="n">are</span> <span class="n">constructed</span> <span class="n">at</span> <span class="n">the</span> <span class="n">end</span> <span class="n">of</span> <span class="n">June</span><span class="o">.</span> <span class="n">The</span> <span class="n">annual</span> <span class="n">returns</span> <span class="n">are</span> <span class="kn">from</span> <span class="nn">January</span> <span class="n">to</span> <span class="n">December</span><span class="o">.</span> <span class="n">Missing</span> <span class="n">data</span> <span class="n">are</span> <span class="n">indicated</span> <span class="n">by</span> <span class="o">-</span><span class="mf">99.99</span> <span class="ow">or</span> <span class="o">-</span><span class="mf">999.</span> <span class="n">Copyright</span> <span class="mi">2020</span> <span class="n">Kenneth</span> <span class="n">R</span><span class="o">.</span> <span class="n">French</span>
+<span class="n">This</span> <span class="n">file</span> <span class="n">was</span> <span class="n">created</span> <span class="n">by</span> <span class="n">CMPT_IND_RETS</span> <span class="n">using</span> <span class="n">the</span> <span class="mi">202004</span> <span class="n">CRSP</span> <span class="n">database</span><span class="o">.</span> <span class="n">It</span> <span class="n">contains</span> <span class="n">value</span><span class="o">-</span> <span class="ow">and</span> <span class="n">equal</span><span class="o">-</span><span class="n">weighted</span> <span class="n">returns</span> <span class="k">for</span> <span class="mi">5</span> <span class="n">industry</span> <span class="n">portfolios</span><span class="o">.</span> <span class="n">The</span> <span class="n">portfolios</span> <span class="n">are</span> <span class="n">constructed</span> <span class="n">at</span> <span class="n">the</span> <span class="n">end</span> <span class="n">of</span> <span class="n">June</span><span class="o">.</span> <span class="n">The</span> <span class="n">annual</span> <span class="n">returns</span> <span class="n">are</span> <span class="kn">from</span> <span class="nn">January</span> <span class="n">to</span> <span class="n">December</span><span class="o">.</span> <span class="n">Missing</span> <span class="n">data</span> <span class="n">are</span> <span class="n">indicated</span> <span class="n">by</span> <span class="o">-</span><span class="mf">99.99</span> <span class="ow">or</span> <span class="o">-</span><span class="mf">999.</span> <span class="n">Copyright</span> <span class="mi">2020</span> <span class="n">Kenneth</span> <span class="n">R</span><span class="o">.</span> <span class="n">French</span>
 
 <span class="g g-Whitespace">  </span><span class="mi">0</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Value</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Monthly</span> <span class="p">(</span><span class="mi">59</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
 <span class="g g-Whitespace">  </span><span class="mi">1</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Equal</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Monthly</span> <span class="p">(</span><span class="mi">59</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
@@ -574,11 +574,11 @@ The <code class="docutils literal notranslate"><span class="pre">get_available_d
 <span class="gh">Out[18]: </span><span class="go"></span>
 <span class="go">         Cnsmr  Manuf  HiTec  Hlth   Other</span>
 <span class="go">Date                                      </span>
-<span class="go">2015-05    542    661    722    508   1070</span>
 <span class="go">2015-06    540    657    717    507   1064</span>
 <span class="go">2015-07    553    671    756    598   1127</span>
 <span class="go">2015-08    548    668    753    596   1124</span>
 <span class="go">2015-09    547    660    750    594   1120</span>
+<span class="go">2015-10    544    656    741    589   1109</span>
 </pre></div>
 </div>
 </div>
@@ -864,16 +864,16 @@ available. More information on the <a class="reference external" href="http://ww
 <span class="gh">Out[32]: </span><span class="go"></span>
 <span class="go">                Open      High       Low     Close       Volume</span>
 <span class="go">Date                                                           </span>
+<span class="go">2020-06-02  25582.52  25743.13  25523.74  25742.65  340293401.0</span>
+<span class="go">2020-06-01  25342.99  25508.83  25220.66  25475.02  329662110.0</span>
+<span class="go">2020-05-29  25324.15  25482.80  25031.67  25383.11  531752542.0</span>
+<span class="go">2020-05-28  25697.36  25758.79  25358.73  25400.64  365708199.0</span>
+<span class="go">2020-05-27  25298.63  25551.56  25009.87  25548.27  405805176.0</span>
+<span class="go">2020-05-26  24781.84  25176.42  24781.84  24995.11  410333191.0</span>
+<span class="go">2020-05-22  24461.98  24481.64  24294.07  24465.16  249149071.0</span>
+<span class="go">2020-05-21  24564.27  24718.46  24370.88  24474.12  338551206.0</span>
+<span class="go">2020-05-20  24455.94  24649.48  24455.94  24575.90  361590527.0</span>
 <span class="go">2020-05-19  24577.48  24599.50  24202.96  24206.86  362434725.0</span>
-<span class="go">2020-05-18  24059.98  24708.54  24059.98  24597.37  464536548.0</span>
-<span class="go">2020-05-15  23454.83  23730.08  23354.15  23685.42  471716617.0</span>
-<span class="go">2020-05-14  23049.06  23630.86  22789.62  23625.34  460204323.0</span>
-<span class="go">2020-05-13  23702.16  23708.90  23067.64  23247.97  459134399.0</span>
-<span class="go">2020-05-12  24292.84  24382.09  23761.58  23764.78  350548213.0</span>
-<span class="go">2020-05-11  24256.45  24366.21  24070.22  24221.99  345546681.0</span>
-<span class="go">2020-05-08  24107.82  24349.90  24107.05  24331.32          NaN</span>
-<span class="go">2020-05-07  23837.21  24094.62  23834.39  23875.89          NaN</span>
-<span class="go">2020-05-06  23978.88  24054.59  23661.14  23664.64          NaN</span>
 </pre></div>
 </div>
 </div>
