@@ -1,7 +1,7 @@
 import pandas as pd
 
-from pandas_datareader.av import AlphaVantage
 from pandas_datareader._utils import RemoteDataError
+from pandas_datareader.av import AlphaVantage
 
 
 class AVSectorPerformanceReader(AlphaVantage):
@@ -25,9 +25,10 @@ class AVSectorPerformanceReader(AlphaVantage):
         Alpha Vantage API key . If not provided the environmental variable
         ALPHAVANTAGE_API_KEY is read. The API key is *required*.
     """
+
     @property
     def function(self):
-        return 'SECTOR'
+        return "SECTOR"
 
     def _read_lines(self, out):
         if "Information" in out:
@@ -35,7 +36,6 @@ class AVSectorPerformanceReader(AlphaVantage):
         else:
             out.pop("Meta Data")
         df = pd.DataFrame(out)
-        columns = ["RT", "1D", "5D", "1M", "3M", "YTD", "1Y", "3Y", "5Y",
-                   "10Y"]
+        columns = ["RT", "1D", "5D", "1M", "3M", "YTD", "1Y", "3Y", "5Y", "10Y"]
         df.columns = columns
         return df

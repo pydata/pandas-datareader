@@ -1,4 +1,5 @@
 import pandas as pd
+import requests
 
 from pandas_datareader.base import _BaseReader
 
@@ -28,15 +29,17 @@ class EcondbReader(_BaseReader):
         if self._show == "labels":
 
             def show_func(x):
-                return x[x.find(':')+1:]
+
+                return x.split(":")[1]
 
         elif self._show == "codes":
 
             def show_func(x):
-                return x[:x.find(':')]
+                return x.split(":")[0]
 
         for entry in results:
             series = pd.DataFrame(entry["data"])[["dates", "values"]].set_index("dates")
+
             head = entry["additional_metadata"]
 
             if head != "":  # this additional metadata is not blank
@@ -44,12 +47,14 @@ class EcondbReader(_BaseReader):
                     [[show_func(x) for x in head.values()]],
                     names=[show_func(x) for x in head.keys()],
                 )
+
             else:
                 series.rename(
                         columns={"values": entry['ticker']}, inplace=True)
 
             if not df.empty:
                 df = df.merge(series, how="outer", left_index=True, right_index=True)
+
             else:
                 df = series
         if df.shape[0] > 0:

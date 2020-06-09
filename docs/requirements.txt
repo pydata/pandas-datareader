@@ -1,0 +1,5 @@
+sphinx
+ipython
+matplotlib
+sphinx_rtd_theme
+requests_cache

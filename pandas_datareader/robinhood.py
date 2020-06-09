@@ -1,8 +1,7 @@
 import pandas as pd
 
 from pandas_datareader.base import _BaseReader
-from pandas_datareader.exceptions import (ImmediateDeprecationError,
-                                          DEP_ERROR_MSG)
+from pandas_datareader.exceptions import DEP_ERROR_MSG, ImmediateDeprecationError
 
 
 class RobinhoodQuoteReader(_BaseReader):
@@ -29,14 +28,24 @@ class RobinhoodQuoteReader(_BaseReader):
     freq : None
         Quotes are near real-time and so this value is ignored
     """
-    _format = 'json'
 
-    def __init__(self, symbols, start=None, end=None, retry_count=3, pause=.1,
-                 timeout=30, session=None, freq=None):
+    _format = "json"
+
+    def __init__(
+        self,
+        symbols,
+        start=None,
+        end=None,
+        retry_count=3,
+        pause=0.1,
+        timeout=30,
+        session=None,
+        freq=None,
+    ):
         raise ImmediateDeprecationError(DEP_ERROR_MSG.format("Robinhood"))
-        super(RobinhoodQuoteReader, self).__init__(symbols, start, end,
-                                                   retry_count, pause,
-                                                   timeout, session, freq)
+        super(RobinhoodQuoteReader, self).__init__(
+            symbols, start, end, retry_count, pause, timeout, session, freq
+        )
         if isinstance(self.symbols, str):
             self.symbols = [self.symbols]
         self._max_symbols = 1630
@@ -45,8 +54,10 @@ class RobinhoodQuoteReader(_BaseReader):
 
     def _validate_symbols(self):
         if len(self.symbols) > self._max_symbols:
-            raise ValueError('A maximum of {0} symbols are supported '
-                             'in a single call.'.format(self._max_symbols))
+            raise ValueError(
+                "A maximum of {0} symbols are supported "
+                "in a single call.".format(self._max_symbols)
+            )
 
     def _get_crumb(self, *args):
         pass
@@ -54,23 +65,23 @@ class RobinhoodQuoteReader(_BaseReader):
     @property
     def url(self):
         """API URL"""
-        return 'https://api.robinhood.com/quotes/'
+        return "https://api.robinhood.com/quotes/"
 
     @property
     def params(self):
         """Parameters to use in API calls"""
-        symbols = ','.join(self.symbols)
-        return {'symbols': symbols}
+        symbols = ",".join(self.symbols)
+        return {"symbols": symbols}
 
     def _process_json(self):
         res = pd.DataFrame(self._json_results)
-        return res.set_index('symbol').T
+        return res.set_index("symbol").T
 
     def _read_lines(self, out):
-        if 'next' in out:
-            self._json_results.extend(out['results'])
-            return self._read_one_data(out['next'])
-        self._json_results.extend(out['results'])
+        if "next" in out:
+            self._json_results.extend(out["results"])
+            return self._read_one_data(out["next"])
+        self._json_results.extend(out["results"])
         return self._process_json()
 
 
@@ -114,26 +125,42 @@ class RobinhoodHistoricalReader(RobinhoodQuoteReader):
       * 5minute: day, week
       * 10minute: day, week
     """
-    _format = 'json'
 
-    def __init__(self, symbols, start=None, end=None, retry_count=3, pause=.1,
-                 timeout=30, session=None, freq=None, interval='day',
-                 span='year'):
+    _format = "json"
+
+    def __init__(
+        self,
+        symbols,
+        start=None,
+        end=None,
+        retry_count=3,
+        pause=0.1,
+        timeout=30,
+        session=None,
+        freq=None,
+        interval="day",
+        span="year",
+    ):
         raise ImmediateDeprecationError(DEP_ERROR_MSG.format("Robinhood"))
-        super(RobinhoodHistoricalReader, self).__init__(symbols, start, end,
-                                                        retry_count, pause,
-                                                        timeout, session, freq)
-        interval_span = {'day': ['year'],
-                         'week': ['5year'],
-                         '10minute': ['day', 'week'],
-                         '5minute': ['day', 'week']}
+        super(RobinhoodHistoricalReader, self).__init__(
+            symbols, start, end, retry_count, pause, timeout, session, freq
+        )
+        interval_span = {
+            "day": ["year"],
+            "week": ["5year"],
+            "10minute": ["day", "week"],
+            "5minute": ["day", "week"],
+        }
         if interval not in interval_span:
-            raise ValueError('Interval must be one of '
-                             '{0}'.format(', '.join(interval_span.keys())))
+            raise ValueError(
+                "Interval must be one of " "{0}".format(", ".join(interval_span.keys()))
+            )
         valid_spans = interval_span[interval]
         if span not in valid_spans:
-            raise ValueError('For interval {0}, span must '
-                             'be in: {1}'.format(interval, valid_spans))
+            raise ValueError(
+                "For interval {0}, span must "
+                "be in: {1}".format(interval, valid_spans)
+            )
         self.interval = interval
         self.span = span
         self._max_symbols = 75
@@ -143,23 +170,21 @@ class RobinhoodHistoricalReader(RobinhoodQuoteReader):
     @property
     def url(self):
         """API URL"""
-        return 'https://api.robinhood.com/quotes/historicals/'
+        return "https://api.robinhood.com/quotes/historicals/"
 
     @property
     def params(self):
         """Parameters to use in API calls"""
-        symbols = ','.join(self.symbols)
-        pars = {'symbols': symbols,
-                'interval': self.interval,
-                'span': self.span}
+        symbols = ",".join(self.symbols)
+        pars = {"symbols": symbols, "interval": self.interval, "span": self.span}
 
         return pars
 
     def _process_json(self):
         df = []
         for sym in self._json_results:
-            vals = pd.DataFrame(sym['historicals'])
-            vals['begins_at'] = pd.to_datetime(vals['begins_at'])
-            vals['symbol'] = sym['symbol']
-            df.append(vals.set_index(['symbol', 'begins_at']))
+            vals = pd.DataFrame(sym["historicals"])
+            vals["begins_at"] = pd.to_datetime(vals["begins_at"])
+            vals["symbol"] = sym["symbol"]
+            df.append(vals.set_index(["symbol", "begins_at"]))
         return pd.concat(df, 0)

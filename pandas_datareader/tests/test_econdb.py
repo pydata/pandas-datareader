@@ -51,14 +51,15 @@ class TestEcondb(object):
         index = pd.date_range("2008-01-01", "2012-01-01", freq="AS", name="TIME_PERIOD")
 
         # sometimes the country and variable columns are swapped
-        df = df.swaplevel(2, 1, axis=1)
+
+        lvl1 = df.columns.levels[0][0]
+        if lvl1 == "Total international arrivals":
+            df = df.swaplevel(0, 1, axis=1)
         for label, values in [("Japan", jp), ("United States", us)]:
             expected = pd.Series(
                 values, index=index, name="Total international arrivals"
             )
-            tm.assert_series_equal(
-                df[label]['Tourism demand surveys'][
-                        "Total international arrivals"], expected)
+            tm.assert_series_equal(df[label]["Total international arrivals"], expected)
 
     def test_bls(self):
         # BLS

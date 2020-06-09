@@ -19,11 +19,11 @@ def _read_content(path_or_buf):
             exists = False
 
         if exists:
-            with open(filepath_or_buffer, 'r') as fh:
+            with open(filepath_or_buffer, "r") as fh:
                 data = fh.read()
         else:
             data = filepath_or_buffer
-    elif hasattr(filepath_or_buffer, 'read'):
+    elif hasattr(filepath_or_buffer, "read"):
         data = filepath_or_buffer.read()
     else:
         data = filepath_or_buffer

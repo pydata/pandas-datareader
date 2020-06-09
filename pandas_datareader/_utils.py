@@ -1,7 +1,8 @@
 import datetime as dt
 
-import requests
 from pandas import to_datetime
+import requests
+
 from pandas_datareader.compat import is_number
 
 
@@ -15,9 +16,16 @@ class RemoteDataError(IOError):
 
 def _sanitize_dates(start, end):
     """
-    Return (datetime_start, datetime_end) tuple
-    if start is None - default is 2010/01/01
+    Return (timestamp_start, timestamp_end) tuple
+    if start is None - default is 5 years before the current date
     if end is None - default is today
+
+    Parameters
+    ----------
+    start : str, int, date, datetime, Timestamp
+        Desired start date
+    end : str, int, date, datetime, Timestamp
+        Desired end date
     """
     if is_number(start):
         # regard int as year
@@ -29,11 +37,19 @@ def _sanitize_dates(start, end):
     end = to_datetime(end)
 
     if start is None:
-        start = dt.datetime(2010, 1, 1)
+        # default to 5 years before today
+        today = dt.date.today()
+        start = today - dt.timedelta(days=365 * 5)
     if end is None:
-        end = dt.datetime.today()
+        # default to today
+        end = dt.date.today()
+    try:
+        start = to_datetime(start)
+        end = to_datetime(end)
+    except (TypeError, ValueError):
+        raise ValueError("Invalid date format.")
     if start > end:
-        raise ValueError('start must be an earlier date than end')
+        raise ValueError("start must be an earlier date than end")
     return start, end
 
 

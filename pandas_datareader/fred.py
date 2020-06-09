@@ -1,8 +1,7 @@
-from pandas_datareader.compat import is_list_like
-
 from pandas import concat, read_csv
 
 from pandas_datareader.base import _BaseReader
+from pandas_datareader.compat import is_list_like
 
 
 class FredReader(_BaseReader):
@@ -40,16 +39,26 @@ class FredReader(_BaseReader):
         def fetch_data(url, name):
             """Utillity to fetch data"""
             resp = self._read_url_as_StringIO(url)
-            data = read_csv(resp, index_col=0, parse_dates=True,
-                            header=None, skiprows=1, names=["DATE", name],
-                            na_values='.')
+            data = read_csv(
+                resp,
+                index_col=0,
+                parse_dates=True,
+                header=None,
+                skiprows=1,
+                names=["DATE", name],
+                na_values=".",
+            )
             try:
                 return data.truncate(self.start, self.end)
             except KeyError:  # pragma: no cover
-                if data.iloc[3].name[7:12] == 'Error':
-                    raise IOError("Failed to get the data. Check that "
-                                  "{0!r} is a valid FRED series.".format(name))
+                if data.iloc[3].name[7:12] == "Error":
+                    raise IOError(
+                        "Failed to get the data. Check that "
+                        "{0!r} is a valid FRED series.".format(name)
+                    )
                 raise
-        df = concat([fetch_data(url, n) for url, n in zip(urls, names)],
-                    axis=1, join='outer')
+
+        df = concat(
+            [fetch_data(url, n) for url, n in zip(urls, names)], axis=1, join="outer"
+        )
         return df

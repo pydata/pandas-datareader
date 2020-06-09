@@ -1,6 +1,9 @@
-ipython
-requests_cache
-sphinx
-sphinx_rtd_theme
-black
-isort
+black==19.10b0; python_version > '3.5'
+flake8-bugbear; python_version > '3.5'
+coverage
+codecov
+coveralls
+flake8
+pytest
+pytest-cov
+wrapt
