@@ -49,7 +49,7 @@ class EcondbReader(_BaseReader):
                         columns={"values": entry['ticker']}, inplace=True)
 
             if not df.empty:
-                df = df.join(series, how="outer")
+                df = df.merge(series, how="outer", left_index=True, right_index=True)
             else:
                 df = series
         if df.shape[0] > 0:
