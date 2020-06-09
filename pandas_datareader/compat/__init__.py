@@ -21,7 +21,7 @@ else:
     from pandas.testing import assert_frame_equal
 
 if PANDAS_0200:
-    from pandas.util.testing import assert_raises_regex
+    # from pandas.util.testing import assert_raises_regex
 
     def get_filepath_or_buffer(filepath_or_buffer, encoding=None,
                                compression=None):
