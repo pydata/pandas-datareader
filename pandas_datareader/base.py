@@ -152,7 +152,9 @@ class _BaseReader(object):
         pause = self.pause
         last_response_text = ""
         for _ in range(self.retry_count + 1):
-            response = self.session.get(url, params=params, headers=headers)
+            response = self.session.get(
+                url, params=params, headers=headers, timeout=self.timeout
+            )
             if response.status_code == requests.codes.ok:
                 return response
 
