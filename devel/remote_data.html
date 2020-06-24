@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Caching queries" href="cache.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> pandas-datareader
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> pandas-datareader
           
 
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -123,6 +125,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -161,7 +164,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Remote Data Access</li>
     
@@ -864,16 +867,16 @@ available. More information on the <a class="reference external" href="http://ww
 <span class="gh">Out[32]: </span><span class="go"></span>
 <span class="go">                Open      High       Low     Close     Volume</span>
 <span class="go">Date                                                         </span>
-<span class="go">2020-06-16  26326.68  26611.03  25811.70  26289.98  494061649</span>
+<span class="go">2020-06-23  26159.39  26314.97  26105.97  26156.10  393203121</span>
+<span class="go">2020-06-22  25865.08  26059.81  25667.68  26024.96  354005555</span>
+<span class="go">2020-06-19  26213.10  26451.44  25759.66  25871.46  685580879</span>
+<span class="go">2020-06-18  26016.45  26154.20  25848.53  26080.10  331645323</span>
+<span class="go">2020-06-17  26330.52  26400.07  26068.41  26119.61  331455159</span>
+<span class="go">2020-06-16  26326.68  26611.03  25811.70  26289.98  494919404</span>
 <span class="go">2020-06-15  25270.39  25891.58  24843.18  25763.16  464033631</span>
 <span class="go">2020-06-12  25659.42  25965.55  25078.41  25605.54  521599251</span>
 <span class="go">2020-06-11  26282.51  26294.08  25082.72  25128.17  653428946</span>
 <span class="go">2020-06-10  27251.89  27355.22  26938.05  26989.99  452134068</span>
-<span class="go">2020-06-09  27447.37  27447.37  27151.06  27272.30  389102400</span>
-<span class="go">2020-06-08  27232.93  27580.21  27232.48  27572.44  435055280</span>
-<span class="go">2020-06-05  26836.80  27338.30  26836.80  27110.98  530853251</span>
-<span class="go">2020-06-04  26226.49  26384.10  26082.31  26281.82  365440595</span>
-<span class="go">2020-06-03  25906.88  26337.75  25906.88  26269.89  385289502</span>
 </pre></div>
 </div>
 </div>
@@ -920,11 +923,19 @@ available. More information on the <a class="reference external" href="http://ww
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, The PyData Development Team
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -935,7 +946,6 @@ available. More information on the <a class="reference external" href="http://ww
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
