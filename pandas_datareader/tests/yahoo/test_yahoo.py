@@ -3,7 +3,7 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 from pandas import DataFrame
-import pandas.util.testing as tm
+import pandas.testing as tm
 import pytest
 import requests
 from requests.exceptions import ConnectionError

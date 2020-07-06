@@ -2,7 +2,7 @@ from datetime import datetime
 
 import numpy as np
 import pandas as pd
-import pandas.util.testing as tm
+import pandas.testing as tm
 import pytest
 
 from pandas_datareader._utils import RemoteDataError
@@ -201,10 +201,9 @@ class TestOECD(object):
         )
         index = pd.date_range("2008-01-01", "2012-01-01", freq="AS", name="Year")
         for label, values in [("Japan", jp), ("United States", us)]:
-            expected = pd.Series(
-                values, index=index, name="Total international arrivals"
-            )
-            tm.assert_series_equal(df[label]["Total international arrivals"], expected)
+            expected = pd.Series(values, index=index, name="Tourism demand surveys")
+            series = df[label]["Total international arrivals"]["Tourism demand surveys"]
+            tm.assert_series_equal(series, expected)
 
     def test_oecd_invalid_symbol(self):
         with pytest.raises(RemoteDataError):

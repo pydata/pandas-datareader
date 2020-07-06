@@ -3,7 +3,7 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 from pandas import DataFrame
-import pandas.util.testing as tm
+import pandas.testing as tm
 import pytest
 
 from pandas_datareader._utils import RemoteDataError
@@ -52,7 +52,7 @@ class TestFred(object):
     def test_fred_part2(self):
         expected = [[576.7], [962.9], [684.7], [848.3], [933.3]]
         result = web.get_data_fred("A09024USA144NNBR", start="1915").iloc[:5]
-        tm.assert_numpy_array_equal(result.values, np.array(expected))
+        np.testing.assert_array_equal(result.values, np.array(expected))
 
     def test_invalid_series(self):
         name = "NOT A REAL SERIES"

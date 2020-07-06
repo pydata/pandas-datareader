@@ -21,6 +21,6 @@ class TestMoex(object):
             df = web.DataReader(
                 ["GAZP", "SIBN"], "moex", start="2019-12-26", end="2019-12-26"
             )
-            assert df.size == 720
+            assert df.size == 740
         except HTTPError as e:
             pytest.skip(e)
