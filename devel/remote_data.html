@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Remote Data Access &mdash; pandas-datareader 0.9.0dev0+63.g2925ebd documentation</title>
+  <title>Remote Data Access &mdash; pandas-datareader 0.9.0dev0+69.g6eec371 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.9.0dev0 (+63, 2925ebd)
+                0.9.0dev0 (+69, 6eec371)
               </div>
             
           
@@ -297,7 +297,7 @@ equities and forex data. Free registration is required to get an API key.</p>
 <h3>Historical Time Series Data<a class="headerlink" href="#historical-time-series-data" title="Permalink to this headline">¶</a></h3>
 <p>Through the
 <a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> Time Series
-endpoints, it is possible to obtain historical equities data for individual
+endpoints, it is possible to obtain historical equities and currency rate data for individual
 symbols. For daily, weekly, and monthly frequencies, 20+ years of historical data is available. The past 3-5 days of intraday data is also available.</p>
 <p>The following endpoints are available:</p>
 <ul class="simple">
@@ -308,6 +308,7 @@ symbols. For daily, weekly, and monthly frequencies, 20+ years of historical dat
 <li><p><code class="docutils literal notranslate"><span class="pre">av-weekly-adjusted</span></code> - Weekly Time Series (Adjusted)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">av-monthly</span></code> - Monthly Time Series</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">av-monthly-adjusted</span></code> - Monthly Time Series (Adjusted)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">av-forex-daily</span></code> - Daily Time Series</p></li>
 </ul>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">os</span>
 
@@ -329,6 +330,8 @@ symbols. For daily, weekly, and monthly frequencies, 20+ years of historical dat
 <span class="go">Name: 2017-02-09, dtype: float64</span>
 </pre></div>
 </div>
+<p>To request the historical exchange rate of physical or digital currencies, use
+<code class="docutils literal notranslate"><span class="pre">av-forex-daily</span></code> and format the symbol as “FROM/TO”, for example “USD/JPY”.</p>
 <p>The top-level function <code class="docutils literal notranslate"><span class="pre">get_data_alphavantage</span></code> is also provided. This
 function will
 return the <code class="docutils literal notranslate"><span class="pre">TIME_SERIES_DAILY</span></code> endpoint for the symbol and date range
@@ -867,6 +870,7 @@ available. More information on the <a class="reference external" href="http://ww
 <span class="gh">Out[32]: </span><span class="go"></span>
 <span class="go">                Open      High       Low     Close     Volume</span>
 <span class="go">Date                                                         </span>
+<span class="go">2020-07-06  25996.08  26297.53  25996.08  26287.03  273085757</span>
 <span class="go">2020-07-02  25936.45  26204.41  25778.12  25827.36  350387758</span>
 <span class="go">2020-07-01  25879.38  26019.31  25713.61  25734.97  374839860</span>
 <span class="go">2020-06-30  25512.43  25905.38  25475.14  25812.88  413195530</span>
@@ -876,7 +880,6 @@ available. More information on the <a class="reference external" href="http://ww
 <span class="go">2020-06-24  25992.96  25992.96  25296.73  25445.94  453410082</span>
 <span class="go">2020-06-23  26159.39  26314.97  26105.97  26156.10  393203121</span>
 <span class="go">2020-06-22  25865.08  26059.81  25667.68  26024.96  354005555</span>
-<span class="go">2020-06-19  26213.10  26451.44  25759.66  25871.46  685580879</span>
 </pre></div>
 </div>
 </div>
