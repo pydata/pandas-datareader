@@ -1,7 +1,7 @@
 import json
+from urllib.parse import urlencode
 
 import pandas as pd
-from urllib.parse import urlencode
 
 from pandas_datareader.base import _BaseReader
 

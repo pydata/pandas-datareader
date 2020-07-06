@@ -3,7 +3,12 @@ import datetime as dt
 import pandas as pd
 
 from pandas_datareader.base import _DailyBaseReader
-from pandas_datareader.compat import StringIO, binary_type, concat, is_list_like
+from pandas_datareader.compat import (
+    StringIO,
+    binary_type,
+    concat,
+    is_list_like,
+)
 
 
 class MoexReader(_DailyBaseReader):
