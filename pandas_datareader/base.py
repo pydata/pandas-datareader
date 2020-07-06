@@ -1,10 +1,10 @@
 import datetime
 import time
+from urllib.parse import urlencode
 import warnings
 
 import numpy as np
 from pandas import DataFrame, concat, read_csv
-from urllib.parse import urlencode
 import requests
 
 from pandas_datareader._utils import (

@@ -1,7 +1,10 @@
 import pandas as pd
 
 from pandas_datareader.base import _BaseReader
-from pandas_datareader.exceptions import DEP_ERROR_MSG, ImmediateDeprecationError
+from pandas_datareader.exceptions import (
+    DEP_ERROR_MSG,
+    ImmediateDeprecationError,
+)
 
 
 class RobinhoodQuoteReader(_BaseReader):

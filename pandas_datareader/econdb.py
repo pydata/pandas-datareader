@@ -1,4 +1,5 @@
 import pandas as pd
+
 from pandas_datareader.base import _BaseReader
 
 
@@ -27,12 +28,12 @@ class EcondbReader(_BaseReader):
         if self._show == "labels":
 
             def show_func(x):
-                return x[x.find(':')+1:]
+                return x[x.find(":") + 1 :]
 
         elif self._show == "codes":
 
             def show_func(x):
-                return x[:x.find(':')]
+                return x[: x.find(":")]
 
         for entry in results:
             series = pd.DataFrame(entry["data"])[["dates", "values"]].set_index("dates")
@@ -44,8 +45,7 @@ class EcondbReader(_BaseReader):
                     names=[show_func(x) for x in head.keys()],
                 )
             else:
-                series.rename(
-                        columns={"values": entry['ticker']}, inplace=True)
+                series.rename(columns={"values": entry["ticker"]}, inplace=True)
 
             if not df.empty:
                 df = df.merge(series, how="outer", left_index=True, right_index=True)

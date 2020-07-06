@@ -16,17 +16,26 @@ from pandas_datareader.bankofcanada import BankOfCanadaReader
 from pandas_datareader.econdb import EcondbReader
 from pandas_datareader.enigma import EnigmaReader
 from pandas_datareader.eurostat import EurostatReader
-from pandas_datareader.exceptions import DEP_ERROR_MSG, ImmediateDeprecationError
+from pandas_datareader.exceptions import (
+    DEP_ERROR_MSG,
+    ImmediateDeprecationError,
+)
 from pandas_datareader.famafrench import FamaFrenchReader
 from pandas_datareader.fred import FredReader
 from pandas_datareader.iex.daily import IEXDailyReader
 from pandas_datareader.iex.deep import Deep as IEXDeep
-from pandas_datareader.iex.tops import LastReader as IEXLasts, TopsReader as IEXTops
+from pandas_datareader.iex.tops import (
+    LastReader as IEXLasts,
+    TopsReader as IEXTops,
+)
 from pandas_datareader.moex import MoexReader
 from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
 from pandas_datareader.oecd import OECDReader
 from pandas_datareader.quandl import QuandlReader
-from pandas_datareader.robinhood import RobinhoodHistoricalReader, RobinhoodQuoteReader
+from pandas_datareader.robinhood import (
+    RobinhoodHistoricalReader,
+    RobinhoodQuoteReader,
+)
 from pandas_datareader.stooq import StooqDailyReader
 from pandas_datareader.tiingo import (
     TiingoDailyReader,
@@ -34,7 +43,9 @@ from pandas_datareader.tiingo import (
     TiingoQuoteReader,
 )
 from pandas_datareader.yahoo.actions import YahooActionReader, YahooDivReader
-from pandas_datareader.yahoo.components import _get_data as get_components_yahoo
+from pandas_datareader.yahoo.components import (
+    _get_data as get_components_yahoo,
+)
 from pandas_datareader.yahoo.daily import YahooDailyReader
 from pandas_datareader.yahoo.options import Options as YahooOptions
 from pandas_datareader.yahoo.quotes import YahooQuotesReader

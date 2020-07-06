@@ -13,8 +13,14 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys
 import os
+import sys
+
+# Add any Sphinx extension module names here, as strings. They can be
+# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
+# ones.
+import IPython
+
 import pandas_datareader as pdr
 import sphinx_rtd_theme
 
@@ -33,10 +39,6 @@ import sphinx_rtd_theme
 #
 # needs_sphinx = '1.0'
 
-# Add any Sphinx extension module names here, as strings. They can be
-# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
-# ones.
-import IPython
 
 extensions = [
     "sphinx.ext.autodoc",
