@@ -22,17 +22,6 @@ Up to date remote data access for pandas, works for multiple versions of pandas.
      :target: https://github.com/psf/black
 
 
-.. warning::
-
-  v0.8.0 is the last version which officially supports Python 2.7. Future versions of
-  ``pandas_datareader`` will end support for Python 2.x.
-
-.. warning::
-
-  As of v0.8.0 Robinhood has been immediately deprecated due to
-  large changes in their API and no stable replacement.
-
-
 Usage
 -----
 

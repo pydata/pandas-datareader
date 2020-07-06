@@ -32,10 +32,6 @@ from pandas_datareader.moex import MoexReader
 from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
 from pandas_datareader.oecd import OECDReader
 from pandas_datareader.quandl import QuandlReader
-from pandas_datareader.robinhood import (
-    RobinhoodHistoricalReader,
-    RobinhoodQuoteReader,
-)
 from pandas_datareader.stooq import StooqDailyReader
 from pandas_datareader.tiingo import (
     TiingoDailyReader,
@@ -43,9 +39,7 @@ from pandas_datareader.tiingo import (
     TiingoQuoteReader,
 )
 from pandas_datareader.yahoo.actions import YahooActionReader, YahooDivReader
-from pandas_datareader.yahoo.components import (
-    _get_data as get_components_yahoo,
-)
+from pandas_datareader.yahoo.components import _get_data as get_components_yahoo
 from pandas_datareader.yahoo.daily import YahooDailyReader
 from pandas_datareader.yahoo.options import Options as YahooOptions
 from pandas_datareader.yahoo.quotes import YahooQuotesReader
@@ -71,8 +65,6 @@ __all__ = [
     "get_iex_book",
     "get_dailysummary_iex",
     "get_data_stooq",
-    "get_data_robinhood",
-    "get_quotes_robinhood",
     "DataReader",
 ]
 
@@ -127,14 +119,6 @@ def get_tops_iex(*args, **kwargs):
 
 def get_last_iex(*args, **kwargs):
     return IEXLasts(*args, **kwargs).read()
-
-
-def get_data_robinhood(*args, **kwargs):
-    return RobinhoodHistoricalReader(*args, **kwargs).read()
-
-
-def get_quotes_robinhood(*args, **kwargs):
-    return RobinhoodQuoteReader(*args, **kwargs).read()
 
 
 def get_data_tiingo(*args, **kwargs):
@@ -367,7 +351,6 @@ def DataReader(
         "nasdaq",
         "quandl",
         "moex",
-        "robinhood",
         "tiingo",
         "yahoo-actions",
         "yahoo-dividends",
@@ -523,15 +506,6 @@ def DataReader(
         ).read()
     elif data_source == "moex":
         return MoexReader(
-            symbols=name,
-            start=start,
-            end=end,
-            retry_count=retry_count,
-            pause=pause,
-            session=session,
-        ).read()
-    elif data_source == "robinhood":
-        return RobinhoodHistoricalReader(
             symbols=name,
             start=start,
             end=end,
