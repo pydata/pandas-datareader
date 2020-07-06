@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-import pandas.util.testing as tm
+import pandas.testing as tm
 import pytest
 
 import pandas_datareader.data as web
@@ -50,8 +50,8 @@ class TestEcondb(object):
         )
 
         # check the values coming back are equal
-        tm.assert_numpy_array_equal(df.values[:, 0], jp)
-        tm.assert_numpy_array_equal(df.values[:, 1], us)
+        np.testing.assert_array_equal(df.values[:, 0], jp)
+        np.testing.assert_array_equal(df.values[:, 1], us)
 
     def test_bls(self):
         # BLS

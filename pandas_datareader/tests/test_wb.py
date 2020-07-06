@@ -2,7 +2,7 @@ import time
 
 import numpy as np
 import pandas as pd
-import pandas.util.testing as tm
+import pandas.testing as tm
 import pytest
 import requests
 
@@ -148,7 +148,7 @@ class TestWB(object):
                 errors="raise",
             )
 
-        with tm.assert_produces_warning():
+        with pytest.warns(Warning):
             result = download(
                 country=cntry_codes, indicator=inds, start=2003, end=2004, errors="warn"
             )
@@ -168,7 +168,7 @@ class TestWB(object):
                 errors="raise",
             )
 
-        with tm.assert_produces_warning():
+        with pytest.warns(Warning):
             result = download(
                 country=cntry_codes, indicator=inds, start=2003, end=2004, errors="warn"
             )
