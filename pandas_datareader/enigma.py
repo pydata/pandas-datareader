@@ -5,6 +5,10 @@ import pandas as pd
 
 from pandas_datareader.base import _BaseReader, string_types
 from pandas_datareader.compat import StringIO
+from pandas_datareader.exceptions import (
+    DEP_ERROR_MSG,
+    ImmediateDeprecationError,
+)
 
 
 class EnigmaReader(_BaseReader):
@@ -52,6 +56,7 @@ class EnigmaReader(_BaseReader):
         session=None,
         base_url="https://public.enigma.com/api",
     ):
+        raise ImmediateDeprecationError(DEP_ERROR_MSG.format("Enigma"))
 
         super(EnigmaReader, self).__init__(
             symbols=[], retry_count=retry_count, pause=pause, session=session
