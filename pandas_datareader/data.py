@@ -361,6 +361,7 @@ def DataReader(
         "yahoo-actions",
         "yahoo-dividends",
         "av-forex",
+        "av-forex-daily",
         "av-daily",
         "av-daily-adjusted",
         "av-weekly",
@@ -564,6 +565,18 @@ def DataReader(
     elif data_source == "av-forex":
         return AVForexReader(
             symbols=name,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+            api_key=api_key,
+        ).read()
+
+    elif data_source == "av-forex-daily":
+        return AVTimeSeriesReader(
+            symbols=name,
+            function="FX_DAILY",
+            start=start,
+            end=end,
             retry_count=retry_count,
             pause=pause,
             session=session,

@@ -39,6 +39,7 @@ class AVTimeSeriesReader(AlphaVantage):
         "TIME_SERIES_MONTHLY": "Monthly Time Series",
         "TIME_SERIES_MONTHLY_ADJUSTED": "Monthly Adjusted Time Series",
         "TIME_SERIES_INTRADAY": "Time Series (1min)",
+        "FX_DAILY": "Time Series FX (Daily)",
     }
 
     def __init__(
@@ -78,6 +79,10 @@ class AVTimeSeriesReader(AlphaVantage):
         return True if self.function == "TIME_SERIES_INTRADAY" else False
 
     @property
+    def forex(self):
+        return True if self.function == "FX_DAILY" else False
+
+    @property
     def output_size(self):
         """ Used to limit the size of the Alpha Vantage query when
         possible.
@@ -92,13 +97,17 @@ class AVTimeSeriesReader(AlphaVantage):
     @property
     def params(self):
         p = {
-            "symbol": self.symbols,
             "function": self.function,
             "apikey": self.api_key,
             "outputsize": self.output_size,
         }
         if self.intraday:
             p.update({"interval": "1min"})
+        if self.forex:
+            p.update({"from_symbol": self.symbols.split("/")[0]})
+            p.update({"to_symbol": self.symbols.split("/")[1]})
+        else:
+            p.update({"symbol": self.symbols})
         return p
 
     def _read_lines(self, out):
