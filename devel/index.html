@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>pandas-datareader &#8212; pandas-datareader 0.9.0rc0+4.gc4bba86 documentation</title>
+    <title>pandas-datareader &#8212; pandas-datareader 0.9.0rc1 documentation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
     <link href="_static/css/index.css" rel="stylesheet">
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
@@ -18,7 +18,7 @@
     <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="What’s New" href="whatsnew.html" />
+    <link rel="next" title="Remote Data Access" href="remote_data.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="docsearch:language" content="en">
   </head>
@@ -41,10 +41,6 @@
         
         
         <li class="nav-item ">
-            <a class="nav-link" href="whatsnew.html">What’s New</a>
-        </li>
-        
-        <li class="nav-item ">
             <a class="nav-link" href="remote_data.html">Remote Data Access</a>
         </li>
         
@@ -58,6 +54,10 @@
         
         <li class="nav-item ">
             <a class="nav-link" href="readers/index.html">Data Readers</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="whatsnew.html">What’s New</a>
         </li>
         
         
@@ -129,22 +129,18 @@
             <a href="#" class="nav-link">pandas-datareader</a><ul class="nav section-nav flex-column">
                 
         <li class="nav-item toc-entry toc-h3">
+            <a href="#installation" class="nav-link">Installation</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
             <a href="#usage" class="nav-link">Usage</a>
         </li>
     
         <li class="nav-item toc-entry toc-h3">
-            <a href="#documentation" class="nav-link">Documentation</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#installation" class="nav-link">Installation</a><ul class="nav section-nav flex-column">
+            <a href="#documentation" class="nav-link">Documentation</a><ul class="nav section-nav flex-column">
                 
         <li class="nav-item toc-entry toc-h4">
             <a href="#requirements" class="nav-link">Requirements</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h4">
-            <a href="#install-latest-release-version-via-pip" class="nav-link">Install latest release version via pip</a>
         </li>
     
         <li class="nav-item toc-entry toc-h4">
@@ -187,15 +183,15 @@
 <a class="reference external image-reference" href="https://codecov.io/gh/pydata/pandas-datareader"><img alt="https://codecov.io/gh/pydata/pandas-datareader/branch/master/graph/badge.svg" src="https://codecov.io/gh/pydata/pandas-datareader/branch/master/graph/badge.svg" /></a>
 <a class="reference external image-reference" href="https://pandas-datareader.readthedocs.io/en/latest/"><img alt="https://readthedocs.org/projects/pandas-datareader/badge/?version=latest" src="https://readthedocs.org/projects/pandas-datareader/badge/?version=latest" /></a>
 <a class="reference external image-reference" href="https://github.com/psf/black"><img alt="https://img.shields.io/badge/code%20style-black-000000.svg" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a>
-<div class="section" id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<p>Starting in 0.19.0, pandas no longer supports <code class="docutils literal notranslate"><span class="pre">pandas.io.data</span></code> or <code class="docutils literal notranslate"><span class="pre">pandas.io.wb</span></code>, so
-you must replace your imports from <code class="docutils literal notranslate"><span class="pre">pandas.io</span></code> with those from <code class="docutils literal notranslate"><span class="pre">pandas_datareader</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandas.io</span> <span class="kn">import</span> <span class="n">data</span><span class="p">,</span> <span class="n">wb</span> <span class="c1"># becomes</span>
-<span class="kn">from</span> <span class="nn">pandas_datareader</span> <span class="kn">import</span> <span class="n">data</span><span class="p">,</span> <span class="n">wb</span>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Install using <code class="docutils literal notranslate"><span class="pre">pip</span></code></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip install pandas-datareader
 </pre></div>
 </div>
-<p>Many functions from the data module have been included in the top level API.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="k">as</span> <span class="nn">pdr</span>
 <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_fred</span><span class="p">(</span><span class="s1">&#39;GS10&#39;</span><span class="p">)</span>
 </pre></div>
@@ -210,9 +206,6 @@ A second copy of the stable documentation is hosted on
 <a class="reference external" href="https://pandas-datareader.readthedocs.io/">read the docs</a> for more details.</p>
 <p><a class="reference external" href="https://pydata.github.io/pandas-datareader/devel/">Development documentation</a>
 is available for the latest changes in master.</p>
-</div>
-<div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="requirements">
 <h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
 <p>Using pandas datareader requires the following packages:</p>
@@ -241,20 +234,15 @@ is available for the latest changes in master.</p>
 <li><p>wrapt</p></li>
 </ul>
 </div>
-<div class="section" id="install-latest-release-version-via-pip">
-<h3>Install latest release version via pip<a class="headerlink" href="#install-latest-release-version-via-pip" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install pandas-datareader
-</pre></div>
-</div>
-</div>
 <div class="section" id="install-latest-development-version">
 <h3>Install latest development version<a class="headerlink" href="#install-latest-development-version" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install git+https://github.com/pydata/pandas-datareader.git
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip install git+https://github.com/pydata/pandas-datareader.git
 </pre></div>
 </div>
 <p>or</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/pydata/pandas-datareader.git
-$ python setup.py install
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/pydata/pandas-datareader.git
+<span class="nb">cd</span> pandas-datareader
+python setup.py install
 </pre></div>
 </div>
 </div>
@@ -264,65 +252,11 @@ $ python setup.py install
 <p>Contents:</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="whatsnew.html">What’s New</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-9-0-july-10-2020">v0.9.0 (July 10, 2020)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-8-0-september-22-2019">v0.8.0 (September 22, 2019)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-7-0-september-11-2018">v0.7.0 (September 11, 2018)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-6-0-january-24-2018">v0.6.0 (January 24, 2018)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-5-0-july-25-2017">v0.5.0 (July 25, 2017)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-4-0-may-15-2017">v0.4.0 (May 15, 2017)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-3-0-january-14-2017">v0.3.0 (January 14, 2017)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-2-1-november-26-2015">v0.2.1 (November 26, 2015)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-2-0-october-9-2015">v0.2.0 (October 9, 2015)</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="remote_data.html">Remote Data Access</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="remote_data.html#tiingo">Tiingo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="remote_data.html#iex">IEX</a></li>
-<li class="toctree-l2"><a class="reference internal" href="remote_data.html#alpha-vantage">Alpha Vantage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="remote_data.html#econdb">Econdb</a></li>
-<li class="toctree-l2"><a class="reference internal" href="remote_data.html#enigma">Enigma</a></li>
-<li class="toctree-l2"><a class="reference internal" href="remote_data.html#quandl">Quandl</a></li>
-<li class="toctree-l2"><a class="reference internal" href="remote_data.html#fred">FRED</a></li>
-<li class="toctree-l2"><a class="reference internal" href="remote_data.html#fama-french">Fama/French</a></li>
-<li class="toctree-l2"><a class="reference internal" href="remote_data.html#world-bank">World Bank</a></li>
-<li class="toctree-l2"><a class="reference internal" href="remote_data.html#oecd">OECD</a></li>
-<li class="toctree-l2"><a class="reference internal" href="remote_data.html#eurostat">Eurostat</a></li>
-<li class="toctree-l2"><a class="reference internal" href="remote_data.html#thrift-savings-plan-tsp-fund-data">Thrift Savings Plan (TSP) Fund Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="remote_data.html#nasdaq-trader-symbol-definitions">Nasdaq Trader Symbol Definitions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="remote_data.html#stooq-index-data">Stooq Index Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="remote_data.html#moex-data">MOEX Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="remote_data.html#naver-finance-data">Naver Finance Data</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="remote_data.html">Remote Data Access</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cache.html">Caching queries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="see-also.html">Other Data Sources</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="see-also.html#alpha-vantage">Alpha Vantage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="see-also.html#tiingo">Tiingo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="see-also.html#barchart">Barchart</a></li>
-<li class="toctree-l2"><a class="reference internal" href="see-also.html#list-of-other-sources">List of Other Sources</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="readers/index.html">Data Readers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="readers/alphavantage.html">AlphaVantage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readers/fred.html">Federal Reserve Economic Data (FRED)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readers/famafrench.html">Fama-French Data (Ken French’s Data Library)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readers/bank-of-canada.html">Bank of Canada</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readers/econdb.html">Econdb</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readers/enigma.html">Enigma</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readers/eurostat.html">Eurostat</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readers/iex.html">The Investors Exchange (IEX)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readers/moex.html">Moscow Exchange (MOEX)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readers/nasdaq-trader.html">NASDAQ</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readers/naver.html">Naver Finance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readers/oecd.html">Organisation for Economic Co-operation and Development (OECD)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readers/quandl.html">Quandl</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readers/stooq.html">Stooq.com</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readers/tiingo.html">Tiingo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readers/tsp.html">Thrift Savings Plan (TSP)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readers/world-bank.html">World Bank</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="see-also.html">Other Data Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readers/index.html">Data Readers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="whatsnew.html">What’s New</a></li>
 </ul>
 </div>
 </div>
@@ -342,7 +276,7 @@ $ python setup.py install
               
               <div class='prev-next-bottom'>
                 
-    <a class='right-next' id="next-link" href="whatsnew.html" title="next page">What’s New</a>
+    <a class='right-next' id="next-link" href="remote_data.html" title="next page">Remote Data Access</a>
 
               </div>
               
