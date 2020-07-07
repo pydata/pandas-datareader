@@ -30,6 +30,7 @@ from pandas_datareader.iex.tops import (
 )
 from pandas_datareader.moex import MoexReader
 from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
+from pandas_datareader.naver import NaverDailyReader
 from pandas_datareader.oecd import OECDReader
 from pandas_datareader.quandl import QuandlReader
 from pandas_datareader.stooq import StooqDailyReader
@@ -43,6 +44,7 @@ from pandas_datareader.yahoo.components import _get_data as get_components_yahoo
 from pandas_datareader.yahoo.daily import YahooDailyReader
 from pandas_datareader.yahoo.options import Options as YahooOptions
 from pandas_datareader.yahoo.quotes import YahooQuotesReader
+
 
 __all__ = [
     "get_components_yahoo",
@@ -364,6 +366,7 @@ def DataReader(
         "av-monthly-adjusted",
         "av-intraday",
         "econdb",
+        "naver",
     ]
 
     if data_source not in expected_source:
@@ -654,6 +657,16 @@ def DataReader(
 
     elif data_source == "econdb":
         return EcondbReader(
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        ).read()
+
+    elif data_source == "naver":
+        return NaverDailyReader(
             symbols=name,
             start=start,
             end=end,
