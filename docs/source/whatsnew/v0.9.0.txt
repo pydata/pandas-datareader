@@ -1,6 +1,6 @@
 .. _whatsnew_090:
 
-v0.9.0 (TBD)
+v0.9.0 (July 10, 2020)
 ---------------------------
 
 Highlights include:
@@ -16,23 +16,43 @@ Highlights include:
 Enhancements
 ~~~~~~~~~~~~
 
-- Added AlphaVantage endpoint to get historical currency exchange rates.
+- Added a timeout parameter to prevent infinite hangs (:issue:`790`)
+- Added AlphaVantage endpoint to get historical currency exchange rates (:issue:`764`)
+- Improved logging when rate limited (:issue:`745`)
 
 .. _whatsnew_090.api_breaking:
 
 Backwards incompatible API changes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+- Dropped support for Python 2.7. The minimum python version is now Python 3.6.
+- Removed Robinhood which no longer exists
+- Immediately deprecated AlphaVantage quote reader which used an end point that has been retired
+- Immediately deprecated Enigma which has substantially changed their business model and API
 
 .. _whatsnew_090.bug_fixes:
 
 Bug Fixes
 ~~~~~~~~~
-
-- Fix Yahoo! actions bug due to change in split format. (:issue: `755`)
-- Fix FutureWarning from pandas import. (:issue: `762`)
+- Fix Yahoo Splits for change in format (:issue:`756`)
+- Fixed reading bond yields from Stooq (:issue:`752`)
+- Fixed EconDB reader to use session (:issue:`737`)
+- Fix reading futures data from Stooq (:issue:`718`)
+- Correct NASDAQ symbols fields link (:issue:`715`)
+- Fix Yahoo! actions bug due to change in split format (:issue:`755`)
+- Fix FutureWarning from pandas import (:issue:`762`)
 
 Contributors
 ~~~~~~~~~~~~
-- David Stephens
+- Spencer Adams
+- Jesse Aldridge
+- Sumin Byeon
+- Patrick Collins
+- David Cottrell
+- Greg
 - Matthew Hall
+- Kirill Ikonnikov
+- Gábor Lipták
+- Kevin Sheppard
+- David Stephens
+

@@ -12,7 +12,7 @@ g = Github(os.environ.get("GITHUB_API_KEY"))
 
 repo = g.get_repo("pydata/pandas-datareader")
 
-start = dt.datetime(2018, 9, 12, 0, 0, 0)
+start = dt.datetime(2019, 9, 26, 0, 0, 0)
 pulls = repo.get_pulls(state="closed", sort="updated", base="master", direction="desc")
 
 users = set()
