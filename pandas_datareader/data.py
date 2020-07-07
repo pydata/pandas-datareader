@@ -45,7 +45,6 @@ from pandas_datareader.yahoo.daily import YahooDailyReader
 from pandas_datareader.yahoo.options import Options as YahooOptions
 from pandas_datareader.yahoo.quotes import YahooQuotesReader
 
-
 __all__ = [
     "get_components_yahoo",
     "get_data_enigma",

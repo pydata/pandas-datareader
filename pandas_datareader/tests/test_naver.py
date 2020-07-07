@@ -1,7 +1,8 @@
 from datetime import datetime
 
-from pandas_datareader import DataReader
 import pytest
+
+from pandas_datareader import DataReader
 
 
 class TestNaver(object):
