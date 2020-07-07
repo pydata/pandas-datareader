@@ -3,8 +3,9 @@ from xml.etree import ElementTree
 
 import numpy as np
 from pandas import DataFrame, to_datetime
-from pandas_datareader.base import _DailyBaseReader
 from six import string_types
+
+from pandas_datareader.base import _DailyBaseReader
 
 
 class NaverDailyReader(_DailyBaseReader):
