@@ -21,10 +21,6 @@ Remote Data Access
 
     The ``access_key`` keyword argument of ``DataReader`` has been deprecated in favor of ``api_key``.
 
-.. warning::
-
-    Robinhood has been immediately deprecated. Endpoints from this provider have been retired.
-
 .. _remote_data.data_reader:
 
 Functions from :mod:`pandas_datareader.data` and :mod:`pandas_datareader.wb`
