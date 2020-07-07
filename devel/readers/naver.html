@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Bank of Canada &mdash; pandas-datareader 0.9.0dev0+93.gee4a087 documentation</title>
+  <title>Naver Finance &mdash; pandas-datareader 0.9.0dev0+93.gee4a087 documentation</title>
   
 
   
@@ -36,8 +36,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Econdb" href="econdb.html" />
-    <link rel="prev" title="Fama-French Data (Ken French’s Data Library)" href="famafrench.html" /> 
+    <link rel="next" title="Organisation for Economic Co-operation and Development (OECD)" href="oecd.html" />
+    <link rel="prev" title="NASDAQ" href="nasdaq-trader.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -95,14 +95,14 @@
 <li class="toctree-l2"><a class="reference internal" href="alphavantage.html">AlphaVantage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="fred.html">Federal Reserve Economic Data (FRED)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="famafrench.html">Fama-French Data (Ken French’s Data Library)</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Bank of Canada</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bank-of-canada.html">Bank of Canada</a></li>
 <li class="toctree-l2"><a class="reference internal" href="econdb.html">Econdb</a></li>
 <li class="toctree-l2"><a class="reference internal" href="enigma.html">Enigma</a></li>
 <li class="toctree-l2"><a class="reference internal" href="eurostat.html">Eurostat</a></li>
 <li class="toctree-l2"><a class="reference internal" href="iex.html">The Investors Exchange (IEX)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moex.html">Moscow Exchange (MOEX)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nasdaq-trader.html">NASDAQ</a></li>
-<li class="toctree-l2"><a class="reference internal" href="naver.html">Naver Finance</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Naver Finance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="oecd.html">Organisation for Economic Co-operation and Development (OECD)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quandl.html">Quandl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="stooq.html">Stooq.com</a></li>
@@ -159,13 +159,13 @@
         
           <li><a href="index.html">Data Readers</a> &raquo;</li>
         
-      <li>Bank of Canada</li>
+      <li>Naver Finance</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/readers/bank-of-canada.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/readers/naver.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -178,41 +178,49 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pandas_datareader.bankofcanada">
-<span id="bank-of-canada"></span><h1>Bank of Canada<a class="headerlink" href="#module-pandas_datareader.bankofcanada" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pandas_datareader.naver">
+<span id="naver-finance"></span><h1>Naver Finance<a class="headerlink" href="#module-pandas_datareader.naver" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="pandas_datareader.bankofcanada.BankOfCanadaReader">
-<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.bankofcanada.</code><code class="sig-name descname">BankOfCanadaReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="o">=</span><span class="default_value">30</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">freq</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.bankofcanada.BankOfCanadaReader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get data for the given name from Bank of Canada.</p>
-<p class="rubric">Notes</p>
-<p>See <a class="reference external" href="https://www.bankofcanada.ca/rates/">Bank of Canada</a></p>
+<dt id="pandas_datareader.naver.NaverDailyReader">
+<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.naver.</code><code class="sig-name descname">NaverDailyReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">adjust_price</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ret_index</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">chunksize</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">interval</span><span class="o">=</span><span class="default_value">'d'</span></em>, <em class="sig-param"><span class="n">get_actions</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">adjust_dividends</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.naver.NaverDailyReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetches daily historical data from Naver Finance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>symbols</strong> – A single symbol; multiple symbols are not currently supported.</p></li>
+<li><p><strong>adjust_price</strong> – Not implemented</p></li>
+<li><p><strong>interval</strong> – Not implemented</p></li>
+<li><p><strong>adjust_dividends</strong> – Not implemented</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
-<dt id="pandas_datareader.bankofcanada.BankOfCanadaReader.close">
-<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.bankofcanada.BankOfCanadaReader.close" title="Permalink to this definition">¶</a></dt>
+<dt id="pandas_datareader.naver.NaverDailyReader.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.naver.NaverDailyReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.bankofcanada.BankOfCanadaReader.default_start_date">
-<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.bankofcanada.BankOfCanadaReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dt id="pandas_datareader.naver.NaverDailyReader.default_start_date">
+<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.naver.NaverDailyReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.bankofcanada.BankOfCanadaReader.params">
-<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.bankofcanada.BankOfCanadaReader.params" title="Permalink to this definition">¶</a></dt>
+<dt id="pandas_datareader.naver.NaverDailyReader.params">
+<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.naver.NaverDailyReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.bankofcanada.BankOfCanadaReader.read">
-<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.bankofcanada.BankOfCanadaReader.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read data from connector</p>
+<dt id="pandas_datareader.naver.NaverDailyReader.read">
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.naver.NaverDailyReader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.bankofcanada.BankOfCanadaReader.url">
-<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.bankofcanada.BankOfCanadaReader.url" title="Permalink to this definition">¶</a></dt>
+<dt id="pandas_datareader.naver.NaverDailyReader.url">
+<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.naver.NaverDailyReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
@@ -228,10 +236,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="econdb.html" class="btn btn-neutral float-right" title="Econdb" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="oecd.html" class="btn btn-neutral float-right" title="Organisation for Economic Co-operation and Development (OECD)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="famafrench.html" class="btn btn-neutral float-left" title="Fama-French Data (Ken French’s Data Library)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="nasdaq-trader.html" class="btn btn-neutral float-left" title="NASDAQ" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

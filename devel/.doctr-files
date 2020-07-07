@@ -11,6 +11,7 @@ devel/_sources/readers/iex.rst.txt
 devel/_sources/readers/index.rst.txt
 devel/_sources/readers/moex.rst.txt
 devel/_sources/readers/nasdaq-trader.rst.txt
+devel/_sources/readers/naver.rst.txt
 devel/_sources/readers/oecd.rst.txt
 devel/_sources/readers/quandl.rst.txt
 devel/_sources/readers/stooq.rst.txt
@@ -119,6 +120,7 @@ devel/readers/iex.html
 devel/readers/index.html
 devel/readers/moex.html
 devel/readers/nasdaq-trader.html
+devel/readers/naver.html
 devel/readers/oecd.html
 devel/readers/quandl.html
 devel/readers/stooq.html

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Remote Data Access &mdash; pandas-datareader 0.9.0dev0+79.gc47efbe documentation</title>
+  <title>Remote Data Access &mdash; pandas-datareader 0.9.0dev0+93.gee4a087 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.9.0dev0 (+79, c47efbe)
+                0.9.0dev0 (+93, ee4a087)
               </div>
             
           
@@ -115,6 +115,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#nasdaq-trader-symbol-definitions">Nasdaq Trader Symbol Definitions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#stooq-index-data">Stooq Index Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#moex-data">MOEX Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#naver-finance-data">Naver Finance Data</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cache.html">Caching queries</a></li>
@@ -210,6 +211,7 @@ Currently the following sources are supported:</p>
 <li><p><a class="reference internal" href="#remote-data-nasdaq-symbols"><span class="std std-ref">Nasdaq Trader symbol definitions</span></a></p></li>
 <li><p><a class="reference internal" href="#remote-data-stooq"><span class="std std-ref">Stooq</span></a></p></li>
 <li><p><a class="reference internal" href="#remote-data-moex"><span class="std std-ref">MOEX</span></a></p></li>
+<li><p><a class="reference internal" href="#remote-data-naver"><span class="std std-ref">Naver Finance</span></a></p></li>
 </ul>
 </div></blockquote>
 <p>It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.</p>
@@ -866,7 +868,7 @@ available. More information on the <a class="reference external" href="http://ww
 <span class="gh">Out[32]: </span><span class="go"></span>
 <span class="go">                Open      High       Low     Close     Volume</span>
 <span class="go">Date                                                         </span>
-<span class="go">2020-07-06  25996.08  26297.53  25996.08  26287.03  273085757</span>
+<span class="go">2020-07-06  25996.08  26297.53  25996.08  26287.03  344151697</span>
 <span class="go">2020-07-02  25936.45  26204.41  25778.12  25827.36  350387758</span>
 <span class="go">2020-07-01  25879.38  26019.31  25713.61  25734.97  374839860</span>
 <span class="go">2020-06-30  25512.43  25905.38  25475.14  25812.88  413195530</span>
@@ -897,6 +899,26 @@ available. More information on the <a class="reference external" href="http://ww
 <span class="go">2017-07-05    CETS  59.9825  60.2600  ...  USDRUB_TOM  2.874226e+11  59.9234</span>
 
 <span class="go">[5 rows x 10 columns]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="naver-finance-data">
+<span id="remote-data-naver"></span><h2>Naver Finance Data<a class="headerlink" href="#naver-finance-data" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://finance.naver.com">Naver Finance</a> provides Korean stock market
+(<a class="reference external" href="https://en.wikipedia.org/wiki/KOSPI">KOSPI</a>, <a class="reference external" href="https://en.wikipedia.org/wiki/KOSDAQ">KOSDAQ</a>) historical data.</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [36]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
+
+<span class="gp">In [37]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;005930&#39;</span><span class="p">,</span> <span class="s1">&#39;naver&#39;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s1">&#39;2019-09-10&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2019-10-09&#39;</span><span class="p">)</span>
+
+<span class="gp">In [38]: </span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[38]: </span><span class="go"></span>
+<span class="go">             Open   High    Low  Close    Volume</span>
+<span class="go">Date                                            </span>
+<span class="go">2019-09-10  47100  47200  46550  47000   9231792</span>
+<span class="go">2019-09-11  47300  47400  46800  47150  16141619</span>
+<span class="go">2019-09-16  47000  47100  46400  47100  15550926</span>
+<span class="go">2019-09-17  47000  47100  46800  46900   7006280</span>
+<span class="go">2019-09-18  46900  47700  46800  47700  10413027</span>
 </pre></div>
 </div>
 </div>
