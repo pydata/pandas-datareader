@@ -21,19 +21,17 @@ Up to date remote data access for pandas, works for multiple versions of pandas.
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
      :target: https://github.com/psf/black
 
+Installation
+------------
+
+Install using ``pip``
+
+.. code-block:: shell
+
+   pip install pandas-datareader
 
 Usage
 -----
-
-Starting in 0.19.0, pandas no longer supports ``pandas.io.data`` or ``pandas.io.wb``, so
-you must replace your imports from ``pandas.io`` with those from ``pandas_datareader``:
-
-.. code-block:: python
-
-   from pandas.io import data, wb # becomes
-   from pandas_datareader import data, wb
-
-Many functions from the data module have been included in the top level API.
 
 .. code-block:: python
 
@@ -51,9 +49,6 @@ A second copy of the stable documentation is hosted on
 
 `Development documentation <https://pydata.github.io/pandas-datareader/devel/>`__
 is available for the latest changes in master.
-
-Installation
-------------
 
 Requirements
 ~~~~~~~~~~~~
@@ -83,23 +78,17 @@ Development and testing additionally requires:
 * pytest-cov
 * wrapt
 
-Install latest release version via pip
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. code-block:: shell
-
-   $ pip install pandas-datareader
-
 Install latest development version
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: shell
 
-    $ pip install git+https://github.com/pydata/pandas-datareader.git
+   pip install git+https://github.com/pydata/pandas-datareader.git
 
 or
 
 .. code-block:: shell
 
-    $ git clone https://github.com/pydata/pandas-datareader.git
-    $ python setup.py install
+   git clone https://github.com/pydata/pandas-datareader.git
+   cd pandas-datareader
+   python setup.py install

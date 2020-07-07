@@ -5,20 +5,20 @@
 
 .. include:: ../../README.rst
 
-
 Documentation
 -------------
 
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
-   whatsnew.rst
    remote_data.rst
    cache.rst
    see-also.rst
    readers/index
+   whatsnew.rst
+
 
 
 Indices and tables
