@@ -60,9 +60,9 @@ Requirements
 
 Using pandas datareader requires the following packages:
 
-* pandas>=0.19.2
+* pandas>=0.23
 * lxml
-* requests>=2.3.0
+* requests>=2.19.0
 
 Building the documentation additionally requires:
 
@@ -70,7 +70,7 @@ Building the documentation additionally requires:
 * ipython
 * requests_cache
 * sphinx
-* sphinx_rtd_theme
+* pydata_sphinx_theme
 
 Development and testing additionally requires:
 
