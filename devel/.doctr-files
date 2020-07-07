@@ -26,11 +26,14 @@ devel/_static/css/index.css
 devel/_static/doctools.js
 devel/_static/documentation_options.js
 devel/_static/file.png
+devel/_static/images/pandas-datareader-plain.svg
+devel/_static/images/pandas-datareader.svg
 devel/_static/jquery-3.5.1.js
 devel/_static/jquery.js
 devel/_static/js/index.js
 devel/_static/language_data.js
 devel/_static/minus.png
+devel/_static/pandas-datareader-plain.svg
 devel/_static/plus.png
 devel/_static/pygments.css
 devel/_static/searchtools.js
