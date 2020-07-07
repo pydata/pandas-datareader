@@ -1,183 +1,241 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>NASDAQ &mdash; pandas-datareader 0.9.0dev0+93.gee4a087 documentation</title>
-  
 
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-
-  
-  
-  
-  
-
-  
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASDAQ &#8212; pandas-datareader 0.9.0dev0+96.gcda01de documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
+    <link href="../_static/css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Naver Finance" href="naver.html" />
-    <link rel="prev" title="Moscow Exchange (MOEX)" href="moex.html" /> 
-</head>
-
-<body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
+    <link rel="prev" title="Moscow Exchange (MOEX)" href="moex.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="docsearch:language" content="en">
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
 
-          
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> pandas-datareader
-          
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-          
-          </a>
-
-          
-            
-            
-              <div class="version">
-                0.9.0dev0 (+93, ee4a087)
-              </div>
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
         
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../whatsnew.html">What’s New</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../remote_data.html">Remote Data Access</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cache.html">Caching queries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../see-also.html">Other Data Sources</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Data Readers</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="alphavantage.html">AlphaVantage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fred.html">Federal Reserve Economic Data (FRED)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="famafrench.html">Fama-French Data (Ken French’s Data Library)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bank-of-canada.html">Bank of Canada</a></li>
-<li class="toctree-l2"><a class="reference internal" href="econdb.html">Econdb</a></li>
-<li class="toctree-l2"><a class="reference internal" href="enigma.html">Enigma</a></li>
-<li class="toctree-l2"><a class="reference internal" href="eurostat.html">Eurostat</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iex.html">The Investors Exchange (IEX)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="moex.html">Moscow Exchange (MOEX)</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">NASDAQ</a></li>
-<li class="toctree-l2"><a class="reference internal" href="naver.html">Naver Finance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="oecd.html">Organisation for Economic Co-operation and Development (OECD)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quandl.html">Quandl</a></li>
-<li class="toctree-l2"><a class="reference internal" href="stooq.html">Stooq.com</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tiingo.html">Tiingo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tsp.html">Thrift Savings Plan (TSP)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="world-bank.html">World Bank</a></li>
-</ul>
-</li>
-</ul>
-
-            
-          
-        </div>
         
-      </div>
-    </nav>
+        <li class="nav-item ">
+            <a class="nav-link" href="../whatsnew.html">What’s New</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../remote_data.html">Remote Data Access</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../cache.html">Caching queries</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../see-also.html">Other Data Sources</a>
+        </li>
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="index.html">Data Readers</a>
+        </li>
+        
+        
+      </ul>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
+
+      <ul class="navbar-nav">
         
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">pandas-datareader</a>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/pydata/pandas-datareader" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
         
-      </nav>
-
-
-      <div class="wy-nav-content">
         
-        <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="index.html">Data Readers</a> &raquo;</li>
-        
-      <li>NASDAQ</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-            
-            <a href="../_sources/readers/nasdaq-trader.rst.txt" rel="nofollow"> View page source</a>
-          
-        
-      </li>
-    
-  </ul>
-
-  
-  <hr/>
+      </ul>
+    </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar">
+
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+  <div class="bd-toc-item active">
+  
+
+  <ul class="nav bd-sidenav">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+        
+          
+              <li class="">
+                  <a href="alphavantage.html">AlphaVantage</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="fred.html">Federal Reserve Economic Data (FRED)</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="famafrench.html">Fama-French Data (Ken French’s Data Library)</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="bank-of-canada.html">Bank of Canada</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="econdb.html">Econdb</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="enigma.html">Enigma</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="eurostat.html">Eurostat</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="iex.html">The Investors Exchange (IEX)</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="moex.html">Moscow Exchange (MOEX)</a>
+              </li>
+          
+        
+          
+              <li class="active">
+                  <a href="">NASDAQ</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="naver.html">Naver Finance</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="oecd.html">Organisation for Economic Co-operation and Development (OECD)</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="quandl.html">Quandl</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="stooq.html">Stooq.com</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="tiingo.html">Tiingo</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="tsp.html">Thrift Savings Plan (TSP)</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="world-bank.html">World Bank</a>
+              </li>
+          
+        
+      
+      
+    </ul>
+
+</nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
   <div class="section" id="module-pandas_datareader.nasdaq_trader">
 <span id="nasdaq"></span><h1>NASDAQ<a class="headerlink" href="#module-pandas_datareader.nasdaq_trader" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
@@ -197,59 +255,30 @@
 </div>
 
 
-           </div>
-           
-          </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="naver.html" class="btn btn-neutral float-right" title="Naver Finance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="moex.html" class="btn btn-neutral float-left" title="Moscow Exchange (MOEX)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="moex.html" title="previous page">Moscow Exchange (MOEX)</a>
+    <a class='right-next' id="next-link" href="naver.html" title="next page">Naver Finance</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
     </div>
-  
 
-  <hr/>
-
-  <div role="contentinfo">
+    <script src="../_static/js/index.js"></script>
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
     <p>
-        
-        &copy; Copyright 2018, The PyData Development Team
-
+          &copy; Copyright 2020, The PyData Development Team.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
 </footer>
-
-        </div>
-      </div>
-
-    </section>
-
-  </div>
-  
-
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-
-  
-  
-    
-   
-
-</body>
+  </body>
 </html>
