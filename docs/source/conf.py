@@ -14,15 +14,19 @@
 # serve to show the default.
 
 import os
-import sys
+
+import pandas_datareader as pdr
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-import IPython
 
-import pandas_datareader as pdr
-import sphinx_rtd_theme
+
+on_rtd = os.environ.get("READTHEDOCS", None) == "True"
+if on_rtd:
+    import sphinx_rtd_theme
+else:
+    import pydata_sphinx_theme  # noqa: F401
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -64,7 +68,7 @@ master_doc = "index"
 
 # General information about the project.
 project = u"pandas-datareader"
-copyright = u"2018, The PyData Development Team"
+copyright = u"2020, The PyData Development Team"
 author = "The PyData Development Team"
 
 # The version info for the project you're documenting, acts as replacement for
@@ -105,8 +109,16 @@ todo_include_todos = True
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = "sphinx_rtd_theme"
-html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+if on_rtd:
+    html_theme = "sphinx_rtd_theme"
+    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+else:
+    html_theme = "pydata_sphinx_theme"
+    # html_theme_path = pydata_sphinx_theme.get_html_theme_path()
+    html_theme_options = {
+        "external_links": [],
+        "github_url": "https://github.com/pydata/pandas-datareader",
+    }
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

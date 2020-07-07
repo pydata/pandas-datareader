@@ -64,7 +64,7 @@ class TestAVTimeSeries(object):
         )
         assert df.columns.equals(self.col_index)
         assert len(df) == 578
-        assert df["volume"][-1] == 19178000
+        assert df["volume"][-1] == 19118319
 
         expected1 = df.loc["2017-02-09"]
         assert expected1["close"] == 132.42
@@ -98,7 +98,7 @@ class TestAVTimeSeries(object):
             )
         )
         assert len(df) == 578
-        assert df["volume"][-1] == 19178000
+        assert df["volume"][-1] == 19118319
 
         expected1 = df.loc["2017-02-09"]
         assert expected1["close"] == 132.42
@@ -191,7 +191,7 @@ class TestAVTimeSeries(object):
         # Not much available to test, but ensure close in length
         df = web.DataReader("AAPL", "av-intraday", retry_count=6, pause=20.5)
 
-        assert len(df) > 1000
+        assert len(df) >= 1
         assert "open" in df.columns
         assert "close" in df.columns
 
@@ -205,6 +205,6 @@ class TestAVTimeSeries(object):
             pause=20.5,
         )
         assert df.columns.equals(self.col_index[:4])  # No volume col for forex
-        assert len(df) == 718
+        assert len(df) == 598
         assert df.loc["2015-02-09"]["close"] == 118.6390
         assert df.loc["2017-05-24"]["high"] == 112.1290

@@ -3,3 +3,4 @@ ipython
 matplotlib
 sphinx_rtd_theme
 requests_cache
+pydata_sphinx_theme

@@ -41,7 +41,7 @@ class TestIEXDaily(object):
     def test_single_symbol(self):
         df = web.DataReader("AAPL", "iex", self.start, self.end)
         assert list(df) == ["open", "high", "low", "close", "volume"]
-        assert len(df) == 578
+        assert len(df) == 476
 
     def test_multiple_symbols(self):
         syms = ["AAPL", "MSFT", "TSLA"]
@@ -103,13 +103,13 @@ class TestIEXDaily(object):
             IEXDailyReader(
                 symbols=syms, start=date.today() - timedelta(days=365), end=date.today()
             )._range_string_from_date()
-            == "2y"
+            == "1y"
         )
         assert (
             IEXDailyReader(
                 symbols=syms, start=date.today() - timedelta(days=730), end=date.today()
             )._range_string_from_date()
-            == "5y"
+            == "2y"
         )
         assert (
             IEXDailyReader(
@@ -117,5 +117,5 @@ class TestIEXDaily(object):
                 start=date.today() - timedelta(days=1826),
                 end=date.today(),
             )._range_string_from_date()
-            == "max"
+            == "5y"
         )

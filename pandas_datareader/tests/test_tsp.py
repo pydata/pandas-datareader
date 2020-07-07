@@ -13,7 +13,7 @@ class TestTSPFunds(object):
 
         assert len(tspdata == 1)
 
-        assert round(tspdata["I Fund"][dt.date(2015, 11, 2)], 5) == 25.0058
+        assert round(tspdata["I Fund"][dt.datetime(2015, 11, 2)], 5) == 25.0058
 
     def test_sanitize_response(self):
         class response(object):
