@@ -15,18 +15,18 @@
 
 import os
 
+import pandas_datareader as pdr
+
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 
 
-import pandas_datareader as pdr
-
 on_rtd = os.environ.get("READTHEDOCS", None) == "True"
 if on_rtd:
     import sphinx_rtd_theme
 else:
-    import pydata_sphinx_theme   # noqa: F401
+    import pydata_sphinx_theme  # noqa: F401
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the

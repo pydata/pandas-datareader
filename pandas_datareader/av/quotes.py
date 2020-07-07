@@ -2,6 +2,10 @@ import numpy as np
 import pandas as pd
 
 from pandas_datareader.av import AlphaVantage
+from pandas_datareader.exceptions import (
+    DEP_ERROR_MSG,
+    ImmediateDeprecationError,
+)
 
 
 class AVQuotesReader(AlphaVantage):
@@ -26,6 +30,8 @@ class AVQuotesReader(AlphaVantage):
     def __init__(
         self, symbols=None, retry_count=3, pause=0.1, session=None, api_key=None
     ):
+        raise ImmediateDeprecationError(DEP_ERROR_MSG.format("AVQuotesReader"))
+
         if isinstance(symbols, str):
             syms = [symbols]
         elif isinstance(symbols, list):
