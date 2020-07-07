@@ -1,158 +1,183 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>pandas-datareader &mdash; pandas-datareader 0.8.1 documentation</title>
-  
 
-  
-  
-  
-  
-
-  
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pandas-datareader &#8212; pandas-datareader 0.9.0rc0 documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
+    <link href="_static/css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="What’s New" href="whatsnew.html" /> 
-</head>
-
-<body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
+    <link rel="next" title="What’s New" href="whatsnew.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="docsearch:language" content="en">
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
 
-          
-            <a href="#" class="icon icon-home"> pandas-datareader
-          
+    
+    <a class="navbar-brand" href="#">
+      <img src="_static/pandas-datareader-plain.svg" class="logo" alt="logo">
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-          
-          </a>
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="whatsnew.html">What’s New</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="remote_data.html">Remote Data Access</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="cache.html">Caching queries</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="see-also.html">Other Data Sources</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="readers/index.html">Data Readers</a>
+        </li>
+        
+        
+      </ul>
 
-          
-            
-            
-              <div class="version">
-                0.8.1
-              </div>
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="whatsnew.html">What’s New</a></li>
-<li class="toctree-l1"><a class="reference internal" href="remote_data.html">Remote Data Access</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cache.html">Caching queries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="see-also.html">Other Data Sources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="readers/index.html">Data Readers</a></li>
-</ul>
-
-            
-          
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
+
+      <ul class="navbar-nav">
         
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">pandas-datareader</a>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/pydata/pandas-datareader" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
         
-      </nav>
-
-
-      <div class="wy-nav-content">
         
-        <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="#">Docs</a> &raquo;</li>
-        
-      <li>pandas-datareader</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-            
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
-          
-        
-      </li>
-    
-  </ul>
-
-  
-  <hr/>
+      </ul>
+    </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar">
+
+<form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+  <div class="bd-toc-item active">
+  
+
+  <ul class="nav bd-sidenav">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+
+</nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#" class="nav-link">pandas-datareader</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#usage" class="nav-link">Usage</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#documentation" class="nav-link">Documentation</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#installation" class="nav-link">Installation</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#requirements" class="nav-link">Requirements</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#install-latest-release-version-via-pip" class="nav-link">Install latest release version via pip</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#install-latest-development-version" class="nav-link">Install latest development version</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#id1" class="nav-link">Documentation</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#indices-and-tables" class="nav-link">Indices and tables</a>
+        </li>
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
   <div class="section" id="pandas-datareader">
 <h1>pandas-datareader<a class="headerlink" href="#pandas-datareader" title="Permalink to this headline">¶</a></h1>
 <p>Up to date remote data access for pandas, works for multiple versions of pandas.</p>
@@ -162,15 +187,6 @@
 <a class="reference external image-reference" href="https://codecov.io/gh/pydata/pandas-datareader"><img alt="https://codecov.io/gh/pydata/pandas-datareader/branch/master/graph/badge.svg" src="https://codecov.io/gh/pydata/pandas-datareader/branch/master/graph/badge.svg" /></a>
 <a class="reference external image-reference" href="https://pandas-datareader.readthedocs.io/en/latest/"><img alt="https://readthedocs.org/projects/pandas-datareader/badge/?version=latest" src="https://readthedocs.org/projects/pandas-datareader/badge/?version=latest" /></a>
 <a class="reference external image-reference" href="https://github.com/psf/black"><img alt="https://img.shields.io/badge/code%20style-black-000000.svg" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>v0.8.0 is the last version which officially supports Python 2.7. Future versions of <code class="docutils literal notranslate"><span class="pre">pandas_datareader</span></code> will end support for Python 2.x.</p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>As of v0.8.0 Robinhood has been immediately deprecated due to
-large changes in their API and no stable replacement.</p>
-</div>
 <div class="section" id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
 <p>Starting in 0.19.0, pandas no longer supports <code class="docutils literal notranslate"><span class="pre">pandas.io.data</span></code> or <code class="docutils literal notranslate"><span class="pre">pandas.io.wb</span></code>, so
@@ -180,7 +196,7 @@ you must replace your imports from <code class="docutils literal notranslate"><s
 </pre></div>
 </div>
 <p>Many functions from the data module have been included in the top level API.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="kn">as</span> <span class="nn">pdr</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="k">as</span> <span class="nn">pdr</span>
 <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_fred</span><span class="p">(</span><span class="s1">&#39;GS10&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -201,9 +217,9 @@ is available for the latest changes in master.</p>
 <h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
 <p>Using pandas datareader requires the following packages:</p>
 <ul class="simple">
-<li><p>pandas&gt;=0.19.2</p></li>
+<li><p>pandas&gt;=0.23</p></li>
 <li><p>lxml</p></li>
-<li><p>requests&gt;=2.3.0</p></li>
+<li><p>requests&gt;=2.19.0</p></li>
 </ul>
 <p>Building the documentation additionally requires:</p>
 <ul class="simple">
@@ -211,7 +227,7 @@ is available for the latest changes in master.</p>
 <li><p>ipython</p></li>
 <li><p>requests_cache</p></li>
 <li><p>sphinx</p></li>
-<li><p>sphinx_rtd_theme</p></li>
+<li><p>pydata_sphinx_theme</p></li>
 </ul>
 <p>Development and testing additionally requires:</p>
 <ul class="simple">
@@ -249,7 +265,8 @@ $ python setup.py install
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="whatsnew.html">What’s New</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-8-0-tbd">v0.8.0 (TBD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-9-0-july-10-2020">v0.9.0 (July 10, 2020)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-8-0-september-22-2019">v0.8.0 (September 22, 2019)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-7-0-september-11-2018">v0.7.0 (September 11, 2018)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-6-0-january-24-2018">v0.6.0 (January 24, 2018)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="whatsnew.html#v0-5-0-july-25-2017">v0.5.0 (July 25, 2017)</a></li>
@@ -271,10 +288,11 @@ $ python setup.py install
 <li class="toctree-l2"><a class="reference internal" href="remote_data.html#world-bank">World Bank</a></li>
 <li class="toctree-l2"><a class="reference internal" href="remote_data.html#oecd">OECD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="remote_data.html#eurostat">Eurostat</a></li>
-<li class="toctree-l2"><a class="reference internal" href="remote_data.html#tsp-fund-data">TSP Fund Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote_data.html#thrift-savings-plan-tsp-fund-data">Thrift Savings Plan (TSP) Fund Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="remote_data.html#nasdaq-trader-symbol-definitions">Nasdaq Trader Symbol Definitions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="remote_data.html#stooq-index-data">Stooq Index Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="remote_data.html#moex-data">MOEX Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote_data.html#naver-finance-data">Naver Finance Data</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cache.html">Caching queries</a></li>
@@ -296,6 +314,7 @@ $ python setup.py install
 <li class="toctree-l2"><a class="reference internal" href="readers/iex.html">The Investors Exchange (IEX)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="readers/moex.html">Moscow Exchange (MOEX)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="readers/nasdaq-trader.html">NASDAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readers/naver.html">Naver Finance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="readers/oecd.html">Organisation for Economic Co-operation and Development (OECD)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="readers/quandl.html">Quandl</a></li>
 <li class="toctree-l2"><a class="reference internal" href="readers/stooq.html">Stooq.com</a></li>
@@ -318,50 +337,29 @@ $ python setup.py install
 </div>
 
 
-           </div>
-           
-          </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="whatsnew.html" class="btn btn-neutral float-right" title="What’s New" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='right-next' id="next-link" href="whatsnew.html" title="next page">What’s New</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
     </div>
-  
 
-  <hr/>
-
-  <div role="contentinfo">
+    <script src="_static/js/index.js"></script>
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
     <p>
-        &copy; Copyright 2018, The PyData Development Team
-
+          &copy; Copyright 2020, The PyData Development Team.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
 </footer>
-
-        </div>
-      </div>
-
-    </section>
-
-  </div>
-  
-
-
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-
-  
-  
-    
-   
-
-</body>
+  </body>
 </html>

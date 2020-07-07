@@ -1,196 +1,247 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Remote Data Access &mdash; pandas-datareader 0.8.1 documentation</title>
-  
 
-  
-  
-  
-  
-
-  
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remote Data Access &#8212; pandas-datareader 0.9.0rc0 documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
+    <link href="_static/css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Caching queries" href="cache.html" />
-    <link rel="prev" title="What’s New" href="whatsnew.html" /> 
-</head>
-
-<body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
+    <link rel="prev" title="What’s New" href="whatsnew.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="docsearch:language" content="en">
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
 
-          
-            <a href="index.html" class="icon icon-home"> pandas-datareader
-          
+    
+    <a class="navbar-brand" href="index.html">
+      <img src="_static/pandas-datareader-plain.svg" class="logo" alt="logo">
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-          
-          </a>
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="whatsnew.html">What’s New</a>
+        </li>
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="">Remote Data Access</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="cache.html">Caching queries</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="see-also.html">Other Data Sources</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="readers/index.html">Data Readers</a>
+        </li>
+        
+        
+      </ul>
 
-          
-            
-            
-              <div class="version">
-                0.8.1
-              </div>
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="whatsnew.html">What’s New</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Remote Data Access</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#tiingo">Tiingo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#iex">IEX</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#alpha-vantage">Alpha Vantage</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#historical-time-series-data">Historical Time Series Data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#quotes">Quotes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#forex">Forex</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#sector-performance">Sector Performance</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#econdb">Econdb</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#enigma">Enigma</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#quandl">Quandl</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#fred">FRED</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#fama-french">Fama/French</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#world-bank">World Bank</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#indicators">Indicators</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#country-codes">Country Codes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#problematic-country-codes-indicators">Problematic Country Codes &amp; Indicators</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#oecd">OECD</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#eurostat">Eurostat</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tsp-fund-data">TSP Fund Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#nasdaq-trader-symbol-definitions">Nasdaq Trader Symbol Definitions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#stooq-index-data">Stooq Index Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#moex-data">MOEX Data</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="cache.html">Caching queries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="see-also.html">Other Data Sources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="readers/index.html">Data Readers</a></li>
-</ul>
-
-            
-          
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
+
+      <ul class="navbar-nav">
         
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">pandas-datareader</a>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/pydata/pandas-datareader" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
         
-      </nav>
-
-
-      <div class="wy-nav-content">
         
-        <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html">Docs</a> &raquo;</li>
-        
-      <li>Remote Data Access</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-            
-            <a href="_sources/remote_data.rst.txt" rel="nofollow"> View page source</a>
-          
-        
-      </li>
-    
-  </ul>
-
-  
-  <hr/>
+      </ul>
+    </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar">
+
+<form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+  <div class="bd-toc-item active">
+  
+
+  <ul class="nav bd-sidenav">
+      
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+
+</nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#tiingo" class="nav-link">Tiingo</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#iex" class="nav-link">IEX</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#alpha-vantage" class="nav-link">Alpha Vantage</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#historical-time-series-data" class="nav-link">Historical Time Series Data</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#quotes" class="nav-link">Quotes</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#forex" class="nav-link">Forex</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#sector-performance" class="nav-link">Sector Performance</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#econdb" class="nav-link">Econdb</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#enigma" class="nav-link">Enigma</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#quandl" class="nav-link">Quandl</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#fred" class="nav-link">FRED</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#fama-french" class="nav-link">Fama/French</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#world-bank" class="nav-link">World Bank</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#indicators" class="nav-link">Indicators</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#country-codes" class="nav-link">Country Codes</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#problematic-country-codes-indicators" class="nav-link">Problematic Country Codes & Indicators</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#oecd" class="nav-link">OECD</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#eurostat" class="nav-link">Eurostat</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#thrift-savings-plan-tsp-fund-data" class="nav-link">Thrift Savings Plan (TSP) Fund Data</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#nasdaq-trader-symbol-definitions" class="nav-link">Nasdaq Trader Symbol Definitions</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#stooq-index-data" class="nav-link">Stooq Index Data</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#moex-data" class="nav-link">MOEX Data</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#naver-finance-data" class="nav-link">Naver Finance Data</a>
+        </li>
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
   <div class="section" id="remote-data-access">
 <span id="remote-data"></span><h1>Remote Data Access<a class="headerlink" href="#remote-data-access" title="Permalink to this headline">¶</a></h1>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">access_key</span></code> keyword argument of <code class="docutils literal notranslate"><span class="pre">DataReader</span></code> has been deprecated in favor of <code class="docutils literal notranslate"><span class="pre">api_key</span></code>.</p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Robinhood has been immediately deprecated. Endpoints from this provider have been retired.</p>
 </div>
 <p id="remote-data-data-reader">Functions from <code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas_datareader.data</span></code> and <a class="reference internal" href="readers/world-bank.html#module-pandas_datareader.wb" title="pandas_datareader.wb"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas_datareader.wb</span></code></a>
 extract data from various Internet sources into a pandas DataFrame.
@@ -211,6 +262,7 @@ Currently the following sources are supported:</p>
 <li><p><a class="reference internal" href="#remote-data-nasdaq-symbols"><span class="std std-ref">Nasdaq Trader symbol definitions</span></a></p></li>
 <li><p><a class="reference internal" href="#remote-data-stooq"><span class="std std-ref">Stooq</span></a></p></li>
 <li><p><a class="reference internal" href="#remote-data-moex"><span class="std std-ref">MOEX</span></a></p></li>
+<li><p><a class="reference internal" href="#remote-data-naver"><span class="std std-ref">Naver Finance</span></a></p></li>
 </ul>
 </div></blockquote>
 <p>It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.</p>
@@ -222,7 +274,7 @@ Free registration is required to get an API key.  Free accounts are rate
 limited and can access a limited number of symbols (500 at the time of
 writing).</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">os</span>
-<span class="gp">In [2]: </span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="kn">as</span> <span class="nn">pdr</span>
+<span class="gp">In [2]: </span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="k">as</span> <span class="nn">pdr</span>
 
 <span class="gp">In [3]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_tiingo</span><span class="p">(</span><span class="s1">&#39;GOOG&#39;</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;TIINGO_API_KEY&#39;</span><span class="p">))</span>
 <span class="gp">In [4]: </span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -246,7 +298,7 @@ below for additional information.</p>
 <p>The Investors Exchange (IEX) provides a wide range of data through an
 <a class="reference external" href="https://iexcloud.io/api/docs/">API</a>.  Historical stock
 prices are available for up to 15 years. The usage of these readers requires the publishable API key from IEX Cloud Console, which can be stored in the <code class="docutils literal notranslate"><span class="pre">IEX_API_KEY</span></code> environment variable.</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
 <span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
@@ -280,7 +332,7 @@ A third interface to the deep API is exposed through
 <p class="admonition-title">Todo</p>
 <p>Execute block when markets are open</p>
 </div>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 <span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;gs&#39;</span><span class="p">,</span> <span class="s1">&#39;iex-tops&#39;</span><span class="p">)</span>
 <span class="n">f</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
@@ -294,7 +346,7 @@ equities and forex data. Free registration is required to get an API key.</p>
 <h3>Historical Time Series Data<a class="headerlink" href="#historical-time-series-data" title="Permalink to this headline">¶</a></h3>
 <p>Through the
 <a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> Time Series
-endpoints, it is possible to obtain historical equities data for individual
+endpoints, it is possible to obtain historical equities and currency rate data for individual
 symbols. For daily, weekly, and monthly frequencies, 20+ years of historical data is available. The past 3-5 days of intraday data is also available.</p>
 <p>The following endpoints are available:</p>
 <ul class="simple">
@@ -305,12 +357,13 @@ symbols. For daily, weekly, and monthly frequencies, 20+ years of historical dat
 <li><p><code class="docutils literal notranslate"><span class="pre">av-weekly-adjusted</span></code> - Weekly Time Series (Adjusted)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">av-monthly</span></code> - Monthly Time Series</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">av-monthly-adjusted</span></code> - Monthly Time Series (Adjusted)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">av-forex-daily</span></code> - Daily Time Series</p></li>
 </ul>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">os</span>
 
 <span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
-<span class="gp">In [3]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<span class="gp">In [3]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
 <span class="gp">In [4]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="s2">&quot;av-daily&quot;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span>
 <span class="gp">   ...: </span>                   <span class="n">end</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span>
@@ -326,6 +379,8 @@ symbols. For daily, weekly, and monthly frequencies, 20+ years of historical dat
 <span class="go">Name: 2017-02-09, dtype: float64</span>
 </pre></div>
 </div>
+<p>To request the historical exchange rate of physical or digital currencies, use
+<code class="docutils literal notranslate"><span class="pre">av-forex-daily</span></code> and format the symbol as “FROM/TO”, for example “USD/JPY”.</p>
 <p>The top-level function <code class="docutils literal notranslate"><span class="pre">get_data_alphavantage</span></code> is also provided. This
 function will
 return the <code class="docutils literal notranslate"><span class="pre">TIME_SERIES_DAILY</span></code> endpoint for the symbol and date range
@@ -341,7 +396,7 @@ once. These quotes are accessible through the top-level function
 
 <span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
-<span class="gp">In [3]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<span class="gp">In [3]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
 <span class="gp">In [4]: </span><span class="n">web</span><span class="o">.</span><span class="n">get_quote_av</span><span class="p">([</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="s2">&quot;TSLA&quot;</span><span class="p">])</span>
 <span class="gh">Out[4]:</span>
@@ -364,7 +419,7 @@ currency exchange rates (for physical and digital currencies).</p>
 as “FROM/TO” as in “USD/JPY”.</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">os</span>
 
-<span class="gp">In [2]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<span class="gp">In [2]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
 <span class="gp">In [3]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s2">&quot;USD/JPY&quot;</span><span class="p">,</span> <span class="s2">&quot;av-forex&quot;</span><span class="p">,</span>
 <span class="go">    ...:                    api_key=os.getenv(&#39;ALPHAVANTAGE_API_KEY&#39;))</span>
@@ -386,7 +441,7 @@ as “FROM/TO” as in “USD/JPY”.</p>
 <p>Multiple pairs are are allowable:</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">os</span>
 
-<span class="gp">In [2]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<span class="gp">In [2]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
 <span class="gp">In [3]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">([</span><span class="s2">&quot;USD/JPY&quot;</span><span class="p">,</span> <span class="s2">&quot;BTC/CNY&quot;</span><span class="p">],</span> <span class="s2">&quot;av-forex&quot;</span><span class="p">,</span>
 <span class="gp">   ...: </span>                   <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALPHAVANTAGE_API_KEY&#39;</span><span class="p">))</span>
@@ -413,7 +468,7 @@ as “FROM/TO” as in “USD/JPY”.</p>
 performances through the top-level function <code class="docutils literal notranslate"><span class="pre">get_sector_performance_av</span></code>.</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">os</span>
 
-<span class="gp">In [2]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<span class="gp">In [2]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
 <span class="gp">In [3]: </span><span class="n">web</span><span class="o">.</span><span class="n">get_sector_performance_av</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 <span class="gh">Out[4]:</span>
@@ -434,19 +489,24 @@ official statistical agencies. Free API allows access to the complete
 Econdb database of time series aggregated into datasets.</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">os</span>
 
-<span class="gp">In [2]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<span class="gp">In [2]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
 <span class="gp">In [3]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;ticker=RGDPUS&#39;</span><span class="p">,</span> <span class="s1">&#39;econdb&#39;</span><span class="p">)</span>
 
 <span class="gp">In [4]: </span><span class="n">f</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 <span class="gh">Out[4]: </span><span class="go"></span>
-<span class="go">               values</span>
-<span class="go">TIME_PERIOD          </span>
-<span class="go">2014-10-01   17143038</span>
-<span class="go">2015-01-01   17277580</span>
-<span class="go">2015-04-01   17405668</span>
-<span class="go">2015-07-01   17463222</span>
-<span class="go">2015-10-01   17468902</span>
+<span class="go">TableName                                                                     T10106</span>
+<span class="go">SeriesCode                                                                    A191RX</span>
+<span class="go">Table              Table 1.1.6. Real Gross Domestic Product, Chained Dollars (A) (Q)</span>
+<span class="go">Series description                                            Gross domestic product</span>
+<span class="go">CL_UNIT                                                                        Level</span>
+<span class="go">CL_FREQ                                                                            Q</span>
+<span class="go">TIME_PERIOD                                                                         </span>
+<span class="go">2015-10-01                                                   17468902               </span>
+<span class="go">2016-01-01                                                   17556840               </span>
+<span class="go">2016-04-01                                                   17639416               </span>
+<span class="go">2016-07-01                                                   17735074               </span>
+<span class="go">2016-10-01                                                   17824232               </span>
 </pre></div>
 </div>
 </div>
@@ -460,7 +520,7 @@ URL has changed from <a class="reference external" href="https://app.enigma.io">
 For example, the following code downloads from  <a class="reference external" href="https://public.enigma.com/datasets/292129b0-1275-44c8-a6a3-2a0881f24fe1">USDA Food Recalls 1996 Data</a>.</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">os</span>
 
-<span class="gp">In [2]: </span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="kn">as</span> <span class="nn">pdr</span>
+<span class="gp">In [2]: </span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="k">as</span> <span class="nn">pdr</span>
 
 <span class="gp">In [3]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_enigma</span><span class="p">(</span><span class="s1">&#39;292129b0-1275-44c8-a6a3-2a0881f24fe1&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ENIGMA_API_KEY&#39;</span><span class="p">))</span>
 
@@ -491,7 +551,7 @@ style shown above, currently available for
 <p>As of June 2017, each DB has a different data schema,
 the coverage in terms of time range is sometimes surprisingly small, and
 the data quality is not always good.</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
 <span class="gp">In [2]: </span><span class="n">symbol</span> <span class="o">=</span> <span class="s1">&#39;WIKI/AAPL&#39;</span>  <span class="c1"># or &#39;AAPL.US&#39;</span>
 
@@ -507,7 +567,7 @@ the data quality is not always good.</p>
 </div>
 <div class="section" id="fred">
 <span id="remote-data-fred"></span><h2>FRED<a class="headerlink" href="#fred" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [5]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [5]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
 <span class="gp">In [6]: </span><span class="kn">import</span> <span class="nn">datetime</span>
 
@@ -541,39 +601,41 @@ the data quality is not always good.</p>
 <span id="remote-data-ff"></span><h2>Fama/French<a class="headerlink" href="#fama-french" title="Permalink to this headline">¶</a></h2>
 <p>Access datasets from the <a class="reference external" href="http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html">Fama/French Data Library</a>.
 The <code class="docutils literal notranslate"><span class="pre">get_available_datasets</span></code> function returns a list of all available datasets.</p>
-<pre class="literal-block">In [13]: from pandas_datareader.famafrench import get_available_datasets
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [13]: </span><span class="kn">from</span> <span class="nn">pandas_datareader.famafrench</span> <span class="kn">import</span> <span class="n">get_available_datasets</span>
 
-In [14]: import pandas_datareader.data as web
+<span class="gp">In [14]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
-In [15]: len(get_available_datasets())
-Out[15]: 295
+<span class="gp">In [15]: </span><span class="nb">len</span><span class="p">(</span><span class="n">get_available_datasets</span><span class="p">())</span>
+<span class="gh">Out[15]: </span><span class="go">297</span>
 
-In [16]: ds = web.DataReader('5_Industry_Portfolios', 'famafrench')
+<span class="gp">In [16]: </span><span class="n">ds</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;5_Industry_Portfolios&#39;</span><span class="p">,</span> <span class="s1">&#39;famafrench&#39;</span><span class="p">)</span>
 
-In [17]: print(ds['DESCR'])
-5 Industry Portfolios
----------------------
+<span class="gp">In [17]: </span><span class="nb">print</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;DESCR&#39;</span><span class="p">])</span>
+<span class="go">5 Industry Portfolios</span>
+<span class="gt">---------------------</span>
 
-This file was created by CMPT_IND_RETS using the 201907 CRSP database. It contains value- and equal-weighted returns for 5 industry portfolios. The portfolios are constructed at the end of June. The annual returns are from January to December. Missing data are indicated by -99.99 or -999. Copyright 2019 Kenneth R. French
+<span class="n">This</span> <span class="n">file</span> <span class="n">was</span> <span class="n">created</span> <span class="n">by</span> <span class="n">CMPT_IND_RETS</span> <span class="n">using</span> <span class="n">the</span> <span class="mi">202005</span> <span class="n">CRSP</span> <span class="n">database</span><span class="o">.</span> <span class="n">It</span> <span class="n">contains</span> <span class="n">value</span><span class="o">-</span> <span class="ow">and</span> <span class="n">equal</span><span class="o">-</span><span class="n">weighted</span> <span class="n">returns</span> <span class="k">for</span> <span class="mi">5</span> <span class="n">industry</span> <span class="n">portfolios</span><span class="o">.</span> <span class="n">The</span> <span class="n">portfolios</span> <span class="n">are</span> <span class="n">constructed</span> <span class="n">at</span> <span class="n">the</span> <span class="n">end</span> <span class="n">of</span> <span class="n">June</span><span class="o">.</span> <span class="n">The</span> <span class="n">annual</span> <span class="n">returns</span> <span class="n">are</span> <span class="kn">from</span> <span class="nn">January</span> <span class="n">to</span> <span class="n">December</span><span class="o">.</span> <span class="n">Missing</span> <span class="n">data</span> <span class="n">are</span> <span class="n">indicated</span> <span class="n">by</span> <span class="o">-</span><span class="mf">99.99</span> <span class="ow">or</span> <span class="o">-</span><span class="mf">999.</span> <span class="n">Copyright</span> <span class="mi">2020</span> <span class="n">Kenneth</span> <span class="n">R</span><span class="o">.</span> <span class="n">French</span>
 
-  0 : Average Value Weighted Returns -- Monthly (59 rows x 5 cols)
-  1 : Average Equal Weighted Returns -- Monthly (59 rows x 5 cols)
-  2 : Average Value Weighted Returns -- Annual (5 rows x 5 cols)
-  3 : Average Equal Weighted Returns -- Annual (5 rows x 5 cols)
-  4 : Number of Firms in Portfolios (59 rows x 5 cols)
-  5 : Average Firm Size (59 rows x 5 cols)
-  6 : Sum of BE / Sum of ME (6 rows x 5 cols)
-  7 : Value-Weighted Average of BE/ME (6 rows x 5 cols)
+<span class="g g-Whitespace">  </span><span class="mi">0</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Value</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Monthly</span> <span class="p">(</span><span class="mi">59</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">1</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Equal</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Monthly</span> <span class="p">(</span><span class="mi">59</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">2</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Value</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Annual</span> <span class="p">(</span><span class="mi">5</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">3</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Equal</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Annual</span> <span class="p">(</span><span class="mi">5</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="nn">  4 : Number of Firms</span> in <span class="ni">Portfolios </span><span class="nt">(59 rows x 5 cols)</span>
+<span class="g g-Whitespace">  </span><span class="mi">5</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Firm</span> <span class="n">Size</span> <span class="p">(</span><span class="mi">59</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">6</span> <span class="p">:</span> <span class="n">Sum</span> <span class="n">of</span> <span class="n">BE</span> <span class="o">/</span> <span class="n">Sum</span> <span class="n">of</span> <span class="n">ME</span> <span class="p">(</span><span class="mi">5</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">  </span><span class="mi">7</span> <span class="p">:</span> <span class="n">Value</span><span class="o">-</span><span class="n">Weighted</span> <span class="n">Average</span> <span class="n">of</span> <span class="n">BE</span><span class="o">/</span><span class="n">ME</span> <span class="p">(</span><span class="mi">5</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
 
-In [18]: ds[4].head()
-Out[18]: 
-         Cnsmr  Manuf  HiTec  Hlth   Other
-Date                                      
-2014-09    566    677    764    531   1111
-2014-10    562    675    758    530   1107
-2014-11    560    673    755    525   1101
-2014-12    556    671    747    524   1094
-2015-01    553    669    741    521   1090</pre>
+<span class="gp">In [18]: </span><span class="n">ds</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[18]: </span><span class="go"></span>
+<span class="go">         Cnsmr  Manuf  HiTec  Hlth   Other</span>
+<span class="go">Date                                      </span>
+<span class="go">2015-07    553    671    756    598   1127</span>
+<span class="go">2015-08    548    668    753    596   1124</span>
+<span class="go">2015-09    547    660    750    594   1120</span>
+<span class="go">2015-10    544    656    741    589   1109</span>
+<span class="go">2015-11    544    654    737    586   1103</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="world-bank">
 <span id="remote-data-wb"></span><h2>World Bank<a class="headerlink" href="#world-bank" title="Permalink to this headline">¶</a></h2>
@@ -594,7 +656,7 @@ constant dollars in North America, you would use the <code class="docutils liter
 Bank’s servers:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">dat</span> <span class="o">=</span> <span class="n">wb</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">indicator</span><span class="o">=</span><span class="s1">&#39;NY.GDP.PCAP.KD&#39;</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;US&#39;</span><span class="p">,</span> <span class="s1">&#39;CA&#39;</span><span class="p">,</span> <span class="s1">&#39;MX&#39;</span><span class="p">],</span> <span class="n">start</span><span class="o">=</span><span class="mi">2005</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">2008</span><span class="p">)</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="k">print</span><span class="p">(</span><span class="n">dat</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="nb">print</span><span class="p">(</span><span class="n">dat</span><span class="p">)</span>
                       <span class="n">NY</span><span class="o">.</span><span class="n">GDP</span><span class="o">.</span><span class="n">PCAP</span><span class="o">.</span><span class="n">KD</span>
 <span class="n">country</span>       <span class="n">year</span>
 <span class="n">Canada</span>        <span class="mi">2008</span>  <span class="mf">36005.5004978584</span>
@@ -637,7 +699,7 @@ contracts around the world.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]:</span> <span class="n">ind</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NY.GDP.PCAP.KD&#39;</span><span class="p">,</span> <span class="s1">&#39;IT.MOB.COV.ZS&#39;</span><span class="p">]</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="n">dat</span> <span class="o">=</span> <span class="n">wb</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">indicator</span><span class="o">=</span><span class="n">ind</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">2011</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">2011</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">15</span><span class="p">]:</span> <span class="n">dat</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;gdp&#39;</span><span class="p">,</span> <span class="s1">&#39;cellphone&#39;</span><span class="p">]</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">16</span><span class="p">]:</span> <span class="k">print</span><span class="p">(</span><span class="n">dat</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">16</span><span class="p">]:</span> <span class="nb">print</span><span class="p">(</span><span class="n">dat</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
                         <span class="n">gdp</span>  <span class="n">cellphone</span>
 <span class="n">country</span>   <span class="n">year</span>
 <span class="n">Swaziland</span> <span class="mi">2011</span>  <span class="mf">2413.952853</span>       <span class="mf">94.9</span>
@@ -650,10 +712,10 @@ contracts around the world.</p>
 <p>Finally, we use the <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> package to assess the relationship between
 our two variables using ordinary least squares regression. Unsurprisingly,
 populations in rich countries tend to use cellphones at a higher rate:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">17</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">18</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="kn">as</span> <span class="nn">smf</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">17</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">18</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="k">as</span> <span class="nn">smf</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">19</span><span class="p">]:</span> <span class="n">mod</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="s1">&#39;cellphone ~ np.log(gdp)&#39;</span><span class="p">,</span> <span class="n">dat</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="k">print</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="nb">print</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
                             <span class="n">OLS</span> <span class="n">Regression</span> <span class="n">Results</span>
 <span class="o">==============================================================================</span>
 <span class="n">Dep</span><span class="o">.</span> <span class="n">Variable</span><span class="p">:</span>              <span class="n">cellphone</span>   <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="p">:</span>                       <span class="mf">0.297</span>
@@ -724,47 +786,50 @@ indicators, or a single ‘bad’ (#4 above) country code).</p>
 You have to specify OECD’s data set code.</p>
 <p>To confirm data set code, access to <code class="docutils literal notranslate"><span class="pre">each</span> <span class="pre">data</span> <span class="pre">-&gt;</span> <span class="pre">Export</span> <span class="pre">-&gt;</span> <span class="pre">SDMX</span> <span class="pre">Query</span></code>. Following
 example is to download ‘Trade Union Density’ data which set code is ‘TUD’.</p>
-<pre class="literal-block">In [19]: import pandas_datareader.data as web
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [19]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
-In [20]: import datetime
+<span class="gp">In [20]: </span><span class="kn">import</span> <span class="nn">datetime</span>
 
-In [21]: df = web.DataReader('TUD', 'oecd')
+<span class="gp">In [21]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;TUD&#39;</span><span class="p">,</span> <span class="s1">&#39;oecd&#39;</span><span class="p">)</span>
 
-In [22]: df.columns
-Out[22]: 
-MultiIndex([( 'Hungary', 'Administrative data',            'Employees'),
-            ( 'Hungary', 'Administrative data',        'Union members'),
-            ( 'Hungary', 'Administrative data', 'Trade union  density'),
-            ( 'Hungary',         'Survey data',            'Employees'),
-            ( 'Hungary',         'Survey data',        'Union members'),
-            ( 'Hungary',         'Survey data', 'Trade union  density'),
-            (  'Mexico', 'Administrative data',            'Employees'),
-            (  'Mexico', 'Administrative data',        'Union members'),
-            (  'Mexico', 'Administrative data', 'Trade union  density'),
-            (  'Mexico',         'Survey data',            'Employees'),
-            ...
-            ('Portugal', 'Administrative data', 'Trade union  density'),
-            ('Portugal',         'Survey data',            'Employees'),
-            ('Portugal',         'Survey data',        'Union members'),
-            ('Portugal',         'Survey data', 'Trade union  density'),
-            ( 'Germany', 'Administrative data',            'Employees'),
-            ( 'Germany', 'Administrative data',        'Union members'),
-            ( 'Germany', 'Administrative data', 'Trade union  density'),
-            ( 'Germany',         'Survey data',            'Employees'),
-            ( 'Germany',         'Survey data',        'Union members'),
-            ( 'Germany',         'Survey data', 'Trade union  density')],
-           names=['Country', 'Source', 'Series'], length=216)
+<span class="gp">In [22]: </span><span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<span class="gh">Out[22]: </span><span class="go"></span>
+<span class="go">MultiIndex([( &#39;Hungary&#39;, &#39;Administrative data&#39;,            &#39;Employees&#39;),</span>
+<span class="go">            ( &#39;Hungary&#39;, &#39;Administrative data&#39;,        &#39;Union members&#39;),</span>
+<span class="go">            ( &#39;Hungary&#39;, &#39;Administrative data&#39;, &#39;Trade union  density&#39;),</span>
+<span class="go">            ( &#39;Hungary&#39;,         &#39;Survey data&#39;,            &#39;Employees&#39;),</span>
+<span class="go">            ( &#39;Hungary&#39;,         &#39;Survey data&#39;,        &#39;Union members&#39;),</span>
+<span class="go">            ( &#39;Hungary&#39;,         &#39;Survey data&#39;, &#39;Trade union  density&#39;),</span>
+<span class="go">            (  &#39;Mexico&#39;, &#39;Administrative data&#39;,            &#39;Employees&#39;),</span>
+<span class="go">            (  &#39;Mexico&#39;, &#39;Administrative data&#39;,        &#39;Union members&#39;),</span>
+<span class="go">            (  &#39;Mexico&#39;, &#39;Administrative data&#39;, &#39;Trade union  density&#39;),</span>
+<span class="go">            (  &#39;Mexico&#39;,         &#39;Survey data&#39;,            &#39;Employees&#39;),</span>
+<span class="go">            ...</span>
+<span class="go">            (&#39;Portugal&#39;, &#39;Administrative data&#39;, &#39;Trade union  density&#39;),</span>
+<span class="go">            (&#39;Portugal&#39;,         &#39;Survey data&#39;,            &#39;Employees&#39;),</span>
+<span class="go">            (&#39;Portugal&#39;,         &#39;Survey data&#39;,        &#39;Union members&#39;),</span>
+<span class="go">            (&#39;Portugal&#39;,         &#39;Survey data&#39;, &#39;Trade union  density&#39;),</span>
+<span class="go">            ( &#39;Germany&#39;, &#39;Administrative data&#39;,            &#39;Employees&#39;),</span>
+<span class="go">            ( &#39;Germany&#39;, &#39;Administrative data&#39;,        &#39;Union members&#39;),</span>
+<span class="go">            ( &#39;Germany&#39;, &#39;Administrative data&#39;, &#39;Trade union  density&#39;),</span>
+<span class="go">            ( &#39;Germany&#39;,         &#39;Survey data&#39;,            &#39;Employees&#39;),</span>
+<span class="go">            ( &#39;Germany&#39;,         &#39;Survey data&#39;,        &#39;Union members&#39;),</span>
+<span class="go">            ( &#39;Germany&#39;,         &#39;Survey data&#39;, &#39;Trade union  density&#39;)],</span>
+<span class="go">           names=[&#39;Country&#39;, &#39;Source&#39;, &#39;Series&#39;], length=216)</span>
 
-In [23]: df[['Japan', 'United States']]
-Out[23]: 
-Country                  Japan                ... United States                     
-Source     Administrative data                ...   Survey data                     
-Series               Employees Union members  ... Union members Trade union  density
-Year                                          ...                                   
-2015-01-01             44480.0     12271.909  ...       16913.0               16.516
-2016-01-01             45650.0     12227.223  ...       17002.0               16.248
+<span class="gp">In [23]: </span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Japan&#39;</span><span class="p">,</span> <span class="s1">&#39;United States&#39;</span><span class="p">]]</span>
+<span class="gh">Out[23]: </span><span class="go"></span>
+<span class="go">Country                  Japan                ... United States                     </span>
+<span class="go">Source     Administrative data                ...   Survey data                     </span>
+<span class="go">Series               Employees Union members  ... Union members Trade union  density</span>
+<span class="go">Year                                          ...                                   </span>
+<span class="go">2016-01-01             43010.0       12418.0  ...       16996.0                 17.4</span>
+<span class="go">2017-01-01             43830.0       12343.0  ...       16975.0                 17.0</span>
+<span class="go">2018-01-01             45650.0       12227.0  ...       17002.0                 16.2</span>
 
-[2 rows x 12 columns]</pre>
+<span class="go">[3 rows x 12 columns]</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="eurostat">
 <span id="remote-data-eurostat"></span><h2>Eurostat<a class="headerlink" href="#eurostat" title="Permalink to this headline">¶</a></h2>
@@ -774,7 +839,7 @@ Year                                          ...
 <li><p><a class="reference external" href="http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=tran_sf_railac&amp;lang=en">http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=tran_sf_railac&amp;lang=en</a></p></li>
 </ul>
 <p>You can specify dataset ID ‘tran_sf_railac’ to get corresponding data via <code class="docutils literal notranslate"><span class="pre">DataReader</span></code>.</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [24]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [24]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
 <span class="gp">In [25]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;tran_sf_railac&#39;</span><span class="p">,</span> <span class="s1">&#39;eurostat&#39;</span><span class="p">)</span>
 
@@ -785,38 +850,38 @@ Year                                          ...
 <span class="go">GEO                                                                                      Austria  ... United Kingdom</span>
 <span class="go">FREQ                                                                                      Annual  ...         Annual</span>
 <span class="go">TIME_PERIOD                                                                                       ...               </span>
-<span class="go">2015-01-01                                                 7.0                                    ...            NaN</span>
 <span class="go">2016-01-01                                                 7.0                                    ...            NaN</span>
 <span class="go">2017-01-01                                                 7.0                                    ...            NaN</span>
+<span class="go">2018-01-01                                                 4.0                                    ...            NaN</span>
 
-<span class="go">[3 rows x 264 columns]</span>
+<span class="go">[3 rows x 272 columns]</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="tsp-fund-data">
-<span id="remote-data-tsp"></span><h2>TSP Fund Data<a class="headerlink" href="#tsp-fund-data" title="Permalink to this headline">¶</a></h2>
-<p>Download mutual fund index prices for the TSP.</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [27]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.tsp</span> <span class="kn">as</span> <span class="nn">tsp</span>
+<div class="section" id="thrift-savings-plan-tsp-fund-data">
+<span id="remote-data-tsp"></span><h2>Thrift Savings Plan (TSP) Fund Data<a class="headerlink" href="#thrift-savings-plan-tsp-fund-data" title="Permalink to this headline">¶</a></h2>
+<p>Download mutual fund index prices for the Thrift Savings Plan (TSP).</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [27]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.tsp</span> <span class="k">as</span> <span class="nn">tsp</span>
 
 <span class="gp">In [28]: </span><span class="n">tspreader</span> <span class="o">=</span> <span class="n">tsp</span><span class="o">.</span><span class="n">TSPReader</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s1">&#39;2015-10-1&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2015-12-31&#39;</span><span class="p">)</span>
 
 <span class="gp">In [29]: </span><span class="n">tspreader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="gh">Out[29]: </span><span class="go"></span>
-<span class="go">            L Income   L 2020   L 2030   L 2040  ...   C Fund   S Fund   I Fund     </span>
-<span class="go">date                                             ...                                </span>
-<span class="go">2015-10-01   17.5164  22.5789  24.2159  25.5690  ...  25.7953  34.0993  23.3202  NaN</span>
-<span class="go">2015-10-02   17.5707  22.7413  24.4472  25.8518  ...  26.1669  34.6504  23.6367     </span>
-<span class="go">2015-10-05   17.6395  22.9582  24.7571  26.2306  ...  26.6467  35.3565  24.1475     </span>
-<span class="go">2015-10-06   17.6338  22.9390  24.7268  26.1898  ...  26.5513  35.1320  24.2294     </span>
-<span class="go">2015-10-07   17.6639  23.0324  24.8629  26.3598  ...  26.7751  35.6035  24.3671     </span>
-<span class="go">...              ...      ...      ...      ...  ...      ...      ...      ...  ...</span>
-<span class="go">2015-12-24   17.7991  23.3039  25.2052  26.7481  ...  27.7831  35.6084  24.3272     </span>
-<span class="go">2015-12-28   17.7950  23.2811  25.1691  26.7015  ...  27.7230  35.4625  24.2816     </span>
-<span class="go">2015-12-29   17.8270  23.3871  25.3226  26.8905  ...  28.0236  35.8047  24.4757     </span>
-<span class="go">2015-12-30   17.8066  23.3216  25.2267  26.7707  ...  27.8239  35.5126  24.4184     </span>
-<span class="go">2015-12-31   17.7733  23.2085  25.0635  26.5715  ...  27.5622  35.2356  24.0952     </span>
+<span class="go">            L Income L 2025   L 2030 L 2035  ...   C Fund   S Fund   I Fund     </span>
+<span class="go">date                                         ...                                </span>
+<span class="go">2015-10-01   17.5164         24.2159         ...  25.7953  34.0993  23.3202  NaN</span>
+<span class="go">2015-10-02   17.5707         24.4472         ...  26.1669  34.6504  23.6367     </span>
+<span class="go">2015-10-05   17.6395         24.7571         ...  26.6467  35.3565  24.1475     </span>
+<span class="go">2015-10-06   17.6338         24.7268         ...  26.5513  35.1320  24.2294     </span>
+<span class="go">2015-10-07   17.6639         24.8629         ...  26.7751  35.6035  24.3671     </span>
+<span class="go">...              ...    ...      ...    ...  ...      ...      ...      ...  ...</span>
+<span class="go">2015-12-24   17.7991         25.2052         ...  27.7831  35.6084  24.3272     </span>
+<span class="go">2015-12-28   17.7950         25.1691         ...  27.7230  35.4625  24.2816     </span>
+<span class="go">2015-12-29   17.8270         25.3226         ...  28.0236  35.8047  24.4757     </span>
+<span class="go">2015-12-30   17.8066         25.2267         ...  27.8239  35.5126  24.4184     </span>
+<span class="go">2015-12-31   17.7733         25.0635         ...  27.5622  35.2356  24.0952     </span>
 
-<span class="go">[62 rows x 11 columns]</span>
+<span class="go">[62 rows x 16 columns]</span>
 </pre></div>
 </div>
 </div>
@@ -824,21 +889,21 @@ Year                                          ...
 <span id="remote-data-nasdaq-symbols"></span><h2>Nasdaq Trader Symbol Definitions<a class="headerlink" href="#nasdaq-trader-symbol-definitions" title="Permalink to this headline">¶</a></h2>
 <p>Download the latest symbols from <a class="reference external" href="ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqtraded.txt">Nasdaq</a>.</p>
 <p>Note that Nasdaq updates this file daily, and historical versions are not
-available. More information on the <a class="reference external" href="http://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs/">field</a> definitions.</p>
+available. More information on the <a class="reference external" href="http://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs">field</a> definitions.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">pandas_datareader.nasdaq_trader</span> <span class="kn">import</span> <span class="n">get_nasdaq_symbols</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]:</span> <span class="n">symbols</span> <span class="o">=</span> <span class="n">get_nasdaq_symbols</span><span class="p">()</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="k">print</span><span class="p">(</span><span class="n">symbols</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;IBM&#39;</span><span class="p">])</span>
-    <span class="n">Nasdaq</span> <span class="n">Traded</span>                                                    <span class="bp">True</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="nb">print</span><span class="p">(</span><span class="n">symbols</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;IBM&#39;</span><span class="p">])</span>
+    <span class="n">Nasdaq</span> <span class="n">Traded</span>                                                    <span class="kc">True</span>
     <span class="n">Security</span> <span class="n">Name</span>       <span class="n">International</span> <span class="n">Business</span> <span class="n">Machines</span> <span class="n">Corporation</span> <span class="n">Co</span><span class="o">...</span>
     <span class="n">Listing</span> <span class="n">Exchange</span>                                                    <span class="n">N</span>
     <span class="n">Market</span> <span class="n">Category</span>
-    <span class="n">ETF</span>                                                             <span class="bp">False</span>
+    <span class="n">ETF</span>                                                             <span class="kc">False</span>
     <span class="n">Round</span> <span class="n">Lot</span> <span class="n">Size</span>                                                    <span class="mi">100</span>
-    <span class="n">Test</span> <span class="n">Issue</span>                                                      <span class="bp">False</span>
+    <span class="n">Test</span> <span class="n">Issue</span>                                                      <span class="kc">False</span>
     <span class="n">Financial</span> <span class="n">Status</span>                                                  <span class="n">NaN</span>
     <span class="n">CQS</span> <span class="n">Symbol</span>                                                        <span class="n">IBM</span>
     <span class="n">NASDAQ</span> <span class="n">Symbol</span>                                                     <span class="n">IBM</span>
-    <span class="n">NextShares</span>                                                      <span class="bp">False</span>
+    <span class="n">NextShares</span>                                                      <span class="kc">False</span>
     <span class="n">Name</span><span class="p">:</span> <span class="n">IBM</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="nb">object</span>
 </pre></div>
 </div>
@@ -846,97 +911,95 @@ available. More information on the <a class="reference external" href="http://ww
 <div class="section" id="stooq-index-data">
 <span id="remote-data-stooq"></span><h2>Stooq Index Data<a class="headerlink" href="#stooq-index-data" title="Permalink to this headline">¶</a></h2>
 <p>Google finance doesn’t provide common index data download. The Stooq site has the data for download.</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [30]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [30]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
 <span class="gp">In [31]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;^DJI&#39;</span><span class="p">,</span> <span class="s1">&#39;stooq&#39;</span><span class="p">)</span>
 
 <span class="gp">In [32]: </span><span class="n">f</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 <span class="gh">Out[32]: </span><span class="go"></span>
-<span class="go">                Open      High       Low     Close       Volume</span>
-<span class="go">Date                                                           </span>
-<span class="go">2019-09-24  27034.07  27079.68  26704.96  26807.77          NaN</span>
-<span class="go">2019-09-23  26851.45  27011.07  26831.34  26949.99   69351291.0</span>
-<span class="go">2019-09-20  27102.18  27194.75  26926.68  26935.07  269740303.0</span>
-<span class="go">2019-09-19  27186.05  27272.17  27064.21  27094.79   68699381.0</span>
-<span class="go">2019-09-18  27075.39  27161.93  26899.15  27147.08   70454821.0</span>
-<span class="go">2019-09-17  27010.12  27110.80  26984.14  27110.80   67020055.0</span>
-<span class="go">2019-09-16  27146.06  27172.87  27032.56  27076.82   72079672.0</span>
-<span class="go">2019-09-13  27216.67  27277.55  27193.95  27219.52   72147749.0</span>
-<span class="go">2019-09-12  27197.32  27306.73  27105.01  27182.45   80090206.0</span>
-<span class="go">2019-09-11  26928.05  27137.04  26885.48  27137.04   80088953.0</span>
+<span class="go">                Open      High       Low     Close     Volume</span>
+<span class="go">Date                                                         </span>
+<span class="go">2020-07-06  25996.08  26297.53  25996.08  26287.03  344151697</span>
+<span class="go">2020-07-02  25936.45  26204.41  25778.12  25827.36  350387758</span>
+<span class="go">2020-07-01  25879.38  26019.31  25713.61  25734.97  374839860</span>
+<span class="go">2020-06-30  25512.43  25905.38  25475.14  25812.88  413195530</span>
+<span class="go">2020-06-29  25152.45  25601.15  25096.16  25595.80  386836808</span>
+<span class="go">2020-06-26  25641.69  25641.69  24971.03  25015.55  678041392</span>
+<span class="go">2020-06-25  25365.22  25769.61  25209.79  25745.60  391245292</span>
+<span class="go">2020-06-24  25992.96  25992.96  25296.73  25445.94  453410082</span>
+<span class="go">2020-06-23  26159.39  26314.97  26105.97  26156.10  393203121</span>
+<span class="go">2020-06-22  25865.08  26059.81  25667.68  26024.96  354005555</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="moex-data">
 <span id="remote-data-moex"></span><h2>MOEX Data<a class="headerlink" href="#moex-data" title="Permalink to this headline">¶</a></h2>
 <p>The Moscow Exchange (MOEX) provides historical data.</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [33]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="kn">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [33]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
 <span class="gp">In [34]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;USD000UTSTOM&#39;</span><span class="p">,</span> <span class="s1">&#39;moex&#39;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s1">&#39;2017-07-01&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2017-07-31&#39;</span><span class="p">)</span>
 
 <span class="gp">In [35]: </span><span class="n">f</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 <span class="gh">Out[35]: </span><span class="go"></span>
-<span class="go">           BOARDID   SHORTNAME         SECID  ...  NUMTRADES        VOLRUR  WAPRICE</span>
-<span class="go">TRADEDATE                                     ...                                  </span>
-<span class="go">2017-07-03    CNGD  USDRUB_TOM  USD000UTSTOM  ...         24  1.864785e+09      NaN</span>
-<span class="go">2017-07-04    CETS  USDRUB_TOM  USD000UTSTOM  ...      21053  1.090265e+11  59.2700</span>
-<span class="go">2017-07-04    CNGD  USDRUB_TOM  USD000UTSTOM  ...         37  1.046416e+09      NaN</span>
-<span class="go">2017-07-05    CETS  USDRUB_TOM  USD000UTSTOM  ...      50108  2.874226e+11  59.9234</span>
-<span class="go">2017-07-05    CNGD  USDRUB_TOM  USD000UTSTOM  ...         35  6.339036e+09      NaN</span>
+<span class="go">           BOARDID    CLOSE     HIGH  ...   SHORTNAME        VOLRUR  WAPRICE</span>
+<span class="go">TRADEDATE                             ...                                   </span>
+<span class="go">2017-07-03    CETS  59.2650  59.4825  ...  USDRUB_TOM  1.472424e+11  59.1903</span>
+<span class="go">2017-07-03    CNGD  59.3600  59.4250  ...  USDRUB_TOM  1.864785e+09      NaN</span>
+<span class="go">2017-07-04    CETS  59.4125  59.4575  ...  USDRUB_TOM  1.090265e+11  59.2700</span>
+<span class="go">2017-07-04    CNGD  59.3575  59.3600  ...  USDRUB_TOM  1.046416e+09      NaN</span>
+<span class="go">2017-07-05    CETS  59.9825  60.2600  ...  USDRUB_TOM  2.874226e+11  59.9234</span>
 
 <span class="go">[5 rows x 10 columns]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="naver-finance-data">
+<span id="remote-data-naver"></span><h2>Naver Finance Data<a class="headerlink" href="#naver-finance-data" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://finance.naver.com">Naver Finance</a> provides Korean stock market
+(<a class="reference external" href="https://en.wikipedia.org/wiki/KOSPI">KOSPI</a>, <a class="reference external" href="https://en.wikipedia.org/wiki/KOSDAQ">KOSDAQ</a>) historical data.</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [36]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
+
+<span class="gp">In [37]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;005930&#39;</span><span class="p">,</span> <span class="s1">&#39;naver&#39;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s1">&#39;2019-09-10&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2019-10-09&#39;</span><span class="p">)</span>
+
+<span class="gp">In [38]: </span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[38]: </span><span class="go"></span>
+<span class="go">             Open   High    Low  Close    Volume</span>
+<span class="go">Date                                            </span>
+<span class="go">2019-09-10  47100  47200  46550  47000   9231792</span>
+<span class="go">2019-09-11  47300  47400  46800  47150  16141619</span>
+<span class="go">2019-09-16  47000  47100  46400  47100  15550926</span>
+<span class="go">2019-09-17  47000  47100  46800  46900   7006280</span>
+<span class="go">2019-09-18  46900  47700  46800  47700  10413027</span>
 </pre></div>
 </div>
 </div>
 </div>
 
 
-           </div>
-           
-          </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="cache.html" class="btn btn-neutral float-right" title="Caching queries" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="whatsnew.html" class="btn btn-neutral float-left" title="What’s New" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="whatsnew.html" title="previous page">What’s New</a>
+    <a class='right-next' id="next-link" href="cache.html" title="next page">Caching queries</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
     </div>
-  
 
-  <hr/>
-
-  <div role="contentinfo">
+    <script src="_static/js/index.js"></script>
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
     <p>
-        &copy; Copyright 2018, The PyData Development Team
-
+          &copy; Copyright 2020, The PyData Development Team.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
 </footer>
-
-        </div>
-      </div>
-
-    </section>
-
-  </div>
-  
-
-
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-
-  
-  
-    
-   
-
-</body>
+  </body>
 </html>

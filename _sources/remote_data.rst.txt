@@ -21,10 +21,6 @@ Remote Data Access
 
     The ``access_key`` keyword argument of ``DataReader`` has been deprecated in favor of ``api_key``.
 
-.. warning::
-
-    Robinhood has been immediately deprecated. Endpoints from this provider have been retired.
-
 .. _remote_data.data_reader:
 
 Functions from :mod:`pandas_datareader.data` and :mod:`pandas_datareader.wb`
@@ -45,6 +41,7 @@ Currently the following sources are supported:
     - :ref:`Nasdaq Trader symbol definitions<remote_data.nasdaq_symbols>`
     - :ref:`Stooq<remote_data.stooq>`
     - :ref:`MOEX<remote_data.moex>`
+    - :ref:`Naver Finance<remote_data.naver>`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
 
@@ -139,7 +136,7 @@ Historical Time Series Data
 
 Through the
 `Alpha Vantage <https://www.alphavantage.co/documentation>`__ Time Series
-endpoints, it is possible to obtain historical equities data for individual
+endpoints, it is possible to obtain historical equities and currency rate data for individual
 symbols. For daily, weekly, and monthly frequencies, 20+ years of historical data is available. The past 3-5 days of intraday data is also available.
 
 The following endpoints are available:
@@ -151,6 +148,7 @@ The following endpoints are available:
 * ``av-weekly-adjusted`` - Weekly Time Series (Adjusted)
 * ``av-monthly`` - Monthly Time Series
 * ``av-monthly-adjusted`` - Monthly Time Series (Adjusted)
+* ``av-forex-daily`` - Daily Time Series
 
 .. code-block:: ipython
 
@@ -173,6 +171,8 @@ The following endpoints are available:
     volume    2.834990e+07
     Name: 2017-02-09, dtype: float64
 
+To request the historical exchange rate of physical or digital currencies, use
+``av-forex-daily`` and format the symbol as "FROM/TO", for example "USD/JPY".
 
 The top-level function ``get_data_alphavantage`` is also provided. This
 function will
@@ -621,10 +621,10 @@ You can specify dataset ID 'tran_sf_railac' to get corresponding data via ``Data
 
 .. _remote_data.tsp:
 
-TSP Fund Data
-=============
+Thrift Savings Plan (TSP) Fund Data
+===================================
 
-Download mutual fund index prices for the TSP.
+Download mutual fund index prices for the Thrift Savings Plan (TSP).
 
 .. ipython:: python
 
@@ -641,7 +641,7 @@ Nasdaq Trader Symbol Definitions
 Download the latest symbols from `Nasdaq <ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqtraded.txt>`_.
 
 Note that Nasdaq updates this file daily, and historical versions are not
-available. More information on the `field <http://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs/>`_ definitions.
+available. More information on the `field <http://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs>`_ definitions.
 
 .. code-block:: python
 
@@ -686,3 +686,19 @@ The Moscow Exchange (MOEX) provides historical data.
    import pandas_datareader.data as web
    f = web.DataReader('USD000UTSTOM', 'moex', start='2017-07-01', end='2017-07-31')
    f.head()
+
+.. _remote_data.naver:
+
+Naver Finance Data
+==================
+`Naver Finance <https://finance.naver.com>`_ provides Korean stock market
+(`KOSPI`_, `KOSDAQ`_) historical data.
+
+.. ipython:: python
+
+   import pandas_datareader.data as web
+   df = web.DataReader('005930', 'naver', start='2019-09-10', end='2019-10-09')
+   df.head()
+
+.. _KOSPI: https://en.wikipedia.org/wiki/KOSPI
+.. _KOSDAQ: https://en.wikipedia.org/wiki/KOSDAQ

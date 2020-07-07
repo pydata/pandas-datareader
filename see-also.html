@@ -1,165 +1,162 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Other Data Sources &mdash; pandas-datareader 0.8.1 documentation</title>
-  
 
-  
-  
-  
-  
-
-  
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Other Data Sources &#8212; pandas-datareader 0.9.0rc0 documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
+    <link href="_static/css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Data Readers" href="readers/index.html" />
-    <link rel="prev" title="Caching queries" href="cache.html" /> 
-</head>
-
-<body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
+    <link rel="prev" title="Caching queries" href="cache.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="docsearch:language" content="en">
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
 
-          
-            <a href="index.html" class="icon icon-home"> pandas-datareader
-          
+    
+    <a class="navbar-brand" href="index.html">
+      <img src="_static/pandas-datareader-plain.svg" class="logo" alt="logo">
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-          
-          </a>
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="whatsnew.html">What’s New</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="remote_data.html">Remote Data Access</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="cache.html">Caching queries</a>
+        </li>
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="">Other Data Sources</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="readers/index.html">Data Readers</a>
+        </li>
+        
+        
+      </ul>
 
-          
-            
-            
-              <div class="version">
-                0.8.1
-              </div>
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="whatsnew.html">What’s New</a></li>
-<li class="toctree-l1"><a class="reference internal" href="remote_data.html">Remote Data Access</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cache.html">Caching queries</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Other Data Sources</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#alpha-vantage">Alpha Vantage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tiingo">Tiingo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#barchart">Barchart</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#list-of-other-sources">List of Other Sources</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="readers/index.html">Data Readers</a></li>
-</ul>
-
-            
-          
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
+
+      <ul class="navbar-nav">
         
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">pandas-datareader</a>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/pydata/pandas-datareader" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
         
-      </nav>
-
-
-      <div class="wy-nav-content">
         
-        <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html">Docs</a> &raquo;</li>
-        
-      <li>Other Data Sources</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-            
-            <a href="_sources/see-also.rst.txt" rel="nofollow"> View page source</a>
-          
-        
-      </li>
-    
-  </ul>
-
-  
-  <hr/>
+      </ul>
+    </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar">
+
+<form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+  <div class="bd-toc-item active">
+  
+
+  <ul class="nav bd-sidenav">
+      
+      
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      
+      
+    </ul>
+
+</nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#alpha-vantage" class="nav-link">Alpha Vantage</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#tiingo" class="nav-link">Tiingo</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#barchart" class="nav-link">Barchart</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#list-of-other-sources" class="nav-link">List of Other Sources</a>
+        </li>
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
   <div class="section" id="other-data-sources">
 <h1>Other Data Sources<a class="headerlink" href="#other-data-sources" title="Permalink to this headline">¶</a></h1>
 <p>Web interfaces are constantly evolving and so there is constant
@@ -185,7 +182,7 @@ simplifying access is available on github.</p>
 </div>
 <div class="section" id="barchart">
 <h2>Barchart<a class="headerlink" href="#barchart" title="Permalink to this headline">¶</a></h2>
-<p>Barchart is a data provider covering a ride range of financial data.  The
+<p>Barchart is a data provider covering a wide range of financial data.  The
 <a class="reference external" href="https://www.barchart.com/ondemand/free-market-data-api">free API</a>
 provides up to two years of historical data.</p>
 <p>A <a class="reference external" href="https://github.com/femtotrader/barchart-ondemand-client-python">python package</a>
@@ -199,52 +196,30 @@ maintains a large list of packages designed to provide access to financial data.
 </div>
 
 
-           </div>
-           
-          </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="readers/index.html" class="btn btn-neutral float-right" title="Data Readers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="cache.html" class="btn btn-neutral float-left" title="Caching queries" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="cache.html" title="previous page">Caching queries</a>
+    <a class='right-next' id="next-link" href="readers/index.html" title="next page">Data Readers</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
     </div>
-  
 
-  <hr/>
-
-  <div role="contentinfo">
+    <script src="_static/js/index.js"></script>
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
     <p>
-        &copy; Copyright 2018, The PyData Development Team
-
+          &copy; Copyright 2020, The PyData Development Team.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
 </footer>
-
-        </div>
-      </div>
-
-    </section>
-
-  </div>
-  
-
-
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-
-  
-  
-    
-   
-
-</body>
+  </body>
 </html>

@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eurostat &#8212; pandas-datareader 0.9.0rc0 documentation</title>
+    <title>Naver Finance &#8212; pandas-datareader 0.9.0rc0 documentation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
     <link href="../_static/css/index.css" rel="stylesheet">
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
@@ -18,8 +18,8 @@
     <script src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="The Investors Exchange (IEX)" href="iex.html" />
-    <link rel="prev" title="Enigma" href="enigma.html" />
+    <link rel="next" title="Organisation for Economic Co-operation and Development (OECD)" href="oecd.html" />
+    <link rel="prev" title="NASDAQ" href="nasdaq-trader.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="docsearch:language" content="en">
   </head>
@@ -147,8 +147,8 @@
           
         
           
-              <li class="active">
-                  <a href="">Eurostat</a>
+              <li class="">
+                  <a href="eurostat.html">Eurostat</a>
               </li>
           
         
@@ -171,8 +171,8 @@
           
         
           
-              <li class="">
-                  <a href="naver.html">Naver Finance</a>
+              <li class="active">
+                  <a href="">Naver Finance</a>
               </li>
           
         
@@ -240,45 +240,49 @@
               
               <div>
                 
-  <div class="section" id="module-pandas_datareader.eurostat">
-<span id="eurostat"></span><h1>Eurostat<a class="headerlink" href="#module-pandas_datareader.eurostat" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pandas_datareader.naver">
+<span id="naver-finance"></span><h1>Naver Finance<a class="headerlink" href="#module-pandas_datareader.naver" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="pandas_datareader.eurostat.EurostatReader">
-<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.eurostat.</code><code class="sig-name descname">EurostatReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="o">=</span><span class="default_value">30</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">freq</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.eurostat.EurostatReader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get data for the given name from Eurostat.</p>
+<dt id="pandas_datareader.naver.NaverDailyReader">
+<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.naver.</code><code class="sig-name descname">NaverDailyReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">adjust_price</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ret_index</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">chunksize</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">interval</span><span class="o">=</span><span class="default_value">'d'</span></em>, <em class="sig-param"><span class="n">get_actions</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">adjust_dividends</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.naver.NaverDailyReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetches daily historical data from Naver Finance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>symbols</strong> – A single symbol; multiple symbols are not currently supported.</p></li>
+<li><p><strong>adjust_price</strong> – Not implemented</p></li>
+<li><p><strong>interval</strong> – Not implemented</p></li>
+<li><p><strong>adjust_dividends</strong> – Not implemented</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
-<dt id="pandas_datareader.eurostat.EurostatReader.close">
-<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.eurostat.EurostatReader.close" title="Permalink to this definition">¶</a></dt>
+<dt id="pandas_datareader.naver.NaverDailyReader.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.naver.NaverDailyReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.eurostat.EurostatReader.default_start_date">
-<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.eurostat.EurostatReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dt id="pandas_datareader.naver.NaverDailyReader.default_start_date">
+<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.naver.NaverDailyReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.eurostat.EurostatReader.dsd_url">
-<em class="property">property </em><code class="sig-name descname">dsd_url</code><a class="headerlink" href="#pandas_datareader.eurostat.EurostatReader.dsd_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>API DSD URL</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="pandas_datareader.eurostat.EurostatReader.params">
-<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.eurostat.EurostatReader.params" title="Permalink to this definition">¶</a></dt>
+<dt id="pandas_datareader.naver.NaverDailyReader.params">
+<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.naver.NaverDailyReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.eurostat.EurostatReader.read">
-<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.eurostat.EurostatReader.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read data from connector</p>
+<dt id="pandas_datareader.naver.NaverDailyReader.read">
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.naver.NaverDailyReader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.eurostat.EurostatReader.url">
-<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.eurostat.EurostatReader.url" title="Permalink to this definition">¶</a></dt>
+<dt id="pandas_datareader.naver.NaverDailyReader.url">
+<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.naver.NaverDailyReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
@@ -292,8 +296,8 @@
               
               <div class='prev-next-bottom'>
                 
-    <a class='left-prev' id="prev-link" href="enigma.html" title="previous page">Enigma</a>
-    <a class='right-next' id="next-link" href="iex.html" title="next page">The Investors Exchange (IEX)</a>
+    <a class='left-prev' id="prev-link" href="nasdaq-trader.html" title="previous page">NASDAQ</a>
+    <a class='right-next' id="next-link" href="oecd.html" title="next page">Organisation for Economic Co-operation and Development (OECD)</a>
 
               </div>
               

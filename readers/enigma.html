@@ -1,194 +1,260 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Enigma &mdash; pandas-datareader 0.8.1 documentation</title>
-  
 
-  
-  
-  
-  
-
-  
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enigma &#8212; pandas-datareader 0.9.0rc0 documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
+    <link href="../_static/css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Eurostat" href="eurostat.html" />
-    <link rel="prev" title="Econdb" href="econdb.html" /> 
-</head>
-
-<body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
+    <link rel="prev" title="Econdb" href="econdb.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="docsearch:language" content="en">
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
 
-          
-            <a href="../index.html" class="icon icon-home"> pandas-datareader
-          
+    
+    <a class="navbar-brand" href="../index.html">
+      <img src="../_static/pandas-datareader-plain.svg" class="logo" alt="logo">
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-          
-          </a>
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../whatsnew.html">What’s New</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../remote_data.html">Remote Data Access</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../cache.html">Caching queries</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../see-also.html">Other Data Sources</a>
+        </li>
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="index.html">Data Readers</a>
+        </li>
+        
+        
+      </ul>
 
-          
-            
-            
-              <div class="version">
-                0.8.1
-              </div>
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../whatsnew.html">What’s New</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../remote_data.html">Remote Data Access</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cache.html">Caching queries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../see-also.html">Other Data Sources</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Data Readers</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="alphavantage.html">AlphaVantage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fred.html">Federal Reserve Economic Data (FRED)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="famafrench.html">Fama-French Data (Ken French’s Data Library)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bank-of-canada.html">Bank of Canada</a></li>
-<li class="toctree-l2"><a class="reference internal" href="econdb.html">Econdb</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Enigma</a></li>
-<li class="toctree-l2"><a class="reference internal" href="eurostat.html">Eurostat</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iex.html">The Investors Exchange (IEX)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="moex.html">Moscow Exchange (MOEX)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nasdaq-trader.html">NASDAQ</a></li>
-<li class="toctree-l2"><a class="reference internal" href="oecd.html">Organisation for Economic Co-operation and Development (OECD)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quandl.html">Quandl</a></li>
-<li class="toctree-l2"><a class="reference internal" href="stooq.html">Stooq.com</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tiingo.html">Tiingo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tsp.html">Thrift Savings Plan (TSP)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="world-bank.html">World Bank</a></li>
-</ul>
-</li>
-</ul>
-
-            
-          
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
+
+      <ul class="navbar-nav">
         
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">pandas-datareader</a>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/pydata/pandas-datareader" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
         
-      </nav>
-
-
-      <div class="wy-nav-content">
         
-        <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="index.html">Data Readers</a> &raquo;</li>
-        
-      <li>Enigma</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-            
-            <a href="../_sources/readers/enigma.rst.txt" rel="nofollow"> View page source</a>
-          
-        
-      </li>
-    
-  </ul>
-
-  
-  <hr/>
+      </ul>
+    </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar">
+
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+  <div class="bd-toc-item active">
+  
+
+  <ul class="nav bd-sidenav">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+        
+          
+              <li class="">
+                  <a href="alphavantage.html">AlphaVantage</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="fred.html">Federal Reserve Economic Data (FRED)</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="famafrench.html">Fama-French Data (Ken French’s Data Library)</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="bank-of-canada.html">Bank of Canada</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="econdb.html">Econdb</a>
+              </li>
+          
+        
+          
+              <li class="active">
+                  <a href="">Enigma</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="eurostat.html">Eurostat</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="iex.html">The Investors Exchange (IEX)</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="moex.html">Moscow Exchange (MOEX)</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="nasdaq-trader.html">NASDAQ</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="naver.html">Naver Finance</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="oecd.html">Organisation for Economic Co-operation and Development (OECD)</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="quandl.html">Quandl</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="stooq.html">Stooq.com</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="tiingo.html">Tiingo</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="tsp.html">Thrift Savings Plan (TSP)</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="world-bank.html">World Bank</a>
+              </li>
+          
+        
+      
+      
+    </ul>
+
+</nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
   <div class="section" id="module-pandas_datareader.enigma">
 <span id="enigma"></span><h1>Enigma<a class="headerlink" href="#module-pandas_datareader.enigma" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="pandas_datareader.enigma.EnigmaReader">
-<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.enigma.</code><code class="sig-name descname">EnigmaReader</code><span class="sig-paren">(</span><em class="sig-param">dataset_id=None</em>, <em class="sig-param">api_key=None</em>, <em class="sig-param">retry_count=5</em>, <em class="sig-param">pause=0.75</em>, <em class="sig-param">session=None</em>, <em class="sig-param">base_url='https://public.enigma.com/api'</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.enigma.</code><code class="sig-name descname">EnigmaReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">api_key</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.75</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">base_url</span><span class="o">=</span><span class="default_value">'https://public.enigma.com/api'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Collects current snapshot of Enigma data located at the specified
 data set ID and returns a pandas DataFrame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dataset_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Enigma dataset UUID.</p></li>
-<li><p><strong>api_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Enigma API key. If not provided, the environmental variable
+<li><p><strong>dataset_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Enigma dataset UUID.</p></li>
+<li><p><strong>api_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><em>optional</em>) – Enigma API key. If not provided, the environmental variable
 ENIGMA_API_KEY is read.</p></li>
-<li><p><strong>retry_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>default 5</em>) – Number of times to retry query request.</p></li>
-<li><p><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>default 0.1</em>) – Time, in seconds, of the pause between retries.</p></li>
+<li><p><strong>retry_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>default 5</em>) – Number of times to retry query request.</p></li>
+<li><p><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><em>default 0.1</em>) – Time, in seconds, of the pause between retries.</p></li>
 <li><p><strong>session</strong> (<em>Session</em><em>, </em><em>default None</em>) – requests.sessions.Session instance to be used.</p></li>
 <li><p><strong>base_url</strong> (str, optional (defaults to <a class="reference external" href="https://public.enigma.com/api">https://public.enigma.com/api</a>)) – Alternative Enigma endpoint to be used.</p></li>
 </ul>
@@ -197,60 +263,60 @@ ENIGMA_API_KEY is read.</p></li>
 <p class="rubric">Examples</p>
 <p>Download current snapshot for the following Florida Inspections Dataset:
 <a class="reference external" href="https://public.enigma.com/datasets/bedaf052-5fcd-4758-8d27-048ce8746c6a">https://public.enigma.com/datasets/bedaf052-5fcd-4758-8d27-048ce8746c6a</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="k">as</span> <span class="nn">pdr</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="k">as</span> <span class="nn">pdr</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_enigma</span><span class="p">(</span><span class="s1">&#39;bedaf052-5fcd-4758-8d27-048ce8746c6a&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>In the event that ENIGMA_API_KEY does not exist in your env, the key can
 be supplied as the second argument or as the keyword argument <cite>api_key</cite></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">EnigmaReader</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="s1">&#39;bedaf052-5fcd-4758-8d27-048ce8746c6a&#39;</span><span class="p">,</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">EnigmaReader</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="s1">&#39;bedaf052-5fcd-4758-8d27-048ce8746c6a&#39;</span><span class="p">,</span>
 <span class="gp">... </span>                  <span class="n">api_key</span><span class="o">=</span><span class="s1">&#39;INSERT_API_KEY&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 </pre></div>
 </div>
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.enigma.EnigmaReader.close">
 <code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.enigma.EnigmaReader.default_start_date">
 <em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.enigma.EnigmaReader.get_current_snapshot_id">
-<code class="sig-name descname">get_current_snapshot_id</code><span class="sig-paren">(</span><em class="sig-param">dataset_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.get_current_snapshot_id" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_current_snapshot_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.get_current_snapshot_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get ID of the most current snapshot of a dataset</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.enigma.EnigmaReader.get_dataset_metadata">
-<code class="sig-name descname">get_dataset_metadata</code><span class="sig-paren">(</span><em class="sig-param">dataset_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.get_dataset_metadata" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_dataset_metadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.get_dataset_metadata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the Dataset Model of this EnigmaReader’s dataset
 <a class="reference external" href="https://docs.public.enigma.com/resources/dataset/index.html">https://docs.public.enigma.com/resources/dataset/index.html</a></p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.enigma.EnigmaReader.get_snapshot_export">
-<code class="sig-name descname">get_snapshot_export</code><span class="sig-paren">(</span><em class="sig-param">snapshot_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.get_snapshot_export" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_snapshot_export</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">snapshot_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.get_snapshot_export" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return raw CSV of a dataset</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.enigma.EnigmaReader.params">
 <em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.enigma.EnigmaReader.read">
 <code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pandas_datareader.enigma.EnigmaReader.url">
 <em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
@@ -261,52 +327,30 @@ be supplied as the second argument or as the keyword argument <cite>api_key</cit
 </div>
 
 
-           </div>
-           
-          </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="eurostat.html" class="btn btn-neutral float-right" title="Eurostat" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="econdb.html" class="btn btn-neutral float-left" title="Econdb" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="econdb.html" title="previous page">Econdb</a>
+    <a class='right-next' id="next-link" href="eurostat.html" title="next page">Eurostat</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
     </div>
-  
 
-  <hr/>
-
-  <div role="contentinfo">
+    <script src="../_static/js/index.js"></script>
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
     <p>
-        &copy; Copyright 2018, The PyData Development Team
-
+          &copy; Copyright 2020, The PyData Development Team.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
 </footer>
-
-        </div>
-      </div>
-
-    </section>
-
-  </div>
-  
-
-
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-
-  
-  
-    
-   
-
-</body>
+  </body>
 </html>

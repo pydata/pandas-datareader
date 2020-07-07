@@ -14,6 +14,7 @@ Data Readers
    iex
    moex
    nasdaq-trader
+   naver
    oecd
    quandl
    stooq
