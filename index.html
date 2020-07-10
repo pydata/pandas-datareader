@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>pandas-datareader &#8212; pandas-datareader 0.9.0rc1 documentation</title>
+    <title>pandas-datareader &#8212; pandas-datareader 0.9.0 documentation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
     <link href="_static/css/index.css" rel="stylesheet">
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
@@ -126,35 +126,19 @@
     <ul class="nav section-nav flex-column">
     
         <li class="nav-item toc-entry toc-h2">
-            <a href="#" class="nav-link">pandas-datareader</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#installation" class="nav-link">Installation</a>
+            <a href="#quick-start" class="nav-link">Quick Start</a>
         </li>
     
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#usage" class="nav-link">Usage</a>
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#contents" class="nav-link">Contents</a>
         </li>
     
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#documentation" class="nav-link">Documentation</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h4">
-            <a href="#requirements" class="nav-link">Requirements</a>
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#documentation" class="nav-link">Documentation</a>
         </li>
     
-        <li class="nav-item toc-entry toc-h4">
-            <a href="#install-latest-development-version" class="nav-link">Install latest development version</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#id1" class="nav-link">Documentation</a>
-        </li>
-    
-            </ul>
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#recent-developments" class="nav-link">Recent developments</a>
         </li>
     
         <li class="nav-item toc-entry toc-h2">
@@ -176,79 +160,23 @@
                 
   <div class="section" id="pandas-datareader">
 <h1>pandas-datareader<a class="headerlink" href="#pandas-datareader" title="Permalink to this headline">¶</a></h1>
+<p>Version: <strong>0.9.0</strong> Date: <strong>July 10, 2020</strong></p>
 <p>Up to date remote data access for pandas, works for multiple versions of pandas.</p>
-<a class="reference external image-reference" href="https://pypi.python.org/pypi/pandas-datareader/"><img alt="https://img.shields.io/pypi/v/pandas-datareader.svg" src="https://img.shields.io/pypi/v/pandas-datareader.svg" /></a>
-<a class="reference external image-reference" href="https://travis-ci.org/pydata/pandas-datareader"><img alt="https://travis-ci.org/pydata/pandas-datareader.svg?branch=master" src="https://travis-ci.org/pydata/pandas-datareader.svg?branch=master" /></a>
-<a class="reference external image-reference" href="https://coveralls.io/r/pydata/pandas-datareader"><img alt="https://coveralls.io/repos/pydata/pandas-datareader/badge.svg?branch=master" src="https://coveralls.io/repos/pydata/pandas-datareader/badge.svg?branch=master" /></a>
-<a class="reference external image-reference" href="https://codecov.io/gh/pydata/pandas-datareader"><img alt="https://codecov.io/gh/pydata/pandas-datareader/branch/master/graph/badge.svg" src="https://codecov.io/gh/pydata/pandas-datareader/branch/master/graph/badge.svg" /></a>
-<a class="reference external image-reference" href="https://pandas-datareader.readthedocs.io/en/latest/"><img alt="https://readthedocs.org/projects/pandas-datareader/badge/?version=latest" src="https://readthedocs.org/projects/pandas-datareader/badge/?version=latest" /></a>
-<a class="reference external image-reference" href="https://github.com/psf/black"><img alt="https://img.shields.io/badge/code%20style-black-000000.svg" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a>
-<div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h2>
 <p>Install using <code class="docutils literal notranslate"><span class="pre">pip</span></code></p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip install pandas-datareader
 </pre></div>
 </div>
-</div>
-<div class="section" id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>and then import and use one of the data readers. This example reads 5-years
+of 10-year constant maturity yields on U.S. government bonds.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="k">as</span> <span class="nn">pdr</span>
 <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_fred</span><span class="p">(</span><span class="s1">&#39;GS10&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="https://pydata.github.io/pandas-datareader/">Stable documentation</a>
-is available on
-<a class="reference external" href="https://pydata.github.io/pandas-datareader/">github.io</a>.
-A second copy of the stable documentation is hosted on
-<a class="reference external" href="https://pandas-datareader.readthedocs.io/">read the docs</a> for more details.</p>
-<p><a class="reference external" href="https://pydata.github.io/pandas-datareader/devel/">Development documentation</a>
-is available for the latest changes in master.</p>
-<div class="section" id="requirements">
-<h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
-<p>Using pandas datareader requires the following packages:</p>
-<ul class="simple">
-<li><p>pandas&gt;=0.23</p></li>
-<li><p>lxml</p></li>
-<li><p>requests&gt;=2.19.0</p></li>
-</ul>
-<p>Building the documentation additionally requires:</p>
-<ul class="simple">
-<li><p>matplotlib</p></li>
-<li><p>ipython</p></li>
-<li><p>requests_cache</p></li>
-<li><p>sphinx</p></li>
-<li><p>pydata_sphinx_theme</p></li>
-</ul>
-<p>Development and testing additionally requires:</p>
-<ul class="simple">
-<li><p>black</p></li>
-<li><p>coverage</p></li>
-<li><p>codecov</p></li>
-<li><p>coveralls</p></li>
-<li><p>flake8</p></li>
-<li><p>pytest</p></li>
-<li><p>pytest-cov</p></li>
-<li><p>wrapt</p></li>
-</ul>
-</div>
-<div class="section" id="install-latest-development-version">
-<h3>Install latest development version<a class="headerlink" href="#install-latest-development-version" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip install git+https://github.com/pydata/pandas-datareader.git
-</pre></div>
-</div>
-<p>or</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/pydata/pandas-datareader.git
-<span class="nb">cd</span> pandas-datareader
-python setup.py install
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="id1">
-<h2>Documentation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
 <p>Contents:</p>
 <div class="toctree-wrapper compound">
 <ul>
@@ -260,14 +188,37 @@ python setup.py install
 </ul>
 </div>
 </div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://pydata.github.io/pandas-datareader/">Stable documentation</a>
+is available on
+<a class="reference external" href="https://pydata.github.io/pandas-datareader/">github.io</a>.
+A second copy of the stable documentation is hosted on
+<a class="reference external" href="https://pandas-datareader.readthedocs.io/">read the docs</a> for more details.</p>
+</div>
+<div class="section" id="recent-developments">
+<h2>Recent developments<a class="headerlink" href="#recent-developments" title="Permalink to this headline">¶</a></h2>
+<p>You can install the latest development version using</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip install git+https://github.com/pydata/pandas-datareader.git
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/pydata/pandas-datareader.git
+<span class="nb">cd</span> pandas-datareader
+python setup.py install
+</pre></div>
+</div>
+<p><a class="reference external" href="https://pydata.github.io/pandas-datareader/devel/">Development documentation</a>
+is available for the latest changes in master.</p>
 </div>
 <div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
+</div>
 </div>
 
 
