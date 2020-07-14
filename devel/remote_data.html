@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Remote Data Access &#8212; pandas-datareader 0.9.0rc1+2.g427f658 documentation</title>
+    <title>Remote Data Access &#8212; pandas-datareader 0.10.0dev0+2.g3ef1b30 documentation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
     <link href="_static/css/index.css" rel="stylesheet">
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
@@ -867,21 +867,9 @@ example is to download ‘Trade Union Density’ data which set code is ‘TUD�
 
 <span class="gp">In [29]: </span><span class="n">tspreader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="gh">Out[29]: </span><span class="go"></span>
-<span class="go">            L Income L 2025   L 2030 L 2035  ...   C Fund   S Fund   I Fund     </span>
-<span class="go">date                                         ...                                </span>
-<span class="go">2015-10-01   17.5164         24.2159         ...  25.7953  34.0993  23.3202  NaN</span>
-<span class="go">2015-10-02   17.5707         24.4472         ...  26.1669  34.6504  23.6367     </span>
-<span class="go">2015-10-05   17.6395         24.7571         ...  26.6467  35.3565  24.1475     </span>
-<span class="go">2015-10-06   17.6338         24.7268         ...  26.5513  35.1320  24.2294     </span>
-<span class="go">2015-10-07   17.6639         24.8629         ...  26.7751  35.6035  24.3671     </span>
-<span class="go">...              ...    ...      ...    ...  ...      ...      ...      ...  ...</span>
-<span class="go">2015-12-24   17.7991         25.2052         ...  27.7831  35.6084  24.3272     </span>
-<span class="go">2015-12-28   17.7950         25.1691         ...  27.7230  35.4625  24.2816     </span>
-<span class="go">2015-12-29   17.8270         25.3226         ...  28.0236  35.8047  24.4757     </span>
-<span class="go">2015-12-30   17.8066         25.2267         ...  27.8239  35.5126  24.4184     </span>
-<span class="go">2015-12-31   17.7733         25.0635         ...  27.5622  35.2356  24.0952     </span>
-
-<span class="go">[62 rows x 16 columns]</span>
+<span class="go">Empty DataFrame</span>
+<span class="go">Columns: []</span>
+<span class="go">Index: [&lt;/html&gt;,   &lt;a href=&quot;https://www.tsp.gov/fund-performance/share-price-history/&quot;&gt;Click here if you are not redirected.&lt;/a&gt;,   &lt;h1&gt;Redirecting&amp;hellip;&lt;/h1&gt;,   &lt;meta name=&quot;robots&quot; content=&quot;noindex&quot;&gt;,   &lt;meta http-equiv=&quot;refresh&quot; content=&quot;0; url=https://www.tsp.gov/fund-performance/share-price-history/&quot;&gt;,   &lt;script&gt;location=&quot;https://www.tsp.gov/fund-performance/share-price-history/&quot;&lt;/script&gt;,   &lt;link rel=&quot;canonical&quot; href=&quot;https://www.tsp.gov/fund-performance/share-price-history/&quot;&gt;,   &lt;title&gt;Redirecting&amp;hellip;&lt;/title&gt;,   &lt;meta charset=&quot;utf-8&quot;&gt;, &lt;html lang=&quot;en-US&quot;&gt;]</span>
 </pre></div>
 </div>
 </div>
@@ -919,16 +907,16 @@ available. More information on the <a class="reference external" href="http://ww
 <span class="gh">Out[32]: </span><span class="go"></span>
 <span class="go">                Open      High       Low     Close     Volume</span>
 <span class="go">Date                                                         </span>
-<span class="go">2020-07-07  26172.01  26174.93  25866.58  25890.18  349238987</span>
+<span class="go">2020-07-13  26225.07  26639.09  26044.23  26085.80  430118575</span>
+<span class="go">2020-07-10  25690.35  26101.32  25637.50  26075.30  338277450</span>
+<span class="go">2020-07-09  26094.92  26103.28  25523.51  25706.09  389840687</span>
+<span class="go">2020-07-08  25950.06  26109.49  25816.25  26067.28  339417991</span>
+<span class="go">2020-07-07  26172.01  26174.93  25866.58  25890.18  349697306</span>
 <span class="go">2020-07-06  25996.08  26297.53  25996.08  26287.03  344583128</span>
-<span class="go">2020-07-02  25936.45  26204.41  25778.12  25827.36  350387758</span>
+<span class="go">2020-07-02  25936.45  26204.41  25778.12  25827.36  350710950</span>
 <span class="go">2020-07-01  25879.38  26019.31  25713.61  25734.97  374839860</span>
 <span class="go">2020-06-30  25512.43  25905.38  25475.14  25812.88  413195530</span>
 <span class="go">2020-06-29  25152.45  25601.15  25096.16  25595.80  386836808</span>
-<span class="go">2020-06-26  25641.69  25641.69  24971.03  25015.55  678041392</span>
-<span class="go">2020-06-25  25365.22  25769.61  25209.79  25745.60  391245292</span>
-<span class="go">2020-06-24  25992.96  25992.96  25296.73  25445.94  453410082</span>
-<span class="go">2020-06-23  26159.39  26314.97  26105.97  26156.10  393203121</span>
 </pre></div>
 </div>
 </div>
