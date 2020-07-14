@@ -19,6 +19,7 @@ Enhancements
 - Added a timeout parameter to prevent infinite hangs (:issue:`790`)
 - Added AlphaVantage endpoint to get historical currency exchange rates (:issue:`764`)
 - Improved logging when rate limited (:issue:`745`)
+- Added daily historical data from Naver Finance (:issue:`722`)
 
 .. _whatsnew_090.api_breaking:
 
