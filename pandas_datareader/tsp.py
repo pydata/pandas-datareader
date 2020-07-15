@@ -27,9 +27,29 @@ class TSPReader(_BaseReader):
         requests.sessions.Session instance to be used
     """
 
+    all_symbols = frozenset(
+        (
+            "L Income",
+            "L 2025",
+            "L 2030",
+            "L 2035",
+            "L 2040",
+            "L 2045",
+            "L 2050",
+            "L 2055",
+            "L 2060",
+            "L 2065",
+            "G Fund",
+            "F Fund",
+            "C Fund",
+            "S Fund",
+            "I Fund",
+        )
+    )
+
     def __init__(
         self,
-        symbols=("Linc", "L2020", "L2030", "L2040", "L2050", "G", "F", "C", "S", "I"),
+        symbols=all_symbols,
         start=None,
         end=None,
         retry_count=3,
@@ -49,22 +69,24 @@ class TSPReader(_BaseReader):
     @property
     def url(self):
         """API URL"""
-        return "https://www.tsp.gov/InvestmentFunds/FundPerformance/index.html"
+        return "https://secure.tsp.gov/components/CORS/getSharePricesRaw.html"
 
     def read(self):
         """ read one data from specified URL """
         df = super(TSPReader, self).read()
         df.columns = map(lambda x: x.strip(), df.columns)
+        df.drop(columns=self.all_symbols - set(self.symbols), inplace=True)
         return df
 
     @property
     def params(self):
         """Parameters to use in API calls"""
         return {
-            "startdate": self.start.strftime("%m/%d/%Y"),
-            "enddate": self.end.strftime("%m/%d/%Y"),
-            "fundgroup": self.symbols,
-            "whichButton": "CSV",
+            "startdate": self.start.strftime("%Y%m%d"),
+            "enddate": self.end.strftime("%Y%m%d"),
+            "download": "0",
+            "Lfunds": "1",
+            "InvFunds": "1",
         }
 
     @staticmethod
