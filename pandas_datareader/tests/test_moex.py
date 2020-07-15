@@ -1,7 +1,7 @@
 import pytest
 from requests.exceptions import HTTPError
 
-import pandas_datareader.data as web
+from pandas_datareader import data as web
 
 pytestmark = pytest.mark.stable
 

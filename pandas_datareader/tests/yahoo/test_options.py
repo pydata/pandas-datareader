@@ -3,10 +3,10 @@ import os
 
 import numpy as np
 import pandas as pd
-import pandas.testing as tm
+from pandas import testing as tm
 import pytest
 
-import pandas_datareader.data as web
+from pandas_datareader import data as web
 
 
 @pytest.yield_fixture

@@ -1,6 +1,6 @@
 import pytest
 
-import pandas_datareader.data as web
+from pandas_datareader import data as web
 from pandas_datareader.exceptions import ImmediateDeprecationError
 
 pytestmark = [

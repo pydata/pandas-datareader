@@ -2,7 +2,7 @@ import datetime as dt
 
 import pytest
 
-import pandas_datareader.tsp as tsp
+from pandas_datareader import tsp as tsp
 
 pytestmark = pytest.mark.stable
 

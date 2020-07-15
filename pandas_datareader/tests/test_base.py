@@ -3,7 +3,7 @@ import datetime as dt
 import pytest
 import requests
 
-import pandas_datareader.base as base
+from pandas_datareader import base as base
 
 pytestmark = pytest.mark.stable
 

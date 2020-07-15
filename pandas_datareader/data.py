@@ -16,18 +16,12 @@ from pandas_datareader.bankofcanada import BankOfCanadaReader
 from pandas_datareader.econdb import EcondbReader
 from pandas_datareader.enigma import EnigmaReader
 from pandas_datareader.eurostat import EurostatReader
-from pandas_datareader.exceptions import (
-    DEP_ERROR_MSG,
-    ImmediateDeprecationError,
-)
+from pandas_datareader.exceptions import DEP_ERROR_MSG, ImmediateDeprecationError
 from pandas_datareader.famafrench import FamaFrenchReader
 from pandas_datareader.fred import FredReader
 from pandas_datareader.iex.daily import IEXDailyReader
 from pandas_datareader.iex.deep import Deep as IEXDeep
-from pandas_datareader.iex.tops import (
-    LastReader as IEXLasts,
-    TopsReader as IEXTops,
-)
+from pandas_datareader.iex.tops import LastReader as IEXLasts, TopsReader as IEXTops
 from pandas_datareader.moex import MoexReader
 from pandas_datareader.nasdaq_trader import get_nasdaq_symbols
 from pandas_datareader.naver import NaverDailyReader

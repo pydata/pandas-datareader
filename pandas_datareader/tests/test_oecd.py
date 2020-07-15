@@ -2,11 +2,11 @@ from datetime import datetime
 
 import numpy as np
 import pandas as pd
-import pandas.testing as tm
+from pandas import testing as tm
 import pytest
 
+from pandas_datareader import data as web
 from pandas_datareader._utils import RemoteDataError
-import pandas_datareader.data as web
 
 
 class TestOECD(object):
