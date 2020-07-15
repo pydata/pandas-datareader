@@ -11,9 +11,18 @@ class TestTSPFunds(object):
     def test_get_allfunds(self):
         tspdata = tsp.TSPReader(start="2015-11-2", end="2015-11-2").read()
 
-        assert len(tspdata == 1)
+        assert len(tspdata) == 1
 
         assert round(tspdata["I Fund"][dt.datetime(2015, 11, 2)], 5) == 25.0058
+
+    def test_get_one_fund(self):
+        tspdata = tsp.TSPReader(
+            start="2015-11-2", end="2015-11-2", symbols=("I Fund",)
+        ).read()
+
+        assert len(tspdata) == 1
+
+        assert tspdata.columns.values.tolist() == ["I Fund"]
 
     def test_sanitize_response(self):
         class response(object):
