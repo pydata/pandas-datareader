@@ -149,7 +149,7 @@ class MoexReader(_DailyBaseReader):
                 markets_n_engines[symbol] = list(set(markets_n_engines[symbol]))
         return markets_n_engines, boards
 
-    def read(self):
+    def read_all_boards(self):
         """Read data"""
 
         markets_n_engines, boards = self._get_metadata()
@@ -208,13 +208,20 @@ class MoexReader(_DailyBaseReader):
             b = concat(dfs, axis=0, join="outer", sort=True)
         else:
             b = dfs[0]
+        return b
 
+
+    def read(self):
+        """Read data"""
+        markets_n_engines, boards = self._get_metadata()
+        b = self.read_all_boards()
         result = pd.DataFrame()
         for secid in list(set(b["SECID"].tolist())):
             part = b[b["BOARDID"] == boards[secid]]
             result = result.append(part)
         result = result.drop_duplicates()
         return result
+
 
     def _read_url_as_String(self, url, params=None):
         """Open an url (and retry)"""
@@ -241,3 +248,5 @@ class MoexReader(_DailyBaseReader):
             sep=";",
             na_values=("-", "null"),
         )
+
+# MoexReader('sber', '2020-07-02', '2020-07-02').read_all_boards()
