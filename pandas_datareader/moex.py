@@ -133,8 +133,8 @@ class MoexReader(_DailyBaseReader):
                     )  # market and engine
 
                     if fields[14] == "1":  # main board for symbol
-                        symbol = symbol.upper()
-                        boards[symbol] = fields[1]
+                        symbol_U = symbol.upper()
+                        boards[symbol_U] = fields[1]
 
             if symbol not in markets_n_engines:
                 raise IOError(
@@ -150,7 +150,7 @@ class MoexReader(_DailyBaseReader):
         return markets_n_engines, boards
 
     def read_all_boards(self):
-        """Read data"""
+        """Read data from every board"""
 
         markets_n_engines, boards = self._get_metadata()
         try:
@@ -210,9 +210,8 @@ class MoexReader(_DailyBaseReader):
             b = dfs[0]
         return b
 
-
     def read(self):
-        """Read data"""
+        """Read data from primary board for each ticker"""
         markets_n_engines, boards = self._get_metadata()
         b = self.read_all_boards()
         result = pd.DataFrame()
@@ -221,7 +220,6 @@ class MoexReader(_DailyBaseReader):
             result = result.append(part)
         result = result.drop_duplicates()
         return result
-
 
     def _read_url_as_String(self, url, params=None):
         """Open an url (and retry)"""
@@ -248,5 +246,3 @@ class MoexReader(_DailyBaseReader):
             sep=";",
             na_values=("-", "null"),
         )
-
-# MoexReader('sber', '2020-07-02', '2020-07-02').read_all_boards()
