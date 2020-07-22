@@ -133,8 +133,8 @@ class MoexReader(_DailyBaseReader):
                     )  # market and engine
 
                     if fields[14] == "1":  # main board for symbol
-                        symbol = symbol.upper()
-                        boards[symbol] = fields[1]
+                        symbol_U = symbol.upper()
+                        boards[symbol_U] = fields[1]
 
             if symbol not in markets_n_engines:
                 raise IOError(
@@ -149,8 +149,8 @@ class MoexReader(_DailyBaseReader):
                 markets_n_engines[symbol] = list(set(markets_n_engines[symbol]))
         return markets_n_engines, boards
 
-    def read(self):
-        """Read data"""
+    def read_all_boards(self):
+        """Read data from every board"""
 
         markets_n_engines, boards = self._get_metadata()
         try:
@@ -208,7 +208,12 @@ class MoexReader(_DailyBaseReader):
             b = concat(dfs, axis=0, join="outer", sort=True)
         else:
             b = dfs[0]
+        return b
 
+    def read(self):
+        """Read data from primary board for each ticker"""
+        markets_n_engines, boards = self._get_metadata()
+        b = self.read_all_boards()
         result = pd.DataFrame()
         for secid in list(set(b["SECID"].tolist())):
             part = b[b["BOARDID"] == boards[secid]]
