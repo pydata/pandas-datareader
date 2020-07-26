@@ -150,7 +150,7 @@ class MoexReader(_DailyBaseReader):
         return markets_n_engines, boards
 
     def read_all_boards(self):
-        """Read data from every board"""
+        """Read all data from every board for every ticker"""
 
         markets_n_engines, boards = self._get_metadata()
         try:
@@ -211,7 +211,7 @@ class MoexReader(_DailyBaseReader):
         return b
 
     def read(self):
-        """Read data from primary board for each ticker"""
+        """Read data from the primary board for each ticker"""
         markets_n_engines, boards = self._get_metadata()
         b = self.read_all_boards()
         result = pd.DataFrame()
