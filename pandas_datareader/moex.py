@@ -102,6 +102,7 @@ class MoexReader(_DailyBaseReader):
         """Get markets and engines for the given symbols"""
 
         markets_n_engines = {}
+        boards = {}
 
         for symbol in self.symbols:
             response = self._get_response(self.__url_metadata.format(symbol=symbol))
@@ -130,6 +131,11 @@ class MoexReader(_DailyBaseReader):
                     markets_n_engines[symbol].append(
                         (fields[5], fields[7])
                     )  # market and engine
+
+                    if fields[14] == "1":  # main board for symbol
+                        symbol_U = symbol.upper()
+                        boards[symbol_U] = fields[1]
+
             if symbol not in markets_n_engines:
                 raise IOError(
                     "{} request returned no metadata: {}\n"
@@ -141,13 +147,14 @@ class MoexReader(_DailyBaseReader):
                 )
             if symbol in markets_n_engines:
                 markets_n_engines[symbol] = list(set(markets_n_engines[symbol]))
-        return markets_n_engines
+        return markets_n_engines, boards
 
-    def read(self):
-        """Read data"""
+    def read_all_boards(self):
+        """Read all data from every board for every ticker"""
 
+        markets_n_engines, boards = self._get_metadata()
         try:
-            self.__markets_n_engines = self._get_metadata()
+            self.__markets_n_engines = markets_n_engines
 
             urls = self.url  # generate urls per symbols
             dfs = []  # an array of pandas dataframes per symbol to concatenate
@@ -198,9 +205,21 @@ class MoexReader(_DailyBaseReader):
                 "check URL or correct a date".format(self.__class__.__name__)
             )
         elif len(dfs) > 1:
-            return concat(dfs, axis=0, join="outer", sort=True)
+            b = concat(dfs, axis=0, join="outer", sort=True)
         else:
-            return dfs[0]
+            b = dfs[0]
+        return b
+
+    def read(self):
+        """Read data from the primary board for each ticker"""
+        markets_n_engines, boards = self._get_metadata()
+        b = self.read_all_boards()
+        result = pd.DataFrame()
+        for secid in list(set(b["SECID"].tolist())):
+            part = b[b["BOARDID"] == boards[secid]]
+            result = result.append(part)
+        result = result.drop_duplicates()
+        return result
 
     def _read_url_as_String(self, url, params=None):
         """Open an url (and retry)"""
