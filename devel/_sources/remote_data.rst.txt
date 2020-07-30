@@ -680,11 +680,19 @@ MOEX Data
 =========
 The Moscow Exchange (MOEX) provides historical data.
 
+pandas_datareader.get_data_moex(*args) is equivalent to 
+pandas_datareader.moex.MoexReader(*args).read() 
 
 .. ipython:: python
 
-   import pandas_datareader.data as web
-   f = web.DataReader('USD000UTSTOM', 'moex', start='2017-07-01', end='2017-07-31')
+   import pandas_datareader as pdr
+   f = pdr.get_data_moex(['USD000UTSTOM', 'MAGN'], '2020-07-02', '2020-07-07')
+   f.head()
+
+   f = pdr.moex.MoexReader('SBER', '2020-07-02', '2020-07-03').read()
+   f.head()
+   
+   f = pdr.moex.MoexReader('SBER', '2020-07-02', '2020-07-03').read_all_boards()
    f.head()
 
 .. _remote_data.naver:

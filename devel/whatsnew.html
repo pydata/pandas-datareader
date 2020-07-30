@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>What’s New &#8212; pandas-datareader 0.10.0dev0+5.g54faf4f documentation</title>
+    <title>What’s New &#8212; pandas-datareader 0.10.0dev0+13.gb48e2e4 documentation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
     <link href="_static/css/index.css" rel="stylesheet">
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
@@ -399,7 +399,7 @@ ended support for these endpoints in 1/2019</p></li>
 <span id="id1"></span><h3>Enhancements<a class="headerlink" href="#whatsnew-080-enhancements" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Added Tiingo IEX Historical reader. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/619">GH619</a>)</p></li>
-<li><p>Added support for Alpha Vantage intraday time series prices (:issue: <cite>631</cite>)</p></li>
+<li><p>Added support for Alpha Vantage intraday time series prices (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/631">GH631</a>)</p></li>
 <li><p>Up to 15 years of historical prices from IEX with new platform, IEX Cloud</p></li>
 <li><p>Added testing on Python 3.7 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/667">GH667</a>)</p></li>
 <li><p>Allow IEX to read less than 1 year of data (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/649">GH649</a>)</p></li>
@@ -423,9 +423,9 @@ be passed as a parameter or stored in the environment variable
 <span id="id3"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-080-bug-fixes" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Fix Yahoo! actions issue where dividends are adjusted twice as a result of a
-change to the Yahoo! API. (:issue: <cite>583</cite>)</p></li>
+change to the Yahoo! API. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/583">GH583</a>)</p></li>
 <li><p>Fix AlphaVantage time series data ordering after provider switch to
-descending order (maintains ascending order for consistency). (:issue: <cite>662</cite>)</p></li>
+descending order (maintains ascending order for consistency). (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/662">GH662</a>)</p></li>
 <li><p>Refactored compatibility library to be independent of pandas version.</p></li>
 <li><p>Fixed quarter value handling in JSDMX and OECD. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/685">GH685</a>)</p></li>
 <li><p>Fixed a bug in <code class="docutils literal notranslate"><span class="pre">base</span></code> so that the reader does not error when response.encoding
@@ -525,13 +525,13 @@ setting the environmental variable QUANDL_API_KEY (<a class="reference external"
 and currency pairs (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/487">GH487</a>).</p></li>
 <li><p>Add <cite>is_list_like</cite> to compatibility layer to avoid failure on pandas &gt;= 0.23 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/520">GH520</a>).</p></li>
 <li><p>Fixed Yahoo! time offset (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/487">GH487</a>).</p></li>
-<li><p>Fix Yahoo! quote reader (:issue: <cite>540</cite>).</p></li>
-<li><p>Remove import of deprecated <cite>tm.get_data_path</cite> (:issue: <cite>566</cite>)</p></li>
+<li><p>Fix Yahoo! quote reader (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/540">GH540</a>).</p></li>
+<li><p>Remove import of deprecated <cite>tm.get_data_path</cite> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/566">GH566</a>)</p></li>
 <li><p>Allow full usage of stooq url parameters.</p></li>
 <li><p>Removed unused requests-file and requests-ftp dependencies.</p></li>
 <li><p>Fix Yahoo! actions issue where the default reporting adjusts dividends. The unadjusted
 dividends may lack precision due to accumulated numerical error when converting adjusted
-to the original dividend amount. (:issue: <cite>495</cite>)</p></li>
+to the original dividend amount. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/495">GH495</a>)</p></li>
 </ul>
 </div>
 </div>

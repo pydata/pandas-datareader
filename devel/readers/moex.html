@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moscow Exchange (MOEX) &#8212; pandas-datareader 0.10.0dev0+5.g54faf4f documentation</title>
+    <title>Moscow Exchange (MOEX) &#8212; pandas-datareader 0.10.0dev0+13.gb48e2e4 documentation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
     <link href="../_static/css/index.css" rel="stylesheet">
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
@@ -287,7 +287,13 @@ downloading ‘chunks’ of symbols can be specified.</p>
 <dl class="py method">
 <dt id="pandas_datareader.moex.MoexReader.read">
 <code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.moex.MoexReader.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read data</p>
+<dd><p>Read data from the primary board for each ticker</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.moex.MoexReader.read_all_boards">
+<code class="sig-name descname">read_all_boards</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.moex.MoexReader.read_all_boards" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read all data from every board for every ticker</p>
 </dd></dl>
 
 <dl class="py method">
