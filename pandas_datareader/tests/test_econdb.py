@@ -60,6 +60,7 @@ class TestEcondb(object):
             expected = pd.Series(
                 values, index=index, name="Total international arrivals"
             )
+            expected.index.freq = None
             tm.assert_series_equal(
                 df[label]["Tourism demand surveys"]["Total international arrivals"],
                 expected,

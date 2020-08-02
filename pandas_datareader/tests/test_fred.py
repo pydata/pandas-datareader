@@ -72,6 +72,7 @@ class TestFred(object):
             index=[pd.Timestamp("2010-01-01 00:00:00")],
         )
         expected.index.rename("DATE", inplace=True)
+        expected.index.freq = "MS"
         tm.assert_frame_equal(received, expected, check_less_precise=True)
 
     def test_fred_multi_bad_series(self):
