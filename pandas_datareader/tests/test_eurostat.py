@@ -98,7 +98,7 @@ class TestEurostat(object):
         uk = pd.Series(uk_values, name=uk_name, index=idx)
 
         for expected in [ne, uk]:
-            expected.index.freq = None  # don't compare freq
+            expected.index.freq = None
             result = df[expected.name]
             tm.assert_series_equal(result, expected)
 

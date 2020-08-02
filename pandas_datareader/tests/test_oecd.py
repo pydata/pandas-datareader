@@ -202,6 +202,7 @@ class TestOECD(object):
         index = pd.date_range("2008-01-01", "2012-01-01", freq="AS", name="Year")
         for label, values in [("Japan", jp), ("United States", us)]:
             expected = pd.Series(values, index=index, name="Tourism demand surveys")
+            expected.index.freq = None
             series = df[label]["Total international arrivals"]["Tourism demand surveys"]
             tm.assert_series_equal(series, expected)
 
