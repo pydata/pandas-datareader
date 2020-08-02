@@ -4,7 +4,7 @@ import os
 
 import numpy as np
 import pandas as pd
-import pandas.testing as tm
+from pandas import testing as tm
 import pytest
 
 from pandas_datareader.io.sdmx import _read_sdmx_dsd, read_sdmx

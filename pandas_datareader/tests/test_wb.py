@@ -2,7 +2,7 @@ import time
 
 import numpy as np
 import pandas as pd
-import pandas.testing as tm
+from pandas import testing as tm
 import pytest
 import requests
 

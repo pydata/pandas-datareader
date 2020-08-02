@@ -4,7 +4,7 @@ import os
 from pandas import DataFrame, MultiIndex
 import pytest
 
-import pandas_datareader.data as web
+from pandas_datareader import data as web
 from pandas_datareader.iex.daily import IEXDailyReader
 
 

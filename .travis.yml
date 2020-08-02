@@ -4,6 +4,7 @@ language: python
 env:
   global:
     - TEST_TYPE="stable and not requires_api_key"
+    - TEST_INSTALL=false
     # Doctr deploy key for pydata/pandas-datareader
     - secure: "iGbOAbBSV5y0TKDh2CifRSk6OpLA9GbEEL/hscHFLSDDUCWcdfvYXda3SWJFWyoQ5QUxSigXWd+ukr4u92d7lmB7m3TWj6BAMNuRpatTgnejLNwLvNeYdvLAxPvx39Cq85frd1Rx1beBLn3h/4wm4Ah+dR5W9NH8+x3OuZMH3Eo="
 
@@ -19,7 +20,7 @@ matrix:
   - python: 3.8
     env: PANDAS=1 NUMPY=1.18
   - python: 3.8
-    env: PANDAS=1 NUMPY=1.19
+    env: PANDAS=1 NUMPY=1.19 TEST_INSTALL=true
   - python: 3.7
     env: TEST_TYPE="quandl" PANDAS=1 NUMPY=1.19
     # In allow failures
@@ -44,7 +45,15 @@ install:
 
 script:
   - if [[ -n "${TEST_TYPE+x}" ]]; then export MARKERS="-m ${TEST_TYPE}"; fi
-  - pytest -v -s -r xX "${MARKERS}" --cov-config .coveragerc --cov=pandas_datareader --cov-report xml:/tmp/cov-datareader.xml --junitxml=/tmp/datareader.xml
+  - |
+    if [[ ${TEST_INSTALL} = false ]]; then
+        pytest -v -s -r xX "${MARKERS}" --cov-config .coveragerc --cov=pandas_datareader --cov-report xml:/tmp/cov-datareader.xml --junitxml=/tmp/datareader.xml
+    else
+        mkdir pdr_test
+        cd pdr_test
+        python -c "import pandas_datareader; pandas_datareader.test()"
+        cd ..
+    fi
   - black --version
   - black --check pandas_datareader
   - flake8 --version
