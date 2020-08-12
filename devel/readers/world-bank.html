@@ -5,7 +5,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>World Bank &#8212; pandas-datareader 0.10.0dev0+18.gd2ef4e6 documentation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
     <link href="../_static/css/index.css" rel="stylesheet">
@@ -249,16 +249,16 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>symbols</strong> (<em>WorldBank indicator string</em><em> or </em><em>list of strings</em>) – taken from the <code class="docutils literal notranslate"><span class="pre">id</span></code> field in <code class="docutils literal notranslate"><span class="pre">WDIsearch()</span></code></p></li>
-<li><p><strong>countries</strong> (<em>string</em><em> or </em><em>list of strings.</em>) – <code class="docutils literal notranslate"><span class="pre">all</span></code> downloads data for all countries
+<li><p><strong>symbols</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">WorldBank</span> <span class="pre">indicator</span> <span class="pre">string</span></code> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <code class="xref py py-class docutils literal notranslate"><span class="pre">strings</span></code>) – taken from the <code class="docutils literal notranslate"><span class="pre">id</span></code> field in <code class="docutils literal notranslate"><span class="pre">WDIsearch()</span></code></p></li>
+<li><p><strong>countries</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <code class="xref py py-class docutils literal notranslate"><span class="pre">strings.</span></code>) – <code class="docutils literal notranslate"><span class="pre">all</span></code> downloads data for all countries
 2 or 3 character ISO country codes select individual
 countries (e.g.``US``,``CA``) or (e.g.``USA``,``CAN``).  The codes
 can be mixed.
 The two ISO lists of countries, provided by wikipedia, are hardcoded
 into pandas as of 11/10/2014.</p></li>
-<li><p><strong>start</strong> (<em>string</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>date</em><em>, </em><em>datetime</em><em>, </em><em>Timestamp</em>) – First year of the data series. Month and day are ignored.</p></li>
-<li><p><strong>end</strong> (<em>string</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>date</em><em>, </em><em>datetime</em><em>, </em><em>Timestamp</em>) – Last year of the data series (inclusive). Month and day are ignored.</p></li>
-<li><p><strong>errors</strong> (<em>str {'ignore'</em><em>, </em><em>'warn'</em><em>, </em><em>'raise'}</em><em>, </em><em>default 'warn'</em>) – Country codes are validated against a hardcoded list.  This controls
+<li><p><strong>start</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code>) – First year of the data series. Month and day are ignored.</p></li>
+<li><p><strong>end</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code>) – Last year of the data series (inclusive). Month and day are ignored.</p></li>
+<li><p><strong>errors</strong> (str <code class="docutils literal notranslate"><span class="pre">{'ignore',</span> <span class="pre">'warn',</span> <span class="pre">'raise'}</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">'warn'</span></code>) – Country codes are validated against a hardcoded list.  This controls
 the outcome of that validation, and attempts to also apply
 to the results from world bank.
 errors=’raise’, will raise a ValueError on a bad country code.</p></li>
@@ -320,10 +320,10 @@ errors=’raise’, will raise a ValueError on a bad country code.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>string</strong> (<em>string</em>) – regular expression</p></li>
-<li><p><strong>field</strong> (<em>string</em>) – id, name, source, sourceNote, sourceOrganization, topics
+<li><p><strong>string</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code>) – regular expression</p></li>
+<li><p><strong>field</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code>) – id, name, source, sourceNote, sourceOrganization, topics
 See notes below</p></li>
-<li><p><strong>case</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – case sensitive search?</p></li>
+<li><p><strong>case</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – case sensitive search?</p></li>
 </ul>
 </dd>
 </dl>
@@ -357,20 +357,20 @@ topics:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>indicator</strong> (<em>string</em><em> or </em><em>list of strings</em>) – taken from the <code class="docutils literal notranslate"><span class="pre">id</span></code> field in <code class="docutils literal notranslate"><span class="pre">WDIsearch()</span></code></p></li>
-<li><p><strong>country</strong> (<em>string</em><em> or </em><em>list of strings.</em>) – <p><code class="docutils literal notranslate"><span class="pre">all</span></code> downloads data for all countries
+<li><p><strong>indicator</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <code class="xref py py-class docutils literal notranslate"><span class="pre">strings</span></code>) – taken from the <code class="docutils literal notranslate"><span class="pre">id</span></code> field in <code class="docutils literal notranslate"><span class="pre">WDIsearch()</span></code></p></li>
+<li><p><strong>country</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <code class="xref py py-class docutils literal notranslate"><span class="pre">strings.</span></code>) – <p><code class="docutils literal notranslate"><span class="pre">all</span></code> downloads data for all countries
 2 or 3 character ISO country codes select individual
 countries (e.g.``US``,``CA``) or (e.g.``USA``,``CAN``).  The codes
 can be mixed.</p>
 <p>The two ISO lists of countries, provided by wikipedia, are hardcoded
 into pandas as of 11/10/2014.</p>
 </p></li>
-<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – First year of the data series</p></li>
-<li><p><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Last year of the data series (inclusive)</p></li>
-<li><p><strong>freq</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – frequency or periodicity of the data to be retrieved (e.g. ‘M’ for
+<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – First year of the data series</p></li>
+<li><p><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Last year of the data series (inclusive)</p></li>
+<li><p><strong>freq</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – frequency or periodicity of the data to be retrieved (e.g. ‘M’ for
 monthly, ‘Q’ for quarterly, and ‘A’ for annual). None defaults to
 annual.</p></li>
-<li><p><strong>errors</strong> (<em>str {'ignore'</em><em>, </em><em>'warn'</em><em>, </em><em>'raise'}</em><em>, </em><em>default 'warn'</em>) – Country codes are validated against a hardcoded list.  This controls
+<li><p><strong>errors</strong> (str <code class="docutils literal notranslate"><span class="pre">{'ignore',</span> <span class="pre">'warn',</span> <span class="pre">'raise'}</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">'warn'</span></code>) – Country codes are validated against a hardcoded list.  This controls
 the outcome of that validation, and attempts to also apply
 to the results from world bank.
 errors=’raise’, will raise a ValueError on a bad country code.</p></li>
@@ -381,7 +381,7 @@ errors=’raise’, will raise a ValueError on a bad country code.</p></li>
 <dd class="field-even"><p><strong>data</strong> – DataFrame with columns country, year, indicator value</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>DataFrame</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -420,9 +420,9 @@ capital city, latitude, and longitude</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>string</strong> (<em>string</em>) – regular expression</p></li>
-<li><p><strong>field</strong> (<em>string</em>) – id, name, source, sourceNote, sourceOrganization, topics. See notes</p></li>
-<li><p><strong>case</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – case sensitive search?</p></li>
+<li><p><strong>string</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code>) – regular expression</p></li>
+<li><p><strong>field</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code>) – id, name, source, sourceNote, sourceOrganization, topics. See notes</p></li>
+<li><p><strong>case</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – case sensitive search?</p></li>
 <li><p><strong>kwargs</strong> – keywords passed to WorldBankReader</p></li>
 </ul>
 </dd>
@@ -470,7 +470,7 @@ copy, so they should be much faster.</p>
   <div class="container">
     <p>
           &copy; Copyright 2020, The PyData Development Team.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.0.<br/>
     </p>
   </div>
 </footer>
