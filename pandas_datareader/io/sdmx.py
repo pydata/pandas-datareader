@@ -47,7 +47,7 @@ def read_sdmx(path_or_buf, dtype="float64", dsd=None):
 
     xdata = _read_content(path_or_buf)
 
-    import xml.etree.ElementTree as ET
+    from xml.etree import ElementTree as ET
 
     root = ET.fromstring(xdata)
 
@@ -204,7 +204,7 @@ def _read_sdmx_dsd(path_or_buf):
 
     xdata = _read_content(path_or_buf)
 
-    import xml.etree.cElementTree as ET
+    from xml.etree import cElementTree as ET
 
     root = ET.fromstring(xdata)
 

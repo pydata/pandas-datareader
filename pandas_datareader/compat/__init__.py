@@ -5,7 +5,7 @@ from urllib.error import HTTPError
 
 import pandas as pd
 from pandas.api.types import is_list_like, is_number
-import pandas.io.common as com
+from pandas.io import common as com
 from pandas.testing import assert_frame_equal
 
 PANDAS_VERSION = LooseVersion(pd.__version__)

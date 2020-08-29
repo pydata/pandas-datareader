@@ -5,10 +5,7 @@ import pandas as pd
 
 from pandas_datareader.base import _BaseReader, string_types
 from pandas_datareader.compat import StringIO
-from pandas_datareader.exceptions import (
-    DEP_ERROR_MSG,
-    ImmediateDeprecationError,
-)
+from pandas_datareader.exceptions import DEP_ERROR_MSG, ImmediateDeprecationError
 
 
 class EnigmaReader(_BaseReader):

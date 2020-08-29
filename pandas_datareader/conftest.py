@@ -3,6 +3,30 @@ import os
 import pytest
 
 
+def pytest_addoption(parser):
+    parser.addoption("--only-stable", action="store_true", help="run only stable tests")
+    parser.addoption(
+        "--skip-requires-api-key",
+        action="store_true",
+        help="skip tests that require an API key",
+    )
+    parser.addoption(
+        "--strict-data-files",
+        action="store_true",
+        help="Fail if a test is skipped for missing data file.",
+    )
+
+
+def pytest_runtest_setup(item):
+    if "stable" not in item.keywords and item.config.getoption("--only-stable"):
+        pytest.skip("skipping due to --only-stable")
+
+    if "requires_api_key" in item.keywords and item.config.getoption(
+        "--skip-requires-api-key"
+    ):
+        pytest.skip("skipping due to --skip-requires-api-key")
+
+
 @pytest.fixture
 def datapath(request):
     """Get the path to a data file.

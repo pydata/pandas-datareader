@@ -1,7 +1,41 @@
+.. _whatsnew_091:
+
+v0.9.1 (TBD)
+------------
+
+.. contents:: What's new in v0.9.1
+    :local:
+    :backlinks: none
+
+
+.. _whatsnew_091.enhancements:
+
+Enhancements
+~~~~~~~~~~~~
+- Added the method ``test`` to the package to simplify running tests from an
+  installation using
+
+.. code-block:: shell
+
+   python -c "import pandas_datareader; pandas_datareader.test()"
+
+.. _whatsnew_091.api_breaking:
+
+Backwards incompatible API changes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Immediately deprecated old symbol names for TSP to reflect the new website API
+
+.. _whatsnew_091.bug_fixes:
+
+Bug Fixes
+~~~~~~~~~
+- Update TSP web scraper to new site (:issue:`740`)
+
 .. _whatsnew_090:
 
 v0.9.0 (July 10, 2020)
----------------------------
+----------------------
 
 Highlights include:
 
@@ -43,7 +77,6 @@ Bug Fixes
 - Correct NASDAQ symbols fields link (:issue:`715`)
 - Fix Yahoo! actions bug due to change in split format (:issue:`755`)
 - Fix FutureWarning from pandas import (:issue:`762`)
-- Update TSP web scraper to new site (:issue:`740`)
 
 Contributors
 ~~~~~~~~~~~~

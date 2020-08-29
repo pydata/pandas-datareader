@@ -1,6 +1,6 @@
 import pytest
 
-import pandas_datareader.data as web
+from pandas_datareader import data as web
 from pandas_datareader.data import get_data_stooq
 
 pytestmark = pytest.mark.stable

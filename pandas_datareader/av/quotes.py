@@ -2,10 +2,7 @@ import numpy as np
 import pandas as pd
 
 from pandas_datareader.av import AlphaVantage
-from pandas_datareader.exceptions import (
-    DEP_ERROR_MSG,
-    ImmediateDeprecationError,
-)
+from pandas_datareader.exceptions import DEP_ERROR_MSG, ImmediateDeprecationError
 
 
 class AVQuotesReader(AlphaVantage):
