@@ -26,9 +26,18 @@ def symbols(request):
     return request.param
 
 
+formats = ["csv", "json"]
+format_ids = list(map(str, formats))
+
+
+@pytest.fixture(params=formats, ids=format_ids)
+def formats(request):
+    return request.param
+
+
 @pytest.mark.skipif(TEST_API_KEY is None, reason="TIINGO_API_KEY not set")
-def test_tiingo_quote(symbols):
-    df = TiingoQuoteReader(symbols=symbols).read()
+def test_tiingo_quote(symbols, formats):
+    df = TiingoQuoteReader(symbols=symbols, response_format=formats).read()
     assert isinstance(df, pd.DataFrame)
     if isinstance(symbols, str):
         symbols = [symbols]
@@ -36,8 +45,8 @@ def test_tiingo_quote(symbols):
 
 
 @pytest.mark.skipif(TEST_API_KEY is None, reason="TIINGO_API_KEY not set")
-def test_tiingo_historical(symbols):
-    df = TiingoDailyReader(symbols=symbols).read()
+def test_tiingo_historical(symbols, formats):
+    df = TiingoDailyReader(symbols=symbols, response_format=formats).read()
     assert isinstance(df, pd.DataFrame)
     if isinstance(symbols, str):
         symbols = [symbols]
@@ -45,8 +54,8 @@ def test_tiingo_historical(symbols):
 
 
 @pytest.mark.skipif(TEST_API_KEY is None, reason="TIINGO_API_KEY not set")
-def test_tiingo_iex_historical(symbols):
-    df = TiingoIEXHistoricalReader(symbols=symbols).read()
+def test_tiingo_iex_historical(symbols, formats):
+    df = TiingoIEXHistoricalReader(symbols=symbols, response_format=formats).read()
     df.head()
     assert isinstance(df, pd.DataFrame)
     if isinstance(symbols, str):
