@@ -241,3 +241,4 @@ class MoexReader(_DailyBaseReader):
             sep=";",
             na_values=("-", "null"),
         )
+        pdr.moex.MoexReader('SBER', '2020-07-02', '2020-07-03').read_all_boards()
