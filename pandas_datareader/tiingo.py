@@ -6,6 +6,7 @@ from pandas_datareader.base import _BaseReader
 
 TIINGO_API_URL_BASE = "https://api.tiingo.com"
 
+
 def get_tiingo_symbols():
     """
     Get the set of stock symbols supported by Tiingo
@@ -48,8 +49,9 @@ class TiingoIEXHistoricalReader(_BaseReader):
         session : Session, default None
             requests.sessions.Session instance to be used
         freq : {str, None}
-            Re-sample frequency. Format is # + (min/hour); e.g. "15min" or "4hour".
-            If no value is provided, defaults to 5min. The minimum value is "1min".
+            Re-sample frequency. Format is #min/hour; e.g. "15min" or "4hour".
+            If no value is provided, defaults to 5min. The minimum value is\
+                 "1min".
             Units in minutes (min) and hours (hour) are accepted.
         response_format : str, default 'json'
             Format of response data returned by the underlying Tiingo REST API.
@@ -69,7 +71,7 @@ class TiingoIEXHistoricalReader(_BaseReader):
         timeout=30,
         session=None,
         freq=None,
-        response_format='json',
+        response_format="json",
         api_key=None,
     ):
         super().__init__(
@@ -88,13 +90,15 @@ class TiingoIEXHistoricalReader(_BaseReader):
                 "environmental variable TIINGO_API_KEY."
             )
         self.api_key = api_key
-        self.response_format = response_format if response_format in ['json', 'csv'] else 'json'
+        self.response_format = (
+            response_format if response_format in ["json", "csv"] else "json"
+        )
         self._concat_axis = 0
 
     @property
     def url(self):
         """API URL"""
-        _url = TIINGO_API_URL_BASE+"/iex/{ticker}/prices"
+        _url = TIINGO_API_URL_BASE + "/iex/{ticker}/prices"
         return _url.format(ticker=self._symbol)
 
     @property
@@ -112,20 +116,22 @@ class TiingoIEXHistoricalReader(_BaseReader):
 
     def _read_one_data(self, url, params):
         """ read one data from specified URL """
-        content_type = "application/json" if self.response_format == "json" else "text/csv"
+        content_type = (
+            "application/json" if self.response_format == "json" else "text/csv"
+        )
         headers = {
             "Content-Type": content_type,
             "Authorization": "Token " + self.api_key,
         }
         out = None
-        if self.response_format == 'json':
-            out = self._get_response(url, params=params, headers=headers).json() 
-        elif self.response_format == 'csv':
+        if self.response_format == "json":
+            out = self._get_response(url, params=params, headers=headers).json()
+        elif self.response_format == "csv":
             out = self._read_url_as_StringIO(url, params=params, headers=headers)
         return self._read_lines(out)
 
     def _read_lines(self, out):
-        df = pd.DataFrame(out) if self.response_format == 'json' else pd.read_csv(out)
+        df = pd.DataFrame(out) if self.response_format == "json" else pd.read_csv(out)
         df["symbol"] = self._symbol
         df["date"] = pd.to_datetime(df["date"])
         df = df.set_index(["symbol", "date"])
@@ -183,7 +189,7 @@ class TiingoDailyReader(_BaseReader):
         timeout=30,
         session=None,
         freq=None,
-        response_format='json',
+        response_format="json",
         api_key=None,
     ):
         super(TiingoDailyReader, self).__init__(
@@ -201,13 +207,15 @@ class TiingoDailyReader(_BaseReader):
                 "environmental variable TIINGO_API_KEY."
             )
         self.api_key = api_key
-        self.response_format = response_format if response_format in ['json', 'csv'] else 'json'
+        self.response_format = (
+            response_format if response_format in ["json", "csv"] else "json"
+        )
         self._concat_axis = 0
 
     @property
     def url(self):
         """API URL"""
-        _url = TIINGO_API_URL_BASE+"/tiingo/daily/{ticker}/prices"
+        _url = TIINGO_API_URL_BASE + "/tiingo/daily/{ticker}/prices"
         return _url.format(ticker=self._symbol)
 
     @property
@@ -216,7 +224,7 @@ class TiingoDailyReader(_BaseReader):
         return {
             "startDate": self.start.strftime("%Y-%m-%d"),
             "endDate": self.end.strftime("%Y-%m-%d"),
-            "format": self.response_format
+            "format": self.response_format,
         }
 
     def _get_crumb(self, *args):
@@ -224,20 +232,22 @@ class TiingoDailyReader(_BaseReader):
 
     def _read_one_data(self, url, params):
         """ read one data from specified URL """
-        content_type = "application/json" if self.response_format == "json" else "text/csv"
+        content_type = (
+            "application/json" if self.response_format == "json" else "text/csv"
+        )
         headers = {
             "Content-Type": content_type,
             "Authorization": "Token " + self.api_key,
         }
         out = None
-        if self.response_format == 'json':
-            out = self._get_response(url, params=params, headers=headers).json() 
-        elif self.response_format == 'csv':
+        if self.response_format == "json":
+            out = self._get_response(url, params=params, headers=headers).json()
+        elif self.response_format == "csv":
             out = self._read_url_as_StringIO(url, params=params, headers=headers)
         return self._read_lines(out)
 
     def _read_lines(self, out):
-        df = pd.DataFrame(out) if self.response_format == 'json' else pd.read_csv(out)
+        df = pd.DataFrame(out) if self.response_format == "json" else pd.read_csv(out)
         df["symbol"] = self._symbol
         df["date"] = pd.to_datetime(df["date"])
         df = df.set_index(["symbol", "date"])
@@ -293,15 +303,14 @@ class TiingoMetaDataReader(TiingoDailyReader):
         api_key=None,
     ):
         super(TiingoMetaDataReader, self).__init__(
-            symbols, start, end, retry_count, pause, timeout, session, freq,
-            api_key
+            symbols, start, end, retry_count, pause, timeout, session, freq, api_key
         )
         self._concat_axis = 1
 
     @property
     def url(self):
         """API URL"""
-        _url = TIINGO_API_URL_BASE+"/tiingo/daily/{ticker}"
+        _url = TIINGO_API_URL_BASE + "/tiingo/daily/{ticker}"
         return _url.format(ticker=self._symbol)
 
     @property
@@ -346,6 +355,7 @@ class TiingoQuoteReader(TiingoDailyReader):
     This is a special case of the daily reader which automatically selected
     the latest data available for each symbol.
     """
+
     def __init__(
         self,
         symbols,
@@ -356,17 +366,23 @@ class TiingoQuoteReader(TiingoDailyReader):
         timeout=30,
         session=None,
         freq=None,
-        response_format='json',
-        api_key=None
+        response_format="json",
+        api_key=None,
     ):
         super(TiingoQuoteReader, self).__init__(
-            symbols, start, end, retry_count, pause, timeout, session, freq,
-            response_format, api_key
+            symbols,
+            start,
+            end,
+            retry_count,
+            pause,
+            timeout,
+            session,
+            freq,
+            response_format,
+            api_key,
         )
 
     @property
     def params(self):
         """Parameters to use in API calls"""
-        return {
-            "format": self.response_format
-        }
+        return {"format": self.response_format}

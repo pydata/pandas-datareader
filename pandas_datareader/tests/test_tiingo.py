@@ -83,7 +83,9 @@ def test_tiingo_no_api_key(symbols):
 
 
 @pytest.mark.skipif(
-    pd.__version__ == "0.19.2", reason="pandas 0.19.2 does not like this file format"
+    pd.__version__ == "0.19.2",
+    reason="pandas 0.19.2 does not like\
+         this file format",
 )
 def test_tiingo_stock_symbols():
     sym = get_tiingo_symbols()
