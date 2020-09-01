@@ -111,11 +111,11 @@ class _BaseReader(object):
             raise NotImplementedError(self._format)
         return self._read_lines(out)
 
-    def _read_url_as_StringIO(self, url, params=None):
+    def _read_url_as_StringIO(self, url, params=None, headers=None):
         """
         Open url (and retry)
         """
-        response = self._get_response(url, params=params)
+        response = self._get_response(url, params=params, headers=headers)
         text = self._sanitize_response(response)
         out = StringIO()
         if len(text) == 0:
