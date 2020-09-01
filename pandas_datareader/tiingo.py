@@ -50,12 +50,13 @@ class TiingoIEXHistoricalReader(_BaseReader):
             requests.sessions.Session instance to be used
         freq : {str, None}
             Re-sample frequency. Format is #min/hour; e.g. "15min" or "4hour".
-            If no value is provided, defaults to 5min. The minimum value is\
-                 "1min".
+            If no value is provided, defaults to 5min. The minimum value is "1min".
             Units in minutes (min) and hours (hour) are accepted.
         response_format : str, default 'json'
-            Format of response data returned by the underlying Tiingo REST API.
-            Acceptable values: 'json', 'csv'.
+            Specifies format of response data returned by the underlying
+            Tiingo REST API. Acceptable values are 'json' and 'csv'.
+            Use of 'csv' results in smaller message payload, less bandwidth,
+            and may delay the time when client hits API's bandwidth limit.
         api_key : str, optional
             Tiingo API key . If not provided the environmental variable
             TIINGO_API_KEY is read. The API key is *required*.
@@ -90,9 +91,9 @@ class TiingoIEXHistoricalReader(_BaseReader):
                 "environmental variable TIINGO_API_KEY."
             )
         self.api_key = api_key
-        self.response_format = (
-            response_format if response_format in ["json", "csv"] else "json"
-        )
+        if response_format not in ["json", "csv"]:
+            raise ValueError("Acceptable values are 'json' and 'csv'")
+        self.response_format = response_format
         self._concat_axis = 0
 
     @property
@@ -172,8 +173,10 @@ class TiingoDailyReader(_BaseReader):
     freq : {str, None}
         Not used.
     response_format : str, default 'json'
-        Format of response data returned by the underlying Tiingo REST API.
-        Acceptable values: 'json', 'csv'.
+        Specifies format of response data returned by the underlying
+        Tiingo REST API. Acceptable values are 'json' and 'csv'.
+        Use of 'csv' results in smaller message payload, less bandwidth,
+        and may delay the time when client hits API's bandwidth limit.
     api_key : str, optional
         Tiingo API key . If not provided the environmental variable
         TIINGO_API_KEY is read. The API key is *required*.
@@ -207,9 +210,9 @@ class TiingoDailyReader(_BaseReader):
                 "environmental variable TIINGO_API_KEY."
             )
         self.api_key = api_key
-        self.response_format = (
-            response_format if response_format in ["json", "csv"] else "json"
-        )
+        if response_format not in ["json", "csv"]:
+            raise ValueError("Acceptable values are 'json' and 'csv'")
+        self.response_format = response_format
         self._concat_axis = 0
 
     @property
@@ -303,7 +306,16 @@ class TiingoMetaDataReader(TiingoDailyReader):
         api_key=None,
     ):
         super(TiingoMetaDataReader, self).__init__(
-            symbols, start, end, retry_count, pause, timeout, session, freq, api_key
+            symbols,
+            start,
+            end,
+            retry_count,
+            pause,
+            timeout,
+            session,
+            freq,
+            response_format="json",
+            api_key=api_key,
         )
         self._concat_axis = 1
 
@@ -344,8 +356,10 @@ class TiingoQuoteReader(TiingoDailyReader):
     freq : {str, None}
         Not used.
     response_format : str, default 'json'
-        Format of response data returned by the underlying Tiingo REST API.
-        Acceptable values: 'json', 'csv'.
+        Specifies format of response data returned by the underlying
+        Tiingo REST API. Acceptable values are 'json' and 'csv'.
+        Use of 'csv' results in smaller message payload, less bandwidth,
+        and may delay the time when client hits API's bandwidth limit.
     api_key : str, optional
         Tiingo API key . If not provided the environmental variable
         TIINGO_API_KEY is read. The API key is *required*.
