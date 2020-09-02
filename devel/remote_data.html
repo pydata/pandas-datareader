@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Remote Data Access &#8212; pandas-datareader 0.10.0dev0+21.gc309574 documentation</title>
+    <title>Remote Data Access &#8212; pandas-datareader 0.10.0dev0+30.gadb67b2 documentation</title>
     
   <link rel="stylesheet" href="_static/css/index.d431a4ee1c1efae0e38bdfebc22debff.css">
 
@@ -243,6 +243,10 @@
             <a href="#naver-finance-data" class="nav-link">Naver Finance Data</a>
         </li>
     
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#yahoo-finance-data" class="nav-link">Yahoo Finance Data</a>
+        </li>
+    
     </ul>
 </nav>
 
@@ -282,6 +286,7 @@ Currently the following sources are supported:</p>
 <li><p><a class="reference internal" href="#remote-data-stooq"><span class="std std-ref">Stooq</span></a></p></li>
 <li><p><a class="reference internal" href="#remote-data-moex"><span class="std std-ref">MOEX</span></a></p></li>
 <li><p><a class="reference internal" href="#remote-data-naver"><span class="std std-ref">Naver Finance</span></a></p></li>
+<li><p><a class="reference internal" href="#remote-data-yahoo"><span class="std std-ref">Yahoo Finance</span></a></p></li>
 </ul>
 </div></blockquote>
 <p>It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.</p>
@@ -991,9 +996,9 @@ pandas_datareader.moex.MoexReader(<a href="#id4"><span class="problematic" id="i
 <span class="go">TRADEDATE                                 ...                               </span>
 <span class="go">2020-07-02            NaN            NaN  ...              NaN           NaN</span>
 <span class="go">2020-07-03            NaN            NaN  ...              NaN           NaN</span>
-<span class="go">2020-07-02            NaN            NaN  ...              NaN           NaN</span>
-<span class="go">2020-07-03            NaN            NaN  ...              NaN           NaN</span>
-<span class="go">2020-07-02            NaN            0.0  ...              NaN           NaN</span>
+<span class="go">2020-07-02            NaN   0.000000e+00  ...              NaN           NaN</span>
+<span class="go">2020-07-02          210.0   1.514438e+10  ...              NaN           NaN</span>
+<span class="go">2020-07-03            NaN   0.000000e+00  ...              NaN           NaN</span>
 
 <span class="go">[5 rows x 65 columns]</span>
 </pre></div>
@@ -1016,6 +1021,58 @@ pandas_datareader.moex.MoexReader(<a href="#id4"><span class="problematic" id="i
 <span class="go">2019-09-16  47000  47100  46400  47100  15550926</span>
 <span class="go">2019-09-17  47000  47100  46800  46900   7006280</span>
 <span class="go">2019-09-18  46900  47700  46800  47700  10413027</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="yahoo-finance-data">
+<span id="remote-data-yahoo"></span><h2>Yahoo Finance Data<a class="headerlink" href="#yahoo-finance-data" title="Permalink to this headline">¶</a></h2>
+<p><a href="#id6"><span class="problematic" id="id7">`</span></a>Yahoo Finance provides stock market data</p>
+<p>The following endpoints are available:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">yahoo</span></code> - retrieve daily stock prices (high, open, close, volu,e and adjusted close)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">yahoo-actions</span></code> - retrieve historical corporate actions (dividends and stock splits)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">yahoo-dividends</span></code> - retrieve historical dividends</p></li>
+</ul>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [43]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
+
+<span class="gp">In [44]: </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="gp">In [45]: </span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+
+<span class="gp">In [46]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;GE&#39;</span><span class="p">,</span> <span class="s1">&#39;yahoo&#39;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s1">&#39;2019-09-10&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2019-10-09&#39;</span><span class="p">)</span>
+
+<span class="gp">In [47]: </span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[47]: </span><span class="go"></span>
+<span class="go">            High   Low  Open  Close      Volume  Adj Close</span>
+<span class="go">Date                                                      </span>
+<span class="go">2019-09-10  9.27  8.90  8.91   9.14  62617200.0   9.099168</span>
+<span class="go">2019-09-11  9.36  9.06  9.15   9.36  57094900.0   9.318185</span>
+<span class="go">2019-09-12  9.52  9.22  9.40   9.26  68115100.0   9.218632</span>
+<span class="go">2019-09-13  9.45  9.14  9.31   9.34  45589400.0   9.308327</span>
+<span class="go">2019-09-16  9.42  9.17  9.30   9.38  45748400.0   9.348191</span>
+
+<span class="gp">In [48]: </span><span class="n">start</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">29</span><span class="p">)</span>
+
+<span class="gp">In [49]: </span><span class="n">end</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+
+<span class="gp">In [50]: </span><span class="n">actions</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;GOOG&#39;</span><span class="p">,</span> <span class="s1">&#39;yahoo-actions&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+
+<span class="gp">In [51]: </span><span class="n">actions</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[51]: </span><span class="go"></span>
+<span class="go">           action   value</span>
+<span class="go">2015-04-27  SPLIT  1.0000</span>
+<span class="go">2014-03-27  SPLIT  0.4995</span>
+
+<span class="gp">In [52]: </span><span class="n">dividends</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;IBM&#39;</span><span class="p">,</span> <span class="s1">&#39;yahoo-dividends&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+
+<span class="gp">In [53]: </span><span class="n">dividends</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[53]: </span><span class="go"></span>
+<span class="go">              action  value</span>
+<span class="go">2020-08-07  DIVIDEND   1.63</span>
+<span class="go">2020-05-07  DIVIDEND   1.63</span>
+<span class="go">2020-02-07  DIVIDEND   1.62</span>
+<span class="go">2019-11-07  DIVIDEND   1.62</span>
+<span class="go">2019-08-08  DIVIDEND   1.62</span>
 </pre></div>
 </div>
 </div>

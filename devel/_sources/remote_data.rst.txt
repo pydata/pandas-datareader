@@ -42,6 +42,7 @@ Currently the following sources are supported:
     - :ref:`Stooq<remote_data.stooq>`
     - :ref:`MOEX<remote_data.moex>`
     - :ref:`Naver Finance<remote_data.naver>`
+    - :ref:`Yahoo Finance<remote_data.yahoo>`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
 
@@ -710,3 +711,31 @@ Naver Finance Data
 
 .. _KOSPI: https://en.wikipedia.org/wiki/KOSPI
 .. _KOSDAQ: https://en.wikipedia.org/wiki/KOSDAQ
+
+.. _remote_data.yahoo:
+
+Yahoo Finance Data
+==================
+`Yahoo Finance provides stock market data
+
+The following endpoints are available:
+
+* ``yahoo`` - retrieve daily stock prices (high, open, close, volu,e and adjusted close)
+* ``yahoo-actions`` - retrieve historical corporate actions (dividends and stock splits) 
+* ``yahoo-dividends`` - retrieve historical dividends
+
+.. ipython:: python
+
+   import pandas_datareader.data as web
+   import pandas as pd
+   import datetime as dt
+   df = web.DataReader('GE', 'yahoo', start='2019-09-10', end='2019-10-09')
+   df.head()
+	
+   start = dt.datetime(2010, 1, 29)
+   end = dt.datetime.today()
+   actions = web.DataReader('GOOG', 'yahoo-actions', start, end) 
+   actions.head()
+
+   dividends = web.DataReader('IBM', 'yahoo-dividends', start, end) 
+   dividends.head()

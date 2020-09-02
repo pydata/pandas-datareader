@@ -18,6 +18,7 @@ devel/_sources/readers/stooq.rst.txt
 devel/_sources/readers/tiingo.rst.txt
 devel/_sources/readers/tsp.rst.txt
 devel/_sources/readers/world-bank.rst.txt
+devel/_sources/readers/yahoo.rst.txt
 devel/_sources/remote_data.rst.txt
 devel/_sources/see-also.rst.txt
 devel/_sources/whatsnew.rst.txt
@@ -108,6 +109,7 @@ devel/readers/stooq.html
 devel/readers/tiingo.html
 devel/readers/tsp.html
 devel/readers/world-bank.html
+devel/readers/yahoo.html
 devel/remote_data.html
 devel/search.html
 devel/searchindex.js

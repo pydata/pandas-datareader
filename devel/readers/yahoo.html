@@ -1,0 +1,1090 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yahoo Finance &#8212; pandas-datareader 0.10.0dev0+30.gadb67b2 documentation</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.d431a4ee1c1efae0e38bdfebc22debff.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.30270b6e4c972e43c488.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="What’s New" href="../whatsnew.html" />
+    <link rel="prev" title="World Bank" href="world-bank.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    
+    <a class="navbar-brand" href="../index.html">
+      <img src="../_static/pandas-datareader-plain.svg" class="logo" alt="logo">
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../remote_data.html">Remote Data Access</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../cache.html">Caching queries</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../see-also.html">Other Data Sources</a>
+        </li>
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="index.html">Data Readers</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../whatsnew.html">What’s New</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/pydata/pandas-datareader" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar">
+
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+  <div class="bd-toc-item active">
+  
+
+  <ul class="nav bd-sidenav">
+      
+      
+      
+      
+      
+      
+      
+      
+        
+          
+              <li class="">
+                  <a href="alphavantage.html">AlphaVantage</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="fred.html">Federal Reserve Economic Data (FRED)</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="famafrench.html">Fama-French Data (Ken French’s Data Library)</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="bank-of-canada.html">Bank of Canada</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="econdb.html">Econdb</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="enigma.html">Enigma</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="eurostat.html">Eurostat</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="iex.html">The Investors Exchange (IEX)</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="moex.html">Moscow Exchange (MOEX)</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="nasdaq-trader.html">NASDAQ</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="naver.html">Naver Finance</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="oecd.html">Organisation for Economic Co-operation and Development (OECD)</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="quandl.html">Quandl</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="stooq.html">Stooq.com</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="tiingo.html">Tiingo</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="tsp.html">Thrift Savings Plan (TSP)</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="world-bank.html">World Bank</a>
+              </li>
+          
+        
+          
+              <li class="active">
+                  <a href="">Yahoo Finance</a>
+              </li>
+          
+        
+      
+      
+      
+      
+    </ul>
+
+</nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="module-pandas_datareader.yahoo.daily">
+<span id="yahoo-finance"></span><h1>Yahoo Finance<a class="headerlink" href="#module-pandas_datareader.yahoo.daily" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="pandas_datareader.yahoo.daily.YahooDailyReader">
+<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.yahoo.daily.</code><code class="sig-name descname">YahooDailyReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">adjust_price</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ret_index</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">chunksize</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">interval</span><span class="o">=</span><span class="default_value">'d'</span></em>, <em class="sig-param"><span class="n">get_actions</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">adjust_dividends</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.daily.YahooDailyReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns DataFrame of with historical over date range,
+start to end.
+To avoid being penalized by Yahoo! Finance servers, pauses between
+downloading ‘chunks’ of symbols can be specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>symbols</strong> (<em>string</em><em>, </em><em>array-like object</em><em> (</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a><em>, </em><em>Series</em><em>)</em><em>, or </em><em>DataFrame</em>) – Single stock symbol (ticker), array-like object of symbols or
+DataFrame with index containing stock symbols.</p></li>
+<li><p><strong>start</strong> (<em>string</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>date</em><em>, </em><em>datetime</em><em>, </em><em>Timestamp</em>) – Starting date. Parses many different kind of date
+representations (e.g., ‘JAN-01-2010’, ‘1/1/10’, ‘Jan, 1, 1980’). Defaults to
+5 years before current date.</p></li>
+<li><p><strong>end</strong> (<em>string</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>date</em><em>, </em><em>datetime</em><em>, </em><em>Timestamp</em>) – Ending date</p></li>
+<li><p><strong>retry_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>default 3</em>) – Number of times to retry query request.</p></li>
+<li><p><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>default 0.1</em>) – Time, in seconds, to pause between consecutive queries of chunks. If
+single value given for symbol, represents the pause between retries.</p></li>
+<li><p><strong>session</strong> (<em>Session</em><em>, </em><em>default None</em>) – requests.sessions.Session instance to be used</p></li>
+<li><p><strong>adjust_price</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>default False</em>) – If True, adjusts all prices in hist_data (‘Open’, ‘High’, ‘Low’,
+‘Close’) based on ‘Adj Close’ price. Adds ‘Adj_Ratio’ column and drops
+‘Adj Close’.</p></li>
+<li><p><strong>ret_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>default False</em>) – If True, includes a simple return index ‘Ret_Index’ in hist_data.</p></li>
+<li><p><strong>chunksize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>default 25</em>) – Number of symbols to download consecutively before intiating pause.</p></li>
+<li><p><strong>interval</strong> (<em>string</em><em>, </em><em>default 'd'</em>) – Time interval code, valid values are ‘d’ for daily, ‘w’ for weekly,
+‘m’ for monthly.</p></li>
+<li><p><strong>get_actions</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>default False</em>) – If True, adds Dividend and Split columns to dataframe.</p></li>
+<li><p><strong>adjust_dividends</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>default true</em>) – If True, adjusts dividends for splits.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.daily.YahooDailyReader.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.daily.YahooDailyReader.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close network session</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.daily.YahooDailyReader.default_start_date">
+<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.yahoo.daily.YahooDailyReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default start date for reader. Defaults to 5 years before current date</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.daily.YahooDailyReader.params">
+<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.yahoo.daily.YahooDailyReader.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameters to use in API calls</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.daily.YahooDailyReader.read">
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.daily.YahooDailyReader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.daily.YahooDailyReader.url">
+<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.yahoo.daily.YahooDailyReader.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>API URL</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-pandas_datareader.yahoo.fx"></span><dl class="py class">
+<dt id="pandas_datareader.yahoo.fx.YahooFXReader">
+<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.yahoo.fx.</code><code class="sig-name descname">YahooFXReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">adjust_price</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ret_index</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">chunksize</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">interval</span><span class="o">=</span><span class="default_value">'d'</span></em>, <em class="sig-param"><span class="n">get_actions</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">adjust_dividends</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.fx.YahooFXReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns DataFrame of historical prices for currencies</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>symbols</strong> (<em>string</em><em>, </em><em>array-like object</em><em> (</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a><em>, </em><em>Series</em><em>)</em><em>, or </em><em>DataFrame</em>) – Single stock symbol (ticker), array-like object of symbols or
+DataFrame with index containing stock symbols.</p></li>
+<li><p><strong>start</strong> (<em>string</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>date</em><em>, </em><em>datetime</em><em>, </em><em>Timestamp</em>) – Starting date, timestamp. Parses many different kind of date
+representations (e.g., ‘JAN-01-2010’, ‘1/1/10’, ‘Jan, 1, 1980’).
+Defaults to ‘1/1/2010’.</p></li>
+<li><p><strong>end</strong> (<em>string</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>date</em><em>, </em><em>datetime</em><em>, </em><em>Timestamp</em>) – Ending date, timestamp. Same format as starting date. Defaults to today.</p></li>
+<li><p><strong>retry_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>default 3</em>) – Number of times to retry query request.</p></li>
+<li><p><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>default 0.1</em>) – Time, in seconds, to pause between consecutive queries of chunks. If
+single value given for symbol, represents the pause between retries.</p></li>
+<li><p><strong>session</strong> (<em>Session</em><em>, </em><em>default None</em>) – requests.sessions.Session instance to be used</p></li>
+<li><p><strong>chunksize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>default 25</em><em> (</em><em>NOT IMPLEMENTED</em><em>)</em>) – Number of symbols to download consecutively before intiating pause.</p></li>
+<li><p><strong>interval</strong> (<em>string</em><em>, </em><em>default '1d'</em>) – <dl class="simple">
+<dt>Valid values are ‘1d’, ‘5d’, ‘1mo’, ‘3mo’, ‘6mo’, ‘1y’, ‘2y’, ‘5y’,</dt><dd><p>’10y’, ‘ytd’, ‘max’</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.fx.YahooFXReader.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.fx.YahooFXReader.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close network session</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.fx.YahooFXReader.default_start_date">
+<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.yahoo.fx.YahooFXReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default start date for reader. Defaults to 5 years before current date</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.fx.YahooFXReader.params">
+<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.yahoo.fx.YahooFXReader.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameters to use in API calls</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.fx.YahooFXReader.read">
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.fx.YahooFXReader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.fx.YahooFXReader.url">
+<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.yahoo.fx.YahooFXReader.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>API URL</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-pandas_datareader.yahoo.options"></span><dl class="py class">
+<dt id="pandas_datareader.yahoo.options.Options">
+<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.yahoo.options.</code><code class="sig-name descname">Options</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbol</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>*Experimental*</strong>
+This class fetches call/put data for a given stock/expiry month.</p>
+<p>It is instantiated with a string representing the ticker symbol.</p>
+<dl class="simple">
+<dt>The class has the following methods:</dt><dd><p>get_options_data(month, year, expiry)
+get_call_data(month, year, expiry)
+get_put_data(month, year, expiry)
+get_near_stock_price(opt_frame, above_below)
+get_all_data(call, put)
+get_forward_data(months, call, put) (deprecated)</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p># Instantiate object with ticker
+&gt;&gt;&gt; aapl = Options(‘aapl’)</p>
+<p># Fetch next expiry call data
+&gt;&gt;&gt; calls = aapl.get_call_data()</p>
+<p># Can now access aapl.calls instance variable
+&gt;&gt;&gt; aapl.calls</p>
+<p># Fetch next expiry put data
+&gt;&gt;&gt; puts = aapl.get_put_data()</p>
+<p># Can now access aapl.puts instance variable
+&gt;&gt;&gt; aapl.puts</p>
+<p># cut down the call data to be 3 below and 3 above the stock price.
+&gt;&gt;&gt; cut_calls = aapl.get_near_stock_price(call=True, above_below=3)</p>
+<p># Fetch call and put data with expiry from now to 8 months out
+&gt;&gt;&gt; forward_data = aapl.get_forward_data(8, call=True, put=True)</p>
+<p># Fetch all call and put data
+&gt;&gt;&gt; all_data = aapl.get_all_data()</p>
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.options.Options.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close network session</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.options.Options.default_start_date">
+<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default start date for reader. Defaults to 5 years before current date</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.options.Options.expiry_dates">
+<em class="property">property </em><code class="sig-name descname">expiry_dates</code><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.expiry_dates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of available expiry dates</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.options.Options.get_all_data">
+<code class="sig-name descname">get_all_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">call</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">put</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.get_all_data" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>*Experimental*</strong>
+Gets either call, put, or both data for all available months starting
+in the current month.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>call</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Whether or not to collect data for call options</p></li>
+<li><p><strong>put</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Whether or not to collect data for put options.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul>
+<li><p><em>pandas.DataFrame</em> – A DataFrame with requested options data.</p>
+<dl>
+<dt>Index:</dt><dd><p>Strike: Option strike, int
+Expiry: Option expiry, Timestamp
+Type: Call or Put, string
+Symbol: Option symbol as reported on Yahoo, string</p>
+</dd>
+<dt>Columns:</dt><dd><p>Last: Last option price, float
+Chg: Change from prior day, float
+PctChg: Change from prior day in percent, float
+Bid: Bid price, float
+Ask: Ask price, float
+Vol: Volume traded, int64
+Open_Int: Open interest, int64
+IsNonstandard: True if the the deliverable is not 100 shares,</p>
+<blockquote>
+<div><p>otherwise false</p>
+</div></blockquote>
+<p>Underlying: Ticker of the underlying security, string
+Underlying_Price: Price of the underlying security, float64
+Quote_Time: Time of the quote, Timestamp
+Last_Trade_Date: Time of the last trade for this expiry</p>
+<blockquote>
+<div><p>and strike, Timestamp</p>
+</div></blockquote>
+<p>IV: Implied volatility, float
+JSON: Parsed json object, json</p>
+<blockquote>
+<div><p>Useful to extract other returned key/value pairs as needed</p>
+</div></blockquote>
+</dd>
+</dl>
+</li>
+<li><p><strong>Note</strong> (<em>Format of returned DataFrame is dependent</em>) – on Yahoo and may change.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.options.Options.get_call_data">
+<code class="sig-name descname">get_call_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">month</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">year</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">expiry</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.get_call_data" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>*Experimental*</strong>
+Gets call/put data for the stock with the expiration data in the
+given month and year</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>month</strong> (<em>number</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em><em>(</em><em>default=None</em><em>)</em>) – The month the options expire. This should be either 1 or 2
+digits.</p></li>
+<li><p><strong>year</strong> (<em>number</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em><em>(</em><em>default=None</em><em>)</em>) – The year the options expire. This should be a 4 digit int.</p></li>
+<li><p><strong>expiry</strong> (<em>date-like</em><em> or </em><em>convertible or</em>) – list-like object, optional (default=None)
+The date (or dates) when options expire (defaults to current month)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p><strong>call_data</strong> – A DataFrame with requested options data.</p>
+<dl>
+<dt>Index:</dt><dd><p>Strike: Option strike, int
+Expiry: Option expiry, Timestamp
+Type: Call or Put, string
+Symbol: Option symbol as reported on Yahoo, string</p>
+</dd>
+<dt>Columns:</dt><dd><p>Last: Last option price, float
+Chg: Change from prior day, float
+PctChg: Change from prior day in percent, float
+Bid: Bid price, float
+Ask: Ask price, float
+Vol: Volume traded, int64
+Open_Int: Open interest, int64
+IsNonstandard: True if the the deliverable is not 100 shares,</p>
+<blockquote>
+<div><p>otherwise false</p>
+</div></blockquote>
+<p>Underlying: Ticker of the underlying security, string
+Underlying_Price: Price of the underlying security, float64
+Quote_Time: Time of the quote, Timestamp
+Last_Trade_Date: Time of the last trade for this expiry</p>
+<blockquote>
+<div><p>and strike, Timestamp</p>
+</div></blockquote>
+<p>IV: Implied volatility, float
+JSON: Parsed json object, json</p>
+<blockquote>
+<div><p>Useful to extract other returned key/value pairs as needed</p>
+</div></blockquote>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<dl class="simple">
+<dt>Note: Format of returned DataFrame is dependent</dt><dd><p>on Yahoo and may change.</p>
+</dd>
+</dl>
+<p>When called, this function will add instance variables named
+calls and puts. See the following example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aapl</span> <span class="o">=</span> <span class="n">Options</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">,</span> <span class="s1">&#39;yahoo&#39;</span><span class="p">)</span>  <span class="c1"># Create object</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aapl</span><span class="o">.</span><span class="n">calls</span>  <span class="c1"># will give an AttributeError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aapl</span><span class="o">.</span><span class="n">get_call_data</span><span class="p">()</span>  <span class="c1"># Get data and set ivars</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aapl</span><span class="o">.</span><span class="n">calls</span>  <span class="c1"># Doesn&#39;t throw AttributeError</span>
+</pre></div>
+</div>
+<p>Also note that aapl.calls will always be the calls for the next
+expiry. If the user calls this method with a different month
+or year, the ivar will be named callsYYMMDD where YY, MM and DD are,
+respectively, two digit representations of the year, month and day
+for the expiry of the options.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.options.Options.get_forward_data">
+<code class="sig-name descname">get_forward_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">months</span></em>, <em class="sig-param"><span class="n">call</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">put</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">near</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">above_below</span><span class="o">=</span><span class="default_value">2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.get_forward_data" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>*Experimental*</strong>
+Gets either call, put, or both data for months starting in the current
+month and going out in the future a specified amount of time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>months</strong> (<em>number</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – How many months to go out in the collection of the data. This is
+inclusive.</p></li>
+<li><p><strong>call</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Whether or not to collect data for call options</p></li>
+<li><p><strong>put</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=False</em><em>)</em>) – Whether or not to collect data for put options.</p></li>
+<li><p><strong>near</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=False</em><em>)</em>) – Whether this function should get only the data near the
+current stock price. Uses Options.get_near_stock_price</p></li>
+<li><p><strong>above_below</strong> (<em>number</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=2</em><em>)</em>) – The number of strike prices above and below the stock price that
+should be taken if the near option is set to True</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>A DataFrame with requested options data.</p>
+<dl>
+<dt>Index:</dt><dd><p>Strike: Option strike, int
+Expiry: Option expiry, Timestamp
+Type: Call or Put, string
+Symbol: Option symbol as reported on Yahoo, string</p>
+</dd>
+<dt>Columns:</dt><dd><p>Last: Last option price, float
+Chg: Change from prior day, float
+PctChg: Change from prior day in percent, float
+Bid: Bid price, float
+Ask: Ask price, float
+Vol: Volume traded, int64
+Open_Int: Open interest, int64
+IsNonstandard: True if the the deliverable is not 100 shares,</p>
+<blockquote>
+<div><p>otherwise false</p>
+</div></blockquote>
+<p>Underlying: Ticker of the underlying security, string
+Underlying_Price: Price of the underlying security, float64
+Quote_Time: Time of the quote, Timestamp
+Last_Trade_Date: Time of the last trade for this expiry</p>
+<blockquote>
+<div><p>and strike, Timestamp</p>
+</div></blockquote>
+<p>IV: Implied volatility, float
+JSON: Parsed json object, json</p>
+<blockquote>
+<div><p>Useful to extract other returned key/value pairs as needed</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Note: Format of returned DataFrame is dependent</dt><dd><p>on Yahoo and may change.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.options.Options.get_near_stock_price">
+<code class="sig-name descname">get_near_stock_price</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">above_below</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">call</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">put</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">month</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">year</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">expiry</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.get_near_stock_price" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>*Experimental*</strong>
+Returns a DataFrame of options that are near the current stock price.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>above_below</strong> (<em>number</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=2</em><em>)</em>) – The number of strike prices above and below the stock price that
+should be taken</p></li>
+<li><p><strong>call</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Tells the function whether or not it should be using calls</p></li>
+<li><p><strong>put</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Tells the function weather or not it should be using puts</p></li>
+<li><p><strong>month</strong> (<em>number</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em><em>(</em><em>default=None</em><em>)</em>) – The month the options expire. This should be either 1 or 2
+digits.</p></li>
+<li><p><strong>year</strong> (<em>number</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em><em>(</em><em>default=None</em><em>)</em>) – The year the options expire. This should be a 4 digit int.</p></li>
+<li><p><strong>expiry</strong> (<em>date-like</em><em> or </em><em>convertible</em><em> or </em><em>list-like object</em><em>,</em>) – optional (default=None)
+The date (or dates) when options expire (defaults to current month)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl>
+<dt><strong>chopped</strong> –    The resultant DataFrame chopped down to be 2 * above_below + 1 rows</dt><dd><p>desired. If there isn’t data as far out as the user has asked for
+then</p>
+<dl>
+<dt>Index:</dt><dd><p>Strike: Option strike, int
+Expiry: Option expiry, Timestamp
+Type: Call or Put, string
+Symbol: Option symbol as reported on Yahoo, string</p>
+</dd>
+<dt>Columns:</dt><dd><p>Last: Last option price, float
+Chg: Change from prior day, float
+PctChg: Change from prior day in percent, float
+Bid: Bid price, float
+Ask: Ask price, float
+Vol: Volume traded, int64
+Open_Int: Open interest, int64
+IsNonstandard: True if the the deliverable is not 100 shares,</p>
+<blockquote>
+<div><p>otherwise false</p>
+</div></blockquote>
+<p>Underlying: Ticker of the underlying security, string
+Underlying_Price: Price of the underlying security, float64
+Quote_Time: Time of the quote, Timestamp
+Last_Trade_Date: Time of the last trade for this expiry</p>
+<blockquote>
+<div><p>and strike, Timestamp</p>
+</div></blockquote>
+<p>IV: Implied volatility, float
+JSON: Parsed json object, json</p>
+<blockquote>
+<div><p>Useful to extract other returned key/value pairs as needed</p>
+</div></blockquote>
+</dd>
+</dl>
+</dd>
+<dt>Note: Format of returned DataFrame is dependent</dt><dd><p>on Yahoo and may change.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.options.Options.get_options_data">
+<code class="sig-name descname">get_options_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">month</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">year</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">expiry</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.get_options_data" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>*Experimental*</strong>
+Gets call/put data for the stock with the expiration data in the
+given month and year</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>month</strong> (<em>number</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em><em>(</em><em>default=None</em><em>)</em>) – The month the options expire. This should be either 1 or 2
+digits.</p></li>
+<li><p><strong>year</strong> (<em>number</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em><em>(</em><em>default=None</em><em>)</em>) – The year the options expire. This should be a 4 digit int.</p></li>
+<li><p><strong>expiry</strong> (<em>date-like</em><em> or </em><em>convertible or</em>) – list-like object, optional (default=None)
+The date (or dates) when options expire (defaults to current month)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>A DataFrame with requested options data.</p>
+<dl>
+<dt>Index:</dt><dd><p>Strike: Option strike, int
+Expiry: Option expiry, Timestamp
+Type: Call or Put, string
+Symbol: Option symbol as reported on Yahoo, string</p>
+</dd>
+<dt>Columns:</dt><dd><p>Last: Last option price, float
+Chg: Change from prior day, float
+PctChg: Change from prior day in percent, float
+Bid: Bid price, float
+Ask: Ask price, float
+Vol: Volume traded, int64
+Open_Int: Open interest, int64
+IsNonstandard: True if the the deliverable is not 100 shares,</p>
+<blockquote>
+<div><p>otherwise False</p>
+</div></blockquote>
+<p>Underlying: Ticker of the underlying security, string
+Underlying_Price: Price of the underlying security, float64
+Quote_Time: Time of the quote, Timestamp
+Last_Trade_Date: Time of the last trade for this expiry</p>
+<blockquote>
+<div><p>and strike, Timestamp</p>
+</div></blockquote>
+<p>IV: Implied volatility, float
+JSON: Parsed json object, json</p>
+<blockquote>
+<div><p>Useful to extract other returned key/value pairs as needed</p>
+</div></blockquote>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<dl class="simple">
+<dt>Note: Format of returned DataFrame is dependent</dt><dd><p>on Yahoo and may change.</p>
+</dd>
+</dl>
+<p>When called, this function will add instance variables named
+calls and puts. See the following example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aapl</span> <span class="o">=</span> <span class="n">Options</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">,</span> <span class="s1">&#39;yahoo&#39;</span><span class="p">)</span>  <span class="c1"># Create object</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aapl</span><span class="o">.</span><span class="n">calls</span>  <span class="c1"># will give an AttributeError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aapl</span><span class="o">.</span><span class="n">get_options</span><span class="p">()</span>  <span class="c1"># Get data and set ivars</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aapl</span><span class="o">.</span><span class="n">calls</span>  <span class="c1"># Doesn&#39;t throw AttributeError</span>
+</pre></div>
+</div>
+<p>Also note that aapl.calls and appl.puts will always be the calls
+and puts for the next expiry. If the user calls this method with
+a different expiry, the ivar will be named callsYYMMDD or putsYYMMDD,
+where YY, MM and DD are, respectively, two digit representations of
+the year, month and day for the expiry of the options.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.options.Options.get_put_data">
+<code class="sig-name descname">get_put_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">month</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">year</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">expiry</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.get_put_data" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>*Experimental*</strong>
+Gets put data for the stock with the expiration data in the
+given month and year</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>month</strong> (<em>number</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em><em>(</em><em>default=None</em><em>)</em>) – The month the options expire. This should be either 1 or 2
+digits.</p></li>
+<li><p><strong>year</strong> (<em>number</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em><em>(</em><em>default=None</em><em>)</em>) – The year the options expire. This should be a 4 digit int.</p></li>
+<li><p><strong>expiry</strong> (<em>date-like</em><em> or </em><em>convertible or</em>) – list-like object, optional (default=None)
+The date (or dates) when options expire (defaults to current month)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p><strong>put_data</strong> – A DataFrame with requested options data.</p>
+<dl>
+<dt>Index:</dt><dd><p>Strike: Option strike, int
+Expiry: Option expiry, Timestamp
+Type: Call or Put, string
+Symbol: Option symbol as reported on Yahoo, string</p>
+</dd>
+<dt>Columns:</dt><dd><p>Last: Last option price, float
+Chg: Change from prior day, float
+PctChg: Change from prior day in percent, float
+Bid: Bid price, float
+Ask: Ask price, float
+Vol: Volume traded, int64
+Open_Int: Open interest, int64
+IsNonstandard: True if the the deliverable is not 100 shares,</p>
+<blockquote>
+<div><p>otherwise false</p>
+</div></blockquote>
+<p>Underlying: Ticker of the underlying security, string
+Underlying_Price: Price of the underlying security, float64
+Quote_Time: Time of the quote, Timestamp
+Last_Trade_Date: Time of the last trade for this expiry</p>
+<blockquote>
+<div><p>and strike, Timestamp</p>
+</div></blockquote>
+<p>IV: Implied volatility, float
+JSON: Parsed json object, json</p>
+<blockquote>
+<div><p>Useful to extract other returned key/value pairs as needed</p>
+</div></blockquote>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<dl class="simple">
+<dt>Note: Format of returned DataFrame is dependent</dt><dd><p>on Yahoo and may change.</p>
+</dd>
+</dl>
+<p>When called, this function will add instance variables named
+puts. See the following example:</p>
+<blockquote>
+<div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aapl</span> <span class="o">=</span> <span class="n">Options</span><span class="p">(</span><span class="s1">&#39;aapl&#39;</span><span class="p">)</span>  <span class="c1"># Create object</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aapl</span><span class="o">.</span><span class="n">puts</span>  <span class="c1"># will give an AttributeError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aapl</span><span class="o">.</span><span class="n">get_put_data</span><span class="p">()</span>  <span class="c1"># Get data and set ivars</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aapl</span><span class="o">.</span><span class="n">puts</span>  <span class="c1"># Doesn&#39;t throw AttributeError</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>return self.__setattr__(self, str(str(x) + str(y)))</p>
+</div></blockquote>
+</div></blockquote>
+<p>Also note that aapl.puts will always be the puts for the next
+expiry. If the user calls this method with a different month
+or year, the ivar will be named putsYYMMDD where YY, MM and DD are,
+respectively, two digit representations of the year, month and day
+for the expiry of the options.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.options.Options.params">
+<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameters to use in API calls</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.options.Options.quote_time">
+<em class="property">property </em><code class="sig-name descname">quote_time</code><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.quote_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the quote time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.options.Options.read">
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data from connector</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.options.Options.underlying_price">
+<em class="property">property </em><code class="sig-name descname">underlying_price</code><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.underlying_price" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the underlying price.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.options.Options.url">
+<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>API URL</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-pandas_datareader.yahoo.quotes"></span><dl class="py class">
+<dt id="pandas_datareader.yahoo.quotes.YahooQuotesReader">
+<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.yahoo.quotes.</code><code class="sig-name descname">YahooQuotesReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="o">=</span><span class="default_value">30</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">freq</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.quotes.YahooQuotesReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get current yahoo quote</p>
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.quotes.YahooQuotesReader.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.quotes.YahooQuotesReader.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close network session</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.quotes.YahooQuotesReader.default_start_date">
+<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.yahoo.quotes.YahooQuotesReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default start date for reader. Defaults to 5 years before current date</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.quotes.YahooQuotesReader.params">
+<code class="sig-name descname">params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbol</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.quotes.YahooQuotesReader.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameters to use in API calls</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.quotes.YahooQuotesReader.read">
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.quotes.YahooQuotesReader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data from connector</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.quotes.YahooQuotesReader.url">
+<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.yahoo.quotes.YahooQuotesReader.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>API URL</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-pandas_datareader.yahoo.components"></span><dl class="py class">
+<dt id="pandas_datareader.yahoo.components._get_data">
+<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.yahoo.components.</code><code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">idx_sym</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.components._get_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns DataFrame containing list of component information for
+index represented in idx_sym from yahoo. Includes component symbol
+(ticker), exchange, and name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>idx_sym</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – <p>Stock index symbol
+Examples:
+‘^DJI’ (Dow Jones Industrial Average)
+‘^NYA’ (NYSE Composite)
+‘^IXIC’ (NASDAQ Composite)</p>
+<p>See: <a class="reference external" href="http://finance.yahoo.com/indices">http://finance.yahoo.com/indices</a> for other index symbols</p>
+</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>idx_df</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-pandas_datareader.yahoo.actions"></span><dl class="py class">
+<dt id="pandas_datareader.yahoo.actions.YahooActionReader">
+<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.yahoo.actions.</code><code class="sig-name descname">YahooActionReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">adjust_price</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ret_index</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">chunksize</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">interval</span><span class="o">=</span><span class="default_value">'d'</span></em>, <em class="sig-param"><span class="n">get_actions</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">adjust_dividends</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooActionReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns DataFrame of historical corporate actions (dividends and stock
+splits) from symbols, over date range, start to end. All dates in the
+resulting DataFrame correspond with dividend and stock split ex-dates.</p>
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.actions.YahooActionReader.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooActionReader.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close network session</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.actions.YahooActionReader.default_start_date">
+<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooActionReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default start date for reader. Defaults to 5 years before current date</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.actions.YahooActionReader.params">
+<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooActionReader.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameters to use in API calls</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.actions.YahooActionReader.read">
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooActionReader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.actions.YahooActionReader.url">
+<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooActionReader.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>API URL</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pandas_datareader.yahoo.actions.YahooDivReader">
+<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.yahoo.actions.</code><code class="sig-name descname">YahooDivReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">adjust_price</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ret_index</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">chunksize</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">interval</span><span class="o">=</span><span class="default_value">'d'</span></em>, <em class="sig-param"><span class="n">get_actions</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">adjust_dividends</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooDivReader" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="pandas_datareader.yahoo.actions.YahooDivReader.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooDivReader.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close network session</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.actions.YahooDivReader.default_start_date">
+<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooDivReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default start date for reader. Defaults to 5 years before current date</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.actions.YahooDivReader.params">
+<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooDivReader.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameters to use in API calls</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.actions.YahooDivReader.read">
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooDivReader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.actions.YahooDivReader.url">
+<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooDivReader.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>API URL</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pandas_datareader.yahoo.actions.YahooSplitReader">
+<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.yahoo.actions.</code><code class="sig-name descname">YahooSplitReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">adjust_price</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ret_index</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">chunksize</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">interval</span><span class="o">=</span><span class="default_value">'d'</span></em>, <em class="sig-param"><span class="n">get_actions</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">adjust_dividends</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooSplitReader" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="pandas_datareader.yahoo.actions.YahooSplitReader.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooSplitReader.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close network session</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.actions.YahooSplitReader.default_start_date">
+<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooSplitReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default start date for reader. Defaults to 5 years before current date</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.actions.YahooSplitReader.params">
+<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooSplitReader.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameters to use in API calls</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.actions.YahooSplitReader.read">
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooSplitReader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pandas_datareader.yahoo.actions.YahooSplitReader.url">
+<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooSplitReader.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>API URL</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="world-bank.html" title="previous page">World Bank</a>
+    <a class='right-next' id="next-link" href="../whatsnew.html" title="next page">What’s New</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.30270b6e4c972e43c488.js"></script>
+
+
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2020, The PyData Development Team.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

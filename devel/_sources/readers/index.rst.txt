@@ -21,3 +21,4 @@ Data Readers
    tiingo
    tsp
    world-bank
+   yahoo
