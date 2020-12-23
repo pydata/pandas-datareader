@@ -34,7 +34,6 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Caching queries" href="cache.html" />
@@ -506,18 +505,19 @@ Econdb database of time series aggregated into datasets.</p>
 
 <span class="gp">In [4]: </span><span class="n">f</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 <span class="gh">Out[4]: </span><span class="go"></span>
-<span class="go">TableName                                                                     T10106</span>
-<span class="go">SeriesCode                                                                    A191RX</span>
-<span class="go">Table              Table 1.1.6. Real Gross Domestic Product, Chained Dollars (A) (Q)</span>
-<span class="go">Series description                                            Gross domestic product</span>
-<span class="go">CL_UNIT                                                                        Level</span>
-<span class="go">CL_FREQ                                                                            Q</span>
-<span class="go">TIME_PERIOD                                                                         </span>
-<span class="go">2016-01-01                                                   17613264               </span>
-<span class="go">2016-04-01                                                   17668204               </span>
-<span class="go">2016-07-01                                                   17764388               </span>
-<span class="go">2016-10-01                                                   17876180               </span>
-<span class="go">2017-01-01                                                   17977300               </span>
+<span class="go">TableName                                                                                                                                   T10106</span>
+<span class="go">SeriesCode                                                                                                                                  A191RX</span>
+<span class="go">Table                                                                            Table 1.1.6. Real Gross Domestic Product, Chained Dollars (A) (Q)</span>
+<span class="go">Series description                                                                                                          Gross domestic product</span>
+<span class="go">CL_UNIT                                                                                                                                      Level</span>
+<span class="go">CL_FREQ                                                                                                                                          Q</span>
+<span class="go">Note               Table 1.1.6. Real Gross Domestic Product, Chained Dollars [Billions of chained (2012) dollars] - LastRevised: December 22, 2020</span>
+<span class="go">TIME_PERIOD                                                                                                                                       </span>
+<span class="go">2016-01-01                                                   17613264                                                                             </span>
+<span class="go">2016-04-01                                                   17668204                                                                             </span>
+<span class="go">2016-07-01                                                   17764388                                                                             </span>
+<span class="go">2016-10-01                                                   17876180                                                                             </span>
+<span class="go">2017-01-01                                                   17977300                                                                             </span>
 </pre></div>
 </div>
 </div>
@@ -931,16 +931,16 @@ available. More information on the <a class="reference external" href="http://ww
 <span class="gh">Out[32]: </span><span class="go"></span>
 <span class="go">                Open      High       Low     Close     Volume</span>
 <span class="go">Date                                                         </span>
-<span class="go">2020-12-15  29919.09  30243.26  29894.95  30199.31  504353486</span>
+<span class="go">2020-12-22  30200.20  30200.20  29992.89  30015.51  438954592</span>
+<span class="go">2020-12-21  30159.00  30304.14  29755.53  30216.45  514084209</span>
+<span class="go">2020-12-18  30314.26  30343.59  30029.44  30179.05  901052039</span>
+<span class="go">2020-12-17  30216.00  30323.78  30216.00  30303.37  410745538</span>
+<span class="go">2020-12-16  30191.38  30236.03  30080.11  30154.54  437252705</span>
+<span class="go">2020-12-15  29919.09  30243.26  29894.95  30199.31  509402096</span>
 <span class="go">2020-12-14  30123.91  30325.79  29849.15  29861.55  503167510</span>
 <span class="go">2020-12-11  29988.21  30071.13  29820.84  30046.37  476285966</span>
 <span class="go">2020-12-10  30032.55  30063.87  29876.82  29999.26  419216240</span>
 <span class="go">2020-12-09  30229.81  30319.70  29951.85  30068.81  493716575</span>
-<span class="go">2020-12-08  29997.95  30246.22  29972.07  30173.88  422487342</span>
-<span class="go">2020-12-07  30233.03  30233.03  29967.22  30069.79  431325167</span>
-<span class="go">2020-12-04  29989.56  30218.26  29989.56  30218.26  411739468</span>
-<span class="go">2020-12-03  29920.83  30110.88  29877.27  29969.52  485289276</span>
-<span class="go">2020-12-02  29695.09  29902.51  29599.29  29883.79  452968618</span>
 </pre></div>
 </div>
 </div>
@@ -984,9 +984,9 @@ pandas_datareader.moex.MoexReader(<a href="#id4"><span class="problematic" id="i
 <span class="go">TRADEDATE                                 ...                               </span>
 <span class="go">2020-07-02            NaN            NaN  ...              NaN           NaN</span>
 <span class="go">2020-07-03            NaN            NaN  ...              NaN           NaN</span>
-<span class="go">2020-07-02            NaN            NaN  ...              NaN           NaN</span>
-<span class="go">2020-07-03            NaN            NaN  ...              NaN           NaN</span>
-<span class="go">2020-07-02            NaN            NaN  ...              NaN           NaN</span>
+<span class="go">2020-07-02            NaN   0.000000e+00  ...              NaN           NaN</span>
+<span class="go">2020-07-02          210.0   1.514438e+10  ...              NaN           NaN</span>
+<span class="go">2020-07-03            NaN   0.000000e+00  ...              NaN           NaN</span>
 
 <span class="go">[5 rows x 65 columns]</span>
 </pre></div>
@@ -1033,11 +1033,11 @@ pandas_datareader.moex.MoexReader(<a href="#id4"><span class="problematic" id="i
 <span class="gh">Out[47]: </span><span class="go"></span>
 <span class="go">            High   Low  Open  Close      Volume  Adj Close</span>
 <span class="go">Date                                                      </span>
-<span class="go">2019-09-10  9.27  8.90  8.91   9.14  62617200.0   9.084153</span>
-<span class="go">2019-09-11  9.36  9.06  9.15   9.36  57094900.0   9.302807</span>
-<span class="go">2019-09-12  9.52  9.22  9.40   9.26  68115100.0   9.203420</span>
-<span class="go">2019-09-13  9.45  9.14  9.31   9.34  45589400.0   9.292966</span>
-<span class="go">2019-09-16  9.42  9.17  9.30   9.38  45748400.0   9.332765</span>
+<span class="go">2019-09-10  9.27  8.90  8.91   9.14  62617200.0   9.075805</span>
+<span class="go">2019-09-11  9.36  9.06  9.15   9.36  57094900.0   9.294257</span>
+<span class="go">2019-09-12  9.52  9.22  9.40   9.26  68115100.0   9.194961</span>
+<span class="go">2019-09-13  9.45  9.14  9.31   9.34  45589400.0   9.284425</span>
+<span class="go">2019-09-16  9.42  9.17  9.30   9.38  45748400.0   9.324186</span>
 
 <span class="gp">In [48]: </span><span class="n">start</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">29</span><span class="p">)</span>
 
@@ -1091,7 +1091,7 @@ pandas_datareader.moex.MoexReader(<a href="#id4"><span class="problematic" id="i
   <div class="container">
     <p>
           &copy; Copyright 2020, The PyData Development Team.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
     </p>
   </div>
 </footer>
