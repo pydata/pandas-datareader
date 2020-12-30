@@ -185,7 +185,7 @@ class MoexReader(_DailyBaseReader):
                             break
                     else:
                         out_list += strings_out[1:]  # remove a CSV head line
-                        if len(strings_out) < 100:  # all data recevied - break
+                        if len(strings_out) < 100:  # all data received - break
                             break
 
                 if len(out_list) > 0:
