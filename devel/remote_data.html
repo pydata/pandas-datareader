@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Remote Data Access &#8212; pandas-datareader 0.10.0dev0+30.gadb67b2 documentation</title>
+    <title>Remote Data Access &#8212; pandas-datareader 0.10.0dev0+32.g90f155a documentation</title>
     
   <link rel="stylesheet" href="_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -513,11 +513,11 @@ Econdb database of time series aggregated into datasets.</p>
 <span class="go">CL_FREQ                                                                                                                                          Q</span>
 <span class="go">Note               Table 1.1.6. Real Gross Domestic Product, Chained Dollars [Billions of chained (2012) dollars] - LastRevised: December 22, 2020</span>
 <span class="go">TIME_PERIOD                                                                                                                                       </span>
-<span class="go">2016-01-01                                                   17613264                                                                             </span>
 <span class="go">2016-04-01                                                   17668204                                                                             </span>
 <span class="go">2016-07-01                                                   17764388                                                                             </span>
 <span class="go">2016-10-01                                                   17876180                                                                             </span>
 <span class="go">2017-01-01                                                   17977300                                                                             </span>
+<span class="go">2017-04-01                                                   18054052                                                                             </span>
 </pre></div>
 </div>
 </div>
@@ -834,11 +834,10 @@ example is to download ‘Trade Union Density’ data which set code is ‘TUD�
 <span class="go">Source     Administrative data                ...   Survey data                     </span>
 <span class="go">Series               Employees Union members  ... Union members Trade union  density</span>
 <span class="go">Year                                          ...                                   </span>
-<span class="go">2016-01-01             43010.0       12418.0  ...       16996.0                 17.4</span>
 <span class="go">2017-01-01             43830.0       12343.0  ...       16975.0                 17.0</span>
 <span class="go">2018-01-01             45650.0       12227.0  ...       17002.0                 16.2</span>
 
-<span class="go">[3 rows x 12 columns]</span>
+<span class="go">[2 rows x 12 columns]</span>
 </pre></div>
 </div>
 </div>
@@ -861,12 +860,11 @@ example is to download ‘Trade Union Density’ data which set code is ‘TUD�
 <span class="go">GEO                                                                                      Austria  ... United Kingdom</span>
 <span class="go">FREQ                                                                                      Annual  ...         Annual</span>
 <span class="go">TIME_PERIOD                                                                                       ...               </span>
-<span class="go">2016-01-01                                                 7.0                                    ...            NaN</span>
 <span class="go">2017-01-01                                                 7.0                                    ...            NaN</span>
 <span class="go">2018-01-01                                                 4.0                                    ...            NaN</span>
 <span class="go">2019-01-01                                                 1.0                                    ...            NaN</span>
 
-<span class="go">[4 rows x 272 columns]</span>
+<span class="go">[3 rows x 272 columns]</span>
 </pre></div>
 </div>
 </div>
@@ -931,6 +929,7 @@ available. More information on the <a class="reference external" href="http://ww
 <span class="gh">Out[32]: </span><span class="go"></span>
 <span class="go">                Open      High       Low     Close     Volume</span>
 <span class="go">Date                                                         </span>
+<span class="go">2020-12-30  30415.09  30525.35  30393.04  30409.56  341689378</span>
 <span class="go">2020-12-29  30492.07  30588.79  30274.24  30335.67  397646925</span>
 <span class="go">2020-12-28  30283.23  30525.56  30283.23  30403.97  350368362</span>
 <span class="go">2020-12-24  30155.92  30209.67  30099.30  30199.87  163374349</span>
@@ -940,7 +939,6 @@ available. More information on the <a class="reference external" href="http://ww
 <span class="go">2020-12-18  30314.26  30343.59  30029.44  30179.05  901052039</span>
 <span class="go">2020-12-17  30216.00  30323.78  30216.00  30303.37  410745538</span>
 <span class="go">2020-12-16  30191.38  30236.03  30080.11  30154.54  437252705</span>
-<span class="go">2020-12-15  29919.09  30243.26  29894.95  30199.31  509402096</span>
 </pre></div>
 </div>
 </div>
@@ -984,9 +982,9 @@ pandas_datareader.moex.MoexReader(<a href="#id4"><span class="problematic" id="i
 <span class="go">TRADEDATE                                 ...                               </span>
 <span class="go">2020-07-02            NaN            NaN  ...              NaN           NaN</span>
 <span class="go">2020-07-03            NaN            NaN  ...              NaN           NaN</span>
-<span class="go">2020-07-02            NaN            NaN  ...              NaN           NaN</span>
-<span class="go">2020-07-03            NaN            NaN  ...              NaN           NaN</span>
-<span class="go">2020-07-02            NaN            0.0  ...              NaN           NaN</span>
+<span class="go">2020-07-02            NaN   0.000000e+00  ...              NaN           NaN</span>
+<span class="go">2020-07-02          210.0   1.514438e+10  ...              NaN           NaN</span>
+<span class="go">2020-07-03            NaN   0.000000e+00  ...              NaN           NaN</span>
 
 <span class="go">[5 rows x 65 columns]</span>
 </pre></div>
