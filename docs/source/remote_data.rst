@@ -31,6 +31,7 @@ Currently the following sources are supported:
     - :ref:`IEX<remote_data.iex>`
     - :ref:`Alpha Vantage<remote_data.alphavantage>`
     - :ref:`Enigma<remote_data.enigma>`
+    - :ref:`Econdb<remote_data.econdb>`
     - :ref:`Quandl<remote_data.quandl>`
     - :ref:`St.Louis FED (FRED)<remote_data.fred>`
     - :ref:`Kenneth French's data library<remote_data.ff>`
@@ -289,7 +290,7 @@ performances through the top-level function ``get_sector_performance_av``.
 
 
 
-.. _remote_data.enigma:
+.. _remote_data.econdb:
 
 Econdb
 ======
@@ -306,7 +307,7 @@ Econdb database of time series aggregated into datasets.
     f = web.DataReader('ticker=RGDPUS', 'econdb')
     f.head()
 
-.. _remote_data.econdb:
+.. _remote_data.enigma:
 
 Enigma
 ======
