@@ -2,7 +2,8 @@ from __future__ import division
 
 import json
 import re
-import time, datetime
+import time
+import datetime
 
 from pandas import DataFrame, isnull, notnull, to_datetime
 
@@ -127,7 +128,8 @@ class YahooDailyReader(_DailyBaseReader):
     def _get_params(self, symbol):
         # This needed because yahoo returns data shifted by 4 hours ago.
         four_hours_in_seconds = 14400
-        # Use the difference between the unix_zero and start to prevent the bug occurrence of `OverflowError: mktime argument out of range`.
+        # Use the difference between the unix_zero and start to prevent the bug occurrence of
+        # `OverflowError: mktime argument out of range`.
         unix_zero = datetime.datetime(1970, 1, 1, 8)
         unix_start = int((self.start - unix_zero).total_seconds())
         unix_start += four_hours_in_seconds
