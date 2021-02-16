@@ -265,7 +265,10 @@ class _DailyBaseReader(_BaseReader):
         for sym_group in _in_chunks(symbols, self.chunksize):
             for sym in sym_group:
                 try:
-                    stocks[sym] = self._read_one_data(self.url, self._get_params(sym))
+                    df = self._read_one_data(self.url, self._get_params(sym))
+                    # Keep the last item if there are duplicated rows with the same index.
+                    df = df[~df.index.duplicated(keep='last')]
+                    stocks[sym] = df
                     passed.append(sym)
                 except (IOError, KeyError):
                     msg = "Failed to read symbol: {0!r}, replacing with NaN."
