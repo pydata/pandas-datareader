@@ -20,13 +20,15 @@ Enhancements
   from every trading board (ver. 0.9.0 behaviour)
 - Docs for MOEX reedited
 
-.. _whatsnew_080.bug_fixes:
+.. _whatsnew_091.bug_fixes:
 
 Bug Fixes
 ~~~~~~~~~
 
 - Fixed broken links on the github ussies on "What’s New" docs pages
+- Deduplicate rows with the same index (:issue:`610`) (:issue:`738`)
 
 Contributors
 ~~~~~~~~~~~~
 - Dmitry Alekseev
+- Chang Lan
