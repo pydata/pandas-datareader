@@ -147,7 +147,7 @@
 <span id="yahoo-finance"></span><h1>Yahoo Finance<a class="headerlink" href="#module-pandas_datareader.yahoo.daily" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="pandas_datareader.yahoo.daily.YahooDailyReader">
-<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.yahoo.daily.</code><code class="sig-name descname">YahooDailyReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">adjust_price</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ret_index</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">chunksize</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">interval</span><span class="o">=</span><span class="default_value">'d'</span></em>, <em class="sig-param"><span class="n">get_actions</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">adjust_dividends</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.daily.YahooDailyReader" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.yahoo.daily.</span></code><code class="sig-name descname"><span class="pre">YahooDailyReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjust_price</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ret_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunksize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'d'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_actions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjust_dividends</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.daily.YahooDailyReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns DataFrame of with historical over date range,
 start to end.
 To avoid being penalized by Yahoo! Finance servers, pauses between
@@ -179,31 +179,31 @@ single value given for symbol, represents the pause between retries.</p></li>
 </dl>
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.daily.YahooDailyReader.close">
-<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.daily.YahooDailyReader.close" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.daily.YahooDailyReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.daily.YahooDailyReader.default_start_date">
-<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.yahoo.daily.YahooDailyReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.yahoo.daily.YahooDailyReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.daily.YahooDailyReader.params">
-<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.yahoo.daily.YahooDailyReader.params" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.yahoo.daily.YahooDailyReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.daily.YahooDailyReader.read">
-<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.daily.YahooDailyReader.read" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.daily.YahooDailyReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.daily.YahooDailyReader.url">
-<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.yahoo.daily.YahooDailyReader.url" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.yahoo.daily.YahooDailyReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
@@ -211,7 +211,7 @@ single value given for symbol, represents the pause between retries.</p></li>
 
 <span class="target" id="module-pandas_datareader.yahoo.fx"></span><dl class="py class">
 <dt id="pandas_datareader.yahoo.fx.YahooFXReader">
-<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.yahoo.fx.</code><code class="sig-name descname">YahooFXReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">adjust_price</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ret_index</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">chunksize</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">interval</span><span class="o">=</span><span class="default_value">'d'</span></em>, <em class="sig-param"><span class="n">get_actions</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">adjust_dividends</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.fx.YahooFXReader" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.yahoo.fx.</span></code><code class="sig-name descname"><span class="pre">YahooFXReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjust_price</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ret_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunksize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'d'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_actions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjust_dividends</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.fx.YahooFXReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns DataFrame of historical prices for currencies</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -237,31 +237,31 @@ single value given for symbol, represents the pause between retries.</p></li>
 </dl>
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.fx.YahooFXReader.close">
-<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.fx.YahooFXReader.close" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.fx.YahooFXReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.fx.YahooFXReader.default_start_date">
-<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.yahoo.fx.YahooFXReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.yahoo.fx.YahooFXReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.fx.YahooFXReader.params">
-<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.yahoo.fx.YahooFXReader.params" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.yahoo.fx.YahooFXReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.fx.YahooFXReader.read">
-<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.fx.YahooFXReader.read" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.fx.YahooFXReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.fx.YahooFXReader.url">
-<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.yahoo.fx.YahooFXReader.url" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.yahoo.fx.YahooFXReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
@@ -269,7 +269,7 @@ single value given for symbol, represents the pause between retries.</p></li>
 
 <span class="target" id="module-pandas_datareader.yahoo.options"></span><dl class="py class">
 <dt id="pandas_datareader.yahoo.options.Options">
-<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.yahoo.options.</code><code class="sig-name descname">Options</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbol</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.yahoo.options.</span></code><code class="sig-name descname"><span class="pre">Options</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>*Experimental*</strong>
 This class fetches call/put data for a given stock/expiry month.</p>
 <p>It is instantiated with a string representing the ticker symbol.</p>
@@ -301,25 +301,25 @@ get_forward_data(months, call, put) (deprecated)</p>
 &gt;&gt;&gt; all_data = aapl.get_all_data()</p>
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.options.Options.close">
-<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.close" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.options.Options.default_start_date">
-<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.default_start_date" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.options.Options.expiry_dates">
-<em class="property">property </em><code class="sig-name descname">expiry_dates</code><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.expiry_dates" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">expiry_dates</span></code><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.expiry_dates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of available expiry dates</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.options.Options.get_all_data">
-<code class="sig-name descname">get_all_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">call</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">put</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.get_all_data" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">get_all_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">call</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">put</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.get_all_data" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>*Experimental*</strong>
 Gets either call, put, or both data for all available months starting
 in the current month.</p>
@@ -374,7 +374,7 @@ JSON: Parsed json object, json</p>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.options.Options.get_call_data">
-<code class="sig-name descname">get_call_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">month</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">year</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">expiry</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.get_call_data" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">get_call_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">month</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expiry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.get_call_data" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>*Experimental*</strong>
 Gets call/put data for the stock with the expiration data in the
 given month and year</p>
@@ -449,7 +449,7 @@ for the expiry of the options.</p>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.options.Options.get_forward_data">
-<code class="sig-name descname">get_forward_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">months</span></em>, <em class="sig-param"><span class="n">call</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">put</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">near</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">above_below</span><span class="o">=</span><span class="default_value">2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.get_forward_data" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">get_forward_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">months</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">call</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">put</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">near</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">above_below</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.get_forward_data" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>*Experimental*</strong>
 Gets either call, put, or both data for months starting in the current
 month and going out in the future a specified amount of time.</p>
@@ -513,7 +513,7 @@ JSON: Parsed json object, json</p>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.options.Options.get_near_stock_price">
-<code class="sig-name descname">get_near_stock_price</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">above_below</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">call</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">put</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">month</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">year</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">expiry</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.get_near_stock_price" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">get_near_stock_price</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">above_below</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">call</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">put</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">month</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expiry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.get_near_stock_price" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>*Experimental*</strong>
 Returns a DataFrame of options that are near the current stock price.</p>
 <dl class="field-list simple">
@@ -579,7 +579,7 @@ JSON: Parsed json object, json</p>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.options.Options.get_options_data">
-<code class="sig-name descname">get_options_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">month</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">year</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">expiry</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.get_options_data" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">get_options_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">month</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expiry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.get_options_data" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>*Experimental*</strong>
 Gets call/put data for the stock with the expiration data in the
 given month and year</p>
@@ -654,7 +654,7 @@ the year, month and day for the expiry of the options.</p>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.options.Options.get_put_data">
-<code class="sig-name descname">get_put_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">month</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">year</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">expiry</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.get_put_data" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">get_put_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">month</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expiry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.get_put_data" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>*Experimental*</strong>
 Gets put data for the stock with the expiration data in the
 given month and year</p>
@@ -734,31 +734,31 @@ for the expiry of the options.</p>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.options.Options.params">
-<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.params" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.options.Options.quote_time">
-<em class="property">property </em><code class="sig-name descname">quote_time</code><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.quote_time" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">quote_time</span></code><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.quote_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the quote time.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.options.Options.read">
-<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.read" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data from connector</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.options.Options.underlying_price">
-<em class="property">property </em><code class="sig-name descname">underlying_price</code><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.underlying_price" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">underlying_price</span></code><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.underlying_price" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the underlying price.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.options.Options.url">
-<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.url" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.yahoo.options.Options.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
@@ -766,35 +766,35 @@ for the expiry of the options.</p>
 
 <span class="target" id="module-pandas_datareader.yahoo.quotes"></span><dl class="py class">
 <dt id="pandas_datareader.yahoo.quotes.YahooQuotesReader">
-<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.yahoo.quotes.</code><code class="sig-name descname">YahooQuotesReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="o">=</span><span class="default_value">30</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">freq</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.quotes.YahooQuotesReader" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.yahoo.quotes.</span></code><code class="sig-name descname"><span class="pre">YahooQuotesReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.quotes.YahooQuotesReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get current yahoo quote</p>
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.quotes.YahooQuotesReader.close">
-<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.quotes.YahooQuotesReader.close" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.quotes.YahooQuotesReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.quotes.YahooQuotesReader.default_start_date">
-<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.yahoo.quotes.YahooQuotesReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.yahoo.quotes.YahooQuotesReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.quotes.YahooQuotesReader.params">
-<code class="sig-name descname">params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbol</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.quotes.YahooQuotesReader.params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">params</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.quotes.YahooQuotesReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.quotes.YahooQuotesReader.read">
-<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.quotes.YahooQuotesReader.read" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.quotes.YahooQuotesReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data from connector</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.quotes.YahooQuotesReader.url">
-<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.yahoo.quotes.YahooQuotesReader.url" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.yahoo.quotes.YahooQuotesReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
@@ -802,7 +802,7 @@ for the expiry of the options.</p>
 
 <span class="target" id="module-pandas_datareader.yahoo.components"></span><dl class="py class">
 <dt id="pandas_datareader.yahoo.components._get_data">
-<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.yahoo.components.</code><code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">idx_sym</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.components._get_data" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.yahoo.components.</span></code><code class="sig-name descname"><span class="pre">_get_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx_sym</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.components._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns DataFrame containing list of component information for
 index represented in idx_sym from yahoo. Includes component symbol
 (ticker), exchange, and name.</p>
@@ -827,37 +827,37 @@ Examples:
 
 <span class="target" id="module-pandas_datareader.yahoo.actions"></span><dl class="py class">
 <dt id="pandas_datareader.yahoo.actions.YahooActionReader">
-<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.yahoo.actions.</code><code class="sig-name descname">YahooActionReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">adjust_price</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ret_index</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">chunksize</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">interval</span><span class="o">=</span><span class="default_value">'d'</span></em>, <em class="sig-param"><span class="n">get_actions</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">adjust_dividends</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooActionReader" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.yahoo.actions.</span></code><code class="sig-name descname"><span class="pre">YahooActionReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjust_price</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ret_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunksize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'d'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_actions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjust_dividends</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooActionReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns DataFrame of historical corporate actions (dividends and stock
 splits) from symbols, over date range, start to end. All dates in the
 resulting DataFrame correspond with dividend and stock split ex-dates.</p>
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.actions.YahooActionReader.close">
-<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooActionReader.close" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooActionReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.actions.YahooActionReader.default_start_date">
-<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooActionReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooActionReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.actions.YahooActionReader.params">
-<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooActionReader.params" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooActionReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.actions.YahooActionReader.read">
-<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooActionReader.read" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooActionReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.actions.YahooActionReader.url">
-<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooActionReader.url" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooActionReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
@@ -865,34 +865,34 @@ resulting DataFrame correspond with dividend and stock split ex-dates.</p>
 
 <dl class="py class">
 <dt id="pandas_datareader.yahoo.actions.YahooDivReader">
-<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.yahoo.actions.</code><code class="sig-name descname">YahooDivReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">adjust_price</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ret_index</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">chunksize</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">interval</span><span class="o">=</span><span class="default_value">'d'</span></em>, <em class="sig-param"><span class="n">get_actions</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">adjust_dividends</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooDivReader" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.yahoo.actions.</span></code><code class="sig-name descname"><span class="pre">YahooDivReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjust_price</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ret_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunksize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'d'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_actions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjust_dividends</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooDivReader" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt id="pandas_datareader.yahoo.actions.YahooDivReader.close">
-<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooDivReader.close" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooDivReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.actions.YahooDivReader.default_start_date">
-<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooDivReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooDivReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.actions.YahooDivReader.params">
-<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooDivReader.params" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooDivReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.actions.YahooDivReader.read">
-<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooDivReader.read" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooDivReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.actions.YahooDivReader.url">
-<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooDivReader.url" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooDivReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
@@ -900,34 +900,34 @@ resulting DataFrame correspond with dividend and stock split ex-dates.</p>
 
 <dl class="py class">
 <dt id="pandas_datareader.yahoo.actions.YahooSplitReader">
-<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.yahoo.actions.</code><code class="sig-name descname">YahooSplitReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">symbols</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">adjust_price</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ret_index</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">chunksize</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">interval</span><span class="o">=</span><span class="default_value">'d'</span></em>, <em class="sig-param"><span class="n">get_actions</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">adjust_dividends</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooSplitReader" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.yahoo.actions.</span></code><code class="sig-name descname"><span class="pre">YahooSplitReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjust_price</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ret_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunksize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'d'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_actions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjust_dividends</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooSplitReader" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt id="pandas_datareader.yahoo.actions.YahooSplitReader.close">
-<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooSplitReader.close" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooSplitReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.actions.YahooSplitReader.default_start_date">
-<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooSplitReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooSplitReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.actions.YahooSplitReader.params">
-<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooSplitReader.params" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooSplitReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.actions.YahooSplitReader.read">
-<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooSplitReader.read" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooSplitReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.yahoo.actions.YahooSplitReader.url">
-<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooSplitReader.url" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.yahoo.actions.YahooSplitReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
@@ -960,7 +960,7 @@ resulting DataFrame correspond with dividend and stock split ex-dates.</p>
   <div class="container">
     <p>
           &copy; Copyright 2020, The PyData Development Team.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.1.<br/>
     </p>
   </div>
 </footer>

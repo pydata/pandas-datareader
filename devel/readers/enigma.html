@@ -147,7 +147,7 @@
 <span id="enigma"></span><h1>Enigma<a class="headerlink" href="#module-pandas_datareader.enigma" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="pandas_datareader.enigma.EnigmaReader">
-<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.enigma.</code><code class="sig-name descname">EnigmaReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">api_key</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">retry_count</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">pause</span><span class="o">=</span><span class="default_value">0.75</span></em>, <em class="sig-param"><span class="n">session</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">base_url</span><span class="o">=</span><span class="default_value">'https://public.enigma.com/api'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.enigma.</span></code><code class="sig-name descname"><span class="pre">EnigmaReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'https://public.enigma.com/api'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Collects current snapshot of Enigma data located at the specified
 data set ID and returns a pandas DataFrame.</p>
 <dl class="field-list simple">
@@ -178,50 +178,50 @@ be supplied as the second argument or as the keyword argument <cite>api_key</cit
 </div>
 <dl class="py method">
 <dt id="pandas_datareader.enigma.EnigmaReader.close">
-<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.close" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.enigma.EnigmaReader.default_start_date">
-<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.enigma.EnigmaReader.get_current_snapshot_id">
-<code class="sig-name descname">get_current_snapshot_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.get_current_snapshot_id" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">get_current_snapshot_id</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.get_current_snapshot_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get ID of the most current snapshot of a dataset</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.enigma.EnigmaReader.get_dataset_metadata">
-<code class="sig-name descname">get_dataset_metadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.get_dataset_metadata" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">get_dataset_metadata</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.get_dataset_metadata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the Dataset Model of this EnigmaReader’s dataset
 <a class="reference external" href="https://docs.public.enigma.com/resources/dataset/index.html">https://docs.public.enigma.com/resources/dataset/index.html</a></p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.enigma.EnigmaReader.get_snapshot_export">
-<code class="sig-name descname">get_snapshot_export</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">snapshot_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.get_snapshot_export" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">get_snapshot_export</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snapshot_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.get_snapshot_export" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return raw CSV of a dataset</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.enigma.EnigmaReader.params">
-<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.params" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.enigma.EnigmaReader.read">
-<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.read" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pandas_datareader.enigma.EnigmaReader.url">
-<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.url" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.enigma.EnigmaReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
@@ -254,7 +254,7 @@ be supplied as the second argument or as the keyword argument <cite>api_key</cit
   <div class="container">
     <p>
           &copy; Copyright 2020, The PyData Development Team.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.1.<br/>
     </p>
   </div>
 </footer>
