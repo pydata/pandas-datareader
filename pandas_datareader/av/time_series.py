@@ -51,7 +51,6 @@ class AVTimeSeriesReader(AlphaVantage):
         retry_count=3,
         pause=0.1,
         session=None,
-        chunksize=25,
         api_key=None,
     ):
         self._func = function
@@ -84,7 +83,7 @@ class AVTimeSeriesReader(AlphaVantage):
 
     @property
     def output_size(self):
-        """ Used to limit the size of the Alpha Vantage query when
+        """Used to limit the size of the Alpha Vantage query when
         possible.
         """
         delta = dt.datetime.now() - self.start

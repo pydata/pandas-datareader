@@ -26,7 +26,10 @@ Bug Fixes
 ~~~~~~~~~
 
 - Fixed broken links on the github ussies on "What’s New" docs pages
+- Fixed tests on av.time_series.py so they can run with a free API key
+- Cleanup unused chunksize in av.time_series.py
 
 Contributors
 ~~~~~~~~~~~~
 - Dmitry Alekseev
+- Jun Wei Fu
