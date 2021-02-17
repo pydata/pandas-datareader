@@ -1,5 +1,6 @@
 from datetime import datetime
 import os
+import time
 
 import pandas as pd
 import pytest
@@ -53,6 +54,8 @@ class TestAVTimeSeries(object):
                 pause=20.5,
             )
 
+        time.sleep(20.5)
+
     def test_av_daily(self):
         df = web.DataReader(
             "AAPL",
@@ -73,6 +76,8 @@ class TestAVTimeSeries(object):
         expected2 = df.loc["2017-05-24"]
         assert expected2["close"] == 153.34
         assert expected2["high"] == 154.17
+
+        time.sleep(20.5)
 
     def test_av_daily_adjusted(self):
         df = web.DataReader(
@@ -112,6 +117,8 @@ class TestAVTimeSeries(object):
         assert expected2["dividend amount"] == 0.00
         assert expected2["split coefficient"] == 1.0
 
+        time.sleep(20.5)
+
     @staticmethod
     def _helper_df_weekly_monthly(df, adj=False):
 
@@ -139,6 +146,8 @@ class TestAVTimeSeries(object):
         assert df.columns.equals(self.col_index)
         self._helper_df_weekly_monthly(df, adj=False)
 
+        time.sleep(20.5)
+
     def test_av_weekly_adjusted(self):
         df = web.DataReader(
             "AAPL",
@@ -154,6 +163,8 @@ class TestAVTimeSeries(object):
         assert df.iloc[-1].name == "2017-05-19"
         assert df.columns.equals(self.col_index_adj)
         self._helper_df_weekly_monthly(df, adj=True)
+
+        time.sleep(20.5)
 
     def test_av_monthly(self):
         df = web.DataReader(
@@ -171,6 +182,8 @@ class TestAVTimeSeries(object):
         assert df.columns.equals(self.col_index)
         self._helper_df_weekly_monthly(df, adj=False)
 
+        time.sleep(20.5)
+
     def test_av_monthly_adjusted(self):
         df = web.DataReader(
             "AAPL",
@@ -187,6 +200,8 @@ class TestAVTimeSeries(object):
         assert df.iloc[-1].name == "2017-04-28"
         self._helper_df_weekly_monthly(df, adj=True)
 
+        time.sleep(20.5)
+
     def test_av_intraday(self):
         # Not much available to test, but ensure close in length
         df = web.DataReader("AAPL", "av-intraday", retry_count=6, pause=20.5)
@@ -194,6 +209,8 @@ class TestAVTimeSeries(object):
         assert len(df) >= 1
         assert "open" in df.columns
         assert "close" in df.columns
+
+        time.sleep(20.5)
 
     def test_av_forex_daily(self):
         df = web.DataReader(
@@ -208,3 +225,5 @@ class TestAVTimeSeries(object):
         assert len(df) == 598
         assert df.loc["2015-02-09"]["close"] == 118.6390
         assert df.loc["2017-05-24"]["high"] == 112.1290
+
+        time.sleep(20.5)
