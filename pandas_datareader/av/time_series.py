@@ -51,7 +51,6 @@ class AVTimeSeriesReader(AlphaVantage):
         retry_count=3,
         pause=0.1,
         session=None,
-        chunksize=25,
         api_key=None,
     ):
         self._func = function
