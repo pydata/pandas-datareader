@@ -58,7 +58,8 @@ class FamaFrenchReader(_BaseReader):
             tmpf.write(raw)
 
             with ZipFile(tmpf, "r") as zf:
-                data = zf.open(zf.namelist()[0]).read().decode()
+                data = zf.open(zf.namelist()[0]).read().decode('utf-8','ignore')
+
 
         return data
 
