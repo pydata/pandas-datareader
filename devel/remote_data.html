@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Remote Data Access &#8212; pandas-datareader 0.10.0dev0+32.g90f155a documentation</title>
     
-  <link rel="stylesheet" href="_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.101715efdecc9b59cb6e1ddfa685c31f.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -19,16 +20,12 @@
 
     
       
-  <link rel="stylesheet"
-    href="_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     
-  <link rel="preload" as="script" href="_static/js/index.d3f166471bb80abb5163.js">
+  <link rel="preload" as="script" href="_static/js/index.d8bbf5861d671d414e1a.js">
 
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -43,57 +40,64 @@
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
-<div class="container-xl">
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
 
-    <a class="navbar-brand" href="index.html">
+
     
-      <img src="_static/pandas-datareader-plain.svg" class="logo" alt="logo" />
+      
+      <a class="navbar-brand" href="index.html">
+        <img src="_static/pandas-datareader-plain.svg" class="logo" alt="logo">
+      </a>
+      
     
-    </a>
+
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
+    
     <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
-        
-        
-        <li class="nav-item active">
-            <a class="nav-link" href="">Remote Data Access</a>
-        </li>
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="cache.html">Caching queries</a>
-        </li>
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="see-also.html">Other Data Sources</a>
-        </li>
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="readers/index.html">Data Readers</a>
-        </li>
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="whatsnew.html">What’s New</a>
-        </li>
-        
+        <li class="toctree-l1 current active nav-item">
+ <a class="current reference internal nav-link" href="#">
+  Remote Data Access
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="cache.html">
+  Caching queries
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="see-also.html">
+  Other Data Sources
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="readers/index.html">
+  Data Readers
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="whatsnew.html">
+  What’s New
+ </a>
+</li>
+
         
       </ul>
 
-
-      
-
-      <ul class="navbar-nav">
-        
-          <li class="nav-item">
-            <a class="nav-link" href="https://github.com/pydata/pandas-datareader" target="_blank" rel="noopener">
-              <span><i class="fab fa-github-square"></i></span>
-            </a>
-          </li>
-        
-        
+      <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/pydata/pandas-datareader" rel="noopener" target="_blank" title="GitHub">
+            <span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label>
+          </a>
+        </li>
       </ul>
     </div>
 </div>
@@ -103,7 +107,9 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar">
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
   <h4>Previous topic</h4>
   <p class="topless"><a href="index.html"
                         title="previous chapter">pandas-datareader</a></p>
@@ -120,7 +126,8 @@
     </div>
 </div>
 <script>$('#searchbox').show(0);</script>
-          </div>
+            </div>
+            
           
 
           
@@ -131,109 +138,133 @@
 </div>
 
 <nav id="bd-toc-nav">
-    <ul class="nav section-nav flex-column">
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#tiingo" class="nav-link">Tiingo</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#iex" class="nav-link">IEX</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#alpha-vantage" class="nav-link">Alpha Vantage</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#historical-time-series-data" class="nav-link">Historical Time Series Data</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#quotes" class="nav-link">Quotes</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#forex" class="nav-link">Forex</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#sector-performance" class="nav-link">Sector Performance</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#econdb" class="nav-link">Econdb</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#enigma" class="nav-link">Enigma</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#quandl" class="nav-link">Quandl</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#fred" class="nav-link">FRED</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#fama-french" class="nav-link">Fama/French</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#world-bank" class="nav-link">World Bank</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#indicators" class="nav-link">Indicators</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#country-codes" class="nav-link">Country Codes</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#problematic-country-codes-indicators" class="nav-link">Problematic Country Codes & Indicators</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#oecd" class="nav-link">OECD</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#eurostat" class="nav-link">Eurostat</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#thrift-savings-plan-tsp-fund-data" class="nav-link">Thrift Savings Plan (TSP) Fund Data</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#nasdaq-trader-symbol-definitions" class="nav-link">Nasdaq Trader Symbol Definitions</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#stooq-index-data" class="nav-link">Stooq Index Data</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#moex-data" class="nav-link">MOEX Data</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#naver-finance-data" class="nav-link">Naver Finance Data</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#yahoo-finance-data" class="nav-link">Yahoo Finance Data</a>
-        </li>
-    
-    </ul>
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tiingo">
+   Tiingo
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#iex">
+   IEX
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#alpha-vantage">
+   Alpha Vantage
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#historical-time-series-data">
+     Historical Time Series Data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#quotes">
+     Quotes
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#forex">
+     Forex
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sector-performance">
+     Sector Performance
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#econdb">
+   Econdb
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#enigma">
+   Enigma
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#quandl">
+   Quandl
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#fred">
+   FRED
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#fama-french">
+   Fama/French
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#world-bank">
+   World Bank
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#indicators">
+     Indicators
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#country-codes">
+     Country Codes
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#problematic-country-codes-indicators">
+     Problematic Country Codes &amp; Indicators
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#oecd">
+   OECD
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#eurostat">
+   Eurostat
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#thrift-savings-plan-tsp-fund-data">
+   Thrift Savings Plan (TSP) Fund Data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#nasdaq-trader-symbol-definitions">
+   Nasdaq Trader Symbol Definitions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#stooq-index-data">
+   Stooq Index Data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#moex-data">
+   MOEX Data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#naver-finance-data">
+   Naver Finance Data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#yahoo-finance-data">
+   Yahoo Finance Data
+  </a>
+ </li>
+</ul>
+
 </nav>
 
 
@@ -241,6 +272,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -929,16 +963,16 @@ available. More information on the <a class="reference external" href="http://ww
 <span class="gh">Out[32]: </span><span class="go"></span>
 <span class="go">                Open      High       Low     Close     Volume</span>
 <span class="go">Date                                                         </span>
+<span class="go">2021-03-16  32966.75  32966.75  32778.23  32825.95  439683904</span>
+<span class="go">2021-03-15  32798.84  32973.40  32629.75  32953.46  413057091</span>
+<span class="go">2021-03-12  32462.40  32793.32  32462.40  32778.64  382557944</span>
+<span class="go">2021-03-11  32354.50  32661.59  32345.70  32485.59  447260353</span>
+<span class="go">2021-03-10  31906.96  32389.50  31906.96  32297.02  469456098</span>
 <span class="go">2021-03-09  31892.35  32150.32  31822.64  31832.74  520141254</span>
 <span class="go">2021-03-08  31512.15  32148.04  31512.15  31802.44  556689043</span>
 <span class="go">2021-03-05  31029.18  31580.33  30766.81  31496.30  577386314</span>
 <span class="go">2021-03-04  31289.01  31461.97  30547.53  30924.14  642847875</span>
 <span class="go">2021-03-03  31352.96  31563.31  31260.14  31270.09  483599269</span>
-<span class="go">2021-03-02  31535.37  31623.27  31377.16  31391.52  392040399</span>
-<span class="go">2021-03-01  31065.90  31668.34  31065.90  31535.51  448282523</span>
-<span class="go">2021-02-26  31401.29  31450.89  30911.37  30932.37  599802031</span>
-<span class="go">2021-02-25  31955.94  31984.77  31293.32  31402.01  523204460</span>
-<span class="go">2021-02-24  31499.75  32009.64  31421.29  31961.86  473681244</span>
 </pre></div>
 </div>
 </div>
@@ -955,11 +989,11 @@ pandas_datareader.moex.MoexReader(<a href="#id4"><span class="problematic" id="i
 <span class="gh">Out[35]: </span><span class="go"></span>
 <span class="go">            ADMITTEDQUOTE  ADMITTEDVALUE  ...  YIELDLASTCOUPON  YIELDTOOFFER</span>
 <span class="go">TRADEDATE                                 ...                               </span>
-<span class="go">2020-07-02         37.605    670695507.0  ...              NaN           NaN</span>
-<span class="go">2020-07-03         37.950    517431999.5  ...              NaN           NaN</span>
-<span class="go">2020-07-06         38.560    640380631.5  ...              NaN           NaN</span>
-<span class="go">2020-07-07         38.140    781482393.5  ...              NaN           NaN</span>
 <span class="go">2020-07-02            NaN            NaN  ...              NaN           NaN</span>
+<span class="go">2020-07-03            NaN            NaN  ...              NaN           NaN</span>
+<span class="go">2020-07-06            NaN            NaN  ...              NaN           NaN</span>
+<span class="go">2020-07-07            NaN            NaN  ...              NaN           NaN</span>
+<span class="go">2020-07-02         37.605    670695507.0  ...              NaN           NaN</span>
 
 <span class="go">[5 rows x 66 columns]</span>
 
@@ -980,10 +1014,10 @@ pandas_datareader.moex.MoexReader(<a href="#id4"><span class="problematic" id="i
 <span class="gh">Out[39]: </span><span class="go"></span>
 <span class="go">            ADMITTEDQUOTE  ADMITTEDVALUE  ...  YIELDLASTCOUPON  YIELDTOOFFER</span>
 <span class="go">TRADEDATE                                 ...                               </span>
-<span class="go">2020-07-02            NaN   0.000000e+00  ...              NaN           NaN</span>
-<span class="go">2020-07-02         210.00   1.514438e+10  ...              NaN           NaN</span>
-<span class="go">2020-07-03            NaN   0.000000e+00  ...              NaN           NaN</span>
-<span class="go">2020-07-03         210.08   1.036950e+10  ...              NaN           NaN</span>
+<span class="go">2020-07-02            NaN            NaN  ...              NaN           NaN</span>
+<span class="go">2020-07-03            NaN            NaN  ...              NaN           NaN</span>
+<span class="go">2020-07-02            NaN            NaN  ...              NaN           NaN</span>
+<span class="go">2020-07-03            NaN            NaN  ...              NaN           NaN</span>
 <span class="go">2020-07-02            NaN            NaN  ...              NaN           NaN</span>
 
 <span class="go">[5 rows x 65 columns]</span>
@@ -1082,7 +1116,7 @@ pandas_datareader.moex.MoexReader(<a href="#id4"><span class="problematic" id="i
     </div>
 
     
-  <script src="_static/js/index.d3f166471bb80abb5163.js"></script>
+  <script src="_static/js/index.d8bbf5861d671d414e1a.js"></script>
 
 
     <footer class="footer mt-5 mt-md-0">

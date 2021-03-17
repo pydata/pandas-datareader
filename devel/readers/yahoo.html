@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Yahoo Finance &#8212; pandas-datareader 0.10.0dev0+32.g90f155a documentation</title>
     
-  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.101715efdecc9b59cb6e1ddfa685c31f.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -19,16 +20,12 @@
 
     
       
-  <link rel="stylesheet"
-    href="../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+  <link rel="preload" as="script" href="../_static/js/index.d8bbf5861d671d414e1a.js">
 
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -43,57 +40,64 @@
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
-<div class="container-xl">
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
 
-    <a class="navbar-brand" href="../index.html">
+
     
-      <img src="../_static/pandas-datareader-plain.svg" class="logo" alt="logo" />
+      
+      <a class="navbar-brand" href="../index.html">
+        <img src="../_static/pandas-datareader-plain.svg" class="logo" alt="logo">
+      </a>
+      
     
-    </a>
+
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
+    
     <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
-        
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="../remote_data.html">Remote Data Access</a>
-        </li>
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="../cache.html">Caching queries</a>
-        </li>
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="../see-also.html">Other Data Sources</a>
-        </li>
-        
-        <li class="nav-item active">
-            <a class="nav-link" href="index.html">Data Readers</a>
-        </li>
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="../whatsnew.html">What’s New</a>
-        </li>
-        
+        <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../remote_data.html">
+  Remote Data Access
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../cache.html">
+  Caching queries
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../see-also.html">
+  Other Data Sources
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="index.html">
+  Data Readers
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../whatsnew.html">
+  What’s New
+ </a>
+</li>
+
         
       </ul>
 
-
-      
-
-      <ul class="navbar-nav">
-        
-          <li class="nav-item">
-            <a class="nav-link" href="https://github.com/pydata/pandas-datareader" target="_blank" rel="noopener">
-              <span><i class="fab fa-github-square"></i></span>
-            </a>
-          </li>
-        
-        
+      <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/pydata/pandas-datareader" rel="noopener" target="_blank" title="GitHub">
+            <span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label>
+          </a>
+        </li>
       </ul>
     </div>
 </div>
@@ -103,7 +107,9 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar">
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
   <h4>Previous topic</h4>
   <p class="topless"><a href="world-bank.html"
                         title="previous chapter">World Bank</a></p>
@@ -120,7 +126,8 @@
     </div>
 </div>
 <script>$('#searchbox').show(0);</script>
-          </div>
+            </div>
+            
           
 
           
@@ -128,9 +135,7 @@
               
 
 <nav id="bd-toc-nav">
-    <ul class="nav section-nav flex-column">
     
-    </ul>
 </nav>
 
 
@@ -138,6 +143,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -953,7 +961,7 @@ resulting DataFrame correspond with dividend and stock split ex-dates.</p>
     </div>
 
     
-  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+  <script src="../_static/js/index.d8bbf5861d671d414e1a.js"></script>
 
 
     <footer class="footer mt-5 mt-md-0">
