@@ -266,7 +266,8 @@ class _DailyBaseReader(_BaseReader):
             for sym in sym_group:
                 try:
                     df = self._read_one_data(self.url, self._get_params(sym))
-                    # Keep the last item if there are duplicated rows with the same index.
+                    # Keep the last item if there are duplicated rows with
+                    # the same index.
                     df = df[~df.index.duplicated(keep="last")]
                     stocks[sym] = df
                     passed.append(sym)
