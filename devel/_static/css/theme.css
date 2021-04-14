@@ -20,6 +20,9 @@
   /* smaller then heading font sizes*/
   --pst-font-size-milli: 12px;
 
+  --pst-sidebar-font-size: .9em;
+  --pst-sidebar-caption-font-size: .9em;
+
   /*****************************************************************************
   * Font family
   **/
@@ -58,6 +61,7 @@
   --pst-color-headerlink-hover: 255, 255, 255;
   --pst-color-preformatted-text: 34, 34, 34;
   --pst-color-preformatted-background: 250, 250, 250;
+  --pst-color-inline-code: 232, 62, 140;
 
   --pst-color-active-navigation: 19, 6, 84;
   --pst-color-navbar-link: 77, 77, 77;
@@ -66,6 +70,8 @@
   --pst-color-sidebar-link: 77, 77, 77;
   --pst-color-sidebar-link-hover: var(--pst-color-active-navigation);
   --pst-color-sidebar-link-active: var(--pst-color-active-navigation);
+  --pst-color-sidebar-expander-background-hover: 244, 244, 244;
+  --pst-color-sidebar-caption: 77, 77, 77;
   --pst-color-toc-link: 119, 117, 122;
   --pst-color-toc-link-hover: var(--pst-color-active-navigation);
   --pst-color-toc-link-active: var(--pst-color-active-navigation);
