@@ -190,7 +190,10 @@ class MoexReader(_DailyBaseReader):
 
                 if len(out_list) > 0:
                     str_io = StringIO("\r\n".join(out_list))
-                    dfs.append(self._read_lines(str_io))  # add a new DataFrame
+                    try:
+                        dfs.append(self._read_lines(str_io))  # add a new DataFrame
+                    except ValueError: # if no suitable dataframe read (boards without data)
+                        pass
         finally:
             self.close()
 
