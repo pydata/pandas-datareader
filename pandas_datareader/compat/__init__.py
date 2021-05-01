@@ -40,9 +40,10 @@ def get_filepath_or_buffer(filepath_or_buffer, encoding=None, compression=None):
     if isinstance(filepath_or_buffer, dict):
         return filepath_or_buffer, encoding, compression
 
-    return com.get_filepath_or_buffer(
+    tmp = com._get_filepath_or_buffer(
         filepath_or_buffer, encoding=encoding, compression=None
     )
+    return tmp.filepath_or_buffer, tmp.encoding, tmp.compression
 
 
 string_types = (str,)
