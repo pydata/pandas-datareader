@@ -22,12 +22,12 @@
       
 
     
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
     
   <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
 
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -180,8 +180,8 @@
   <div class="section" id="module-pandas_datareader.av.forex">
 <span id="alphavantage"></span><h1>AlphaVantage<a class="headerlink" href="#module-pandas_datareader.av.forex" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="pandas_datareader.av.forex.AVForexReader">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.av.forex.</span></code><code class="sig-name descname"><span class="pre">AVForexReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.av.forex.AVForexReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pandas_datareader.av.forex.</span></span><span class="sig-name descname"><span class="pre">AVForexReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns DataFrame of the Alpha Vantage Foreign Exchange (FX) Exchange Rates
 data.</p>
 <div class="versionadded">
@@ -201,52 +201,52 @@ ALPHAVANTAGE_API_KEY is read. The API key is <em>required</em>.</p></li>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="pandas_datareader.av.forex.AVForexReader.close">
-<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader.close" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.av.forex.AVForexReader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.forex.AVForexReader.data_key">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">data_key</span></code><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader.data_key" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.forex.AVForexReader.data_key">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">data_key</span></span><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader.data_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Key of data returned from Alpha Vantage</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.forex.AVForexReader.default_start_date">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.forex.AVForexReader.default_start_date">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">default_start_date</span></span><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.forex.AVForexReader.function">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">function</span></code><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader.function" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.forex.AVForexReader.function">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">function</span></span><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader.function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alpha Vantage endpoint function</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.forex.AVForexReader.params">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader.params" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.forex.AVForexReader.params">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.av.forex.AVForexReader.read">
-<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.av.forex.AVForexReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data from connector</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.forex.AVForexReader.url">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader.url" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.forex.AVForexReader.url">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#pandas_datareader.av.forex.AVForexReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
 </dd></dl>
 
 <span class="target" id="module-pandas_datareader.av.time_series"></span><dl class="py class">
-<dt id="pandas_datareader.av.time_series.AVTimeSeriesReader">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.av.time_series.</span></code><code class="sig-name descname"><span class="pre">AVTimeSeriesReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'TIME_SERIES_DAILY'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunksize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.av.time_series.AVTimeSeriesReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pandas_datareader.av.time_series.</span></span><span class="sig-name descname"><span class="pre">AVTimeSeriesReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'TIME_SERIES_DAILY'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunksize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns DataFrame of the Alpha Vantage Stock Time Series endpoints</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.7.0.</span></p>
@@ -269,59 +269,59 @@ ALPHAVANTAGE_API_KEY is read. The API key is <em>required</em>.</p></li>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="pandas_datareader.av.time_series.AVTimeSeriesReader.close">
-<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.close" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.av.time_series.AVTimeSeriesReader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.time_series.AVTimeSeriesReader.data_key">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">data_key</span></code><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.data_key" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.time_series.AVTimeSeriesReader.data_key">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">data_key</span></span><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.data_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Key of data returned from Alpha Vantage</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.time_series.AVTimeSeriesReader.default_start_date">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.time_series.AVTimeSeriesReader.default_start_date">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">default_start_date</span></span><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.time_series.AVTimeSeriesReader.function">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">function</span></code><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.function" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.time_series.AVTimeSeriesReader.function">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">function</span></span><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alpha Vantage endpoint function</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.time_series.AVTimeSeriesReader.output_size">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">output_size</span></code><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.output_size" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.time_series.AVTimeSeriesReader.output_size">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">output_size</span></span><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.output_size" title="Permalink to this definition">¶</a></dt>
 <dd><p>Used to limit the size of the Alpha Vantage query when
 possible.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.time_series.AVTimeSeriesReader.params">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.params" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.time_series.AVTimeSeriesReader.params">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.av.time_series.AVTimeSeriesReader.read">
-<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.av.time_series.AVTimeSeriesReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data from connector</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.time_series.AVTimeSeriesReader.url">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.url" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.time_series.AVTimeSeriesReader.url">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#pandas_datareader.av.time_series.AVTimeSeriesReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
 </dd></dl>
 
 <span class="target" id="module-pandas_datareader.av.sector"></span><dl class="py class">
-<dt id="pandas_datareader.av.sector.AVSectorPerformanceReader">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.av.sector.</span></code><code class="sig-name descname"><span class="pre">AVSectorPerformanceReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.av.sector.AVSectorPerformanceReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pandas_datareader.av.sector.</span></span><span class="sig-name descname"><span class="pre">AVSectorPerformanceReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns DataFrame of the Alpha Vantage Sector Performances SECTOR data.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.7.0.</span></p>
@@ -340,52 +340,52 @@ ALPHAVANTAGE_API_KEY is read. The API key is <em>required</em>.</p></li>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="pandas_datareader.av.sector.AVSectorPerformanceReader.close">
-<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader.close" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.av.sector.AVSectorPerformanceReader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.sector.AVSectorPerformanceReader.data_key">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">data_key</span></code><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader.data_key" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.sector.AVSectorPerformanceReader.data_key">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">data_key</span></span><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader.data_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Key of data returned from Alpha Vantage</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.sector.AVSectorPerformanceReader.default_start_date">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.sector.AVSectorPerformanceReader.default_start_date">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">default_start_date</span></span><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.sector.AVSectorPerformanceReader.function">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">function</span></code><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader.function" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.sector.AVSectorPerformanceReader.function">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">function</span></span><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader.function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alpha Vantage endpoint function</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.sector.AVSectorPerformanceReader.params">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader.params" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.sector.AVSectorPerformanceReader.params">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.av.sector.AVSectorPerformanceReader.read">
-<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.av.sector.AVSectorPerformanceReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data from connector</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.sector.AVSectorPerformanceReader.url">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader.url" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.sector.AVSectorPerformanceReader.url">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#pandas_datareader.av.sector.AVSectorPerformanceReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
 </dd></dl>
 
 <span class="target" id="module-pandas_datareader.av.quotes"></span><dl class="py class">
-<dt id="pandas_datareader.av.quotes.AVQuotesReader">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.av.quotes.</span></code><code class="sig-name descname"><span class="pre">AVQuotesReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.av.quotes.AVQuotesReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pandas_datareader.av.quotes.</span></span><span class="sig-name descname"><span class="pre">AVQuotesReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns DataFrame of Alpha Vantage Realtime Stock quotes for a symbol or
 list of symbols.</p>
 <dl class="field-list simple">
@@ -401,44 +401,44 @@ single value given for symbol, represents the pause between retries.</p></li>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="pandas_datareader.av.quotes.AVQuotesReader.close">
-<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader.close" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.av.quotes.AVQuotesReader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.quotes.AVQuotesReader.data_key">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">data_key</span></code><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader.data_key" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.quotes.AVQuotesReader.data_key">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">data_key</span></span><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader.data_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Key of data returned from Alpha Vantage</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.quotes.AVQuotesReader.default_start_date">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.quotes.AVQuotesReader.default_start_date">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">default_start_date</span></span><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.quotes.AVQuotesReader.function">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">function</span></code><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader.function" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.quotes.AVQuotesReader.function">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">function</span></span><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader.function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alpha Vantage endpoint function</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.quotes.AVQuotesReader.params">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader.params" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.quotes.AVQuotesReader.params">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.av.quotes.AVQuotesReader.read">
-<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.av.quotes.AVQuotesReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data from connector</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.av.quotes.AVQuotesReader.url">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader.url" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.av.quotes.AVQuotesReader.url">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#pandas_datareader.av.quotes.AVQuotesReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
@@ -476,7 +476,7 @@ single value given for symbol, represents the pause between retries.</p></li>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.1.<br/>
 </p>
     </div>
     

@@ -22,12 +22,12 @@
       
 
     
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
     
   <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
 
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -180,36 +180,36 @@
   <div class="section" id="module-pandas_datareader.oecd">
 <span id="organisation-for-economic-co-operation-and-development-oecd"></span><h1>Organisation for Economic Co-operation and Development (OECD)<a class="headerlink" href="#module-pandas_datareader.oecd" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="pandas_datareader.oecd.OECDReader">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.oecd.</span></code><code class="sig-name descname"><span class="pre">OECDReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.oecd.OECDReader" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.oecd.OECDReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pandas_datareader.oecd.</span></span><span class="sig-name descname"><span class="pre">OECDReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.oecd.OECDReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get data for the given name from OECD.</p>
 <dl class="py method">
-<dt id="pandas_datareader.oecd.OECDReader.close">
-<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.oecd.OECDReader.close" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.oecd.OECDReader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.oecd.OECDReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.oecd.OECDReader.default_start_date">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.oecd.OECDReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.oecd.OECDReader.default_start_date">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">default_start_date</span></span><a class="headerlink" href="#pandas_datareader.oecd.OECDReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.oecd.OECDReader.params">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.oecd.OECDReader.params" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.oecd.OECDReader.params">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#pandas_datareader.oecd.OECDReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.oecd.OECDReader.read">
-<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.oecd.OECDReader.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.oecd.OECDReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.oecd.OECDReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data from connector</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.oecd.OECDReader.url">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.oecd.OECDReader.url" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.oecd.OECDReader.url">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#pandas_datareader.oecd.OECDReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
@@ -247,7 +247,7 @@
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.1.<br/>
 </p>
     </div>
     

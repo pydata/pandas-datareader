@@ -22,12 +22,12 @@
       
 
     
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
     
   <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
 
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -180,8 +180,8 @@
   <div class="section" id="module-pandas_datareader.wb">
 <span id="world-bank"></span><h1>World Bank<a class="headerlink" href="#module-pandas_datareader.wb" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="pandas_datareader.wb.WorldBankReader">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.wb.</span></code><code class="sig-name descname"><span class="pre">WorldBankReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">countries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'warn'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.wb.WorldBankReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pandas_datareader.wb.</span></span><span class="sig-name descname"><span class="pre">WorldBankReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">countries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'warn'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download data series from the World Bank’s World Development Indicators</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -203,20 +203,20 @@ errors=’raise’, will raise a ValueError on a bad country code.</p></li>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="pandas_datareader.wb.WorldBankReader.close">
-<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.close" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.wb.WorldBankReader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.wb.WorldBankReader.default_start_date">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.wb.WorldBankReader.default_start_date">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">default_start_date</span></span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.wb.WorldBankReader.get_countries">
-<code class="sig-name descname"><span class="pre">get_countries</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.get_countries" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.wb.WorldBankReader.get_countries">
+<span class="sig-name descname"><span class="pre">get_countries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.get_countries" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query information about countries</p>
 <p class="rubric">Notes</p>
 <p>Provides information such as:</p>
@@ -233,26 +233,26 @@ errors=’raise’, will raise a ValueError on a bad country code.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.wb.WorldBankReader.get_indicators">
-<code class="sig-name descname"><span class="pre">get_indicators</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.get_indicators" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.wb.WorldBankReader.get_indicators">
+<span class="sig-name descname"><span class="pre">get_indicators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.get_indicators" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download information about all World Bank data series</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.wb.WorldBankReader.params">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.params" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.wb.WorldBankReader.params">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.wb.WorldBankReader.read">
-<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.wb.WorldBankReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.wb.WorldBankReader.search">
-<code class="sig-name descname"><span class="pre">search</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gdp.*capi'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'name'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.search" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.wb.WorldBankReader.search">
+<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gdp.*capi'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'name'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.search" title="Permalink to this definition">¶</a></dt>
 <dd><p>Search available data series from the world bank</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -279,17 +279,17 @@ sourceNote:
 topics:</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.wb.WorldBankReader.url">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.url" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.wb.WorldBankReader.url">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#pandas_datareader.wb.WorldBankReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py function">
-<dt id="pandas_datareader.wb.download">
-<code class="sig-prename descclassname"><span class="pre">pandas_datareader.wb.</span></code><code class="sig-name descname"><span class="pre">download</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indicator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2003</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2005</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'warn'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.download" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.wb.download">
+<span class="sig-prename descclassname"><span class="pre">pandas_datareader.wb.</span></span><span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indicator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2003</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2005</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'warn'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.download" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download data series from the World Bank’s World Development Indicators</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -324,8 +324,8 @@ errors=’raise’, will raise a ValueError on a bad country code.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pandas_datareader.wb.get_countries">
-<code class="sig-prename descclassname"><span class="pre">pandas_datareader.wb.</span></code><code class="sig-name descname"><span class="pre">get_countries</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.get_countries" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.wb.get_countries">
+<span class="sig-prename descclassname"><span class="pre">pandas_datareader.wb.</span></span><span class="sig-name descname"><span class="pre">get_countries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.get_countries" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query information about countries</p>
 <dl class="simple">
 <dt>Provides information such as:</dt><dd><p>country code, region, income level,
@@ -340,8 +340,8 @@ capital city, latitude, and longitude</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pandas_datareader.wb.get_indicators">
-<code class="sig-prename descclassname"><span class="pre">pandas_datareader.wb.</span></code><code class="sig-name descname"><span class="pre">get_indicators</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.get_indicators" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.wb.get_indicators">
+<span class="sig-prename descclassname"><span class="pre">pandas_datareader.wb.</span></span><span class="sig-name descname"><span class="pre">get_indicators</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.get_indicators" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download information about all World Bank data series</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -351,8 +351,8 @@ capital city, latitude, and longitude</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pandas_datareader.wb.search">
-<code class="sig-prename descclassname"><span class="pre">pandas_datareader.wb.</span></code><code class="sig-name descname"><span class="pre">search</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gdp.*capi'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'name'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.search" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.wb.search">
+<span class="sig-prename descclassname"><span class="pre">pandas_datareader.wb.</span></span><span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gdp.*capi'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'name'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.wb.search" title="Permalink to this definition">¶</a></dt>
 <dd><p>Search available data series from the world bank</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -415,7 +415,7 @@ copy, so they should be much faster.</p>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.1.<br/>
 </p>
     </div>
     

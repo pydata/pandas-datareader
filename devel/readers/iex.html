@@ -22,12 +22,12 @@
       
 
     
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
     
   <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
 
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -180,8 +180,8 @@
   <div class="section" id="module-pandas_datareader.iex.daily">
 <span id="the-investors-exchange-iex"></span><h1>The Investors Exchange (IEX)<a class="headerlink" href="#module-pandas_datareader.iex.daily" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="pandas_datareader.iex.daily.IEXDailyReader">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.iex.daily.</span></code><code class="sig-name descname"><span class="pre">IEXDailyReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunksize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.daily.IEXDailyReader" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.daily.IEXDailyReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pandas_datareader.iex.daily.</span></span><span class="sig-name descname"><span class="pre">IEXDailyReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunksize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.daily.IEXDailyReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns DataFrame of historical stock prices
 from symbols, over date range, start to end. To avoid being penalized by
 IEX servers, pauses between downloading ‘chunks’ of symbols can be
@@ -205,158 +205,158 @@ single value given for symbol, represents the pause between retries.</p></li>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="pandas_datareader.iex.daily.IEXDailyReader.close">
-<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.daily.IEXDailyReader.close" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.daily.IEXDailyReader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.daily.IEXDailyReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.daily.IEXDailyReader.default_start_date">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.iex.daily.IEXDailyReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.daily.IEXDailyReader.default_start_date">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">default_start_date</span></span><a class="headerlink" href="#pandas_datareader.iex.daily.IEXDailyReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.daily.IEXDailyReader.endpoint">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">endpoint</span></code><a class="headerlink" href="#pandas_datareader.iex.daily.IEXDailyReader.endpoint" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.daily.IEXDailyReader.endpoint">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">endpoint</span></span><a class="headerlink" href="#pandas_datareader.iex.daily.IEXDailyReader.endpoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>API endpoint</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.daily.IEXDailyReader.params">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.iex.daily.IEXDailyReader.params" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.daily.IEXDailyReader.params">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#pandas_datareader.iex.daily.IEXDailyReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.iex.daily.IEXDailyReader.read">
-<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.daily.IEXDailyReader.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.daily.IEXDailyReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.daily.IEXDailyReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.daily.IEXDailyReader.url">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.iex.daily.IEXDailyReader.url" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.daily.IEXDailyReader.url">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#pandas_datareader.iex.daily.IEXDailyReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
 </dd></dl>
 
 <span class="target" id="module-pandas_datareader.iex.market"></span><dl class="py class">
-<dt id="pandas_datareader.iex.market.MarketReader">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.iex.market.</span></code><code class="sig-name descname"><span class="pre">MarketReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.market.MarketReader" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.market.MarketReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pandas_datareader.iex.market.</span></span><span class="sig-name descname"><span class="pre">MarketReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.market.MarketReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Near real-time traded volume</p>
 <p class="rubric">Notes</p>
 <p>Market data is captured by the IEX system between approximately 7:45 a.m.
 and 5:15 p.m. ET.</p>
 <dl class="py method">
-<dt id="pandas_datareader.iex.market.MarketReader.close">
-<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.market.MarketReader.close" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.market.MarketReader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.market.MarketReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.market.MarketReader.default_start_date">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.iex.market.MarketReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.market.MarketReader.default_start_date">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">default_start_date</span></span><a class="headerlink" href="#pandas_datareader.iex.market.MarketReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.market.MarketReader.params">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.iex.market.MarketReader.params" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.market.MarketReader.params">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#pandas_datareader.iex.market.MarketReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.iex.market.MarketReader.read">
-<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.market.MarketReader.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.market.MarketReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.market.MarketReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.market.MarketReader.service">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">service</span></code><a class="headerlink" href="#pandas_datareader.iex.market.MarketReader.service" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.market.MarketReader.service">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">service</span></span><a class="headerlink" href="#pandas_datareader.iex.market.MarketReader.service" title="Permalink to this definition">¶</a></dt>
 <dd><p>Service endpoint</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.market.MarketReader.url">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.iex.market.MarketReader.url" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.market.MarketReader.url">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#pandas_datareader.iex.market.MarketReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
 </dd></dl>
 
 <span class="target" id="module-pandas_datareader.iex.ref"></span><dl class="py class">
-<dt id="pandas_datareader.iex.ref.SymbolsReader">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.iex.ref.</span></code><code class="sig-name descname"><span class="pre">SymbolsReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.ref.SymbolsReader" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.ref.SymbolsReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pandas_datareader.iex.ref.</span></span><span class="sig-name descname"><span class="pre">SymbolsReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.ref.SymbolsReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Symbols available for trading on IEX</p>
 <p class="rubric">Notes</p>
 <p>Returns symbols IEX supports for trading. Updated daily as of 7:45 a.m.
 ET.</p>
 <dl class="py method">
-<dt id="pandas_datareader.iex.ref.SymbolsReader.close">
-<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.ref.SymbolsReader.close" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.ref.SymbolsReader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.ref.SymbolsReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.ref.SymbolsReader.default_start_date">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.iex.ref.SymbolsReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.ref.SymbolsReader.default_start_date">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">default_start_date</span></span><a class="headerlink" href="#pandas_datareader.iex.ref.SymbolsReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.ref.SymbolsReader.params">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.iex.ref.SymbolsReader.params" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.ref.SymbolsReader.params">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#pandas_datareader.iex.ref.SymbolsReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.iex.ref.SymbolsReader.read">
-<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.ref.SymbolsReader.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.ref.SymbolsReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.ref.SymbolsReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.ref.SymbolsReader.service">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">service</span></code><a class="headerlink" href="#pandas_datareader.iex.ref.SymbolsReader.service" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.ref.SymbolsReader.service">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">service</span></span><a class="headerlink" href="#pandas_datareader.iex.ref.SymbolsReader.service" title="Permalink to this definition">¶</a></dt>
 <dd><p>Service endpoint</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.ref.SymbolsReader.url">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.iex.ref.SymbolsReader.url" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.ref.SymbolsReader.url">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#pandas_datareader.iex.ref.SymbolsReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
 </dd></dl>
 
 <span class="target" id="module-pandas_datareader.iex.stats"></span><dl class="py class">
-<dt id="pandas_datareader.iex.stats.DailySummaryReader">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.iex.stats.</span></code><code class="sig-name descname"><span class="pre">DailySummaryReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.DailySummaryReader" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.DailySummaryReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pandas_datareader.iex.stats.</span></span><span class="sig-name descname"><span class="pre">DailySummaryReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.DailySummaryReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Daily statistics from IEX for a day or month</p>
 <dl class="py method">
-<dt id="pandas_datareader.iex.stats.DailySummaryReader.close">
-<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.DailySummaryReader.close" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.DailySummaryReader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.DailySummaryReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.stats.DailySummaryReader.default_start_date">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.iex.stats.DailySummaryReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.DailySummaryReader.default_start_date">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">default_start_date</span></span><a class="headerlink" href="#pandas_datareader.iex.stats.DailySummaryReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.stats.DailySummaryReader.params">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.iex.stats.DailySummaryReader.params" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.DailySummaryReader.params">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#pandas_datareader.iex.stats.DailySummaryReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.iex.stats.DailySummaryReader.read">
-<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.DailySummaryReader.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.DailySummaryReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.DailySummaryReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unfortunately, IEX’s API can only retrieve data one day or one month
 at a time. Rather than specifying a date range, we will have to run
 the read function for each date provided.</p>
@@ -367,45 +367,45 @@ the read function for each date provided.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.stats.DailySummaryReader.service">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">service</span></code><a class="headerlink" href="#pandas_datareader.iex.stats.DailySummaryReader.service" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.DailySummaryReader.service">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">service</span></span><a class="headerlink" href="#pandas_datareader.iex.stats.DailySummaryReader.service" title="Permalink to this definition">¶</a></dt>
 <dd><p>Service endpoint</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.stats.DailySummaryReader.url">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.iex.stats.DailySummaryReader.url" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.DailySummaryReader.url">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#pandas_datareader.iex.stats.DailySummaryReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="pandas_datareader.iex.stats.MonthlySummaryReader">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.iex.stats.</span></code><code class="sig-name descname"><span class="pre">MonthlySummaryReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.MonthlySummaryReader" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.MonthlySummaryReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pandas_datareader.iex.stats.</span></span><span class="sig-name descname"><span class="pre">MonthlySummaryReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.MonthlySummaryReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Monthly statistics from IEX</p>
 <dl class="py method">
-<dt id="pandas_datareader.iex.stats.MonthlySummaryReader.close">
-<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.MonthlySummaryReader.close" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.MonthlySummaryReader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.MonthlySummaryReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.stats.MonthlySummaryReader.default_start_date">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.iex.stats.MonthlySummaryReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.MonthlySummaryReader.default_start_date">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">default_start_date</span></span><a class="headerlink" href="#pandas_datareader.iex.stats.MonthlySummaryReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.stats.MonthlySummaryReader.params">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.iex.stats.MonthlySummaryReader.params" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.MonthlySummaryReader.params">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#pandas_datareader.iex.stats.MonthlySummaryReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.iex.stats.MonthlySummaryReader.read">
-<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.MonthlySummaryReader.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.MonthlySummaryReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.MonthlySummaryReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Unfortunately, IEX’s API can only retrieve data one day or one month</dt><dd><p>at a time. Rather than specifying a date range, we will have to run
 the read function for each date provided.</p>
@@ -418,65 +418,65 @@ the read function for each date provided.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.stats.MonthlySummaryReader.service">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">service</span></code><a class="headerlink" href="#pandas_datareader.iex.stats.MonthlySummaryReader.service" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.MonthlySummaryReader.service">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">service</span></span><a class="headerlink" href="#pandas_datareader.iex.stats.MonthlySummaryReader.service" title="Permalink to this definition">¶</a></dt>
 <dd><p>Service endpoint</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.stats.MonthlySummaryReader.url">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.iex.stats.MonthlySummaryReader.url" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.MonthlySummaryReader.url">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#pandas_datareader.iex.stats.MonthlySummaryReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="pandas_datareader.iex.stats.RecordsReader">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.iex.stats.</span></code><code class="sig-name descname"><span class="pre">RecordsReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.RecordsReader" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.RecordsReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pandas_datareader.iex.stats.</span></span><span class="sig-name descname"><span class="pre">RecordsReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.RecordsReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Total matched volume information from IEX</p>
 <dl class="py method">
-<dt id="pandas_datareader.iex.stats.RecordsReader.close">
-<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.RecordsReader.close" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.RecordsReader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.RecordsReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.stats.RecordsReader.default_start_date">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.iex.stats.RecordsReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.RecordsReader.default_start_date">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">default_start_date</span></span><a class="headerlink" href="#pandas_datareader.iex.stats.RecordsReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.stats.RecordsReader.params">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.iex.stats.RecordsReader.params" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.RecordsReader.params">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#pandas_datareader.iex.stats.RecordsReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.iex.stats.RecordsReader.read">
-<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.RecordsReader.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.RecordsReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.RecordsReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.stats.RecordsReader.service">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">service</span></code><a class="headerlink" href="#pandas_datareader.iex.stats.RecordsReader.service" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.RecordsReader.service">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">service</span></span><a class="headerlink" href="#pandas_datareader.iex.stats.RecordsReader.service" title="Permalink to this definition">¶</a></dt>
 <dd><p>Service endpoint</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.stats.RecordsReader.url">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.iex.stats.RecordsReader.url" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.RecordsReader.url">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#pandas_datareader.iex.stats.RecordsReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="pandas_datareader.iex.stats.RecentReader">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.iex.stats.</span></code><code class="sig-name descname"><span class="pre">RecentReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.RecentReader" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.RecentReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pandas_datareader.iex.stats.</span></span><span class="sig-name descname"><span class="pre">RecentReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.RecentReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recent trading volume from IEX</p>
 <p class="rubric">Notes</p>
 <p>Returns 6 fields for each day:</p>
@@ -495,46 +495,46 @@ volume.</p></li>
 </ul>
 </div></blockquote>
 <dl class="py method">
-<dt id="pandas_datareader.iex.stats.RecentReader.close">
-<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.RecentReader.close" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.RecentReader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.RecentReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.stats.RecentReader.default_start_date">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.iex.stats.RecentReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.RecentReader.default_start_date">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">default_start_date</span></span><a class="headerlink" href="#pandas_datareader.iex.stats.RecentReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.stats.RecentReader.params">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.iex.stats.RecentReader.params" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.RecentReader.params">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#pandas_datareader.iex.stats.RecentReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.iex.stats.RecentReader.read">
-<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.RecentReader.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.RecentReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.stats.RecentReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.stats.RecentReader.service">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">service</span></code><a class="headerlink" href="#pandas_datareader.iex.stats.RecentReader.service" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.RecentReader.service">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">service</span></span><a class="headerlink" href="#pandas_datareader.iex.stats.RecentReader.service" title="Permalink to this definition">¶</a></dt>
 <dd><p>Service endpoint</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.stats.RecentReader.url">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.iex.stats.RecentReader.url" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.stats.RecentReader.url">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#pandas_datareader.iex.stats.RecentReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
 </dd></dl>
 
 <span class="target" id="module-pandas_datareader.iex.deep"></span><dl class="py class">
-<dt id="pandas_datareader.iex.deep.Deep">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.iex.deep.</span></code><code class="sig-name descname"><span class="pre">Deep</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.deep.Deep" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.deep.Deep">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pandas_datareader.iex.deep.</span></span><span class="sig-name descname"><span class="pre">Deep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.deep.Deep" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve order book data from IEX</p>
 <p class="rubric">Notes</p>
 <p>Real-time depth of book quotations direct from IEX. Returns aggregated
@@ -544,128 +544,128 @@ orders and non-displayed portions of reserve orders are not counted.</p>
 <p>Also provides last trade price and size information. Routed executions
 are not reported.</p>
 <dl class="py method">
-<dt id="pandas_datareader.iex.deep.Deep.close">
-<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.deep.Deep.close" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.deep.Deep.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.deep.Deep.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.deep.Deep.default_start_date">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.iex.deep.Deep.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.deep.Deep.default_start_date">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">default_start_date</span></span><a class="headerlink" href="#pandas_datareader.iex.deep.Deep.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.deep.Deep.params">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.iex.deep.Deep.params" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.deep.Deep.params">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#pandas_datareader.iex.deep.Deep.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.iex.deep.Deep.read">
-<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.deep.Deep.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.deep.Deep.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.deep.Deep.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.deep.Deep.service">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">service</span></code><a class="headerlink" href="#pandas_datareader.iex.deep.Deep.service" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.deep.Deep.service">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">service</span></span><a class="headerlink" href="#pandas_datareader.iex.deep.Deep.service" title="Permalink to this definition">¶</a></dt>
 <dd><p>Service endpoint</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.deep.Deep.url">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.iex.deep.Deep.url" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.deep.Deep.url">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#pandas_datareader.iex.deep.Deep.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
 </dd></dl>
 
 <span class="target" id="module-pandas_datareader.iex.tops"></span><dl class="py class">
-<dt id="pandas_datareader.iex.tops.TopsReader">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.iex.tops.</span></code><code class="sig-name descname"><span class="pre">TopsReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.tops.TopsReader" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.tops.TopsReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pandas_datareader.iex.tops.</span></span><span class="sig-name descname"><span class="pre">TopsReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.tops.TopsReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Near-real time aggregated bid and offer positions</p>
 <p class="rubric">Notes</p>
 <p>IEX’s aggregated best quoted bid and offer position for all securities
 on IEX’s displayed limit order book.</p>
 <dl class="py method">
-<dt id="pandas_datareader.iex.tops.TopsReader.close">
-<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.tops.TopsReader.close" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.tops.TopsReader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.tops.TopsReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.tops.TopsReader.default_start_date">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.iex.tops.TopsReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.tops.TopsReader.default_start_date">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">default_start_date</span></span><a class="headerlink" href="#pandas_datareader.iex.tops.TopsReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.tops.TopsReader.params">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.iex.tops.TopsReader.params" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.tops.TopsReader.params">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#pandas_datareader.iex.tops.TopsReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.iex.tops.TopsReader.read">
-<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.tops.TopsReader.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.tops.TopsReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.tops.TopsReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.tops.TopsReader.service">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">service</span></code><a class="headerlink" href="#pandas_datareader.iex.tops.TopsReader.service" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.tops.TopsReader.service">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">service</span></span><a class="headerlink" href="#pandas_datareader.iex.tops.TopsReader.service" title="Permalink to this definition">¶</a></dt>
 <dd><p>Service endpoint</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.tops.TopsReader.url">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.iex.tops.TopsReader.url" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.tops.TopsReader.url">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#pandas_datareader.iex.tops.TopsReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="pandas_datareader.iex.tops.LastReader">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pandas_datareader.iex.tops.</span></code><code class="sig-name descname"><span class="pre">LastReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.tops.LastReader" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.tops.LastReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pandas_datareader.iex.tops.</span></span><span class="sig-name descname"><span class="pre">LastReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.tops.LastReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Information of executions on IEX</p>
 <p class="rubric">Notes</p>
 <p>Last provides trade data for executions on IEX. Provides last sale price,
 size and time.</p>
 <dl class="py method">
-<dt id="pandas_datareader.iex.tops.LastReader.close">
-<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.tops.LastReader.close" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.tops.LastReader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.tops.LastReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.tops.LastReader.default_start_date">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default_start_date</span></code><a class="headerlink" href="#pandas_datareader.iex.tops.LastReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.tops.LastReader.default_start_date">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">default_start_date</span></span><a class="headerlink" href="#pandas_datareader.iex.tops.LastReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.tops.LastReader.params">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#pandas_datareader.iex.tops.LastReader.params" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.tops.LastReader.params">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#pandas_datareader.iex.tops.LastReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.iex.tops.LastReader.read">
-<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.tops.LastReader.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.iex.tops.LastReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.iex.tops.LastReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.tops.LastReader.service">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">service</span></code><a class="headerlink" href="#pandas_datareader.iex.tops.LastReader.service" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.tops.LastReader.service">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">service</span></span><a class="headerlink" href="#pandas_datareader.iex.tops.LastReader.service" title="Permalink to this definition">¶</a></dt>
 <dd><p>Service endpoint</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.iex.tops.LastReader.url">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#pandas_datareader.iex.tops.LastReader.url" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.iex.tops.LastReader.url">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#pandas_datareader.iex.tops.LastReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>API URL</p>
 </dd></dl>
 
@@ -703,7 +703,7 @@ size and time.</p>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.1.<br/>
 </p>
     </div>
     

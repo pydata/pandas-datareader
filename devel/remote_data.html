@@ -22,12 +22,12 @@
       
 
     
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css" />
     
   <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
 
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -989,16 +989,16 @@ available. More information on the <a class="reference external" href="http://ww
 <span class="gh">Out[32]: </span><span class="go"></span>
 <span class="go">                Open      High       Low     Close     Volume</span>
 <span class="go">Date                                                         </span>
-<span class="go">2021-05-04  34080.20  34147.78  33765.68  34133.03  483210085</span>
+<span class="go">2021-05-11  34572.74  34572.74  34075.31  34269.16  473244013</span>
+<span class="go">2021-05-10  34785.27  35091.56  34741.57  34742.82  430788989</span>
+<span class="go">2021-05-07  34578.27  34811.39  34464.31  34777.76  375114370</span>
+<span class="go">2021-05-06  34245.11  34561.29  34185.06  34548.53  394242898</span>
+<span class="go">2021-05-05  34163.99  34331.20  34039.66  34230.34  326697630</span>
+<span class="go">2021-05-04  34080.20  34147.78  33765.68  34133.03  483639078</span>
 <span class="go">2021-05-03  33904.89  34221.06  33904.89  34113.23  353663836</span>
 <span class="go">2021-04-30  33988.75  33988.75  33784.96  33874.85  431923354</span>
 <span class="go">2021-04-29  33855.64  34087.21  33744.28  34060.36  458048125</span>
 <span class="go">2021-04-28  33860.46  33946.60  33805.56  33820.38  398723167</span>
-<span class="go">2021-04-27  33932.13  34043.98  33870.46  33984.93  338943330</span>
-<span class="go">2021-04-26  34044.23  34148.94  33941.37  33981.57  325552440</span>
-<span class="go">2021-04-23  33804.52  34157.57  33713.29  34043.49  382946618</span>
-<span class="go">2021-04-22  34109.88  34126.57  33717.19  33815.90  398528744</span>
-<span class="go">2021-04-21  33808.30  34160.34  33773.80  34137.31  343539008</span>
 </pre></div>
 </div>
 </div>
@@ -1015,11 +1015,11 @@ pandas_datareader.moex.MoexReader(<a href="#id4"><span class="problematic" id="i
 <span class="gh">Out[35]: </span><span class="go"></span>
 <span class="go">            ADMITTEDQUOTE  ADMITTEDVALUE  ...  YIELDLASTCOUPON  YIELDTOOFFER</span>
 <span class="go">TRADEDATE                                 ...                               </span>
-<span class="go">2020-07-02            NaN            NaN  ...              NaN           NaN</span>
-<span class="go">2020-07-03            NaN            NaN  ...              NaN           NaN</span>
-<span class="go">2020-07-06            NaN            NaN  ...              NaN           NaN</span>
-<span class="go">2020-07-07            NaN            NaN  ...              NaN           NaN</span>
 <span class="go">2020-07-02         37.605    670695507.0  ...              NaN           NaN</span>
+<span class="go">2020-07-03         37.950    517431999.5  ...              NaN           NaN</span>
+<span class="go">2020-07-06         38.560    640380631.5  ...              NaN           NaN</span>
+<span class="go">2020-07-07         38.140    781482393.5  ...              NaN           NaN</span>
+<span class="go">2020-07-02            NaN            NaN  ...              NaN           NaN</span>
 
 <span class="go">[5 rows x 66 columns]</span>
 
@@ -1040,10 +1040,10 @@ pandas_datareader.moex.MoexReader(<a href="#id4"><span class="problematic" id="i
 <span class="gh">Out[39]: </span><span class="go"></span>
 <span class="go">            ADMITTEDQUOTE  ADMITTEDVALUE  ...  YIELDLASTCOUPON  YIELDTOOFFER</span>
 <span class="go">TRADEDATE                                 ...                               </span>
-<span class="go">2020-07-02            NaN   0.000000e+00  ...              NaN           NaN</span>
-<span class="go">2020-07-02         210.00   1.514438e+10  ...              NaN           NaN</span>
-<span class="go">2020-07-03            NaN   0.000000e+00  ...              NaN           NaN</span>
-<span class="go">2020-07-03         210.08   1.036950e+10  ...              NaN           NaN</span>
+<span class="go">2020-07-02            NaN            NaN  ...              NaN           NaN</span>
+<span class="go">2020-07-03            NaN            NaN  ...              NaN           NaN</span>
+<span class="go">2020-07-02            NaN            NaN  ...              NaN           NaN</span>
+<span class="go">2020-07-02            NaN            NaN  ...              NaN           NaN</span>
 <span class="go">2020-07-02            NaN            NaN  ...              NaN           NaN</span>
 
 <span class="go">[5 rows x 65 columns]</span>
@@ -1114,11 +1114,11 @@ pandas_datareader.moex.MoexReader(<a href="#id4"><span class="problematic" id="i
 <span class="gp">In [53]: </span><span class="n">dividends</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 <span class="gh">Out[53]: </span><span class="go"></span>
 <span class="go">              action  value</span>
+<span class="go">2021-05-07  DIVIDEND   1.64</span>
 <span class="go">2021-02-09  DIVIDEND   1.63</span>
 <span class="go">2020-11-09  DIVIDEND   1.63</span>
 <span class="go">2020-08-07  DIVIDEND   1.63</span>
 <span class="go">2020-05-07  DIVIDEND   1.63</span>
-<span class="go">2020-02-07  DIVIDEND   1.62</span>
 </pre></div>
 </div>
 </div>
@@ -1154,7 +1154,7 @@ pandas_datareader.moex.MoexReader(<a href="#id4"><span class="problematic" id="i
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.1.<br/>
 </p>
     </div>
     
