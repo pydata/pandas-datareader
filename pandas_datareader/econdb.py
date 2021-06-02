@@ -22,13 +22,19 @@ class EcondbReader(_BaseReader):
 
     def read(self):
         """ read one data from specified URL """
+        params = dict(s.split('=') for s in self.symbols.split('&'))
+        if 'from' in params:
+            self.start = pd.to_datetime(params['from'], format='%Y-%m-%d')
+        if 'to' in params:
+            self.end = pd.to_datetime(params['to'], format='%Y-%m-%d')
+
         results = self.session.get(self.url).json()["results"]
         df = pd.DataFrame({"dates": []}).set_index("dates")
 
         if self._show == "labels":
 
             def show_func(x):
-                return x[x.find(":") + 1 :]
+                return x[x.find(":") + 1:]
 
         elif self._show == "codes":
 
