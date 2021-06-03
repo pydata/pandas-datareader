@@ -52,7 +52,7 @@ class TestEcondb(object):
         # TOURISM_INBOUND
 
         df = web.DataReader(
-            "dataset=OE_TOURISM_INBOUND&COUNTRY=JPN,USA&" "VARIABLE=INB_ARRIVALS_TOTAL",
+            "dataset=OE_TOURISM_INBOUND&COUNTRY=JPN,USA&VARIABLE=INB_ARRIVALS_TOTAL",
             "econdb",
             start=pd.Timestamp("2008-01-01"),
             end=pd.Timestamp("2012-01-01"),
