@@ -63,7 +63,7 @@ class YahooDailyReader(_DailyBaseReader):
         adjust_price=False,
         ret_index=False,
         chunksize=1,
-        interval="d",
+        interval="1d",
         get_actions=False,
         adjust_dividends=True,
     ):
