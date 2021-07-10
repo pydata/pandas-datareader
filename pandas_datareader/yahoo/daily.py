@@ -150,7 +150,7 @@ class YahooDailyReader(_DailyBaseReader):
         del params["symbol"]
         url = url.format(symbol)
 
-        resp = self._get_response(url, params=params)
+        resp = self._get_response(url, params=params, headers=self.headers)
         ptrn = r"root\.App\.main = (.*?);\n}\(this\)\);"
         try:
             j = json.loads(re.search(ptrn, resp.text, re.DOTALL).group(1))
