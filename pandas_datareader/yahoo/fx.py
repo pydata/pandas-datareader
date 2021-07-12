@@ -78,7 +78,7 @@ class YahooFXReader(YahooDailyReader):
             self.close()
 
     def _read_one_data(self, symbol):
-        """ read one data from specified URL """
+        """read one data from specified URL"""
         url = "https://query1.finance.yahoo.com/v8/finance/chart/{}=X".format(symbol)
         params = self._get_params(symbol)
 

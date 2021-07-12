@@ -102,7 +102,7 @@ class _BaseReader(object):
             self.close()
 
     def _read_one_data(self, url, params):
-        """ read one data from specified URL """
+        """read one data from specified URL"""
         if self._format == "string":
             out = self._read_url_as_StringIO(url, params=params)
         elif self._format == "json":
@@ -139,7 +139,7 @@ class _BaseReader(object):
         return response.content
 
     def _get_response(self, url, params=None, headers=None):
-        """ send raw HTTP request to get requests.Response from the specified url
+        """send raw HTTP request to get requests.Response from the specified url
         Parameters
         ----------
         url : str
@@ -181,7 +181,7 @@ class _BaseReader(object):
         raise RemoteDataError(msg)
 
     def _get_crumb(self, *args):
-        """ To be implemented by subclass """
+        """To be implemented by subclass"""
         raise NotImplementedError("Subclass has not implemented method.")
 
     def _output_error(self, out):
@@ -221,7 +221,7 @@ class _BaseReader(object):
 
 
 class _DailyBaseReader(_BaseReader):
-    """ Base class for Google / Yahoo daily reader """
+    """Base class for Google / Yahoo daily reader"""
 
     def __init__(
         self,
@@ -302,7 +302,7 @@ def _in_chunks(seq, size):
 
 class _OptionBaseReader(_BaseReader):
     def __init__(self, symbol, session=None):
-        """ Instantiates options_data with a ticker saved as symbol """
+        """Instantiates options_data with a ticker saved as symbol"""
         self.symbol = symbol.upper()
         super(_OptionBaseReader, self).__init__(symbols=symbol, session=session)
 

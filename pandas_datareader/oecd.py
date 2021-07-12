@@ -22,7 +22,7 @@ class OECDReader(_BaseReader):
         return "{0}/{1}/all/all?".format(url, self.symbols)
 
     def _read_lines(self, out):
-        """ read one data from specified URL """
+        """read one data from specified URL"""
         df = read_jsdmx(out)
         try:
             idx_name = df.index.name  # hack for pandas 0.16.2

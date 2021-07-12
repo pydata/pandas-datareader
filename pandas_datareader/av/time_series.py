@@ -84,7 +84,7 @@ class AVTimeSeriesReader(AlphaVantage):
 
     @property
     def output_size(self):
-        """ Used to limit the size of the Alpha Vantage query when
+        """Used to limit the size of the Alpha Vantage query when
         possible.
         """
         delta = dt.datetime.now() - self.start
