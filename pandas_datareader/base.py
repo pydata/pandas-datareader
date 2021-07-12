@@ -38,7 +38,7 @@ class _BaseReader(object):
     pause : float, default 0.1
         Time, in seconds, of the pause between retries.
     session : Session, default None
-        requests.sessions.Session instance to be used
+        requests.sessions.Session instance to be used.
     freq : {str, None}
         Frequency to use in select readers
     """
@@ -47,15 +47,15 @@ class _BaseReader(object):
     _format = "string"
 
     def __init__(
-            self,
-            symbols,
-            start=None,
-            end=None,
-            retry_count=3,
-            pause=0.1,
-            timeout=30,
-            session=None,
-            freq=None,
+        self,
+        symbols,
+        start=None,
+        end=None,
+        retry_count=3,
+        pause=0.1,
+        timeout=30,
+        session=None,
+        freq=None,
     ):
 
         self.symbols = symbols
@@ -72,6 +72,7 @@ class _BaseReader(object):
         self.pause_multiplier = 1
         self.session = _init_session(session, retry_count)
         self.freq = freq
+        self.headers = None
 
     def close(self):
         """Close network session"""
@@ -148,8 +149,8 @@ class _BaseReader(object):
             parameters passed to the URL
         """
 
-        # initial attempt + retry
-        if headers == None:
+        # Use default headers if not passes and not using a user session
+        if headers is None:
             headers = self.headers
 
         pause = self.pause
@@ -227,14 +228,14 @@ class _DailyBaseReader(_BaseReader):
     """Base class for Google / Yahoo daily reader"""
 
     def __init__(
-            self,
-            symbols=None,
-            start=None,
-            end=None,
-            retry_count=3,
-            pause=0.1,
-            session=None,
-            chunksize=25,
+        self,
+        symbols=None,
+        start=None,
+        end=None,
+        retry_count=3,
+        pause=0.1,
+        session=None,
+        chunksize=25,
     ):
         super(_DailyBaseReader, self).__init__(
             symbols=symbols,
@@ -300,7 +301,7 @@ def _in_chunks(seq, size):
     """
     Return sequence in 'chunks' of size defined by size
     """
-    return (seq[pos: pos + size] for pos in range(0, len(seq), size))
+    return (seq[pos : pos + size] for pos in range(0, len(seq), size))
 
 
 class _OptionBaseReader(_BaseReader):
@@ -334,7 +335,7 @@ class _OptionBaseReader(_BaseReader):
         raise NotImplementedError
 
     def get_near_stock_price(
-            self, above_below=2, call=True, put=False, month=None, year=None, expiry=None
+        self, above_below=2, call=True, put=False, month=None, year=None, expiry=None
     ):
         """
         ***Experimental***
@@ -343,7 +344,7 @@ class _OptionBaseReader(_BaseReader):
         raise NotImplementedError
 
     def get_forward_data(
-            self, months, call=True, put=False, near=False, above_below=2
+        self, months, call=True, put=False, near=False, above_below=2
     ):  # pragma: no cover
         """
         ***Experimental***
