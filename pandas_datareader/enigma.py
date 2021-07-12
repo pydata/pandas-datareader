@@ -123,7 +123,7 @@ class EnigmaReader(_BaseReader):
 
     def get_dataset_metadata(self, dataset_id):
         """Get the Dataset Model of this EnigmaReader's dataset
-            https://docs.public.enigma.com/resources/dataset/index.html
+        https://docs.public.enigma.com/resources/dataset/index.html
         """
         url = "datasets/{0}?row_limit=0".format(dataset_id)
         response = self._get(url)

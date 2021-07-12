@@ -50,7 +50,7 @@ class AlphaVantage(_BaseReader):
 
     @property
     def url(self):
-        """ API URL """
+        """API URL"""
         return AV_BASE_URL
 
     @property
@@ -59,12 +59,12 @@ class AlphaVantage(_BaseReader):
 
     @property
     def function(self):
-        """ Alpha Vantage endpoint function"""
+        """Alpha Vantage endpoint function"""
         raise NotImplementedError
 
     @property
     def data_key(self):
-        """ Key of data returned from Alpha Vantage """
+        """Key of data returned from Alpha Vantage"""
         raise NotImplementedError
 
     def _read_lines(self, out):

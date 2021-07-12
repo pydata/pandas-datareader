@@ -21,7 +21,7 @@ class EcondbReader(_BaseReader):
         )
 
     def read(self):
-        """ read one data from specified URL """
+        """read one data from specified URL"""
         results = self.session.get(self.url).json()["results"]
         df = pd.DataFrame({"dates": []}).set_index("dates")
 

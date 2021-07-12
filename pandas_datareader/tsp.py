@@ -72,7 +72,7 @@ class TSPReader(_BaseReader):
         return "https://secure.tsp.gov/components/CORS/getSharePricesRaw.html"
 
     def read(self):
-        """ read one data from specified URL """
+        """read one data from specified URL"""
         df = super(TSPReader, self).read()
         df.columns = map(lambda x: x.strip(), df.columns)
         df.drop(columns=self.all_symbols - set(self.symbols), inplace=True)

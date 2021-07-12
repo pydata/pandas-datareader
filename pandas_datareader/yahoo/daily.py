@@ -144,7 +144,7 @@ class YahooDailyReader(_DailyBaseReader):
         return params
 
     def _read_one_data(self, url, params):
-        """ read one data from specified symbol """
+        """read one data from specified symbol"""
 
         symbol = params["symbol"]
         del params["symbol"]

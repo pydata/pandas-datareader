@@ -25,34 +25,34 @@ def get_tiingo_symbols():
 
 class TiingoIEXHistoricalReader(_BaseReader):
     """
-        Historical data from Tiingo on equities, ETFs and mutual funds,
-        with re-sampling capability. This query is limited to the last
-        1,000 bars based in the endDate. So the startDate is moved if
-        it goes past the limit.
+    Historical data from Tiingo on equities, ETFs and mutual funds,
+    with re-sampling capability. This query is limited to the last
+    1,000 bars based in the endDate. So the startDate is moved if
+    it goes past the limit.
 
-        Parameters
-        ----------
-        symbols : {str, List[str]}
-            String symbol or list of symbols
-        start : string, int, date, datetime, Timestamp
-            Starting date. Parses many different kind of date
-            representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980'). Defaults to
-            20 years before current date.
-        end : string, int, date, datetime, Timestamp
-            Ending date
-        retry_count : int, default 3
-            Number of times to retry query request.
-        pause : float, default 0.1
-            Time, in seconds, of the pause between retries.
-        session : Session, default None
-            requests.sessions.Session instance to be used
-        freq : {str, None}
-        Re-sample frequency. Format is # + (min/hour); e.g. "15min" or "4hour".
-        If no value is provided, defaults to 5min. The minimum value is "1min".
-        Units in minutes (min) and hours (hour) are accepted.
-        api_key : str, optional
-            Tiingo API key . If not provided the environmental variable
-            TIINGO_API_KEY is read. The API key is *required*.
+    Parameters
+    ----------
+    symbols : {str, List[str]}
+        String symbol or list of symbols
+    start : string, int, date, datetime, Timestamp
+        Starting date. Parses many different kind of date
+        representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980'). Defaults to
+        20 years before current date.
+    end : string, int, date, datetime, Timestamp
+        Ending date
+    retry_count : int, default 3
+        Number of times to retry query request.
+    pause : float, default 0.1
+        Time, in seconds, of the pause between retries.
+    session : Session, default None
+        requests.sessions.Session instance to be used
+    freq : {str, None}
+    Re-sample frequency. Format is # + (min/hour); e.g. "15min" or "4hour".
+    If no value is provided, defaults to 5min. The minimum value is "1min".
+    Units in minutes (min) and hours (hour) are accepted.
+    api_key : str, optional
+        Tiingo API key . If not provided the environmental variable
+        TIINGO_API_KEY is read. The API key is *required*.
     """
 
     def __init__(
@@ -105,7 +105,7 @@ class TiingoIEXHistoricalReader(_BaseReader):
         pass
 
     def _read_one_data(self, url, params):
-        """ read one data from specified URL """
+        """read one data from specified URL"""
         headers = {
             "Content-Type": "application/json",
             "Authorization": "Token " + self.api_key,
@@ -207,7 +207,7 @@ class TiingoDailyReader(_BaseReader):
         pass
 
     def _read_one_data(self, url, params):
-        """ read one data from specified URL """
+        """read one data from specified URL"""
         headers = {
             "Content-Type": "application/json",
             "Authorization": "Token " + self.api_key,
