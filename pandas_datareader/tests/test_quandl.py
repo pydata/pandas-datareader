@@ -1,11 +1,10 @@
 import os
 
-import pytest
 import pandas as pd
+import pytest
 
 from pandas_datareader import data as web
 from pandas_datareader.compat import assert_frame_equal
-
 
 TEST_API_KEY = os.getenv("QUANDL_API_KEY")
 # Ensure blank TEST_API_KEY not used in pull request
