@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
-import pytest
 from pandas import testing as tm
+import pytest
 
 from pandas_datareader import data as web
 

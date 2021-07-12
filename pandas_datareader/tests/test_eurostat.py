@@ -20,10 +20,11 @@ class TestEurostat(object):
         )
         assert isinstance(df, pd.DataFrame)
 
-        header = df.columns.levels[0][0]
         currencies = ["Italian lira", "Lithuanian litas"]
-        df = df[header]
-        df = df["Average"][currencies]
+        # cols = [(currency, "Average") for currency in currencies]
+        df_currency = df[currencies]
+        df_currency = df_currency.xs("Average", axis=1, level=1)
+        df_currency.columns = df_currency.columns.droplevel(1)
 
         exp_col = pd.MultiIndex.from_product(
             [currencies, ["Annual"]], names=["CURRENCY", "FREQ"]
@@ -31,7 +32,7 @@ class TestEurostat(object):
         exp_idx = pd.DatetimeIndex(["2009-01-01", "2010-01-01"], name="TIME_PERIOD")
         values = np.array([[1936.27, 3.4528], [1936.27, 3.4528]])
         expected = pd.DataFrame(values, index=exp_idx, columns=exp_col)
-        tm.assert_frame_equal(df, expected)
+        tm.assert_frame_equal(df_currency, expected)
 
     def test_get_sts_cobp_a(self):
         # Building permits - annual data (2010 = 100)
@@ -44,8 +45,8 @@ class TestEurostat(object):
 
         idx = pd.date_range("2000-01-01", "2013-01-01", freq="AS", name="TIME_PERIOD")
         ne_name = (
-            "Index, 2010=100",
             "Building permits - m2 of useful floor area",
+            "Index, 2010=100",
             "Unadjusted data (i.e. neither seasonally adjusted nor "
             "calendar adjusted data)",
             "Non-residential buildings, except office buildings",
@@ -71,8 +72,8 @@ class TestEurostat(object):
         ne = pd.Series(ne_values, name=ne_name, index=idx)
 
         uk_name = (
-            "Index, 2010=100",
             "Building permits - m2 of useful floor area",
+            "Index, 2010=100",
             "Unadjusted data (i.e. neither seasonally adjusted nor "
             "calendar adjusted data)",
             "Non-residential buildings, except office buildings",
@@ -113,11 +114,11 @@ class TestEurostat(object):
         )
 
         name = (
-            "All taxes and levies included",
-            "Gigajoule (gross calorific value - GCV)",
             "Euro",
-            "Band D1 : Consumption < 20 GJ",
+            "Gigajoule (gross calorific value - GCV)",
             "Natural gas",
+            "All taxes and levies included",
+            "Band D1 : Consumption < 20 GJ",
             "Denmark",
             "Semi-annual",
         )
