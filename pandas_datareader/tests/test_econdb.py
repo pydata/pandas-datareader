@@ -23,6 +23,7 @@ class TestEcondb(object):
         assert df.index[0].year == 2010
         assert df.index[-1].year == 2018
 
+    @pytest.mark.xfail(reason="Dataset does not exist on Econdb")
     def test_get_cdh_e_fos(self):
         # EUROSTAT
         # Employed doctorate holders in non managerial and non professional
