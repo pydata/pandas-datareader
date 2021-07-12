@@ -10,6 +10,14 @@ class EcondbReader(_BaseReader):
     _format = None
     _show = "labels"
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(**kwargs)
+        params = dict(s.split("=") for s in self.symbols.split("&"))
+        if "from" in params and not kwargs.get("start"):
+            self.start = pd.to_datetime(params["from"], format="%Y-%m-%d")
+        if "to" in params and not kwargs.get("end"):
+            self.end = pd.to_datetime(params["to"], format="%Y-%m-%d")
+
     @property
     def url(self):
         """API URL"""
@@ -21,7 +29,7 @@ class EcondbReader(_BaseReader):
         )
 
     def read(self):
-        """ read one data from specified URL """
+        """read one data from specified URL"""
         results = self.session.get(self.url).json()["results"]
         df = pd.DataFrame({"dates": []}).set_index("dates")
 
