@@ -34,15 +34,15 @@ __all__ = [
 
 
 def get_filepath_or_buffer(filepath_or_buffer, encoding=None, compression=None):
-
-    # Dictionaries are no longer considered valid inputs
-    # for "get_filepath_or_buffer" starting in pandas >= 0.20.0
-    if isinstance(filepath_or_buffer, dict):
-        return filepath_or_buffer, encoding, compression
-
-    return com.get_filepath_or_buffer(
-        filepath_or_buffer, encoding=encoding, compression=None
-    )
+    try:
+        handle = com.get_handle(
+            filepath_or_buffer, "r", encoding=encoding, compression=compression
+        )
+        return (handle.handle, encoding, compression)
+    except AttributeError:
+        return com.get_filepath_or_buffer(
+            filepath_or_buffer, encoding=encoding, compression=None
+        )
 
 
 string_types = (str,)
