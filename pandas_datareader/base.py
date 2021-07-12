@@ -38,7 +38,7 @@ class _BaseReader(object):
     pause : float, default 0.1
         Time, in seconds, of the pause between retries.
     session : Session, default None
-        requests.sessions.Session instance to be used
+        requests.sessions.Session instance to be used.
     freq : {str, None}
         Frequency to use in select readers
     """
@@ -72,6 +72,7 @@ class _BaseReader(object):
         self.pause_multiplier = 1
         self.session = _init_session(session, retry_count)
         self.freq = freq
+        self.headers = None
 
     def close(self):
         """Close network session"""
@@ -148,7 +149,10 @@ class _BaseReader(object):
             parameters passed to the URL
         """
 
-        # initial attempt + retry
+        # Use default headers if not passes and not using a user session
+        if headers is None:
+            headers = self.headers
+
         pause = self.pause
         last_response_text = ""
         for _ in range(self.retry_count + 1):
