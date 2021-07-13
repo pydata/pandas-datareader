@@ -3,17 +3,11 @@
 Up to date remote data access for pandas, works for multiple versions of
 pandas.
 
-[![image][]][1]
-
-[![image][2]][3]
-
-[![image][4]][5]
-
-[![image][6]][7]
-
-[![image][8]][9]
-
-[![image][10]][11]
+[![image](https://img.shields.io/pypi/v/pandas-datareader.svg)](https://pypi.python.org/pypi/pandas-datareader/)
+[![image](https://codecov.io/gh/pydata/pandas-datareader/branch/master/graph/badge.svg)](https://codecov.io/gh/pydata/pandas-datareader)
+[![image](https://readthedocs.org/projects/pandas-datareader/badge/?version=latest)](https://pandas-datareader.readthedocs.io/en/latest/)
+[![image](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![License](https://img.shields.io/pypi/l/pandas-datareader)](https://pypi.org/project/pandas-datareader/)
 
 ## Installation
 
@@ -32,18 +26,19 @@ pdr.get_data_fred('GS10')
 
 ## Documentation
 
-[Stable documentation][] is available on
-[github.io][Stable documentation]. A second copy of the stable
-documentation is hosted on [read the docs][] for more details.
+[Stable documentation](https://pydata.github.io/pandas-datareader/) is available on
+[github.io](https://pydata.github.io/pandas-datareader/). A second copy of the stable
+documentation is hosted on [read the docs](https://pandas-datareader.readthedocs.io/)
+for more details.
 
-[Development documentation][] is available for the latest changes in
-master.
+[Development documentation](https://pydata.github.io/pandas-datareader/devel/) is available
+for the latest changes in master.
 
 ### Requirements
 
 Using pandas datareader requires the following packages:
 
--   pandas>=0.23
+-   pandas>=1.0
 -   lxml
 -   requests>=2.19.0
 
@@ -69,7 +64,7 @@ Development and testing additionally requires:
 ### Install latest development version
 
 ``` shell
-pip install git+https://github.com/pydata/pandas-datareader.git
+python -m pip install git+https://github.com/pydata/pandas-datareader.git
 ```
 
 or
@@ -79,19 +74,3 @@ git clone https://github.com/pydata/pandas-datareader.git
 cd pandas-datareader
 python setup.py install
 ```
-
-  [image]: https://img.shields.io/pypi/v/pandas-datareader.svg
-  [1]: https://pypi.python.org/pypi/pandas-datareader/
-  [2]: https://travis-ci.org/pydata/pandas-datareader.svg?branch=master
-  [3]: https://travis-ci.org/pydata/pandas-datareader
-  [4]: https://coveralls.io/repos/pydata/pandas-datareader/badge.svg?branch=master
-  [5]: https://coveralls.io/r/pydata/pandas-datareader
-  [6]: https://codecov.io/gh/pydata/pandas-datareader/branch/master/graph/badge.svg
-  [7]: https://codecov.io/gh/pydata/pandas-datareader
-  [8]: https://readthedocs.org/projects/pandas-datareader/badge/?version=latest
-  [9]: https://pandas-datareader.readthedocs.io/en/latest/
-  [10]: https://img.shields.io/badge/code%20style-black-000000.svg
-  [11]: https://github.com/psf/black
-  [Stable documentation]: https://pydata.github.io/pandas-datareader/
-  [read the docs]: https://pandas-datareader.readthedocs.io/
-  [Development documentation]: https://pydata.github.io/pandas-datareader/devel/
