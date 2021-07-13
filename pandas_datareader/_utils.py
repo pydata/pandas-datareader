@@ -53,8 +53,11 @@ def _sanitize_dates(start, end):
     return start, end
 
 
-def _init_session(session, retry_count=3):
+def _init_session(session):
     if session is None:
         session = requests.Session()
         # do not set requests max_retries here to support arbitrary pause
+    else:
+        if not isinstance(session, requests.Session):
+            raise TypeError("session must be a request.Session")
     return session

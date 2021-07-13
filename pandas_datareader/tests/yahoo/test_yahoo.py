@@ -159,7 +159,7 @@ class TestYahoo(object):
         else:
             floats.append("Adj Close")
 
-        assert result[floats].dtypes.all() == np.floating
+        assert result[floats].dtypes.all() == np.float64
 
     @skip_on_exception(RemoteDataError)
     def test_get_data_multiple_symbols_two_dates(self):
@@ -168,7 +168,7 @@ class TestYahoo(object):
         assert result.size == 3
 
         # sanity checking
-        assert result.dtypes == np.floating
+        assert result.dtypes == np.float64
 
         expected = np.array(
             [
@@ -207,12 +207,12 @@ class TestYahoo(object):
         assert actions.loc["2005-02-28", "value"][0] == 1 / 2.0
 
         assert actions.loc["1995-11-21", "action"][0] == "DIVIDEND"
-        assert round(actions.loc["1995-11-21", "value"][0], 3) == 0.120
+        assert round(actions.loc["1995-11-21", "value"][0], 3) == 0.030
 
         actions = web.get_data_yahoo_actions("AAPL", start, end, adjust_dividends=True)
 
         assert actions.loc["1995-11-21", "action"][0] == "DIVIDEND"
-        assert round(actions.loc["1995-11-21", "value"][0], 4) == 0.0043
+        assert round(actions.loc["1995-11-21", "value"][0], 4) == 0.0011
 
     def test_get_data_yahoo_actions_invalid_symbol(self):
         start = datetime(1990, 1, 1)
@@ -226,14 +226,14 @@ class TestYahoo(object):
         r = YahooDailyReader("GOOG", start="JAN-01-2015")
         df = r.read()
 
-        assert df.Volume.loc["JAN-02-2015"] == 1447500
+        assert df.Volume.loc["JAN-02-2015"] == 1447563
 
         session = requests.Session()
 
         r = YahooDailyReader("GOOG", session=session)
         assert r.session is session
 
-    def test_yahoo_DataReader(self):
+    def test_yahoo_datareader(self):
         start = datetime(2010, 1, 1)
         end = datetime(2015, 5, 9)
         # yahoo will adjust for dividends by default
@@ -275,19 +275,19 @@ class TestYahoo(object):
                     "DIVIDEND",
                 ],
                 "value": [
-                    0.52,
-                    0.47,
-                    0.47,
-                    0.47,
-                    0.14285714,
-                    0.47,
-                    0.43571,
-                    0.43571,
-                    0.43571,
-                    0.43571,
-                    0.37857,
-                    0.37857,
-                    0.37857,
+                    0.130000,
+                    0.117500,
+                    0.117500,
+                    0.117500,
+                    0.142857,
+                    0.117500,
+                    0.108929,
+                    0.108929,
+                    0.108929,
+                    0.108929,
+                    0.094643,
+                    0.094643,
+                    0.094643,
                 ],
             },
             index=exp_idx,
@@ -316,19 +316,19 @@ class TestYahoo(object):
                     "DIVIDEND",
                 ],
                 "value": [
-                    0.52,
-                    0.47,
-                    0.47,
-                    0.47,
-                    0.14285714,
-                    3.29,
-                    3.05,
-                    3.05,
-                    3.05,
-                    3.05,
-                    2.65,
-                    2.65,
-                    2.65,
+                    0.1300,
+                    0.1175,
+                    0.1175,
+                    0.1175,
+                    0.1429,
+                    0.8225,
+                    0.7625,
+                    0.7625,
+                    0.7625,
+                    0.7625,
+                    0.6625,
+                    0.6625,
+                    0.6625,
                 ],
             },
             index=exp_idx,
@@ -344,13 +344,13 @@ class TestYahoo(object):
         result = web.DataReader("NTR", "yahoo-actions", start, end)
 
         exp_idx = pd.DatetimeIndex(
-            ["2018-12-28", "2018-09-27", "2018-06-28", "2018-03-28", "2018-01-02"]
+            ["2018-12-28", "2018-09-27", "2018-06-28", "2018-03-28"]
         )
 
         exp = pd.DataFrame(
             {
-                "action": ["DIVIDEND", "DIVIDEND", "DIVIDEND", "DIVIDEND", "SPLIT"],
-                "value": [0.43, 0.40, 0.40, 0.40, 1.00],
+                "action": ["DIVIDEND", "DIVIDEND", "DIVIDEND", "DIVIDEND"],
+                "value": [0.43, 0.40, 0.40, 0.40],
             },
             index=exp_idx,
         )
