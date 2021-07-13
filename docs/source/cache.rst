@@ -27,12 +27,15 @@ passing a ``requests_cache.Session`` to ``DataReader`` or ``Options`` using the
 Below is an example with Yahoo! Finance. The session parameter is implemented for all datareaders.
 
 .. ipython:: python
+    :okexcept:
 
     import pandas_datareader.data as web
+    from pandas_datareader.yahoo.headers import DEFAULT_HEADERS
     import datetime
     import requests_cache
     expire_after = datetime.timedelta(days=3)
     session = requests_cache.CachedSession(cache_name='cache', backend='sqlite', expire_after=expire_after)
+    session.headers = DEFAULT_HEADERS
     start = datetime.datetime(2010, 1, 1)
     end = datetime.datetime(2013, 1, 27)
     f = web.DataReader("F", 'yahoo', start, end, session=session)

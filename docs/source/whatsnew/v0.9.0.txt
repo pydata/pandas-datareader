@@ -1,39 +1,3 @@
-.. _whatsnew_091:
-
-v0.9.1 (TBD)
-------------
-
-.. contents:: What's new in v0.9.1
-    :local:
-    :backlinks: none
-
-
-.. _whatsnew_091.enhancements:
-
-Enhancements
-~~~~~~~~~~~~
-- Added the method ``test`` to the package to simplify running tests from an
-  installation using
-
-.. code-block:: shell
-
-   python -c "import pandas_datareader; pandas_datareader.test()"
-
-.. _whatsnew_091.api_breaking:
-
-Backwards incompatible API changes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-- Immediately deprecated old symbol names for TSP to reflect the new website API
-
-.. _whatsnew_091.bug_fixes:
-
-Bug Fixes
-~~~~~~~~~
-- Update TSP web scraper to new site (:issue:`740`)
-
-.. _whatsnew_090:
-
 v0.9.0 (July 10, 2020)
 ----------------------
 
@@ -54,6 +18,12 @@ Enhancements
 - Added AlphaVantage endpoint to get historical currency exchange rates (:issue:`764`)
 - Improved logging when rate limited (:issue:`745`)
 - Added daily historical data from Naver Finance (:issue:`722`)
+- Added the method ``test`` to the package to simplify running tests from an
+  installation using
+
+.. code-block:: shell
+
+   python -c "import pandas_datareader; pandas_datareader.test()"
 
 .. _whatsnew_090.api_breaking:
 
@@ -72,6 +42,7 @@ Bug Fixes
 ~~~~~~~~~
 - Fix Yahoo Splits for change in format (:issue:`756`)
 - Fixed reading bond yields from Stooq (:issue:`752`)
+- Update TSP web scraper to new site (:issue:`740`)
 - Fixed EconDB reader to use session (:issue:`737`)
 - Fix reading futures data from Stooq (:issue:`718`)
 - Correct NASDAQ symbols fields link (:issue:`715`)
