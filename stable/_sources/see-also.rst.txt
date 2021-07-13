@@ -27,7 +27,7 @@ simplifying access is available on github.
 
 Barchart
 ========
-Barchart is a data provider covering a ride range of financial data.  The
+Barchart is a data provider covering a wide range of financial data.  The
 `free API <https://www.barchart.com/ondemand/free-market-data-api>`__
 provides up to two years of historical data.
 

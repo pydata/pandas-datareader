@@ -1,83 +1,124 @@
 
-
 <!DOCTYPE html>
 
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moscow Exchange (MOEX) &#8212; pandas-datareader 0.10.0dev0 documentation</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
-    <link href="../_static/css/index.css" rel="stylesheet">
-    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moscow Exchange (MOEX) &#8212; pandas-datareader v0.10.0 documentation</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="NASDAQ" href="nasdaq-trader.html" />
     <link rel="prev" title="The Investors Exchange (IEX)" href="iex.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="docsearch:language" content="en">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
-<div class="container-xl">
+    <div class="container-fluid" id="banner"></div>
 
     
-    <a class="navbar-brand" href="../index.html">
-      <img src="../_static/pandas-datareader-plain.svg" class="logo" alt="logo">
-    </a>
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
     
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+    
 
-    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
-      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
-        
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="../remote_data.html">Remote Data Access</a>
-        </li>
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="../cache.html">Caching queries</a>
-        </li>
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="../see-also.html">Other Data Sources</a>
-        </li>
-        
-        <li class="nav-item active">
-            <a class="nav-link" href="index.html">Data Readers</a>
-        </li>
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="../whatsnew.html">What’s New</a>
-        </li>
-        
-        
-      </ul>
+<a class="navbar-brand" href="../index.html">
+  <img src="../_static/pandas-datareader-plain.svg" class="logo" alt="logo">
+</a>
 
 
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
       
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../remote_data.html">
+  Remote Data Access
+ </a>
+</li>
 
-      <ul class="navbar-nav">
-        
-          <li class="nav-item">
-            <a class="nav-link" href="https://github.com/pydata/pandas-datareader" target="_blank" rel="noopener">
-              <span><i class="fab fa-github-square"></i></span>
-            </a>
-          </li>
-        
-        
-      </ul>
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../cache.html">
+  Caching queries
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../see-also.html">
+  Other Data Sources
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="index.html">
+  Data Readers
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../whatsnew.html">
+  What’s New
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
     </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/pydata/pandas-datareader" rel="noopener" target="_blank" title="GitHub">
+            <span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label>
+          </a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
 </div>
     </nav>
     
@@ -85,156 +126,52 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar">
-
-<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form>
-
-
-<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-  <div class="bd-toc-item active">
-  
-
-  <ul class="nav bd-sidenav">
-      
-      
-      
-      
-      
-      
-      
-      
-        
-          
-              <li class="">
-                  <a href="alphavantage.html">AlphaVantage</a>
-              </li>
-          
-        
-          
-              <li class="">
-                  <a href="fred.html">Federal Reserve Economic Data (FRED)</a>
-              </li>
-          
-        
-          
-              <li class="">
-                  <a href="famafrench.html">Fama-French Data (Ken French’s Data Library)</a>
-              </li>
-          
-        
-          
-              <li class="">
-                  <a href="bank-of-canada.html">Bank of Canada</a>
-              </li>
-          
-        
-          
-              <li class="">
-                  <a href="econdb.html">Econdb</a>
-              </li>
-          
-        
-          
-              <li class="">
-                  <a href="enigma.html">Enigma</a>
-              </li>
-          
-        
-          
-              <li class="">
-                  <a href="eurostat.html">Eurostat</a>
-              </li>
-          
-        
-          
-              <li class="">
-                  <a href="iex.html">The Investors Exchange (IEX)</a>
-              </li>
-          
-        
-          
-              <li class="active">
-                  <a href="">Moscow Exchange (MOEX)</a>
-              </li>
-          
-        
-          
-              <li class="">
-                  <a href="nasdaq-trader.html">NASDAQ</a>
-              </li>
-          
-        
-          
-              <li class="">
-                  <a href="naver.html">Naver Finance</a>
-              </li>
-          
-        
-          
-              <li class="">
-                  <a href="oecd.html">Organisation for Economic Co-operation and Development (OECD)</a>
-              </li>
-          
-        
-          
-              <li class="">
-                  <a href="quandl.html">Quandl</a>
-              </li>
-          
-        
-          
-              <li class="">
-                  <a href="stooq.html">Stooq.com</a>
-              </li>
-          
-        
-          
-              <li class="">
-                  <a href="tiingo.html">Tiingo</a>
-              </li>
-          
-        
-          
-              <li class="">
-                  <a href="tsp.html">Thrift Savings Plan (TSP)</a>
-              </li>
-          
-        
-          
-              <li class="">
-                  <a href="world-bank.html">World Bank</a>
-              </li>
-          
-        
-      
-      
-      
-      
-    </ul>
-
-</nav>
-          </div>
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="iex.html"
+                        title="previous chapter">The Investors Exchange (IEX)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="nasdaq-trader.html"
+                        title="next chapter">NASDAQ</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+            </div>
+            
           
 
           
           <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
               
+              <div class="toc-item">
+                
 
 <nav id="bd-toc-nav">
-    <ul class="nav section-nav flex-column">
     
-    </ul>
 </nav>
-
-
+              </div>
               
+              <div class="toc-item">
+                
+              </div>
+              
+            
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -243,22 +180,22 @@
   <div class="section" id="module-pandas_datareader.moex">
 <span id="moscow-exchange-moex"></span><h1>Moscow Exchange (MOEX)<a class="headerlink" href="#module-pandas_datareader.moex" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="pandas_datareader.moex.MoexReader">
-<em class="property">class </em><code class="sig-prename descclassname">pandas_datareader.moex.</code><code class="sig-name descname">MoexReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.moex.MoexReader" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.moex.MoexReader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pandas_datareader.moex.</span></span><span class="sig-name descname"><span class="pre">MoexReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.moex.MoexReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a DataFrame of historical stock prices from symbols from Moex</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>symbols</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><em>an array-like object</em><em> (</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a><em>, </em><em>Series</em><em>)</em><em>, or </em><em>a DataFrame</em>) – A single stock symbol (secid), an array-like object of symbols or
+<li><p><strong>symbols</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>an array-like object</em><em> (</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a><em>, </em><em>Series</em><em>)</em><em>, or </em><em>a DataFrame</em>) – A single stock symbol (secid), an array-like object of symbols or
 a DataFrame with an index containing stock symbols.</p></li>
-<li><p><strong>start</strong> (<em>string</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>date</em><em>, </em><em>datetime</em><em>, </em><em>Timestamp</em>) – Starting date. Parses many different kind of date
+<li><p><strong>start</strong> (<em>string</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>date</em><em>, </em><em>datetime</em><em>, </em><em>Timestamp</em>) – Starting date. Parses many different kind of date
 representations (e.g., ‘JAN-01-2010’, ‘1/1/10’, ‘Jan, 1, 1980’). Defaults to
 20 years before current date.</p></li>
-<li><p><strong>end</strong> (<em>string</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>date</em><em>, </em><em>datetime</em><em>, </em><em>Timestamp</em>) – Ending date</p></li>
-<li><p><strong>retry_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>default 3</em>) – The number of times to retry query request.</p></li>
-<li><p><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>default 0.1</em>) – Time, in seconds, to pause between consecutive queries of chunks. If
+<li><p><strong>end</strong> (<em>string</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>date</em><em>, </em><em>datetime</em><em>, </em><em>Timestamp</em>) – Ending date</p></li>
+<li><p><strong>retry_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>default 3</em>) – The number of times to retry query request.</p></li>
+<li><p><strong>pause</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>default 0.1</em>) – Time, in seconds, to pause between consecutive queries of chunks. If
 single value given for symbol, represents the pause between retries.</p></li>
-<li><p><strong>chunksize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>default 25</em>) – The number of symbols to download consecutively before intiating pause.</p></li>
+<li><p><strong>chunksize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>default 25</em>) – The number of symbols to download consecutively before intiating pause.</p></li>
 <li><p><strong>session</strong> (<em>Session</em><em>, </em><em>default None</em>) – requests.sessions.Session instance to be used</p></li>
 </ul>
 </dd>
@@ -267,32 +204,38 @@ single value given for symbol, represents the pause between retries.</p></li>
 <p>To avoid being penalized by Moex servers, pauses more than 0.1s between
 downloading ‘chunks’ of symbols can be specified.</p>
 <dl class="py method">
-<dt id="pandas_datareader.moex.MoexReader.close">
-<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.moex.MoexReader.close" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.moex.MoexReader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.moex.MoexReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close network session</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.moex.MoexReader.default_start_date">
-<em class="property">property </em><code class="sig-name descname">default_start_date</code><a class="headerlink" href="#pandas_datareader.moex.MoexReader.default_start_date" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.moex.MoexReader.default_start_date">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">default_start_date</span></span><a class="headerlink" href="#pandas_datareader.moex.MoexReader.default_start_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default start date for reader. Defaults to 5 years before current date</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pandas_datareader.moex.MoexReader.params">
-<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#pandas_datareader.moex.MoexReader.params" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.moex.MoexReader.params">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#pandas_datareader.moex.MoexReader.params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parameters to use in API calls</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.moex.MoexReader.read">
-<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.moex.MoexReader.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read data</p>
+<dt class="sig sig-object py" id="pandas_datareader.moex.MoexReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.moex.MoexReader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data from the primary board for each ticker</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pandas_datareader.moex.MoexReader.url">
-<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pandas_datareader.moex.MoexReader.url" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pandas_datareader.moex.MoexReader.read_all_boards">
+<span class="sig-name descname"><span class="pre">read_all_boards</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.moex.MoexReader.read_all_boards" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read all data from every board for every ticker</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pandas_datareader.moex.MoexReader.url">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#pandas_datareader.moex.MoexReader.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of API URLs per symbol</p>
 </dd></dl>
 
@@ -316,14 +259,24 @@ downloading ‘chunks’ of symbols can be specified.</p>
 
       </div>
     </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
 
-    <script src="../_static/js/index.js"></script>
-    <footer class="footer mt-5 mt-md-0">
+  <footer class="footer mt-5 mt-md-0">
   <div class="container">
-    <p>
-          &copy; Copyright 2020, The PyData Development Team.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
-    </p>
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2020, The PyData Development Team.<br/>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
+</p>
+    </div>
+    
   </div>
 </footer>
   </body>

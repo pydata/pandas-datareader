@@ -1,261 +1,235 @@
 
-
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>NASDAQ &mdash; pandas-datareader 0.7.0 documentation</title>
-  
 
-  
-  
-  
-  
-
-  
-
-  
-  
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NASDAQ &#8212; pandas-datareader v0.10.0 documentation</title>
     
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
 
-  
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Organisation for Economic Co-operation and Development (OECD)" href="oecd.html" />
-    <link rel="prev" title="Morningstar" href="morningstar.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
-</head>
-
-<body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
+    <link rel="next" title="Naver Finance" href="naver.html" />
+    <link rel="prev" title="Moscow Exchange (MOEX)" href="moex.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
 
     
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
-          
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
 
-          
-            <a href="../index.html" class="icon icon-home"> pandas-datareader
-          
+  <div id="navbar-start">
+    
+    
 
-          
+<a class="navbar-brand" href="../index.html">
+  <img src="../_static/pandas-datareader-plain.svg" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../remote_data.html">
+  Remote Data Access
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../cache.html">
+  Caching queries
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../see-also.html">
+  Other Data Sources
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="index.html">
+  Data Readers
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../whatsnew.html">
+  What’s New
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/pydata/pandas-datareader" rel="noopener" target="_blank" title="GitHub">
+            <span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label>
           </a>
-
-          
-            
-            
-              <div class="version">
-                0.7.0
-              </div>
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
 </div>
+    </nav>
+    
 
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+    <div class="container-xl">
+      <div class="row">
           
             
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="moex.html"
+                        title="previous chapter">Moscow Exchange (MOEX)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="naver.html"
+                        title="next chapter">Naver Finance</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
             
               
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
             
-            
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../whatsnew.html">What’s New</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../remote_data.html">Remote Data Access</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cache.html">Caching queries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../see-also.html">Other Data Sources</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Data Readers</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="alphavantage.html">AlphaVantage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fred.html">Federal Reserve Economic Data (FRED)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="famafrench.html">Fama-French Data (Ken French’s Data Library)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bank-of-canada.html">Bank of Canada</a></li>
-<li class="toctree-l2"><a class="reference internal" href="enigma.html">Engima</a></li>
-<li class="toctree-l2"><a class="reference internal" href="eurostat.html">Eurostat</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iex.html">The Investors Exchange (IEX)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="moex.html">Moscow Exchange (MOEX)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="morningstar.html">Morningstar</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">NASDAQ</a></li>
-<li class="toctree-l2"><a class="reference internal" href="oecd.html">Organisation for Economic Co-operation and Development (OECD)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quandl.html">Quandl</a></li>
-<li class="toctree-l2"><a class="reference internal" href="robinhood.html">Robinhood</a></li>
-<li class="toctree-l2"><a class="reference internal" href="stooq.html">Stooq.com</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tiingo.html">Tiingo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tsp.html">Thrift Savings Plan (TSP)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="world-bank.html">World Bank</a></li>
-</ul>
-</li>
-</ul>
-
-            
-          
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">pandas-datareader</a>
-        
-      </nav>
-
-
-      <div class="wy-nav-content">
-        
-        <div class="rst-content">
-        
+          </div>
           
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="index.html">Data Readers</a> &raquo;</li>
-        
-      <li>NASDAQ</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-            
-            <a href="../_sources/readers/nasdaq-trader.rst.txt" rel="nofollow"> View page source</a>
           
-        
-      </li>
-    
-  </ul>
-
-  
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
+          
             
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
   <div class="section" id="module-pandas_datareader.nasdaq_trader">
 <span id="nasdaq"></span><h1>NASDAQ<a class="headerlink" href="#module-pandas_datareader.nasdaq_trader" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
-<dt id="pandas_datareader.nasdaq_trader.get_nasdaq_symbols">
-<code class="descclassname">pandas_datareader.nasdaq_trader.</code><code class="descname">get_nasdaq_symbols</code><span class="sig-paren">(</span><em>retry_count=3</em>, <em>timeout=30</em>, <em>pause=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.nasdaq_trader.get_nasdaq_symbols" title="Permalink to this definition">¶</a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="pandas_datareader.nasdaq_trader.get_nasdaq_symbols">
+<span class="sig-prename descclassname"><span class="pre">pandas_datareader.nasdaq_trader.</span></span><span class="sig-name descname"><span class="pre">get_nasdaq_symbols</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">retry_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pandas_datareader.nasdaq_trader.get_nasdaq_symbols" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the list of all available equity symbols from Nasdaq.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>nasdaq_tickers</strong> – DataFrame with company tickers, names, and other properties.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">pandas.DataFrame</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>nasdaq_tickers</strong> – DataFrame with company tickers, names, and other properties.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
 
 
-           </div>
-           
-          </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="oecd.html" class="btn btn-neutral float-right" title="Organisation for Economic Co-operation and Development (OECD)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="morningstar.html" class="btn btn-neutral" title="Morningstar" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="moex.html" title="previous page">Moscow Exchange (MOEX)</a>
+    <a class='right-next' id="next-link" href="naver.html" title="next page">Naver Finance</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
     </div>
   
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
 
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        &copy; Copyright 2018, The PyData Development Team.
-
-    </p>
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2020, The PyData Development Team.<br/>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
+</p>
+    </div>
+    
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
 </footer>
-
-        </div>
-      </div>
-
-    </section>
-
-  </div>
-  
-
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'0.7.0',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
-
-</body>
+  </body>
 </html>

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Remote Data Access &#8212; pandas-datareader 0.10.0dev0+32.g90f155a documentation</title>
+    <title>Remote Data Access &#8212; pandas-datareader v0.10.0 documentation</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -320,6 +320,7 @@ Currently the following sources are supported:</p>
 <li><p><a class="reference internal" href="#remote-data-tiingo"><span class="std std-ref">Tiingo</span></a></p></li>
 <li><p><a class="reference internal" href="#remote-data-iex"><span class="std std-ref">IEX</span></a></p></li>
 <li><p><a class="reference internal" href="#remote-data-alphavantage"><span class="std std-ref">Alpha Vantage</span></a></p></li>
+<li><p><a class="reference internal" href="#remote-data-econdb"><span class="std std-ref">Econdb</span></a></p></li>
 <li><p><a class="reference internal" href="#remote-data-enigma"><span class="std std-ref">Enigma</span></a></p></li>
 <li><p><a class="reference internal" href="#remote-data-quandl"><span class="std std-ref">Quandl</span></a></p></li>
 <li><p><a class="reference internal" href="#remote-data-fred"><span class="std std-ref">St.Louis FED (FRED)</span></a></p></li>
@@ -557,29 +558,30 @@ performances through the top-level function <code class="docutils literal notran
 <p><a class="reference external" href="https://www.econdb.com">Econdb</a> provides economic data from 90+
 official statistical agencies. Free API allows access to the complete
 Econdb database of time series aggregated into datasets.</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">os</span>
+<p>Reading data for a single series such as the <a class="reference external" href="https://www.econdb.com/series/RGDPUS/">RGDP</a>
+for United States, is as simple as taking the ticker segment from the URL path
+(<code class="docutils literal notranslate"><span class="pre">RGDPUS</span></code> in <a class="reference external" href="https://www.econdb.com/series/RGDPUS/">https://www.econdb.com/series/RGDPUS/</a>) and passing it in like:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
-<span class="gp">In [2]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
-
-<span class="gp">In [3]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;ticker=RGDPUS&#39;</span><span class="p">,</span> <span class="s1">&#39;econdb&#39;</span><span class="p">)</span>
-
-<span class="gp">In [4]: </span><span class="n">f</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="gh">Out[4]: </span><span class="go"></span>
-<span class="go">TableName                                                                                                                              T10106</span>
-<span class="go">SeriesCode                                                                                                                             A191RX</span>
-<span class="go">Table                                                                       Table 1.1.6. Real Gross Domestic Product, Chained Dollars (A) (Q)</span>
-<span class="go">Series description                                                                                                     Gross domestic product</span>
-<span class="go">CL_UNIT                                                                                                                                 Level</span>
-<span class="go">CL_FREQ                                                                                                                                     Q</span>
-<span class="go">Note               Table 1.1.6. Real Gross Domestic Product, Chained Dollars [Billions of chained (2012) dollars] - LastRevised: May 27, 2021</span>
-<span class="go">TIME_PERIOD                                                                                                                                  </span>
-<span class="go">2016-07-01                                                   17764388                                                                        </span>
-<span class="go">2016-10-01                                                   17876180                                                                        </span>
-<span class="go">2017-01-01                                                   17977300                                                                        </span>
-<span class="go">2017-04-01                                                   18054052                                                                        </span>
-<span class="go">2017-07-01                                                   18185636                                                                        </span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;ticker=RGDPUS&#39;</span><span class="p">,</span> <span class="s1">&#39;econdb&#39;</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
+<p>The code snippet for exporting the whole dataset, or its filtered down subset,
+can be generated by using the Export -&gt; Pandas Python3 functionality
+on any of the numerous datasets available,
+such as the Eurostat’s <a class="reference external" href="https://www.econdb.com/dataset/NAMQ_10_GDP">GDP and main components</a></p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;dataset=NAMQ_10_GDP&amp;v=Geopolitical entity (reporting)&amp;h=TIME&amp;from=2018-05-01&amp;to=2021-01-01&amp;GEO=[AL,AT,BE,BA,BG,HR,CY,CZ,DK,EE,EA19,FI,FR,DE,EL,HU,IS,IE,IT,XK,LV,LT,LU,MT,ME,NL,MK,NO,PL,PT,RO,RS,SK,SI,ES,SE,CH,TR,UK]&amp;NA_ITEM=[B1GQ]&amp;S_ADJ=[SCA]&amp;UNIT=[CLV10_MNAC]&#39;</span><span class="p">,</span> <span class="s1">&#39;econdb&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+<p>Datasets can be located through Econdb’s <a class="reference external" href="https://www.econdb.com/search">search</a>
+engine, or discovered by exploring the <a class="reference external" href="https://www.econdb.com/tree/">tree</a>
+of available statistical sources.</p>
 </div>
 <div class="section" id="enigma">
 <span id="remote-data-econdb"></span><h2>Enigma<a class="headerlink" href="#enigma" title="Permalink to this headline">¶</a></h2>
@@ -638,26 +640,26 @@ the data quality is not always good.</p>
 </div>
 <div class="section" id="fred">
 <span id="remote-data-fred"></span><h2>FRED<a class="headerlink" href="#fred" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [5]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
-<span class="gp">In [6]: </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">In [2]: </span><span class="kn">import</span> <span class="nn">datetime</span>
 
-<span class="gp">In [7]: </span><span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">In [3]: </span><span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-<span class="gp">In [8]: </span><span class="n">end</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">27</span><span class="p">)</span>
+<span class="gp">In [4]: </span><span class="n">end</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">27</span><span class="p">)</span>
 
-<span class="gp">In [9]: </span><span class="n">gdp</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;GDP&#39;</span><span class="p">,</span> <span class="s1">&#39;fred&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+<span class="gp">In [5]: </span><span class="n">gdp</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;GDP&#39;</span><span class="p">,</span> <span class="s1">&#39;fred&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
 
-<span class="gp">In [10]: </span><span class="n">gdp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2013-01-01&#39;</span><span class="p">]</span>
-<span class="gh">Out[10]: </span><span class="go"></span>
+<span class="gp">In [6]: </span><span class="n">gdp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2013-01-01&#39;</span><span class="p">]</span>
+<span class="gh">Out[6]: </span><span class="go"></span>
 <span class="go">GDP    16569.591</span>
 <span class="go">Name: 2013-01-01 00:00:00, dtype: float64</span>
 
 <span class="go"># Multiple series:</span>
-<span class="gp">In [11]: </span><span class="n">inflation</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">([</span><span class="s1">&#39;CPIAUCSL&#39;</span><span class="p">,</span> <span class="s1">&#39;CPILFESL&#39;</span><span class="p">],</span> <span class="s1">&#39;fred&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+<span class="gp">In [7]: </span><span class="n">inflation</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">([</span><span class="s1">&#39;CPIAUCSL&#39;</span><span class="p">,</span> <span class="s1">&#39;CPILFESL&#39;</span><span class="p">],</span> <span class="s1">&#39;fred&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
 
-<span class="gp">In [12]: </span><span class="n">inflation</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="gh">Out[12]: </span><span class="go"></span>
+<span class="gp">In [8]: </span><span class="n">inflation</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[8]: </span><span class="go"></span>
 <span class="go">            CPIAUCSL  CPILFESL</span>
 <span class="go">DATE                          </span>
 <span class="go">2010-01-01   217.488   220.633</span>
@@ -672,20 +674,20 @@ the data quality is not always good.</p>
 <span id="remote-data-ff"></span><h2>Fama/French<a class="headerlink" href="#fama-french" title="Permalink to this headline">¶</a></h2>
 <p>Access datasets from the <a class="reference external" href="http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html">Fama/French Data Library</a>.
 The <code class="docutils literal notranslate"><span class="pre">get_available_datasets</span></code> function returns a list of all available datasets.</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [13]: </span><span class="kn">from</span> <span class="nn">pandas_datareader.famafrench</span> <span class="kn">import</span> <span class="n">get_available_datasets</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [9]: </span><span class="kn">from</span> <span class="nn">pandas_datareader.famafrench</span> <span class="kn">import</span> <span class="n">get_available_datasets</span>
 
-<span class="gp">In [14]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
+<span class="gp">In [10]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
-<span class="gp">In [15]: </span><span class="nb">len</span><span class="p">(</span><span class="n">get_available_datasets</span><span class="p">())</span>
-<span class="gh">Out[15]: </span><span class="go">297</span>
+<span class="gp">In [11]: </span><span class="nb">len</span><span class="p">(</span><span class="n">get_available_datasets</span><span class="p">())</span>
+<span class="gh">Out[11]: </span><span class="go">297</span>
 
-<span class="gp">In [16]: </span><span class="n">ds</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;5_Industry_Portfolios&#39;</span><span class="p">,</span> <span class="s1">&#39;famafrench&#39;</span><span class="p">)</span>
+<span class="gp">In [12]: </span><span class="n">ds</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;5_Industry_Portfolios&#39;</span><span class="p">,</span> <span class="s1">&#39;famafrench&#39;</span><span class="p">)</span>
 
-<span class="gp">In [17]: </span><span class="nb">print</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;DESCR&#39;</span><span class="p">])</span>
+<span class="gp">In [13]: </span><span class="nb">print</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;DESCR&#39;</span><span class="p">])</span>
 <span class="go">5 Industry Portfolios</span>
 <span class="gt">---------------------</span>
 
-<span class="n">This</span> <span class="n">file</span> <span class="n">was</span> <span class="n">created</span> <span class="n">by</span> <span class="n">CMPT_IND_RETS</span> <span class="n">using</span> <span class="n">the</span> <span class="mi">202104</span> <span class="n">CRSP</span> <span class="n">database</span><span class="o">.</span> <span class="n">It</span> <span class="n">contains</span> <span class="n">value</span><span class="o">-</span> <span class="ow">and</span> <span class="n">equal</span><span class="o">-</span><span class="n">weighted</span> <span class="n">returns</span> <span class="k">for</span> <span class="mi">5</span> <span class="n">industry</span> <span class="n">portfolios</span><span class="o">.</span> <span class="n">The</span> <span class="n">portfolios</span> <span class="n">are</span> <span class="n">constructed</span> <span class="n">at</span> <span class="n">the</span> <span class="n">end</span> <span class="n">of</span> <span class="n">June</span><span class="o">.</span> <span class="n">The</span> <span class="n">annual</span> <span class="n">returns</span> <span class="n">are</span> <span class="kn">from</span> <span class="nn">January</span> <span class="n">to</span> <span class="n">December</span><span class="o">.</span> <span class="n">Missing</span> <span class="n">data</span> <span class="n">are</span> <span class="n">indicated</span> <span class="n">by</span> <span class="o">-</span><span class="mf">99.99</span> <span class="ow">or</span> <span class="o">-</span><span class="mf">999.</span> <span class="n">Copyright</span> <span class="mi">2021</span> <span class="n">Kenneth</span> <span class="n">R</span><span class="o">.</span> <span class="n">French</span>
+<span class="n">This</span> <span class="n">file</span> <span class="n">was</span> <span class="n">created</span> <span class="n">by</span> <span class="n">CMPT_IND_RETS</span> <span class="n">using</span> <span class="n">the</span> <span class="mi">202105</span> <span class="n">CRSP</span> <span class="n">database</span><span class="o">.</span> <span class="n">It</span> <span class="n">contains</span> <span class="n">value</span><span class="o">-</span> <span class="ow">and</span> <span class="n">equal</span><span class="o">-</span><span class="n">weighted</span> <span class="n">returns</span> <span class="k">for</span> <span class="mi">5</span> <span class="n">industry</span> <span class="n">portfolios</span><span class="o">.</span> <span class="n">The</span> <span class="n">portfolios</span> <span class="n">are</span> <span class="n">constructed</span> <span class="n">at</span> <span class="n">the</span> <span class="n">end</span> <span class="n">of</span> <span class="n">June</span><span class="o">.</span> <span class="n">The</span> <span class="n">annual</span> <span class="n">returns</span> <span class="n">are</span> <span class="kn">from</span> <span class="nn">January</span> <span class="n">to</span> <span class="n">December</span><span class="o">.</span> <span class="n">Missing</span> <span class="n">data</span> <span class="n">are</span> <span class="n">indicated</span> <span class="n">by</span> <span class="o">-</span><span class="mf">99.99</span> <span class="ow">or</span> <span class="o">-</span><span class="mf">999.</span> <span class="n">Copyright</span> <span class="mi">2021</span> <span class="n">Kenneth</span> <span class="n">R</span><span class="o">.</span> <span class="n">French</span>
 
 <span class="g g-Whitespace">  </span><span class="mi">0</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Value</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Monthly</span> <span class="p">(</span><span class="mi">59</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
 <span class="g g-Whitespace">  </span><span class="mi">1</span> <span class="p">:</span> <span class="n">Average</span> <span class="n">Equal</span> <span class="n">Weighted</span> <span class="n">Returns</span> <span class="o">--</span> <span class="n">Monthly</span> <span class="p">(</span><span class="mi">59</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
@@ -696,15 +698,15 @@ The <code class="docutils literal notranslate"><span class="pre">get_available_d
 <span class="g g-Whitespace">  </span><span class="mi">6</span> <span class="p">:</span> <span class="n">Sum</span> <span class="n">of</span> <span class="n">BE</span> <span class="o">/</span> <span class="n">Sum</span> <span class="n">of</span> <span class="n">ME</span> <span class="p">(</span><span class="mi">5</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
 <span class="g g-Whitespace">  </span><span class="mi">7</span> <span class="p">:</span> <span class="n">Value</span><span class="o">-</span><span class="n">Weighted</span> <span class="n">Average</span> <span class="n">of</span> <span class="n">BE</span><span class="o">/</span><span class="n">ME</span> <span class="p">(</span><span class="mi">5</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">5</span> <span class="n">cols</span><span class="p">)</span>
 
-<span class="gp">In [18]: </span><span class="n">ds</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="gh">Out[18]: </span><span class="go"></span>
+<span class="gp">In [14]: </span><span class="n">ds</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[14]: </span><span class="go"></span>
 <span class="go">         Cnsmr  Manuf  HiTec  Hlth   Other</span>
 <span class="go">Date                                      </span>
-<span class="go">2016-06    525    618    697    568   1058</span>
 <span class="go">2016-07    539    622    719    620   1109</span>
 <span class="go">2016-08    536    621    713    614   1099</span>
 <span class="go">2016-09    534    615    705    609   1090</span>
 <span class="go">2016-10    530    613    699    604   1087</span>
+<span class="go">2016-11    529    611    688    600   1084</span>
 </pre></div>
 </div>
 </div>
@@ -857,47 +859,65 @@ indicators, or a single ‘bad’ (#4 above) country code).</p>
 You have to specify OECD’s data set code.</p>
 <p>To confirm data set code, access to <code class="docutils literal notranslate"><span class="pre">each</span> <span class="pre">data</span> <span class="pre">-&gt;</span> <span class="pre">Export</span> <span class="pre">-&gt;</span> <span class="pre">SDMX</span> <span class="pre">Query</span></code>. Following
 example is to download ‘Trade Union Density’ data which set code is ‘TUD’.</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [19]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [15]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
-<span class="gp">In [20]: </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">In [16]: </span><span class="kn">import</span> <span class="nn">datetime</span>
 
-<span class="gp">In [21]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;TUD&#39;</span><span class="p">,</span> <span class="s1">&#39;oecd&#39;</span><span class="p">)</span>
+<span class="gp">In [17]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;TUD&#39;</span><span class="p">,</span> <span class="s1">&#39;oecd&#39;</span><span class="p">)</span>
 
-<span class="gp">In [22]: </span><span class="n">df</span><span class="o">.</span><span class="n">columns</span>
-<span class="gh">Out[22]: </span><span class="go"></span>
-<span class="go">MultiIndex([( &#39;Hungary&#39;, &#39;Administrative data&#39;,            &#39;Employees&#39;),</span>
-<span class="go">            ( &#39;Hungary&#39;, &#39;Administrative data&#39;,        &#39;Union members&#39;),</span>
-<span class="go">            ( &#39;Hungary&#39;, &#39;Administrative data&#39;, &#39;Trade union  density&#39;),</span>
-<span class="go">            ( &#39;Hungary&#39;,         &#39;Survey data&#39;,            &#39;Employees&#39;),</span>
-<span class="go">            ( &#39;Hungary&#39;,         &#39;Survey data&#39;,        &#39;Union members&#39;),</span>
-<span class="go">            ( &#39;Hungary&#39;,         &#39;Survey data&#39;, &#39;Trade union  density&#39;),</span>
-<span class="go">            (  &#39;Mexico&#39;, &#39;Administrative data&#39;,            &#39;Employees&#39;),</span>
-<span class="go">            (  &#39;Mexico&#39;, &#39;Administrative data&#39;,        &#39;Union members&#39;),</span>
-<span class="go">            (  &#39;Mexico&#39;, &#39;Administrative data&#39;, &#39;Trade union  density&#39;),</span>
-<span class="go">            (  &#39;Mexico&#39;,         &#39;Survey data&#39;,            &#39;Employees&#39;),</span>
-<span class="go">            ...</span>
-<span class="go">            (&#39;Portugal&#39;, &#39;Administrative data&#39;, &#39;Trade union  density&#39;),</span>
-<span class="go">            (&#39;Portugal&#39;,         &#39;Survey data&#39;,            &#39;Employees&#39;),</span>
-<span class="go">            (&#39;Portugal&#39;,         &#39;Survey data&#39;,        &#39;Union members&#39;),</span>
-<span class="go">            (&#39;Portugal&#39;,         &#39;Survey data&#39;, &#39;Trade union  density&#39;),</span>
-<span class="go">            ( &#39;Germany&#39;, &#39;Administrative data&#39;,            &#39;Employees&#39;),</span>
-<span class="go">            ( &#39;Germany&#39;, &#39;Administrative data&#39;,        &#39;Union members&#39;),</span>
-<span class="go">            ( &#39;Germany&#39;, &#39;Administrative data&#39;, &#39;Trade union  density&#39;),</span>
-<span class="go">            ( &#39;Germany&#39;,         &#39;Survey data&#39;,            &#39;Employees&#39;),</span>
-<span class="go">            ( &#39;Germany&#39;,         &#39;Survey data&#39;,        &#39;Union members&#39;),</span>
-<span class="go">            ( &#39;Germany&#39;,         &#39;Survey data&#39;, &#39;Trade union  density&#39;)],</span>
-<span class="go">           names=[&#39;Country&#39;, &#39;Source&#39;, &#39;Series&#39;], length=216)</span>
+<span class="gp">In [18]: </span><span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<span class="gh">Out[18]: </span><span class="go"></span>
+<span class="go">MultiIndex([(      &#39;Australia&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (        &#39;Austria&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (        &#39;Belgium&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (         &#39;Canada&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            ( &#39;Czech Republic&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (        &#39;Denmark&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (        &#39;Finland&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (         &#39;France&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (        &#39;Germany&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (         &#39;Greece&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (        &#39;Hungary&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (        &#39;Iceland&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (        &#39;Ireland&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (          &#39;Italy&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (          &#39;Japan&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (          &#39;Korea&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (     &#39;Luxembourg&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (         &#39;Mexico&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (    &#39;Netherlands&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (    &#39;New Zealand&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (         &#39;Norway&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (         &#39;Poland&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (       &#39;Portugal&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (&#39;Slovak Republic&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (          &#39;Spain&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (         &#39;Sweden&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (    &#39;Switzerland&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (         &#39;Turkey&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            ( &#39;United Kingdom&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (  &#39;United States&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (   &#39;OECD - Total&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (          &#39;Chile&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (       &#39;Colombia&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (     &#39;Costa Rica&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (        &#39;Estonia&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (         &#39;Israel&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (         &#39;Latvia&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (      &#39;Lithuania&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;),</span>
+<span class="go">            (       &#39;Slovenia&#39;, &#39;Annual&#39;, &#39;Percentage of employees&#39;)],</span>
+<span class="go">           names=[&#39;Country&#39;, &#39;Frequency&#39;, &#39;Measure&#39;])</span>
 
-<span class="gp">In [23]: </span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Japan&#39;</span><span class="p">,</span> <span class="s1">&#39;United States&#39;</span><span class="p">]]</span>
-<span class="gh">Out[23]: </span><span class="go"></span>
-<span class="go">Country                  Japan                ... United States                     </span>
-<span class="go">Source     Administrative data                ...   Survey data                     </span>
-<span class="go">Series               Employees Union members  ... Union members Trade union  density</span>
-<span class="go">Year                                          ...                                   </span>
-<span class="go">2017-01-01             43830.0       12343.0  ...       16975.0                 17.0</span>
-<span class="go">2018-01-01             45650.0       12227.0  ...       17002.0                 16.2</span>
-
-<span class="go">[2 rows x 12 columns]</span>
+<span class="gp">In [19]: </span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Japan&#39;</span><span class="p">,</span> <span class="s1">&#39;United States&#39;</span><span class="p">]]</span>
+<span class="gh">Out[19]: </span><span class="go"></span>
+<span class="go">Country                      Japan           United States</span>
+<span class="go">Frequency                   Annual                  Annual</span>
+<span class="go">Measure    Percentage of employees Percentage of employees</span>
+<span class="go">Time                                                      </span>
+<span class="go">2017-01-01               17.500000                    10.6</span>
+<span class="go">2018-01-01               17.200001                    10.3</span>
+<span class="go">2019-01-01               16.799999                     9.9</span>
+<span class="go">2020-01-01                     NaN                    10.3</span>
 </pre></div>
 </div>
 </div>
@@ -909,20 +929,20 @@ example is to download ‘Trade Union Density’ data which set code is ‘TUD�
 <li><p><a class="reference external" href="http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=tran_sf_railac&amp;lang=en">http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=tran_sf_railac&amp;lang=en</a></p></li>
 </ul>
 <p>You can specify dataset ID ‘tran_sf_railac’ to get corresponding data via <code class="docutils literal notranslate"><span class="pre">DataReader</span></code>.</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [24]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [20]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
-<span class="gp">In [25]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;tran_sf_railac&#39;</span><span class="p">,</span> <span class="s1">&#39;eurostat&#39;</span><span class="p">)</span>
+<span class="gp">In [21]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;tran_sf_railac&#39;</span><span class="p">,</span> <span class="s1">&#39;eurostat&#39;</span><span class="p">)</span>
 
-<span class="gp">In [26]: </span><span class="n">df</span>
-<span class="gh">Out[26]: </span><span class="go"></span>
-<span class="go">UNIT                                                                                      Number  ...               </span>
-<span class="go">ACCIDENT    Collisions of trains, including collisions with obstacles within the clearance gauge  ...        Unknown</span>
-<span class="go">GEO                                                                                      Austria  ... United Kingdom</span>
-<span class="go">FREQ                                                                                      Annual  ...         Annual</span>
-<span class="go">TIME_PERIOD                                                                                       ...               </span>
-<span class="go">2017-01-01                                                 7.0                                    ...            NaN</span>
-<span class="go">2018-01-01                                                 4.0                                    ...            NaN</span>
-<span class="go">2019-01-01                                                 1.0                                    ...            NaN</span>
+<span class="gp">In [22]: </span><span class="n">df</span>
+<span class="gh">Out[22]: </span><span class="go"></span>
+<span class="go">UNIT                                                                                      Number                                                      ...                                                       </span>
+<span class="go">ACCIDENT    Collisions of trains, including collisions with obstacles within the clearance gauge                                                      ... Unknown                                               </span>
+<span class="go">GEO                                                                                      Austria Belgium Bulgaria Switzerland Channel Tunnel Czechia  ... Romania Sweden Slovenia Slovakia Turkey United Kingdom</span>
+<span class="go">FREQ                                                                                      Annual  Annual   Annual      Annual         Annual  Annual  ...  Annual Annual   Annual   Annual Annual         Annual</span>
+<span class="go">TIME_PERIOD                                                                                                                                           ...                                                       </span>
+<span class="go">2017-01-01                                                 7.0                                       1.0      1.0         3.0            0.0    11.0  ...     NaN    NaN      NaN      NaN    0.0            NaN</span>
+<span class="go">2018-01-01                                                 4.0                                       0.0      1.0         3.0            0.0     6.0  ...     NaN    NaN      NaN      NaN    0.0            NaN</span>
+<span class="go">2019-01-01                                                 1.0                                       2.0      4.0         4.0            0.0     7.0  ...     NaN    NaN      NaN      NaN    NaN            NaN</span>
 
 <span class="go">[3 rows x 264 columns]</span>
 </pre></div>
@@ -931,25 +951,25 @@ example is to download ‘Trade Union Density’ data which set code is ‘TUD�
 <div class="section" id="thrift-savings-plan-tsp-fund-data">
 <span id="remote-data-tsp"></span><h2>Thrift Savings Plan (TSP) Fund Data<a class="headerlink" href="#thrift-savings-plan-tsp-fund-data" title="Permalink to this headline">¶</a></h2>
 <p>Download mutual fund index prices for the Thrift Savings Plan (TSP).</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [27]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.tsp</span> <span class="k">as</span> <span class="nn">tsp</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [23]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.tsp</span> <span class="k">as</span> <span class="nn">tsp</span>
 
-<span class="gp">In [28]: </span><span class="n">tspreader</span> <span class="o">=</span> <span class="n">tsp</span><span class="o">.</span><span class="n">TSPReader</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s1">&#39;2015-10-1&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2015-12-31&#39;</span><span class="p">)</span>
+<span class="gp">In [24]: </span><span class="n">tspreader</span> <span class="o">=</span> <span class="n">tsp</span><span class="o">.</span><span class="n">TSPReader</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s1">&#39;2015-10-1&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2015-12-31&#39;</span><span class="p">)</span>
 
-<span class="gp">In [29]: </span><span class="n">tspreader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="gh">Out[29]: </span><span class="go"></span>
-<span class="go">            L Income  L 2025   L 2030  ...   C Fund   S Fund   I Fund</span>
-<span class="go">Date                                   ...                           </span>
-<span class="go">2015-12-31   17.7733     NaN  25.0635  ...  27.5622  35.2356  24.0952</span>
-<span class="go">2015-12-30   17.8066     NaN  25.2267  ...  27.8239  35.5126  24.4184</span>
-<span class="go">2015-12-29   17.8270     NaN  25.3226  ...  28.0236  35.8047  24.4757</span>
-<span class="go">2015-12-28   17.7950     NaN  25.1691  ...  27.7230  35.4625  24.2816</span>
-<span class="go">2015-12-24   17.7991     NaN  25.2052  ...  27.7831  35.6084  24.3272</span>
-<span class="go">...              ...     ...      ...  ...      ...      ...      ...</span>
-<span class="go">2015-10-07   17.6639     NaN  24.8629  ...  26.7751  35.6035  24.3671</span>
-<span class="go">2015-10-06   17.6338     NaN  24.7268  ...  26.5513  35.1320  24.2294</span>
-<span class="go">2015-10-05   17.6395     NaN  24.7571  ...  26.6467  35.3565  24.1475</span>
-<span class="go">2015-10-02   17.5707     NaN  24.4472  ...  26.1669  34.6504  23.6367</span>
-<span class="go">2015-10-01   17.5164     NaN  24.2159  ...  25.7953  34.0993  23.3202</span>
+<span class="gp">In [25]: </span><span class="n">tspreader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gh">Out[25]: </span><span class="go"></span>
+<span class="go">            L Income  L 2025   L 2030  L 2035   L 2040  L 2045   L 2050  L 2055  L 2060  L 2065   G Fund   F Fund   C Fund   S Fund   I Fund</span>
+<span class="go">Date                                                                                                                                        </span>
+<span class="go">2015-12-31   17.7733     NaN  25.0635     NaN  26.5715     NaN  15.0263     NaN     NaN     NaN  14.9154  16.9549  27.5622  35.2356  24.0952</span>
+<span class="go">2015-12-30   17.8066     NaN  25.2267     NaN  26.7707     NaN  15.1556     NaN     NaN     NaN  14.9146  16.9249  27.8239  35.5126  24.4184</span>
+<span class="go">2015-12-29   17.8270     NaN  25.3226     NaN  26.8905     NaN  15.2319     NaN     NaN     NaN  14.9137  16.9150  28.0236  35.8047  24.4757</span>
+<span class="go">2015-12-28   17.7950     NaN  25.1691     NaN  26.7015     NaN  15.1101     NaN     NaN     NaN  14.9128  16.9799  27.7230  35.4625  24.2816</span>
+<span class="go">2015-12-24   17.7991     NaN  25.2052     NaN  26.7481     NaN  15.1407     NaN     NaN     NaN  14.9093  16.9596  27.7831  35.6084  24.3272</span>
+<span class="go">...              ...     ...      ...     ...      ...     ...      ...     ...     ...     ...      ...      ...      ...      ...      ...</span>
+<span class="go">2015-10-07   17.6639     NaN  24.8629     NaN  26.3598     NaN  14.9063     NaN     NaN     NaN  14.8429  17.0725  26.7751  35.6035  24.3671</span>
+<span class="go">2015-10-06   17.6338     NaN  24.7268     NaN  26.1898     NaN  14.7979     NaN     NaN     NaN  14.8421  17.0790  26.5513  35.1320  24.2294</span>
+<span class="go">2015-10-05   17.6395     NaN  24.7571     NaN  26.2306     NaN  14.8233     NaN     NaN     NaN  14.8413  17.0531  26.6467  35.3565  24.1475</span>
+<span class="go">2015-10-02   17.5707     NaN  24.4472     NaN  25.8518     NaN  14.5805     NaN     NaN     NaN  14.8388  17.0924  26.1669  34.6504  23.6367</span>
+<span class="go">2015-10-01   17.5164     NaN  24.2159     NaN  25.5690     NaN  14.4009     NaN     NaN     NaN  14.8380  17.0467  25.7953  34.0993  23.3202</span>
 
 <span class="go">[62 rows x 15 columns]</span>
 </pre></div>
@@ -981,70 +1001,70 @@ available. More information on the <a class="reference external" href="http://ww
 <div class="section" id="stooq-index-data">
 <span id="remote-data-stooq"></span><h2>Stooq Index Data<a class="headerlink" href="#stooq-index-data" title="Permalink to this headline">¶</a></h2>
 <p>Google finance doesn’t provide common index data download. The Stooq site has the data for download.</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [30]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [26]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
-<span class="gp">In [31]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;^DJI&#39;</span><span class="p">,</span> <span class="s1">&#39;stooq&#39;</span><span class="p">)</span>
+<span class="gp">In [27]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;^DJI&#39;</span><span class="p">,</span> <span class="s1">&#39;stooq&#39;</span><span class="p">)</span>
 
-<span class="gp">In [32]: </span><span class="n">f</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
-<span class="gh">Out[32]: </span><span class="go"></span>
+<span class="gp">In [28]: </span><span class="n">f</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="gh">Out[28]: </span><span class="go"></span>
 <span class="go">                Open      High       Low     Close     Volume</span>
 <span class="go">Date                                                         </span>
-<span class="go">2021-06-08  34645.84  34665.38  34452.94  34599.82  340382662</span>
-<span class="go">2021-06-07  34766.20  34820.91  34574.51  34630.24  299990040</span>
-<span class="go">2021-06-04  34618.69  34772.12  34618.69  34756.39  306595177</span>
-<span class="go">2021-06-03  34550.31  34667.41  34334.41  34577.04  334321380</span>
-<span class="go">2021-06-02  34614.62  34706.65  34545.96  34600.38  302421498</span>
-<span class="go">2021-06-01  34584.19  34849.32  34542.87  34575.31  337295799</span>
-<span class="go">2021-05-28  34558.50  34631.11  34520.09  34529.45  308099352</span>
-<span class="go">2021-05-27  34432.47  34608.82  34389.24  34464.64  582378357</span>
-<span class="go">2021-05-26  34336.34  34409.59  34271.44  34323.05  310227166</span>
-<span class="go">2021-05-25  34428.66  34511.35  34266.03  34312.46  339153231</span>
+<span class="go">2021-07-12  34836.75  35014.90  34730.15  34996.18  344606907</span>
+<span class="go">2021-07-09  34457.51  34893.72  34457.51  34870.16  340542786</span>
+<span class="go">2021-07-08  34569.01  34569.01  34145.59  34421.93  374853414</span>
+<span class="go">2021-07-07  34604.17  34708.78  34435.59  34681.79  340215866</span>
+<span class="go">2021-07-06  34790.16  34814.20  34358.42  34577.37  390545107</span>
+<span class="go">2021-07-02  34642.42  34821.93  34613.49  34786.35  332517041</span>
+<span class="go">2021-07-01  34507.32  34640.28  34498.85  34633.53  309690314</span>
+<span class="go">2021-06-30  34290.74  34553.16  34245.48  34502.51  333493947</span>
+<span class="go">2021-06-29  34338.89  34469.83  34266.83  34292.29  321388212</span>
+<span class="go">2021-06-28  34428.10  34449.65  34186.13  34283.27  320257590</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="moex-data">
 <span id="remote-data-moex"></span><h2>MOEX Data<a class="headerlink" href="#moex-data" title="Permalink to this headline">¶</a></h2>
 <p>The Moscow Exchange (MOEX) provides historical data.</p>
-<p>pandas_datareader.get_data_moex(<a href="#id2"><span class="problematic" id="id3">*</span></a>args) is equivalent to
-pandas_datareader.moex.MoexReader(<a href="#id4"><span class="problematic" id="id5">*</span></a>args).read()</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [33]: </span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="k">as</span> <span class="nn">pdr</span>
+<p><code class="docutils literal notranslate"><span class="pre">pandas_datareader.get_data_moex(*args)</span></code> is equivalent to
+<code class="docutils literal notranslate"><span class="pre">pandas_datareader.moex.MoexReader(*args).read()</span></code></p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [29]: </span><span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="k">as</span> <span class="nn">pdr</span>
 
-<span class="gp">In [34]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_moex</span><span class="p">([</span><span class="s1">&#39;USD000UTSTOM&#39;</span><span class="p">,</span> <span class="s1">&#39;MAGN&#39;</span><span class="p">],</span> <span class="s1">&#39;2020-07-02&#39;</span><span class="p">,</span> <span class="s1">&#39;2020-07-07&#39;</span><span class="p">)</span>
+<span class="gp">In [30]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">get_data_moex</span><span class="p">([</span><span class="s1">&#39;USD000UTSTOM&#39;</span><span class="p">,</span> <span class="s1">&#39;MAGN&#39;</span><span class="p">],</span> <span class="s1">&#39;2020-07-02&#39;</span><span class="p">,</span> <span class="s1">&#39;2020-07-07&#39;</span><span class="p">)</span>
 
-<span class="gp">In [35]: </span><span class="n">f</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="gh">Out[35]: </span><span class="go"></span>
-<span class="go">            ADMITTEDQUOTE  ADMITTEDVALUE  ...  YIELDLASTCOUPON  YIELDTOOFFER</span>
-<span class="go">TRADEDATE                                 ...                               </span>
-<span class="go">2020-07-02         37.605    670695507.0  ...              NaN           NaN</span>
-<span class="go">2020-07-03         37.950    517431999.5  ...              NaN           NaN</span>
-<span class="go">2020-07-06         38.560    640380631.5  ...              NaN           NaN</span>
-<span class="go">2020-07-07         38.140    781482393.5  ...              NaN           NaN</span>
-<span class="go">2020-07-02            NaN            NaN  ...              NaN           NaN</span>
+<span class="gp">In [31]: </span><span class="n">f</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[31]: </span><span class="go"></span>
+<span class="go">            ADMITTEDQUOTE  ADMITTEDVALUE  BEICLOSE  BID BOARDID BOARDNAME  BUYBACKDATE  CBRCLOSE    CLOSE CLOSEAUCTIONPRICE  ... TRENDWAP TRENDWAPPR  TYPE        VALUE        VOLRUR      VOLUME  WAPRICE WAVAL  YIELDLASTCOUPON  YIELDTOOFFER</span>
+<span class="go">TRADEDATE                                                                                                                    ...                                                                                                               </span>
+<span class="go">2020-07-02         37.605    670695507.0       NaN  NaN    TQBR       NaN          NaN       NaN  37.6050               NaN  ...      NaN        NaN   NaN  670695507.0           NaN  17876400.0  37.5150   0.0              NaN           NaN</span>
+<span class="go">2020-07-03         37.950    517431999.5       NaN  NaN    TQBR       NaN          NaN       NaN  37.9500               NaN  ...      NaN        NaN   NaN  517431999.5           NaN  13648900.0  37.9100   0.0              NaN           NaN</span>
+<span class="go">2020-07-06         38.560    640380631.5       NaN  NaN    TQBR       NaN          NaN       NaN  38.5600               NaN  ...      NaN        NaN   NaN  640380631.5           NaN  16565100.0  38.6600   0.0              NaN           NaN</span>
+<span class="go">2020-07-07         38.140    781482393.5       NaN  NaN    TQBR       NaN          NaN       NaN  38.1400               NaN  ...      NaN        NaN   NaN  781482393.5           NaN  20373700.0  38.3550   0.0              NaN           NaN</span>
+<span class="go">2020-07-02            NaN            NaN       NaN  NaN    CETS       NaN          NaN       NaN  70.5525               NaN  ...      NaN        NaN   NaN          NaN  1.760773e+11         NaN  70.4005   NaN              NaN           NaN</span>
 
 <span class="go">[5 rows x 66 columns]</span>
 
-<span class="gp">In [36]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">moex</span><span class="o">.</span><span class="n">MoexReader</span><span class="p">(</span><span class="s1">&#39;SBER&#39;</span><span class="p">,</span> <span class="s1">&#39;2020-07-02&#39;</span><span class="p">,</span> <span class="s1">&#39;2020-07-03&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">In [32]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">moex</span><span class="o">.</span><span class="n">MoexReader</span><span class="p">(</span><span class="s1">&#39;SBER&#39;</span><span class="p">,</span> <span class="s1">&#39;2020-07-02&#39;</span><span class="p">,</span> <span class="s1">&#39;2020-07-03&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
-<span class="gp">In [37]: </span><span class="n">f</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="gh">Out[37]: </span><span class="go"></span>
-<span class="go">            ADMITTEDQUOTE  ADMITTEDVALUE  ...  YIELDLASTCOUPON  YIELDTOOFFER</span>
-<span class="go">TRADEDATE                                 ...                               </span>
-<span class="go">2020-07-02         210.00   1.514438e+10  ...              NaN           NaN</span>
-<span class="go">2020-07-03         210.08   1.036950e+10  ...              NaN           NaN</span>
+<span class="gp">In [33]: </span><span class="n">f</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[33]: </span><span class="go"></span>
+<span class="go">            ADMITTEDQUOTE  ADMITTEDVALUE  BEICLOSE  BID BOARDID BOARDNAME  BUYBACKDATE  CBRCLOSE   CLOSE CLOSEAUCTIONPRICE  ... TRENDCLSPR TRENDWAP  TRENDWAPPR  TYPE         VALUE      VOLUME  WAPRICE WAVAL  YIELDLASTCOUPON  YIELDTOOFFER</span>
+<span class="go">TRADEDATE                                                                                                                   ...                                                                                                              </span>
+<span class="go">2020-07-02         210.00   1.514438e+10       NaN  NaN    TQBR       NaN          NaN       NaN  209.60               NaN  ...        NaN      NaN         NaN   NaN  1.589563e+10  76382050.0   208.11   0.0              NaN           NaN</span>
+<span class="go">2020-07-03         210.08   1.036950e+10       NaN  NaN    TQBR       NaN          NaN       NaN  210.95               NaN  ...        NaN      NaN         NaN   NaN  1.065166e+10  50644210.0   210.32   0.0              NaN           NaN</span>
 
 <span class="go">[2 rows x 65 columns]</span>
 
-<span class="gp">In [38]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">moex</span><span class="o">.</span><span class="n">MoexReader</span><span class="p">(</span><span class="s1">&#39;SBER&#39;</span><span class="p">,</span> <span class="s1">&#39;2020-07-02&#39;</span><span class="p">,</span> <span class="s1">&#39;2020-07-03&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read_all_boards</span><span class="p">()</span>
+<span class="gp">In [34]: </span><span class="n">f</span> <span class="o">=</span> <span class="n">pdr</span><span class="o">.</span><span class="n">moex</span><span class="o">.</span><span class="n">MoexReader</span><span class="p">(</span><span class="s1">&#39;SBER&#39;</span><span class="p">,</span> <span class="s1">&#39;2020-07-02&#39;</span><span class="p">,</span> <span class="s1">&#39;2020-07-03&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read_all_boards</span><span class="p">()</span>
 
-<span class="gp">In [39]: </span><span class="n">f</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="gh">Out[39]: </span><span class="go"></span>
-<span class="go">            ADMITTEDQUOTE  ADMITTEDVALUE  ...  YIELDLASTCOUPON  YIELDTOOFFER</span>
-<span class="go">TRADEDATE                                 ...                               </span>
-<span class="go">2020-07-02            NaN   0.000000e+00  ...              NaN           NaN</span>
-<span class="go">2020-07-02         210.00   1.514438e+10  ...              NaN           NaN</span>
-<span class="go">2020-07-03            NaN   0.000000e+00  ...              NaN           NaN</span>
-<span class="go">2020-07-03         210.08   1.036950e+10  ...              NaN           NaN</span>
-<span class="go">2020-07-02            NaN            NaN  ...              NaN           NaN</span>
+<span class="gp">In [35]: </span><span class="n">f</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[35]: </span><span class="go"></span>
+<span class="go">            ADMITTEDQUOTE  ADMITTEDVALUE  BEICLOSE  BID BOARDID BOARDNAME  BUYBACKDATE  CBRCLOSE   CLOSE CLOSEAUCTIONPRICE  ... TRENDCLSPR TRENDWAP  TRENDWAPPR  TYPE         VALUE      VOLUME  WAPRICE WAVAL  YIELDLASTCOUPON  YIELDTOOFFER</span>
+<span class="go">TRADEDATE                                                                                                                   ...                                                                                                              </span>
+<span class="go">2020-07-02            NaN            NaN       NaN  0.0    MXBD       NaN          NaN       NaN     NaN               NaN  ...        NaN      NaN         NaN   NaN           NaN         NaN      NaN   NaN              NaN           NaN</span>
+<span class="go">2020-07-03            NaN            NaN       NaN  0.0    MXBD       NaN          NaN       NaN     NaN               NaN  ...        NaN      NaN         NaN   NaN           NaN         NaN      NaN   NaN              NaN           NaN</span>
+<span class="go">2020-07-02            NaN   0.000000e+00       NaN  NaN    SMAL       NaN          NaN       NaN  209.90               NaN  ...        NaN      NaN         NaN   NaN  1.014523e+04        49.0   208.11   0.0              NaN           NaN</span>
+<span class="go">2020-07-02          210.0   1.514438e+10       NaN  NaN    TQBR       NaN          NaN       NaN  209.60               NaN  ...        NaN      NaN         NaN   NaN  1.589563e+10  76382050.0   208.11   0.0              NaN           NaN</span>
+<span class="go">2020-07-03            NaN   0.000000e+00       NaN  NaN    SMAL       NaN          NaN       NaN  210.25               NaN  ...        NaN      NaN         NaN   NaN  5.882460e+03        28.0   210.32   0.0              NaN           NaN</span>
 
 <span class="go">[5 rows x 65 columns]</span>
 </pre></div>
@@ -1054,12 +1074,12 @@ pandas_datareader.moex.MoexReader(<a href="#id4"><span class="problematic" id="i
 <span id="remote-data-naver"></span><h2>Naver Finance Data<a class="headerlink" href="#naver-finance-data" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://finance.naver.com">Naver Finance</a> provides Korean stock market
 (<a class="reference external" href="https://en.wikipedia.org/wiki/KOSPI">KOSPI</a>, <a class="reference external" href="https://en.wikipedia.org/wiki/KOSDAQ">KOSDAQ</a>) historical data.</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [40]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [36]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
-<span class="gp">In [41]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;005930&#39;</span><span class="p">,</span> <span class="s1">&#39;naver&#39;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s1">&#39;2019-09-10&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2019-10-09&#39;</span><span class="p">)</span>
+<span class="gp">In [37]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;005930&#39;</span><span class="p">,</span> <span class="s1">&#39;naver&#39;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s1">&#39;2019-09-10&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2019-10-09&#39;</span><span class="p">)</span>
 
-<span class="gp">In [42]: </span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="gh">Out[42]: </span><span class="go"></span>
+<span class="gp">In [38]: </span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[38]: </span><span class="go"></span>
 <span class="go">             Open   High    Low  Close    Volume</span>
 <span class="go">Date                                            </span>
 <span class="go">2019-09-10  47100  47200  46550  47000   9231792</span>
@@ -1072,47 +1092,47 @@ pandas_datareader.moex.MoexReader(<a href="#id4"><span class="problematic" id="i
 </div>
 <div class="section" id="yahoo-finance-data">
 <span id="remote-data-yahoo"></span><h2>Yahoo Finance Data<a class="headerlink" href="#yahoo-finance-data" title="Permalink to this headline">¶</a></h2>
-<p><a href="#id6"><span class="problematic" id="id7">`</span></a>Yahoo Finance provides stock market data</p>
+<p>Yahoo Finance provides stock market data</p>
 <p>The following endpoints are available:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">yahoo</span></code> - retrieve daily stock prices (high, open, close, volu,e and adjusted close)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">yahoo-actions</span></code> - retrieve historical corporate actions (dividends and stock splits)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">yahoo-dividends</span></code> - retrieve historical dividends</p></li>
 </ul>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [43]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [39]: </span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
-<span class="gp">In [44]: </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">In [40]: </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-<span class="gp">In [45]: </span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+<span class="gp">In [41]: </span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
 
-<span class="gp">In [46]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;GE&#39;</span><span class="p">,</span> <span class="s1">&#39;yahoo&#39;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s1">&#39;2019-09-10&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2019-10-09&#39;</span><span class="p">)</span>
+<span class="gp">In [42]: </span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;GE&#39;</span><span class="p">,</span> <span class="s1">&#39;yahoo&#39;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s1">&#39;2019-09-10&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2019-10-09&#39;</span><span class="p">)</span>
 
-<span class="gp">In [47]: </span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="gh">Out[47]: </span><span class="go"></span>
+<span class="gp">In [43]: </span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[43]: </span><span class="go"></span>
 <span class="go">            High   Low  Open  Close      Volume  Adj Close</span>
 <span class="go">Date                                                      </span>
-<span class="go">2019-09-10  9.27  8.90  8.91   9.14  62617200.0   9.069116</span>
-<span class="go">2019-09-11  9.36  9.06  9.15   9.36  57094900.0   9.287409</span>
-<span class="go">2019-09-12  9.52  9.22  9.40   9.26  68115100.0   9.188185</span>
-<span class="go">2019-09-13  9.45  9.14  9.31   9.34  45589400.0   9.277584</span>
-<span class="go">2019-09-16  9.42  9.17  9.30   9.38  45748400.0   9.317317</span>
+<span class="go">2019-09-10  9.27  8.90  8.91   9.14  62617200.0   9.062220</span>
+<span class="go">2019-09-11  9.36  9.06  9.15   9.36  57094900.0   9.280347</span>
+<span class="go">2019-09-12  9.52  9.22  9.40   9.26  68115100.0   9.181198</span>
+<span class="go">2019-09-13  9.45  9.14  9.31   9.34  45589400.0   9.270529</span>
+<span class="go">2019-09-16  9.42  9.17  9.30   9.38  45748400.0   9.310231</span>
 
-<span class="gp">In [48]: </span><span class="n">start</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">29</span><span class="p">)</span>
+<span class="gp">In [44]: </span><span class="n">start</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">29</span><span class="p">)</span>
 
-<span class="gp">In [49]: </span><span class="n">end</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+<span class="gp">In [45]: </span><span class="n">end</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
 
-<span class="gp">In [50]: </span><span class="n">actions</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;GOOG&#39;</span><span class="p">,</span> <span class="s1">&#39;yahoo-actions&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+<span class="gp">In [46]: </span><span class="n">actions</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;GOOG&#39;</span><span class="p">,</span> <span class="s1">&#39;yahoo-actions&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
 
-<span class="gp">In [51]: </span><span class="n">actions</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="gh">Out[51]: </span><span class="go"></span>
+<span class="gp">In [47]: </span><span class="n">actions</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[47]: </span><span class="go"></span>
 <span class="go">           action     value</span>
 <span class="go">2015-04-27  SPLIT  0.997262</span>
 <span class="go">2014-03-27  SPLIT  0.499500</span>
 
-<span class="gp">In [52]: </span><span class="n">dividends</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;IBM&#39;</span><span class="p">,</span> <span class="s1">&#39;yahoo-dividends&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+<span class="gp">In [48]: </span><span class="n">dividends</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s1">&#39;IBM&#39;</span><span class="p">,</span> <span class="s1">&#39;yahoo-dividends&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
 
-<span class="gp">In [53]: </span><span class="n">dividends</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="gh">Out[53]: </span><span class="go"></span>
+<span class="gp">In [49]: </span><span class="n">dividends</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[49]: </span><span class="go"></span>
 <span class="go">              action  value</span>
 <span class="go">2021-05-07  DIVIDEND   1.64</span>
 <span class="go">2021-02-09  DIVIDEND   1.63</span>
