@@ -1,0 +1,30 @@
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=azure-devops#passing-parameters
+schedules:
+- cron: "27 3 * * 0"
+  # 3:27am UTC every Sunday
+  displayName: Weekly build
+  branches:
+    include:
+    - main
+  always: true
+
+trigger:
+- main
+
+variables:
+  PYTHONHASHSEED: 12345678
+  SETUPTOOLS_USE_DISTUTILS: "stdlib"
+  coverage: true
+  RANDOMGEN_CYTHON_COVERAGE: true
+
+jobs:
+    
+- template: ci/azure/azure_template_posix.yml
+  parameters:
+    name: Linux
+    vmImage: ubuntu-20.04
+
+- template: ci/azure/azure_template_windows.yml
+  parameters:
+    name: Windows
+    vmImage: windows-2019
