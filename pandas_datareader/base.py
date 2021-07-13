@@ -70,7 +70,7 @@ class _BaseReader(object):
         self.pause = pause
         self.timeout = timeout
         self.pause_multiplier = 1
-        self.session = _init_session(session, retry_count)
+        self.session = _init_session(session)
         self.freq = freq
         self.headers = None
 
@@ -148,11 +148,7 @@ class _BaseReader(object):
         params : dict or None
             parameters passed to the URL
         """
-
-        # Use default headers if not passes and not using a user session
-        if headers is None:
-            headers = self.headers
-
+        headers = headers or self.headers
         pause = self.pause
         last_response_text = ""
         for _ in range(self.retry_count + 1):

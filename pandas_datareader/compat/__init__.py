@@ -39,11 +39,16 @@ def get_filepath_or_buffer(filepath_or_buffer, encoding=None, compression=None):
     # for "get_filepath_or_buffer" starting in pandas >= 0.20.0
     if isinstance(filepath_or_buffer, dict):
         return filepath_or_buffer, encoding, compression
-
-    tmp = com._get_filepath_or_buffer(
-        filepath_or_buffer, encoding=encoding, compression=None
-    )
-    return tmp.filepath_or_buffer, tmp.encoding, tmp.compression
+    try:
+        tmp = com._get_filepath_or_buffer(
+            filepath_or_buffer, encoding=encoding, compression=None
+        )
+        return tmp.filepath_or_buffer, tmp.encoding, tmp.compression
+    except AttributeError:
+        tmp = com.get_filepath_or_buffer(
+            filepath_or_buffer, encoding=encoding, compression=None
+        )
+        return tmp
 
 
 string_types = (str,)

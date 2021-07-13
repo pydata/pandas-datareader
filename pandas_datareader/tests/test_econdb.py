@@ -58,7 +58,7 @@ class TestEcondb(object):
             start=pd.Timestamp("2008-01-01"),
             end=pd.Timestamp("2012-01-01"),
         )
-        df = df.astype(np.float)
+        df = df.astype(float)
         jp = np.array([8351000, 6790000, 8611000, 6219000, 8368000], dtype=float)
         us = np.array(
             [175702304, 160507424, 164079728, 167600272, 171320416], dtype=float
