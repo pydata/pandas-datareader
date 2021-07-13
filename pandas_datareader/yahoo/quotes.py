@@ -5,7 +5,7 @@ from pandas import DataFrame
 
 from pandas_datareader.base import _BaseReader
 from pandas_datareader.compat import string_types
-from pandas_datareader.yahoo._headers import DEFAULT_HEADERS
+from pandas_datareader.yahoo.headers import DEFAULT_HEADERS
 
 _DEFAULT_PARAMS = {
     "lang": "en-US",

@@ -704,8 +704,8 @@ MOEX Data
 =========
 The Moscow Exchange (MOEX) provides historical data.
 
-pandas_datareader.get_data_moex(*args) is equivalent to 
-pandas_datareader.moex.MoexReader(*args).read() 
+``pandas_datareader.get_data_moex(*args)`` is equivalent to
+``pandas_datareader.moex.MoexReader(*args).read()``
 
 .. ipython:: python
 
@@ -739,7 +739,7 @@ Naver Finance Data
 
 Yahoo Finance Data
 ==================
-`Yahoo Finance provides stock market data
+Yahoo Finance provides stock market data
 
 The following endpoints are available:
 

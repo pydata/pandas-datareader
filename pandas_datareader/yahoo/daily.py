@@ -8,7 +8,7 @@ from pandas import DataFrame, isnull, notnull, to_datetime
 
 from pandas_datareader._utils import RemoteDataError
 from pandas_datareader.base import _DailyBaseReader
-from pandas_datareader.yahoo._headers import DEFAULT_HEADERS
+from pandas_datareader.yahoo.headers import DEFAULT_HEADERS
 
 
 class YahooDailyReader(_DailyBaseReader):
