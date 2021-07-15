@@ -27,22 +27,22 @@ Functions from :mod:`pandas_datareader.data` and :mod:`pandas_datareader.wb`
 extract data from various Internet sources into a pandas DataFrame.
 Currently the following sources are supported:
 
-    - :ref:`Tiingo<remote_data.tiingo>`
-    - :ref:`IEX<remote_data.iex>`
     - :ref:`Alpha Vantage<remote_data.alphavantage>`
     - :ref:`Econdb<remote_data.econdb>`
     - :ref:`Enigma<remote_data.enigma>`
+    - :ref:`Eurostat<remote_data.eurostat>`
+    - :ref:`IEX<remote_data.iex>`
+    - :ref:`Kenneth French's data library<remote_data.ff>`
+    - :ref:`MOEX<remote_data.moex>`
+    - :ref:`Nasdaq Trader symbol definitions<remote_data.nasdaq_symbols>`
+    - :ref:`Naver Finance<remote_data.naver>`
+    - :ref:`OECD<remote_data.oecd>`
     - :ref:`Quandl<remote_data.quandl>`
     - :ref:`St.Louis FED (FRED)<remote_data.fred>`
-    - :ref:`Kenneth French's data library<remote_data.ff>`
-    - :ref:`World Bank<remote_data.wb>`
-    - :ref:`OECD<remote_data.oecd>`
-    - :ref:`Eurostat<remote_data.eurostat>`
-    - :ref:`Thrift Savings Plan<remote_data.tsp>`
-    - :ref:`Nasdaq Trader symbol definitions<remote_data.nasdaq_symbols>`
     - :ref:`Stooq<remote_data.stooq>`
-    - :ref:`MOEX<remote_data.moex>`
-    - :ref:`Naver Finance<remote_data.naver>`
+    - :ref:`Thrift Savings Plan<remote_data.tsp>`
+    - :ref:`Tiingo<remote_data.tiingo>`
+    - :ref:`World Bank<remote_data.wb>`
     - :ref:`Yahoo Finance<remote_data.yahoo>`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
