@@ -7,7 +7,7 @@ Module contains tools for collecting data from various remote sources
 import warnings
 
 from pandas.util._decorators import deprecate_kwarg
-
+from pandas_datareader.base import _BaseReader
 from pandas_datareader.av.forex import AVForexReader
 from pandas_datareader.av.quotes import AVQuotesReader
 from pandas_datareader.av.sector import AVSectorPerformanceReader
@@ -60,9 +60,11 @@ __all__ = [
     "get_iex_book",
     "get_dailysummary_iex",
     "get_data_stooq",
+    "register_custom_datareader",
     "DataReader",
 ]
 
+custom_datareader = {}
 
 def get_data_alphavantage(*args, **kwargs):
     return AVTimeSeriesReader(*args, **kwargs).read()
@@ -270,6 +272,55 @@ def get_iex_book(*args, **kwargs):
     return IEXDeep(*args, **kwargs).read()
 
 
+def register_custom_datareader(custom_name, custom_class):
+    """
+    Registers a custom datareader to be used
+
+        Parameters
+    ----------
+    custom_name : str
+        A string represents name you want to give to your custom class
+    custom_class : _BaseReader
+        A class that extends _BaseReader
+
+    Returns
+    -------
+    True if successful, Error otherwise.
+    """
+    custom_datareader[custom_name] = custom_class
+    return True
+
+def unregister_custom_datareader(custom_name):
+    """
+    Unregisters a custom datareader to be used
+
+        Parameters
+    ----------
+    custom_name : str
+        A string represents name you want to give to your custom class
+
+    Returns
+    -------
+    True if successful, Error otherwise.
+    """
+    del custom_datareader[custom_name]
+    return True
+
+def get_custom_datareader(custom_name):
+    """
+    Get a custom datareader registered before
+
+        Parameters
+    ----------
+    custom_name : str
+        A string represents name you gave to your custom class
+
+    Returns
+    -------
+    Class registered before
+    """
+    return custom_datareader[custom_name]
+
 @deprecate_kwarg("access_key", "api_key")
 def DataReader(
     name,
@@ -329,6 +380,7 @@ def DataReader(
     ff = DataReader("6_Portfolios_2x3", "famafrench")
     ff = DataReader("F-F_ST_Reversal_Factor", "famafrench")
     """
+    custom_source = list(custom_datareader.keys())
     expected_source = [
         "yahoo",
         "iex",
@@ -360,7 +412,7 @@ def DataReader(
         "av-intraday",
         "econdb",
         "naver",
-    ]
+    ] + custom_source
 
     if data_source not in expected_source:
         msg = "data_source=%r is not implemented" % data_source
@@ -666,6 +718,18 @@ def DataReader(
             retry_count=retry_count,
             pause=pause,
             session=session,
+        ).read()
+
+    elif data_source in custom_source:
+        CustomDataReader = get_custom_datareader(data_source)
+        return CustomDataReader(
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+            api_key=api_key,
         ).read()
 
     else:
