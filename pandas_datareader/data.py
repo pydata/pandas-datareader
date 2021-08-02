@@ -66,6 +66,7 @@ __all__ = [
 
 custom_datareader = {}
 
+
 def get_data_alphavantage(*args, **kwargs):
     return AVTimeSeriesReader(*args, **kwargs).read()
 
@@ -290,6 +291,7 @@ def register_custom_datareader(custom_name, custom_class):
     custom_datareader[custom_name] = custom_class
     return True
 
+
 def unregister_custom_datareader(custom_name):
     """
     Unregisters a custom datareader to be used
@@ -306,6 +308,7 @@ def unregister_custom_datareader(custom_name):
     del custom_datareader[custom_name]
     return True
 
+
 def get_custom_datareader(custom_name):
     """
     Get a custom datareader registered before
@@ -320,6 +323,7 @@ def get_custom_datareader(custom_name):
     Class registered before
     """
     return custom_datareader[custom_name]
+
 
 @deprecate_kwarg("access_key", "api_key")
 def DataReader(
