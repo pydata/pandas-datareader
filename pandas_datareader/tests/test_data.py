@@ -43,19 +43,16 @@ class TestDataReader(object):
 
             @property
             def url(self):
-                return 'https://stooq.com/q/d/l/'
+                return "https://stooq.com/q/d/l/"
 
             def _get_params(self, symbol):
-                params = {
-                    's': symbol,
-                    'i': "d"
-                }
+                params = {"s": symbol, "i": "d"}
                 return params
 
-        register_custom_datareader('demo', DemoReader)
-        result = DataReader('USDJPY', 'demo')
+        register_custom_datareader("demo", DemoReader)
+        result = DataReader("USDJPY", "demo")
         assert isinstance(result, DataFrame)
 
     def test_custom_reader_fail(self):
         with pytest.raises(NotImplementedError):
-            DataReader('USDJPY', 'demo1')
+            DataReader("USDJPY", "demo1")
