@@ -743,7 +743,7 @@ Yahoo Finance provides stock market data
 
 The following endpoints are available:
 
-* ``yahoo`` - retrieve daily stock prices (high, open, close, volu,e and adjusted close)
+* ``yahoo`` - retrieve daily stock prices (high, open, close, volume and adjusted close)
 * ``yahoo-actions`` - retrieve historical corporate actions (dividends and stock splits) 
 * ``yahoo-dividends`` - retrieve historical dividends
 
