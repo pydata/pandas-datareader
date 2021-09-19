@@ -1,4 +1,3 @@
-
 import pandas as pd
 
 from pandas_datareader.base import _BaseReader
@@ -17,8 +16,8 @@ class BCBReader(_BaseReader):
     symbols : {int, str, List[str], List[int]}
         The symbols are integer codes related to available time series.
         This argument can be obtained in the SGS system site.
-        In this site searches can be executed in order to find out the desired series 
-        and use the series code in the symbols argument.
+        In this site searches can be executed in order to find out the desired
+        series and use the series code in the symbols argument.
     start : string, int, date, datetime, Timestamp
         Starting date. Parses many different kind of date
         representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
@@ -44,8 +43,8 @@ class BCBReader(_BaseReader):
         """Parameters to use in API calls"""
         params = {
             "formato": "json",
-            "dataInicial": self.start.strftime('%d/%m/%Y'),
-            "dataFinal": self.end.strftime('%d/%m/%Y'),
+            "dataInicial": self.start.strftime("%d/%m/%Y"),
+            "dataFinal": self.end.strftime("%d/%m/%Y"),
         }
         return params
 
@@ -72,7 +71,9 @@ class BCBReader(_BaseReader):
 
         urls = [self.url.format(n) for n in names]
 
-        _req = lambda url, n: self._read_single_request(n, url, self.params)
+        def _req(url, n):
+            return self._read_single_request(n, url, self.params)
+
         dfs = [_req(url, n) for url, n in zip(urls, names)]
         df = pd.concat(dfs, axis=1, join="outer")
         return df
@@ -85,14 +86,16 @@ class BCBReader(_BaseReader):
         except ValueError:
             out.seek(0)
             msg = out.read()
-            raise RemoteDataError("message: {}, symbol: {}".format(msg, symbol))
+            raise RemoteDataError(
+                "message: {}, symbol: {}".format(msg, symbol)
+            ) from None
 
-        cns = {'data': 'date', 'valor': str(symbol), 'datafim': 'end_date'}
+        cns = {"data": "date", "valor": str(symbol), "datafim": "end_date"}
         df = df.rename(columns=cns)
-        
-        if 'date' in df:
-            df['date'] = pd.to_datetime(df['date'], format='%d/%m/%Y')
-        if 'end_date' in df:
-            df['end_date'] = pd.to_datetime(df['end_date'], format='%d/%m/%Y')
-        
-        return df.set_index('date')
+
+        if "date" in df:
+            df["date"] = pd.to_datetime(df["date"], format="%d/%m/%Y")
+        if "end_date" in df:
+            df["end_date"] = pd.to_datetime(df["end_date"], format="%d/%m/%Y")
+
+        return df.set_index("date")
