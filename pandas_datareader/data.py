@@ -34,6 +34,7 @@ from pandas_datareader.tiingo import (
     TiingoQuoteReader,
 )
 from pandas_datareader.yahoo.actions import YahooActionReader, YahooDivReader
+from pandas_datareader.bcb import BCBReader
 from pandas_datareader.yahoo.components import _get_data as get_components_yahoo
 from pandas_datareader.yahoo.daily import YahooDailyReader
 from pandas_datareader.yahoo.options import Options as YahooOptions
@@ -61,6 +62,7 @@ __all__ = [
     "get_dailysummary_iex",
     "get_data_stooq",
     "DataReader",
+    "get_data_bcb",
 ]
 
 
@@ -270,6 +272,10 @@ def get_iex_book(*args, **kwargs):
     return IEXDeep(*args, **kwargs).read()
 
 
+def get_data_bcb(*args, **kwargs):
+    return BCBReader(*args, **kwargs).read()
+
+
 @deprecate_kwarg("access_key", "api_key")
 def DataReader(
     name,
@@ -360,6 +366,7 @@ def DataReader(
         "av-intraday",
         "econdb",
         "naver",
+        "bcb",
     ]
 
     if data_source not in expected_source:
@@ -660,6 +667,16 @@ def DataReader(
 
     elif data_source == "naver":
         return NaverDailyReader(
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        ).read()
+
+    elif data_source == "bcb":
+        return BCBReader(
             symbols=name,
             start=start,
             end=end,
