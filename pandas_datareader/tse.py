@@ -48,7 +48,7 @@ class TSEReader(_DailyBaseReader):
         requests.sessions.Session instance to be used.
     adjust_price : bool, default False
         If True, adjusts all prices in hist_data ('Open', 'High', 'Low',
-        'Close') based on 'Adj Close' nad 'Yesterday' price.
+        'Close') based on 'Adj Close' and 'Yesterday' price.
     interval: string, d, w, m for daily, weekly, monthly
     """
 
@@ -116,9 +116,12 @@ class TSEReader(_DailyBaseReader):
                 "message: {}, symbol: {}".format(msg, params.i)
             ) from None
 
-        df = df.iloc[::-1]
+        df = df.iloc[::-1].reset_index(drop=True)
         df = df.rename(columns=_TSE_FIELD_MAPPINGS)
         df = df.reindex(_TSE_FIELD_MAPPINGS.values(), axis=1)
+
+        if(self.adjust_price):
+            df = _adjust_prices(df)
 
         if "Date" in df:
             df["Date"] = pd.to_datetime(df["Date"], format="%Y%m%d")
@@ -170,3 +173,42 @@ class TSEReader(_DailyBaseReader):
 
     def _replace_arabic(self, string: str):
         return string.replace('ك', 'ک').replace('ي', 'ی').strip()
+
+
+def _adjust_prices(hist_data, price_list=None):
+    """
+    Return modifed DataFrame with adjusted prices based on
+    'Adj Close' and 'Yesterday'  price
+    """
+    if hist_data.empty:
+        return hist_data
+    if not isinstance(hist_data.index, pd.core.indexes.range.RangeIndex):
+        raise TypeError(
+            "Error in adjusting price; index type must be RangeIndex"
+        ) from None
+    if price_list is None:
+        price_list = ["Open", "High", "Low", "Close", "AdjClose", "Yesterday"]
+
+    data = hist_data.copy()
+    step = data.index.step
+    diff = list(data.index[data.shift(1).AdjClose != data.Yesterday])
+    if len(diff) > 0:
+        diff.pop(0)
+    ratio = 1
+    ratio_list = []
+    for i in diff[::-1]:
+        ratio *= (
+            data.loc[i, 'Yesterday'] / data.shift(1).loc[i, 'AdjClose']
+        )
+        ratio_list.insert(0, ratio)
+    for i, k in enumerate(diff):
+        if i == 0:
+            start = data.index.start
+        else:
+            start = diff[i-1]
+        end = diff[i]-step
+        data.loc[start:end, price_list] = round(
+            data.loc[start:end, price_list] * ratio_list[i]
+        )
+
+    return data
