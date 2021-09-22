@@ -33,6 +33,7 @@ from pandas_datareader.tiingo import (
     TiingoIEXHistoricalReader,
     TiingoQuoteReader,
 )
+from pandas_datareader.tse import TSEReader
 from pandas_datareader.yahoo.actions import YahooActionReader, YahooDivReader
 from pandas_datareader.yahoo.components import _get_data as get_components_yahoo
 from pandas_datareader.yahoo.daily import YahooDailyReader
@@ -46,6 +47,7 @@ __all__ = [
     "get_data_fred",
     "get_data_moex",
     "get_data_quandl",
+    "get_data_tse",
     "get_data_yahoo",
     "get_data_yahoo_actions",
     "get_nasdaq_symbols",
@@ -270,6 +272,10 @@ def get_iex_book(*args, **kwargs):
     return IEXDeep(*args, **kwargs).read()
 
 
+def get_data_tse(*args, **kwargs):
+    return TSEReader(*args, **kwargs).read()
+
+
 @deprecate_kwarg("access_key", "api_key")
 def DataReader(
     name,
@@ -360,6 +366,7 @@ def DataReader(
         "av-intraday",
         "econdb",
         "naver",
+        "tse",
     ]
 
     if data_source not in expected_source:
@@ -666,6 +673,18 @@ def DataReader(
             retry_count=retry_count,
             pause=pause,
             session=session,
+        ).read()
+
+    elif data_source == "tse":
+        return TSEReader(
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+            adjust_price=False,
+            interval="d",
         ).read()
 
     else:

@@ -44,6 +44,7 @@ Currently the following sources are supported:
     - :ref:`Tiingo<remote_data.tiingo>`
     - :ref:`World Bank<remote_data.wb>`
     - :ref:`Yahoo Finance<remote_data.yahoo>`
+    - :ref:`Tehran Stock Exchange<remote_data.tse>`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
 
@@ -762,3 +763,23 @@ The following endpoints are available:
 
    dividends = web.DataReader('IBM', 'yahoo-dividends', start, end) 
    dividends.head()
+
+.. _remote_data.tse:
+
+Tehran Stock Exchange
+=====================
+An interface to structure the information provided by
+`Tehran Stock Exchange <https://www.tsetmc.com/>`_
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+    from datetime import datetime
+    start = datetime(2021, 1, 1)
+    end = dt.datetime.today()
+    f = web.DataReader("نوری", "tse", start, end)
+    f.head()
+    
+    # Multiple series:
+    multi = web.DataReader(["نوری", "برکت"], "tse", start, end)
+    multi.head()

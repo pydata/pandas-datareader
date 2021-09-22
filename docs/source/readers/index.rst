@@ -22,3 +22,4 @@ Data Readers
    tsp
    world-bank
    yahoo
+   tse
