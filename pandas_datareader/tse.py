@@ -127,6 +127,15 @@ class TSEReader(_DailyBaseReader):
             df["Date"] = pd.to_datetime(df["Date"], format="%Y%m%d")
             df = df.set_index("Date")
             df = df[self.start:self.end]
+            if(self.interval == 'w'):
+                ohlc = df['Close'].resample('w-sat').ohlc()
+                ohlc['volume'] = df['Volume'].resample('w-sat').sum()
+                df = ohlc
+            elif self.interval == 'm':
+                ohlc = df['Close'].resample('m').ohlc()
+                ohlc['volume'] = df['Volume'].resample('m').sum()
+                df = ohlc
+
         return df
 
     def _symbol_search_request(self, symbol):
