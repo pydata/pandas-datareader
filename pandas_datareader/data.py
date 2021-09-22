@@ -684,6 +684,7 @@ def DataReader(
             pause=pause,
             session=session,
             adjust_price=False,
+            chunksize=10,
             interval="d",
         ).read()
 

@@ -1,11 +1,28 @@
 import pandas as pd
 
-from pandas_datareader.base import _BaseReader
-from pandas_datareader.compat import is_list_like
+from pandas_datareader.base import _DailyBaseReader
 from pandas_datareader._utils import RemoteDataError, SymbolWarning
 
+_TSE_TICKER_URL = "http://www.tsetmc.com/tsev2/data/Export-txt.aspx"
+_TSE_MARKET_WATCH_INIT_URL = (
+    "http://www.tsetmc.com/tsev2/data/MarketWatchInit.aspx?h=0&r=0"
+)
+_TSE_FIELD_MAPPINGS = {
+    "<DTYYYYMMDD>": "Date",
+    "<FIRST>": "Open",
+    "<HIGH>": "High",
+    "<LOW>": "Low",
+    "<LAST>": "Close",
+    "<VOL>": "Volume",
+    "<VALUE>": "Value",
+    "<OPENINT>": "Count",
+    "<CLOSE>": "AdjClose",
+    "<OPEN>": "Yesterday",
+}
+_tse_ticker_cache = None
 
-class TSEReader(_BaseReader):
+
+class TSEReader(_DailyBaseReader):
     """
     Tehran stock exchange daily data
 
@@ -44,6 +61,7 @@ class TSEReader(_BaseReader):
         pause=0.1,
         session=None,
         adjust_price=False,
+        chunksize=1,
         interval="d",
     ):
         super().__init__(
@@ -53,6 +71,7 @@ class TSEReader(_BaseReader):
             retry_count=retry_count,
             pause=pause,
             session=session,
+            chunksize=chunksize,
         )
 
         # Ladder up the wait time between subsequent requests to improve
@@ -70,114 +89,84 @@ class TSEReader(_BaseReader):
     @property
     def url(self):
         """API URL"""
+        return (_TSE_TICKER_URL)
 
-        return ("http://www.tsetmc.com/tsev2/data/"
-                "Export-txt.aspx?t=i&a=1&b=0&i={}")
+    def _get_params(self, symbol):
+        # This needed because yahoo returns data shifted by 4 hours ago.
+        index = self._symbol_search_request(symbol)
 
-    def read(self):
-        """
-        Read data from connector
-        """
-        try:
-            return self._read()
-        finally:
-            self.close()
+        params = {
+            "t": "i",
+            "a": 1,
+            "b": 0,
+            "i": index,
+        }
+        return params
 
-    def _read(self):
-        """
-        read data from many URLs if necessary and
-        joins into one DataFrame
-        """
-        indexes = self._symbol_search_request(self.symbols)
-
-        urls = [self.url.format(indexes[n]) for n in indexes]
-
-        def _req(url, n):
-            return self._read_single_request(n, url, self.params)
-
-        dfs = {n: _req(url, n) for url, n in zip(urls, indexes)}
-
-        return dfs
-
-    def _read_single_request(self, symbol, url, params):
+    def _read_one_data(self, url, params):
         """read one data from specified URL"""
 
-        out = self._read_url_as_StringIO(url, params=None)
+        out = self._read_url_as_StringIO(url, params)
         try:
             df = pd.read_csv(out)
         except ValueError:
             out.seek(0)
             msg = out.read()
             raise RemoteDataError(
-                "message: {}, symbol: {}".format(msg, symbol)
+                "message: {}, symbol: {}".format(msg, params.i)
             ) from None
 
         df = df.iloc[::-1]
-        HISTORY_FIELD_MAPPINGS = {
-            "<DTYYYYMMDD>": "date",
-            "<FIRST>": "open",
-            "<HIGH>": "high",
-            "<LOW>": "low",
-            "<LAST>": "close",
-            "<VOL>": "volume",
-            "<VALUE>": "value",
-            "<OPENINT>": "count",
-            "<CLOSE>": "adjClose",
-            "<OPEN>": "yesterday",
-        }
-        df = df.rename(columns=HISTORY_FIELD_MAPPINGS)
-        df = df.reindex(HISTORY_FIELD_MAPPINGS.values(), axis=1)
+        df = df.rename(columns=_TSE_FIELD_MAPPINGS)
+        df = df.reindex(_TSE_FIELD_MAPPINGS.values(), axis=1)
 
-        if "date" in df:
-            df["date"] = pd.to_datetime(df["date"], format="%Y%m%d")
-            df = df.set_index("date")
+        if "Date" in df:
+            df["Date"] = pd.to_datetime(df["Date"], format="%Y%m%d")
+            df = df.set_index("Date")
             df = df[self.start:self.end]
         return df
 
-    def _symbol_search_request(self, symbols):
+    def _symbol_search_request(self, symbol):
         """read one data from specified URL"""
-        MARKET_WATCH_INIT_URL = (
-            "http://www.tsetmc.com/tsev2/data/MarketWatchInit.aspx?h=0&r=0"
-        )
-        if not is_list_like(symbols):
-            names = [symbols]
-        else:
-            names = symbols
-        out = self._read_url_as_StringIO(MARKET_WATCH_INIT_URL, params=None)
-        out.seek(0)
-        msg = out.read()
-        # response contain different groups for different data
-        response_groups = msg.split("@")
-        if len(response_groups) < 3:
-            raise RemoteDataError(
-                "response groups: {}, symbol: {}".format(
-                    len(response_groups),
-                    symbols
-                )
-            ) from None
+        global _tse_ticker_cache
 
-        symbols_data = response_groups[2].split(";")
-
-        market_symbols = {}
-        for symbol_data in symbols_data:
-            data = symbol_data.split(",")
-            market_symbols[
-                self._replace_arabic(data[2]).replace('\u200c', '')
-            ] = self._replace_arabic(data[0])
-
-        indexes = {}
-        for name in names:
-            try:
-                if name.isnumeric():
-                    indexes[name] = name
-                else:
-                    indexes[name] = market_symbols[name]
-            except KeyError:
-                raise SymbolWarning(
-                    "{} not found".format(name)
+        if _tse_ticker_cache is None:
+            out = self._read_url_as_StringIO(
+                _TSE_MARKET_WATCH_INIT_URL,
+                params=None
+            )
+            out.seek(0)
+            msg = out.read()
+            # response contain different groups for different data
+            response_groups = msg.split("@")
+            if len(response_groups) < 3:
+                raise RemoteDataError(
+                    "response groups: {}, symbol: {}".format(
+                        len(response_groups),
+                        symbol
+                    )
                 ) from None
 
-        return indexes
+            symbols_data = response_groups[2].split(";")
+
+            _tse_ticker_cache = {}
+            for symbol_data in symbols_data:
+                data = symbol_data.split(",")
+                _tse_ticker_cache[
+                    self._replace_arabic(data[2]).replace('\u200c', '')
+                ] = self._replace_arabic(data[0])
+
+        try:
+            if symbol.isnumeric():
+                index = symbol
+            else:
+                index = _tse_ticker_cache[symbol]
+        except KeyError:
+            raise SymbolWarning(
+                "{} not found".format(symbol)
+            ) from None
+
+        return index
 
     def _replace_arabic(self, string: str):
         return string.replace('ك', 'ک').replace('ي', 'ی').strip()
