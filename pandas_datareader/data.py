@@ -273,6 +273,34 @@ def get_iex_book(*args, **kwargs):
 
 
 def get_data_tse(*args, **kwargs):
+    """
+    Tehran stock exchange daily data
+
+    Returns DataFrame of historical data from the Tehran Stock Exchange
+    open data service, over date range, start to end.
+
+    Parameters
+    ----------
+    symbols : {int, str, List[str], List[int]}
+        The symbols can be persian symbol code or instrument id.
+        This argument can be obtained from tsetmc.com site.
+    start : string, int, date, datetime, Timestamp
+        Starting date. Parses many different kind of date
+        default value is 5 years ago
+        representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
+    end : string, int, date, datetime, Timestamp
+        Ending date
+    retry_count : int, default 3
+        Number of times to retry query request.
+    pause : float, default 0.1
+        Time, in seconds, of the pause between retries.
+    session : Session, default None
+        requests.sessions.Session instance to be used.
+    adjust_price : bool, default False
+        If True, adjusts all prices in hist_data ('Open', 'High', 'Low',
+        'Close') based on 'Adj Close' and 'Yesterday' price.
+    interval: string, d, w, m for daily, weekly, monthly
+    """
     return TSEReader(*args, **kwargs).read()
 
 
