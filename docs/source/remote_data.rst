@@ -780,6 +780,14 @@ An interface to structure the information provided by
     f = web.DataReader("نوری", "tse", start, end)
     f.head()
     
+    # Adjust prices
+    f = web.get_data_tse("نوری", start, end, adjust_price=True)
+    f.head()
+    
+    # Resamle Close price weekly or monthly
+    f = web.get_data_tse("نوری", start, end, interval="m")
+    f.head()
+    
     # Multiple series:
     multi = web.DataReader(["نوری", "برکت"], "tse", start, end)
     multi.head()
