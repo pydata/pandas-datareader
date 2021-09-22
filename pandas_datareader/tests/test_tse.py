@@ -37,7 +37,7 @@ class TestTSE(object):
         assert df.index.name == "Date"
         assert df.index[0] == pd.to_datetime(self.start)
         assert df.index[-1] == pd.to_datetime(self.end)
-        assert list(df.columns.get_level_values(1)[0:len(names)]) == names
+        assert list(df.columns.get_level_values(1)[0 : len(names)]) == names
         assert len(df) == 126
 
     def test_tse_multi_bad_series(self):

@@ -82,14 +82,12 @@ class TSEReader(_DailyBaseReader):
         self.interval = interval
 
         if self.interval not in ["d", "w", "m"]:
-            raise ValueError(
-                "Invalid interval: valid values are  'd', 'w' and 'm'. "
-            )
+            raise ValueError("Invalid interval: valid values are  'd', 'w' and 'm'. ")
 
     @property
     def url(self):
         """API URL"""
-        return (_TSE_TICKER_URL)
+        return _TSE_TICKER_URL
 
     def _get_params(self, symbol):
         # This needed because yahoo returns data shifted by 4 hours ago.
@@ -120,20 +118,20 @@ class TSEReader(_DailyBaseReader):
         df = df.rename(columns=_TSE_FIELD_MAPPINGS)
         df = df.reindex(_TSE_FIELD_MAPPINGS.values(), axis=1)
 
-        if(self.adjust_price):
+        if self.adjust_price:
             df = _adjust_prices(df)
 
         if "Date" in df:
             df["Date"] = pd.to_datetime(df["Date"], format="%Y%m%d")
             df = df.set_index("Date")
-            df = df[self.start:self.end]
-            if(self.interval == 'w'):
-                ohlc = df['Close'].resample('w-sat').ohlc()
-                ohlc['volume'] = df['Volume'].resample('w-sat').sum()
+            df = df[self.start : self.end]
+            if self.interval == "w":
+                ohlc = df["Close"].resample("w-sat").ohlc()
+                ohlc["volume"] = df["Volume"].resample("w-sat").sum()
                 df = ohlc
-            elif self.interval == 'm':
-                ohlc = df['Close'].resample('m').ohlc()
-                ohlc['volume'] = df['Volume'].resample('m').sum()
+            elif self.interval == "m":
+                ohlc = df["Close"].resample("m").ohlc()
+                ohlc["volume"] = df["Volume"].resample("m").sum()
                 df = ohlc
 
         return df
@@ -143,10 +141,7 @@ class TSEReader(_DailyBaseReader):
         global _tse_ticker_cache
 
         if _tse_ticker_cache is None:
-            out = self._read_url_as_StringIO(
-                _TSE_MARKET_WATCH_INIT_URL,
-                params=None
-            )
+            out = self._read_url_as_StringIO(_TSE_MARKET_WATCH_INIT_URL, params=None)
             out.seek(0)
             msg = out.read()
             # response contain different groups for different data
@@ -154,8 +149,7 @@ class TSEReader(_DailyBaseReader):
             if len(response_groups) < 3:
                 raise RemoteDataError(
                     "response groups: {}, symbol: {}".format(
-                        len(response_groups),
-                        symbol
+                        len(response_groups), symbol
                     )
                 ) from None
 
@@ -165,7 +159,7 @@ class TSEReader(_DailyBaseReader):
             for symbol_data in symbols_data:
                 data = symbol_data.split(",")
                 _tse_ticker_cache[
-                    self._replace_arabic(data[2]).replace('\u200c', '')
+                    self._replace_arabic(data[2]).replace("\u200c", "")
                 ] = self._replace_arabic(data[0])
 
         try:
@@ -174,14 +168,12 @@ class TSEReader(_DailyBaseReader):
             else:
                 index = _tse_ticker_cache[symbol]
         except KeyError:
-            raise SymbolWarning(
-                "{} not found".format(symbol)
-            ) from None
+            raise SymbolWarning("{} not found".format(symbol)) from None
 
         return index
 
     def _replace_arabic(self, string: str):
-        return string.replace('ك', 'ک').replace('ي', 'ی').strip()
+        return string.replace("ك", "ک").replace("ي", "ی").strip()
 
 
 def _adjust_prices(hist_data, price_list=None):
@@ -206,16 +198,14 @@ def _adjust_prices(hist_data, price_list=None):
     ratio = 1
     ratio_list = []
     for i in diff[::-1]:
-        ratio *= (
-            data.loc[i, 'Yesterday'] / data.shift(1).loc[i, 'AdjClose']
-        )
+        ratio *= data.loc[i, "Yesterday"] / data.shift(1).loc[i, "AdjClose"]
         ratio_list.insert(0, ratio)
     for i, k in enumerate(diff):
         if i == 0:
             start = data.index.start
         else:
-            start = diff[i-1]
-        end = diff[i]-step
+            start = diff[i - 1]
+        end = diff[i] - step
         data.loc[start:end, price_list] = round(
             data.loc[start:end, price_list] * ratio_list[i]
         )
