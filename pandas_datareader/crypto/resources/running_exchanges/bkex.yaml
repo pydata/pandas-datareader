@@ -1,0 +1,356 @@
+name: bkex
+exchange: true
+api_url: https://api.bkex.cc
+
+requests:
+  currency_pairs:
+    request:
+      template: /v2/common/symbols
+      pair_template: null
+      params: null 
+    response:
+      type: dict
+      values:
+        msg: 
+          type: str
+        code: 
+          type: str
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              coinTypes:
+                type: list
+                values:
+                  type: dict
+                  values:
+                    symbol:
+                      type: str
+    mapping:
+      - key: currency_pair_first
+        path: 
+        - data
+        - symbol
+        type:
+        - str
+        - split
+        - "_"
+        - 0
+      - key: currency_pair_second
+        path:
+        - data
+        - symbol
+        type:
+        - str
+        - split
+        - "_"
+        - 1
+  
+  tickers:
+    request:
+      template: /v2/q/ticker/price
+      pair_template: 
+        template: "{first}_{second}"
+        lower_case: false
+        alias: pair
+      params: null
+    response:
+      type: dict
+      values:
+        code:
+          type: int
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              price:
+                type: float
+              symbol:
+                type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+        - data
+        - symbol
+        type:
+        - str
+        - split
+        - "_"
+        - 0
+      - key: currency_pair_second
+        path:
+        - data
+        - symbol
+        type:
+        - str
+        - split
+        - "_"
+        - 1
+      - key: last_price
+        path:
+        - data
+        - price
+        type:
+        - float
+      - key: time
+        path: []
+        type:
+        - none
+        - now
+
+  historic_rates:
+    request:
+      template: /v2/q/kline
+      pair_template: 
+        template: "{first}_{second}"
+        lower_case: false
+        alias: symbol
+      params: 
+        period:
+          allowed:
+            minutes: 1m
+            hours: 1h
+            days: 1d
+            weeks: 1w
+          default: 1d
+        size:
+          default: 1000
+        to:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestampms
+        from:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedeltams
+            - interval
+            - 1000
+
+
+    response:
+      type: dict
+      values:
+        msg: 
+          type: str
+        code:
+          type: str
+        data: 
+          type: list
+          values:
+            type: dict
+            values:
+              ts: # timestamp ms
+                type: int
+              close: # closing price
+                type: float
+              open: # opening price
+                type: float
+              hhigh: # highest price
+                type: float
+              low: # lowest price
+                type: float
+              volume: #base amount
+                type: float
+    mapping:
+      - key: time
+        path:
+        - data
+        - ts
+        type:
+        - float
+        - from_timestamp
+        - 1
+      - key: low
+        path:
+        - data
+        - low
+        type:
+        - float
+      - key: high
+        path:
+        - data
+        - high
+        type:
+        - float
+      - key: open
+        path:
+        - data
+        - open
+        type:
+        - float
+      - key: close
+        path:
+        - data
+        - close
+        type:
+        - float
+      - key: volume
+        path:
+          - data
+          - volume
+        type:
+          - float
+
+  order_books:
+    request:
+      template: /v2/q/depth
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        depth:
+          type:
+          - int
+          default: 50
+        preicion:
+          type: int
+          default: 4
+    response:
+      type: dict
+      values:
+        msg:
+          type: str
+        code:
+          type: str
+        data:
+          type: dict
+          values:
+            bid:
+              type: list
+              values:
+                type: list
+                values:
+                  0: # price
+                    type: float
+                  1: # quantity
+                    type: float
+            ask:
+              type: list
+              values:
+                type: list
+                values:
+                  0: # price
+                    type: float
+                  1: # quantity
+                    type: float
+
+    mapping:
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: id
+        path: []
+        type:
+          - none
+          - now_timestamp
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_price
+        path:
+          - data
+          - bid
+          - 0
+        type:
+          - float
+      - key: bids_amount
+        path:
+          - data
+          - bid
+          - 1
+        type:
+          - float
+      - key: asks_price
+        path:
+          - data
+          - ask
+          - 0
+        type:
+          - float
+      - key: asks_amount
+        path:
+          - data
+          - ask
+          - 1
+        type:
+          - float
+
+  trades:
+    request:
+      template: /v2/q/deals
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        size:
+          type:
+          - int
+          default: 50
+    response:
+      type: dict
+      values:
+        msg:
+          type: str
+        code:
+          type: str
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              ts:
+                type: int
+              price:
+                type: float
+              volume:
+                type: float
+              direction:
+                type: str
+    mapping:
+      - key: time
+        path:
+          - data
+          - ts
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: id
+        path:
+          - data
+          - ts
+        type:
+          - int
+      - key: direction
+        path:
+          - data
+          - direction
+        type:
+          - value
+          - map
+          - B
+          - buy
+          - S
+          - sell
+      - key: price
+        path:
+          - data
+          - price
+        type:
+          - float
+      - key: amount
+        path:
+          - data
+          - volume
+        type:
+          - float

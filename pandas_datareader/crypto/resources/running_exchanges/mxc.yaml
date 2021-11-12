@@ -1,0 +1,290 @@
+# historic rates require a start time which is not known.
+# the new api v2 requires an API key.
+
+name: mxc
+exchange: true
+api_url: https://www.mxc.com/
+
+requests:
+  currency_pairs:
+    request:
+      template: /open/api/v1/data/markets
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        code:
+          type: str
+        data:
+          type: list
+          values:
+            currency_pair:
+              type: str
+        msg:
+          type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - data
+          - []
+        type:
+          - str
+          - split
+          - "_"
+          - 0
+      - key: currency_pair_second
+        path:
+          - data
+          - []
+        type:
+          - str
+          - split
+          - "_"
+          - 1
+
+  tickers:
+    request:
+      template: open/api/v1/data/ticker
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        code:
+          type: str
+        data:
+          type: dict
+          values:
+            currency_pair:
+              type: dict
+              values:
+                volume:
+                  type: float
+                high:
+                  type: float
+                low:
+                  type: float
+                buy:
+                  type: float
+                sell:
+                  type: float
+                open: 
+                  type: float
+                last: 
+                  type: float
+                percentChange:
+                  type: float
+        msg:
+          type: str
+    
+    mapping:
+    - key: time
+      path: []
+      type:
+      - none
+      - now
+    - key: currency_pair_first
+      path:
+      - data
+      - dict_key
+      type:
+      - str
+      - splitupper
+      - "_"
+      - 0
+    - key: currency_pair_second
+      path: 
+      - data
+      - dict_key
+      type:
+      - str
+      - splitupper
+      - "_"
+      - 1
+    - key: daily_volume
+      path: 
+      - data
+      - dict_values
+      - volume
+      type:
+      - float
+    - key: best_ask
+      path:
+      - data
+      - dict_values
+      - buy
+      type: 
+      - float
+    - key: best_bid
+      path:
+      - data
+      - dict_values
+      - sell
+      type: 
+      - float
+    - key: last_price
+      path:
+      - data
+      - dict_values
+      - last
+      type:
+      - float
+
+
+  trades:
+    request:
+      template: /open/api/v1/data/history
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: market
+      params: null
+
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              tradeTime:
+                type: str
+              tradePrice:
+                type: str
+              tradeQuantity:
+                type: str
+              tradeType:
+                type: str
+    mapping:
+      - key: id
+        path:
+          - data
+          - tradeTime
+        type:
+          - str
+          - dateparser
+          - totimestamp
+      - key: time
+        path:
+          - data
+          - tradeTime
+        type:
+          - str
+          - dateparser
+      - key: direction
+        path:
+          - data
+          - tradeType
+        type:
+          - value
+          - map
+          - "1"
+          - sell
+          - "2"
+          - buy
+      - key: price
+        path:
+          - data
+          - tradeQuantity
+        type:
+          - str
+          - float
+      - key: amount
+        path:
+          - data
+          - tradePrice
+        type:
+          - str
+          - float
+
+
+
+  order_books:
+    request:
+      template: /open/api/v1/data/depth
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: market
+      params:
+        depth:
+          type: int
+          degfault: 50
+
+    response:
+      type: dict
+      values:
+        data:
+          type: dict
+          values:
+            asks:
+              type: list
+              values:
+                type: dict
+                values:
+                  price:
+                    type: str
+                  quantity:
+                    type: str
+            bids:
+              type: list
+              values:
+                type: dict
+                values:
+                  price:
+                    type: str
+                  quantity:
+                    type: str
+
+    mapping:
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: id
+        path: []
+        type:
+          - none
+          - now_timestamp
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_price
+        path:
+          - data
+          - bids
+          - price
+        type:
+          - str
+          - float
+      - key: bids_amount
+        path:
+          - data
+          - bids
+          - quantity
+        type:
+          - str
+          - float
+      - key: asks_price
+        path:
+          - data
+          - asks
+          - price
+        type:
+          - str
+          - float
+      - key: asks_amount
+        path:
+          - data
+          - asks
+          - quantity
+        type:
+          - str
+          - float
+
+

@@ -1,0 +1,420 @@
+name: bw
+exchange: true
+rate_limit: null
+api_url: https://www.bw.com/api/
+
+requests:
+  currency_pairs:
+    request:
+      template: data/v1/tickers
+      pair_template: null
+      params:
+        isUseMarketName:
+          type: bool
+          default: "True"
+    response:
+      type: dict
+      values:
+        datas:
+          type: dict
+          values:
+            currency_pair:
+              type: list
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - datas
+          - list_key
+        type:
+          - str
+          - split
+          - "_"
+          - 0
+      - key: currency_pair_second
+        path:
+          - datas
+          - list_key
+        type:
+          - str
+          - split
+          - "_"
+          - 1
+
+  tickers:
+    request:
+      template: data/v1/tickers
+      pair_template: null
+      params:
+        isUseMarketName:
+          type: bool
+          default: True
+    response:
+      type: dict
+      values:
+        datas:
+          type: dict
+          values:
+            currency_pair:
+              type: list
+              values:
+                0: #MarketID
+                  type: int
+                1: #last
+                  type: str                
+                2: #high
+                  type: str                   
+                3: #low
+                  type: str                   
+                4: #24h Volumne
+                  type: str                   
+                5: #24h price increase
+                  type: str                   
+                6: #recent 6h closing price list
+                  type: str                     
+                7: #buy one price
+                  type: str                     
+                8: #sell one price
+                  type: str                     
+                9: #24h turnover
+                  type: str
+    mapping:
+    - key: time
+      path: []
+      type:
+      - none
+      - now
+    - key: currency_pair_first
+      path:
+      - datas
+      - list_key
+      type:
+      - str
+      - split
+      - "_"
+      - 0
+    - key: currency_pair_second
+      path:
+      - datas
+      - list_key
+      type:
+      - str
+      - split
+      - "_"
+      - 1
+    - key: last_price
+      path: 
+      - datas
+      - list_values
+      - 1
+      type:
+      - str
+      - float      
+    - key: daily_volume
+      path:
+      - datas
+      - list_values
+      - 4
+      type:
+      - str
+      - float
+    - key: best_bid
+      path: 
+      - datas
+      - list_values
+      - 7
+      type:
+      - str
+      - float      
+    - key: best_ask
+      path: 
+      - datas
+      - list_values
+      - 8
+      type:
+      - str
+      - float      
+
+  historic_rates:
+    request:
+      template: data/v1/klines
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: marketName
+      params:
+        dataSize:
+          type: int
+          default: 500
+        type:
+          allowed:
+            minutes: 1M
+            hours: 1H
+            days: 1D
+            weeks: 1W
+          default: 1D
+
+    response:
+      type: dict
+      values:
+        datas:
+          type: list
+          values:
+            type: list
+            values:
+              0: #data Typ
+                type: str
+              1: #market ID
+                type: int
+              2: #market_name
+                type: str
+              3: #timestamp
+                type: int
+              4: #opening Price
+                type: str
+              5: #highest price
+                type: str
+              6: #lowest Price
+                type: str
+              7: #closing Price
+                type: #str
+              8: #volume
+                type: str
+              9: #price_range
+                type: str
+              10: #US Dollar Exchange Rate
+                type: # str
+              11: # K-line Period
+                type: str
+              12: #converted
+                type: bool
+              13: #?
+                type: str
+        resMsg: 
+          type: dict
+          values:
+            message:
+              type: str
+            method:
+              type: str
+            code:
+              type: str
+
+    mapping:
+    - key: time
+      path:
+      - datas
+      - 3
+      type:
+      - str
+      - float
+      - from_timestamp
+      - 0
+    - key: open
+      path:
+      - datas
+      - 4
+      type:
+      - str
+      - float
+    - key: close
+      path:
+      - datas
+      - 7
+      type:
+      - str
+      - float
+    - key: low
+      path:
+      - datas
+      - 6
+      type:
+      - str
+      - float
+    - key: high
+      path:
+      - datas
+      - 5
+      type:
+      - str
+      - float
+    - key: volume
+      path:
+      - datas
+      - 8
+      type:
+      - str
+      - float
+
+
+  trades:
+    request:
+      template: data/v1/trades
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: marketName
+      params:
+        dataSize:
+          type: int
+          max: 20
+          default: 20
+    response:
+      type: dict
+      values:
+        datas:
+          type: list
+          values:
+            type: list
+            values:
+              0:  #trade data
+                type: str
+              1: # market ID
+                type: str
+              2: # timestamp
+                type: str
+              3: # symbol
+                type: str
+              4: # direction
+                type: str
+              5: # price
+                type: str
+              6: # amount
+                type: str
+    mapping:
+      - key: time
+        path:
+          - datas
+          - 2
+        type:
+          - str
+          - float
+          - from_timestamp
+          - 0
+      - key: id
+        path:
+          - datas
+          - 2
+        type:
+          - str
+          - int
+      - key: direction
+        path:
+          - datas
+          - 4
+        type:
+          - value
+          - map
+          - bid
+          - sell
+          - ask
+          - buy
+      - key: price
+        path:
+          - datas
+          - 5
+        type:
+          - str
+          - float
+      - key: amount
+        path:
+          - datas
+          - 6
+        type:
+          - str
+          - float
+
+  order_books:
+    request:
+      template: data/v1/entrusts
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: marketName
+      params:
+        dataSize:
+          type: int
+          max: 50
+          default: 50
+
+    response:
+      type: dict
+      values:
+        datas:
+          type: dict
+          values:
+            asks:
+              type: list
+              values:
+                type: list
+                values:
+                  0:
+                    type: str
+                  1:
+                    type: str
+            bids:
+              type: list
+              values:
+                type: list
+                values:
+                  0:
+                    type: str
+                  1:
+                    type: str
+            timestamp:
+              type: str
+    mapping:
+      - key: time
+        path:
+          - datas
+          - timestamp
+        type:
+          - str
+          - float
+          - from_timestamp
+          - 0
+      - key: id
+        path:
+          - datas
+          - timestamp
+        type:
+          - str
+          - int
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_amount
+        path:
+          - datas
+          - bids
+          - 1
+        type:
+          - str
+          - float
+      - key: bids_price
+        path:
+          - datas
+          - bids
+          - 0
+        type:
+          - str
+          - float
+      - key: asks_amount
+        path:
+          - datas
+          - asks
+          - 1
+        type:
+          - str
+          - float
+      - key: asks_price
+        path:
+          - datas
+          - asks
+          - 0
+        type:
+          - str
+          - float
+

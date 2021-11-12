@@ -1,0 +1,248 @@
+name: mercatox
+terms: null
+api_url: https://mercatox.com/api/public/v1/
+rate_limit: null
+requests:
+
+  currency_pairs:
+    request:
+      template: ticker
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: dict
+    mapping:
+    - key: currency_pair_first
+      path:
+      - dict_key
+      type:
+      - str
+      - split
+      - "_"
+      - 0
+    - key: currency_pair_second
+      path:
+      - dict_key
+      type:
+      - str
+      - split
+      - "_"
+      - 1
+
+  tickers:
+    request: 
+      template: ticker
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: dict
+          values:
+            last_price:
+              type: str
+            baseVolume:
+              type: str
+            quoteVolume:
+              type: str
+            lowestAsk:
+              type: str
+            highestBid:
+              type: str
+    mapping:
+    - key: time
+      path: []
+      type:
+      - none
+      - now
+    - key: currency_pair_first
+      path:
+      - dict_key
+      type:
+      - str
+      - split
+      - "_"
+      - 0
+    - key: currency_pair_second
+      path:
+      - dict_key
+      type:
+      - str
+      - split
+      - "_"
+      - 1
+    - key: last_price
+      path: 
+      - dict_values
+      - last_price
+      type:
+      - str
+      - float
+    - key: best_bid
+      path:
+      - dict_values
+      - highestBid
+      type:
+      - str
+      - float
+    - key: best_ask
+      path:
+      - dict_values
+      - lowestAsk
+      type:
+      - str
+      - float
+    - key: daily_volume
+      path:
+        - dict_values
+        - base_volume
+      type:
+        - str
+        - float
+
+  trades:
+    request:
+      template: trades
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: market_pair
+      params: null
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          trade_id:
+            type: str
+          price:
+            type: str
+          base_volume:
+            type: str
+          quote_volume:
+            type: str
+          trade_timestamp:
+            type: str
+          type:
+            type: str
+
+    mapping:
+      - key: time
+        path:
+          - trade_timestamp
+        type:
+          - str
+          - float
+          - from_timestamp
+          - 0
+      - key: id
+        path:
+          - trade_id
+        type:
+          - str
+          - int
+      - key: direction
+        path:
+          - type
+        type:
+          - str
+      - key: price
+        path:
+          - price
+        type:
+          - str
+          - float
+      - key: amount
+        path:
+          - base_volume
+        type:
+          - str
+          - float
+
+  order_books:
+    request:
+      template: orderbook
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: market_pair
+      params: null
+
+    response:
+      type: dict
+      values:
+        timestamp:
+          type: str
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0:
+                type: str
+              1:
+                type: str
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0:
+                type: str
+              1:
+                type: str
+    mapping:
+      - key: time
+        path:
+          - timestamp
+        type:
+          - str
+          - float
+          - from_timestamp
+          - 0
+      - key: id
+        path:
+          - timestamp
+        type:
+          - str
+          - int
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_amount
+        path:
+          - bids
+          - 1
+        type:
+          - str
+          - float
+      - key: bids_price
+        path:
+          - bids
+          - 0
+        type:
+          - str
+          - float
+      - key: asks_amount
+        path:
+          - asks
+          - 1
+        type:
+          - str
+          - float
+      - key: asks_price
+        path:
+          - asks
+          - 0
+        type:
+          - str
+          - float
+
+        

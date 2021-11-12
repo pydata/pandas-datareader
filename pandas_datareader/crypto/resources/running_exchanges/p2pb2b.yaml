@@ -1,0 +1,393 @@
+# ToDo: Function für einen Offset für HR schreiben.
+
+name: p2pb2b
+exchange: true
+rate_limit:
+  max: 100
+  unit: 60
+api_url: https://api.p2pb2b.io/api/v2/public/
+
+requests:
+  currency_pairs:
+    request:
+      template: markets
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        result:
+          type: list
+          values:
+            type: dict
+            values:
+              name:
+                type: str
+              stock:
+                type: str
+              money:
+                type: str
+    mapping:
+    - key: currency_pair_first
+      path:
+        - result
+        - stock
+      type:
+        - str
+    - key: currency_pair_second
+      path:
+        - result
+        - money
+      type:
+        - str
+
+  tickers:
+    request:
+      template: tickers
+      pair_template: null
+      params: null
+    response: 
+      type: dict
+      values: 
+        success:
+          type: bool
+        message:
+          type: str
+        resulst:
+          type: dict
+          values:
+            currency_pair:
+              type: dict
+              values:
+                at: 
+                  type: int
+                ticker:
+                  type: dict
+                  values:
+                    bid:
+                      type: float
+                    ask:
+                      type: float
+                    low:
+                      type: float
+                    high:
+                      type: float
+                    last:
+                      type: float
+                    vol:
+                      type: float
+                    change:
+                      type: float
+    mapping:
+    - key: time
+      path:
+      - result
+      - dict_values
+      - at
+      type:
+      - float
+      - from_timestamp
+      - 0
+    - key: currency_pair_first
+      path:
+      - result
+      - dict_key
+      type:
+      - str
+      - split
+      - "_"
+      - 0
+    - key: currency_pair_second
+      path:
+      - result
+      - dict_key
+      type:
+      - str
+      - split
+      - "_"
+      - 1
+    - key: last_price
+      path:
+      - result
+      - dict_values
+      - ticker
+      - last
+      type:
+      - float
+    - key: best_bid
+      path:
+      - result
+      - dict_values
+      - ticker
+      - bid
+      type: 
+      - float
+    - key: best_ask
+      path:
+      - result
+      - dict_values
+      - ticker
+      - ask
+      type:
+      - float
+    - key: daily_volume
+      path:
+      - result
+      - dict_values
+      - ticker
+      - vol
+      type:
+      - float
+
+  trades:
+    request:
+      template: history
+      pair_template:
+        template:  "{first}_{second}"
+        lower_case: false
+        alias: market
+      params:
+        lastId:
+          type: int
+          default: 1
+        limit:
+          type: int
+          default: 100
+    response:
+      type: dict
+      values:
+        success:
+          type: bool
+        message:
+          type: str
+        result:
+          type: list
+          values:
+            type: dict
+            values:
+              id:
+                type: int
+              type:
+                type: str
+              time:
+                type: int
+              amount:
+                type: float
+              price:
+                type: float
+
+    mapping:
+    - key: time
+      path:
+      - result
+      - time
+      type:
+      - float
+      - from_timestamp
+      - 0
+    - key: id
+      path:
+        - result
+        - id
+      type:
+        - int
+    - key: amount
+      path:
+      - result
+      - amount
+      type:
+      - float
+    - key: price
+      path:
+      - result
+      - price
+      type:
+      - float
+    - key: direction
+      path:
+      - result
+      - type
+      type:
+      - str
+
+  order_books:
+    request:
+      template: depth/result
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: market
+      params:
+        limit:
+          type: int
+          default: 100
+        interval:
+          default: 0
+
+    response:
+      type: dict
+      values:
+        result:
+          type: dict
+          asks:
+            type: list
+            values:
+              type: list
+              values:
+                0:
+                  type: str
+                1:
+                  type: str
+          bids:
+            type: list
+            values:
+              type: list
+              values:
+                0:
+                  type: str
+                1:
+                  type: str
+        cache_time:
+          type: float
+        current_time:
+          type: float
+    mapping:
+      - key: id
+        path:
+          - cache_time
+        type:
+          - float
+          - int
+      - key: time
+        path:
+          - cache_time
+        type:
+          - float
+          - from_timestamp
+          - 0
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_price
+        path:
+          - result
+          - bids
+          - 0
+        type:
+          - str
+          - float
+      - key: bids_amount
+        path:
+          - result
+          - bids
+          - 1
+        type:
+          - str
+          - float
+      - key: asks_price
+        path:
+          - result
+          - asks
+          - 0
+        type:
+          - str
+          - float
+      - key: asks_amount
+        path:
+          - result
+          - asks
+          - 1
+        type:
+          - str
+          - float
+
+  historic_rates:
+    request:
+      template: market/kline
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: market
+      params:
+        interval:
+          allowed:
+            minutes: 1m
+            hours: 1h
+            days: 1d
+          default: 1d
+        limit:
+          type: int
+          default: 500
+
+    response:
+      type: dict
+      values:
+        result:
+          type: list
+          values:
+            type: dict
+            values:
+              0: #time
+                type: int
+              1: #open
+                type: str
+              2: #close
+                type: str
+              3: #high
+                type: str
+              4: #low
+                type: str
+              5: #volume
+                type: str
+              6: #amount
+                type: str
+
+    mapping:
+      - key: time
+        path:
+          - result
+          - 0
+        type:
+          - float
+          - from_timestamp
+          - 0
+      - key: open
+        path:
+          - result
+          - 1
+        type:
+          - str
+          - float
+      - key: high
+        path:
+          - result
+          - 3
+        type:
+          - str
+          - float
+      - key: low
+        path:
+          - result
+          - 4
+        type:
+          - str
+          - float
+      - key: close
+        path:
+          - result
+          - 2
+        type:
+          - str
+          - float
+      - key: volume
+        path:
+          - result
+          - 5
+        type:
+          - str
+          - float
+
+
+

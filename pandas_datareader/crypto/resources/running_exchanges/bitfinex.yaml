@@ -1,0 +1,365 @@
+name: bitfinex
+  #  v1:
+#api_url: https://api-pub.bitfinex.com/
+#api_url: https://api.bitfinex.com/
+api_url: ''
+
+rate_limit:
+  max: 90
+  unit: 60
+
+requests:
+  currency_pairs:
+    request:
+      template: https://api.bitfinex.com/v1/symbols_details
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          pair:
+            type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+         - pair
+        type:
+          - str
+          - split_at_del_or_index
+          - ':'
+          - 3
+          - 0
+
+      - key: currency_pair_second
+        path:
+          - pair
+        type:
+          - str
+          - split_at_del_or_index
+          - ':'
+          - 3
+          - 1
+
+
+  tickers:
+    request:
+      template: https://api.bitfinex.com/v1/pubticker/{currency_pair}
+      pair_template: # i.e. tBTCUSD
+        template: "{first}{second}"
+        lower_case: false
+      params: null
+    response:
+      type: dict
+      values:
+        mid:
+          type: str
+        bid:
+          type: str
+        ask:
+          type: str
+        last_price:
+          type: str
+        low:
+          type: str
+        high:
+          type: str
+        volume:
+          type: str
+        timestamp:
+          type: str
+    mapping: # for trading pairs (ex. tBTCUSD)
+      - key: time
+        path:
+          - timestamp
+        type:
+          - str
+          - float
+          - from_timestamp
+          - 0
+      - key: best_bid
+        path:
+          - bid
+        type:
+          - str
+          - float
+      - key: best_ask
+        path:
+          - ask
+        type:
+          - str
+          - float
+      - key: last_price
+        path:
+          - last_price
+        type:
+          - str
+          - float
+      - key: daily_volume
+        path:
+          - volume
+        type:
+          - str
+          - float
+
+  trades:
+    request:
+      template: https://api.bitfinex.com/v1/trades/{currency_pair}
+      pair_template: # i.e. tBTCUSD
+        template: "{first}{second}"
+        lower_case: false
+      params:
+        limit_trades: # Number of records
+          default: 999 # max: 10000
+        start: # Millisecond start time
+          required: false
+        end: # Millisecond end time
+          required: false
+        sort: # if = 1 it sorts results returned with old > new
+          default: -1
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          # template on trading pairs (ex. tBTCUSD)
+            timestamp: # ID
+              type: int
+            tid: # MTS: millisecond time stamp
+              type:
+                - int
+            price: # Price: How much was bought (positive) or sold (negative).
+              type: float
+            amount: # Amount: Price at which the trade was executed
+              type: float
+            exchange: # Exchange Name
+              type: str
+            type: # Direction (i.e. Sell/Buy)
+              type: str
+          # template on funding currencies (ex. fUSD)
+
+    mapping: # for trading pairs (ex. tBTCUSD)
+      - key: time
+        path:
+          - timestamp
+        type:
+          - float
+          - from_timestamp
+          - 0
+      - key: id
+        path:
+          - tid
+        type:
+          - int
+      - key: amount
+        path:
+          - amount
+        type:
+          - float
+      - key: price
+        path:
+          - price
+        type:
+          - float
+      - key: direction
+        path:
+          - type
+        type:
+          - str
+
+  order_books:
+    request:
+      template: https://api.bitfinex.com/v1/book/{currency_pair}
+      pair_template: # i.e. tBTCUSD
+        template: "{first}{second}"
+        lower_case: false
+      params:
+        group: # Level of price aggregation (P0, P1, P2, P3, P4, R0)
+          type: str
+          default: 1
+        limit_bids: # Number of price points ("25", "100")
+          type: int
+          default: 50
+        limit_asks: # Number of price points ("25", "100")
+          type: int
+          default: 50
+    response:
+      type: dict
+      values:
+        bids:
+          type: list
+          values:
+            type: dict
+            values:
+              price:
+                type: str
+              amount:
+                type: str
+              timestamp:
+                type: str
+        asks:
+          type: list
+          values:
+            type: dict
+            values:
+              price:
+                type: str
+              amount:
+                type: str
+              timestamp:
+                type: str
+
+    mapping: # for trading pairs (ex. tBTCUSD), if AMOUNT > 0 then bid else ask.
+      - key: id
+        path:
+          - bids
+          - timestamp
+        type:
+          - str
+          - float
+          - int
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: time
+        path:
+          - bids
+          - timestamp
+        type:
+          - str
+          - float
+          - from_timestamp
+          - 0
+
+      - key: asks_price
+        path:
+          - asks
+          - price
+        type:
+          - str
+          - float
+      - key: asks_amount
+        path:
+          - asks
+          - amount
+        type:
+          - str
+          - float
+
+      - key: bids_price
+        path:
+          - bids
+          - price
+        type:
+          - str
+          - float
+      - key: bids_amount
+        path:
+          - bids
+          - amount
+        type:
+          - str
+          - float
+
+
+  historic_rates:
+    request:
+      template: https://api-pub.bitfinex.com/v2/candles/trade:{frequency}:{currency_pair}/hist
+      pair_template: # i.e. tBTCUSD
+        template: "t{first}{second}"
+        lower_case: false
+      params:
+        limit: # Number of candles requested
+          default: 10000 # max
+        start: # Filter start (ms)
+          required: false
+        end: # Filter end (ms)
+          function: last_timestamp
+          type:
+            - datetime
+            - timestampms
+        sort: # if = 1 it sorts results returned with old > new
+          required: false
+
+        frequency:
+          allowed:
+            minutes: 1m
+            hours: 1h
+            days: 1D
+            weeks: 7D
+            months: 1M
+          default: 1D
+
+    response:
+      type: list
+      values:
+        # response with Section = "last"
+        - 0: # MTS: millisecond time stamp
+            type:
+              - float
+              - from_timestamp
+              - 1
+          1: # OPEN: First execution during the time frame
+            type: float
+          2: # CLOSE: Last execution during the time frame
+            type: float
+          3: # HIGH: Highest execution during the time frame
+            type: float
+          4: # LOW: Lowest execution during the timeframe
+            type: float
+          5: # VOLUME: Quantity of symbol traded within the timeframe
+            type: float
+        # response with Section = "hist"
+        - type: list
+          values:
+            0: # MTS: millisecond time stamp
+              type:
+                - float
+                - from_timestamp
+                - 1
+            1: # OPEN: First execution during the time frame
+              type: float
+            2: # CLOSE: Last execution during the time frame
+              type: float
+            3: # HIGH: Highest execution during the time frame
+              type: float
+            4: # LOW: Lowest execution during the timeframe
+              type: float
+            5: # VOLUME: Quantity of symbol traded within the timeframe
+              type: float
+    mapping: # for trading pairs (ex. tBTCUSD)
+      - key: time
+        path:
+          - 0
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: open
+        path:
+          - 1
+        type:
+          - float
+      - key: close
+        path:
+          - 2
+        type:
+          - float
+      - key: high
+        path:
+          - 3
+        type:
+          - float
+      - key: low
+        path:
+          - 4
+        type:
+          - float
+      - key: volume
+        path:
+          - 5
+        type:
+          - float

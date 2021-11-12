@@ -1,0 +1,247 @@
+name: indodax
+api_url: https://indodax.com/api/
+is_exchange: True
+
+requests:
+  currency_pairs:
+    request:
+      template: pairs
+      pair_template: null
+      params: null
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          id:
+            type: str
+          symbol:
+            type: str
+          base_currency:
+            type: str
+          traded_currency:
+            type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - traded_currency
+        type:
+          - str
+          - upper
+      - key: currency_pair_second
+        path:
+          - base_currency
+        type:
+          - str
+          - upper
+
+  tickers:
+    request:
+      template: ticker_all
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        tickers:
+          type: dict
+          values:
+            currency_pair:
+              type: dict
+              values:
+                high:
+                  type: str
+                low:
+                  type: str
+                vol_btc:
+                  type: str
+                vol_idr:
+                  type: str
+                last:
+                  type: str
+                buy:
+                  type: str
+                sell:
+                  type: str
+                server_time:
+                  type: int
+    mapping:
+      - key: currency_pair_first
+        path:
+          - tickers
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 0
+      - key: currency_pair_second
+        path:
+          - tickers
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 1
+      - key: time
+        path:
+          - tickers
+          - dict_values
+          - server_time
+        type:
+          - float
+          - from_timestamp
+          - 0
+      - key: last_price
+        path:
+          - tickers
+          - dict_values
+          - last
+        type:
+          - str
+          - float
+      - key: best_bid
+        path:
+          - tickers
+          - dict_values
+          - buy
+        type:
+          - str
+          - float
+      - key: best_ask
+        path:
+          - tickers
+          - dict_values
+          - sell
+        type:
+          - str
+          - float
+
+  order_books:
+    request:
+      template: depth/{currency_pair}
+      pair_template:
+        template: "{first}{second}"
+        alias: null
+        lower_case: true
+      params: null
+
+    response:
+      type: dict
+      values:
+        buy:
+          type: list
+          0: #price
+            type: strr
+          1: #size
+            type: str
+        sell:
+          type: list
+          0:
+            type: str
+          1:
+            type: str
+    mapping:
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: id
+        path: []
+        type:
+          - none
+          - now_timestamp
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_amount
+        path:
+          - buy
+          - 1
+        type:
+          - str
+          - float
+      - key: bids_price
+        path:
+          - buy
+          - 0
+        type:
+          - str
+          - float
+      - key: asks_amount
+        path:
+          - sell
+          - 1
+        type:
+          - str
+          - float
+      - key: asks_price
+        path:
+          - sell
+          - 0
+        type:
+          - str
+          - float
+
+  trades:
+    request:
+      template: trades/{currency_pair}
+      pair_template:
+        template: "{first}{second}"
+        alias: null
+        lower_case: true
+      params: null
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          date:
+            type: str
+          price:
+            type: str
+          amount:
+            type: str
+          tid:
+            type: str
+          type:
+            type: str
+    mapping:
+      - key: time
+        path:
+          - date
+        type:
+          - str
+          - float
+          - from_timestamp
+          - 0
+      - key: id
+        path:
+          - tid
+        type:
+          - str
+          - int
+      - key: direction
+        path:
+          - type
+        type:
+          - str
+      - key: price
+        path:
+          - price
+        type:
+          - str
+          - float
+      - key: amount
+        path:
+          - amount
+        type:
+          - str
+          - float

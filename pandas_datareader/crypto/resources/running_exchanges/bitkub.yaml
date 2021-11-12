@@ -1,0 +1,246 @@
+name: bitkub
+exchange: true
+
+rate_limit: null
+api_url: https://api.bitkub.com
+
+requests:
+  currency_pairs:
+    request:
+      template: /api/market/symbols
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        result:
+          type: list
+          values:
+            type: dict
+            values:
+              symbol:
+                type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - result
+          - symbol
+        type:
+          - str
+          - split
+          - "_"
+          - 0
+      - key: currency_pair_second
+        path:
+          - result
+          - symbol
+        type:
+          - str
+          - split
+          - "_"
+          - 1
+
+  tickers:
+    request:
+      template: /api/market/ticker
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: dict
+          values:
+            last:
+              type: float
+            lowestAsk:
+              type: float
+            highestBid:
+              type: float
+            baseVolume:
+              type: float
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 0
+      - key: currency_pair_second
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 1
+      - key: last_price
+        path:
+          - dict_values
+          - last
+        type:
+          - float
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: best_bid
+        path:
+          - dict_values
+          - highestBid
+        type:
+          - float
+      - key: best_ask
+        path:
+          - dict_values
+          - lowestAsk
+        type:
+          - float
+      - key: daily_volume
+        path:
+          - dict_values
+          - baseVolume
+        type:
+          - float
+
+  trades:
+    request:
+      template: /api/market/trades
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: sym
+      params:
+        lmt:
+          type: int
+          default: 200
+    response:
+      type: dict
+      values:
+        result:
+          type: list
+          values:
+            type: list
+            values:
+              0: # time
+                type: int
+              1: # price
+                type: float
+              2: # quty
+                type: float
+              3: # side
+                type: str
+
+    mapping:
+    - key: time
+      path:
+        - result
+        - 0
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: id
+      path:
+        - result
+        - 0
+      type:
+        - int
+    - key: direction
+      path:
+        - result
+        - 3
+      type:
+        - str
+    - key: price
+      path:
+        - result
+        - 1
+      type:
+        - float
+    - key: amount
+      path:
+        - result
+        - 2
+      type:
+        - float
+
+  order_books:
+    request:
+      template: /api/market/depth
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: sym
+      params:
+        lmt:
+          type: int
+          default: 50
+
+    response:
+      type: dict
+      values:
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type: int
+              1: # quantity
+                type: int
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0:
+                type: int
+              1:
+                type: int
+    mapping:
+    - key: time
+      path: []
+      type:
+        - none
+        - now
+    - key: id
+      path: []
+      type:
+        - none
+        - now_timestamp
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - bids
+        - 1
+      type:
+        - float
+    - key: bids_price
+      path:
+        - bids
+        - 0
+      type:
+        - float
+    - key: asks_amount
+      path:
+        - asks
+        - 1
+      type:
+        - float
+    - key: asks_price
+      path:
+        - asks
+        - 0
+      type:
+        - float

@@ -1,0 +1,253 @@
+name: btc-alpha
+api_docs: https://btc-alpha.github.io/api-docs/
+rate_limit: null
+
+api_url: https://btc-alpha.com/api/
+
+requests:
+  currency_pairs:
+    request:
+      template: v1/pairs/
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          currency1:
+            type: str
+          currency2:
+            type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - currency1
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - currency2
+        type:
+          - str
+
+  historic_rates:
+    request:
+      template: charts/{currency_pair}/{frequency}/chart
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+      params:
+        limit:
+          max: 720
+          default: 720
+        until:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestamp
+        frequency:
+          allowed:
+            minutes: 5
+            hours: 60
+            days: D
+          default: D
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          time:
+            type: int
+          open:
+            type: float
+          high:
+            type: float
+          low:
+            type: float
+          close:
+            type: float
+          volume:
+            type: float
+
+    mapping:
+    - key: time
+      path:
+        - time
+      type:
+        - float
+        - from_timestamp
+        - 0
+    - key: open
+      path:
+        - open
+      type:
+        - float
+    - key: high
+      path:
+        - high
+      type:
+        - float
+    - key: low
+      path:
+        - low
+      type:
+        - float
+    - key: close
+      path:
+        - close
+      type:
+        - float
+    - key: volume
+      path:
+        - volume
+      type:
+        - float
+
+
+  trades:
+    request:
+      template: v1/exchanges
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: pair
+      params:
+        limit:
+          type: int
+          default: 100
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          id:
+            type: int
+          timestamp:
+            type: float
+          price:
+            type: str
+          amount:
+            type: str
+          type:
+            type: str
+
+    mapping:
+    - key: time
+      path:
+        - timestamp
+      type:
+        - float
+        - from_timestamp
+        - 0
+    - key: id
+      path:
+        - id
+      type:
+        - int
+    - key: direction
+      path:
+        - type
+      type:
+        - str
+    - key: price
+      path:
+        - price
+      type:
+        - str
+        - float
+    - key: amount
+      path:
+        - amount
+      type:
+        - str
+        - float
+
+  order_books:
+    request:
+      template: v1/orderbook/{currency_pair}
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+      params:
+        group:
+          type: int
+          default: 1 # group by price
+        limit_asks:
+          type: int
+          default: 50
+        limit_bids:
+          type: int
+          default: 50
+    response:
+      type: dict
+      values:
+        sell:
+          type: list
+          values:
+            type: dict
+            values:
+              price:
+                type: float
+              id: # id and timestamp only if group=1
+                type: int
+              amount:
+                type: float
+              timestamp:
+                type: float
+        buy:
+          type: list
+          values:
+            type: dict
+            values:
+              price:
+                type: float
+              id:
+                type: int
+              amount:
+                type: float
+              timestamp:
+                type: float
+
+    mapping:
+    - key: time
+      path: []
+      type:
+        - none
+        - now
+    - key: id
+      path: []
+      type:
+        - none
+        - now_timestamp
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - buy
+        - amount
+      type:
+        - float
+    - key: bids_price
+      path:
+        - buy
+        - price
+      type:
+        - float
+    - key: asks_amount
+      path:
+        - sell
+        - amount
+      type:
+        - float
+    - key: asks_price
+      path:
+        - sell
+        - price
+      type:
+        - float

@@ -1,0 +1,330 @@
+
+name: xt
+exchange: true
+api_docs: https://github.com/xtpub/api-doc/blob/master/rest-api-v1-en.md
+rate_limit:
+  max: 1000
+  unit: 60
+
+api_url: https://api.xt.com
+
+requests:
+  currency_pairs:
+    request:
+      template: /data/api/v1/getMarketConfig
+      pair_template: null
+      params: null
+
+    response:
+      type:
+        type: list
+        values:
+          currency_pair:
+            type: dict
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 0
+      - key: currency_pair_second
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 1
+
+  tickers:
+    request:
+      template: /data/api/v1/getTickers
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: dict
+          values:
+            price:
+              type: float
+            ask:
+              type: float
+            bid:
+              type: float
+            coinVol:
+              type: float
+    mapping:
+      - key: currency_pair_first
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 0
+      - key: currency_pair_second
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 1
+      - key: last_price
+        path:
+          - dict_values
+          - price
+        type:
+          - float
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: best_bid
+        path:
+          - dict_values
+          - bid
+        type:
+          - float
+      - key: best_ask
+        path:
+          - dict_values
+          - ask
+        type:
+          - float
+      - key: daily_volume
+        path:
+          - dict_values
+          - coinVol
+        type:
+          - float
+
+  historic_rates:
+    request:
+      template: /data/api/v1/getKLine
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: true
+        alias: market
+      params:
+        type:
+          allowed:
+            minutes: 1min
+            hours: 1hour
+            days: 1day
+            weeks: 7day
+            months: 30day
+          default: 1day
+        since:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 1000
+    response:
+      type: dict
+      values:
+        datas:
+          type: list
+          values:
+            type: list
+            values:
+              0: #time
+                type: int
+              1: #open
+                type: float
+              2: #high
+                type: float
+              3: #low
+                type: float
+              4: #close
+                type: float
+              5: #vol
+                type: float
+              6:  #turnover
+                type: float
+
+    mapping:
+    - key: time
+      path:
+        - datas
+        - 0
+      type:
+        - float
+        - from_timestamp
+        - 0
+    - key: open
+      path:
+        - datas
+        - 1
+      type:
+        - float
+    - key: high
+      path:
+        - datas
+        - 2
+      type:
+        - float
+    - key: low
+      path:
+        - datas
+        - 3
+      type:
+        - float
+    - key: close
+      path:
+        - datas
+        - 4
+      type:
+        - float
+    - key: volume
+      path:
+        - datas
+        - 5
+      type:
+        - float
+
+
+  trades:
+    request:
+      template: /data/api/v1/getTrades
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: true
+        alias: market
+      params: null
+
+    response:
+      type: list
+      values:
+        type: list
+        values:
+          0: #time
+            type: int
+          1: #price
+            type: float
+          2: #quantity
+            type: float
+          3: # directoin
+            type: str
+          4: #id
+            type: int
+
+    mapping:
+    - key: time
+      path:
+        - []
+        - 0
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: id
+      path:
+        - []
+        - 4
+      type:
+        - int
+    - key: direction
+      path:
+        - []
+        - 3
+      type:
+        - value
+        - map
+        - bid
+        - buy
+        - ask
+        - sell
+    - key: price
+      path:
+        - []
+        - 1
+      type:
+        - float
+    - key: amount
+      path:
+        - []
+        - 2
+      type:
+        - float
+
+  order_books:
+    request:
+      template: /data/api/v1/getDepth
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: true
+        alias: market
+      params: null
+
+    response:
+      type: dict
+      values:
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0: #price
+                type: float
+              1: #quantity
+                type: float
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0: #price
+                type: float
+              1: #quantity
+                type: float
+
+    mapping:
+    - key: time
+      path: []
+      type:
+        - none
+        - now
+    - key: id
+      path: []
+      type:
+        - none
+        - now_timestamp
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - bids
+        - 1
+      type:
+        - float
+    - key: bids_price
+      path:
+        - bids
+        - 0
+      type:
+        - float
+    - key: asks_amount
+      path:
+        - asks
+        - 1
+      type:
+        - float
+    - key: asks_price
+      path:
+        - asks
+        - 0
+      type:
+        - float

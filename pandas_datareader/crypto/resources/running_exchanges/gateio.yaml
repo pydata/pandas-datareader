@@ -1,0 +1,361 @@
+name: gateio
+exchange: true
+api_url: https://api.gateio.ws/api/v4/spot/
+rate_limit: null
+requests:
+  currency_pairs:
+    request:
+      template: currency_pairs
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          id:
+            type: str
+          base:
+            type: str
+          quote:
+            type: str
+          fee:
+            type: str
+          min_base_amount:
+            type: str
+          min_quote_amount:
+            type: str
+          amount_precision:
+            type: str
+          precision:
+            type: int
+          trade_status:
+            type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - base
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - quote
+        type:
+          - str
+
+  tickers:
+    request:
+      template: tickers
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          currency_pair:
+            type: str
+          last:
+            type: str
+          lowest_ask:
+            type: str
+          highest_bid:
+            type: str
+          change_percentage:
+            type: str
+          base_volume:
+            type: str
+          quote_volume:
+            type: str
+          high_24h:
+            type: str
+          low_24h:
+            type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - currency_pair
+        type:
+          - str
+          - split
+          - "_"
+          - 0
+      - key: currency_pair_second
+        path:
+          - currency_pair
+        type:
+          - str
+          - split
+          - "_"
+          - 1
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: last_price
+        path:
+          - last
+        type:
+          - str
+          - float
+      - key: best_bid
+        path:
+          - highest_bid
+        type:
+          - str
+          - float
+      - key: best_ask
+        path:
+          - lowest_ask
+        type:
+          - str
+          - float
+      - key: daily_volume
+        path:
+          - quote_volume
+        type:
+          - str
+          - float
+#
+  order_books:
+    request:
+      template: order_book
+      pair_template:
+        template: "{first}_{second}"
+        alias: currency_pair
+        lower_case: true
+      params:
+        interval:
+          type: int
+          default: 0
+        limit:
+          type: int
+          default: 30
+
+    response:
+      type: dict
+      values:
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type:
+                - str
+              1: # size
+                type:
+                - str
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0:
+                type:
+                - str
+              1:
+                type:
+                - str
+    mapping:
+    - key: time
+      path: []
+      type:
+      - none
+      - now
+    - key: asks_price
+      path:
+      - asks
+      - 0
+      type:
+      - str
+      - float
+    - key: asks_amount
+      path:
+      - asks
+      - 1
+      type:
+      - str
+      - float
+    - key: bids_price
+      path:
+      - bids
+      - 0
+      type:
+      - str
+      - float
+    - key: bids_amount
+      path:
+      - bids
+      - 1
+      type:
+      - str
+      - float
+    - key: id
+      path: []
+      type:
+        - none
+        - now_timestamp
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+
+  trades:
+    request:
+      template: trades
+      pair_template:
+        template: "{first}_{second}"
+        alias: currency_pair
+        lower_case: true
+      params:
+        limit:
+          type: int
+          default: 200
+        last_id:
+          type: int
+          required: false
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          id:
+            type: str
+          create_time:
+            type: str
+          side:
+            type: str
+          role:
+            type: str
+          amount:
+            type: str
+          price:
+            type: str
+          order_id:
+            type: str
+          fee:
+            type: str
+          fee_currency:
+            type: str
+          point_fee:
+            type: str
+          gt_fee:
+            type: str
+
+    mapping:
+    - key: time
+      path:
+      - create_time
+      type:
+      - str
+      - float
+      - from_timestamp
+      - 0
+    - key: amount
+      path:
+        - amount
+      type:
+      - str
+      - float
+    - key: direction
+      path:
+        - side
+      type:
+      - str
+    - key: price
+      path:
+        - price
+      type:
+        - str
+        - float
+    - key: id
+      path:
+        - id
+      type:
+        - str
+        - int
+
+
+  historic_rates:
+    request:
+      template: candlesticks
+      pair_template:
+        template: "{first}_{second}"
+        alias: currency_pair
+        lower_case: true
+      params:
+        limit:
+          type: int
+          default: 1000
+        interval:
+          allowed:
+            minutes: 1m
+            hours: 1h
+            days: 1d
+            weeks: 1w
+          default: 1d
+        to:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestamp
+    response:
+      type: list
+      values:
+        type: list
+        values:
+          0:
+            type: str
+          1:
+            type: str
+          2:
+            type: str
+          3:
+            type: str
+          4:
+            type: str
+          5:
+            type: str
+          6:
+            type: str
+    mapping:
+    - key: time
+      path:
+      - 0
+      type:
+      - str
+      - float
+      - from_timestamp
+      - 0
+    - key: volume
+      path:
+      - 1
+      type:
+      - str
+      - float
+    - key: close
+      path:
+      - 2
+      type:
+      - str
+      - float
+    - key: high
+      path:
+      - 3
+      type:
+      - str
+      - float
+    - key: low
+      path:
+      - 4
+      type:
+      - str
+      - float
+    - key: open
+      path:
+      - 5
+      type:
+      - str

@@ -1,0 +1,202 @@
+name: coinall
+exchange: true
+api_url: https://www.coinall.com/api/spot/v3/
+rate_limit:
+  max: 6
+  unit: 1
+
+requests:
+  currency_pairs:
+    request:
+      template: instruments
+      pair_template: null
+      params: null
+    response:
+      type: list
+      vaues:
+        type: dict
+        values:
+          base_currency:
+            type: str
+          instrument_id:
+            type: str
+          quote_currency:
+            type: str
+          size_increment:
+            type: str
+          tick_size:
+            type: str
+    mapping:
+    - key: currency_pair_first
+      path:
+      - base_currency
+      type:
+      - str
+    - key: currency_pair_second
+      path:
+      - quote_currency
+      type:
+      - str
+      
+  tickers:
+    request:
+      template: instruments/ticker
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          best_ask:
+            type: str
+          best_bid:
+            type: str
+          instrument_id:
+            type: str
+          product_id:
+            type: str
+          last:
+            type: str
+          ask:
+            type: str
+          bid:
+            type: str
+          open24h:
+            type: str
+          high24h:
+            type: str
+          low_24h:
+            type: str
+          base_volume_24h:
+            type: str
+          timestamp:
+            type: str
+          quote_volume_24h:
+            type: str
+    mapping:
+    - key: time
+      path:
+      - timestamp
+      type:
+      - str
+      - strptime
+      - "%Y-%m-%dT%H:%M:%S.%fz"
+    - key: currency_pair_first
+      path:
+      - instrument_id
+      type:
+      - str
+      - split
+      - "-"
+      - 0
+    - key: currency_pair_second
+      path:
+      - instrument_id
+      type:
+      - str
+      - split
+      - "-"
+      - 1
+    - key: last_price
+      path:
+      - last
+      type:
+      - str
+      - float
+    - key: best_bid
+      path:
+      - best_bid
+      type:
+      - str
+      - float
+    - key: best_ask
+      path:
+      - best_ask
+      type:
+      - str
+      - float
+
+      
+  historic_rates:
+    request:
+      template: instruments/{currency_pair}/candles
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: false
+      params:
+        granularity:
+          allowed:
+            minutes: 60
+            hours: 3600
+            days: 86400
+            weeks: 604800
+          default: 86400 #1d in seconds
+        end:
+          function: last_timestamp
+          type:
+            - datetime
+            - format
+            - "%Y-%m-%dT%H:%M:%S.%fZ"
+
+    response:
+      type: list
+      values:
+        type: list
+        values:
+          0: #timestamp
+            type: str
+          1: #open
+            type: str
+          2: #high
+            type: str
+          3: #low
+            type: str
+          4: #close
+            type: str
+          5: #volume
+            type: str
+    mapping:
+    - key: time
+      path:
+      - []
+      - 0
+      type:
+      - str
+      - strptime
+      - "%Y-%m-%dT%H:%M:%S.%fz"
+    - key: open
+      path:
+      - []
+      - 1
+      type:
+      - str
+      - float
+    - key: high
+      path:
+      - []
+      - 2
+      type:
+      - str
+      - float
+    - key: low
+      path:
+      - []
+      - 3
+      type:
+      - str
+      - float
+    - key: close
+      path:
+      - []
+      - 4
+      type:
+      - str
+      - float
+    - key: volume
+      path:
+      - []
+      - 5
+      type:
+      - str
+      - float

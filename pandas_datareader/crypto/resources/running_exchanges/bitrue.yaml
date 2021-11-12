@@ -1,0 +1,227 @@
+name: bitrue
+exchange: true
+
+rate_limit: null
+
+api_url:  https://www.bitrue.com/
+
+requests:
+  currency_pairs:
+    request:
+      template: api/v1/exchangeInfo
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        timezone:
+          type: str
+        serverTime:
+          type: int
+        symbols:
+          type: list
+          values:
+            type: dict
+            values:
+              symbol:
+                type: str
+              status:
+                type: str
+              baseAsset:
+                type: str
+              quoteAsset:
+                type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - symbols
+          - baseAsset
+        type:
+          - str
+          - upper
+      - key: currency_pair_second
+        path:
+          - symbols
+          - quoteAsset
+        type:
+          - str
+          - upper
+
+  tickers:
+    request:
+      template: /api/v1/ticker/price
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbol
+      params: null
+
+    response:
+      type: dict
+      values:
+        symbol:
+          type: str
+        price:
+          type: str
+
+    mapping:
+    - key: time
+      path: []
+      type:
+      - none
+      - now
+    - key: last_price
+      path:
+        - price
+      type:
+      - str
+      - float
+
+  trades:
+    request:
+      template: /api/v1/trades
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        limit:
+          type: int
+          default: 100 #max 1000
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          id:
+            type: int
+          price:
+            type: str
+          qty:
+            type: str
+          time:
+            type: str
+          isBuyerMaker:
+            type: bool
+          isBestMatch:
+            type: bool
+    mapping:
+      - key: time
+        path:
+          - time
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: amount
+        path:
+          - qty
+        type:
+          - str
+          - float
+      - key: price
+        path:
+          - price
+        type:
+          - str
+          - float
+      - key: direction
+        path:
+          - isBuyerMaker
+        type:
+          - value
+          - map
+          - true
+          - sell
+          - false
+          - buy
+      - key: id
+        path:
+          - id
+        type:
+          - int
+
+
+  order_books:
+    request:
+      template: /api/v1/depth
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        limit:
+          type: int
+          default: 100 #max 1000
+    response:
+      type: dict
+      values:
+        lastUpdateId:
+          type: int
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type: str
+              1: # amount
+                type: str
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type: str
+              1: # amount
+                type: str
+    mapping:
+      - key: time
+        path:
+          - lastUpdateId
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: id
+        path:
+          - lastUpdateId
+        type:
+          - int
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_price
+        path:
+          - bids
+          - 0
+        type:
+          - str
+          - float
+      - key: bids_amount
+        path:
+          - bids
+          - 1
+        type:
+          - str
+          - float
+      - key: asks_price
+        path:
+          - asks
+          - 0
+        type:
+          - str
+          - float
+      - key: asks_amount
+        path:
+          - asks
+          - 1
+        type:
+          - str
+          - float
+
+    

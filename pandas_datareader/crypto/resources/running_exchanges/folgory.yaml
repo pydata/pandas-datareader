@@ -1,0 +1,284 @@
+name: folgory
+exchange: true
+api_url: https://folgory.com/
+
+requests:
+  currency_pairs:
+    request:
+      template: api/v1
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          cur:
+            type: str
+          symbol:
+            type: str
+          last:
+            type: str
+          high:
+            type: str
+          low:
+            type: str
+          volume:
+            type: str
+          vwap:
+            type: str
+          max_bid:
+            type: str
+          best_ask:
+            type: str
+          best_bid:
+            type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - []
+          - symbol
+        type:
+          - str
+          - split
+          - /
+          - 0
+      - key: currency_pair_second
+        path:
+          - []
+          - symbol
+        type:
+          - str
+          - split
+          - /
+          - 1
+
+  tickers:
+    request:
+      template: api/v1
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          cur:
+            type: str
+          symbol:
+            type: str
+          last:
+            type: str
+          high:
+            type: str
+          low:
+            type: str
+          volume:
+            type: str
+          vwap:
+            type: str
+          max_bid:
+            type: str
+          best_ask:
+            type: str
+          best_bid:
+            type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - []
+          - symbol
+        type:
+          - str
+          - split
+          - /
+          - 0
+      - key: currency_pair_second
+        path:
+          - []
+          - symbol
+        type:
+          - str
+          - split
+          - /
+          - 1
+      - key: last_price
+        path:
+          - []
+          - last
+        type:
+          - str
+          - float
+      - key: best_bid
+        path:
+          - []
+          - max_bid
+        type:
+          - str
+          - float
+      - key: best_ask
+        path:
+          - []
+          - best_ask
+        type:
+          - str
+          - float
+      - key: daily_volume
+        path:
+          - []
+          - volume
+        type:
+          - str
+          - float
+
+  trades:
+    request:
+      template: market/trade
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        limit:
+          type: int
+          max: 500
+          default: 500
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          id:
+            type: str
+          amount:
+            type: str
+          qty:
+            type: str
+          time:
+            type: str
+          Type:
+            type: str
+    mapping:
+      - key: time
+        path:
+          - time
+        type:
+          - float
+          - from_timestamp
+          - 0
+      - key: id
+        path:
+          - id
+        type:
+          - str
+          - int
+      - key: direction
+        path:
+          - Type
+        type:
+          - str
+      - key: price
+        path:
+          - amount
+        type:
+          - str
+          - float
+      - key: amount
+        path:
+          - qty
+        type:
+          - str
+          - float
+
+  order_books:
+    request:
+      template: market/order_book
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        limit:
+          type: int
+          max: 50
+          default: 50
+    response:
+      type: dict
+      values:
+        data:
+          type: dict
+          values:
+            timestamp:
+              type: int
+            asks:
+              type: list
+              values:
+                type: list
+                values:
+                  0:
+                    type: str
+                  1:
+                    type: str
+            bids:
+              type: list
+              values:
+                type: list
+                values:
+                  0:
+                    type: str
+                  1:
+                    type: str
+
+    mapping:
+      - key: time
+        path:
+          - data
+          - timestamp
+        type:
+          - float
+          - from_timestamp
+          - 0
+      - key: id
+        path:
+          - data
+          - timestamp
+        type:
+          - int
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_price
+        path:
+          - data
+          - bids
+          - 1
+        type:
+          - str
+          - float
+      - key: bids_amount
+        path:
+          - data
+          - bids
+          - 0
+        type:
+          - str
+          - float
+      - key: asks_price
+        path:
+          - data
+          - asks
+          - 1
+        type:
+          - str
+          - float
+      - key: asks_amount
+        path:
+          - data
+          - asks
+          - 0
+        type:
+          - str
+          - float

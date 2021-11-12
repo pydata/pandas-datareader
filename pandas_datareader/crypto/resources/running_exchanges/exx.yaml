@@ -1,0 +1,360 @@
+name: exx
+exchange: true
+api_docs: https://www.exx.com/help/restApi
+api_url: https://api.exx.com/data/v1/
+rate_limit: null
+requests:
+  currency_pairs:
+    request:
+      template: markets
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        currency_pair: # e.g. ltc_cnyt, variable key, each available currency pair
+          type: dict
+          values:
+            amountScale:
+              type: int
+            minAmount:
+              type:
+              - str
+              - float
+            isOpen:
+              type: boolean
+            maxLevels:
+              type: int
+            priceScale:
+              type: int
+    mapping:
+    - key: currency_pair_first
+      path: # key not values!
+      - dict_key
+      type:
+      - str
+      - splitupper
+      - "_"
+      - 0
+    - key: currency_pair_second
+      path: # key not values!
+      - dict_key
+      type:
+      - str
+      - splitupper
+      - "_"
+      - 1
+      
+  tickers:
+    request:
+      template: tickers
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        currency_pairs: # e.g. bts_btc, variable key, each available currency pair
+          type: dict
+          values:
+            high:
+              type: str
+            vol:
+              type: str
+            monthRiseRate:
+              type: float
+            last:
+              type: str
+            low:
+              type: str
+            buy:
+              type: str
+            sell:
+              type: str
+            weekRiseRate:
+              type: float
+            riseRate:
+              type: float
+    mapping:
+    - key: time
+      path: []
+      type:
+      - none
+      - now
+    - key: currency_pair_first
+      path:
+      - dict_key
+      type:
+      - str
+      - splitupper
+      - "_"
+      - 0
+    - key: currency_pair_second
+      path:
+      - dict_key
+      type:
+      - str
+      - splitupper
+      - "_"
+      - 1
+    - key: daily_volume
+      path:
+      - dict_values
+      - vol
+      type:
+      - str
+      - float
+    - key: last_price
+      path:
+      - dict_values
+      - last
+      type:
+      - str
+      - float
+    - key: best_ask
+      path:
+      - dict_values
+      - sell
+      type:
+      - str
+      - float
+    - key: best_bid
+      path:
+      - dict_values
+      - buy
+      type:
+      - str
+      - float
+
+  order_books:
+    request:
+      template: depth
+      pair_template: # e.g. ltc_cnyt
+        template: "{first}_{second}"
+        lower_case: true
+        alias: currency
+      params: null
+    response:
+      type: dict
+      values:
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type:
+                - str
+              1: # size
+                type:
+                - str
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type:
+                - str
+              1: # size
+                type:
+                - str
+        timestamp:
+          type:
+          - int
+    mapping:
+    - key: id
+      path:
+        - timestamp
+      type:
+        - int
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: asks_price
+      path:
+      - asks
+      - 0
+      type:
+      - str
+      - float
+    - key: asks_amount
+      path:
+      - asks
+      - 1
+      type:
+      - str
+      - float
+    - key: bids_price
+      path:
+      - bids
+      - 0
+      type:
+      - str
+      - float
+    - key: bids_amount
+      path:
+      - bids
+      - 1
+      type:
+      - str
+      - float
+    - key: time
+      path:
+      - timestamp
+      type:
+      - float
+      - from_timestamp
+      - 0
+
+  trades:
+    request:
+      template: trades
+      pair_template: # e.g. ltc_cnyt
+        template: "{first}_{second}"
+        lower_case: true
+        alias: currency
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          date:
+            type:
+            - float
+            - from_timestamp
+            - 0
+          amount:
+            type: float
+          price:
+            type: float
+          trade_type:
+            type: str
+          type:
+            type: str
+          tid:
+            type: int
+    mapping:
+    - key: time
+      path:
+      - date
+      type:
+      - float
+      - from_timestamp
+      - 0
+    - key: id
+      path:
+        - tid
+      type:
+        - int
+    - key: amount
+      path:
+      - amount
+      type:
+      - float
+    - key: price
+      path:
+      - price
+      type:
+      - float
+    - key: direction
+      path:
+      - type
+      type:
+      - str
+
+  historic_rates:
+    request:
+      template: klines
+      pair_template: # e.g. ltc_cnyt
+        template: "{first}_{second}"
+        lower_case: true
+        alias: market
+      params:
+        type:
+          allowed:
+            minutes: 1min
+            hours: 1hour
+            days: 1day
+          default: 1day
+        size:
+          type: int
+          required: false
+          default: 10000
+        assist:
+          type: str #usd, cny
+          default: none
+    response:
+      type: dict
+      values:
+        datas:
+          type: dict
+          values:
+            symbol:
+              type: str
+            data:
+              type: list
+              values:
+                type: list
+                values:
+                  0: # timestamp
+                    type:
+                    - int
+                  1: # open
+                    type: float
+                  2: # high
+                    type: float
+                  3: # low
+                    type: float
+                  4: # close
+                    type: float
+                  5: # volume
+                    type: float
+                
+    mapping:
+    - key: time
+      path:
+      - datas
+      - data
+      - 0
+      type:
+      - float
+      - from_timestamp
+      - 1
+    - key: open
+      path:
+      - datas
+      - data
+      - 1
+      type:
+      - float
+    - key: high
+      path:
+      - datas
+      - data
+      - 2
+      type:
+      - float
+    - key: low
+      path:
+      - datas
+      - data
+      - 3
+      type:
+      - float
+    - key: close
+      path:
+      - datas
+      - data
+      - 4
+      type:
+      - float
+    - key: volume
+      path:
+      - datas
+      - data
+      - 5
+      type:
+      - float

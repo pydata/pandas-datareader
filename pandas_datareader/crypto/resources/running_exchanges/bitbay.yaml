@@ -1,0 +1,384 @@
+name: bitbay
+exchange: true
+
+api_url: https://api.bitbay.net/rest/trading/
+rate_limit:
+  max: 60
+  unit: 60
+
+requests:
+  currency_pairs:
+    request:
+      template: ticker
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        items:
+          type: dict
+          values:
+            currency_pair:
+              type: dict
+
+    mapping:
+    - key: currency_pair_first
+      path:
+        - items
+        - dict_key
+      type:
+        - str
+        - split
+        - "-"
+        - 0
+    - key: currency_pair_second
+      path:
+        - items
+        - dict_key
+      type:
+        - str
+        - split
+        - "-"
+        - 1
+
+  tickers:
+    request:
+      template: ticker
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        items:
+          type: dict
+          values:
+            currency_pair:
+              type: dict
+              values:
+                market:
+                  type: dict
+                  values:
+                    time:
+                      type: str
+                    highestBid:
+                      type: str
+                    lowestAsk:
+                      type: str
+                    rate:
+                      type: str
+
+    mapping:
+    - key: currency_pair_first
+      path:
+        - items
+        - dict_key
+      type:
+        - str
+        - split
+        - "-"
+        - 0
+    - key: currency_pair_second
+      path:
+        - items
+        - dict_key
+      type:
+        - str
+        - split
+        - "-"
+        - 1
+    - key: time
+      path:
+        - items
+        - dict_values
+        - time
+      type:
+      - str
+      - float
+      - from_timestamp
+      - 1
+    - key: last_price
+      path:
+      - items
+      - dict_values
+      - rate
+      type:
+      - str
+      - float
+    - key: best_bid
+      path:
+      - items
+      - dict_values
+      - highestBid
+      type:
+      - str
+      - float
+    - key: best_ask
+      path:
+      - items
+      - dict_values
+      - lowestAsk
+      type:
+      - str
+      - float
+
+
+  trades:
+    request:
+      template: transactions/{currency_pair}
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: false
+      params:
+        limit:
+          type: int
+          max: 300
+          default: 300
+    response:
+      type: dict
+      values:
+        items:
+          type: list
+          values:
+            type: dict
+            values:
+              id:
+                type: str
+              t:
+                type: str
+              a:
+                type: str
+              r:
+                type: str
+              ty:
+                type: str
+
+    mapping:
+    - key: time
+      path:
+      - items
+      - t
+      type:
+      - str
+      - float
+      - from_timestamp
+      - 1
+    - key: id
+      path:
+        - items
+        - id
+      type:
+        - str
+    - key: price
+      path:
+      - items
+      - r
+      type:
+      - str
+      - float
+    - key: amount
+      path:
+      - items
+      - a
+      type:
+      - str
+      - float
+    - key: direction
+      path:
+      - items
+      - ty
+      type:
+      - str
+
+
+  order_books:
+    request:
+      template: orderbook-limited/{currency_pair}/50 #change limit 50 here
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: false
+      params: null
+    response:
+      type: dict
+      values:
+        sell:
+          type: list
+          values:
+            type: dict
+            values:
+              ra:
+                type: str
+              ca:
+                type: str
+              sa:
+                type: str
+              pa:
+                type: str
+              co:
+                type: int
+        buy:
+          type: list
+          values:
+            type: dict
+            values:
+              ra:
+                type: str
+              ca:
+                type: str
+              sa:
+                type: str
+              pa:
+                type: str
+              co:
+                type: int
+        timestamp:
+          type: str
+        seqNo:
+          type: str
+
+    mapping:
+     - key: time
+       path:
+         - timestamp
+       type:
+       - str
+       - float
+       - from_timestamp
+       - 1
+     - key: id
+       path:
+         - seqNo
+       type:
+         - str
+         - int
+     - key: position
+       path: []
+       type:
+         - none
+         - range
+     - key: bids_price
+       path:
+       - buy
+       - ra
+       type:
+       - str
+       - float
+     - key: bids_amount
+       path:
+       - buy
+       - ca
+       type:
+       - str
+       - float
+     - key: asks_price
+       path:
+       - sell
+       - ra
+       type:
+       - str
+       - float
+     - key: asks_amount
+       path:
+       - sell
+       - ca
+       type:
+       - str
+       - float
+
+  historic_rates:
+    request:
+      template: candle/history/{currency_pair}/{frequency}
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: false
+      params:
+        to:
+          type:
+            - none
+            - now_timestampms
+        from:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedeltams
+            - interval
+            - 2000
+
+        frequency:
+          allowed:
+            minutes: 60
+            hours: 3600
+            days: 86400
+            weeks: 604800
+    response:
+      type: dict
+      values:
+        items:
+          type: list
+          values:
+            type: list
+            values:
+              0:
+                type: str
+              1:
+                type: dict
+                values:
+                  o:
+                    type: str
+                  c:
+                    type: str
+                  h:
+                    type: str
+                  l:
+                    type: str
+                  v:
+                    type: str
+    mapping:
+      - key: time
+        path:
+          - items
+          - 0
+        type:
+          - str
+          - float
+          - from_timestamp
+          - 1
+      - key: open
+        path:
+          - items
+          - 1
+          - o
+        type:
+          - str
+          - float
+      - key: high
+        path:
+          - items
+          - 1
+          - h
+        type:
+          - str
+          - float
+      - key: low
+        path:
+          - items
+          - 1
+          - l
+        type:
+          - str
+          - float
+      - key: close
+        path:
+          - items
+          - 1
+          - c
+        type:
+          - str
+          - float
+      - key: volume
+        path:
+          - items
+          - 1
+          - v
+        type:
+          - str
+          - float

@@ -1,0 +1,266 @@
+name: korbit
+exchange: true
+api_url: https://api.korbit.co.kr/v1/
+
+rate_limit:
+  max: 60
+  unit: 60
+
+requests:
+
+  currency_pairs:
+    request:
+      template: ticker/detailed/all
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: dict
+          values:
+            timetamp:
+              type: int
+            last:
+              type: str
+            bid:
+              type: str
+            ask:
+              type: str
+            volume:
+              type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 0
+      - key: currency_pair_second
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 1
+
+  tickers:
+    request:
+      template: ticker/detailed/all
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: dict
+          values:
+            timetamp:
+              type: int
+            last:
+              type: str
+            bid:
+              type: str
+            ask:
+              type: str
+            volume:
+              type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 0
+      - key: currency_pair_second
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 1
+      - key: time
+        path:
+          - dict_values
+          - timestamp
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: last_price
+        path:
+          - dict_values
+          - last
+        type:
+          - str
+          - float
+      - key: best_bid
+        path:
+          - dict_values
+          - bid
+        type:
+          - str
+          - float
+      - key: best_ask
+        path:
+          - dict_values
+          - ask
+        type:
+          - str
+          - float
+      - key: daily_volume
+        path:
+          - dict_values
+          - volume
+        type:
+          - str
+          - float
+
+  order_books:
+    request:
+      template: orderbook
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: true
+        alias: currency_pair
+      params: null
+
+    response:
+      type: dict
+      values:
+        timestamp:
+          type: int
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type: str
+              1: # qty
+                type: str
+              2:
+                type: str
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0:
+                type: str
+              1:
+                type: str
+              2:
+                type: str
+    mapping:
+      - key: id
+        path:
+          - timestamp
+        type:
+          - int
+      - key: time
+        path:
+          - timestamp
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_price
+        path:
+          - bids
+          - 0
+        type:
+          - str
+          - float
+      - key: bids_amount
+        path:
+          - bids
+          - 1
+        type:
+          - str
+          - float
+      - key: asks_price
+        path:
+          - asks
+          - 0
+        type:
+          - str
+          - float
+      - key: asks_amount
+        path:
+          - asks
+          - 1
+        type:
+          - str
+          - float
+
+  trades:
+    request:
+      template: transactions
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: true
+        alias: currency_pair
+      params: null
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          timestamp:
+            type: int
+          tid:
+            type: str
+          price:
+            type: str
+          amount:
+            type: str
+          type:
+            type: str
+    mapping:
+      - key: id
+        path:
+          - tid
+        type:
+          - str
+          - int
+      - key: time
+        path:
+          - timestamp
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: price
+        path:
+          - price
+        type:
+          - str
+          - float
+      - key: amount
+        path:
+          - amount
+        type:
+          - str
+          - float
+      - key: direction
+        path:
+          - type
+        type:
+          - str

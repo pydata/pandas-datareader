@@ -1,0 +1,285 @@
+name: exmo
+exchange: true
+api_url: https://api.exmo.com/v1.1/
+rate_limit:
+  max: 600
+  unit: 60
+
+requests:
+  currency_pairs:
+    request:
+      template: pair_settings
+      pair_template:
+      params:
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: dict
+    mapping:
+      - key: currency_pair_first
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 0
+      - key: currency_pair_second
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 1
+
+  tickers:
+    request:
+      template: ticker
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        currency_pair: # variable key, each available currency pair
+          type: dict
+          values:
+            buy_price: # current maximum buy price
+              type:
+              - str
+            sell_price: # current minimum sell price
+              type:
+              - str
+            last_trade: # last deal price
+              type:
+              - str
+            high: # maximum deal price within the last 24 hours
+              type:
+              - str
+            low: # minimum deal price within the last 24 hours
+              type:
+              - str
+            avg: # average deal price within the last 24 hours
+              type:
+              - str
+            vol: # the volume of deals within the last 24 hours
+              type:
+              - str
+            vol_curr: # the total value of all deals within the last 24 hours
+              type:
+              - str
+            updated: # date and time of data update
+              type:
+              - int
+    mapping:
+    - key: time
+      path:
+      - dict_values
+      - updated
+      type:
+      - float
+      - from_timestamp
+      - 0
+    - key: currency_pair_first
+      path:
+      - dict_key
+      type:
+      - str
+      - split
+      - "_"
+      - 0
+    - key: currency_pair_second
+      path:
+      - dict_key
+      type:
+      - str
+      - split
+      - "_"
+      - 1    
+    - key: best_bid
+      path:
+      - dict_values
+      - buy_price
+      type:
+      - str
+      - float
+    - key: best_ask
+      path:
+      - dict_values
+      - sell_price
+      type:
+      - str
+      - float
+    - key: last_price
+      path:
+      - dict_values
+      - last_trade
+      type:
+      - str
+      - float
+    - key: daily_volume
+      path:
+      - dict_values
+      - vol
+      type:
+      - str
+      - float
+
+  trades:
+    request:
+      template: trades
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: pair
+      params:
+    response:
+      type: dict
+      values:
+        currency_pair: # variable key, each available currency pair
+          type: dict
+          values:
+            trade_id: # current maximum buy price
+              type:
+                - int
+            date: # current minimum sell price
+              type:
+                - int
+            type: # last deal price
+              type:
+                - str
+            quantity: # maximum deal price within the last 24 hours
+              type:
+                - str
+            price: # minimum deal price within the last 24 hours
+              type:
+                - str
+            amout: # average deal price within the last 24 hours
+              type:
+                - str
+    mapping:
+      - key: id
+        path:
+          - dict_values
+          - trade_id
+        type:
+          - int
+      - key: time
+        path:
+          - dict_values
+          - date
+        type:
+          - float
+          - from_timestamp
+          - 0
+      - key: direction
+        path:
+          - dict_values
+          - type
+        type:
+          - str
+      - key: price
+        path:
+          - dict_values
+          - price
+        type:
+          - str
+          - float
+      - key: amount
+        path:
+          - dict_values
+          - quantity
+        type:
+          - str
+          - float
+
+  order_books:
+    request:
+        template: order_book
+        pair_template:
+          template: "{first}_{second}"
+          lower_case: false
+          alias: pair
+        params:
+          limit:
+            type: int
+            default: 100 #max: 1000
+
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: dict
+          values:
+            ask:
+              type: list
+              values:
+                type: list
+                values:
+                  0:
+                    type: str
+                  1:
+                    type: str
+                  2:
+                    type: str
+            bid:
+              type: list
+              values:
+                type: list
+                values:
+                  0: #Price
+                    type: str
+                  1: #Quantity
+                    type: str
+                  2: #Amount (-> Price*Quantity)
+                    type: str
+
+    mapping:
+      - key: id
+        path: []
+        type:
+          - none
+          - now_timestamp
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_price
+        path:
+          - dict_values
+          - bid
+          - 0
+        type:
+          - str
+          - float
+      - key: bids_amount
+        path:
+          - dict_values
+          - bid
+          - 1
+        type:
+          - str
+          - float
+      - key: asks_price
+        path:
+          - dict_values
+          - ask
+          - 0
+        type:
+          - str
+          - float
+      - key: asks_amount
+        path:
+          - dict_values
+          - ask
+          - 1
+        type:
+          - str
+          - float

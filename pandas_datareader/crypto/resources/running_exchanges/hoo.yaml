@@ -1,0 +1,341 @@
+name: hoo
+exchange: true
+api_docs: https://hoo.com/docs-en
+rate_limit:
+  max: 300
+  unit: 60
+
+api_url: https://api.hoolgd.com/open/v1/
+
+requests:
+  currency_pairs:
+    request:
+      template: tickers/market
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              price:
+                type: str
+              symbol:
+                type: str
+              volume:
+                type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - data
+          - symbol
+        type:
+          - str
+          - split
+          - "-"
+          - 0
+      - key: currency_pair_second
+        path:
+          - data
+          - symbol
+        type:
+          - str
+          - split
+          - "-"
+          - 1
+
+  tickers:
+    request:
+      template: tickers/market
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              price:
+                type: str
+              symbol:
+                type: str
+              volume:
+                type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - data
+          - symbol
+        type:
+          - str
+          - split
+          - "-"
+          - 0
+      - key: currency_pair_second
+        path:
+          - data
+          - symbol
+        type:
+          - str
+          - split
+          - "-"
+          - 1
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: daily_volume
+        path:
+          - data
+          - volume
+        type:
+          - str
+          - float
+      - key: last_price
+        path:
+          - data
+          - price
+        type:
+          - str
+          - float
+
+  historic_rates:
+    request:
+      template: kline/market
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        type:
+          allowed:
+            minutes: 1Min
+            hours: 1Hour
+            days: 1Day
+            weeks: 1Week
+          default: 1Day
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              open:
+                type: str
+              high:
+                type: str
+              low:
+                type: str
+              close:
+                type: str
+              time:
+                type: int
+              volume:
+                type: str
+    mapping:
+    - key: time
+      path:
+        - data
+        - time
+      type:
+        - float
+        - from_timestamp
+        - 0
+    - key: open
+      path:
+        - data
+        - open
+      type:
+        - str
+        - float
+    - key: high
+      path:
+        - data
+        - high
+      type:
+        - str
+        - float
+    - key: low
+      path:
+        - data
+        - low
+      type:
+        - str
+        - float
+    - key: close
+      path:
+        - data
+        - close
+      type:
+        - str
+        - float
+    - key: volume
+      path:
+        - data
+        - volume
+      type:
+        - str
+        - float
+
+  trades:
+    request:
+      template: trade/market
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: false
+        alias: symbol
+      params: null
+
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              amount:
+                type: str
+              price:
+                type: str
+              time:
+                type: int
+              side:
+                type: str
+              volume:
+                type: str
+
+    mapping:
+    - key: time
+      path:
+        - data
+        - time
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: id
+      path:
+        - data
+        - time
+      type:
+        - int
+    - key: direction
+      path:
+        - data
+        - side
+      type:
+        - value
+        - map
+        - -1
+        - buy
+        - 1
+        - sell
+    - key: price
+      path:
+        - data
+        - price
+      type:
+        - str
+        - float
+    - key: amount
+      path:
+        - data
+        - volume
+      type:
+        - str
+        - float
+
+  order_books:
+    request:
+      template: depth/market
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: false
+        alias: symbol
+      params: null
+
+    response:
+      type: dict
+      values:
+        data:
+          type: dict
+          values:
+            bids:
+              type: list
+              values:
+                type: dict
+                values:
+                  price:
+                    type: str
+                  quantity:
+                    type: str
+            asks:
+              type: list
+              values:
+                type: dict
+                values:
+                  price:
+                    type: str
+                  quantity:
+                    type: str
+
+    mapping:
+    - key: time
+      path: []
+      type:
+        - none
+        - now
+    - key: id
+      path: []
+      type:
+        - none
+        - now_timestamp
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - data
+        - bids
+        - quantity
+      type:
+        - str
+        - float
+    - key: bids_price
+      path:
+        - data
+        - bids
+        - price
+      type:
+        - str
+        - float
+    - key: asks_amount
+      path:
+        - data
+        - asks
+        - quantity
+      type:
+        - str
+        - float
+    - key: asks_price
+      path:
+        - data
+        - asks
+        - price
+      type:
+        - str
+        - float

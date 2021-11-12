@@ -1,0 +1,336 @@
+name: idex
+exchange: true
+api_docs: https://docs.idex.io/#introduction
+api_url: https://api.idex.io/
+rate_limit:
+  max: 300
+  unit: 60
+requests:
+  currency_pairs:
+    request:
+      template: v1/markets
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          baseAsset:
+            type: str
+          quoteAsset:
+            type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - baseAsset
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - quoteAsset
+        type:
+          - str
+
+
+  tickers:
+    request:
+      template: v1/tickers
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          baseAsset:
+            type: str
+          quoteAsset:
+            type: str
+          baseVolume:
+            type: str
+          quoteVolume:
+            type: str
+          ask:
+            type: str
+          bid:
+            type: str
+          time:
+            type: int
+
+    mapping:
+    - key: currency_pair_first
+      path:
+        - market
+      type:
+        - str
+        - split
+        - "-"
+        - 0
+    - key: currency_pair_second
+      path:
+        - market
+      type:
+        - str
+        - split
+        - "-"
+        - 1
+    - key: time
+      path:
+        - time
+      type:
+      - float
+      - from_timestamp
+      - 1
+    - key: best_ask
+      path:
+        - bid
+      type:
+      - str
+      - float
+    - key: best_bid
+      path:
+      - bid
+      type:
+      - str
+      - float
+
+  order_books:
+    request:
+      template: v1/orderbook
+      pair_template: # e.g. ETH_SAN
+        template: "{first}-{second}"
+        lower_case: false
+        alias: market
+      params:
+        level:
+          type: int
+          default: 2
+        limit:
+          type: int
+          default: 50
+
+    response:
+      type: dict
+      values:
+        sequence:
+          type: int
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0: #price
+                type:
+                - str
+              1: #quantity
+                type:
+                - str
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0: #price
+                type:
+                  - str
+              1: #quantity
+                type:
+                  - str
+    mapping:
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: id
+      path:
+        - sequence
+      type:
+        - int
+    - key: time
+      path: []
+      type:
+      - none
+      - now
+    - key: asks_price
+      path:
+      - asks
+      - 0
+      type:
+      - str
+      - float
+    - key: asks_amount
+      path:
+      - asks
+      - 1
+      type:
+      - str
+      - float
+    - key: bids_price
+      path:
+      - bids
+      - 0
+      type:
+      - str
+      - float
+    - key: bids_amount
+      path:
+      - bids
+      - 1
+      type:
+      - str
+      - float
+
+  trades:
+    request:
+      template: v1/trades
+      pair_template: # e.g. ETH_SAN
+        template: "{first}-{second}"
+        lower_case: false
+        alias: market
+      params:
+        limit:
+          type: int
+          max: 1000
+          default: 200
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          fillId:
+            type: str
+          quantity:
+            type: str
+          price:
+            type: str
+          time:
+            type: int
+          makerSide:
+            type: str
+          sequence:
+            type: int
+    mapping:
+    - key: time
+      path:
+      - time
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: id
+      path:
+        - sequence
+      type:
+        - int
+    - key: amount
+      path:
+      - quantity
+      type:
+      - str
+      - float
+    - key: direction
+      path:
+      - makerSide
+      type:
+      - value
+      - map
+      - sell
+      - buy
+      - buy
+      - sell
+    - key: price
+      path:
+      - price
+      type:
+      - str
+      - float
+
+  historic_rates:
+    request:
+      template: v1/candles
+      pair_template: # e.g. ETH_SAN
+        template: "{first}-{second}"
+        lower_case: false
+        alias: market
+      params:
+        interval:
+          allowed:
+            minutes: 1m
+            hours: 1h
+            days: 1d
+          default: 1d
+        limit:
+          max: 1000
+          default: 1000
+        end:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestampms
+#        start:
+#          function: last_timestamp
+#          type:
+#            - datetime
+#            - timedeltams
+#            - interval
+#            - 1000
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          market:
+            type: str
+          start:
+            type: int
+          open:
+            type: str
+          high:
+            type: str
+          low:
+            type: str
+          close:
+            type: str
+          volume:
+            type: str
+    mapping:
+      - key: time
+        path:
+          - start
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: open
+        path:
+          - open
+        type:
+          - str
+          - float
+      - key: high
+        path:
+          - high
+        type:
+          - str
+          - float
+      - key: low
+        path:
+          - low
+        type:
+          - str
+          - float
+      - key: close
+        path:
+          - close
+        type:
+          - str
+          - float
+      - key: volume
+        path:
+          - volume
+        type:
+          - str
+          - float

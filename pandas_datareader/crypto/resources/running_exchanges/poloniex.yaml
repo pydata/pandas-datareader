@@ -1,0 +1,354 @@
+name: poloniex
+exchange: true
+api_url: https://poloniex.com/
+rate_limit: null
+requests:
+  currency_pairs:
+    request:
+      template: public?command=returnTicker
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        currency_pair: # variable key, each currency pair e.g. ltc_btc
+          type: dict
+          values:
+            last:
+              type: float
+            lowestAsk:
+              type: float
+            highestBid:
+              type: float
+            percentChange:
+              type: float
+            baseVolume:
+              type: float
+            quoteVolume:
+              type: float
+            isFrozen:
+              type: int
+            high24hr:
+              type: float
+            low24hr:
+              type: float
+    mapping:
+      - key: currency_pair_first
+        path:
+          - dict_key
+        type:
+          - str
+          - splitupper
+          - "_"
+          - 1
+      - key: currency_pair_second
+        path:
+          - dict_key
+        type:
+          - str
+          - splitupper
+          - "_"
+          - 0
+
+  tickers:
+    request:
+      template: public?command=returnTicker
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        currency_pair: # variable key, each currency pair e.g. ltc_btc
+          type: dict
+          values:
+            last:
+              type: float
+            lowestAsk:
+              type: float
+            highestBid:
+              type: float
+            percentChange:
+              type: float
+            baseVolume:
+              type: float
+            quoteVolume:
+              type: float
+            isFrozen:
+              type: int
+            high24hr:
+              type: float
+            low24hr:
+              type: float
+    mapping:
+    - key: time
+      path: []
+      type:
+      - none
+      - now
+    - key: currency_pair_first
+      path:
+      - dict_key
+      type:
+      - str
+      - splitupper
+      - "_"
+      - 1
+    - key: currency_pair_second
+      path:
+      - dict_key
+      type:
+      - str
+      - splitupper
+      - "_"
+      - 0
+    - key: last_price
+      path:
+      - dict_values
+      - last
+      type:
+      - float
+    - key: best_bid
+      path:
+      - dict_values
+      - highestBid
+      type:
+      - float
+    - key: best_ask
+      path:
+      - dict_values
+      - lowestAsk
+      type:
+      - float
+    - key: daily_volume
+      path:
+      - dict_values
+      - base_volume
+      type:
+      - float
+
+  historic_rates:
+    request:
+      template: public?command=returnChartData
+      pair_template:
+        template: "{first}_{second}"
+        alias: currencyPair
+        lower_case: false
+      params:
+        start:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 1000
+#          type: int
+#          default: 946684800 # 01.01.2000
+        period:
+          allowed:
+            minutes: 300
+            hours: 7200
+            days: 86400
+          default: 86400 #1 Day in Seconds
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          date:
+            type: int
+          high:
+            type: float
+          low:
+            type: float
+          open:
+            type: float
+          close:
+            type: float
+          quoteVolume:
+            type: float
+          weightedAverage:
+            type: flaot
+
+    mapping:
+      - key: time
+        path:
+          - date
+        type:
+          - float
+          - from_timestamp
+          - 0
+      - key: close
+        path:
+          - close
+        type:
+          - float
+      - key: open
+        path:
+          - open
+        type:
+          - float
+      - key: high
+        path:
+          - high
+        type:
+          - float
+      - key: low
+        path:
+          - low
+        type:
+          - float
+      - key: volume
+        path:
+          - volume
+        type:
+          - float
+
+  order_books:
+    request:
+      template: public?command=returnOrderBook
+      pair_template:
+        template: "{first}_{second}"
+        alias: currencyPair
+        lower_case: false
+      params:
+        depth:
+          type: int
+          default: 100
+
+    response:
+      type: dict
+      values:
+        ask:
+          type: list
+          values:
+            type: list
+            values:
+              0:
+                type: str
+              1:
+                type: float
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0:
+                type: str
+              1:
+                type: float
+        is_frozen:
+          type: str
+        seq:
+          type: int
+
+    mapping:
+    - key: time
+      path: []
+      type:
+        - none
+        - now
+    - key: bids_price
+      path:
+        - bids
+        - 0
+      type:
+        - str
+        - float
+    - key: bids_amount
+      path:
+        - bids
+        - 1
+      type:
+        - float
+    - key: asks_price
+      path:
+        - asks
+        - 0
+      type:
+        - str
+        - float
+    - key: asks_amount
+      path:
+        - asks
+        - 1
+      type:
+        - float
+    - key: id
+      path:
+        - seq
+      type:
+        - int
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+
+  trades:
+    request:
+      template: public?command=returnTradeHistory
+      pair_template:
+        template: "{first}_{second}"
+        alias: currencyPair
+        lower_case: false
+      params: null
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          globalTradeID:
+            type: int
+          tradeID:
+            type: int
+          date:
+            type: str
+          type:
+            type: str
+          rate:
+            type: str
+          amount:
+            type: str
+          total:
+            type: str
+          orderNumber:
+            type: str
+    mapping:
+      - key: time
+        path:
+          - date
+        type:
+          - str
+          - strptime
+          - "%Y-%m-%d %H:%M:%S"
+      - key: id
+        path:
+          - tradeID
+        type:
+          - str
+          - int
+      - key: price
+        path:
+          - rate
+        type:
+          - str
+          - float
+      - key: amount
+        path:
+          - amount
+        type:
+          - str
+          - float
+      - key: direction
+        path:
+          - type
+        type:
+          - str
+
+
+
+
+
+

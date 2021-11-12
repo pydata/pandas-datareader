@@ -1,0 +1,313 @@
+# Tickers don't work as they only return the first currency. The second, with the type conversion (none, constant)
+# does not work yet.
+
+name: 50x
+exchange: true
+
+rate_limit: null # no rate limit
+#  max: null
+#  unit: null
+
+api_url: https://rates.50x.com/
+
+requests:
+  currency_pairs:
+    request:
+      template: market
+      pair_template: null
+      params:
+        base:
+          default: USDT
+
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: dict
+          values:
+            vol:
+              type: str
+            rate:
+              type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - dict_key
+        type:
+          - str
+      - key: currency_pair_second
+        path: []
+        type:
+          - none
+          - constant
+          - "USDT"
+
+#  tickers:
+#    request:
+#      template: market
+#      pair_template: null
+#      params:
+#        base:
+#          default: "USDT"
+#    response:
+#      type: dict
+#      values:
+#        currency_pair:
+#          type: dict
+#          values:
+#            vol:
+#              type: str
+#            rate:
+#              type: str
+#
+#    mapping:
+#      - key: currency_pair_first
+#        path:
+#          - dict_key
+#        type:
+#          - str
+#      - key: currency_pair_second
+#        path: []
+#        type:
+#          - none
+#          - constant
+#          - "USDT"
+#      - key: last_price
+#        path:
+#          - dict_values
+#          - rate
+#        type:
+#          - str
+#          - float
+#      - key: time
+#        path: []
+#        type:
+#          - none
+#          - now
+#      - key: daily_volume
+#        path:
+#          - dict_values
+#          - vol
+#        type:
+#          - str
+#          - float
+
+  historic_rates:
+    request:
+      template: chart
+      pair_template:
+        template: "{first}/{second}"
+        lower_case: false
+        alias: pair
+      params:
+        period:
+          allowed:
+            minutes: M1
+            hours: H1
+            days: D
+            weeks: W
+          default: D
+        end:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestamp
+#        start:
+#          function: last_timestamp
+#          type:
+#            - datetime
+#            - timedelta
+#            - interval
+#            - 100
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          vol:
+            type: float
+          high:
+            type: float
+          low:
+            type: float
+          open:
+            type: float
+          close:
+            type: float
+          date:
+            type: int
+
+    mapping:
+    - key: time
+      path:
+        - date
+      type:
+        - float
+        - from_timestamp
+        - 0
+    - key: open
+      path:
+        - open
+      type:
+        - float
+    - key: high
+      path:
+        - high
+      type:
+        - float
+    - key: low
+      path:
+        - low
+      type:
+        - float
+    - key: close
+      path:
+        - close
+      type:
+        - float
+    - key: volume
+      path:
+        - vol
+      type:
+        - float
+
+
+  trades:
+    request:
+      template: last_trades/
+      pair_template:
+        template: "{first}/{second}"
+        lower_case: false
+        alias: pair
+      params: null
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          a:
+            type: int
+          bs:
+            type: str
+          ts:
+            type: float
+          rate:
+            type: float
+          vol1:
+            type: float
+          vol2:
+            type: float
+
+    mapping:
+    - key: time
+      path:
+        - ts
+      type:
+        - float
+        - float
+        - from_timestamp
+        - 0
+    - key: id
+      path:
+        - ts
+      type:
+        - float
+        - int
+    - key: direction
+      path:
+        - bs
+      type:
+        - value
+        - map
+        - b
+        - buy
+        - s
+        - sell
+    - key: price
+      path:
+        - rate
+      type:
+        - float
+    - key: amount
+      path:
+        - vol1
+      type:
+        - float
+
+  order_books:
+    request:
+      template: orderbook/
+      pair_template:
+        template: "{first}/{second}"
+        lower_case: false
+        alias: pair
+      params: null
+
+    response:
+      type: dict
+      values:
+        bid:
+          type: list
+          values:
+            type: list
+            values:
+              0:
+                type: int
+              1:
+                type: int
+              2:
+                type: int
+        ask:
+          type: list
+          values:
+            type: list
+            values:
+              0:
+                type: int
+              1:
+                type: int
+              2:
+                type: int
+
+    mapping:
+    - key: time
+      path: []
+      type:
+        - none
+        - now
+    - key: id
+      path: []
+      type:
+        - none
+        - now_timestamp
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - bid
+        - 1
+      type:
+        - float
+    - key: bids_price
+      path:
+        - bid
+        - 0
+      type:
+        - float
+    - key: asks_amount
+      path:
+        - ask
+        - 1
+      type:
+        - float
+    - key: asks_price
+      path:
+        - ask
+        - 0
+      type:
+        - float

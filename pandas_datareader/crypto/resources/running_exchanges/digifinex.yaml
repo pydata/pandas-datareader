@@ -1,0 +1,291 @@
+name: digifinex
+exchange: true
+api_doc: https://docs.digifinex.com/en-ww/v3/#market-data
+rate_limit: null
+api_url: https://openapi.digifinex.vip/v3/
+
+requests:
+  currency_pairs:
+    request:
+      template: markets
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              volume_precision:
+                type: int
+              price_precision:
+                type: int
+              market:
+                type: str
+              min_amount:
+                type: int
+              min_volume:
+                type: float
+    mapping:
+      - key: currency_pair_first
+        path:
+        - data
+        - market
+        type:
+        - str
+        - splitupper
+        - "_"
+        - 0
+      - key: currency_pair_second
+        path:
+        - data
+        - market
+        type:
+        - str
+        - splitupper
+        - "_"
+        - 1
+
+  tickers:
+    request:
+      template: ticker
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        ticker: 
+          type: list
+          values:
+            type: dict
+            values:
+              vol:
+                type: float
+              change: 
+                type: float
+              base_vol:
+                type: float
+              sell:
+                type: float
+              last:
+                type: float
+              symbol:
+                type: str
+              low: 
+                type: float
+              buy:
+                type: float
+              high:
+                type: float
+        date:
+          type: int
+        code: 
+          type: bool
+          
+    mapping:
+    - key: time
+      path: []
+      type:
+      - none
+      - now
+    - key: currency_pair_first
+      path: 
+      - ticker
+      - symbol
+      type:
+      - str
+      - splitupper
+      - "_"
+      - 0
+    - key: currency_pair_second
+      path:
+      - ticker
+      - symbol
+      type:
+      - str
+      - splitupper
+      - "_"
+      - 1
+    - key: last_price
+      path:
+      - ticker
+      - last
+      type:
+      - float
+    - key: best_bid
+      path:
+      - ticker
+      - buy
+      type:
+      - float
+    - key: best_ask
+      path:
+      - ticker
+      - sell
+      type:
+      - float
+    - key: daily_volume
+      path: 
+      - ticker
+      - vol
+      type:
+      - float
+        
+  historic_rates:
+    request:
+      template: kline
+      pair_template: 
+        template: "{first}_{second}"
+        lower_case: true
+        alias: symbol
+      params:
+        period:
+          allowed:
+            minutes: 1
+            hours: 60
+            days: 1D
+            weeks: 1W
+          default: 1D
+        start_time:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 1000
+        end_time:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestamp
+
+    response:
+      type: dict
+      values:
+        code:
+          type: dict
+        data:
+          type: list
+          values:
+            type: list
+            values:
+              0: # timestamp
+                type: int
+              1: # volume
+                type: float
+              2: # close
+                type: float
+              3: # high
+                type: float
+              4:  # low
+                type: float
+              5: # open
+                type: float
+    mapping:
+    - key: time
+      path:
+      - data
+      - []
+      - 0    
+      type:
+      - float
+      - from_timestamp
+      - 0
+    - key: volume
+      path:
+      - data
+      - []
+      - 1         
+      type:
+      - float
+    - key: close
+      path:    
+      - data
+      - []
+      - 2     
+      type:
+      - float
+    - key: high
+      path:
+      - data
+      - []
+      - 3   
+      type:
+      - float
+    - key: low
+      path:  
+      - data
+      - []
+      - 4       
+      type:
+      - float
+    - key: open
+      path:       
+      - data
+      - []
+      - 4  
+      type:
+      - float
+      
+#  trades:
+#    request:
+#      template: trades
+#      pair_template: 
+#        template: "{first}_{second}"
+#        lower_case: true
+#        alias: symbol
+#      params: 
+#        limit: #between 100-500
+#          type: int
+#          default: 100
+#    response:
+#      type: dict
+#      values:
+#        data:
+#          type: list
+#          values:
+#            type: dict
+#            values:
+#              date:
+#                type: int
+#              id:
+#                type: int
+#              amount:
+#                type: float
+#              type:
+#                type: str
+#              price:
+#                type: float
+#    mapping:
+#    - key: trade_time
+#      path:
+#      - data
+#      - date
+#      type:
+#      - int
+#      - fromtimestamp
+#    - key: trade_amount
+#      path:
+#      - data
+#      - amount
+#      type: 
+#      - float
+#    - key: trade_last_price
+#      path:
+#      - data
+#      - price
+#      type:
+#      - int
+#    - key: trade_side
+#      path: 
+#      - data
+#      - type
+#      type:
+#      - str
+#      
+#  order_book:
+#    request:
+#    response:
+#    mapping:

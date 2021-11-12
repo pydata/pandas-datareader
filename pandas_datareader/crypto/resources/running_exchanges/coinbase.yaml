@@ -1,0 +1,338 @@
+name: coinbase
+exchange: true
+api_url: https://api.pro.coinbase.com/
+rate_limit:
+  max: 180
+  unit: 60
+requests:
+  currency_pairs:
+    request:
+      template: products/
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          id: # i.e. "BTC-USD"
+            type: str
+          base_currency: # i.e. "BTC"
+            type: str
+          quote_currency: # i.e. "USD"
+            type: str
+          base_min_size:
+            type:
+            - str
+          base_max_size:
+            type:
+            - str
+          quote_increment:
+            type:
+            - str
+    mapping:
+    - key: currency_pair_first
+      path:
+      - base_currency
+      type:
+      - str
+    - key: currency_pair_second
+      path:
+      - quote_currency
+      type:
+      - str
+
+  tickers:
+    request:
+      template: products/{currency_pair}/ticker
+      pair_template:  # e.g. BTC-USD
+        template: "{first}-{second}"
+        lower_case: false
+      params: null
+    response:
+      type: dict
+      values:
+        trade_id:
+          type: int
+        price:
+          type:
+          - str
+        size:
+          type:
+          - str
+        bid:
+          type:
+          - str
+        ask:
+          type:
+          - str
+        volume:
+          type:
+          - str
+        time:
+          type:
+          - str
+    mapping:
+
+    - key: last_price
+      path:
+      - price
+      type:
+      - str
+      - float
+    - key: best_bid
+      path:
+      - bid
+      type:
+      - str
+      - float
+    - key: best_ask
+      path:
+      - ask
+      type:
+      - str
+      - float
+    - key: daily_volume
+      path:
+      - volume
+      type:
+      - str
+      - float
+    - key: time
+      path:
+      - time
+      type:
+      - str
+      - dateparser
+
+
+  order_books:
+     request:
+       template: products/{currency_pair}/book
+       pair_template:  # e.g. BTC-USD
+         template: "{first}-{second}"
+         lower_case: false
+       params:
+         level:
+           type: int
+           possible:
+             - 1 # Only the best bid and ask
+             - 2 # Top 50 bids and asks (aggregated)
+             - 3 # Full order book (non aggregated), Abuse of Level 3 via polling will cause your access to be limited or blocked.
+           default: 2
+     response:
+       type: dict
+       values:
+         sequence:
+           type:
+           - int
+         bids:
+           type: list
+           values:
+             type: list
+             values:
+               0: # price
+                 type:
+                 - str
+               1: # size
+                 type:
+                 - str
+               2: # num-orders
+                 type: int
+         asks:
+           type: list
+           values:
+             type: list
+             values:
+               0: # price
+                 type:
+                 - str
+               1: # size
+                 type:
+                 - str
+               2: # num-orders
+                 type: int
+     mapping:
+     - key: time
+       path: []
+       type:
+       - none
+       - now
+     - key: bids_price
+       path:
+       - bids
+       - 0
+       type:
+       - str
+       - float
+     - key: bids_amount
+       path:
+       - bids
+       - 1
+       type:
+       - str
+       - float
+     - key: asks_price
+       path:
+       - asks
+       - 0
+       type:
+       - str
+       - float
+     - key: asks_amount
+       path:
+       - asks
+       - 1
+       type:
+       - str
+       - float
+     - key: position
+       path: []
+       type:
+       - none
+       - range
+     - key: id
+       path:
+         - sequence
+       type:
+         - int
+
+
+  trades:
+    request:
+      template: products/{currency_pair}/trades
+      pair_template:  # e.g. BTC-USD
+        template: "{first}-{second}"
+        lower_case: false
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          time:
+            type:
+            - str
+          trade_id:
+            type: int
+          price:
+            type:
+            - str
+          size:
+            type:
+            - str
+          side:
+            type: str
+    mapping:
+    - key: time
+      path:
+      - time
+      type:
+      - str
+      - dateparser
+    - key: price
+      path:
+      - price
+      type:
+      - str
+      - float
+    - key: amount
+      path:
+      - size
+      type:
+      - str
+      - float
+    - key: direction
+      path:
+      - side
+      type:
+      - str
+    - key: id
+      path:
+        - trade_id
+      type:
+        - int
+
+  historic_rates: # Historical rates should not be polled frequently. If you need real-time information, use the trade and book endpoints along with the websocket feed.
+    request:
+      template: products/{currency_pair}/candles
+      pair_template:  # e.g. BTC-USD
+        template: "{first}-{second}"
+        lower_case: false
+      params:
+        start: # Start time in ISO 8601 "%Y-%m-%dT%H:%M:%S.%fZ"
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 300
+            - from_timestamp
+            - 0
+            - "%Y-%m-%dT%H:%M:%S.%fZ"
+        end: # End time in ISO 8601
+          function: last_timestamp
+          type:
+            - datetime
+            - format
+            - "%Y-%m-%dT%H:%M:%S.%fZ"
+        granularity: # Desired timeslice in seconds
+          type: int
+          allowed:
+            minutes: 60
+            hours: 3600
+            days: 86400
+          default: 86400
+    response:
+      type: list # TODO: Header Entry?
+      values:
+        type: list
+        values:
+          0: # start time
+            type: int
+          1: # low
+            type: float
+          2: # high
+            type: float
+          3: # open
+            type: float
+          4: # close
+            type: float
+          5: # volume
+            type: float
+    mapping:
+    - key: time
+      path:
+      - 0
+      type:
+      - float
+      - from_timestamp
+      - 0
+      - to_end
+      - interval
+
+    - key: low
+      path:
+      - 1
+      type:
+      - float
+    - key: high
+      path:
+      - 2
+      type:
+      - float
+    - key: open
+      path:
+      - 3
+      type:
+      - float
+    - key: close
+      path:
+      - 4
+      type:
+      - float
+    - key: volume
+      path:
+      - 5
+      type:
+      - float

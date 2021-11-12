@@ -1,0 +1,192 @@
+name: aax
+exchange: true
+rate_limit: null
+api_url: https://api.aax.com/v2/
+
+requests:
+  currency_pairs:
+    request:
+      template: instruments
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              base:
+                type: str
+              quote:
+                type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - data
+          - base
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - data
+          - quote
+        type:
+          - str
+
+  order_books:
+    request:
+      template: market/orderbooks
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        level:
+          max: 50
+          default: 50
+
+    response:
+      type: dict
+      values:
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0:
+                type: str
+              1:
+                type: str
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0: #price
+                type: str
+              1: #quantity
+                type: str
+        e:
+          type: str
+        t:
+          type: int
+
+    mapping:
+      - key: id
+        path:
+          - t
+        type:
+          - int
+      - key: time
+        path:
+          - t
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_amount
+        path:
+          - bids
+          - []
+          - 1
+        type:
+          - str
+          - float
+      - key: bids_price
+        path:
+          - bids
+          - 0
+        type:
+          - str
+          - float
+      - key: asks_amount
+        path:
+          - asks
+          - 1
+        type:
+          - str
+          - float
+      - key: asks_price
+        path:
+          - asks
+          - 0
+        type:
+          - str
+          - float
+
+  trades:
+    request:
+      template: market/trades
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        limit:
+          max: 2000
+          default: 200
+
+    response:
+      type: dict
+      values:
+        trades:
+          type: list
+          values:
+            type: dict
+            values:
+              p:
+                type: str
+              q:
+                type: str
+              t:
+                type: int
+    mapping:
+      - key: id
+        path:
+          - trades
+          - t
+        type:
+          - int
+      - key: time
+        path:
+          - trades
+          - t
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: price
+        path:
+          - trades
+          - p
+        type:
+          - str
+          - float_absolut
+      - key: amount
+        path:
+          - trades
+          - q
+        type:
+          - str
+          - float
+      - key: direction
+        path:
+          - trades
+          - p
+        type:
+          - any
+          - value
+          - map
+          - true
+          - buy
+          - false
+          - sell
+

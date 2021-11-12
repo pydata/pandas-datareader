@@ -1,0 +1,225 @@
+name: latoken
+exchange: true
+api_url: https://api.latoken.com/api/v2/
+rate_limit: null
+
+requests:
+
+  currency_pairs:
+    request:
+      template: ticker
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values: 
+        type: dict
+        values:
+          symbol:
+            type: str
+          lastPrice:
+            type: str
+    mapping:          
+      - key: currency_pair_first
+        path:
+        - symbol
+        type:
+        - str
+        - split
+        - "/"
+        - 0
+      - key: currency_pair_second
+        path:
+        - symbol
+        type:
+        - str
+        - split
+        - "/"
+        - 1
+       
+  tickers:
+    request:
+      template: ticker
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          symbol:
+            type: str
+          lastPrice:
+            type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - symbol
+        type:
+          - str
+          - split
+          - "/"
+          - 0
+      - key: currency_pair_second
+        path:
+          - symbol
+        type:
+          - str
+          - split
+          - "/"
+          - 1
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: last_price
+        path:
+          - lastPrice
+        type:
+          - str
+          - float
+
+
+  order_books:
+    request:
+      template: book/{currency_pair}
+      pair_template:
+        template: "{first}/{second}"
+        lower_case: false
+      params:
+        limit:
+          type: int
+          max: 1000
+          default: 50
+
+    response:
+      type: dict
+      values:
+        ask:
+          type: list
+          values:
+            type: dict
+            values:
+              price:
+                type: str
+              quantity:
+                type: str
+        bid:
+          type: list
+          values:
+            type: dict
+            values:
+              price:
+                type: str
+              quantity:
+                type: str
+
+    mapping:
+      - key: id
+        path: []
+        type:
+          - none
+          - now_timestamp
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_price
+        path:
+          - bid
+          - price
+        type:
+          - str
+          - float
+      - key: bids_amount
+        path:
+          - bid
+          - quantity
+        type:
+          - str
+          - float
+      - key: asks_price
+        path:
+          - ask
+          - price
+        type:
+          - str
+          - float
+      - key: asks_amount
+        path:
+          - ask
+          - quantity
+        type:
+          - str
+          - float
+
+
+
+  trades:
+    request:
+      template: trade/history/{currency_pair}
+      pair_template: #BTCETH
+        template: "{first}/{second}"
+        lower_case: false
+      params:
+        limit:
+          type: int
+          default: 100
+
+    response:
+      type: list
+      values:
+        type: dict
+        value:
+          id:
+            type: int
+          isMakerBuyer:
+            type: str
+          price:
+            type: str
+          quantity:
+            type: str
+          timestamp:
+            type: int
+    mapping:
+      - key: time
+        path:
+          - timestamp
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: id
+        path:
+          - id
+        type:
+          - str
+      - key: direction
+        path:
+          - isMakerBuyer
+        type:
+          - value
+          - map
+          - false
+          - buy
+          - true
+          - sell
+      - key: price
+        path:
+        - price
+        type:
+        - str
+        - float
+      - key: amount
+        path:
+          - quantity
+        type:
+          - str
+          - float

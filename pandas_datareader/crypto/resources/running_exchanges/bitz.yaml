@@ -1,0 +1,548 @@
+name: bitz
+exchange: true
+api_url: https://api.bitzapi.com/
+rate_limit: null
+requests:
+  currency_pairs:
+    request:
+      template: Market/symbolList
+      pair_template: null # e.g. 777_btc
+      params: null
+    response:
+      type: dict
+      values:
+        status:
+          type: int
+        msg:
+          type: str
+        data:
+          type: dict
+          values:
+            currency_pairs: # variable key, each available currency pair
+              type: dict
+              values:
+                id:
+                  type:
+                  - str
+                  - int
+                name: # e.g. ltc_btc
+                  type: str
+                coinFrom: # ltc
+                  type: str
+                coinTo: # btc
+                  type: str
+                numberFloat:
+                  type:
+                  - str
+                  - int
+                priceFloat:
+                  type:
+                  - str
+                  - int
+                status:
+                  type:
+                  - str
+                  - int
+                minTrade:
+                  type:
+                  - str
+                  - float
+                maxTrade:
+                  type:
+                  - str
+                  - float
+        time:
+          type:
+          - float
+          - from_timestamp
+          - 0
+        microtime:
+          type:
+          - str
+          - float
+          - from_timestamp
+          - 0
+        source:
+          type: str
+    mapping:
+    - key: currency_pair_first
+      path:
+      - data
+      - dict_values
+      - coinFrom
+      type:
+      - str
+      - upper
+    - key: currency_pair_second
+      path:
+      - data
+      - dict_values
+      - coinTo
+      type:
+      - str
+      - upper
+
+  order_books:
+    request:
+      template: Market/depth
+      pair_template: # e.g. 777_btc
+        template: "{first}_{second}"
+        lower_case: true
+        alias: symbol
+      params: null
+    response:
+      type: dict
+      values:
+        status:
+          type: int
+        msg:
+          type: str
+        data:
+          type: dict
+          values:
+            asks:
+              type: list
+              values:
+                type: list
+                values:
+                  0: # price
+                    type:
+                    - str
+                  1: # number
+                    type:
+                    - str
+                  2: # Total price
+                    type:
+                    - str
+            bids:
+              type: list
+              values:
+                type: list
+                values:
+                  0: # price
+                    type:
+                    - str
+                  1: # number
+                    type:
+                    - str
+                  2: # Total price
+                    type:
+                    - str
+            coinPair:
+              type: str
+        time:
+          type:
+          - int
+        microtime:
+          type:
+          - str
+        source:
+          type: str
+
+    mapping:
+    - key: time
+      path:
+      - time
+      type:
+      - float
+      - from_timestamp
+      - 0
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: id
+      path:
+        - time
+      type:
+        - int
+    - key: asks_price
+      path:
+      - data
+      - asks
+#      - []
+      - 0
+      type:
+      - str
+      - float
+    - key: asks_amount
+      path:
+      - data
+      - asks
+#      - []
+      - 1
+      type:
+      - str
+      - float
+    - key: bids_price
+      path:
+      - data
+      - bids
+#      - []
+      - 0
+      type:
+      - str
+      - float
+    - key: bids_amount
+      path:
+      - data
+      - bids
+#      - []
+      - 1
+      type:
+      - str
+      - float
+
+
+  tickers:
+    request:
+      template: Market/ticker
+      pair_template: # e.g. 777_btc
+        template: "{first}_{second}"
+        lower_case: true
+        alias: symbol
+      params: null
+    response:
+      type: dict
+      values:
+        status:
+          type: int
+        msg:
+          type: str
+        data:
+          type: dict
+          values:
+            symbol:
+              type: str
+            quoteVolume:
+              type:
+              - str
+              - float
+            volume:
+              type:
+              - str
+              - float
+            priceChange24h:
+              type:
+              - str
+              - float
+            askPrice:
+              type:
+              - str
+              - float
+            askQty:
+              type:
+              - str
+              - float
+            bidPrice:
+              type:
+              - str
+              - float
+            bidQty:
+              type:
+              - str
+              - float
+            open:
+              type:
+              - str
+              - float
+            high:
+              type:
+              - str
+              - float
+            low:
+              type:
+              - str
+              - float
+            now:
+              type:
+              - str
+              - float
+            firstId:
+              type:
+              - str
+              - float
+            lastId:
+              type:
+              - str
+              - float
+            dealCount:
+              type:
+              - str
+              - float
+            numberPrecision:
+              type:
+              - str
+              - float
+            pricePrecision:
+              type:
+              - str
+              - float
+            cny:
+              type:
+              - str
+              - float
+            usd:
+              type:
+              - str
+              - float
+            krw:
+              type:
+              - str
+              - float
+        time:
+          type:
+          - float
+          - from_timestamp
+          - 0
+        microtime:
+          type:
+          - str
+          - float
+          - from_timestamp
+          - 0
+        source:
+          type: str
+    mapping:
+    - key: best_ask
+      path:
+      - data
+      - askPrice
+      type:
+      - str
+      - float
+    - key: best_bid
+      path:
+      - data
+      - bidPrice
+      type:
+      - str
+      - float
+    - key: daily_volume
+      path:
+      - data
+      - volume
+      type:
+      - str
+      - float
+    - key: time
+      path:
+      - time
+      type:
+      - float
+      - from_timestamp
+      - 0
+
+  historic_rates:
+    request:
+      template: Market/kline
+      pair_template: # e.g. 777_btc
+        template: "{first}_{second}"
+        lower_case: true
+        alias: symbol
+      params:
+        resolution:
+          type: str
+          allowed:
+            minutes: 1min
+            hours: 60min
+            days: 1day
+            weeks: 1week
+            months: 1mon
+          default: 1day
+        size: # get number range: 1-300
+          type: int
+          min: 1
+          max: 300
+          required: false
+        to: # microsecond. Return the data before this microsecond
+          function: last_timestamp
+          type:
+            - datetime
+            - timestampms
+    response:
+      type: dict
+      values:
+        status:
+          type: int
+        msg:
+          type: str
+        data:
+          type: dict
+          values:
+            bars:
+              type: list
+              values:
+                type: dict
+                values:
+                  time:
+                    type: 
+                    - str
+                  open:
+                    type:
+                    - str
+                    - float
+                  high:
+                    type:
+                    - str
+                    - float
+                  low:
+                    type:
+                    - str
+                    - float
+                  close:
+                    type:
+                    - str
+                    - float
+                  volume:
+                    type:
+                    - str
+                    - float
+                  datetime:
+                    type: str
+            resolution:
+              type: str
+            symbol:
+              type: str
+            from:
+              type:
+              - str
+            to:
+              type:
+              - str
+            size:
+              type:
+              - str
+              - int
+        time:
+          type:
+          - int
+        microtime:
+          type:
+          - str
+        source:
+          type: str
+    mapping:
+    - key: time
+      path:
+      - data
+      - bars
+      - time
+      type:
+      - str
+      - float
+      - from_timestamp
+      - 1
+    - key: open
+      path:
+      - data
+      - bars
+      - open
+      type:
+      - str
+      - float
+    - key: high
+      path:
+      - data
+      - bars
+      - high
+      type:
+      - str
+      - float
+    - key: low
+      path:
+      - data
+      - bars
+      - low
+      type:
+      - str
+      - float
+    - key: close
+      path:
+      - data
+      - bars
+      - close
+      type:
+      - str
+      - float
+    - key: volume
+      path:
+      - data
+      - bars
+      - volume
+      type:
+      - str
+      - float
+
+  trades:
+    request:
+      template: Market/order
+      pair_template: # e.g. 777_btc
+        template: "{first}_{second}"
+        lower_case: true
+        alias: symbol
+      params: null
+    response:
+      type: dict
+      values:
+        status:
+          type: int
+        msg:
+          type: str
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              id:
+                type:
+                - str
+              t: # time, e.g. 12:58:48
+                type: str
+              T: # timestamp
+                type:
+                - int
+              p: # price
+                type:
+                - str
+              n: # number
+                type:
+                - str
+              s: # type
+                type: str
+    mapping:
+    - key: id
+      path:
+        - data
+        - id
+      type:
+        - int
+    - key: time
+      path:
+      - data
+      - T
+      type:
+      - float
+      - from_timestamp
+      - 0
+    - key: price
+      path:
+      - data
+      - p
+      type:
+      - str
+      - float
+    - key: amount
+      path:
+      - data
+      - n
+      type:
+      - str
+      - float
+    - key: direction
+      path:
+      - data
+      - s
+      type:
+      - str

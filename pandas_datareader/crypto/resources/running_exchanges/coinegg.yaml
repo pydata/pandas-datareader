@@ -1,0 +1,310 @@
+name: coinegg
+exchange: true
+
+rate_limit:
+  max: 3000
+  unit: 60
+
+api_url: https://api.coinegg.fun/
+
+requests:
+  currency_pairs:
+    request:
+      template: openapi/v1/brokerInfo
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        symbols:
+          type: list
+          values:
+            type: dict
+            values:
+              baseAsset:
+                type: str
+              quoteAsset:
+                type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - symbols
+          - baseAsset
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - symbols
+          - quoteAsset
+        type:
+          - str
+
+  tickers:
+    request:
+      template: openapi/quote/v1/ticker/price
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: sybmol
+      params: null
+    response:
+      type: dict
+      values:
+        symbol:
+          type: str
+        price:
+          type: str
+
+    mapping:
+      - key: last_price
+        path:
+          - price
+        type:
+          - str
+          - float
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+
+  historic_rates:
+    request:
+      template: openapi/quote/v1/klines
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        interval:
+          allowed:
+            minutes: 1m
+#            hours: 1h
+            days: 1d
+            weeks: 1w
+            months: 1M
+          default: 1d
+        endTime:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestampms
+#        startTime: #not required with endTime and limit parameter
+#          function: last_timestamp
+#          type:
+#            - datetime
+#            - timedeltams
+#            - interval
+#            - 100
+        limit:
+          type:
+            - int
+          default: 1000
+
+    response:
+      type: list
+      values:
+        type: list
+        values:
+          0: #open time
+            type: int
+          1: #open
+            type: str
+          2: # high
+            type: str
+          3: # low
+            type: str
+          4: # close
+            type: str
+          5: # vol
+            type: str
+          6: # close time
+            type: int
+          7: # quote_vol
+            type: str
+
+    mapping:
+    - key: time
+      path:
+      - 0
+      type:
+      - float
+      - from_timestamp
+      - 1
+      - to_end
+      - interval
+    - key: open
+      path:
+        - 1
+      type:
+        - str
+        - float
+    - key: high
+      path:
+        - 2
+      type:
+        - str
+        - float
+    - key: low
+      path:
+        - 3
+      type:
+        - str
+        - float
+    - key: close
+      path:
+        - 4
+      type:
+        - str
+        - float
+    - key: volume
+      path:
+        - 5
+      type:
+        - str
+        - float
+
+
+  trades:
+    request:
+      template: openapi/quote/v1/trades
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        limit:
+          default: 500 #max: 1000
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          price:
+            type: str
+          time:
+            type: int
+          qty:
+            type: str
+          isBuyerMaker:
+            type: bool
+
+    mapping:
+    - key: time
+      path:
+        - time
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: id
+      path:
+        - time
+      type:
+        - int
+    - key: direction
+      path:
+        - isBuyerMaker
+      type:
+        - value
+        - map
+        - true
+        - sell
+        - false
+        - buy
+    - key: price
+      path:
+        - price
+      type:
+        - str
+        - float
+    - key: amount
+      path:
+        - qty
+      type:
+        - str
+        - float
+
+  order_books:
+    request:
+      template: openapi/quote/v1/depth
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        limit:
+          default: 50
+
+    response:
+      type: dict
+      values:
+        time:
+          type: int
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0:
+                type: str
+              1:
+                type: str
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0: #price
+                type: str
+              1: #qty
+                type: str
+
+    mapping:
+    - key: time
+      path:
+        - time
+      type:
+      - float
+      - from_timestamp
+      - 1
+    - key: id
+      path:
+        - time
+      type:
+        - int
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - bids
+        - 1
+      type:
+        - str
+        - float
+    - key: bids_price
+      path:
+        - bids
+        - 0
+      type:
+        - str
+        - float
+    - key: asks_amount
+      path:
+        - asks
+        - 1
+      type:
+        - str
+        - float
+    - key: asks_price
+      path:
+        - asks
+        - 0
+      type:
+        - str float

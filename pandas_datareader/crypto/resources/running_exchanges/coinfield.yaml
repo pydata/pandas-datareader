@@ -1,0 +1,348 @@
+name: coinfield
+exchange: true
+
+rate_limit: null
+
+api_url: https://api.coinfield.com/v1/
+
+requests:
+  currency_pairs:
+    request:
+      template: markets
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        markets:
+          type: list
+          values:
+            type: dict
+            values:
+              id:
+                type: str
+              name:
+                type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - markets
+          - name
+        type:
+          - str
+          - split
+          - "/"
+          - 0
+      - key: currency_pair_second
+        path:
+          - markets
+          - name
+        type:
+          - str
+          - split
+          - "/"
+          - 1
+
+  tickers:
+    request:
+      template: tickers/{currency_pair}
+      pair_template:
+        template: "{first}{second}"
+        lower_case: true
+      params: null
+    response:
+      type: dict
+      values:
+        markets:
+          type: list
+          values:
+            type: dict
+            values:
+              timestamp:
+                type: str
+              bid:
+                type: float
+              ask:
+                type: float
+              vol:
+                type: float
+              last:
+                type: float
+
+    mapping:
+      - key: last_price
+        path:
+          - markets
+          - last
+        type:
+          - float
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: best_bid
+        path:
+          - markets
+          - bid
+        type:
+          - float
+      - key: best_ask
+        path:
+          - markets
+          - ask
+        type:
+          - float
+      - key: daily_volume
+        path:
+          - markets
+          - vol
+        type:
+          - float
+
+  historic_rates:
+    request:
+      template: ohlc/{currency_pair}
+      pair_template:
+        template: "{first}{second}"
+        lower_case: true
+      params:
+        limit:
+          default: 400
+        period:
+          allowed:
+            minutes: 1
+            hours: 60
+            days: 1440
+            weeks: 10080
+          default: 1440
+        to:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestamp
+        from:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 400
+    response:
+      type: dict
+      values:
+        ohlc:
+          type: list
+          values:
+            type: dict
+            values:
+              ts:
+                type: str
+              o:
+                type: str
+              h:
+                type: str
+              l:
+                type: str
+              c:
+                type: str
+              v:
+                type: str
+
+    mapping:
+    - key: time
+      path:
+        - ohlc
+        - ts
+      type:
+        - str
+        - dateparser
+    - key: open
+      path:
+        - ohlc
+        - o
+      type:
+        - str
+        - float
+    - key: high
+      path:
+        - ohlc
+        - h
+      type:
+        - str
+        - float
+    - key: low
+      path:
+        - ohlc
+        - l
+      type:
+        - str
+        - float
+    - key: close
+      path:
+        - ohlc
+        - c
+      type:
+        - str
+        - float
+    - key: volume
+      path:
+        - ohlc
+        - v
+      type:
+        - str
+        - float
+
+
+  trades:
+    request:
+      template: trades/{currency_pair}
+      pair_template:
+        template: "{first}{second}"
+        lower_case: true
+      params:
+        limit:
+          default: 200
+
+    response:
+      type: dict
+      values:
+        trades_hash:
+          type: str
+        trades:
+          type: list
+          values:
+            type: dict
+            values:
+              id:
+                type: int
+              price:
+                type: str
+              volume:
+                type: str
+              total_value:
+                type: str
+              timestamp:
+                type: str
+
+
+    mapping:
+    - key: time
+      path:
+        - trades
+        - timestamp
+      type:
+        - str
+        - dateparser
+    - key: id
+      path:
+        - trades
+        - id
+      type:
+        - int
+#    - key: direction
+#      path:
+#      type:
+    - key: price
+      path:
+        - trades
+        - price
+      type:
+        - str
+        - float
+    - key: amount
+      path:
+        - trades
+        - volume
+      type:
+        - str
+        - float
+
+  order_books:
+    request:
+      template: orderbook/{currency_pair}
+      pair_template:
+        template: "{first}{second}"
+        lower_case: true
+      params:
+        limit:
+          default: 50
+
+    response:
+      type: dict
+      values:
+        asks_hash:
+          type: str
+        bids:
+          type: list
+          values:
+            type: dict
+            values:
+              id:
+                type: int
+              price:
+                type: str
+              volume:
+                type: str
+              timestamp:
+                type: str
+        asks:
+          type: list
+          values:
+            type: dict
+            values:
+              id:
+                type: int
+              price:
+                type: str
+              volume:
+                type: str
+              timestamp:
+                type: str
+
+    mapping:
+    - key: time
+      path: []
+      type:
+        - none
+        - now
+    - key: id
+      path: []
+      type:
+        - none
+        - now_timestamp
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - bids
+        - volume
+      type:
+        - str
+        - float
+    - key: bids_price
+      path:
+        - bids
+        - price
+      type:
+        - str
+        - float
+    - key: asks_amount
+      path:
+        - asks
+        - volume
+      type:
+        - str
+        - float
+    - key: asks_price
+      path:
+        - asks
+        - price
+      type:
+        - str
+        - float

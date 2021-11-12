@@ -1,0 +1,237 @@
+name: whitebit
+exchange: true
+api_url: https://whitebit.com/api/v4/public/
+
+requests:
+  currency_pairs:
+    request:
+      template: ticker
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: dict
+          values:
+            base_id:
+              type: int
+            quote_id:
+              type: int
+            last_price:
+              type: str
+            base_volume:
+              type: str
+            quote_volume:
+              type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 0
+      - key: currency_pair_second
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 1
+
+
+  tickers:
+    request:
+      template: ticker
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: dict
+          values:
+            base_id:
+              type: int
+            quote_id:
+              type: int
+            last_price:
+              type: str
+            base_volume:
+              type: str
+            quote_volume:
+              type: str
+
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 0
+      - key: currency_pair_second
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 1
+      - key: last_price
+        path:
+          - dict_values
+          - last_price
+        type:
+          - str
+          - float
+      - key: daily_volume
+        path:
+          - dict_values
+          - base_volume
+        type:
+          - str
+          - float
+
+  trades:
+    request:
+      template: trades/{currency_pair}
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          tradeID:
+            type: int
+          price:
+            type: str
+          trade_timestamp:
+            type: int
+          base_volume:
+            type: str
+          quote_volume:
+            type: str
+          type:
+            type: str
+    mapping:
+      - key: id
+        path:
+          - tradeID
+        type:
+          - int
+      - key: direction
+        path:
+          - type
+        type:
+          - str
+      - key: time
+        path:
+          - trade_timestamp
+        type:
+          - float
+          - from_timestamp
+          - 0
+      - key: amount
+        path:
+          - quote_volume
+        type:
+          - str
+          - float
+      - key: price
+        path:
+          - price
+        type:
+          - str
+          - float
+
+  order_books:
+    request:
+      template: orderbook/{currency_pair}
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+      params:
+        depth:
+          type: int
+          default: 50
+        level:
+          type: int
+          default: 2
+    response:
+      type: dict
+      values:
+        timestamp:
+          type: int
+        asks:
+          type: list
+          values:
+            list:
+              values:
+                0: #price
+                  type: str
+                1: #qty
+                  type: str
+        bids:
+          type: list
+          values:
+            list:
+              values:
+                0: #price
+                  type: str
+                1: #qty
+                  type: str
+    mapping:
+      - key: time
+        path:
+          - timestamp
+        type:
+          - float
+          - from_timestamp
+          - 0
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: id
+        path:
+          - timestamp
+        type:
+          - int
+      - key: bids_price
+        path:
+          - bids
+          - 0
+        type:
+          - str
+          - float
+      - key: bids_amount
+        path:
+          - bids
+          - 1
+        type:
+          - str
+          - float
+      - key: asks_price
+        path:
+          - asks
+          - 0
+        type:
+          - str
+          - float
+      - key: asks_amount
+        path:
+          - asks
+          - 1
+        type:
+          - str
+          - float

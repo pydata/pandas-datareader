@@ -1,0 +1,229 @@
+#ToDO: trades do not respond. Either no trades are made or the API is dysfunctional.
+
+name: stormgain
+exchange: true
+rate_limit:
+
+api_url: https://public-api.stormgain.com/api/v1/
+
+requests:
+  currency_pairs:
+    request:
+      template: spot/summary
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          base_currency:
+            type: str
+          quote_currency:
+            type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - base_currency
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - quote_currency
+        type:
+          - str
+  tickers:
+    request:
+      template: spot/summary
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          base_currency:
+            type: str
+          quote_currency:
+            type: str
+          last_price:
+            type: str
+          lowest_ask:
+            type: str
+          highest_bid:
+            type: str
+          base_volume:
+            type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - base_currency
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - quote_currency
+        type:
+          - str
+      - key: last_price
+        path:
+          - last_price
+        type:
+          - str
+          - float
+      - key: best_bid
+        path:
+          - highest_bid
+        type:
+          - str
+          - float
+      - key: best_ask
+        path:
+          - lowest_ask
+        type:
+          - str
+          - float
+      - key: daily_volume
+        path:
+          - base_volume
+        type:
+          - str
+          - float
+
+  order_books:
+    request:
+      template: orderbook/{currency_pair}
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+      params: null
+
+    response:
+      type: dict
+      values:
+        timestamp:
+          type: int
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0: #price
+                type: str
+              1: # quantity
+                type: str
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0: #price
+                type: str
+              1: # quantity
+                type: str
+    mapping:
+      - key: id
+        path:
+          - timestamp
+        type:
+          - int
+      - key: time
+        path:
+          - timestamp
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_amount
+        path:
+          - bids
+          - 1
+        type:
+          - str
+          - float
+      - key: bids_price
+        path:
+          - bids
+          - 0
+        type:
+          - str
+          - float
+      - key: asks_amount
+        path:
+          - asks
+          - 1
+        type:
+          - str
+          - float
+      - key: asks_price
+        path:
+          - asks
+          - 0
+        type:
+          - str
+          - float
+
+  trades:
+    request:
+      template: trade/{currency_pair}
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+      params: null
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          trade_id:
+            type: int
+          timestamp:
+            type: str
+          type:
+            type: str
+          price:
+            type: str
+          base_volume:
+            type: str
+          quote_volume:
+            type: str
+    mapping:
+      - key: id
+        path:
+          - trade_id
+        type:
+          - int
+      - key: time
+        path:
+          - timestamp
+        type:
+          - str
+          - float
+          - from_timestamp
+          - 1
+      - key: direction
+        path:
+          - type
+        type:
+          - str
+      - key: price
+        path:
+          - price
+        type:
+          - str
+          - float
+      - key: amount
+        path:
+          - base_volume
+        type:
+          - str
+          - float
+
+

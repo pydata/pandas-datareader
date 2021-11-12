@@ -1,0 +1,333 @@
+name: lbank
+exchange: true
+api_docs: https://github.com/LBank-exchange/lbank-official-api-docs/tree/master/API-For-Spot-EN
+api_url: https://api.lbkex.com/v1/
+rate_limit: null
+
+requests:
+  tickers:
+    request:
+      template: ticker.do
+      pair_template: null
+      params: 
+        symbol:
+          type: str
+          default: all  
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          symbol:
+            type: str
+          ticker:
+            type: dict
+            values:
+              change:
+                type: float
+              high:
+                type: float
+              latest:
+                type: float
+              low:
+                type: float
+              turnover:
+                type: float
+              vol:
+                type: float
+          timestamp:
+            type:
+            - int
+    mapping:
+    - key: time
+      path: []
+      type:
+      - none
+      - now
+    - key: currency_pair_first
+      path:
+      - symbol
+      type:
+      - str
+      - splitupper
+      - "_"
+      - 0
+    - key: currency_pair_second
+      path:
+      - symbol
+      type:
+      - str
+      - splitupper
+      - "_"
+      - 1
+    - key: last_price
+      path:
+      - ticker
+      - latest
+      type:
+      - float
+    - key: last_price
+      path:
+      - ticker
+      - latest
+      type:
+      - float
+    - key: daily_volume
+      path:
+      - ticker
+      - vol
+      type:
+      - float
+
+  currency_pairs:
+    request:
+      template: currencyPairs.do
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values: # each available currency pair e.g. "bcc_eth","etc_btc"...
+        type: str
+    mapping:
+    - key: currency_pair_first
+      path:
+      - []
+      type:
+      - str
+      - split
+      - "_"
+      - 0
+    - key: currency_pair_second
+      path:
+      - []
+      type:
+      - str
+      - split
+      - "_"
+      - 1
+
+  order_books:
+    request:
+      template: depth.do
+      pair_template: # e.g. eth_btc
+        template: "{first}_{second}"
+        lower_case: true
+        alias: symbol
+      params:
+        size:
+          type: int
+          min: 1
+          max: 60
+          default: 60
+        merge:
+          type: int
+          default: 0
+    response:
+      type: dict
+      values:
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type: float
+              1: # size
+                type: float
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type: float
+              1: # size
+                type: float
+    mapping:
+    - key: id
+      path: []
+      type:
+        - none
+        - now_timestamp
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: time
+      path: []
+      type:
+      - none
+      - now
+    - key: asks_price
+      path:
+      - asks
+      - 0
+      type:
+      - str
+      - float
+    - key: asks_amount
+      path:
+      - asks
+      - 1
+      type:
+      - str
+      - float
+    - key: bids_price
+      path:
+      - bids
+      - 0
+      type:
+      - str
+      - float
+    - key: bids_amount
+      path:
+      - bids
+      - 1
+      type:
+      - str
+      - float
+
+  trades:
+    request:
+      template: trades.do
+      pair_template: # e.g. eth_btc
+        template: "{first}_{second}"
+        lower_case: true
+        alias: symbol
+      params:
+        size:
+          type: int
+          min: 1
+          max: 600
+          default: 200
+        time:
+          required: false
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          date_ms:
+            type:
+            - float
+            - from_timestamp
+            - 0
+          amount:
+            type: float
+          price:
+            type: float
+          type:
+            type: str
+          tid:
+            type: str
+    mapping:
+    - key: id
+      path:
+        - tid
+      type:
+        - str
+    - key: time
+      path:
+      - date_ms
+      type:
+      - float
+      - from_timestamp
+      - 1
+    - key: amount
+      path:
+      - amount
+      type:
+      - float
+    - key: price
+      path:
+      - price
+      type:
+      - float
+    - key: direction
+      path:
+      - type
+      type:
+      - str
+
+  historic_rates:
+    request:
+      template: kline.do
+      pair_template: # e.g. eth_btc
+        template: "{first}_{second}"
+        lower_case: true
+        alias: symbol
+      params:
+        size:
+          type: int
+          min: 1
+          max: 2880
+          default: 2880
+        type:
+          allowed:
+            minutes: minute1
+            hours: hour1
+            days: day1
+            weeks: week1
+            months: month1
+          default: day1
+        time:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 2880
+#          type: int
+#          default: 1325432318 #01.01.2012
+    response:
+      type: list
+      values:
+        type: list
+        values:
+          0: # timestamp
+            type:
+            - int
+          1: # open
+            type: float
+          2: # high
+            type: float
+          3: # low
+            type: float
+          4: # close
+            type: float
+          5: # volume
+            type: float
+    mapping:
+    - key: time
+      path:
+      - 0
+      type:
+      - float
+      - from_timestamp
+      - 0
+    - key: open
+      path:
+      - 1
+      type:
+      - float
+    - key: high
+      path:
+      - 2
+      type:
+      - float
+    - key: low
+      path:
+      - 3
+      type:
+      - float
+    - key: close
+      path:
+      - 4
+      type:
+      - float
+    - key: volume
+      path:
+      - 5
+      type:
+      - float

@@ -1,0 +1,314 @@
+name: coinjar
+exchange: true
+
+rate_limit: null
+
+api_url: ""
+
+requests:
+  currency_pairs:
+    request:
+      template: https://api.exchange.coinjar.com/products
+      pair_template: null
+      params: null
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          name:
+            type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - name
+        type:
+          - str
+          - split
+          - "/"
+          - 0
+      - key: currency_pair_second
+        path:
+          - name
+        type:
+          - str
+          - split
+          - "/"
+          - 1
+
+  tickers:
+    request:
+      template: https://data.exchange.coinjar.com/products/{currency_pair}/ticker
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+      params: null
+    response:
+      type: dict
+      values:
+        volume_24h:
+          type: str
+        last:
+          type: str
+        current_time:
+          type: str
+        bid:
+          type: str
+        ask:
+          type: str
+
+    mapping:
+      - key: last_price
+        path:
+          - last
+        type:
+          - str
+          - float
+      - key: time
+        path:
+          - current_time
+        type:
+          - str
+          - dateparser
+      - key: best_bid
+        path:
+          - bid
+        type:
+          - str
+          - float
+      - key: best_ask
+        path:
+          - ask
+        type:
+          - str
+          - float
+      - key: daily_volume
+        path:
+          - volume_24h
+        type:
+          - str
+          - float
+
+  historic_rates:
+    request:
+      template: https://data.exchange.coinjar.com/products/{currency_pair}/candles
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+      params:
+        before:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestamp
+        after:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 300
+        interval:
+          allowed:
+            minutes: 1m
+            hours: 1h
+            days: 1d
+            weeks: 1w
+            months: 1M
+          default: 1d
+
+    response:
+      type: list
+      values:
+        type: list
+        values:
+          0: #time
+            type: str
+          1: #open
+            type: str
+          2: #high
+            type: str
+          3: #low
+            type: str
+          4: #close
+            type: str
+          5: #vol
+            type: str
+
+    mapping:
+    - key: time
+      path:
+        - 0
+      type:
+        - str
+        - dateparser
+    - key: open
+      path:
+        - 1
+      type:
+        - str
+        - float
+    - key: high
+      path:
+        - 2
+      type:
+        - str
+        - float
+    - key: low
+      path:
+        - 3
+      type:
+        - str
+        - float
+    - key: close
+      path:
+        - 4
+      type:
+        - str
+        - float
+    - key: volume
+      path:
+        - 5
+      type:
+        - str
+        - float
+
+
+  trades:
+    request:
+      template: https://data.exchange.coinjar.com/products/{currency_pair}/trades
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+      params:
+        limit:
+          default: 200
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          value:
+            type: str
+          timestamp:
+            type: str
+          tid:
+            type: int
+          taker_side:
+            type: str
+          size:
+            type: str
+          price:
+            type: str
+
+    mapping:
+    - key: time
+      path:
+        - timestamp
+      type:
+        - str
+        - dateparser
+    - key: id
+      path:
+        - tid
+      type:
+        - int
+    - key: direction
+      path:
+        - taker_side
+      type:
+        - str
+    - key: price
+      path:
+        - price
+      type:
+        - str
+        - float
+    - key: amount
+      path:
+        - size
+      type:
+        - str
+        - float
+
+  order_books:
+    request:
+      template: https://data.exchange.coinjar.com/products/{currency_pair}/book
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+      params:
+        level:
+          allowed:
+            1: #Best bid/best ask
+            2: #Top20
+            3: #Full Book
+          default: 2
+    response:
+      type: dict
+      values:
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type: str
+              1: # qty
+                type: str
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type: str
+              1: # qty
+                type: str
+    mapping:
+    - key: time
+      path: []
+      type:
+        - none
+        - now
+    - key: id
+      path: []
+      type:
+        - none
+        - now_timestamp
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - bids
+        - 1
+      type:
+        - str
+        - float
+    - key: bids_price
+      path:
+        - bids
+        - 0
+      type:
+        - str
+        - float
+    - key: asks_amount
+      path:
+        - asks
+        - 1
+      type:
+        - str
+        - float
+    - key: asks_price
+      path:
+        - asks
+        - 0
+      type:
+        - str
+        - float

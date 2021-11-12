@@ -1,0 +1,301 @@
+name: gopax
+exchange: true
+
+rate_limit:
+  max: 1200
+  unit: 60
+
+api_url: https://api.gopax.co.kr
+
+requests:
+  currency_pairs:
+    request:
+      template: /trading-pairs
+      pair_template: null
+      params: null
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          baseAsset:
+            type: str
+          quoteAsset:
+            type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - baseAsset
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - quoteAsset
+        type:
+          - str
+
+  tickers:
+    request:
+      template: /trading-pairs/{currency_pair}/ticker
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: false
+      params: null
+    response:
+      type: dict
+      values:
+        price:
+          type: float
+        ask:
+          type: float
+        bid:
+          type: float
+        volume:
+          type: float
+        time:
+          type: str
+
+    mapping:
+      - key: last_price
+        path:
+          - price
+        type:
+          - float
+      - key: time
+        path:
+          - time
+        type:
+          - str
+          - dateparser
+      - key: best_bid
+        path:
+          - bid
+        type:
+          - float
+      - key: best_ask
+        path:
+          - ask
+        type:
+          - float
+      - key: daily_volume
+        path:
+          - volume
+        type:
+          - float
+
+  historic_rates:
+    request:
+      template: /trading-pairs/{currency_pair}/candles
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: false
+      params:
+        interval:
+          allowed:
+            minutes: 1
+            hours: 60
+            days: 1440
+          default: 1440 # e.g. 1 day
+        start:
+          default: 0 # better as intervals up to 5000 can lead to zero new prices and the program exits.
+#          function: last_timestamp
+#          type:
+#            - datetime
+#            - timedeltams
+#            - interval
+#            - 5000
+        end:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestampms
+
+    response:
+      type: list
+      values:
+        type: list
+        values:
+          0: #time
+            type: int
+          1: #open
+            type: float
+          2: #high
+            type: float
+          3: #low
+            type: float
+          4: #close
+            type: float
+          5: #volume
+            type: float
+
+    mapping:
+    - key: time
+      path:
+        - []
+        - 0
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: open
+      path:
+        - []
+        - 1
+      type:
+        - float
+    - key: high
+      path:
+        - []
+        - 2
+      type:
+        - float
+    - key: low
+      path:
+        - []
+        - 3
+      type:
+        - float
+    - key: close
+      path:
+        - []
+        - 4
+      type:
+        - float
+    - key: volume
+      path:
+        - []
+        - 5
+      type:
+        - float
+
+
+  trades:
+    request:
+      template: /trading-pairs/{currency_pair}/trades
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: false
+      params: null
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          date:
+            type: int
+          id:
+            type: int
+          price:
+            type: float
+          amount:
+            type: float
+          side:
+            type: str
+
+    mapping:
+    - key: time
+      path:
+        - date
+      type:
+        - float
+        - from_timestamp
+        - 0
+    - key: id
+      path:
+        - id
+      type:
+        - int
+    - key: direction
+      path:
+        - side
+      type:
+        - str
+    - key: price
+      path:
+        - price
+      type:
+        - float
+    - key: amount
+      path:
+        - amount
+      type:
+        - float
+
+  order_books:
+    request:
+      template: /trading-pairs/{currency_pair}/book
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: false
+      params:
+        level:
+          type: int
+          default: 2
+
+    response:
+      type: dict
+      values:
+        sequence:
+          type: int
+        bid:
+          type: list
+          values:
+            type: list
+            values:
+              1: #price
+                type: float
+              2: #quantity
+                type: float
+        ask:
+          type: list
+          values:
+            type: list
+            values:
+              1: #price
+                type: float
+              2: #quantity
+                type: float
+
+    mapping:
+    - key: time
+      path: []
+      type:
+        - none
+        - now
+    - key: id
+      path:
+        - sequence
+      type:
+        - int
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - bid
+        - 2
+      type:
+        - float
+    - key: bids_price
+      path:
+        - bid
+        - 1
+      type:
+        - float
+    - key: asks_amount
+      path:
+        - ask
+        - 2
+      type:
+        - float
+    - key: asks_price
+      path:
+        - ask
+        - 1
+      type:
+        - float

@@ -1,0 +1,325 @@
+name: coinsbit
+exchange: true
+
+rate_limit: null
+api_url: https://coinsbit.io/api/v1/public/
+
+requests:
+  currency_pairs:
+    request:
+      template: markets
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        result:
+          type: list
+          values:
+            type: dict
+            values:
+              name:
+                type: str
+              stock:
+                type: str
+              money:
+                type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - result
+          - stock
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - result
+          - money
+        type:
+          - str
+
+  tickers:
+    request:
+      template: tickers
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        result:
+          type: dict
+          values:
+            currency_pair:
+              type: dict
+              values:
+                at:
+                  type: int
+                ticker:
+                  type: dict
+                  values:
+                    bid:
+                      type: str
+                    ask:
+                      type: str
+                    last:
+                      type: str
+                    vol:
+                      type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - result
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 0
+      - key: currency_pair_second
+        path:
+          - result
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 1
+      - key: time
+        path:
+          - result
+          - dict_values
+          - at
+        type:
+          - float
+          - from_timestamp
+          - 0
+      - key: last
+        path:
+          - result
+          - dict_values
+          - ticker
+          - last
+        type:
+          - str
+          - float
+      - key: best_bid
+        path:
+          - result
+          - dict_values
+          - ticker
+          - bid
+        type:
+          - str
+          - float
+      - key: best_ask
+        path:
+          - result
+          - dict_values
+          - ticker
+          - ask
+        type:
+          - str
+          - float
+      - key: daily_volume
+        path:
+          - result
+          - dict_values
+          - ticker
+          - vol
+        type:
+          - str
+          - float
+
+  order_books:
+    request:
+      template: depth/result
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: market
+      params:
+        limit:
+          default: 50 #max=100
+    response:
+      type: dict
+      values:
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0: #price
+                type: str
+              1: #qty
+                type: str
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0:
+                type: str
+              1:
+                type: str
+    mapping:
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: id
+        path: []
+        type:
+          - none
+          - now_timestamp
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_amount
+        path:
+          - bids
+          - 1
+        type:
+          - str
+          - float
+      - key: bids_price
+        path:
+          - bids
+          - 0
+        type:
+          - str
+          - float
+      - key: asks_amount
+        path:
+          - asks
+          - 1
+        type:
+          - str
+          - float
+      - key: asks_price
+        path:
+          - asks
+          - 0
+        type:
+          - str
+          - float
+
+  historic_rates:
+    request:
+      template: kline
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: market
+      params:
+        start:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 1000
+        end:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestamp
+        interval:
+          allowed: #minimum is 86400
+#            minutes: 60
+#            hours: 3600
+            days: 86400
+            weeks: 604800
+            months: 18144000
+
+          default: 86400 # 1day
+    response:
+      type: dict
+      values:
+        result:
+          type: dict
+          values:
+            market:
+              type: str
+            start:
+              type: int
+            end:
+              type: int
+            interval:
+              type: int
+            kline:
+              type: list
+              values:
+                type: dict
+                values:
+                  time:
+                    type: int
+                  open:
+                    type: str
+                  highest:
+                    type: str
+                  lowest:
+                    type: str
+                  close:
+                    type: str
+                  volume:
+                    type: str
+                  amount:
+                    type: str
+    mapping:
+      - key: time
+        path:
+          - result
+          - kline
+          - time
+        type:
+          - float
+          - from_timestamp
+          - 0
+      - key: open
+        path:
+          - result
+          - kline
+          - open
+        type:
+          - str
+          - float
+      - key: high
+        path:
+          - result
+          - kline
+          - highest
+        type:
+          - str
+          - float
+      - key: low
+        path:
+          - result
+          - kline
+          - lowest
+        type:
+          - str
+          - float
+      - key: close
+        path:
+          - result
+          - kline
+          - close
+        type:
+          - str
+      - key: volume
+        path:
+          - result
+          - kline
+          - volume
+        type:
+          - str
+          - float
+
+
+
+

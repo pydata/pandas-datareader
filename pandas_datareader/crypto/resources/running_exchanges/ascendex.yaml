@@ -1,0 +1,401 @@
+name: ascendex
+exchange: true
+
+rate_limit: null
+
+api_url: https://ascendex.com/api/pro/v1/
+
+requests:
+  currency_pairs:
+    request:
+      template: products
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              baseAsset:
+                type: str
+              quoteAsset:
+                type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - data
+          - baseAsset
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - data
+          - quoteAsset
+        type:
+          - str
+
+  tickers:
+    request:
+      template: ticker
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              symbol:
+                type: str
+              volume:
+                type: str
+              ask:
+                type: list
+                values:
+                  0:
+                    type: str
+              bids:
+                type: list
+                values:
+                  0:
+                    type: str
+
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - data
+          - symbol
+        type:
+          - str
+          - split
+          - "/"
+          - 0
+      - key: currency_pair_second
+        path:
+          - data
+          - symbol
+        type:
+          - str
+          - split
+          - "/"
+          - 1
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: best_bid
+        path:
+          - data
+          - bid
+          - 0
+        type:
+          - str
+          - float
+      - key: best_ask
+        path:
+          - data
+          - ask
+          - 0
+        type:
+          - str
+          - float
+      - key: daily_volume
+        path:
+          - data
+          - volume
+        type:
+          - str
+          - float
+
+  historic_rates:
+    request:
+      template: barhist
+      pair_template:
+        template: "{first}/{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        interval:
+          allowed:
+            minutes: 1
+            hours: 60
+            days: 1d
+            weeks: 1w
+            months: 1m
+          default: 1d
+        to:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestampms
+#        from:
+#          function: last_timestamp
+#          type:
+#            - datatime
+#            - timedeltams
+#            - interval
+#            - 500
+        n:
+          default: 20
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              data:
+                type: dict
+                values:
+                  c:
+                    type: str
+                  h:
+                    type: str
+                  i:
+                    type: str
+                  l:
+                    type: str
+                  o:
+                    type: str
+                  v:
+                    type: str
+                  ts:
+                    type: int
+
+    mapping:
+    - key: time
+      path:
+        - data
+        - data
+        - ts
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: open
+      path:
+        - data
+        - data
+        - o
+      type:
+        - str
+        - float
+    - key: high
+      path:
+        - data
+        - data
+        - h
+      type:
+        - str
+        - float
+    - key: low
+      path:
+        - data
+        - data
+        - l
+      type:
+        - str
+        - float
+    - key: close
+      path:
+        - data
+        - data
+        - c
+      type:
+        - str
+        - float
+    - key: volume
+      path:
+        - data
+        - data
+        - v
+      type:
+        - str
+        - float
+
+  trades:
+    request:
+      template: trades
+      pair_template:
+        template: "{first}/{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        n:
+          default: 100
+
+    response:
+      type: dict
+      values:
+        data:
+          type: dict
+          values:
+            data:
+              type: list
+              values:
+                type: dict
+                values:
+                  seqnum:
+                    type: int
+                  p:
+                    type: str
+                  q:
+                    type: str
+                  ts:
+                    type: int
+                  bm:
+                    type: bool
+
+    mapping:
+    - key: time
+      path:
+        - data
+        - data
+        - ts
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: id
+      path:
+        - data
+        - data
+        - seqnum
+      type:
+        - int
+    - key: direction
+      path:
+        - data
+        - data
+        - bm
+      type:
+        - value
+        - map
+        - true
+        - sell
+        - false
+        - buy
+    - key: price
+      path:
+        - data
+        - data
+        - p
+      type:
+        - str
+        - float
+    - key: amount
+      path:
+        - data
+        - data
+        - q
+      type:
+        - str
+        - float
+
+  order_books:
+    request:
+      template: depth
+      pair_template:
+        template: "{first}/{second}"
+        lower_case: false
+        alias: symbol
+      params: null
+
+    response:
+      type: dict
+      values:
+        data:
+          type: dict
+          data:
+            type: dict
+            seqnum:
+              type: int
+            ts:
+              type: int
+            asks:
+              type: list
+              values:
+                type: list
+                values:
+                  0: # p
+                    type: str
+                  1: #qty
+                    type: str
+            bids:
+              type: list
+              values:
+                type: list
+                values:
+                  0: # p
+                    type: str
+                  1: #qty
+                    type: str
+
+    mapping:
+    - key: time
+      path:
+        - data
+        - data
+        - ts
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: id
+      path:
+        - data
+        - data
+        - seqnum
+      type:
+        - int
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - data
+        - data
+        - bids
+        - 1
+      type:
+        - str
+        - float
+    - key: bids_price
+      path:
+        - data
+        - data
+        - bids
+        - 0
+      type:
+        - str
+        - float
+    - key: asks_amount
+      path:
+        - data
+        - data
+        - asks
+        - 1
+      type:
+        - str
+        - float
+    - key: asks_price
+      path:
+        - data
+        - data
+        - asks
+        - 0
+      type:
+        - str
+        - float

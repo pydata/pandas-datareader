@@ -1,0 +1,369 @@
+#ToDo: API Dokumentation nicht auffindbar. Historic Rates flexibeler Timestamp nicht implementiert.
+name: bleutrade
+exchange: true
+api_url: https://bleutrade.com/api/v3/
+rate_limit: null
+
+requests:
+  currency_pairs:
+    request:
+      template: public/getmarkets
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        success:
+          type: bool
+        message:
+          type: str
+        result:
+          type: list
+          values:
+            type: dict
+            values:
+              MarketName:
+                type: str  # e.g. ETH_BTC
+              MarketAsset: # e.g. ETH
+                type: str
+              BaseAsset: # e.g. BTC
+                type: str
+              MarketAssetLong: # e.g. Ethereum
+                type: str
+              BaseAssetLong: # e.g. Bitcoin
+                type: str
+              IsActive:
+               type: bool
+              MinTradeSize:
+                type: float
+              InfoMassage: 
+                type: str
+    mapping:
+    - key: currency_pair_first
+      path:
+      - result
+      - MarketAsset
+      type:
+      - str
+    - key: currency_pair_second
+      path:
+      - result
+      - BaseAsset
+      type:
+      - str
+
+
+  tickers:
+    request:
+      template: public/getticker
+      pair_template:
+        template: "{first}_{second}"  
+        lower_case: false
+        alias: market      
+      params: null
+    response:
+      type: dict
+      values:
+        success:
+          type: bool
+        message:
+          type: str
+        result:
+          type: list
+          values:
+            type: dict
+            values:
+              Market:
+                type: str
+              Bid:
+                type: float
+              Ask:
+                type: float
+              Last:
+                type: float
+    mapping:
+      - key: time
+        path: []      
+        type:
+        - none
+        - now
+      - key: last_price
+        path:
+        - result
+        - Last
+        type:
+        - float
+      - key: best_bid
+        path: 
+        - result
+        - Bid
+        type: 
+        - float
+      - key: best_ask
+        path:
+        - result
+        - Ask
+        type:
+        - float
+        
+  order_books:
+    request:
+      template: public/getorderbook
+      pair_template: # e.g. ETH_BTC
+        template: "{first}_{second}"
+        lower_case: false
+        alias: market
+      params:
+        type:
+          type: str
+          default: ALL
+        depth:
+          type: int
+          default: 20
+    response:
+      type: dict
+      values:
+        success:
+          type: bool
+        message:
+          type: str
+        result:
+          type: dict
+          values:
+            buy:
+              type: list
+              values:
+                type: dict
+                values:
+                  Quantity:
+                    type: float
+                  Rate:
+                    type: float
+            sell:
+              type: list
+              values:
+                type: dict
+                values:
+                  Quantity:
+                    type: float
+                  Rate:
+                    type: float
+    mapping:
+    - key: time
+      path: []
+      type:
+      - none
+      - now
+    - key: id
+      path: []
+      type:
+        - none
+        - now_timestamp
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_price
+      path:
+      - result
+      - buy
+      - Rate
+      type:
+      - float
+    - key: bids_amount
+      path:
+      - result
+      - buy
+      - Quantity
+      type:
+      - float
+    - key: asks_price
+      path:
+      - result
+      - sell
+      - Rate
+      type:
+      - float
+    - key: asks_amount
+      path:
+      - result
+      - sell
+      - Quantity
+      type:
+      - float
+
+  trades:
+    request:
+      template:  public/getmarkethistory
+      pair_template: # e.g. ETH_BTC
+        template: "{first}_{second}"
+        lower_case: false
+        alias: market
+      params:
+        count:
+          type: int
+          max: 200
+          default: 20
+    response:
+      type: dict
+      values:
+        success:
+          type: bool
+        message:
+          type: str
+        result:
+          type: list
+          values:
+            type: dict
+            values:
+              TradeID:
+                type: int
+              TimeStamp:
+                type:
+                - str
+              Quantity:
+                type: float
+              Price:
+                type: float
+              BaseVolumne:
+                type: float
+              OrderType:
+                type: str
+              Total:
+                type: float
+
+    mapping:
+    - key: time
+      path:
+      - result
+      - TimeStamp
+      type:
+      - str
+      - dateparser
+    - key: id
+      path:
+        - result
+        - TradeID
+      type:
+        - int
+    - key: amount
+      path:
+      - result
+      - Quantity
+      type:
+      - float
+    - key: price
+      path:
+      - result
+      - Price
+      type:
+      - float
+    - key: direction
+      path:
+      - result
+      - OrderType
+      type:
+      - str
+
+  historic_rates:
+    request:
+      template: public/getcandles
+      pair_template: # e.g. ETH_BTC
+        template: "{first}_{second}"
+        lower_case: false
+        alias: market
+      params:
+        period:
+          type: str
+          allowed:
+#            minutes: 1m #raises an error
+            hours: 1h
+            days: 1d
+            weeks: 1w
+          default: 1d
+    response:
+      type: dict
+      values:
+        success:
+          type: bool
+        message:
+          type: str
+        result:
+          type: list
+          values:
+            type: dict
+            values:
+              TimeStamp:
+                type:
+                - str
+                - strptime
+                - "%Y-%m-%d %H:%M:%S"
+              Open:
+                type:
+                - str
+                - float
+              High:
+                type:
+                - str
+                - float
+              Low:
+                type:
+                - str
+                - float
+              Close:
+                type:
+                - str
+                - float
+              Volume:
+                type:
+                - str
+                - float
+              BaseVolume:
+                type:
+                - str
+                - float
+    mapping:
+    - key: time
+      path:
+      - result
+      - TimeStamp
+      type:
+      - str
+      - strptime
+      - "%Y-%m-%d %H:%M:%S"
+    - key: open
+      path:
+      - result
+      - Open
+      type:
+      - str
+      - float
+    - key: high
+      path:
+      - result
+      - High
+      type:
+      - str
+      - float
+    - key: low
+      path:
+      - result
+      - Low
+      type:
+      - str
+      - float
+    - key: close
+      path:
+      - result
+      - Close
+      type:
+      - str
+      - float
+    - key: volume
+      path:
+      - result
+      - Volume
+      type:
+      - str
+      - float

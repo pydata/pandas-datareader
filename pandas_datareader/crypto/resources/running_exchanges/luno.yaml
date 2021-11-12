@@ -1,0 +1,286 @@
+name: luno
+is_exchange: true
+
+api_url: https://api.luno.com/api/1/
+rate_limit:
+  max: 1
+  unit: 1
+requests:
+  currency_pairs:
+    request:
+      template: tickers
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        tickers:
+          type: list
+          values:
+            type: dict
+            values:
+              pair:
+                type: str
+              timestamp:
+                type: int
+              bid:
+                type: str
+              ask:
+                type: str
+              last_trade:
+                type: str
+              rolling_24_hour_volume:
+                type: str
+              status:
+                type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - tickers
+          - pair
+        type:
+          - str
+          - slice
+          - 0
+          - 3
+      - key: currency_pair_second
+        path:
+          - tickers
+          - pair
+        type:
+          - str
+          - slice
+          - 3
+          - 6
+
+  tickers:
+    request:
+      template: tickers
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        tickers:
+          type: list
+          values:
+            type: dict
+            values:
+              pair:
+                type: str
+              timestamp:
+                type: int
+              bid:
+                type: str
+              ask:
+                type: str
+              last_trade:
+                type: str
+              rolling_24_hour_volume:
+                type: str
+              status:
+                type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - tickers
+          - pair
+        type:
+          - str
+          - slice
+          - 0
+          - 3
+      - key: currency_pair_second
+        path:
+          - tickers
+          - pair
+        type:
+          - str
+          - slice
+          - 3
+          - 6
+      - key: time
+        path:
+          - tickers
+          - timestamp
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: last_price
+        path:
+          - tickers
+          - last_trade
+        type:
+          - str
+          - float
+      - key: best_bid
+        path:
+          - tickers
+          - bid
+        type:
+          - str
+          - float
+      - key: best_ask
+        path:
+          - tickers
+          - ask
+        type:
+          - str
+          - float
+
+
+  order_books:
+    request:
+      template: orderbook_top
+      pair_template: # e.g. XBTZAR
+        template: "{first}{second}"
+        lower_case: false
+        alias: pair
+      params: null
+    response:
+      type: dict
+      values:
+        timestamp:
+          type:
+          - float
+          - from_timestamp
+          - 1
+        asks:
+          type: list
+          values:
+            type: dict
+            values:
+              price:
+                type: str
+              volume:
+                type: str
+
+        bids:
+          type: list
+          values:
+            type: dict
+            values:
+              price:
+                type: str
+              volume:
+                type: str
+    mapping:
+    - key: time
+      path:
+      - timestamp
+      type:
+      - float
+      - from_timestamp
+      - 1
+    - key: asks_price
+      path:
+      - asks
+      - price
+      type:
+      - str
+      - float
+    - key: asks_amount
+      path:
+      - asks
+      - price
+      type:
+      - str
+      - float
+    - key: bids_price
+      path:
+      - bids
+      - price
+      type:
+      - str
+      - float
+    - key: bids_amount
+      path:
+      - bids
+      - price
+      type:
+      - str
+      - float
+    - key: id
+      path:
+        - timestamp
+      type:
+        - int
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+
+
+  trades:
+    request:
+      template: trades
+      pair_template: # e.g. XBTZAR
+        template: "{first}{second}"
+        lower_case: false
+        alias: pair
+      params:
+        since:
+          type:
+          - datetime
+          - totimestamp
+          required: false
+    response:
+      type: dict
+      values:
+        trades:
+          type: list
+          values:
+            type: dict
+            values:
+              timestamp:
+                type: int
+              price:
+                type: str
+              volume:
+                type: str
+              is_buy:
+                type: bool
+    mapping:
+    - key: time
+      path:
+      - trades
+      - timestamp
+      type:
+      - float
+      - from_timestamp
+      - 1
+    - key: direction
+      path:
+        - trades
+        - is_buy
+      type:
+        - value
+        - map
+        - true
+        - 'buy'
+        - false
+        - 'sell'
+
+    - key: id
+      path:
+        - trades
+        - sequence
+      type:
+        - int
+    - key: price
+      path:
+      - trades
+      - price
+      type:
+      - str
+      - float
+    - key: amount
+      path:
+      - trades
+      - volume
+      type:
+      - str
+      - float

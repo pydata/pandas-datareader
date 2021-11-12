@@ -1,0 +1,378 @@
+name: coinbene
+exchange: true
+api_url: https://openapi-exchange.coinbene.com/api/exchange/v2/market/
+rate_limit: 
+  max: 15
+  unit: 1
+requests:
+  currency_pairs:
+    request:
+      template: tradePair/list
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        code:
+          type: int
+        data:
+          type: list
+          values: 
+            type: dict
+            values: 
+              symbol:
+                type: str
+              baseAsset:
+                type: str
+              quoteAsset:
+                type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+        - data
+        - baseAsset
+        type:
+        - str
+      - key: currency_pair_second
+        path: 
+        - data
+        - quoteAsset
+        type:
+        - str
+  
+  tickers:
+    request:
+      template: ticker/one
+      pair_template:
+        template: "{first}/{second}"
+        lower_case: false
+        alias: symbol
+      params: null
+    response:
+      type: dict
+      values:
+        code:
+          type: int
+        message:
+          type: str
+        data:
+          type: dict
+          values:
+            symbol:
+              type: str
+            latestPrice:
+              type: str
+            bestBid:
+              type: str
+            bestAsk:
+              type: str
+            high24h:
+              type: str
+            low24h:
+              type: str
+            volume24h:
+              type: str
+            chg24h:
+              type: str
+            chg0h:
+              type: str
+    mapping:
+    - key: time
+      path: []
+      type:
+        - none
+        - now
+    - key: last_price
+      path:
+        - data
+        - latestPrice
+      type:
+        - str
+        - float
+    - key: best_bid
+      path:
+        - data
+        - bestBid
+      type:
+        - str
+        - float
+    - key: best_ask
+      path:
+        - data
+        - bestAsk
+      type:
+        - str
+        - float
+
+  trades:
+    request:
+      template: trades
+      pair_template:
+        template: "{first}/{second}"
+        lower_case: false
+        alias: symbol
+      params: null
+    response:
+      type: dict
+      values:
+        code:
+          type: int
+        data:
+          type: list
+          values:
+            type: list
+            0:
+              type: str
+            1:
+              type: str
+            2:
+              type: str
+            3:
+              type: str
+            4:
+              type: str
+    mapping:
+      - key: time
+        path:
+          - data
+          - 4
+        type:
+          - str
+          - strptime
+          - "%Y-%m-%dT%H:%M:%S.%fZ"
+      - key: id
+        path:
+          - data
+          - 4
+        type:
+          - strptime
+          - totimestamp
+          - "%Y-%m-%dT%H:%M:%S.%fZ"
+      - key: amount
+        path:
+          - data
+          - 2
+        type:
+          - str
+          - float
+      - key: price
+        path:
+          - data
+          - 1
+        type:
+          - str
+          - float
+      - key: direction
+        path:
+          - data
+          - 3
+        type:
+          - str
+
+  historic_rates:
+    request:
+      template: instruments/candles
+      pair_template:
+        template: "{first}/{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        period:
+          allowed:
+            minutes: 1
+            hours: 60
+            days: D
+            weeks: W
+            months: M
+          default: D
+        end:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestamp
+    response:
+      type: dict
+      values:
+        code:
+          type: int
+        data:
+          type: list
+          values:
+            type: list
+            values:
+              0: #timestamp
+                type: str
+              1: # open
+                type: str
+              2: # high
+                type: str
+              3: # low
+                type: str
+              4:  # close
+                type: str
+              5: #volume
+                type: str
+    mapping:
+      - key: time
+        path:
+          - data
+          - 0
+        type:
+          - str
+          - strptime
+          - "%Y-%m-%dT%H:%M:%S.%fZ"
+      - key: open
+        path:
+          - data
+          - 1
+        type:
+          - str
+          - float
+      - key: high
+        path:
+          - data
+          - 2
+        type:
+          - str
+          - float
+      - key: low
+        path:
+          - data
+          - 3
+        type:
+          - str
+          - float
+      - key: close
+        path:
+          - data
+          - 4
+        type:
+          - str
+          - float
+      - key: volume
+        path:
+          - data
+          - 5
+        type:
+          - str
+          - float
+
+  order_books:
+    request:
+      template: orderBook
+      pair_template:
+        template: "{first}/{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        depth:
+          type: int
+          default: 100
+    response:
+      type: dict
+      values:
+        code:
+          type: int
+        data:
+          type: dict
+          values:
+            asks:
+              type: list
+              values:
+                type: list
+                values:
+                  0: # Price
+                    type: str
+                  1: # Size
+                    type: str
+            bids:
+              type: list
+              values:
+                type: list
+                values:
+                  0: # Price
+                    type: str
+                  1: # Size
+                    type: str
+    mapping:
+      - key: id
+        path: []
+        type:
+          - none
+          - now_timestamp
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: bids_price
+        path:
+          - data
+          - bids
+          - 0
+        type:
+          - str
+          - float
+      - key: bids_amount
+        path:
+          - data
+          - bids
+          - 1
+        type:
+          - str
+          - float
+      - key: asks_amount
+        path:
+          - data
+          - asks
+          - 1
+        type:
+          - str
+          - float
+      - key: asks_price
+        path:
+          - data
+          - asks
+          - 0
+        type:
+          - str
+          - float
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

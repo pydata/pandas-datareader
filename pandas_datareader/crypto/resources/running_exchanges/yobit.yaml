@@ -1,0 +1,265 @@
+name: yobit
+
+api_url: https://yobit.net/api/3/
+rate_limit:
+  max: 30
+  unit: 60
+requests:
+  currency_pairs:
+    request:
+      template: info/
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        server_time:
+          type:
+          - int
+        pairs:
+          type: dict
+          values:
+            currency_pair: # e.g. ltc_btc; each available currency_pair, variable key
+              type: dict
+              values:
+                decimal_places:
+                  type: int
+                min_price:
+                  type: float
+                max_price:
+                  type: float
+                min_amount:
+                  type: float
+                hidden:
+                  type: int
+                fee:
+                  type: float
+    mapping:
+    - key: currency_pair_first
+      path:
+      - pairs
+      - dict_key
+      type:
+      - str
+      - split
+      - "_"
+      - 0
+    - key: currency_pair_second
+      path:
+      - pairs
+      - dict_key
+      type:
+      - str
+      - split
+      - "_"
+      - 1
+
+  tickers:
+    request:
+      template: ticker/{currency_pair}/
+      pair_template: # e.g. ltc_btc
+        template: "{first}_{second}"
+        lower_case: true
+      params: null
+    response:
+      type: dict
+      values:
+        currency_pair: # requested currency pair
+          type: dict
+          values:
+            high:
+              type: float
+            low:
+              type: float
+            avg:
+              type: float
+            vol:
+              type: float
+            vol_cur:
+              type: float
+            last:
+              type: float
+            buy:
+              type: float
+            sell:
+              type: float
+            updated:
+              type:
+              - int
+    mapping:
+    - key: daily_volume
+      path:
+      - dict_values
+      - vol
+      type:
+      - float
+    - key: last_price
+      path:
+      - dict_values
+      - last
+      type:
+      - float
+    - key: best_bid
+      path:
+      - dict_values
+      - buy
+      type:
+      - float
+    - key: best_ask
+      path:
+      - dict_values
+      - sell
+      type:
+      - float
+    - key: time
+      path:
+      - dict_values
+      - updated
+      type:
+      - float
+      - from_timestamp
+      - 0
+
+  order_books:
+    request:
+      template: depth/{currency_pair}/
+      pair_template: # e.g. ltc_btc
+        template: "{first}_{second}"
+        lower_case: true
+      params:
+        limit:
+          type: int
+          max: 2000
+          default: 150
+    response:
+      type: dict
+      values:
+        currency_pair: # requested currency pair
+          type: dict
+          values:
+            asks:
+              type: list
+              values:
+                type: list
+                values:
+                  0: # price
+                    type: float
+                  1: # size
+                    type: float
+            bids:
+              type: list
+              values:
+                type: list
+                values:
+                  0: # price
+                    type: float
+                  1: # size
+                    type: float
+    mapping:
+    - key: time
+      path: []
+      type:
+      - none
+      - now
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: id
+      path: []
+      type:
+        - none
+        - now_timestamp
+    - key: asks_price
+      path:
+      - dict_values
+      - asks
+      - 0
+      type:
+      - float
+    - key: asks_amount
+      path:
+      - dict_values
+      - asks
+      - 1
+      type:
+      - float
+    - key: bids_price
+      path:
+      - dict_values
+      - bids
+      - 0
+      type:
+      - float
+    - key: bids_amount
+      path:
+      - dict_values
+      - bids
+      - 1
+      type:
+      - float
+
+  trades:
+    request:
+      template: trades/{currency_pair}/
+      pair_template: # e.g. ltc_btc
+        template: "{first}_{second}"
+        lower_case: true
+      params:
+        limit:
+          type: int
+          max: 2000
+          default: 150
+    response:
+      type: dict
+      values:
+        currency_pair: # requested currency pair
+          type: list
+          values:
+            type: dict
+            values:
+              type:
+                type: str
+              price:
+                type: float
+              amount:
+                type: float
+              tid:
+                type: int
+              timestamp:
+                type:
+                - int
+    mapping:
+    - key: direction
+      path:
+      - dict_values
+      - type
+      type:
+      - str
+    - key: price
+      path:
+      - dict_values
+      - price
+      type:
+      - float
+    - key: amount
+      path:
+      - dict_values
+      - amount
+      type:
+      - float
+    - key: time
+      path:
+      - dict_values
+      - timestamp
+      type:
+      - float
+      - from_timestamp
+      - 0
+    - key: id
+      path:
+        - dict_values
+        - tid
+      type:
+        - int

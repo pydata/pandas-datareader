@@ -1,0 +1,393 @@
+name: hitbtc
+exchange: true
+api_docs: https://api.hitbtc.com/#market-data
+api_url: https://api.hitbtc.com/api/2/
+rate_limit:
+  max: 100
+  unit: 1
+requests:
+  currency_pairs:
+    request:
+      template: public/symbol/
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          id: # Symbol identifier. In the future, the description will simply use the symbol, i.e. "ETHBTC"
+            type: str
+          baseCurrency: # i.e. "ETH"
+            type: str
+          quoteCurrency: # i.e. "BTC"
+            type: str
+          quantityIncrement:
+            type:
+            - str
+            - float
+          tickSize:
+            type:
+            - str
+            - float
+          takeLiquidityRate: # Default fee rate
+            type:
+            - str
+            - float
+          provideLiquidityRate: # Default fee rate for market making trades
+            type:
+            - str
+            - float
+          feeCurrency: # i.e. "BTC"
+            type: str
+    mapping:
+    - key: currency_pair_first
+      path:
+      - baseCurrency
+      type:
+      - str
+    - key: currency_pair_second
+      path:
+      - quoteCurrency
+      type:
+      - str
+
+  tickers:
+    request:
+      template: public/ticker/{currency_pair}
+      pair_template: # i.e. ETHBTC
+        template: "{first}{second}"
+        lower_case: false
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          ask: # Best ask price
+            type:
+            - str
+            - float
+          bid: # Best bid price
+            type:
+            - str
+            - float
+          last: # Last trade price
+            type:
+            - str
+            - float
+          open: # Last trade price 24 hours ago
+            type:
+            - str
+            - float
+          low: # Lowest trade price within 24 hours
+            type:
+            - str
+            - float
+          high: # Highest trade price within 24 hours
+            type:
+            - str
+            - float
+          volume: # Total trading amount within 24 hours in base currency
+            type:
+            - str
+            - float
+          volumeQuote: # Total trading amount within 24 hours in quote currency
+            type:
+            - str
+            - float
+          timestamp: # Last update or refresh ticker timestamp
+            type:
+            - str
+          symbol:
+            type: str
+    mapping:
+    - key: best_ask
+      path:
+      - ask
+      type:
+      - str
+      - float
+    - key: best_bid
+      path:
+      - bid
+      type:
+      - str
+      - float
+    - key: last_price
+      path:
+      - last
+      type:
+      - str
+      - float
+    - key: daily_volume
+      path:
+      - volume
+      type:
+      - str
+      - float
+    - key: time
+      path:
+      - timestamp
+      type:
+      - str
+      - dateparser
+
+  trades:
+    request:
+      template: public/trades/{currency_pair}
+      pair_template: # i.e. ETHBTC
+        template: "{first}{second}"
+        lower_case: false
+      params:
+        sort:
+          type: str
+          default: DESC
+        by: # Filtration definition. Accepted values: id, timestamp. Default timestamp
+          type: str
+          default: timestamp
+          required: false
+        from: # Number or Datetime
+          required: false
+        till: # Number or Datetime
+          required: false
+        limit:
+          type: int
+          required: false
+        offset:
+          type: int
+          required: false
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          id:
+            type: int
+          price:
+            type:
+            - str
+            - float
+          quantity:
+            type:
+            - str
+            - float
+          side: # Trade side "sell" or "buy"
+            type: str
+          timestamp:
+            type:
+            - str
+    mapping:
+    - key: price
+      path:
+      - price
+      type:
+      - str
+      - float
+    - key: amount
+      path:
+      - quantity
+      type:
+      - str
+      - float
+    - key: direction
+      path:
+      - side
+      type:
+      - str
+    - key: ime
+      path:
+      - timestamp
+      type:
+      - str
+      - dateparser
+    - key: id
+      path:
+        - id
+      type:
+        - int
+
+  order_books:
+    request:
+      template: public/orderbook/{currency_pair}
+      pair_template: # i.e. ETHBTC
+         template: "{first}{second}"
+         lower_case: false
+      params:
+         limit: # Limit of orderbook levels. Set 0 to view full orderbook levels
+           type: int
+           default: 100
+    response:
+      type: dict
+      values:
+        ask:
+          type: list
+          values:
+            type: dict
+            values:
+              price: # Price level
+                type:
+                - str
+              size: # Total volume of orders with the specified price
+                type:
+                - str
+        bid:
+          type: list
+          values:
+            type: dict
+            values:
+              price: # Price level
+                type:
+                - str
+              size: # Total volume of orders with the specified price
+                type:
+                - str
+    mapping:
+    - key: book_time
+      path: []
+      type:
+       - none
+       - now
+    - key: id
+      path: []
+      type:
+        - none
+        - now_timestamp
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: asks_price
+      path:
+       - ask
+       - price
+      type:
+       - str
+       - float
+    - key: asks_amount
+      path:
+       - ask
+       - size
+      type:
+       - str
+       - float
+    - key: bids_price
+      path:
+       - bid
+       - price
+      type:
+       - str
+       - float
+    - key: bids_amount
+      path:
+       - bid
+       - size
+      type:
+       - str
+       - float
+
+  historic_rates:
+    request:
+      template: public/candles/{currency_pair}
+      pair_template: # i.e. ETHBTC
+        template: "{first}{second}"
+        lower_case: false
+      params:
+        period:
+          type: str
+          allowed:
+            minutes: M1
+#            hours: H1
+            days: D1
+            weeks: D7
+            months: 1M
+          default: D1
+        sort:
+          type: str
+          default: ASC
+        from:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 1000
+            - from_timestamp
+            - 0
+            - "%Y-%m-%dT%H:%M:%S.%fZ"
+        till:
+          function: last_timestamp
+          type:
+            - datetime
+            - format
+            - "%Y-%m-%dT%H:%M:%S.%fZ"
+        limit: # Limit of candles, default 100.
+          type: int
+          default: 1000
+        offset:
+          type: int
+          required: false
+    response: # Result contain candles only with non zero volume. (No trades - no candles)
+      type: list
+      values:
+        type: dict
+        values:
+          timestamp:
+            type:
+            - str
+          open: # Open price
+            type:
+            - str
+          close: # Close price
+            type:
+            - str
+          min: # Min price
+            type:
+            - str
+          max: # Max price
+            type:
+            - str
+          volume: # Volume in base currency
+            type:
+            - str
+          volumeQuote: # Volume in quote currency
+            type:
+            - str
+    mapping:
+    - key: time
+      path:
+      - timestamp
+      type:
+      - str
+      - dateparser
+    - key: open
+      path:
+      - open
+      type:
+      - str
+      - float
+    - key: close
+      path:
+      - close
+      type:
+      - str
+      - float
+    - key: low
+      path:
+      - min
+      type:
+      - str
+      - float
+    - key: high
+      path:
+      - max
+      type:
+      - str
+      - float
+    - key: volume
+      path:
+      - volume
+      type:
+      - str
+      - float

@@ -1,0 +1,252 @@
+name: wazirx
+is_exchange: true
+
+api_url: https://api.wazirx.com/api/v2/
+
+requests:
+  currency_pairs:
+    request:
+      template: market-status
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        markets:
+          type: list
+          values:
+            type: dict
+            values:
+              baseMarket:
+                type: str
+              quoteMarket:
+                type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - markets
+          - baseMarket
+        type:
+          - str
+          - upper
+      - key: currency_pair_second
+        path:
+          - markets
+          - quoteMarket
+        type:
+          - str
+          - upper
+
+
+  tickers:
+    request:
+      template: tickers
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: dict
+          values:
+            base_unit:
+              type: str
+            quote_unit:
+              type: str
+            last:
+              type: str
+            sell:
+              type: str
+            buy:
+              type: str
+            at:
+              type: int
+            volume:
+              type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - dict_values
+          - base_unit
+        type:
+          - str
+          - upper
+      - key: currency_pair_second
+        path:
+          - dict_values
+          - quote_unit
+        type:
+          - str
+          - upper
+      - key: time
+        path:
+          - dict_values
+          - at
+        type:
+          - float
+          - from_timestamp
+          - 0
+      - key: last_price
+        path:
+          - dict_values
+          - last
+        type:
+          - str
+          - float
+      - key: best_ask
+        path:
+          - dict_values
+          - sell
+        type:
+          - str
+          - float
+      - key: best_bid
+        path:
+          - dict_values
+          - buy
+        type:
+          - str
+          - float
+      - key: daily_volume
+        path:
+          - dict_values
+          - volume
+        type:
+          - str
+          - float
+
+  order_books:
+    request:
+      template: depth
+      pair_template:
+        template: "{first}{second}"
+        lower_case: true
+        alias: market
+      params: null
+
+    response:
+      type: dict
+      values:
+        timestamp:
+          type: int
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type: str
+              1: #volume
+                type: str
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type: str
+              1: #volume
+                type: str
+
+    mapping:
+      - key: time
+        path:
+          - timestamp
+        type:
+          - str
+          - float
+          - from_timestamp
+          - 0
+      - key: id
+        path:
+          - timestamp
+        type:
+          - str
+          - int
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_price
+        path:
+          - bids
+          - 0
+        type:
+          - str
+          - float
+      - key: bids_amount
+        path:
+          - bids
+          - 1
+        type:
+          - str
+          - float
+      - key: asks_amount
+        path:
+          - asks
+          - 1
+        type:
+          - str
+          - float
+      - key: asks_price
+        path:
+          - asks
+          - 0
+        type:
+          - str
+          - float
+
+  trades:
+    request:
+      template: trades
+      pair_template:
+        template: "{first}{second}"
+        lower_case: true
+        alias: market
+      params: null
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          id:
+            type: int
+          price:
+            type: str
+          volume:
+            type: str
+          funds:
+            type: str
+          market:
+            type: str
+          created_at:
+            type: str
+          side:
+            type: null
+    mapping:
+      - key: time
+        path:
+          - created_at
+        type:
+          - str
+          - dateparser
+      - key: id
+        path:
+          - id
+        type:
+          - int
+      - key: price
+        path:
+          - price
+        type:
+          - str
+          - float
+      - key: amount
+        path:
+          - volume
+        type:
+          - str
+          - float

@@ -1,0 +1,195 @@
+# ToDO: Ticker not working. ErrorCode: Internal Server Error. Try again later.
+
+name: lykke
+exchange: true
+rate_limit: null
+api_url: https://hft-apiv2.lykke.com/api/
+
+requests:
+  currency_pairs:
+    request:
+      template: assetpairs
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        payload:
+          type: list
+          values:
+            type: dict
+            values:
+              name:
+                type: str
+    mapping:
+    - key: currency_pair_first
+      path:
+        - payload
+        - name
+      type:
+      - str
+      - split
+      - "/"
+      - 0
+    - key: currency_pair_second
+      path:
+      - payload
+      - name
+      type:
+      - str
+      - split
+      - "/"
+      - 1
+
+  order_books:
+    request:
+      template: orderbooks
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: assetPairId
+      params:
+        depth:
+          type: int
+          default: 50
+
+    response:
+      type: dict
+      values:
+        payload:
+          type: list
+          values:
+            type: dict
+            values:
+              timestamp:
+                type: int
+              bids:
+                type: list
+                values:
+                  type: dict
+                  values:
+                    v:
+                      type: float
+                    p:
+                      type: float
+              asks:
+                type: list
+                values:
+                  type: dict
+                  values:
+                    v:
+                      type: float
+                    p:
+                      type: float
+
+    mapping:
+      - key: time
+        path:
+          - payload
+          - timestamp
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: id
+        path:
+          - payload
+          - timestamp
+        type:
+          - int
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_amount
+        path:
+          - payload
+          - bids
+          - v
+        type:
+          - float
+      - key: bids_price
+        path:
+          - payload
+          - bids
+          - p
+        type:
+          - float
+      - key: asks_amount
+        path:
+          - payload
+          - asks
+          - v
+        type:
+          - float
+      - key: asks_price
+        path:
+          - payload
+          - asks
+          - p
+        type:
+          - float
+
+
+  trades:
+    request:
+      template: trades/public/{currency_pair}
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+      params:
+        take:
+          type: int
+          default: 200
+    response:
+      type: dict
+      values:
+        payload:
+          type: list
+          values:
+            type: dict
+            values:
+              timestamp:
+                type: int
+              id:
+                type: str
+              price:
+                type: float
+              volume:
+                type: float
+              side:
+                type: str
+    mapping:
+      - key: time
+        path:
+          - payload
+          - timestamp
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: direction
+        path:
+          - payload
+          - side
+        type:
+          - str
+      - key: id
+        path:
+          - payload
+          - id
+        type:
+          - str
+      - key: price
+        path:
+          - payload
+          - price
+        type:
+          - float
+      - key: amount
+        path:
+          - payload
+          - volume
+        type:
+          - float

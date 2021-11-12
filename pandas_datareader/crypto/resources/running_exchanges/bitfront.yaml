@@ -1,0 +1,251 @@
+name: bitfront
+exchange: true
+
+rate_limit: null
+
+api_url: https://openapi.bitfront.me/v1/market/public/
+
+requests:
+  currency_pairs:
+    request:
+      template: /coins/pairPolicy
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        responseData:
+          type: list
+          values:
+            type: dict
+            marketType:
+              type: str
+            coinType:
+              type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - responseData
+          - coinType
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - responseData
+          - marketType
+        type:
+          - str
+
+  tickers:
+    request:
+      template: currentTickValue
+      pair_template:
+        template: "{first}.{second}"
+        lower_case: false
+        alias: coinPair
+      params: null
+    response:
+      type: dict
+      values:
+        responseTime:
+          type: int
+        responseData:
+          type: list
+          values:
+            type: dict
+            values:
+              bid:
+                type: float
+              ask:
+                type: float
+              last:
+                type: float
+              volume:
+                type: float
+    mapping:
+      - key: last_price
+        path:
+          - responseData
+          - last
+        type:
+          - float
+      - key: time
+        path:
+          - responseTime
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: best_bid
+        path:
+          - responseData
+          - bid
+        type:
+          - float
+      - key: best_ask
+        path:
+          - responseData
+          - ask
+        type:
+          - float
+      - key: daily_volume
+        path:
+          - responseData
+          - volume
+        type:
+          - float
+
+
+  order_books:
+    request:
+      template: orderBooks
+      pair_template:
+        template: "{first}.{second}"
+        lower_case: false
+        alias: coinPair
+      params:
+        depth:
+          max: 1000
+          default: 50
+
+    response:
+      type: dict
+      values:
+        responseTime:
+          type: int
+        responseData:
+          type: dict
+          values:
+            ASK:
+              type: list
+              values:
+                type: dict
+                values:
+                  price:
+                    type: float
+                  amount:
+                    type: float
+            BID:
+              type: list
+              values:
+                type: dict
+                values:
+                  price:
+                    type: float
+                  amount:
+                    type: float
+
+    mapping:
+    - key: time
+      path:
+        - responseTime
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: id
+      path:
+        - responseTime
+      type:
+        - int
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - responseData
+        - BID
+        - amount
+      type:
+        - float
+    - key: bids_price
+      path:
+        - responseData
+        - BID
+        - price
+      type:
+        - float
+    - key: asks_amount
+      path:
+        - responseData
+        - ASK
+        - amount
+      type:
+        - float
+    - key: asks_price
+      path:
+        - responseData
+        - ASK
+        - price
+      type:
+        - float
+
+  trades:
+    request:
+      template: tradeHistory
+      pair_template:
+        template: "{first}.{second}"
+        lower_case: false
+        alias: coinPair
+      params:
+        max:
+          default: 100
+
+    response:
+      type: dict
+      values:
+        responseTime:
+          type: int
+        responseData:
+          type: list
+          values:
+            type: dict
+            values:
+              transactionID:
+                type: int
+              price:
+                type: float
+              amount:
+                type: float
+              orderSide:
+                type: str
+              createdAt:
+                type: int
+
+    mapping:
+    - key: time
+      path:
+        - responseData
+        - createdAt
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: id
+      path:
+        - responseData
+        - transactionID
+      type:
+        - int
+    - key: direction
+      path:
+        - responseData
+        - orderSide
+      type:
+        - str
+    - key: price
+      path:
+        - responseData
+        - price
+      type:
+        - float
+    - key: amount
+      path:
+        - responseData
+        - amount
+      type:
+        - float

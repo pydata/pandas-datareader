@@ -1,0 +1,374 @@
+name: bequant
+exchange: true
+
+rate_limit:
+  max: 6000
+  unit: 60
+
+api_url: https://api.bequant.io/api/2/public/
+
+requests:
+  currency_pairs:
+    request:
+      template: symbol
+      pair_template: null
+      params: null
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          baseCurrency:
+            type: str
+          quoteCurrency:
+            type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - baseCurrency
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - quoteCurrency
+        type:
+          - str
+
+  tickers:
+    request:
+      template: ticker
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbols
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          ask:
+            type: str
+          bid:
+            type: str
+          last:
+            type: str
+          volume:
+            type: str
+          volumeQuote:
+            type: str
+          timestamp:
+            type: str
+
+    mapping:
+      - key: last_price
+        path:
+          - last
+        type:
+          - str
+          - float
+      - key: time
+        path:
+          - timestamp
+        type:
+          - str
+          - dateparser
+      - key: best_bid
+        path:
+          - bid
+        type:
+          - str
+          - float
+      - key: best_ask
+        path:
+          - ask
+        type:
+          - str
+          - float
+      - key: daily_volume
+        path:
+          - volume
+        type:
+          - str
+          - float
+
+  historic_rates:
+    request:
+      template: candles
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbols
+      params:
+        period:
+          allowed:
+            minutes: M1
+            hours: H1
+            days: D1
+            weeks: D7
+            months: 1M
+          default: D1
+
+        till:
+          function: last_timestamp
+          type:
+            - datetime
+            - format
+            - "%Y-%m-%dT%H:%M:%S.%fZ"
+        from:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 1000
+            - from_timestamp
+            - 0
+            - "%Y-%m-%dT%H:%M:%S.%fZ"
+        sort:
+          default: DESC
+        limit:
+          max: 1000
+          default: 1000
+
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: list
+          values:
+            type: dict
+            values:
+              timestamp:
+                type: str
+              open:
+                type: str
+              close:
+                type: str
+              min:
+                type: str
+              max:
+                type: str
+              volumeQuote:
+                type: str
+              volume:
+                type: str
+
+    mapping:
+    - key: time
+      path:
+        - list_values
+        - timestamp
+      type:
+        - str
+        - dateparser
+    - key: open
+      path:
+        - list_values
+        - open
+      type:
+        - str
+        - float
+    - key: high
+      path:
+        - list_values
+        - max
+      type:
+        - str
+        - float
+    - key: low
+      path:
+        - list_values
+        - min
+      type:
+        - str
+        - float
+    - key: close
+      path:
+        - list_values
+        - close
+      type:
+        - str
+        - float
+    - key: volume
+      path:
+        - list_values
+        - volume
+      type:
+        - str
+        - float
+
+  trades:
+    request:
+      template: trades
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbols
+      params:
+#        from:
+#          function: last_timestamp
+#          type:
+#            - datetime
+#            - timestamp
+#        till:
+#          function: last_timestamp
+#          type:
+#            - datetime
+#            - timedelta
+#            - interval
+#            - 1000
+#        sort:
+#          default: DESC
+        limit:
+          max: 1000
+          default: 500
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: list
+          values:
+            type: dict
+            values:
+              id:
+                type: int
+              price:
+                type: str
+              quantity:
+                type: str
+              side:
+                type: str
+              timestamp:
+                type: str
+
+    mapping:
+    - key: time
+      path:
+        - list_values
+        - timestamp
+      type:
+        - str
+        - dateparser
+    - key: id
+      path:
+        - list_values
+        - id
+      type:
+        - int
+    - key: direction
+      path:
+        - list_values
+        - side
+      type:
+        - str
+    - key: price
+      path:
+        - list_values
+        - price
+      type:
+        - str
+        - float
+    - key: amount
+      path:
+        - list_values
+        - quantity
+      type:
+        - str
+        - float
+
+  order_books:
+    request:
+      template: orderbook
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbols
+      params:
+        limit:
+          default: 100
+
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: dict
+          values:
+            timestamp:
+              type: str
+            batchingTime:
+              type: str
+            ask:
+              type: list
+              values:
+                type: dict
+                values:
+                  price:
+                    type: str
+                  size:
+                    type: str
+            bid:
+              type: list
+              values:
+                type: dict
+                values:
+                  price:
+                    type: str
+                  size:
+                    type: str
+
+    mapping:
+    - key: time
+      path:
+        - dict_values
+        - timestamp
+      type:
+        - str
+        - dateparser
+    - key: id
+      path:
+        - dict_values
+        - timestamp
+      type:
+        - str
+        - dateparser
+        - totimestamp
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - dict_values
+        - bid
+        - size
+      type:
+        - str
+        - float
+    - key: bids_price
+      path:
+        - dict_values
+        - bid
+        - price
+      type:
+        - str
+        - float
+    - key: asks_amount
+      path:
+        - dict_values
+        - ask
+        - size
+      type:
+        - str
+        - float
+    - key: asks_price
+      path:
+        - dict_values
+        - ask
+        - price
+      type:
+        - str
+        - float

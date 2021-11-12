@@ -1,0 +1,344 @@
+#keine moeglichkeit candles/historic_rates abzufragen
+name: bitso
+exchange: true
+api_url: https://api.bitso.com/v3/
+rate_limit:
+  max: 60
+  # 1 minute
+  unit: 60
+requests:
+  currency_pairs:
+    request:
+      template: available_books/
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        success:
+          type: bool
+        payload:
+          type: list
+          values:
+            type: dict
+            values:
+              book: # e.g. btc_mxn
+                type: str
+              minimum_amount:
+                type:
+                - str
+              maximum_amount:
+                type:
+                - str
+              minimum_price:
+                type:
+                - str
+              maximum_price:
+                type:
+                - str
+              minimum_value:
+                type:
+                - str
+              maximum_value:
+                type:
+                - str
+    mapping:
+    - key: currency_pair_first
+      path:
+      - payload
+      - book
+      type:
+      - str
+      - splitupper
+      - "_"
+      - 0
+    - key: currency_pair_second
+      path:
+      - payload
+      - book
+      type:
+      - str
+      - splitupper
+      - "_"
+      - 1
+      
+  tickers:
+    request:
+      template: ticker
+      pair_template: null
+      params:
+        book:
+          type: str
+          default: all
+    response:
+      type: dict
+      values:
+        success:
+          type: bool
+        payload:
+          type: dict
+          values:
+            book:
+              type:
+              - str
+            volume:
+              type:
+              - str
+            high:
+              type:
+              - str
+            last:
+              type:
+              - str
+            low:
+              type:
+              - str
+            vwap:
+              type:
+              - str
+            ask:
+              type:
+              - str
+            bid:
+              type:
+              - str
+            created_at:
+              type:
+              - str
+    mapping:
+    - key: currency_pair_first
+      path:
+        - payload
+        - book
+      type:
+        - str
+        - split
+        - '_'
+        - 0
+    - key: currency_pair_second
+      path:
+        - payload
+        - book
+      type:
+        - str
+        - split
+        - '_'
+        - 1
+    - key: daily_volume
+      path:
+      - payload
+      - volume
+      type:
+      - str
+      - float
+    - key: last_price
+      path:
+      - payload
+      - last
+      type:
+      - str
+      - float
+    - key: best_ask
+      path:
+      - payload
+      - ask
+      type:
+      - str
+      - float
+    - key: best_bid
+      path:
+      - payload
+      - bid
+      type:
+      - str
+      - float
+    - key: time
+      path:
+      - payload
+      - created_at
+      type:
+      - str
+      - dateparser
+
+  order_books:
+    request:
+      template: order_book
+      pair_template: # e.g. btc_mxn
+        template: "{first}_{second}"
+        lower_case: true
+        alias: book
+      params:
+        aggregate:
+          type: bool
+          default: true
+    response:
+      type: dict
+      values:
+        success:
+          type: bool
+        payload:
+          type: dict
+          values:
+            asks:
+              type: list
+              values:
+                type: dict
+                values:
+                  book:
+                    type: str
+                  price:
+                    type:
+                    - str
+                  amount:
+                    type:
+                    - str
+            bids:
+              type: list
+              values:
+                type: dict
+                values:
+                  book:
+                    type: str
+                  price:
+                    type:
+                    - str
+                  amount:
+                    type:
+                    - str
+            updated_at:
+              type:
+              - str
+            sequence:
+              type:
+              - str
+    mapping:
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: id
+      path:
+        - payload
+        - sequence
+      type:
+        - str
+        - int
+    - key: asks_price
+      path:
+      - payload
+      - asks
+      - price
+      type:
+      - str
+      - float
+    - key: asks_amount
+      path:
+      - payload
+      - asks
+      - amount
+      type:
+      - str
+      - float
+    - key: bids_price
+      path:
+      - payload
+      - bids
+      - price
+      type:
+      - str
+      - float
+    - key: bids_amount
+      path:
+      - payload
+      - bids
+      - amount
+      type:
+      - str
+      - float
+    - key: time
+      path:
+      - payload
+      - updated_at
+      type:
+      - str
+      - dateparser
+
+  trades:
+    request:
+      template: trades
+      pair_template: # e.g. btc_mxn
+        template: "{first}_{second}"
+        lower_case: true
+        alias: book
+      params:
+        marker: # Returns objects that are older or newer (depending on 'sort’) than the object with this ID
+          type: int
+          required: false
+        sort:
+          type: str
+          default: desc
+        limit:
+          type: int
+          max: 100
+          default: 100
+    response:
+      type: dict
+      values:
+        success:
+          type: bool
+        payload:
+          type: list
+          values:
+            type: dict
+            values:
+              book:
+                type: str
+              created_at:
+                type:
+                - str
+
+              amount:
+                type:
+                - str
+              maker_side:
+                type: str
+              price:
+                type:
+                - str
+              tid:
+                type: int
+    mapping:
+    - key: time
+      path:
+      - payload
+      - created_at
+      type:
+      - str
+      - dateparser
+    - key: id
+      path:
+        - payload
+        - tid
+      type:
+        - int
+    - key: amount
+      path:
+      - payload
+      - amount
+      type:
+      - str
+      - float
+    - key: direction
+      path:
+      - payload
+      - maker_side
+      type:
+      - str
+    - key: price
+      path:
+      - payload
+      - price
+      type:
+      - str
+      - float

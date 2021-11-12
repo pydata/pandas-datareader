@@ -1,0 +1,359 @@
+#ToDO: HR endpoint is not really working. Frequently returning data is non-json format (status 503) which can not
+# be parsed.
+
+name: omgfin
+api_url: https://omgfin.com/api/v1/
+rate_limit:
+  max: 600
+  unit: 60
+
+
+requests:
+
+  currency_pairs:
+    request:
+      template: exchangeInfo
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        symbols:
+          type: list
+          values:
+            type: dict
+            values:
+              baseAsset:
+                type: str
+              quoteAsset:
+                type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - symbols
+          - baseAsset
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - symbols
+          - quoteAsset
+        type:
+          - str
+
+  tickers:
+    request:
+      template: ticker/summary
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: dict
+          values:
+            last:
+              type: str
+            lowestAsk:
+              type: str
+            highest_bid:
+              type: str
+            percentChange:
+              type: str
+            baseVolume:
+              type: str
+            quoteVolume:
+              type: str
+            high24h:
+              type: str
+            low24h:
+              type: str
+    mapping:
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: currency_pair_first
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 0
+      - key: currency_pair_second
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 1
+      - key: last_price
+        path:
+          - dict_values
+          - last
+        type:
+          - str
+          - float
+      - key: best_bid
+        path:
+          - dict_values
+          - highestBid
+        type:
+          - str
+          - float
+      - key: best_ask
+        path:
+          - dict_values
+          - lowestAsk
+        type:
+          - str
+          - float
+      - key: daily_volume
+        path:
+          - dict_values
+          - baseVolume
+        type:
+          - str
+          - float
+
+  historic_rates:
+    request:
+      template: klines
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        interval:
+          allowed:
+            minutes: 1m
+            hours: 1h
+            days: 1d
+            weeks: 1w
+          default: 1d
+        limit:
+          default: 300 # max: 300
+#        startTime:
+#          function: last_timestamp
+#          type:
+#            - datetime
+#            - timedeltams
+#            - interval
+#            - 300
+        endTime:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestampms
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          OT:
+            type: int
+          O:
+            type: str
+          H:
+            type: str
+          L:
+            type: str
+          C:
+            type: str
+          CT:
+            type: int
+          QV:
+            type: str
+          V:
+            type: str
+
+    mapping:
+    - key: time
+      path:
+        - CT
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: open
+      path:
+        - O
+      type:
+        - str
+        - float
+    - key: high
+      path:
+        - H
+      type:
+        - str
+        - float
+    - key: low
+      path:
+        - L
+      type:
+        - str
+        - float
+    - key: close
+      path:
+        - C
+      type:
+        - str
+        - float
+    - key: volume
+      path:
+        - V
+      type:
+        - str
+        - float
+
+
+  trades:
+    request:
+      template: trades/{currency_pair}
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+      params:
+        limit:
+          max: 1000
+          default: 500
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          id:
+            type: int
+          price:
+            type: str
+          qty:
+            type: str
+          time:
+            type: int
+          isBuyerMaker:
+            type: str
+          isBestMatch:
+            type: str
+
+    mapping:
+    - key: time
+      path:
+        - time
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: id
+      path:
+        - id
+      type:
+        - int
+    - key: direction
+      path:
+        - isBuyerMaker
+      type:
+        - value
+        - map
+        - True
+        - sell
+        - False
+        - buy
+    - key: price
+      path:
+        - price
+      type:
+        - str
+        - float
+    - key: amount
+      path:
+        - qty
+      type:
+        - str
+        - float
+
+  order_books:
+    request:
+      template: orderbook/{currency_pair}
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+      params:
+        limit:
+          max: 500
+          default: 50
+
+    response:
+      type: dict
+      values:
+        timestamp:
+          type: int
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0:
+                type: str
+              1:
+                type: str
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0:
+                type: str
+              1:
+                type: str
+
+    mapping:
+    - key: time
+      path:
+        - timestamp
+      type:
+        - float
+        - from_timestamp
+        - 0
+    - key: id
+      path:
+        - timestamp
+      type:
+        - int
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - bids
+        - 1
+      type:
+        - str
+        - float
+    - key: bids_price
+      path:
+        - bids
+        - 0
+      type:
+        - str
+        - float
+    - key: asks_amount
+      path:
+        - asks
+        - 1
+      type:
+        - str
+        - float
+    - key: asks_price
+      path:
+        - asks
+        - 0
+      type:
+        - str
+        - float

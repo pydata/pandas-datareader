@@ -1,0 +1,405 @@
+# Trade direction is available but not certain what is meant...
+name: zbg
+exchange: true
+api_url: https://kline.zbg.com/
+
+rate_limit: 
+  max: 1000
+  unit: 60
+
+requests:
+  currency_pairs:
+    request:
+      template: /exchange/api/v1/common/symbols
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        datas:
+          type: list
+          values:
+            type: dict
+            values:
+              symbol:
+                type: str
+              base-currency:
+                type: str
+              quote-currency:
+                type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - datas
+          - base-currency
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - datas
+          - quote-currency
+        type:
+          - str
+
+
+  tickers:
+    request: 
+      template: api/data/v1/tickers
+      pair_template: null
+      params: 
+        isUseMarketName:
+          type: str
+          default: true
+    response:
+      type: dict
+      values:
+        datas:
+          type: dict
+          values:
+            currency_pair:
+              type: list
+              values:
+                0: #marketId
+                  type: str
+                1: #last price
+                  type: str
+                2: #highest price
+                  type: str
+                3: #lowest
+                  type: str
+                4: #24h volume
+                  type: str
+                5: #24h change
+                  type: str
+                6: #
+                  type: str
+                7: #top buying price
+                  type: str
+                8: #top selling price
+                  type: str
+                9:  #24h volume in unit of buyers currency
+                  type: str
+    mapping:
+    - key: time
+      path: []
+      type:
+      - none
+      - now
+    - key: currency_pair_first
+      path: 
+      - datas
+      - list_key
+      type:
+      - str
+      - split
+      - "_"
+      - 0
+    - key: currency_pair_second
+      path:
+      - datas
+      - list_key
+      type:
+      - str
+      - split
+      - "_"
+      - 1
+    - key: last_price
+      path:
+      - datas
+      - list_values
+      - 1
+      type: 
+      - str
+      - float
+    - key: daily_volume
+      path:
+      - datas
+      - list_values
+      - 4
+      type: 
+      - str
+      - float
+    - key: best_bid
+      path:
+        - datas
+        - list_values
+        - 7
+      type:
+        - str
+        - float
+    - key: best_ask
+      path:
+        - datas
+        - list_values
+        - 8
+      type:
+        - str
+        - float
+
+
+  historic_rates:
+    request:
+      template: api/data/v1/klines
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: marketName
+      params:
+        type:
+          allowed:
+            minutes: 1M
+            hours: 1H
+            days: 1D
+            weeks: 1W
+          default: 1D
+        dataSize:
+          type: int
+          default: 10000
+
+    response:
+      type: dict
+      values:
+        datas:
+          type: list
+          values:
+            type: list
+            values:
+              0:
+                type: str
+              1:
+                type: str
+              2: # pair
+                type: str
+              3: # time
+                type: str
+              4: # open
+                type: str
+              5: # high
+                type: str
+              6: # low
+                type: str
+              7: # close
+                type: str
+              8: # base volume
+                type: str
+              13: # quote volume
+                type: str
+    mapping:
+    - key: time
+      path:
+        - datas
+        - 3
+      type:
+        - str
+        - float
+        - from_timestamp
+        - 0
+    - key: open
+      path:
+        - datas
+        - 4
+      type:
+        - str
+        - float
+    - key: high
+      path:
+        - datas
+        - 5
+      type:
+        - str
+        - float
+    - key: low
+      path:
+        - datas
+        - 6
+      type:
+        - str
+        - float
+    - key: close
+      path:
+        - datas
+        - 7
+      type:
+        - str
+        - float
+    - key: volume
+      path:
+        - datas
+        - 8
+      type:
+        - str
+        - float
+
+  trades:
+    request:
+      template: /api/data/v1/trades
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: marketName
+      params:
+        dataSize:
+          type: int
+          max: 1000
+          default: 1000
+
+    response:
+      type: dict
+      values:
+        datas:
+          type: list
+          values:
+            type: list
+            values:
+              0:
+                type: str
+              1:
+                type: str
+              2: # time
+                type: str
+              3: # pair
+                type: str
+              4: # direction
+                type: str
+              5: # price
+                type: str
+              6: # qty
+                type: str
+    mapping:
+      - key: id
+        path:
+          - datas
+          - 2
+        type:
+          - str
+          - int
+      - key: time
+        path:
+          - datas
+          - 2
+        type:
+          - str
+          - float
+          - from_timestamp
+          - 0
+      - key: price
+        path:
+          - datas
+          - 5
+        type:
+          - str
+          - float
+      - key: amount
+        path:
+          - datas
+          - 6
+        type:
+          - str
+          - float
+#      - key: direction # not certain what bid and ask for a direction is
+#        path:
+#          - datas
+#          - 4
+#        type:
+#          - map
+#          - values
+#          - bid
+#          - sell
+#          - ask
+#          - buy
+
+  order_books:
+    request:
+      template: api/data/v1/entrusts
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: marketName
+      params:
+        dataSize:
+          type: int
+          max: 200
+          default: 50
+
+    response:
+      type: dict
+      values:
+        datas:
+          type: dict
+          values:
+            asks:
+              type: list
+              values:
+                type: list
+                values:
+                  0:
+                    type: str
+                  1:
+                    type: str
+            bids:
+              type: list
+              values:
+                type: list
+                values:
+                  0:
+                    type: str
+                  1:
+                    type: str
+            timestamp:
+              type: str
+    mapping:
+      - key: id
+        path:
+          - datas
+          - timestamp
+        type:
+          - str
+          - int
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: time
+        path:
+          - datas
+          - timestamp
+        type:
+          - str
+          - float
+          - from_timestamp
+          - 0
+      - key: bids_amount
+        path:
+          - datas
+          - bids
+          - 1
+        type:
+          - str
+          - float
+      - key: bids_price
+        path:
+          - datas
+          - bids
+          - 0
+        type:
+          - str
+          - float
+      - key: asks_price
+        path:
+          - datas
+          - asks
+          - 0
+        type:
+          - str
+          - float
+      - key: asks_amount
+        path:
+          - datas
+          - asks
+          - 1
+        type:
+          - str
+          - float

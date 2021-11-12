@@ -1,0 +1,330 @@
+name: b2bx
+exchange: true
+
+rate_limit:
+  max: 120
+  unit: 60
+
+api_url: ""
+
+requests:
+  currency_pairs:
+    request:
+      template: https://api.b2bx.exchange:8443/trading/frontoffice/api/info
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        pairs:
+          type: dict
+          values:
+            currency_pair:
+              type: dict
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - pairs
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 0
+      - key: currency_pair_second
+        path:
+          - pairs
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 1
+
+
+  tickers:
+    request:
+      template: https://cmc-gate.b2bx.exchange/marketdata/cmc/v1/ticker
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: dict
+          values:
+            last_price:
+              type: str
+            base_volume:
+              type: str
+            quote_volume:
+              type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 0
+      - key: currency_pair_second
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "_"
+          - 1
+      - key: last_price
+        path:
+          - dict_values
+          - last_price
+        type:
+          - str
+          - float
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: daily_volume
+        path:
+          - dict_values
+          - base_volume
+        type:
+          - str
+          - float
+
+  historic_rates:
+    request:
+      template: https://api.b2bx.exchange:8443/trading/marketdata/instruments/{currency_pair}/history
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: true
+      params:
+        endDate:
+          function: last_timestamp
+          type:
+            - datetime
+            - format
+            - "%Y-%m-%dT%H:%M:%S"
+        startDate:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 1000
+            - from_timestamp
+            - 0
+            - "%Y-%m-%dT%H:%M:%S"
+        count:
+          default: 1000 #max
+        type:
+          allowed:
+            minutes: 1m
+            hours: 1h
+            days: 1d
+            weeks: 1w
+            months: 1M
+          default: 1d
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              start:
+                type: str
+              end:
+                type: str
+              open:
+                type: float
+              high:
+                type: float
+              low:
+                type: float
+              close:
+                type: float
+              volume:
+                type: float
+              quoteVolume:
+                type: float
+
+    mapping:
+    - key: time
+      path:
+        - data
+        - start
+      type:
+        - str
+        - dateparser
+    - key: open
+      path:
+        - data
+        - open
+      type:
+        - float
+    - key: high
+      path:
+        - data
+        - high
+      type:
+        - float
+    - key: low
+      path:
+        - data
+        - low
+      type:
+        - float
+    - key: close
+      path:
+        - data
+        - close
+      type:
+        - float
+    - key: volume
+      path:
+        - data
+        - volume
+      type:
+        - float
+
+
+  trades:
+    request:
+      template: https://cmc-gate.b2bx.exchange/marketdata/cmc/v1/trades/{currency_pair}
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: true
+      params: null
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          tradeID:
+            type: str
+          price:
+            type: str
+          base_volume:
+            type: str
+          quote_volume:
+            type: str
+          trade_timestamp:
+            type: str
+          type:
+            type: str
+    mapping:
+    - key: time
+      path:
+        - trade_timestamp
+      type:
+        - str
+        - float
+        - from_timestamp
+        - 0
+    - key: id
+      path:
+        - tradeID
+      type:
+        - str
+        - int
+    - key: direction
+      path:
+        - type
+      type:
+        - str
+    - key: price
+      path:
+        - price
+      type:
+        - str
+        - float
+    - key: amount
+      path:
+        - base_volume
+      type:
+        - str
+        - float
+
+  order_books:
+    request:
+      template: https://api.b2bx.exchange:8443/trading/marketdata/instruments/{currency_pair}/depth
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: true
+      params: null
+
+    response:
+      type: dict
+      values:
+        bids:
+          type: list
+          values:
+            type: dict
+            values:
+              amount:
+                type: float
+              price:
+                type: float
+        asks:
+          type: list
+          values:
+            type: dict
+            values:
+              amount:
+                type: float
+              price:
+                type: float
+        version:
+          type: int
+
+
+    mapping:
+    - key: time
+      path: []
+      type:
+        - none
+        - now
+    - key: id
+      path:
+        - version
+      type:
+        - int
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - bids
+        - amount
+      type:
+        - float
+    - key: bids_price
+      path:
+        - bids
+        - price
+      type:
+        - float
+    - key: asks_amount
+      path:
+        - asks
+        - amount
+      type:
+        - float
+    - key: asks_price
+      path:
+        - asks
+        - price
+      type:
+        - float
