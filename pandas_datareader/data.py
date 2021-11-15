@@ -38,6 +38,7 @@ from pandas_datareader.yahoo.components import _get_data as get_components_yahoo
 from pandas_datareader.yahoo.daily import YahooDailyReader
 from pandas_datareader.yahoo.options import Options as YahooOptions
 from pandas_datareader.yahoo.quotes import YahooQuotesReader
+from pandas_datareader.crypto import CryptoReader
 
 __all__ = [
     "get_components_yahoo",
@@ -61,6 +62,7 @@ __all__ = [
     "get_dailysummary_iex",
     "get_data_stooq",
     "DataReader",
+    "get_data_crypto"
 ]
 
 
@@ -134,6 +136,10 @@ def get_exchange_rate_av(*args, **kwargs):
 
 def get_sector_performance_av(*args, **kwargs):
     return AVSectorPerformanceReader(*args, **kwargs).read()
+
+
+def get_data_crypto(*args, **kwargs):
+    return CryptoReader(*args, **kwargs).read()
 
 
 def get_markets_iex(*args, **kwargs):

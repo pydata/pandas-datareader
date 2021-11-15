@@ -1,13 +1,12 @@
-import sys
-from typing import Dict
+from typing import Dict, List
 
 from sys import stdout
 import pandas as pd
 import time
 import pytz
 
-from pandas_datareader.crypto.exchange import Exchange
-from pandas_datareader.crypto.utilities import split_str_to_list
+from pandas_datareader.crypto_utils.exchange import Exchange
+from pandas_datareader.crypto_utils.utilities import split_str_to_list, get_exchange_names
 
 
 class CryptoReader(Exchange):
@@ -17,7 +16,7 @@ class CryptoReader(Exchange):
     the _BaseReader.
     """
 
-    def __init__(self, exchange_name: str, symbols, interval: str = 'minutes', **kwargs):
+    def __init__(self, exchange_name: str, symbols, interval: str = 'days', **kwargs):
         """ Constructor.
 
         @param exchange_name: String repr of the exchange name
@@ -28,25 +27,36 @@ class CryptoReader(Exchange):
 
         super(CryptoReader, self).__init__(exchange_name, symbols, interval, **kwargs)
 
-    def await_rate_limit(self):
+    @staticmethod
+    def get_all_exchanges() -> List:
+        """ Get all supported exchange names.
+
+        @return List of exchange names.
+        """
+
+        return get_exchange_names()
+
+    def _await_rate_limit(self):
         """ Sleep in order to not violate the rate limit."""
 
         time.sleep(self.rate_limit)
 
     @staticmethod
-    def sort_columns(dataframe: pd.DataFrame) -> pd.DataFrame:
+    def _sort_columns(dataframe: pd.DataFrame) -> pd.DataFrame:
         """ Sort columns in OHLCV order.
 
         @param dataframe: Requested data with unordered columns
         @return: pd.DataFrame with ordered columns
         """
 
-        columns = {'open', 'high', 'low', 'close', 'volume', 'market_cap'}
-        columns = list(columns.intersection(set(dataframe.columns)))
-        return dataframe.loc[columns, :]
+        # remove columns not returned by the exchange and maintain order.
+        columns = ['open', 'high', 'low', 'close', 'volume', 'market_cap']
+        columns = sorted(set(columns).intersection(dataframe.columns), key=columns.index)
+
+        return dataframe.loc[:, columns]
 
     @staticmethod
-    def print_timestamp(timestamp):
+    def _print_timestamp(timestamp):
         """ Prints the actual request timestamp.
 
         @param timestamp: The timestamp
@@ -54,7 +64,16 @@ class CryptoReader(Exchange):
         stdout.write("Requesting from: \r{}".format(timestamp))
         stdout.flush()
 
-    def index_and_cut_dataframe(self, dataframe: pd.DataFrame) -> pd.DataFrame:
+    def read(self, new_symbols: str = None) -> pd.DataFrame:
+        """ Read the data.
+
+        @param new_symbols: Set new currency-pair different from the initial one.
+        @return: pd.DataFrame of requested data
+        """
+
+        return self._request(new_symbols)
+
+    def _index_and_cut_dataframe(self, dataframe: pd.DataFrame) -> pd.DataFrame:
         """ Set index and cut data according to user specification.
 
         @param dataframe: Requested raw data
@@ -65,7 +84,7 @@ class CryptoReader(Exchange):
         dataframe.sort_index(inplace=True)
         dataframe = dataframe.loc[pytz.utc.localize(self.start): pytz.utc.localize(self.end)]
 
-        return dataframe
+        return self._sort_columns(dataframe)
 
     def _get_data(self) -> Dict:
         """ Requests the data and returns the response json.
@@ -82,18 +101,19 @@ class CryptoReader(Exchange):
         url, params = self.get_formatted_url_and_params(param_dict, *self.symbols.keys())
 
         # Perform the request
-        self.print_timestamp(list(self.symbols.values())[0])
+        self._print_timestamp(list(self.symbols.values())[0])
         resp = self._get_response(url, params=params, headers=None)
 
         # Await the rate-limit to avoid ip ban.
-        self.await_rate_limit()
+        self._await_rate_limit()
         return resp.json()
 
-    def request(self, new_symbols: str = None) -> pd.DataFrame:
+    def _request(self, new_symbols: str = None) -> pd.DataFrame:
         """ Requests and extracts the data. Requests may be performed iteratively over time
         to collect the full time-series.
 
         @param new_symbols: New currency-pair to request, if they differ from the constructor.
+
         @return df: pd.DataFrame of the returned data.
         """
 
@@ -107,22 +127,23 @@ class CryptoReader(Exchange):
         # data points returned by a single request, thus making it necessary to iterate backwards in time and merge
         # the retrieved data.
         while True:
+            # perform request and extract data.
             resp = self._get_data()
             data, mappings = self.format_data(resp)
             if not data:
                 break
+
             # Append new data to the result list
             result = result + data
 
             # Find the place in the mapping list for the key "time".
-            for counter, value in enumerate(mappings):
-                if value == 'time':
-                    break
+            time_key = {v: k for k, v in enumerate(mappings)}
+            time_key = time_key.get('time')
 
-            # Extract the minimum timestamp from the response to continue requesting with.
-            new_time = min(item[counter] for item in data)
+            # Extract the minimum timestamp from the response for further requests.
+            new_time = min(item[time_key] for item in data)
 
-            # Break the requesting if condition is fulfilled
+            # Break the requesting if minimum timestamp is lower than initial start time.
             if new_time.timestamp() <= self.start.timestamp():
                 break
             # Or continue requesting from the new timestamp.
@@ -131,6 +152,7 @@ class CryptoReader(Exchange):
 
         # Move cursor to the next line to ensure that new print statements are executed correctly.
         stdout.write("\n")
+        # If there is data put it into a pd.DataFrame, set index and cut it to fit the initial start/end time.
         if result:
             result = pd.DataFrame(result, columns=mappings)
-            return self.index_and_cut_dataframe(result)
+            return self._index_and_cut_dataframe(result)
