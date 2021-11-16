@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 """
 This module is preparing the python path to access all modules.
 """
+
 import os
 import sys
 from pathlib import Path

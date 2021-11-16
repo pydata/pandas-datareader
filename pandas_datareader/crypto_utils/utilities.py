@@ -1,22 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 """
 Module providing several utility functions needed across the whole program.
-
-Functions:
-    - TYPE_CONVERSION: Dict providing functions for type conversions.
-    - COMPARATOR: Dict providing function for comparison.
-    - read_config: Function reading the config-file.
-    - yaml_loader: Function for loading yaml-files.
-    - load_program_config: Function loading the program configuration.
-    - provide_ssl_context: Function providing an SSL-context if none is available.
-    - get_exchange_names: Function returning all exchanges.
-    - replace_list_item: Function replacing a specific item from a list.
-    - get_all_exchanges_and_methods: Function returning all exchanges and supported request methods.
-    - prepend_spaces_to_columns: Function prepending spaces to columns for readability.
-    - handler: Exception handler logging uncaught exceptions.
-    - signal_handler: Function recognizing kill signals and raising SystemExit.
-    - init_logger: Function initializing the global logger.
 """
 
 from typing import Any, Optional, Dict, List

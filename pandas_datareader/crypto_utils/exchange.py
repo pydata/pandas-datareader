@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from typing import Tuple, Any, Dict, Union, List, Optional
 
 from datetime import datetime
@@ -9,6 +12,7 @@ from pandas_datareader.crypto_utils.utilities import yaml_loader, replace_list_i
 from pandas_datareader.crypto_utils.mapping import extract_mappings
 from pandas_datareader.crypto_utils.mapping import convert_type
 from pandas_datareader.base import _BaseReader
+from pandas_datareader.exceptions import EmptyResponseError
 
 
 class Exchange(_BaseReader):
@@ -223,7 +227,8 @@ class Exchange(_BaseReader):
         @return: Tuple of extracted and formatted data and a list of the mapping keys in the same order.
         """
         if not responses:
-            return None, None
+            raise EmptyResponseError
+            # return None, None
 
         results = list()
         mappings = extract_mappings(self.name, self.yaml_file.get('requests')).get('historic_rates')
@@ -233,7 +238,6 @@ class Exchange(_BaseReader):
         temp_results = dict(zip((key for key in mapping_keys), itertools.repeat([], len(mappings))))
 
         try:
-
             for mapping in mappings:
                 if "interval" in mapping.types:
                     mapping.types = replace_list_item(mapping.types, "interval", self.interval)

@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from typing import Dict, List
 
 from sys import stdout
@@ -17,7 +20,7 @@ class CryptoReader(Exchange):
     """
 
     def __init__(self, exchange_name: str, symbols, interval: str = 'days', **kwargs):
-        """ Constructor.
+        """ Constructor. Inherits from the Exchange and _BaseReader class.
 
         @param exchange_name: String repr of the exchange name
         @param symbols: Currency pair to request (i.e. BTC-USD)
@@ -37,7 +40,7 @@ class CryptoReader(Exchange):
         return get_exchange_names()
 
     def _await_rate_limit(self):
-        """ Sleep in order to not violate the rate limit."""
+        """ Sleep in order to not violate the rate limit, measured in requests per minute."""
 
         time.sleep(self.rate_limit)
 
@@ -61,6 +64,7 @@ class CryptoReader(Exchange):
 
         @param timestamp: The timestamp
         """
+
         stdout.write("Requesting from: \r{}".format(timestamp))
         stdout.flush()
 
@@ -91,6 +95,7 @@ class CryptoReader(Exchange):
 
         @return: Response json
         """
+
         # Ensure that the currency-pairs are seperated in a list
         if isinstance(self.symbols, str):
             self.symbols = split_str_to_list(self.symbols)
@@ -113,13 +118,13 @@ class CryptoReader(Exchange):
         to collect the full time-series.
 
         @param new_symbols: New currency-pair to request, if they differ from the constructor.
-
         @return df: pd.DataFrame of the returned data.
         """
 
         if new_symbols:
             if isinstance(new_symbols, str):
                 new_symbols = split_str_to_list(new_symbols)
+            # Create a new dict with new symbols as keys and the end timestamp as values.
             self.symbols = dict.fromkeys(new_symbols, self.end)
 
         result = list()

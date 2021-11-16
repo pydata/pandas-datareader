@@ -1,11 +1,14 @@
-import pytest
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
+import pytest
 import datetime
 import pandas as pd
 
 from pandas_datareader.crypto import CryptoReader
 from pandas_datareader.crypto_utils.mapping import extract_mappings
 from pandas_datareader.crypto_utils.utilities import yaml_loader
+from pandas_datareader.exceptions import EmptyResponseError
 
 
 class TestCryptoReader:
@@ -40,47 +43,9 @@ class TestCryptoReader:
         assert isinstance(result, pd.DataFrame)
         assert not result.empty
 
-    def test_extract_mappings(self):
-        """ Test to extract the mapping keys and values from the yaml files."""
-
-        result = extract_mappings(self.CryptoReader.name,
-                                  self.CryptoReader.yaml_file.get('requests')).get('historic_rates')
-
-        assert isinstance(result, list)
-        assert result
-
-    def test_all_exchanges_have_mappings(self):
-        """ Test if all exchange yaml-files have a specified mapping."""
-
-        exchanges = self.CryptoReader.get_all_exchanges()
-        assert isinstance(exchanges, list)
-        assert exchanges
-
-        for exchange in exchanges:
-            file = yaml_loader(exchange)
-            result = extract_mappings(exchange, file.get('requests')).get('historic_rates')
-
-            assert isinstance(result, list)
-            assert result
-
-    def test_necessary_values_in_mappings(self):
-        """ Test if all necessary values are in the mappings."""
-        # ToDo
-        pass
-
-    def test_extract_values_from_response(self):
-        """ Tests to correctly extract the values from a specified response."""
-        # ToDo
-        pass
-
-    def test_iterate_requests_until_no_further_timestamp(self):
+    def test_iterate_requests_until_end(self):
         """ Tests to iterate the request with updated timestamps until no more timestamp is collected
             or start time is reached."""
-        # ToDo
-        pass
-
-    def test_empty_response(self):
-        """ Test the behavior for an valid but empty response."""
         # ToDo
         pass
 
@@ -118,3 +83,79 @@ class TestCryptoReader:
         assert min(response.index).to_timestamp() == self.CryptoReader.start
         assert max(response.index).to_timestamp() == self.CryptoReader.end
 
+
+class TestExchange:
+    """ Unit tests for the Exchange class."""
+
+    exchange_name = 'coinbase'
+    symbols = 'btc-usd'
+    kwargs = {'interval': 'days'}
+    CryptoReader = CryptoReader(exchange_name, symbols, **kwargs)
+
+    def test_extract_mappings(self):
+        """ Test to extract the mapping keys and values from the yaml files."""
+
+        result = extract_mappings(self.CryptoReader.name,
+                                  self.CryptoReader.yaml_file.get('requests')).get('historic_rates')
+
+        assert isinstance(result, list)
+        assert result
+
+    def test_all_exchanges_have_mappings_and_necessary_values(self):
+        """ Test if all exchange yaml-files have a specified mapping."""
+
+        exchanges = self.CryptoReader.get_all_exchanges()
+        assert isinstance(exchanges, list)
+        assert exchanges
+
+        for exchange in exchanges:
+            file = yaml_loader(exchange)
+            result = extract_mappings(exchange, file.get('requests')).get('historic_rates')
+            assert isinstance(result, list)
+            assert result
+
+    def test_necessary_values_in_mappings(self):
+        """ Test if all necessary values are in the mappings."""
+
+        exchanges = self.CryptoReader.get_all_exchanges()
+        assert isinstance(exchanges, list)
+        assert exchanges
+
+        for exchange in exchanges:
+            file = yaml_loader(exchange)
+            mappings = extract_mappings(exchange, file.get('requests')).get('historic_rates')
+
+            for mapping in mappings:
+                assert all([item in mapping.__dict__.keys() for item in ['key', 'path', 'types']])
+                assert all([val is not None for k, val in mapping.__dict__.items()])
+
+    def test_extract_request_url(self):
+        """ Test to extract the request url and parameters."""
+        # ToDo
+        pass
+
+    def test_format_request_url_and_params(self):
+        """ Test to correctly format the request url and parameters."""
+        # ToDo
+        pass
+
+    def test_all_exchange_apis(self):
+        """ Test if the API of every exchange is correctly implemented and functional."""
+        # ToDo
+        pass
+
+    def test_extract_values_from_response(self):
+        """ Tests to correctly extract the values from a specified response."""
+        # ToDo
+        pass
+
+    def test_empty_response(self):
+        """ Test the behavior for an valid but empty response."""
+        resp = []
+        with pytest.raises(EmptyResponseError):
+            self.CryptoReader.format_data(resp)
+
+    def test_format_data(self):
+        """ Test to correctly extract the response values."""
+        # ToDo
+        pass
