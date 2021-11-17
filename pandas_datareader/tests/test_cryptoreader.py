@@ -16,8 +16,7 @@ class TestCryptoReader:
 
     exchange_name = 'coinbase'
     symbols = 'btc-usd'
-    kwargs = {'interval': 'days'}
-    CryptoReader = CryptoReader(exchange_name, symbols, **kwargs)
+    CryptoReader = CryptoReader(exchange_name, symbols)
 
     def test_get_all_exchanges(self):
         """ Test to return a list of all available exchanges."""
@@ -86,11 +85,10 @@ class TestCryptoReader:
 
 class TestExchange:
     """ Unit tests for the Exchange class."""
-
+    # ToDo: Create test-exchange yaml file and use it instead for this class.
     exchange_name = 'coinbase'
     symbols = 'btc-usd'
-    kwargs = {'interval': 'days'}
-    CryptoReader = CryptoReader(exchange_name, symbols, **kwargs)
+    CryptoReader = CryptoReader(exchange_name, symbols)
 
     def test_extract_mappings(self):
         """ Test to extract the mapping keys and values from the yaml files."""
@@ -118,16 +116,15 @@ class TestExchange:
         """ Test if all necessary values are in the mappings."""
 
         exchanges = self.CryptoReader.get_all_exchanges()
-        assert isinstance(exchanges, list)
-        assert exchanges
 
         for exchange in exchanges:
             file = yaml_loader(exchange)
             mappings = extract_mappings(exchange, file.get('requests')).get('historic_rates')
 
             for mapping in mappings:
+                # Check if the object dict contains all necessary keys and not-None values.
                 assert all([item in mapping.__dict__.keys() for item in ['key', 'path', 'types']])
-                assert all([val is not None for k, val in mapping.__dict__.items()])
+                assert all([val is not None for _, val in mapping.__dict__.items()])
 
     def test_extract_request_url(self):
         """ Test to extract the request url and parameters."""

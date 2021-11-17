@@ -1,34 +1,44 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Dict, List
+from typing import Dict, List, Union
 
+from abc import ABC
 from sys import stdout
 import pandas as pd
 import time
+from datetime import datetime
 import pytz
 
 from pandas_datareader.crypto_utils.exchange import Exchange
 from pandas_datareader.crypto_utils.utilities import split_str_to_list, get_exchange_names
 
 
-class CryptoReader(Exchange):
+class CryptoReader(Exchange, ABC):
     """ Class to request the data from a given exchange for a given currency-pair.
     The class inherits from Exchange to extract and format the request urls, as well as to
     extract and format the values from the response json. The requests are performed by
     the _BaseReader.
     """
 
-    def __init__(self, exchange_name: str, symbols, interval: str = 'days', **kwargs):
+    def __init__(self,
+                 exchange_name: str,
+                 symbols: str,
+                 start: Union[str, datetime] = None,
+                 end: Union[str, datetime] = None,
+                 interval: str = None,
+                 **kwargs):
         """ Constructor. Inherits from the Exchange and _BaseReader class.
 
         @param exchange_name: String repr of the exchange name
         @param symbols: Currency pair to request (i.e. BTC-USD)
+        @param start: The start time of the request, handed over to the BaseReader.
+        @param end: The end time of the request, handed over to the BaseReader.
         @param interval: Candle interval (i.e. minutes, hours, days, weeks, months)
         @param kwargs: Additional arguments for the _BaseReader class.
         """
 
-        super(CryptoReader, self).__init__(exchange_name, symbols, interval, **kwargs)
+        super(CryptoReader, self).__init__(exchange_name, interval, symbols, start, end, **kwargs)
 
     @staticmethod
     def get_all_exchanges() -> List:
@@ -68,15 +78,6 @@ class CryptoReader(Exchange):
         stdout.write("Requesting from: \r{}".format(timestamp))
         stdout.flush()
 
-    def read(self, new_symbols: str = None) -> pd.DataFrame:
-        """ Read the data.
-
-        @param new_symbols: Set new currency-pair different from the initial one.
-        @return: pd.DataFrame of requested data
-        """
-
-        return self._request(new_symbols)
-
     def _index_and_cut_dataframe(self, dataframe: pd.DataFrame) -> pd.DataFrame:
         """ Set index and cut data according to user specification.
 
@@ -113,7 +114,7 @@ class CryptoReader(Exchange):
         self._await_rate_limit()
         return resp.json()
 
-    def _request(self, new_symbols: str = None) -> pd.DataFrame:
+    def read(self, new_symbols: str = None) -> pd.DataFrame:
         """ Requests and extracts the data. Requests may be performed iteratively over time
         to collect the full time-series.
 

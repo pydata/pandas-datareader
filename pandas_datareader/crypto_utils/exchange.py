@@ -3,6 +3,7 @@
 
 from typing import Tuple, Any, Dict, Union, List, Optional
 
+from abc import ABC
 from datetime import datetime
 import string
 from collections import OrderedDict, deque
@@ -15,22 +16,29 @@ from pandas_datareader.base import _BaseReader
 from pandas_datareader.exceptions import EmptyResponseError
 
 
-class Exchange(_BaseReader):
+class Exchange(_BaseReader, ABC):
     """ Class for every exchange supported. The class extracts the request url, fits parameters,
-    extracts the values from the response json and performs type-conversions.
-    """
+    extracts the values from the response json and performs type-conversions."""
 
-    def __init__(self, name: str, symbols, interval: str, **kwargs):
-        super(Exchange, self).__init__(symbols, **kwargs)
-        self.name = name
+    def __init__(self, exchange_name: str, interval: str = 'days', *args, **kwargs):
+        """ Constructor.
+
+        @param exchange_name: The exchange name.
+        @param interval: The candle interval.
+        @param args: Additional ordered arguments for the BaseReader.
+        @param kwargs: Additional keyword arguments for the BaseReader.
+        """
+
+        super(Exchange, self).__init__(*args, **kwargs)
+        self.name = exchange_name
         self.yaml_file = yaml_loader(self.name)
-        self.interval: Union[str, Dict] = interval
+        self.interval: str = interval
         self.rate_limit = self.get_rate_limit()
 
-    def get_rate_limit(self) -> int:
+    def get_rate_limit(self) -> Union[int, float]:
         """ Calculates the rate-limit of an exchange.
 
-        @return: The rate limit, i.e. time to "sleep" to not violate the limit per minute.
+        @return: The rate limit, i.e. time to "sleep" to not violate the limit in seconds.
         """
         if self.yaml_file.get("rate_limit"):
             if self.yaml_file["rate_limit"]["max"] <= 0:
@@ -191,13 +199,17 @@ class Exchange(_BaseReader):
         @param kwargs: The value to be converted.
         @return: Converted value.
         """
+
         param_value = kwargs.get("has_value", None)
         conv_params = val
+
         # to avoid conversion when only a type declaration was done. If a parameter is of type "int".
         if isinstance(conv_params, str) or len(conv_params) < 2:
             return param_value
+
         # replace the key "interval" with the interval specified in the configuration file.
         conv_params = [self.interval if x == "interval" else x for x in conv_params]
+
         # return {cp: convert_type(param_value[cp], deque(conv_params)) for cp in currency_pairs}
         # ToDo: Check if the above line works. The older version needed both if statements below.
         if isinstance(param_value, dict):
@@ -211,6 +223,7 @@ class Exchange(_BaseReader):
         @param last_ts: The oldest timestamp from the previous request
         @return: The latest timestamp.
         """
+
         if last_ts:
             return last_ts
 
@@ -219,13 +232,14 @@ class Exchange(_BaseReader):
         else:
             return self.end
 
-    def format_data(self, responses: Dict) -> Tuple[Optional[List], Optional[List]]:
+    def format_data(self, responses: Union[Dict, List]) -> Tuple[Optional[List], Optional[List]]:
         """ Extracts and formats the response data, according to the mapping keys and path.
         Data is then ordered and returned as a tuple.
 
         @param responses: The response json
         @return: Tuple of extracted and formatted data and a list of the mapping keys in the same order.
         """
+
         if not responses:
             raise EmptyResponseError
             # return None, None
