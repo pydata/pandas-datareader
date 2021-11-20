@@ -51,7 +51,7 @@ class CryptoReader(Exchange, ABC):
 
         return get_exchange_names()
 
-    def get_currency_pairs(self) -> Optional[pd.DataFrame]:
+    def get_currency_pairs(self, raw_data: bool = False) -> Optional[pd.DataFrame]:
         """ Requests all supported currency pairs from the exchange.
 
         @return: A list of all listed currency pairs.
@@ -65,7 +65,15 @@ class CryptoReader(Exchange, ABC):
         except (requests.exceptions.MissingSchema, Exception):
             return None
 
-        return pd.DataFrame(resp, columns=["Exchange", "Base", "Quote"])
+        return pd.DataFrame(resp, columns=["Exchange", "Base", "Quote"]) if not raw_data else resp
+
+    def _check_symbols(self) -> bool:
+        """ Checks if the specified currency-pair is listed on the exchange"""
+
+        currency_pairs = self.get_currency_pairs(raw_data=True)
+        symbols = self.symbols.keys()
+
+        return all([(self.name, *symbol.upper().split("-")) in currency_pairs for symbol in symbols])
 
     def _await_rate_limit(self):
         """ Sleep in order to not violate the rate limit, measured in requests per minute."""
@@ -95,6 +103,10 @@ class CryptoReader(Exchange, ABC):
         if isinstance(self.symbols, str):
             self.symbols = split_str_to_list(self.symbols)
             self.symbols = dict.fromkeys(self.symbols, self.end)
+
+        # Check if the provided currency-pair is listed on the exchange.
+        if not self._check_symbols():
+            raise KeyError(f"At least one of the provided currency-pairs is not listed on '{self.name}'.")
 
         # Extract and format the url and parameters for the request
         param_dict = self.extract_request_urls(self.symbols)
@@ -160,4 +172,8 @@ class CryptoReader(Exchange, ABC):
         # If there is data put it into a pd.DataFrame, set index and cut it to fit the initial start/end time.
         if result:
             result = pd.DataFrame(result, columns=mappings)
-            return self._index_and_cut_dataframe(result)
+            result = self._index_and_cut_dataframe(result)
+
+        # Reset the self.end date may be used before before for iteration.
+        self.end = self._base_end
+        return result

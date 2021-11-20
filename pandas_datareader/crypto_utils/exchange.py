@@ -34,6 +34,7 @@ class Exchange(_BaseReader, ABC):
         self.yaml_file = yaml_loader(self.name)
         self.interval: str = interval
         self.rate_limit = self.get_rate_limit()
+        self._base_end = kwargs.get("end", datetime.utcnow())
 
     def get_rate_limit(self) -> Union[int, float]:
         """ Calculates the rate-limit of an exchange.
