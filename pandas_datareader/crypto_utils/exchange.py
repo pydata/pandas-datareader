@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Tuple, Any, Dict, Union, List, Optional
+from typing import Tuple, Any, Dict, Union, List, Optional, Iterator
 
 from abc import ABC
 from datetime import datetime
@@ -68,22 +68,26 @@ class Exchange(_BaseReader, ABC):
 
         if pair_template_dict["lower_case"]:
             formatted_string = formatted_string.lower()
+        else:
+            formatted_string = formatted_string.upper()
 
         return formatted_string
 
-    def get_formatted_url_and_params(self, url_and_parameters: Any, currency_pair: str) -> Tuple[str, Dict]:
+    def get_formatted_url_and_params(self, url_and_parameters: Any, currency_pair: str,
+                                     request_type: str = 'historic_rates') -> Tuple[str, Dict]:
         """ Formats the request url, inserts the currency-pair representation and/or
         extracts the parameters specified for the exchange and request.
 
         @param url_and_parameters: Extracted url and parameters from self.extract_request_urls.
         @param currency_pair: The currency pair of interest to format the url and params on.
+        @param request_type: The request type. Default: "historic_rates". Possible: "historic_rates", "currency_pairs".
         @return Tuple of formatted url and formatted parameters.
         """
 
-        url = url_and_parameters.get('historic_rates').get("url")
-        pair_template = url_and_parameters.get('historic_rates').get("pair_template")
+        url = url_and_parameters.get(request_type).get("url")
+        pair_template = url_and_parameters.get(request_type).get("pair_template")
         pair_formatted = self.apply_currency_pair_format(currency_pair)
-        parameters = url_and_parameters.get('historic_rates').get("params")
+        parameters = url_and_parameters.get(request_type).get("params")
 
         parameters.update({key: parameters[key][currency_pair]
                            for key, val in parameters.items() if isinstance(val, dict)})
@@ -105,14 +109,16 @@ class Exchange(_BaseReader, ABC):
 
         return url_formatted, parameters
 
-    def extract_request_urls(self, currency_pairs: Dict[str, datetime]) -> Dict:
+    def extract_request_urls(self, currency_pairs: Optional[Dict[str, datetime]],
+                             request_type: str = "historic_rates") -> Dict:
         """ Extracts the request url from the yaml-file and implements the parameters.
 
         @param currency_pairs: Currency-pair with the timestamp of the latest request.
+        @param request_type: Request name, default: "historic_rates". Possible: "historic_rates", "currency_pairs".
         @return: Dict of the extracted url and parameters.
         """
 
-        request_dict = self.yaml_file.get("requests").get("historic_rates").get("request")
+        request_dict = self.yaml_file.get("requests").get(request_type).get("request")
         request_parameters = dict()
         request_parameters["url"] = self.yaml_file.get("api_url", "") + request_dict.get("template", "")
         request_parameters["pair_template"] = request_dict.get("pair_template", None)
@@ -122,7 +128,7 @@ class Exchange(_BaseReader, ABC):
 
         if not parameters:
             request_parameters["params"] = {}
-            urls["historic_rates"] = request_parameters
+            urls[request_type] = request_parameters
             return urls
 
         mapping: dict = {"allowed": self._allowed, "function": self._function,
@@ -147,7 +153,7 @@ class Exchange(_BaseReader, ABC):
                 parameter[param] = mapping.get(key)(val, **kwargs)
 
         request_parameters["params"] = parameter
-        urls["historic_rates"] = request_parameters
+        urls[request_type] = request_parameters
         return urls
 
     def _allowed(self, val: dict, **_: dict) -> Any:
@@ -288,3 +294,43 @@ class Exchange(_BaseReader, ABC):
             result = list(itertools.zip_longest(*result))
 
             return result, list(temp_results.keys())
+
+    def format_currency_pairs(self, response: Tuple[str, dict]) -> Optional[Iterator[Tuple[str, str, str]]]:
+        """
+        Extracts the currency-pairs of out of the given json-response
+        that was collected from the Rest-API of this exchange.
+
+        Process is similar to @see{self.format_ticker()}.
+
+        @param response:
+            Raw json-response from the Rest-API of this exchange that needs be formatted.
+        @return:
+            Iterator containing tuples of the following structure:
+            (self.name, name of first currency-pair, name of second currency-pair)
+        """
+
+        results = {"currency_pair_first": [],
+                   "currency_pair_second": []}
+        mappings = extract_mappings(self.name, self.yaml_file.get('requests')).get('currency_pairs')
+
+        for mapping in mappings:
+            results[mapping.key] = mapping.extract_value(response)
+
+            if isinstance(results[mapping.key], str):
+                # If the result is only one currency, it will be split into every letter.
+                # To avoid this, put it into a list.
+                results[mapping.key] = [results[mapping.key]]
+
+        # Check if all dict values do have the same length
+        values = list(results.values())
+        # Get the max length from all dict values
+        len_results = {key: len(value) for key, value in results.items() if hasattr(value, "__iter__")}
+        len_results = max(len_results.values()) if bool(len_results) else 1
+
+        if not all(len(value) == len_results for value in values):
+            # Update all dict values with equal length
+            results.update({k: itertools.repeat(*v, len_results) for k, v in results.items() if len(v) == 1})
+
+        return list(itertools.zip_longest(itertools.repeat(self.name, len_results),
+                                          results["currency_pair_first"],
+                                          results["currency_pair_second"]))

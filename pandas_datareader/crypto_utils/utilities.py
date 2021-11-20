@@ -7,12 +7,14 @@ Module providing several utility functions needed across the whole program.
 
 from typing import Any, Optional, Dict, List
 
+import os
+from sys import stdout
 import calendar
 import datetime
-import os
 from datetime import timedelta
 import dateutil.parser
 import yaml
+import pandas as pd
 
 from pandas_datareader.crypto_utils.time_helper import TimeHelper, TimeUnit
 import pandas_datareader.crypto_utils._paths as _paths
@@ -291,3 +293,27 @@ def split_str_to_list(string: str, splitter: str = ",") -> List[str]:
 
     # remove possible blanks from strings
     return [item.replace(" ", "") for item in items]
+
+
+def sort_columns(dataframe: pd.DataFrame) -> pd.DataFrame:
+    """ Sort columns in OHLCV order.
+
+    @param dataframe: Requested data with unordered columns
+    @return: pd.DataFrame with ordered columns
+    """
+
+    # remove columns not returned by the exchange and maintain order.
+    columns = ['open', 'high', 'low', 'close', 'volume', 'market_cap']
+    columns = sorted(set(columns).intersection(dataframe.columns), key=columns.index)
+
+    return dataframe.loc[:, columns]
+
+
+def print_timestamp(timestamp):
+    """ Prints the actual request timestamp.
+
+    @param timestamp: The timestamp
+    """
+
+    stdout.write("Requesting from: \r{}".format(timestamp))
+    stdout.flush()

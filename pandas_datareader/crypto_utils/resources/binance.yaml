@@ -1,0 +1,388 @@
+name: binance
+exchange: true
+api_url: https://api.binance.com/api/
+rate_limit:
+  max: 1200
+  unit: 60
+requests:
+  currency_pairs:
+    request:
+      template: v1/exchangeInfo
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        timezone:
+          type: str # "UTC"
+        serverTime:
+          type:
+          - float
+          - from_timestamp
+          - 1
+        rateLimits:
+          type: list
+        exchangeFilters:
+          type: list
+        symbols:
+          type: list
+          values:
+            type: dict
+            values:
+              symbol: # i.e. "ETHBTC"
+                type: str
+              status: # i.e. "TRADING"
+                type: str
+              baseAsset: # i.e. ETH
+                type: str
+              baseAssetPrecision:
+                type: int
+              quoteAsset: # i.e. "BTC"
+                type: str
+              quotePrecision:
+                type: int
+              orderTypes:
+                type: list
+              icebergAllowed:
+                type: bool
+              filters:
+                type: list
+    mapping:
+    - key: currency_pair_first
+      path:
+      - symbols
+      - baseAsset
+      type:
+      - str
+    - key: currency_pair_second
+      path:
+      - symbols
+      - quoteAsset
+      type:
+      - str
+
+  tickers:
+    request:
+      template: v3/ticker/bookTicker
+      pair_template: # e.g. BNBBTC
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbol
+      params: null
+    response:
+      type: dict
+      values:
+        symbol:
+          type: str
+        bidPrice:
+          type:
+          - str
+          - float
+        bidQty:
+          type:
+          - str
+          - float
+        askPrice:
+          type:
+          - str
+          - float
+        askQty:
+          type:
+          - str
+          - float
+    mapping:
+    - key: time
+      path: []
+      type:
+      - none
+      - now
+    - key: best_bid
+      path:
+      - bidPrice
+      type:
+      - str
+      - float
+    - key: best_ask
+      path:
+      - askPrice
+      type:
+      - str
+      - float
+
+  order_books:
+    request:
+      template: v3/depth
+      pair_template: # e.g. BNBBTC
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        limit:
+          max: 100
+          default: 50
+
+    response:
+      type: dict
+      values:
+        lastUpdateId:
+          type: int
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type:
+                - str
+                - float
+              1: # quantity
+                type:
+                - str
+                - float
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type:
+                - str
+                - float
+              1: # quantity
+                type:
+                - str
+                - float
+    mapping:
+    - key: time
+      path: []
+      type:
+      - none
+      - now
+
+    - key: id
+      path:
+        - lastUpdateId
+      type:
+        - str
+
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_price
+      path:
+      - bids
+      - 0
+      type:
+      - str
+      - float
+    - key: bids_amount
+      path:
+      - bids
+      - 1
+      type:
+      - str
+      - float
+    - key: asks_price
+      path:
+      - asks
+      - 0
+      type:
+      - str
+      - float
+    - key: asks_amount
+      path:
+      - asks
+      - 1
+      type:
+      - str
+      - float
+
+  trades:
+    request:
+      template: v1/trades
+      pair_template: # e.g. BNBBTC
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        limit:
+          max: 1000
+          default: 500
+      weight: 1
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          id:
+            type: int
+          price:
+            type:
+            - str
+            - float
+          qty:
+            type:
+            - str
+            - float
+          time:
+            type:
+            - float
+            - from_timestamp
+            - 1
+          isBuyerMaker:
+            type: bool
+          isBestMatch:
+            type: bool
+    mapping:
+    - key: id
+      path:
+        - id
+      type:
+        - int
+    - key: price
+      path:
+      - price
+      type:
+      - str
+      - float
+    - key: amount
+      path:
+      - qty
+      type:
+      - str
+      - float
+    - key: time
+      path:
+      - time
+      type:
+      - float
+      - from_timestamp
+      - 1
+    - key: direction
+      path:
+        - isBuyerMaker
+      type:
+        - value
+        - map
+        - True
+        - sell
+        - False
+        - buy
+
+  historic_rates:
+    request:
+      template: v1/klines
+      pair_template: # e.g. BNBBTC
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        interval:
+          allowed:
+            minutes: 1m
+            hours: 1h
+            days: 1d
+            weeks: 1w
+            months: 1M
+          default: 1d
+        startTime:
+          required: false
+        endTime:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestampms
+        limit:
+          max: 1000
+          default: 1000
+    response:
+      type: list
+      values:
+        type: list
+        values:
+          0: # Open time
+            type:
+            - float
+            - from_timestamp
+            - 1
+          1: # open
+            type:
+            - str
+            - float
+          2: # high
+            type:
+            - str
+            - float
+          3: # low
+            type:
+            - str
+            - float
+          4: # close
+            type:
+            - str
+            - float
+          5: # volume
+            type:
+            - str
+            - float
+          6: # close time
+            type:
+            - float
+            - from_timestamp
+            - 1
+          7: # Quote asset volume
+            type:
+            - str
+            - float
+          8: # Number of trades
+            type: int
+          9: # Taker buy base asset volume
+            type:
+            - str
+            - float
+          10: # Taker buy quote asset volume
+            type:
+            - str
+            - float
+          11: # ignore
+            type: ignore
+    mapping:
+    - key: open
+      path:
+      - 1
+      type:
+      - str
+      - float
+    - key: high
+      path:
+      - 2
+      type:
+      - str
+      - float
+    - key: low
+      path:
+      - 3
+      type:
+      - str
+      - float
+    - key: close
+      path:
+      - 4
+      type:
+      - str
+      - float
+    - key: volume
+      path:
+      - 5
+      type:
+      - str
+      - float
+    - key: time
+      path:
+      - 6
+      type:
+      - float
+      - from_timestamp
+      - 1

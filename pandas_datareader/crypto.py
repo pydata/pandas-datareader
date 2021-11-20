@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Dict, List, Union
+from typing import Dict, List, Union, Optional
 
 from abc import ABC
 from sys import stdout
@@ -9,9 +9,11 @@ import pandas as pd
 import time
 from datetime import datetime
 import pytz
+import requests.exceptions
 
 from pandas_datareader.crypto_utils.exchange import Exchange
 from pandas_datareader.crypto_utils.utilities import split_str_to_list, get_exchange_names
+from pandas_datareader.crypto_utils.utilities import sort_columns, print_timestamp
 
 
 class CryptoReader(Exchange, ABC):
@@ -49,34 +51,26 @@ class CryptoReader(Exchange, ABC):
 
         return get_exchange_names()
 
+    def get_currency_pairs(self) -> Optional[pd.DataFrame]:
+        """ Requests all supported currency pairs from the exchange.
+
+        @return: A list of all listed currency pairs.
+        """
+
+        param_dict = self.extract_request_urls(None, "currency_pairs")
+        url = param_dict.get("currency_pairs").get("url", None)
+        try:
+            resp = self._get_response(url, params=None, headers=None)
+            resp = self.format_currency_pairs(resp.json())
+        except (requests.exceptions.MissingSchema, Exception):
+            return None
+
+        return pd.DataFrame(resp, columns=["Exchange", "Base", "Quote"])
+
     def _await_rate_limit(self):
         """ Sleep in order to not violate the rate limit, measured in requests per minute."""
 
         time.sleep(self.rate_limit)
-
-    @staticmethod
-    def _sort_columns(dataframe: pd.DataFrame) -> pd.DataFrame:
-        """ Sort columns in OHLCV order.
-
-        @param dataframe: Requested data with unordered columns
-        @return: pd.DataFrame with ordered columns
-        """
-
-        # remove columns not returned by the exchange and maintain order.
-        columns = ['open', 'high', 'low', 'close', 'volume', 'market_cap']
-        columns = sorted(set(columns).intersection(dataframe.columns), key=columns.index)
-
-        return dataframe.loc[:, columns]
-
-    @staticmethod
-    def _print_timestamp(timestamp):
-        """ Prints the actual request timestamp.
-
-        @param timestamp: The timestamp
-        """
-
-        stdout.write("Requesting from: \r{}".format(timestamp))
-        stdout.flush()
 
     def _index_and_cut_dataframe(self, dataframe: pd.DataFrame) -> pd.DataFrame:
         """ Set index and cut data according to user specification.
@@ -89,7 +83,7 @@ class CryptoReader(Exchange, ABC):
         dataframe.sort_index(inplace=True)
         dataframe = dataframe.loc[pytz.utc.localize(self.start): pytz.utc.localize(self.end)]
 
-        return self._sort_columns(dataframe)
+        return sort_columns(dataframe)
 
     def _get_data(self) -> Dict:
         """ Requests the data and returns the response json.
@@ -107,7 +101,6 @@ class CryptoReader(Exchange, ABC):
         url, params = self.get_formatted_url_and_params(param_dict, *self.symbols.keys())
 
         # Perform the request
-        self._print_timestamp(list(self.symbols.values())[0])
         resp = self._get_response(url, params=params, headers=None)
 
         # Await the rate-limit to avoid ip ban.
@@ -136,8 +129,14 @@ class CryptoReader(Exchange, ABC):
             # perform request and extract data.
             resp = self._get_data()
             data, mappings = self.format_data(resp)
+            # break if no data is returned
             if not data:
                 break
+            # or all returned data points already exist.
+            elif result == data or all([datapoint in result for datapoint in data]):
+                break
+
+            print_timestamp(list(self.symbols.values())[0])
 
             # Append new data to the result list
             result = result + data
