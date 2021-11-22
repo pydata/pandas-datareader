@@ -7,7 +7,7 @@ import pandas as pd
 
 from pandas_datareader.crypto import CryptoReader
 from pandas_datareader.crypto_utils.mapping import extract_mappings
-from pandas_datareader.crypto_utils.utilities import yaml_loader
+from pandas_datareader.crypto_utils.utilities import yaml_loader, sort_columns
 from pandas_datareader.exceptions import EmptyResponseError
 
 
@@ -42,6 +42,11 @@ class TestCryptoReader:
         assert isinstance(result, pd.DataFrame)
         assert not result.empty
 
+    def test_check_symbols(self):
+        """ Test checking if the provided currency-pair is listed on an exchange."""
+        # ToDo
+        pass
+
     def test_iterate_requests_until_end(self):
         """ Tests to iterate the request with updated timestamps until no more timestamp is collected
             or start time is reached."""
@@ -54,7 +59,7 @@ class TestCryptoReader:
         ordered_cols = ['open', 'high', 'low', 'close']
         response = pd.DataFrame({'high': range(0, 5), 'close':  range(0, 5),
                                  'open':  range(0, 5), 'low':  range(0, 5)})
-        response = self.CryptoReader._sort_columns(dataframe=response)
+        response = sort_columns(dataframe=response)
 
         assert all(ordered_cols == response.columns)
 
@@ -63,7 +68,7 @@ class TestCryptoReader:
 
         response = pd.DataFrame({'High': range(0, 5), 'CLOSE':  range(0, 5),
                                  'oPen':  range(0, 5), 'low':  range(0, 5)})
-        response = self.CryptoReader._sort_columns(dataframe=response)
+        response = sort_columns(dataframe=response)
 
         assert response.columns == 'low'
 

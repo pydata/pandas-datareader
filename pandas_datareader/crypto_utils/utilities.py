@@ -292,7 +292,7 @@ def split_str_to_list(string: str, splitter: str = ",") -> List[str]:
     items = string.rsplit(splitter)
 
     # remove possible blanks from strings
-    return [item.replace(" ", "") for item in items]
+    return [item.replace(" ", "").lower() for item in items]
 
 
 def sort_columns(dataframe: pd.DataFrame) -> pd.DataFrame:

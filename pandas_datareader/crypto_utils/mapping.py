@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 """
 Module to find, extract and convert values from the exchange responses.
 
@@ -20,8 +21,7 @@ from pandas_datareader.crypto_utils.utilities import TYPE_CONVERSIONS
 
 
 def convert_type(value: Any, types_queue: Deque[str]) -> Any:
-    """
-    Converts the value via type conversions.
+    """ Converts the value via type conversions.
 
     Helper method to convert the given value via a queue of type conversions.
 
@@ -69,8 +69,7 @@ def convert_type(value: Any, types_queue: Deque[str]) -> Any:
 
 
 class Mapping:
-    """
-    Class representing mapping data and logic.
+    """ Class representing mapping data and logic.
 
     Class representing mapping data und further functionality provided
     with methods.
@@ -94,8 +93,7 @@ class Mapping:
                  key: str,
                  path: List[str],
                  types: List[str]):
-        """
-        Constructor of Mapping.
+        """ Constructor of Mapping.
 
         Constructor method for constructing method objects.
 
@@ -117,10 +115,8 @@ class Mapping:
         self.types = types
 
     def traverse_path(self, response: Dict[str, Any], path_queue: Deque[str],
-                      currency_pair_info: Tuple[str, str, str] = None) \
-            -> Any:
-        """
-        Traverses the path on a response.
+                      currency_pair_info: Tuple[str, str, str] = None) -> Any:
+        """ Traverses the path on a response.
 
         Helper method for traversing the path on the given response dict (subset).
 
@@ -155,7 +151,7 @@ class Mapping:
             traversed = response[currency_pair_info[2]]
         elif is_scalar(response):
             return None
-        else:  # Hier editiert für Kraken sonderfall
+        else:  # Special case for kraken.
             if isinstance(response, dict) and path_element not in response.keys():
                 return None
             else:
@@ -170,8 +166,7 @@ class Mapping:
                       types_queue: Deque[str] = None,
                       iterate: bool = True,
                       currency_pair_info: Tuple[str, str, str] = (None, None, None)) -> Any:
-        """
-        Extracts the value specified by "self.path".
+        """ Extracts the value specified by "self.path".
 
         Extracts the value specified by the path sequence and converts it
         using the "types" specified.
@@ -284,8 +279,7 @@ class Mapping:
 
 
 def extract_mappings(exchange_name: str, requests: Dict[str, Any]) -> Dict[str, List[Mapping]]:
-    """
-    Helper-Method which should be only called by the constructor.
+    """ Helper-Method which should be only called by the constructor.
     Extracts out of a given exchange .yaml-requests-section for each
     request the necessary mappings so the values can be extracted from
     the response for said request.
@@ -308,6 +302,7 @@ def extract_mappings(exchange_name: str, requests: Dict[str, Any]) -> Dict[str, 
         Dictionary with the following structure:
             {'request_name': List[Mapping]}
     """
+
     response_mappings = dict()
     if requests:
         for request in requests:
@@ -331,8 +326,7 @@ def extract_mappings(exchange_name: str, requests: Dict[str, Any]) -> Dict[str, 
 
 
 def is_scalar(value: Any) -> bool:
-    """
-    Indicates whether a value is a scalar or not.
+    """ Indicates whether a value is a scalar or not.
 
     Convenience function returning a bool whether the provided value is a single value or not.
     Strings count as scalar although they are iterable.

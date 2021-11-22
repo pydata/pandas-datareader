@@ -51,9 +51,10 @@ class CryptoReader(Exchange, ABC):
 
         return get_exchange_names()
 
-    def get_currency_pairs(self, raw_data: bool = False) -> Optional[pd.DataFrame]:
+    def get_currency_pairs(self, raw_data: bool = False) -> Optional[Union[pd.DataFrame, List]]:
         """ Requests all supported currency pairs from the exchange.
 
+        @param raw_data: Return the raw data as a list of tuples.
         @return: A list of all listed currency pairs.
         """
 
@@ -71,12 +72,12 @@ class CryptoReader(Exchange, ABC):
         """ Checks if the specified currency-pair is listed on the exchange"""
 
         currency_pairs = self.get_currency_pairs(raw_data=True)
-        symbols = self.symbols.keys()
+        symbols = self.symbols.keys() if isinstance(self.symbols, dict) else [self.symbols]
 
-        return all([(self.name, *symbol.upper().split("-")) in currency_pairs for symbol in symbols])
+        return all([(self.name, *symbol.lower().split("-")) in currency_pairs for symbol in symbols])
 
     def _await_rate_limit(self):
-        """ Sleep in order to not violate the rate limit, measured in requests per minute."""
+        """ Sleep time in order to not violate the rate limit, measured in requests per minute."""
 
         time.sleep(self.rate_limit)
 
@@ -106,7 +107,8 @@ class CryptoReader(Exchange, ABC):
 
         # Check if the provided currency-pair is listed on the exchange.
         if not self._check_symbols():
-            raise KeyError(f"At least one of the provided currency-pairs is not listed on '{self.name}'.")
+            raise KeyError(f"The provided currency-pair is not listed on '{self.name.capitalize()}'. "
+                           f"Call CryptoReader.get_currency_pairs() for an overview.")
 
         # Extract and format the url and parameters for the request
         param_dict = self.extract_request_urls(self.symbols)
@@ -117,6 +119,7 @@ class CryptoReader(Exchange, ABC):
 
         # Await the rate-limit to avoid ip ban.
         self._await_rate_limit()
+
         return resp.json()
 
     def read(self, new_symbols: str = None) -> pd.DataFrame:
@@ -174,6 +177,8 @@ class CryptoReader(Exchange, ABC):
             result = pd.DataFrame(result, columns=mappings)
             result = self._index_and_cut_dataframe(result)
 
-        # Reset the self.end date may be used before before for iteration.
-        self.end = self._base_end
+        # ToDo: Make decorator from function call?
+        # Reset the self.end date of the _BaseReader for further requesting.
+        self.reset_base_reader()
+
         return result

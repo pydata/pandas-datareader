@@ -4,6 +4,7 @@
 from typing import Tuple, Any, Dict, Union, List, Optional, Iterator
 
 from abc import ABC
+import inspect
 from datetime import datetime
 import string
 from collections import OrderedDict, deque
@@ -34,7 +35,29 @@ class Exchange(_BaseReader, ABC):
         self.yaml_file = yaml_loader(self.name)
         self.interval: str = interval
         self.rate_limit = self.get_rate_limit()
-        self._base_end = kwargs.get("end", datetime.utcnow())
+        self.args = args
+        self.kwargs = kwargs
+
+    def reset_base_reader(self):
+        """ Reset the _BaseReader with the initial values to allow further requesting with the same CryptoReader
+        instance. The self.end attribute gets manipulated during iterative requests which would lead to
+        falsely specified parameters afterwards. The symbols must remain as they may be changed after initialization"""
+
+        # Get all args from the _BaseReader class and remove "self".
+        args = inspect.getfullargspec(_BaseReader)[0]
+        args.remove("self")
+        args = dict.fromkeys(args)
+
+        # Update the empty dict of args with already existing *args and **kwargs.
+        args.update(dict(zip(args, self.args)))
+        args.update(**self.kwargs)
+
+        # If the attribute was changed after initialization, keep the change and remove None values from the dict
+        args.update({'symbols': self.symbols})
+        args = {k: v for k, v in args.items() if v is not None}
+
+        # Init the parent class.
+        super(Exchange, self).__init__(**args)
 
     def get_rate_limit(self) -> Union[int, float]:
         """ Calculates the rate-limit of an exchange.
@@ -316,6 +339,7 @@ class Exchange(_BaseReader, ABC):
 
         for mapping in mappings:
             results[mapping.key] = mapping.extract_value(response)
+            results[mapping.key] = [item.lower() for item in results[mapping.key]]
 
             if isinstance(results[mapping.key], str):
                 # If the result is only one currency, it will be split into every letter.
