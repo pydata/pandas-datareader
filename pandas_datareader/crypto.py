@@ -3,6 +3,7 @@
 
 from typing import Dict, List, Union, Optional
 
+import warnings
 from abc import ABC
 from sys import stdout
 import pandas as pd
@@ -74,6 +75,10 @@ class CryptoReader(Exchange, ABC):
         currency_pairs = self.get_currency_pairs(raw_data=True)
         symbols = self.symbols.keys() if isinstance(self.symbols, dict) else [self.symbols]
 
+        if currency_pairs is None:
+            warnings.warn("Currency-pair request is dysfunctional. Check of valid symbol specification is skipped.")
+            return True
+
         return all([(self.name, *symbol.lower().split("-")) in currency_pairs for symbol in symbols])
 
     def _await_rate_limit(self):
@@ -88,9 +93,13 @@ class CryptoReader(Exchange, ABC):
         @return: pd.DataFrame with specified length and proper index.
         """
 
+        # Reindex dataframe and cut it to the specified timestamps.
         dataframe.set_index("time", inplace=True)
         dataframe.sort_index(inplace=True)
         dataframe = dataframe.loc[pytz.utc.localize(self.start): pytz.utc.localize(self.end)]
+
+        # Remove duplicates if any exist. Keep the first appearance and drop all after.
+        dataframe.drop_duplicates(keep="first", inplace=True)
 
         return sort_columns(dataframe)
 
@@ -100,7 +109,7 @@ class CryptoReader(Exchange, ABC):
         @return: Response json
         """
 
-        # Ensure that the currency-pairs are seperated in a list
+        # Ensure that the currency-pairs are seperated in a list.
         if isinstance(self.symbols, str):
             self.symbols = split_str_to_list(self.symbols)
             self.symbols = dict.fromkeys(self.symbols, self.end)
@@ -144,6 +153,7 @@ class CryptoReader(Exchange, ABC):
             # perform request and extract data.
             resp = self._get_data()
             data, mappings = self.format_data(resp)
+
             # break if no data is returned
             if not data:
                 break
