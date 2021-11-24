@@ -42,19 +42,39 @@ class Exchange(_BaseReader, ABC):
         self.symbol_setter(self.symbols)
 
     @property
-    def param_dict(self):
+    def param_dict(self) -> Optional[Dict]:
+        """ Returns a dict of parameters.
+
+        @return: Dict of parameters
+        """
+
         return self._param_dict
 
     @property
-    def url_and_params(self):
+    def url_and_params(self) -> Optional[Dict]:
+        """ Returns a dict of FORMATTED url and parameters.
+
+        @return: Dict of url and parameters
+        """
+
         return self._url_and_params
 
     @property
-    def url(self):
+    def url(self) -> str:
+        """ Returns the formatted url.
+
+        @return: String of the formatted url.
+        """
+
         return self._url_and_params.get("url")
 
     @property
-    def params(self):
+    def params(self) -> Dict:
+        """ Returns the formatted parameters.
+
+        @return: Dict of all formatted parameters.
+        """
+
         return self._url_and_params.get("params")
 
     @url_and_params.setter
@@ -88,7 +108,6 @@ class Exchange(_BaseReader, ABC):
         else:
             self._url_and_params = {'url': url, 'params': parameters}
             return
-            # return url, parameters
 
         variables = [item[1] for item in string.Formatter().parse(url) if item[1] is not None]
         url_formatted = url.format(**parameters)
@@ -96,7 +115,6 @@ class Exchange(_BaseReader, ABC):
         parameters = {k: v for k, v in parameters.items() if k not in variables}
 
         self._url_and_params = {'url': url_formatted, 'params': parameters}
-        # return url_formatted, parameters
 
     @param_dict.setter
     def param_dict(self, request_type: str):
@@ -119,7 +137,6 @@ class Exchange(_BaseReader, ABC):
             urls[request_type] = request_parameters
             self._param_dict = urls
             return
-            # return urls
 
         mapping: dict = {"allowed": self._allowed, "function": self._function,
                          "default": self._default, "type": self._type_con}
@@ -153,6 +170,7 @@ class Exchange(_BaseReader, ABC):
         @param _: unused additional arguments needed in other methods.
         @return: value if key in dict, else None.
         """
+
         if isinstance(self.interval, dict):
             value = None
         else:
@@ -171,6 +189,7 @@ class Exchange(_BaseReader, ABC):
         @param kwargs: not used but needed for another function.
         @return: The currency-pair with the respective timestamp to continue requesting.
         """
+
         if val == "last_timestamp":
             return {cp: self._get_first_timestamp(last_ts) for cp, last_ts in kwargs.get("currency_pairs").items()}
 
@@ -238,7 +257,6 @@ class Exchange(_BaseReader, ABC):
 
         if not responses:
             raise EmptyResponseError
-            # return None, None
 
         results = list()
         mappings = extract_mappings(self.name, self.yaml_file.get('requests')).get('historic_rates')

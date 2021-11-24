@@ -38,7 +38,7 @@ class CryptoReader(Exchange, ABC):
         @param start: The start time of the request, handed over to the BaseReader.
         @param end: The end time of the request, handed over to the BaseReader.
         @param interval: Candle interval (i.e. minutes, hours, days, weeks, months)
-        @param kwargs: Additional arguments for the _BaseReader class.
+        @param **kwargs: Additional kw-arguments for the _BaseReader class.
         """
 
         super(CryptoReader, self).__init__(exchange_name, interval, symbols, start, end, **kwargs)
@@ -67,7 +67,7 @@ class CryptoReader(Exchange, ABC):
         to collect the full time-series.
 
         @param new_symbols: New currency-pair to request, if they differ from the constructor.
-        @return df: pd.DataFrame of the returned data.
+        @return: pd.DataFrame of the returned data.
         """
 
         if new_symbols:
@@ -129,7 +129,7 @@ class CryptoReader(Exchange, ABC):
     def get_all_exchanges() -> List:
         """ Get all supported exchange names.
 
-        @return List of exchange names.
+        @return: List of exchange names.
         """
 
         return get_exchange_names()
@@ -175,9 +175,11 @@ class CryptoReader(Exchange, ABC):
         @return: pd.DataFrame with specified length and proper index.
         """
 
-        # Reindex dataframe and cut it to the specified timestamps.
+        # Reindex dataframe and cut it to the specified start and end dates.
         dataframe.set_index("time", inplace=True)
         dataframe.sort_index(inplace=True)
+        # Returned timestamps from the exchanges are converted into UTC and therefore timezone aware.
+        # Make start and end dates timezone aware in order to make them comparable.
         dataframe = dataframe.loc[pytz.utc.localize(self.start): pytz.utc.localize(self.end)]
 
         return sort_columns(dataframe)
