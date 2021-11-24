@@ -120,7 +120,6 @@ class CryptoReader(Exchange, ABC):
             result = pd.DataFrame(result, columns=mappings)
             result = self._index_and_cut_dataframe(result)
 
-        # ToDo: Make decorator from function call?
         # Reset the self.end date of the _BaseReader for further requesting.
         self.reset_request_start_date()
 
@@ -180,8 +179,5 @@ class CryptoReader(Exchange, ABC):
         dataframe.set_index("time", inplace=True)
         dataframe.sort_index(inplace=True)
         dataframe = dataframe.loc[pytz.utc.localize(self.start): pytz.utc.localize(self.end)]
-
-        # Remove duplicates if any exist. Keep the first appearance and drop all after.
-        # dataframe.drop_duplicates(keep="first", inplace=True)
 
         return sort_columns(dataframe)

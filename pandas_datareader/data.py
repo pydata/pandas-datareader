@@ -287,6 +287,7 @@ def DataReader(
     pause=0.1,
     session=None,
     api_key=None,
+    **kwargs
 ):
     """
     Imports data from a number of online sources.
@@ -685,6 +686,7 @@ def DataReader(
             retry_count=retry_count,
             pause=pause,
             session=session,
+            **kwargs
         ).read()
 
     else:
