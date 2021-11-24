@@ -53,8 +53,9 @@ class TestCryptoReader:
 
     def test_check_symbols(self):
         """ Test checking if the provided currency-pair is listed on an exchange."""
-        # ToDo
-        pass
+        with pytest.raises(KeyError):
+            self.CryptoReader.symbols = {" - ": datetime.datetime.today()}
+            self.CryptoReader.read()
 
     def test_iterate_requests_until_end(self):
         """ Tests to iterate the request with updated timestamps until no more timestamp is collected
@@ -140,15 +141,31 @@ class TestExchange:
                 assert all([item in mapping.__dict__.keys() for item in ['key', 'path', 'types']])
                 assert all([val is not None for _, val in mapping.__dict__.items()])
 
-    def test_extract_request_url(self):
+    def test_extract_param_dict(self):
         """ Test to extract the request url and parameters."""
-        # ToDo
-        pass
 
-    def test_format_request_url_and_params(self):
+        request_types = ["historic_rates", "currency_pairs"]
+
+        for request_type in request_types:
+            self.CryptoReader.param_dict = request_type
+
+            assert isinstance(self.CryptoReader.param_dict, dict)
+            assert request_type in self.CryptoReader.param_dict.keys()
+            assert isinstance(self.CryptoReader.param_dict.get(request_type), dict)
+            assert "url" in self.CryptoReader.param_dict.get(request_type).keys()
+
+    def test_format_url_and_params(self):
         """ Test to correctly format the request url and parameters."""
-        # ToDo
-        pass
+
+        request_types = ["historic_rates", "currency_pairs"]
+
+        for request_type in request_types:
+            self.CryptoReader.param_dict = request_type
+            self.CryptoReader.url_and_params = request_type
+
+            assert isinstance(self.CryptoReader.url_and_params, dict)
+            assert isinstance(self.CryptoReader.url, str)
+            assert isinstance(self.CryptoReader.params, dict)
 
     def test_all_exchange_apis(self):
         """ Test if the API of every exchange is correctly implemented and functional."""
@@ -168,5 +185,17 @@ class TestExchange:
 
     def test_format_data(self):
         """ Test to correctly extract the response values."""
-        # ToDo
-        pass
+
+        request_types = ["historic_rates", "currency_pairs"]
+
+        for request_type in request_types:
+            self.CryptoReader.param_dict = request_type
+            self.CryptoReader.url_and_params = request_type
+
+            resp = self.CryptoReader._get_data()
+            data, mappings = self.CryptoReader.format_data(resp)
+
+            assert isinstance(data, list)
+            assert isinstance(mappings, list)
+            assert all([len(item) == len(mappings) for item in data])
+
