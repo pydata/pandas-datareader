@@ -25,8 +25,8 @@ class Exchange(_BaseReader, ABC):
 
         @param exchange_name: The exchange name.
         @param interval: The candle interval.
-        @param args: Additional ordered arguments for the BaseReader.
-        @param kwargs: Additional keyword arguments for the BaseReader.
+        @param args: Additional ordered arguments for the _BaseReader.
+        @param kwargs: Additional keyword arguments for the _BaseReader.
         """
 
         super(Exchange, self).__init__(*args, **kwargs)
@@ -85,6 +85,7 @@ class Exchange(_BaseReader, ABC):
         @param request_type: The request type. Default: "historic_rates". Possible: "historic_rates", "currency_pairs".
         @return Tuple of formatted url and formatted parameters.
         """
+
         currency_pair = list(self.symbols.keys())[0]
         url = self.param_dict.get(request_type).get("url")
         pair_template = self.param_dict.get(request_type).get("pair_template")
@@ -183,10 +184,10 @@ class Exchange(_BaseReader, ABC):
 
     def _function(self, val: str, **kwargs: dict) -> Dict[str, datetime]:
         """ Execute function for all currency-pairs. Function returns the first
-        timestamp in the DB, or datetime.now() if none exists.
+        timestamp, or datetime.now() if none exists.
 
         @param val: contains the function name as string.
-        @param kwargs: not used but needed for another function.
+        @param kwargs: Contains the last timestamp.
         @return: The currency-pair with the respective timestamp to continue requesting.
         """
 

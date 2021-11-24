@@ -12,7 +12,6 @@ Functions:
     - is_scalar
 """
 
-import logging
 from collections import deque
 from collections.abc import Iterable
 from typing import Any, List, Dict, Deque, Tuple
@@ -160,7 +159,6 @@ class Mapping:
         return traversed
 
     def extract_value(self,
-                      # response: List[Dict[str, Any]],
                       response: Any,
                       path_queue: Deque[str] = None,
                       types_queue: Deque[str] = None,
@@ -188,6 +186,7 @@ class Mapping:
                  the response.
         @rtype: Any
         """
+
         if path_queue is None:
             path_queue = deque(self.path)
 
@@ -317,7 +316,6 @@ def extract_mappings(exchange_name: str, requests: Dict[str, Any]) -> Dict[str, 
                         mapping_list.append(Mapping(entry["key"], entry["path"], entry["type"]))
                 except KeyError:
                     print(f"Error loading mappings of {exchange_name} in {request}: {entry}")
-                    logging.error("Error loading mappings of %s in %s: %s", exchange_name, request, entry)
                     break
 
                 response_mappings[request] = mapping_list
