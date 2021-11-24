@@ -4,13 +4,12 @@
 from typing import Tuple, Any, Dict, Union, List, Optional, Iterator
 
 from abc import ABC
-import inspect
 from datetime import datetime
 import string
 from collections import OrderedDict, deque
 import itertools
 
-from pandas_datareader.crypto_utils.utilities import yaml_loader, replace_list_item
+from pandas_datareader.crypto_utils.utilities import yaml_loader, replace_list_item, split_str_to_list
 from pandas_datareader.crypto_utils.mapping import extract_mappings
 from pandas_datareader.crypto_utils.mapping import convert_type
 from pandas_datareader.base import _BaseReader
@@ -37,84 +36,47 @@ class Exchange(_BaseReader, ABC):
         self.rate_limit = self.get_rate_limit()
         self.args = args
         self.kwargs = kwargs
+        self._param_dict = None
+        self._url_and_params = None
 
-    def reset_base_reader(self):
-        """ Reset the _BaseReader with the initial values to allow further requesting with the same CryptoReader
-        instance. The self.end attribute gets manipulated during iterative requests which would lead to
-        falsely specified parameters afterwards. The symbols must remain as they may be changed after initialization"""
+        self.symbol_setter(self.symbols)
 
-        # Get all args from the _BaseReader class and remove "self".
-        args = inspect.getfullargspec(_BaseReader)[0]
-        args.remove("self")
-        args = dict.fromkeys(args)
+    @property
+    def param_dict(self):
+        return self._param_dict
 
-        # Update the empty dict of args with already existing *args and **kwargs.
-        args.update(dict(zip(args, self.args)))
-        args.update(**self.kwargs)
+    @property
+    def url_and_params(self):
+        return self._url_and_params
 
-        # If the attribute was changed after initialization, keep the change and remove None values from the dict
-        args.update({'symbols': self.symbols})
-        args = {k: v for k, v in args.items() if v is not None}
+    @property
+    def url(self):
+        return self._url_and_params.get("url")
 
-        # Init the parent class.
-        super(Exchange, self).__init__(**args)
+    @property
+    def params(self):
+        return self._url_and_params.get("params")
 
-    def get_rate_limit(self) -> Union[int, float]:
-        """ Calculates the rate-limit of an exchange.
-
-        @return: The rate limit, i.e. time to "sleep" to not violate the limit in seconds.
-        """
-        if self.yaml_file.get("rate_limit"):
-            if self.yaml_file["rate_limit"]["max"] <= 0:
-                rate_limit = 0
-            else:
-                rate_limit = self.yaml_file["rate_limit"]["unit"] / self.yaml_file["rate_limit"]["max"]
-        else:
-            rate_limit = 0
-
-        return rate_limit
-
-    def apply_currency_pair_format(self, currency_pair: str) -> str:
-        """ Helper method that applies the format described in the yaml for the specific
-        request on the given currency-pair.
-
-        @param currency_pair: String repr of the currency-pair
-        @return: String of the formatted currency-pair. Example: BTC and ETH -> "btc_eth"
-        """
-
-        first, second = currency_pair.split("-")
-
-        request_url_and_params = self.yaml_file.get("requests").get("historic_rates").get("request")
-        pair_template_dict = request_url_and_params["pair_template"]
-        pair_template = pair_template_dict["template"]
-
-        formatted_string: str = pair_template.format(first=first, second=second)
-
-        if pair_template_dict["lower_case"]:
-            formatted_string = formatted_string.lower()
-        else:
-            formatted_string = formatted_string.upper()
-
-        return formatted_string
-
-    def get_formatted_url_and_params(self, url_and_parameters: Any, currency_pair: str,
-                                     request_type: str = 'historic_rates') -> Tuple[str, Dict]:
+    @url_and_params.setter
+    def url_and_params(self, request_type):
         """ Formats the request url, inserts the currency-pair representation and/or
         extracts the parameters specified for the exchange and request.
 
-        @param url_and_parameters: Extracted url and parameters from self.extract_request_urls.
-        @param currency_pair: The currency pair of interest to format the url and params on.
         @param request_type: The request type. Default: "historic_rates". Possible: "historic_rates", "currency_pairs".
         @return Tuple of formatted url and formatted parameters.
         """
-
-        url = url_and_parameters.get(request_type).get("url")
-        pair_template = url_and_parameters.get(request_type).get("pair_template")
+        currency_pair = list(self.symbols.keys())[0]
+        url = self.param_dict.get(request_type).get("url")
+        pair_template = self.param_dict.get(request_type).get("pair_template")
         pair_formatted = self.apply_currency_pair_format(currency_pair)
-        parameters = url_and_parameters.get(request_type).get("params")
+        parameters = self.param_dict.get(request_type).get("params")
 
         parameters.update({key: parameters[key][currency_pair]
                            for key, val in parameters.items() if isinstance(val, dict)})
+
+        if not parameters and not pair_template:
+            self._url_and_params = {'url': url, 'params': parameters}
+            return
 
         # Case 1: Currency-Pairs in request parameters: eg. www.test.com?market=BTC-USD
         if "alias" in pair_template.keys() and pair_template["alias"]:
@@ -124,20 +86,22 @@ class Exchange(_BaseReader, ABC):
             parameters.update({"currency_pair": pair_formatted})
 
         else:
-            return url, parameters
+            self._url_and_params = {'url': url, 'params': parameters}
+            return
+            # return url, parameters
 
         variables = [item[1] for item in string.Formatter().parse(url) if item[1] is not None]
         url_formatted = url.format(**parameters)
-        # drop params who are filled directly into the url
+        # Drop params who are filled directly into the url
         parameters = {k: v for k, v in parameters.items() if k not in variables}
 
-        return url_formatted, parameters
+        self._url_and_params = {'url': url_formatted, 'params': parameters}
+        # return url_formatted, parameters
 
-    def extract_request_urls(self, currency_pairs: Optional[Dict[str, datetime]],
-                             request_type: str = "historic_rates") -> Dict:
+    @param_dict.setter
+    def param_dict(self, request_type: str):
         """ Extracts the request url from the yaml-file and implements the parameters.
 
-        @param currency_pairs: Currency-pair with the timestamp of the latest request.
         @param request_type: Request name, default: "historic_rates". Possible: "historic_rates", "currency_pairs".
         @return: Dict of the extracted url and parameters.
         """
@@ -153,7 +117,9 @@ class Exchange(_BaseReader, ABC):
         if not parameters:
             request_parameters["params"] = {}
             urls[request_type] = request_parameters
-            return urls
+            self._param_dict = urls
+            return
+            # return urls
 
         mapping: dict = {"allowed": self._allowed, "function": self._function,
                          "default": self._default, "type": self._type_con}
@@ -171,14 +137,14 @@ class Exchange(_BaseReader, ABC):
             if not parameters[param].get("required", True):
                 continue
             # Iterate over the functions and fill the params dict with values. Kwargs are needed only partially.
-            kwargs = {"has_value": None, "currency_pairs": currency_pairs}
+            kwargs = {"has_value": None, "currency_pairs": self.symbols}
             for key, val in options.items():
                 kwargs.update({"has_value": parameter.get(param, None)})
                 parameter[param] = mapping.get(key)(val, **kwargs)
 
         request_parameters["params"] = parameter
         urls[request_type] = request_parameters
-        return urls
+        self._param_dict = urls
 
     def _allowed(self, val: dict, **_: dict) -> Any:
         """ Extract the configured value from all allowed values. If there is no match, return str "default".
@@ -339,12 +305,12 @@ class Exchange(_BaseReader, ABC):
 
         for mapping in mappings:
             results[mapping.key] = mapping.extract_value(response)
-            results[mapping.key] = [item.lower() for item in results[mapping.key]]
 
             if isinstance(results[mapping.key], str):
                 # If the result is only one currency, it will be split into every letter.
                 # To avoid this, put it into a list.
                 results[mapping.key] = [results[mapping.key]]
+            results[mapping.key] = [item.lower() for item in results[mapping.key]]
 
         # Check if all dict values do have the same length
         values = list(results.values())
@@ -359,3 +325,58 @@ class Exchange(_BaseReader, ABC):
         return list(itertools.zip_longest(itertools.repeat(self.name, len_results),
                                           results["currency_pair_first"],
                                           results["currency_pair_second"]))
+
+    def reset_request_start_date(self):
+        """ Reset the end date for the symbols in order to be able to restart a request from the end date."""
+
+        key = list(self.symbols.keys())[0]
+        self.symbols.update({key: self.end})
+
+    def get_rate_limit(self) -> Union[int, float]:
+        """ Calculates the rate-limit of an exchange.
+
+        @return: The rate limit, i.e. time to "sleep" to not violate the limit in seconds.
+        """
+        if self.yaml_file.get("rate_limit"):
+            if self.yaml_file["rate_limit"]["max"] <= 0:
+                rate_limit = 0
+            else:
+                rate_limit = self.yaml_file["rate_limit"]["unit"] / self.yaml_file["rate_limit"]["max"]
+        else:
+            rate_limit = 0
+
+        return rate_limit
+
+    def apply_currency_pair_format(self, currency_pair: str) -> str:
+        """ Helper method that applies the format described in the yaml for the specific
+        request on the given currency-pair.
+
+        @param currency_pair: String repr of the currency-pair
+        @return: String of the formatted currency-pair. Example: BTC and ETH -> "btc_eth"
+        """
+
+        first, second = currency_pair.split("-")
+
+        request_url_and_params = self.yaml_file.get("requests").get("historic_rates").get("request")
+        pair_template_dict = request_url_and_params["pair_template"]
+        pair_template = pair_template_dict["template"]
+
+        formatted_string: str = pair_template.format(first=first, second=second)
+
+        if pair_template_dict["lower_case"]:
+            formatted_string = formatted_string.lower()
+        else:
+            formatted_string = formatted_string.upper()
+
+        return formatted_string
+
+    def symbol_setter(self, new_symbols: Union[str, dict]):
+        """ Prepare the symbols and transform them from a string into a dict.
+
+        @param new_symbols: String repr of the new symbols, seperated by hyphen.
+        """
+
+        if isinstance(new_symbols, str):
+            new_symbols = split_str_to_list(new_symbols)
+            # Create a new dict with new symbols as keys and the end timestamp as values.
+            self.symbols = dict.fromkeys(new_symbols, self.end)

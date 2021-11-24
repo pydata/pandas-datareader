@@ -3,7 +3,7 @@ Module contains tools for collecting data from various remote sources
 """
 
 # flake8: noqa
-
+import os
 import warnings
 
 from pandas.util._decorators import deprecate_kwarg
@@ -39,6 +39,7 @@ from pandas_datareader.yahoo.daily import YahooDailyReader
 from pandas_datareader.yahoo.options import Options as YahooOptions
 from pandas_datareader.yahoo.quotes import YahooQuotesReader
 from pandas_datareader.crypto import CryptoReader
+from pandas_datareader.crypto_utils.utilities import get_exchange_names
 
 __all__ = [
     "get_components_yahoo",
@@ -366,6 +367,7 @@ def DataReader(
         "av-intraday",
         "econdb",
         "naver",
+        *crypto_exchanges
     ]
 
     if data_source not in expected_source:
@@ -674,6 +676,17 @@ def DataReader(
             session=session,
         ).read()
 
+    elif data_source in crypto_exchanges:
+        return CryptoReader(
+            exchange_name=data_source,
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        ).read()
+
     else:
         msg = "data_source=%r is not implemented" % data_source
         raise NotImplementedError(msg)
@@ -693,3 +706,6 @@ def Options(symbol, data_source=None, session=None):
         return YahooOptions(symbol, session=session)
     else:
         raise NotImplementedError("currently only yahoo supported")
+
+crypto_exchanges = get_exchange_names()
+

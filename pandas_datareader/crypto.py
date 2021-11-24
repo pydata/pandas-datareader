@@ -13,7 +13,7 @@ import pytz
 import requests.exceptions
 
 from pandas_datareader.crypto_utils.exchange import Exchange
-from pandas_datareader.crypto_utils.utilities import split_str_to_list, get_exchange_names
+from pandas_datareader.crypto_utils.utilities import get_exchange_names
 from pandas_datareader.crypto_utils.utilities import sort_columns, print_timestamp
 
 
@@ -26,10 +26,10 @@ class CryptoReader(Exchange, ABC):
 
     def __init__(self,
                  exchange_name: str,
-                 symbols: str,
+                 symbols: Union[str, dict],
                  start: Union[str, datetime] = None,
                  end: Union[str, datetime] = None,
-                 interval: str = None,
+                 interval: str = "days",
                  **kwargs):
         """ Constructor. Inherits from the Exchange and _BaseReader class.
 
@@ -43,88 +43,19 @@ class CryptoReader(Exchange, ABC):
 
         super(CryptoReader, self).__init__(exchange_name, interval, symbols, start, end, **kwargs)
 
-    @staticmethod
-    def get_all_exchanges() -> List:
-        """ Get all supported exchange names.
-
-        @return List of exchange names.
-        """
-
-        return get_exchange_names()
-
-    def get_currency_pairs(self, raw_data: bool = False) -> Optional[Union[pd.DataFrame, List]]:
-        """ Requests all supported currency pairs from the exchange.
-
-        @param raw_data: Return the raw data as a list of tuples.
-        @return: A list of all listed currency pairs.
-        """
-
-        param_dict = self.extract_request_urls(None, "currency_pairs")
-        url = param_dict.get("currency_pairs").get("url", None)
-        try:
-            resp = self._get_response(url, params=None, headers=None)
-            resp = self.format_currency_pairs(resp.json())
-        except (requests.exceptions.MissingSchema, Exception):
-            return None
-
-        return pd.DataFrame(resp, columns=["Exchange", "Base", "Quote"]) if not raw_data else resp
-
-    def _check_symbols(self) -> bool:
-        """ Checks if the specified currency-pair is listed on the exchange"""
-
-        currency_pairs = self.get_currency_pairs(raw_data=True)
-        symbols = self.symbols.keys() if isinstance(self.symbols, dict) else [self.symbols]
-
-        if currency_pairs is None:
-            warnings.warn("Currency-pair request is dysfunctional. Check of valid symbol specification is skipped.")
-            return True
-
-        return all([(self.name, *symbol.lower().split("-")) in currency_pairs for symbol in symbols])
-
-    def _await_rate_limit(self):
-        """ Sleep time in order to not violate the rate limit, measured in requests per minute."""
-
-        time.sleep(self.rate_limit)
-
-    def _index_and_cut_dataframe(self, dataframe: pd.DataFrame) -> pd.DataFrame:
-        """ Set index and cut data according to user specification.
-
-        @param dataframe: Requested raw data
-        @return: pd.DataFrame with specified length and proper index.
-        """
-
-        # Reindex dataframe and cut it to the specified timestamps.
-        dataframe.set_index("time", inplace=True)
-        dataframe.sort_index(inplace=True)
-        dataframe = dataframe.loc[pytz.utc.localize(self.start): pytz.utc.localize(self.end)]
-
-        # Remove duplicates if any exist. Keep the first appearance and drop all after.
-        dataframe.drop_duplicates(keep="first", inplace=True)
-
-        return sort_columns(dataframe)
-
     def _get_data(self) -> Dict:
         """ Requests the data and returns the response json.
 
         @return: Response json
         """
 
-        # Ensure that the currency-pairs are seperated in a list.
-        if isinstance(self.symbols, str):
-            self.symbols = split_str_to_list(self.symbols)
-            self.symbols = dict.fromkeys(self.symbols, self.end)
-
-        # Check if the provided currency-pair is listed on the exchange.
-        if not self._check_symbols():
-            raise KeyError(f"The provided currency-pair is not listed on '{self.name.capitalize()}'. "
-                           f"Call CryptoReader.get_currency_pairs() for an overview.")
-
         # Extract and format the url and parameters for the request
-        param_dict = self.extract_request_urls(self.symbols)
-        url, params = self.get_formatted_url_and_params(param_dict, *self.symbols.keys())
+        self.param_dict = "historic_rates"
+        # self.get_formatted_url_and_params(self.param_dict, *self.symbols.keys())
+        self.url_and_params = "historic_rates"
 
         # Perform the request
-        resp = self._get_response(url, params=params, headers=None)
+        resp = self._get_response(self.url, params=self.params, headers=None)
 
         # Await the rate-limit to avoid ip ban.
         self._await_rate_limit()
@@ -140,10 +71,12 @@ class CryptoReader(Exchange, ABC):
         """
 
         if new_symbols:
-            if isinstance(new_symbols, str):
-                new_symbols = split_str_to_list(new_symbols)
-            # Create a new dict with new symbols as keys and the end timestamp as values.
-            self.symbols = dict.fromkeys(new_symbols, self.end)
+            self.symbol_setter(new_symbols)
+
+        # Check if the provided currency-pair is listed on the exchange.
+        if not self._check_symbols():
+            raise KeyError(f"The provided currency-pair is not listed on '{self.name.capitalize()}'. "
+                           f"Call CryptoReader.get_currency_pairs() for an overview.")
 
         result = list()
         # Repeat until no "older" timestamp is delivered. Cryptocurrency exchanges often restrict the amount of
@@ -189,6 +122,66 @@ class CryptoReader(Exchange, ABC):
 
         # ToDo: Make decorator from function call?
         # Reset the self.end date of the _BaseReader for further requesting.
-        self.reset_base_reader()
+        self.reset_request_start_date()
 
         return result
+
+    @staticmethod
+    def get_all_exchanges() -> List:
+        """ Get all supported exchange names.
+
+        @return List of exchange names.
+        """
+
+        return get_exchange_names()
+
+    def get_currency_pairs(self, raw_data: bool = False) -> Optional[Union[pd.DataFrame, List]]:
+        """ Requests all supported currency pairs from the exchange.
+
+        @param raw_data: Return the raw data as a list of tuples.
+        @return: A list of all listed currency pairs.
+        """
+
+        self.param_dict = "currency_pairs"
+        self.url_and_params = "currency_pairs"
+        try:
+            resp = self._get_response(self.url, params=None, headers=None)
+            resp = self.format_currency_pairs(resp.json())
+        except (requests.exceptions.MissingSchema, Exception):
+            return None
+
+        return pd.DataFrame(resp, columns=["Exchange", "Base", "Quote"]) if not raw_data else resp
+
+    def _check_symbols(self) -> bool:
+        """ Checks if the specified currency-pair is listed on the exchange"""
+
+        currency_pairs = self.get_currency_pairs(raw_data=True)
+        symbols = self.symbols.keys() if isinstance(self.symbols, dict) else [self.symbols]
+
+        if currency_pairs is None:
+            warnings.warn("Currency-pair request is dysfunctional. Check of valid symbol specification is skipped.")
+            return True
+
+        return all([(self.name, *symbol.lower().split("-")) in currency_pairs for symbol in symbols])
+
+    def _await_rate_limit(self):
+        """ Sleep time in order to not violate the rate limit, measured in requests per minute."""
+
+        time.sleep(self.rate_limit)
+
+    def _index_and_cut_dataframe(self, dataframe: pd.DataFrame) -> pd.DataFrame:
+        """ Set index and cut data according to user specification.
+
+        @param dataframe: Requested raw data
+        @return: pd.DataFrame with specified length and proper index.
+        """
+
+        # Reindex dataframe and cut it to the specified timestamps.
+        dataframe.set_index("time", inplace=True)
+        dataframe.sort_index(inplace=True)
+        dataframe = dataframe.loc[pytz.utc.localize(self.start): pytz.utc.localize(self.end)]
+
+        # Remove duplicates if any exist. Keep the first appearance and drop all after.
+        # dataframe.drop_duplicates(keep="first", inplace=True)
+
+        return sort_columns(dataframe)

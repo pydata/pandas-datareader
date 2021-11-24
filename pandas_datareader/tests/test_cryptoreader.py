@@ -42,6 +42,15 @@ class TestCryptoReader:
         assert isinstance(result, pd.DataFrame)
         assert not result.empty
 
+    def test_reset_request_start_date(self):
+        """ Test resetting the request start date."""
+
+        key = list(self.CryptoReader.symbols.keys())[0]
+        self.CryptoReader.symbols.update({key: datetime.datetime(2020, 1, 1)})
+        self.CryptoReader.reset_request_start_date()
+
+        assert self.CryptoReader.symbols.get(key).date() == datetime.datetime.now().date()
+
     def test_check_symbols(self):
         """ Test checking if the provided currency-pair is listed on an exchange."""
         # ToDo
