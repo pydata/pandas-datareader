@@ -15,6 +15,7 @@ import requests.exceptions
 from pandas_datareader.crypto_utils.exchange import Exchange
 from pandas_datareader.crypto_utils.utilities import get_exchange_names
 from pandas_datareader.crypto_utils.utilities import sort_columns, print_timestamp
+from pandas_datareader.exceptions import EmptyResponseError
 
 
 class CryptoReader(Exchange, ABC):
@@ -27,7 +28,7 @@ class CryptoReader(Exchange, ABC):
     def __init__(self,
                  exchange_name: str,
                  symbols: Union[str, dict],
-                 start: Union[str, datetime] = None,
+                 start: Union[str, datetime] = datetime(2009, 1, 1),
                  end: Union[str, datetime] = None,
                  interval: str = "days",
                  **kwargs):
@@ -85,13 +86,14 @@ class CryptoReader(Exchange, ABC):
         while True:
             # perform request and extract data.
             resp = self._get_data()
-            data, mappings = self.format_data(resp)
-
-            # break if no data is returned
-            if not data:
+            try:
+                data, mappings = self.format_data(resp)
+            # Break if no data is returned
+            except EmptyResponseError:
                 break
+
             # or all returned data points already exist.
-            elif result == data or all([datapoint in result for datapoint in data]):
+            if result == data or all([datapoint in result for datapoint in data]):
                 break
 
             print_timestamp(list(self.symbols.values())[0])
@@ -158,10 +160,10 @@ class CryptoReader(Exchange, ABC):
         symbols = self.symbols.keys() if isinstance(self.symbols, dict) else [self.symbols]
 
         if currency_pairs is None:
-            warnings.warn("Currency-pair request is dysfunctional. Check of valid symbol specification is skipped.")
+            warnings.warn("Currency-pair request is dysfunctional. Check for valid symbols is skipped.")
             return True
 
-        return all([(self.name, *symbol.lower().split("-")) in currency_pairs for symbol in symbols])
+        return all([(self.name, *symbol.lower().split("/")) in currency_pairs for symbol in symbols])
 
     def _await_rate_limit(self):
         """ Sleep time in order to not violate the rate limit, measured in requests per minute."""

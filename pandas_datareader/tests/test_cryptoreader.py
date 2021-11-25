@@ -22,7 +22,7 @@ class TestCryptoReader:
     """ Unit tests for the CryptoReader."""
 
     exchange_name = 'coinbase'
-    symbols = 'btc-usd'
+    symbols = 'btc/usd'
     CryptoReader = CryptoReader(exchange_name, symbols)
 
     def test_get_all_exchanges(self):
@@ -43,9 +43,9 @@ class TestCryptoReader:
     def test_request_new_symbol(self):
         """ Test to request NEW symbols."""
 
-        result = self.CryptoReader.read('eth-usd')
+        result = self.CryptoReader.read('eth/usd')
 
-        assert 'eth-usd' in self.CryptoReader.symbols.keys()
+        assert 'eth/usd' in self.CryptoReader.symbols.keys()
         assert isinstance(result, pd.DataFrame)
         assert not result.empty
 
@@ -60,7 +60,15 @@ class TestCryptoReader:
 
     def test_check_symbols(self):
         """ Test checking if the provided currency-pair is listed on an exchange."""
+
         with pytest.raises(KeyError):
+            self.CryptoReader.symbols = {" / ": datetime.datetime.today()}
+            self.CryptoReader.read()
+
+    def test_check_wrong_splitting_symbol(self):
+        """ Test checking if the provided currency-pair is listed on an exchange."""
+
+        with pytest.raises(BaseException):
             self.CryptoReader.symbols = {" - ": datetime.datetime.today()}
             self.CryptoReader.read()
 
@@ -109,7 +117,7 @@ class TestExchange:
     """ Unit tests for the Exchange class."""
     # ToDo: Create test-exchange yaml file and use it instead for this class.
     exchange_name = 'coinbase'
-    symbols = 'btc-usd'
+    symbols = 'btc/usd'
     CryptoReader = CryptoReader(exchange_name, symbols)
 
     def test_extract_mappings(self):

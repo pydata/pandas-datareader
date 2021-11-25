@@ -44,6 +44,7 @@ Currently the following sources are supported:
     - :ref:`Tiingo<remote_data.tiingo>`
     - :ref:`World Bank<remote_data.wb>`
     - :ref:`Yahoo Finance<remote_data.yahoo>`
+    - :ref:`Cryptocurrency Data<remote_data.crypto>`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
 
@@ -762,3 +763,46 @@ The following endpoints are available:
 
    dividends = web.DataReader('IBM', 'yahoo-dividends', start, end) 
    dividends.head()
+
+
+.. _remote_data.crypto:
+
+Cryptocurrency Data
+===================
+
+Access historical data feed from the most popular and liquid exchanges and platforms and return OHLCV candles.
+Platforms such as ``Coingecko`` or ``Coinpaprika`` return in addition the global turnover volume and market capitalization.
+
+The ``CryptoReader`` offers helpful methods to print all supported exchanges/platforms and their listed
+currency-pairs:
+
+.. ipython:: python
+
+    from pandas_datareader.crypto import CryptoReader
+    CryptoReader.get_all_exchanges()
+
+Data can be retrieved with the ``DataReader`` class, which takes the following arguments:
+
+* ``name`` - the currency-pair of interest
+* ``data_source`` - the name of the exchange or platform
+* ``start`` - start date
+* ``end`` - end date
+* ``interval`` - the candle interval (e.g. "minutes", "hours", "days")
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+    df = web.DataReader("btc/usd", "coinbase")
+    df.head()
+
+Additionally, the ``CryptoReader`` can be used directly:
+
+.. ipython:: python
+
+    from pandas_datareader.crypto import CryptoReader
+    reader = CryptoReader("btc/usd", "coinbase", interval="minutes", start="2021-10-01", end="2021-10-31")
+    df = reader.read()
+    df.head()
+
+    df = reader.read("eth/usd")
+    df.head()

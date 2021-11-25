@@ -29,7 +29,7 @@ class Exchange(_BaseReader, ABC):
         @param kwargs: Additional keyword arguments for the _BaseReader.
         """
 
-        super(Exchange, self).__init__(*args, **kwargs)
+        super(Exchange, self).__init__(timeout=10, *args, **kwargs)
         self.name = exchange_name
         self.yaml_file = yaml_loader(self.name)
         self.interval: str = interval
@@ -95,7 +95,7 @@ class Exchange(_BaseReader, ABC):
         parameters.update({key: parameters[key][currency_pair]
                            for key, val in parameters.items() if isinstance(val, dict)})
 
-        if not parameters and not pair_template:
+        if not pair_template and request_type == "currency_pairs":
             self._url_and_params = {'url': url, 'params': parameters}
             return
 
@@ -373,8 +373,11 @@ class Exchange(_BaseReader, ABC):
         @param currency_pair: String repr of the currency-pair
         @return: String of the formatted currency-pair. Example: BTC and ETH -> "btc_eth"
         """
-
-        first, second = currency_pair.split("-")
+        try:
+            first, second = currency_pair.split("/")
+        except ValueError as e:
+            raise Exception("Base and quote currency are indistinguishable."
+                            " Currencies must be split by '/': %s" % currency_pair) from e
 
         request_url_and_params = self.yaml_file.get("requests").get("historic_rates").get("request")
         pair_template_dict = request_url_and_params["pair_template"]
