@@ -1,0 +1,225 @@
+# Cannot extract bid/sell side from orderbooks.
+name: nominex
+exchange: true
+
+rate_limit: null
+api_docs: https://developer.nominex.io/#parameters
+api_url: https://nominex.io/api/rest/v1/
+
+requests:
+  currency_pairs:
+    request:
+      template: pairs
+      pair_template: null
+      params: null
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          name:
+            type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - name
+        type:
+          - str
+          - split
+          - "/"
+          - 0
+      - key: currency_pair_second
+        path:
+          - name
+        type:
+          - str
+          - split
+          - "/"
+          - 1
+
+  tickers:
+    request:
+      template: ticker/{currency_pair}
+      pair_template:
+        template: "{first}/{second}"
+        lower_case: false
+      params: null
+    response:
+      type: dict
+      values:
+        bid:
+          type: float
+        ask:
+          type: float
+        baseVolume:
+          type: float
+        price:
+          type: float
+
+    mapping:
+      - key: last_price
+        path:
+          - price
+        type:
+          - float
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: best_bid
+        path:
+          - bid
+        type:
+          - float
+      - key: best_ask
+        path:
+          - ask
+        type:
+          - float
+      - key: daily_volume
+        path:
+          - baseVolume
+        type:
+          - float
+
+  historic_rates:
+    request:
+      template: candles/{currency_pair}/{frequency}
+      pair_template:
+        template: "{first}/{second}"
+        lower_case: false
+      params:
+        frequency:
+          allowed:
+            minutes: TF1M
+            hours: TF1H
+            days: TF1D
+            weeks: TF7D
+            months: TF1MO
+          default: TF1D
+        limit:
+          default: 400 # max
+        end:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestampms
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          timestamp:
+            type: int
+          open:
+            type: float
+          close:
+            type: float
+          high:
+            type: float
+          low:
+            type: float
+          volume:
+            type: float
+
+
+    mapping:
+    - key: time
+      path:
+        - timestamp
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: open
+      path:
+        - open
+      type:
+        - float
+    - key: high
+      path:
+        - high
+      type:
+        - float
+    - key: low
+      path:
+        - low
+      type:
+        - float
+    - key: close
+      path:
+        - close
+      type:
+        - float
+    - key: volume
+      path:
+        - volume
+      type:
+        - float
+
+
+  trades:
+    request:
+      template: trades/{currency_pair}
+      pair_template:
+        template: "{first}/{second}"
+        lower_case: false
+      params:
+        limit:
+          default: 200 # max
+
+    response:
+      type: dict
+      values:
+        items:
+          type: list
+          values:
+            type: dict
+            values:
+              id:
+                type: int
+              timestamp:
+                type: int
+              amount:
+                type: float
+              price:
+                type: float
+              side:
+                type: str
+
+    mapping:
+    - key: time
+      path:
+        - items
+        - timestamp
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: id
+      path:
+        - items
+        - id
+      type:
+        - int
+    - key: direction
+      path:
+        - items
+        - side
+      type:
+        - str
+    - key: price
+      path:
+        - items
+        - price
+      type:
+        - float
+    - key: amount
+      path:
+        - items
+        - amount
+      type:
+        - float

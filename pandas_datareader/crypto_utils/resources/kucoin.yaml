@@ -1,0 +1,432 @@
+name: kucoin
+exchange: true
+api_url: https://api.kucoin.com/api/v1/
+rate_limit:
+  max: 30
+  unit: 60
+requests:
+  currency_pairs:
+    request:
+      template: symbols
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        code:
+          type:
+            - str
+            - int
+        data:
+          type: list
+          values:
+            symbol:
+              type: str
+            name:
+              type: str
+            baseCurrency:
+              type: str
+            quoteCurrency:
+              type: str
+            baseMinSize:
+              type: float
+            quoteMinSize:
+              type: int
+            baseMaxSize:
+              type: int
+            quoteMaxSize:
+              type: float
+            baseIncrement:
+              type: float
+            quoteIncrement:
+              type: float
+            priceIncrement:
+              type: float
+            feeCurrency:
+              type: str
+            enableTrading:
+              type: bool
+    mapping:
+    - key: currency_pair_first
+      path:
+      - data
+      - symbol
+      type:
+      - str
+      - split
+      - "-"
+      - 0
+    - key: currency_pair_second
+      path:
+      - data
+      - symbol
+      type:
+      - str
+      - split
+      - "-"
+      - 1
+
+  tickers:
+    request:
+      template: market/allTickers
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        code:
+          type: int
+        data:
+          type: dict
+          values:
+            ticker:
+              type: list
+              values:
+                type: dict
+                values:
+                  symbol: # e.g. KCS
+                    type: str
+                  high:
+                    type: float
+                  vol:
+                    type: float
+                  last:
+                    type: float
+                  low:
+                    type: float
+                  buy:
+                    type: float
+                  sell:
+                    type: float
+                  changePrice: 
+                    type: float
+                  averagePrice:
+                    type: float
+                  changeRate:
+                    type: float
+                  volValue:
+                    type: float
+            time:
+              type: int
+    mapping:
+    - key: time
+      path:
+      - data
+      - time
+      type:
+      - float
+      - from_timestamp
+      - 1
+    - key: currency_pair_first
+      path:
+      - data
+      - ticker
+      - symbol
+      type:
+      - str
+      - split
+      - "-"
+      - 0
+    - key: currency_pair_second
+      path:
+      - data
+      - ticker
+      - symbol
+      type:
+      - str
+      - split
+      - "-"
+      - 1
+    - key: last_price
+      path:
+      - data
+      - ticker
+      - last
+      type:
+      - float
+    - key: best_bid
+      path:
+      - data
+      - ticker
+      - buy
+      type:
+      - float
+    - key: best_ask
+      path:
+      - data
+      - ticker
+      - sell
+      type:
+      - float
+    - key: daily_volume
+      path:
+      - data
+      - ticker
+      - volValue
+      type:
+      - float
+
+  historic_rates:
+    request:
+      template: market/candles
+      pair_template: # e.g. KCS-BTC
+        template: "{first}-{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        startAt:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 1000
+        endAt:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestamp
+        type:
+          allowed:
+            minutes: 1min
+            hours: 1hour
+            days: 1day
+            weeks: 1week
+          default: 1day
+
+    response:
+      type: dict
+      values:
+        code:
+          type: str
+        data:
+          type: list
+          values:
+            type: list
+            values:
+              0: # timestamp
+                type:
+                - str
+              1: # open
+                type: 
+                - str
+              2: # close
+                type: 
+                - str
+              3: # high
+                type: 
+                - str
+              4: # low
+                type: 
+                - str
+              5: # volume
+                type: 
+                - str
+              6: # amount
+                type: 
+                - str
+    mapping:
+    - key: time
+      path:
+      - data
+      - 0
+      type:
+      - str
+      - float
+      - from_timestamp
+      - 0
+    - key: open
+      path:
+      - data
+      - 1
+      type:
+      - str
+      - float
+    - key: close
+      path:
+      - data
+      - 2
+      type:
+      - str
+      - float
+    - key: high
+      path:
+      - data
+      - 3
+      type:
+      - str
+      - float
+    - key: low
+      path:
+      - data
+      - 4
+      type:
+      - str
+      - float
+    - key: volume
+      path:
+      - data
+      - 5
+      type:
+      - str
+      - float
+
+
+  order_books:
+    request:
+      template: market/orderbook/level2_20
+      pair_template: # e.g. KCS-BTC
+        template: "{first}-{second}"
+        lower_case: false
+        alias: symbol
+      params: null
+    response:
+      type: dict
+      values:
+        code:
+          type: str
+        data:
+          type: dict
+          values:
+            time:
+              type: int
+            sequence:
+              type: str
+            bids:
+              type: list
+              values:
+                type: list
+                values:
+                  0:
+                    type: str
+                  1:
+                    type: str
+            asks:
+              type: list
+              values:
+                type: list
+                values:
+                  0:
+                    type: str
+                  1:
+                    type: str
+    mapping:
+    - key: asks_price
+      path:
+      - data
+      - asks
+      - 0
+      type:
+      - str
+      - float
+    - key: asks_amount
+      path:
+      - data
+      - asks
+      - 1
+      type:
+      - str
+      - float
+    - key: bids_price
+      path:
+      - data
+      - bids
+      - 0
+      type:
+      - str
+      - float
+    - key: bids_amount
+      path:
+      - data
+      - bids
+      - 1
+      type:
+      - str
+      - float
+    - key: time
+      path:
+      - data
+      - time
+      type:
+      - float
+      - from_timestamp
+      - 1
+    - key: id
+      path:
+        - data
+        - sequence
+      type:
+        - str
+        - int
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+
+  trades:
+    request:
+      template: market/histories
+      pair_template:
+        template: "{first}-{second}"
+        alias: symbol
+        lower_case: false
+      params: null
+
+    response:
+      type: dict
+      values:
+        code:
+          type: str
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              sequence:
+                type: str
+              price:
+                type: str
+              size:
+                type: str
+              side:
+                type: str
+              time:
+                type: int
+    mapping:
+      - key: time
+        path:
+          - data
+          - time
+        type:
+          - float
+          - from_timestamp
+          - 3
+      - key: price
+        path:
+          - data
+          - price
+        type:
+          - str
+          - float
+      - key: amount
+        path:
+          - data
+          - size
+        type:
+          - str
+          - float
+      - key: direction
+        path:
+          - data
+          - side
+        type:
+          - str
+      - key: id
+        path:
+          - data
+          - sequence
+        type:
+          - str
+          - int
+

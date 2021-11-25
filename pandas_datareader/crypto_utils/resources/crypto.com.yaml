@@ -1,0 +1,392 @@
+name: crypto.com
+exchange: true
+rate_limit:
+  max: 6000
+  unit: 60
+
+api_url: https://uat-api.3ona.co/v2/
+
+requests:
+  currency_pairs:
+    request:
+      template: public/get-instruments
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        result:
+          type: dict
+          values:
+            instruments:
+              type: list
+              values:
+                type: dict
+                values:
+                  instrument_name:
+                    type: str
+                  quote_currency:
+                    type: str
+                  base_currency:
+                    type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - result
+          - instruments
+          - base_currency
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - result
+          - instruments
+          - quote_currency
+        type:
+          - str
+
+  tickers:
+    request:
+      template: public/get-ticker
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        result:
+          type: dict
+          values:
+            data:
+              type: list
+              values:
+                i:
+                  type: str
+                b:
+                  type: float
+                k:
+                  type: float
+                a:
+                  type: float
+                t:
+                  type: int
+                v:
+                  type: float
+    mapping:
+      - key: currency_pair_first
+        path:
+          - result
+          - data
+          - i
+        type:
+          - str
+          - split
+          - "_"
+          - 0
+      - key: currency_pair_second
+        path:
+          - result
+          - data
+          - i
+        type:
+          - str
+          - split
+          - "_"
+          - 1
+      - key: time
+        path:
+          - result
+          - data
+          - t
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: last_price
+        path:
+          - result
+          - data
+          - a
+        type:
+          - float
+      - key: best_bid
+        path:
+          - result
+          - data
+          - b
+        type:
+          - float
+      - key: best_ask
+        path:
+          - result
+          - data
+          - k
+        type:
+          - float
+      - key: daily_volume
+        path:
+          - result
+          - data
+          - v
+        type:
+          - float
+
+  trades:
+    request:
+      template: public/get-trades
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: instrument_name
+      params: null
+
+    response:
+      type: dict
+      values:
+        result:
+          type: dict
+          values:
+            instrument_name:
+              type: str
+            data:
+              type: list
+              values:
+                type: dict
+                values:
+                  dataTime:
+                    type: int
+                  d: #trade id
+                    type: int
+                  s: #side
+                    type: str
+                  p: #price
+                    type: float
+                  q: #quantity
+                    type: float
+                  t: #time
+                    type: int
+                  i:
+                    type: str
+    mapping:
+      - key: time
+        path:
+          - result
+          - data
+          - t
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: id
+        path:
+          - result
+          - data
+          - d
+        type:
+          - int
+      - key: direction
+        path:
+          - result
+          - data
+          - s
+        type:
+          - str
+      - key: price
+        path:
+          - result
+          - data
+          - p
+        type:
+          - float
+      - key: amount
+        path:
+          - result
+          - data
+          - q
+        type:
+          - float
+
+  order_books:
+    request:
+      template: public/get-book
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: instrument_name
+      params:
+        depth:
+          type: int
+          max: 150
+          default: 50
+    response:
+      type: dict
+      values:
+        result:
+          type: dict
+          values:
+            data:
+              type: list
+              values:
+                type: dict
+                values:
+                  bids:
+                    type: list
+                    values:
+                      type: list
+                      values:
+                        0: #price
+                          type: float
+                        1: #qty
+                          type: float
+                  asks:
+                    type: list
+                    values:
+                      type: list
+                      values:
+                        0: #price
+                          type: float
+                        1: #qty
+                          type: float
+                  t: #timestamp
+                    type: int
+    mapping:
+      - key: time
+        path:
+          - result
+          - data
+          - t
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: id
+        path:
+          - result
+          - data
+          - t
+        type:
+          - int
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_price
+        path:
+          - result
+          - data
+          - bids
+          - 0
+        type:
+          - float
+      - key: bids_amount
+        path:
+          - result
+          - data
+          - bids
+          - 1
+        type:
+          - float
+      - key: asks_price
+        path:
+          - result
+          - data
+          - asks
+          - 0
+        type:
+          - float
+      - key: asks_amount
+        path:
+          - result
+          - data
+          - asks
+          - 1
+        type:
+          - float
+
+  historic_rates:
+    request:
+      template: public/get-candlestick
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: instrument_name
+      params:
+        timeframe:
+          allowed:
+#            minutes: 1M
+#            hours: 1H
+            days: 1D
+            weeks: 1W
+#            months: 1M
+          default: 1D
+        limit:
+          default: 100
+
+    response:
+      type: dict
+      values:
+        result:
+          type: data
+          values:
+            type: list
+            values:
+              type: dict
+              values:
+                t:
+                  type: int
+                o:
+                  type: float
+                h:
+                  type: float
+                l:
+                  type: float
+                c:
+                  type: float
+                v:
+                  type: float
+    mapping:
+      - key: time
+        path:
+          - result
+          - data
+          - t
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: open
+        path:
+          - result
+          - data
+          - o
+        type:
+          - float
+      - key: high
+        path:
+          - result
+          - data
+          - h
+        type:
+          - float
+      - key: low
+        path:
+          - result
+          - data
+          - l
+        type:
+          - float
+      - key: close
+        path:
+          - result
+          - data
+          - c
+        type:
+          - float
+      - key: volume
+        path:
+          - result
+          - data
+          - v
+        type:
+          - float

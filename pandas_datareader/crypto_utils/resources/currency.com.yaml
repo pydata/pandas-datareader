@@ -1,0 +1,320 @@
+name: currency.com
+exchange: true
+api_url: https://marketcap.backend.currency.com/api/v1/
+
+rate_limit: null
+
+requests:
+  currency_pairs:
+    request:
+      template: ticker
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: dict
+          values:
+            base_currency:
+              type: str
+            quote_currency:
+              type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - dict_values
+          - base_currency
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - dict_values
+          - quote_currency
+        type:
+          - str
+
+  tickers:
+    request:
+      template: ticker
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: dict
+          values:
+            base_currency:
+              type: str
+            quote_currency:
+              type: str
+            last_price:
+              type: float
+            base_volume:
+              type: float
+            lowest_ask_price:
+              type: float
+            highest_bid_price:
+              type: float
+    mapping:
+      - key: currency_pair_first
+        path:
+          - dict_values
+          - base_currency
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - dict_values
+          - quote_currency
+        type:
+          - str
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: last_price
+        path:
+          - dict_values
+          - last_price
+        type:
+          - float
+      - key: best_bid
+        path:
+          - dict_values
+          - highest_bid
+        type:
+          - float
+      - key: best_ask
+        path:
+          - dict_values
+          - lowest_ask
+        type:
+          - float
+      - key: daily_volume
+        path:
+          - dict_values
+          - base_volume
+        type:
+          - float
+
+  order_books:
+    request:
+      template: orderbook
+      pair_template:
+        template: "{first}/{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        depth:
+          default: 50
+
+    response:
+      type: dict
+      values:
+        timestamp:
+          type: int
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type: float
+              1: # qty
+                type: float
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type: float
+              1: # qty
+                type: float
+
+    mapping:
+      - key: id
+        path:
+          - timestamp
+        type:
+          - int
+      - key: time
+        path:
+          - timestamp
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_price
+        path:
+          - bids
+          - 0
+        type:
+          - float
+      - key: bids_amount
+        path:
+          - bids
+          - 1
+        type:
+          - float
+      - key: asks_price
+        path:
+          - asks
+          - 0
+        type:
+          - float
+      - key: asks_amount
+        path:
+          - asks
+          - 1
+        type:
+          - float
+
+  historic_rates:
+    request:
+      template: candles
+      pair_template:
+        template: "{first}/{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        interval:
+          allowed:
+            minutes: M1
+            hours: H1
+            days: D1
+            weeks: W1
+          default: D1
+        limit:
+          default: 1000
+        endTime:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestampms
+        startTime:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedeltams
+            - interval
+            - 1000
+
+    response:
+      type: list
+      values:
+        type: list
+        values:
+          0:
+            type: int
+          1:
+            type: str
+          2:
+            type: str
+          3:
+            type: str
+          4:
+            type: str
+    mapping:
+      - key: time
+        path:
+          - []
+          - 0
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: open
+        path:
+          - []
+          - 1
+        type:
+          - str
+          - float
+      - key: high
+        path:
+          - []
+          - 2
+        type:
+          - str
+          - float
+      - key: low
+        path:
+          - []
+          - 3
+        type:
+          - str
+          - float
+      - key: close
+        path:
+          - []
+          - 4
+        type:
+          - str
+          - float
+
+  trades:
+    request:
+      template: trades
+      pair_template:
+        template: "{first}/{second}"
+        lower_case: false
+        alias: symbol
+      params: null
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          tradeID:
+            type: int
+          price:
+            type: float
+          base_volume:
+            type: float
+          quote_volume:
+            type: float
+          trade_timestamp:
+            type: float
+          type:
+            type: str
+
+    mapping:
+      - key: id
+        path:
+          - tradeID
+        type:
+          - int
+      - key: time
+        path:
+          - trade_timestamp
+        type:
+          - float
+          - from_timestamp
+          - 0
+      - key: direction
+        path:
+          - type
+        type:
+          - str
+      - key: price
+        path:
+          - price
+        type:
+          - float
+      - key: amount
+        path:
+          - base_volume
+        type:
+          - float

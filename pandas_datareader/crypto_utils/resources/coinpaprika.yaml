@@ -1,0 +1,226 @@
+# ToDo: Tickers fehlerhaft
+name: coinpaprika
+exchange: false
+
+rate_limit:
+  max: 600
+  unit: 60
+
+api_url: https://api.coinpaprika.com/v1/
+
+requests:
+  currency_pairs:
+    request:
+      template: coins
+      pair_template: null
+      params: null
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          id:
+            type: str
+          name:
+            type: str
+          symbol:
+            type: str
+
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - id
+        type:
+          - str
+      - key: currency_pair_second
+        path: []
+        type:
+          - none
+          - constant
+          - 'USD'
+
+#  pair_infos:
+#    request:
+#      template: coins/{currency_pair}
+#      pair_template:
+#        template: "{first}"
+#        lower_case: true
+#      params: null
+#    response:
+#      type: dict
+#      values:
+#        first_data_at:
+#          type: str
+#        last_data_at:
+#          type: str
+#    mapping:
+#      - key: start
+#        path:
+#          - first_data_at
+#        type:
+#          - str
+#          - dateparser
+#      - key: end
+#        path:
+#          - last_data_at
+#        type:
+#          - str
+#          - dateparser
+##
+  historic_rates:
+    request:
+      template: tickers/{currency_pair}/historical
+      pair_template:
+        template: "{first}"
+        lower_case: true
+      params:
+        start:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 5000
+        end:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestamp
+        limit:
+          default: 5000 # max!
+        interval:
+          allowed:
+            minutes: 5m
+            hours: 1h
+            days: 1d
+            weeks: 7d
+            months: 30d
+          default: 1d
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          timestamp:
+            type: str
+          price:
+            type: float
+          volume_24h:
+            type: float
+          market_cap:
+            type: float
+
+    mapping:
+      - key: time
+        path:
+          - timestamp
+        type:
+          - str
+          - dateparser
+      - key: close
+        path:
+          - price
+        type:
+          - float
+      - key: volume
+        path:
+          - volume_24h
+        type:
+          - float
+      - key: market_cap
+        path:
+          - market_cap
+        type:
+          - float
+
+
+#  sentiments:
+#    request:
+#      template: tickers/{currency_pair}/historical
+#      pair_template:
+#        template: "{first}"
+#        lower_case: true
+#      params:
+#
+#  historic_rates:
+#    request:
+#      template: coins/{currency_pair}/ohlcv/historical
+#      pair_template:
+#        template: "{first}"
+#        lower_case: true
+#      params:
+#        start:
+#          function: last_timestamp
+#          type:
+#            - datetime
+#            - timedelta
+#            - interval
+#            - 366
+#        limit:
+#          default: 366 # max value
+#        quote:
+#          default: usd # or 'btc'
+#
+#    response:
+#      type: list
+#      values:
+#        type: dict
+#        values:
+#          time_open:
+#            type: str
+#          time_close:
+#            type: str
+#          open:
+#            type: float
+#          high:
+#            type: float
+#          low:
+#            type: float
+#          close:
+#            type: float
+#          volume:
+#            type: float
+#          market_cap:
+#            type: float
+#
+#
+#    mapping:
+#    - key: time
+#      path:
+#        - time_close
+#      type:
+#        - str
+#        - dateparser
+#    - key: open
+#      path:
+#        - open
+#      type:
+#        - float
+#    - key: high
+#      path:
+#        - high
+#      type:
+#        - float
+#    - key: low
+#      path:
+#        - low
+#      type:
+#        - float
+#    - key: close
+#      path:
+#        - close
+#      type:
+#        - float
+#    - key: volume
+#      path:
+#        - volume
+#      type:
+#        - float
+#    - key: market_cap
+#      path:
+#        - market_cap
+#      type:
+#        - float

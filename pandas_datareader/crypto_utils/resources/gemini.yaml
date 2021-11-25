@@ -1,0 +1,320 @@
+# The extraction of the currency_pairs relies on the fact, that every quote_currency is only 3 digits long.
+# However this may change in future.
+
+name: gemini
+exchange: true
+api_docs: https://docs.gemini.com/rest-api/
+api_url: https://api.gemini.com/
+rate_limit: # For public API entry points, we limit requests to 120 requests per minute, and recommend that you do not exceed 1 request per second.
+  max: 120 # recommended: 60
+  unit: 60
+
+requests:
+  currency_pairs:
+    request:
+      template: v1/symbols
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values: # each available currency pair, i.e. "btcusd"
+        type: str
+    mapping: # TODO split Methode
+    - key: currency_pair_first
+      path:
+        - []
+      type:
+      - str
+      - slice
+      - 0
+      - -3
+    - key: currency_pair_second
+      path:
+        - []
+      type:
+      - str
+      - slice
+      - -3
+      -
+
+  tickers:
+    request:
+      template: v1/pricefeed
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          pair:
+            type: str
+          price:
+            type: str
+          percentageChange24h:
+            type: str
+
+    mapping:
+    - key: currency_pair_first
+      path:
+        - pair
+      type:
+        - str
+        - slice
+        - 0
+        - -3
+    - key: currency_pair_second
+      path:
+        - pair
+      type:
+        - str
+        - slice
+        - -3
+        -
+    - key: last_price
+      path:
+      - price
+      type:
+      - str
+      - float
+    - key: time
+      path: []
+      type:
+        - none
+        - now
+
+  order_books:
+    request:
+      template: v1/book/{currency_pair}
+      pair_template: # e.g. btcusd
+        template: "{first}{second}"
+        lower_case: true
+      params:
+        limit_bids: # Optional. Limit the number of bids (offers to buy) returned. Default is 50. May be 0 to return the full order book on this side.
+          type: int
+          default: 50
+        limit_asks: # Optional. Limit the number of asks (offers to sell) returned. Default is 50. May be 0 to return the full order book on this side.
+          type: int
+          default: 50
+    response:
+      type: dict
+      values:
+        bids: # The bids currently on the book. These are offers to buy at a given price
+          type: list
+          values:
+            type: dict
+            values:
+              amount: # The total quantity remaining at the price
+                type:
+                - str
+              price: # The price
+                type:
+                - str
+              timestamp: # DO NOT USE - this field is included for compatibility reasons only and is just populated with a dummy value.
+                type:
+                - str
+        asks: # The asks currently on the book. These are offers to sell at a given price
+          type: list
+          values:
+            type: dict
+            values:
+              amount: # The total quantity remaining at the price
+                type:
+                - str
+              price: # The price
+                type:
+                - str
+              timestamp: # DO NOT USE - this field is included for compatibility reasons only and is just populated with a dummy value.
+                type:
+                - str
+    mapping:
+    - key: time
+      path:
+        - bids
+        - timestamp
+      type:
+        - str
+        - float
+        - from_timestamp
+        - 0
+    - key: id
+      path:
+        - bids
+        - timestamp
+      type:
+        - str
+        - int
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+      - bids
+      - amount
+      type:
+      - str
+      - float
+    - key: bids_price
+      path:
+      - bids
+      - price
+      type:
+      - str
+      - float
+    - key: asks_amount
+      path:
+      - asks
+      - amount
+      type:
+      - str
+      - float
+    - key: asks_price
+      path:
+      - asks
+      - price
+      type:
+      - str
+      - float
+
+  trades: # This public API endpoint is limited to retrieving seven calendar days of data.
+    request:
+      template: v1/trades/{currency_pair}
+      pair_template: # e.g. btcusd
+        template: "{first}{second}"
+        lower_case: true
+      params:
+        since: # Optional. Only return trades after this timestamp. If not present, will show the most recent trades.
+          required: false
+        limit_trades: # Optional. The maximum number of trades to return. The default is 50.
+          type: int
+          default: 50
+        include_breaks: # Optional. Whether to display broken trades. False by default. Can be '1' or 'true' to activate
+          type: bool
+          required: false
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          timestamp: # The time that the trade was executed
+            type:
+            - int
+          timestampms: # The time that the trade was executed in milliseconds
+            type:
+            - int
+          tid: # The trade ID number
+            type:
+            - int
+          price: # The price the trade was executed at
+            type:
+            - str
+          amount: # The amount that was traded
+            type:
+            - str
+          exchange: # Will always be "gemini"
+            type: str
+          type:
+            type: str
+            allowed:
+            - buy     # buy means that an ask was removed from the book by an incoming buy order
+            - sell    # sell means that a bid was removed from the book by an incoming sell order
+            - auction # auction indicates a bulk trade from an auction
+            - block   # block indicates a block trade
+          broken:
+            type: bool # Whether the trade was broken or not. Broken trades will not be displayed by default; use the include_breaks to display them.
+    mapping:
+    - key: time
+      path:
+      - timestamp
+      type:
+      - float
+      - from_timestamp
+      - 0
+    - key: id
+      path:
+        - tid
+      type:
+        - int
+    - key: price
+      path:
+      - price
+      type:
+      - str
+      - float
+    - key: amount
+      path:
+      - amount
+      type:
+      - str
+      - float
+    - key: direction
+      path:
+      - type
+      type:
+      - str
+
+  historic_rates:
+    request:
+      template: v2/candles/{currency_pair}/{frequency}
+      pair_template:
+        template: "{first}{second}"
+        lower_case: true
+      params:
+        frequency:
+          allowed:
+            minutes: 1m
+            hours: 1hr
+            days: 1day
+          default: 1day
+    response:
+      type: list
+      values:
+        type: list
+        values:
+          0: # timestamp
+            type: int
+          1: # open
+            type: float
+          2: # high
+            type: float
+          3: # low
+            type: float
+          4: # close
+            type: float
+          5: # volume
+            type: float
+    mapping:
+      - key: time
+        path:
+          - 0
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: open
+        path:
+          - 1
+        type:
+          - float
+      - key: high
+        path:
+          - 2
+        type:
+          - float
+      - key: low
+        path:
+          - 3
+        type:
+          - float
+      - key: close
+        path:
+          - 4
+        type:
+          - float
+      - key: volume
+        path:
+          - 5
+        type:
+          - float

@@ -1,0 +1,211 @@
+name: deepcoin
+exchange: true
+
+rate_limit: null
+
+api_url: https://api-w.deepcoin.pro
+
+requests:
+  currency_pairs:
+    request:
+      template: /query/v1.0/Instrument
+      pair_template: null
+      params:
+        ProductGroup:
+          default: Spot
+
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              InsturmentID:
+                type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - data
+          - InstrumentID
+        type:
+          - str
+          - split
+          - "/"
+          - 0
+      - key: currency_pair_second
+        path:
+          - data
+          - InstrumentID
+        type:
+          - str
+          - split
+          - "/"
+          - 1
+
+  tickers:
+    request:
+      template: /query/v1.0/MarketData
+      pair_template: null
+      params:
+        ProductGroup:
+          default: Spot
+
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              InstrumentID:
+                type: str
+              UpdateTime:
+                type: int
+              LastPrice:
+                type: float
+              BidPrice1:
+                type: float
+              AskPrice1:
+                type: float
+              Turnover:
+                type: float
+              Volume:
+                type: float
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - data
+          - InstrumentID
+        type:
+          - str
+          - split
+          - "/"
+          - 0
+      - key: currency_pair_second
+        path:
+          - data
+          - InstrumentID
+        type:
+          - str
+          - split
+          - "/"
+          - 1
+      - key: last_price
+        path:
+          - data
+          - LastPrice
+        type:
+          - float
+      - key: time
+        path:
+          - data
+          - UpdateTime
+        type:
+          - float
+          - from_timestamp
+          - 0
+      - key: best_bid
+        path:
+          - data
+          - BidPrice1
+        type:
+          - float
+      - key: best_ask
+        path:
+          - data
+          - AskPrice1
+        type:
+          - float
+      - key: daily_volume
+        path:
+          - data
+          - Turnover
+        type:
+          - float
+
+  historic_rates:
+    request:
+      template: /query/v1.0/KLine
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: InstrumentID
+      params:
+        Type:
+          allowed:
+            minutes: 1m
+            hours: 1h
+            days: 1d
+            weeks: 1w
+            months: 1o
+          default: 1d
+        Count:
+          max: 2000
+          default: 200
+        StartDatetime:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 200
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          BeginTime:
+            type: int
+          UpdateTime:
+            type: int
+          OpenPrice:
+            type: float
+          ClosePrice:
+            type: float
+          HighestPrice:
+            type: float
+          LowestPrice:
+            type: float
+          Volume:
+            type: float
+          Turnover:
+            type: float
+
+    mapping:
+    - key: time
+      path:
+        - UpdateTime
+      type:
+        - float
+        - from_timestamp
+        - 0
+    - key: open
+      path:
+        - ClosePrice
+      type:
+        - float
+    - key: high
+      path:
+        - HighestPrice
+      type:
+        - float
+    - key: low
+      path:
+        - LowestPrice
+      type:
+        - float
+    - key: close
+      path:
+        - ClosePrice
+      type:
+        - float
+    - key: volume
+      path:
+        - Turnover
+      type:
+        - float

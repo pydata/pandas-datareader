@@ -1,0 +1,310 @@
+name: bittrex
+exchange: true
+api_docs: https://bittrex.github.io/api/v3
+api_url: https://api.bittrex.com/v3/
+rate_limit: null
+requests:
+  currency_pairs:
+    request:
+      template: markets
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          symbol:
+            type: str
+          baseCurrencySymbol:
+            type: str
+          quoteCurrencySymbol:
+            type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - baseCurrencySymbol
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - quoteCurrencySymbol
+        type:
+          - str
+
+  tickers:
+    request:
+      template: markets/tickers
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          symbol:
+            type:
+              - str
+          lastTradeRate:
+            type:
+              - str
+              - float
+          bidRate:
+            type:
+              - str
+              - float
+          askRate:
+            type:
+              - str
+              - float
+    mapping:
+    - key: currency_pair_first
+      path:
+        - symbol
+      type:
+        - str
+        - split
+        - '-'
+        - 0
+    - key: currency_pair_second
+      path:
+        - symbol
+      type:
+        - str
+        - split
+        - '-'
+        - 1
+    - key: time
+      path: []
+      type:
+        - none
+        - now
+    - key: last_price
+      path:
+        - lastTradeRate
+      type:
+        - str
+        - float
+    - key: best_bid
+      path:
+        - bidRate
+      type:
+        - str
+        - float
+    - key: best_ask
+      path:
+        - askRate
+      type:
+        - str
+        - float
+
+  order_books:
+    request:
+      template: markets/{currency_pair}/orderbook
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: false
+      params:
+        depth:
+          type: int
+          max: 500
+          default: 25
+    response:
+      type: dict
+      values:
+        bid:
+          type: list
+          values:
+            type: dict
+            values:
+              quantity:
+                type: str
+              rate:
+                type: str
+        ask:
+          type: list
+          values:
+            type: dict
+            values:
+              quantity:
+                type: str
+              rate:
+                type: str
+    mapping:
+    - key: time
+      path: []
+      type:
+        - none
+        - now
+    - key: id
+      path: []
+      type:
+        - none
+        - now_timestamp
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_price
+      path:
+        - bid
+        - rate
+      type:
+        - str
+        - float
+    - key: bids_amount
+      path:
+        - bid
+        - quantity
+      type:
+        - str
+        - float
+    - key: asks_price
+      path:
+        - ask
+        - rate
+      type:
+        - str
+        - float
+    - key: asks_amount
+      path:
+        - ask
+        - quantity
+      type:
+        - str
+        - float
+
+  trades:
+    request:
+      template: markets/{currency_pair}/trades
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: true
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          id:
+            type: str
+          executedAt:
+            type: str
+          quantity:
+            type: str
+          rate:
+            type: str
+          takerSide:
+            type: str
+
+    mapping:
+    - key: time
+      path:
+        - executedAt
+      type:
+        - str
+        - dateparser
+    - key: id
+      path:
+        - id
+      type:
+        - str
+    - key: price
+      path:
+        - rate
+      type:
+        - str
+        - float
+    - key: amount
+      path:
+        - quantity
+      type:
+        - str
+        - float
+    - key: direction
+      path:
+        - takerSide
+      type:
+        - str
+
+  historic_rates:
+    request:
+      template: markets/{currency_pair}/candles/{frequency}/historical/{from}
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: false
+        alias: null
+      params:
+        frequency:
+          allowed:
+            minutes: MINUTE_1
+          default: MINUTE_1
+
+        from:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 1440
+            - from_timestamp
+            - 0
+            - "%Y/%m/%d"
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          startsAt:
+            type: str
+          open:
+            type: str
+          high:
+            type: str
+          low:
+            type: str
+          close:
+            type: str
+          volume:
+            type: str
+          quoteVolume:
+            type: str
+    mapping:
+      - key: time
+        path:
+          - startsAt
+        type:
+          - str
+          - dateparser
+      - key: open
+        path:
+          - open
+        type:
+          - str
+          - float
+      - key: high
+        path:
+          - high
+        type:
+          - str
+          - float
+      - key: low
+        path:
+          - low
+        type:
+          - str
+          - float
+      - key: close
+        path:
+          - close
+        type:
+          - str
+          - float
+      - key: volume
+        path:
+          - quoteVolume
+        type:
+          - str
+          - float

@@ -1,0 +1,384 @@
+name: ftx
+is_exchange: true
+api_docs: https://docs.ftx.com/#rest-api
+api_url: https://ftx.com/api/
+#
+rate_limit:
+  max: 1800
+  unit: 60
+
+requests:
+  currency_pairs:
+    request:
+      template: markets
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        success:
+          type: boolean
+        result:
+          type: list
+          values:
+            type: dict
+            values:
+              name:
+                type: str
+              baseCurrency:
+                type: str
+              quoteCurrency:
+                type: str
+              type:
+                type: str
+              underlying:
+                type: str
+              enabled:
+                type: boolean
+              ask:
+                type: float
+              bid:
+                type: float
+              last:
+                type: float
+              postOnly:
+                type: boolean
+              priceIncrement:
+                type: float
+              sizeIncrement:
+                type: float
+              restricted:
+                type: boolean
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - result
+          - baseCurrency
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - result
+          - quoteCurrency
+        type:
+          - str
+
+  tickers:
+    request:
+      template: markets
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        success:
+          type: boolean
+        result:
+          type: list
+          values:
+            type: dict
+            values:
+              name:
+                type: str
+              baseCurrency:
+                type: str
+              quoteCurrency:
+                type: str
+              type:
+                type: str
+              underlying:
+                type: str
+              enabled:
+                type: boolean
+              ask:
+                type: float
+              bid:
+                type: float
+              last:
+                type: float
+              postOnly:
+                type: boolean
+              priceIncrement:
+                type: float
+              sizeIncrement:
+                type: float
+              restricted:
+                type: boolean
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - result
+          - baseCurrency
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - result
+          - quoteCurrency
+        type:
+          - str
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: last
+        path:
+          - result
+          - last
+        type:
+          - float
+      - key: best_ask
+        path:
+          - result
+          - ask
+        type:
+          - float
+      - key: best_bid
+        path:
+          - result
+          - bid
+        type:
+          - float
+
+  historic_rates:
+    request:
+      template: markets/{currency_pair}/candles
+      pair_template:
+        template: "{first}_{second}"
+        alias: null
+        lower_case: false
+      params:
+        resolution:
+          allowed:
+            seconds: 15
+            minutes: 60
+            hours: 3600
+            days: 86400
+          default: 86400 #daily
+        limit:
+          type: int
+          default: 5000
+        end_time:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestamp
+
+    response:
+      type: dict
+      values:
+        success:
+          type: boolean
+        result:
+          type: list
+          values:
+            type: dict
+            values:
+              close:
+                type: float
+              high:
+                type: float
+              low:
+                type: float
+              open:
+                type: float
+              startTime:
+                type: str
+              time:
+                type: int
+              volume:
+                type: float
+    mapping:
+      - key: time
+        path:
+          - result
+          - time
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: open
+        path:
+          - result
+          - open
+        type:
+          - float
+      - key: high
+        path:
+          - result
+          - high
+        type:
+          - float
+      - key: low
+        path:
+          - result
+          - low
+        type:
+          - float
+      - key: close
+        path:
+          - result
+          - close
+        type:
+          - float
+      - key: volume
+        path:
+          - result
+          - volume
+        type:
+          - float
+
+  trades:
+    request:
+      template: markets/{currency_pair}/trades
+      pair_template:
+        template: "{first}_{second}"
+        alias: null
+        lower_case: false
+      params:
+        limit:
+          type: int
+          default: 100
+
+    response:
+      type: dict
+      values:
+        success:
+          type: boolean
+        result:
+          type: list
+          values:
+            type: dict
+            values:
+              id:
+                type: int
+              liquidation:
+                type: boolean
+              price:
+                type: float
+              side:
+                type: str
+              size:
+                type: float
+              time:
+                type: str
+    mapping:
+      - key: time
+        path:
+          - result
+          - time
+        type:
+          - str
+          - strptime
+          - "%Y-%m-%dT%H:%M:%S.%f+00:00"
+      - key: id
+        path:
+          - result
+          - id
+        type:
+          - int
+      - key: direction
+        path:
+          - result
+          - side
+        type:
+          - str
+      - key: price
+        path:
+          - result
+          - price
+        type:
+          - float
+      - key: amount
+        path:
+          - result
+          - size
+        type:
+          - float
+
+  order_books:
+    request:
+      template: markets/{currency_pair}/orderbook
+      pair_template:
+        template: "{first}_{second}"
+        alias: null
+        lower_case: false
+      params:
+        depth:
+          type: int
+          default: 200
+
+    response:
+      type: dict
+      values:
+        success:
+          type: bool
+        result:
+          type: dict
+          values:
+            asks:
+              type: list
+              values:
+                type: list
+                0:
+                  type: float
+                1:
+                  type: float
+            bids:
+              type: list
+              values:
+                type: list
+                0:
+                  type: float
+                1:
+                  type: float
+
+    mapping:
+      - key: id
+        path: []
+        type:
+          - none
+          - now_timestamp
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: bids_price
+        path:
+          - result
+          - bids
+          - 0
+        type:
+          - float
+      - key: bids_amount
+        path:
+          - result
+          - bids
+          - 1
+        type:
+          - float
+      - key: asks_price
+        path:
+          - result
+          - asks
+          - 0
+        type:
+          - float
+      - key: asks_amount
+        path:
+          - result
+          - asks
+          - 1
+        type:
+          - float

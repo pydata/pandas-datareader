@@ -1,0 +1,340 @@
+name: therocktrading
+exchange: true
+
+rate_limit:
+  max: 600
+  unit: 60
+
+api_url: https://api.therocktrading.com/v1/
+
+requests:
+  currency_pairs:
+    request:
+      template: funds
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        funds:
+          type: list
+          values:
+            type: dict
+            values:
+              base_currency:
+                type: str
+              trade_currency:
+                type: str
+
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - funds
+          - trade_currency
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - funds
+          - base_currency
+        type:
+          - str
+
+  tickers:
+    request:
+      template: funds/{currency_pair}/ticker
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+      params: null
+    response:
+      type: dict
+      values:
+        date:
+          type: str
+        bid:
+          type: str
+        ask:
+          type: str
+        last:
+          type: str
+        volume:
+          type: str
+        traded_volume:
+          type: str
+
+    mapping:
+      - key: last_price
+        path:
+          - last
+        type:
+          - str
+          - float
+      - key: time
+        path:
+          - date
+        type:
+          - str
+          - dateparser
+      - key: best_bid
+        path:
+          - bid
+        type:
+          - str
+          - float
+      - key: best_ask
+        path:
+          - ask
+        type:
+          - str
+          - float
+      - key: daily_volume
+        path:
+          - volume
+        type:
+          - str
+          - float
+
+  historic_rates:
+    request:
+      template: funds/{currency_pair}/ohlc_statistics
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+      params:
+        period:
+          allowed:
+            minutes: 1
+            hours: 60
+#            days: 1440
+#            weeks: 10080
+#            months: 43200
+          default: 60
+        before:
+          function: last_timestamp
+          type:
+            - datetime
+            - format
+            - "%Y-%m-%dT%H:%M:%S%Z"
+        after:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 1000 #max interval 60 DAYS!
+            - from_timestamp
+            - 0
+            - "%Y-%m-%dT%H:%M:%S%Z"
+#          default: "2020-03-19T17:25:00.000Z"
+        sort:
+          default: DESC
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          open:
+            type: float
+          high:
+            type: float
+          low:
+            type: float
+          close:
+            type: float
+          base_volume:
+            type: float
+          trade_volume:
+            type: float
+          interval_starts_at:
+            type: str
+          interval_ends_at:
+            type: str
+
+    mapping:
+    - key: time
+      path:
+        - interval_ends_at
+      type:
+        - str
+        - dateparser
+    - key: open
+      path:
+        - open
+      type:
+        - float
+    - key: high
+      path:
+        - high
+      type:
+        - float
+    - key: low
+      path:
+        - low
+      type:
+        - float
+    - key: close
+      path:
+        - close
+      type:
+        - float
+    - key: volume
+      path:
+        - traded_volume
+      type:
+        - float
+
+  trades:
+    request:
+      template: funds/{currency_pair}/trades
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+      params:
+#        before:
+#          function: last_timestamp
+#          type:
+#            - datetime
+#            - format
+#            - "%Y-%m-%dT%H:%M:%S%Z"
+#        after:
+#          function: last_timestamp
+#          type:
+#            - datetime
+#            - timedelta
+#            - interval
+#            - 1000
+#            - fromtimestamp
+#            - "%Y-%m-%dT%H:%M:%S%Z"
+        per_page:
+          max: 250
+          default: 250
+
+    response:
+      type: dict
+      values:
+        type: list
+        values:
+          type: dict
+          values:
+            trade_id:
+              type: int
+            amount:
+              type: float
+            price:
+              type: float
+              side:
+                type: str
+              date:
+                type: str
+
+
+    mapping:
+    - key: time
+      path:
+        - trades
+        - date
+      type:
+        - str
+        - dateparser
+    - key: id
+      path:
+        - trades
+        - id
+      type:
+        - int
+    - key: direction
+      path:
+        - trades
+        - side
+      type:
+        - str
+    - key: price
+      path:
+        - trades
+        - price
+      type:
+        - float
+    - key: amount
+      path:
+        - trades
+        - amount
+      type:
+        - float
+
+  order_books:
+    request:
+      template: funds/{currency_pair}/orderbook
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+      params:
+        limit:
+          default: 50
+    response:
+      type: dict
+      values:
+        date:
+          type: str
+        asks:
+          type: list
+          values:
+            type: dict
+            values:
+              price:
+                type: float
+              amount:
+                type: float
+        bids:
+          type: list
+          values:
+            type: dict
+            values:
+              price:
+                type: float
+              amount:
+                type: float
+
+    mapping:
+    - key: time
+      path:
+        - date
+      type:
+        - str
+        - dateparser
+    - key: id
+      path: []
+      type:
+        - none
+        - now_timestamp
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - bids
+        - amount
+      type:
+        - float
+    - key: bids_price
+      path:
+        - bids
+        - price
+      type:
+        - float
+    - key: asks_amount
+      path:
+        - asks
+        - amount
+      type:
+        - float
+    - key: asks_price
+      path:
+        - asks
+        - price
+      type:
+        - float

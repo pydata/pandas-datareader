@@ -1,0 +1,389 @@
+name: btc_turk
+is_exchange: true
+
+api_url: "" #Base Api url changes. Complete URL therefore in templates
+rate_limit:
+  max: 60
+  unit: 60
+
+requests:
+  currency_pairs:
+    request:
+      template: https://api.btcturk.com/api/v2/ticker
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        data:
+          type: dict
+          values:
+            type: list
+            values:
+              pair:
+                type: str
+              pairNormalized:
+                type: str
+              timestamp:
+                type: int
+              last:
+                type: float
+              high:
+                type: float
+              low:
+                type: float
+              bid:
+                type: float
+              ask:
+                type: float
+              open:
+                type: float
+              volume:
+                type: float
+
+    mapping:
+    - key: currency_pair_first
+      path:
+      - data
+      - pairNormalized
+      type:
+      - str
+      - split
+      - "_"
+      - 0
+    - key: currency_pair_second
+      path:
+      - data
+      - pairNormalized
+      type:
+      - str
+      - split
+      - "_"
+      - 1
+
+  tickers:
+    request:
+      template: https://api.btcturk.com/api/v2/ticker
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        data:
+          type: dict
+          values:
+            type: list
+            values:
+              pair:
+                type: str
+              pairNormalized:
+                type: str
+              timestamp:
+                type: int
+              last:
+                type: float
+              high:
+                type: float
+              low:
+                type: float
+              bid:
+                type: float
+              ask:
+                type: float
+              open:
+                type: float
+              volume:
+                type: float
+    mapping:
+    - key: currency_pair_first
+      path:
+      - data
+      - pairNormalized
+      type:
+      - str
+      - split
+      - "_"
+      - 0
+    - key: currency_pair_second
+      path:
+      - data
+      - pairNormalized
+      type:
+      - str
+      - split
+      - "_"
+      - 1
+    - key: time
+      path:
+      - data
+      - timestamp
+      type:
+      - float
+      - from_timestamp
+      - 1
+    - key: best_bid
+      path:
+      - data
+      - bid
+      type:
+      - float
+    - key: daily_volume
+      path:
+      - data
+      - volume
+      type:
+      - float
+    - key: best_ask
+      path:
+      - data
+      - ask
+      type:
+      - float
+    - key: last_price
+      path:
+        - data
+        - last
+      type:
+        - float
+
+  order_books:
+    request:
+      template: https://api.btcturk.com/api/v2/orderbook
+      pair_template: # e.g. BTCTRY
+        template: "{first}{second}"
+        lower_case: false
+        alias: pairSymbol
+      params:
+        limit:
+          type: int
+          default: 100 #max 1000
+    response:
+      type: dict
+      values:
+        data:
+          type: dict
+          values:
+            timestamp:
+              type: int
+            bids:
+              type: list
+              values:
+                type: list
+                values:
+                  0: #price
+                    type: str
+                  1:  # qty
+                    type: str
+            asks:
+              type: list
+              values:
+                type: list
+                values:
+                  0:
+                    type: str
+                  1:
+                    type: str
+
+    mapping:
+    - key: time
+      path:
+      - data
+      - timestamp
+      type:
+      - float
+      - from_timestamp
+      - 1
+    - key: id
+      path:
+        - data
+        - timestamp
+      type:
+        - int
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_price
+      path:
+      - data
+      - bids
+      - 0
+      type:
+      - str
+      - float
+    - key: bids_amount
+      path:
+      - data
+      - bids
+      - 1
+      type:
+      - str
+      - float
+    - key: asks_price
+      path:
+      - data
+      - asks
+      - 0
+      type:
+      - str
+      - float
+    - key: asks_amount
+      path:
+      - data
+      - asks
+      - 1
+      type:
+      - str
+      - float
+
+  trades:
+    request:
+      template: https://api.btcturk.com/api/v2/trades
+      pair_template: # e.g. BTCTRY
+        template: "{first}{second}"
+        lower_case: false
+        alias: pairSymbol
+      params:
+        last:
+          type: int
+          max: 50
+          default: 50
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              pair:
+                type: str
+              pairNormalized:
+                type: str
+              date:
+                type: int
+              tid:
+                type: str
+              price:
+                type: float
+              amount:
+                type: float
+              side:
+                type: str
+
+
+    mapping:
+    - key: time
+      path:
+      - data
+      - date
+      type:
+      - float
+      - from_timestamp
+      - 1
+    - key: id
+      path:
+        - data
+        - tid
+      type:
+        - str
+        - int
+    - key: direction
+      path:
+        - data
+        - side
+      type:
+        - str
+    - key: price
+      path:
+      - data
+      - price
+      type:
+      - str
+      - float
+    - key: amount
+      path:
+      - data
+      - amount
+      type:
+      - str
+      - float
+
+  historic_rates: # no hint which currency pair is meant
+    request:
+      template: https://graph-api.btcturk.com/v1/ohlcs
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: pair
+      params:
+        to: # from and to params are available. But API returns every data point by default.
+          function: last_timestamp
+          type:
+            - datetime
+            - timestamp
+        from:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 1000
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          time:
+            type: int
+          open:
+            type: float
+          high:
+            type: float
+          low:
+            type: float
+          close:
+            type: float
+          volume:
+            type: float
+          average:
+            type: float
+          dailyChangeAmount:
+            type: float
+          dailyChangePercentage:
+            type: float
+    mapping:
+    - key: time
+      path:
+      - time
+      type:
+      - float
+      - from_timestamp
+      - 0
+    - key: open
+      path:
+      - open
+      type:
+      - float
+    - key: high
+      path:
+      - high
+      type:
+      - float
+    - key: low
+      path:
+      - low
+      type:
+      - float
+    - key: close
+      path:
+      - close
+      type:
+      - float
+    - key: volume
+      path:
+      - volume
+      type:
+      - float

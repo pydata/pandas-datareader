@@ -1,0 +1,255 @@
+# Tickers only with no split parameter in the CP
+name: nicehash
+exchange: true
+
+rate_limit: null
+
+api_url: https://api2.nicehash.com/exchange/api/v2/
+
+requests:
+  currency_pairs:
+    request:
+      template: info/status
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        symbols:
+          type: list
+          values:
+            type: dict
+            values:
+              baseAsset:
+                type: str
+              quoteAsset:
+                type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - symbols
+          - baseAsset
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - symbols
+          - quoteAsset
+        type:
+          - str
+
+
+  historic_rates:
+    request:
+      template: info/candlesticks
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: market
+      params:
+        resolution:
+          allowed:
+            minutes: 1
+            hours: 60
+            days: 1440
+          default: 1440 # daily
+        from:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 2000
+        to:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestamp
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          time:
+            type: int
+          open:
+            type: float
+          close:
+            type: float
+          high:
+            type: float
+          low:
+            type: float
+          volume:
+            type: float
+          quote_volume:
+            type: float
+
+    mapping:
+    - key: time
+      path:
+        - time
+      type:
+        - float
+        - from_timestamp
+        - 0
+    - key: open
+      path:
+        - open
+      type:
+        - float
+    - key: high
+      path:
+        - high
+      type:
+        - float
+    - key: low
+      path:
+        - low
+      type:
+        - float
+    - key: close
+      path:
+        - close
+      type:
+        - float
+    - key: volume
+      path:
+        - volume
+      type:
+        - float
+
+  trades:
+    request:
+      template: info/trades
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: market
+      params:
+        limit:
+          default: 200
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          id:
+            type: str
+          dir:
+            type: str
+          price:
+            type: flaot
+          qty:
+            type: float
+          sndQty:
+            type: float
+          time:
+            type: int
+
+    mapping:
+    - key: time
+      path:
+        - time
+      type:
+        - float
+        - from_timestamp
+        - 2
+    - key: id
+      path:
+        - id
+      type:
+        - str
+    - key: direction
+      path:
+        - dir
+      type:
+        - str
+    - key: price
+      path:
+        - price
+      type:
+        - float
+    - key: amount
+      path:
+        - qty
+      type:
+        - float
+
+  order_books:
+    request:
+      template: orderbook
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: market
+      params:
+        limit:
+          default: 50
+
+    response:
+      type: dict
+      values:
+        tick:
+          type: int
+        buy:
+          type: list
+          values:
+            type: list
+            values:
+              0:
+                type: float
+              1:
+                type: float
+        sell:
+          type: list
+          values:
+            type: list
+            values:
+              0:
+                type: float
+              1:
+                type: float
+
+    mapping:
+    - key: time
+      path: []
+      type:
+        - none
+        - now
+    - key: id
+      path:
+        - tick
+      type:
+        - int
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - buy
+        - 1
+      type:
+        - float
+    - key: bids_price
+      path:
+        - buy
+        - 0
+      type:
+        - float
+    - key: asks_amount
+      path:
+        - sell
+        - 1
+      type:
+        - float
+    - key: asks_price
+      path:
+        - sell
+        - 0
+      type:
+        - float

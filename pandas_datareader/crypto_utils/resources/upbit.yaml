@@ -1,0 +1,320 @@
+name: upbit
+exchange: true
+api_url: https://api.upbit.com/v1/
+rate_limit: null
+
+requests:
+  currency_pairs:
+    request:
+      template: market/all
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          market: # e.g. KRW-BTC
+            type: str
+          korean_name:
+            type: str
+          english_name:
+            type: str
+    mapping:
+    - key: currency_pair_first
+      path:
+      - market
+      type:
+      - str
+      - split
+      - "-"
+      - 1
+    - key: currency_pair_second
+      path:
+      - market
+      type:
+      - str
+      - split
+      - "-"
+      - 0
+
+  historic_rates:
+    request:
+      template: candles/{frequency}
+      pair_template: # e.g. KRW-BTC
+        template: "{second}-{first}"
+        lower_case: false
+        alias: market
+      params:
+        frequency:
+          allowed:
+            minutes: minutes/1
+            hours: minutes/60
+            days: days
+            weeks: weeks
+            months: months
+          default: days
+        to:
+          function: last_timestamp
+          type:
+          - datetime
+          - format
+          - "%Y-%m-%dT%H:%M:%S.%fZ"
+        count:
+          type: int
+          max: 200
+          default: 200
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          market:
+            type: str
+          candle_date_time_utc:
+            type:
+            - str
+          candle_date_time_kst:
+            type:
+            - str
+          opening_price:
+            type: float
+          high_price:
+            type: float
+          low_price:
+            type: float
+          trade_price:
+            type: float
+          timestamp:
+            type:
+            - int
+          candle_acc_trade_price:
+            type: float
+          candle_acc_trade_volume:
+            type: float
+    mapping:
+    - key: open
+      path:
+      - opening_price
+      type:
+      - float
+    - key: high
+      path:
+      - high_price
+      type:
+      - float
+    - key: low
+      path:
+      - low_price
+      type:
+      - float
+    - key: close
+      path:
+        - trade_price
+      type:
+        - float
+    - key: time
+      path:
+      - candle_date_time_utc
+      type:
+        - str
+        - dateparser
+    - key: volume
+      path:
+      - candle_acc_trade_volume
+      type:
+      - float
+
+  trades:
+    request:
+      template: trades/ticks
+      pair_template: # e.g. KRW-BTC
+        template: "{second}-{first}"
+        lower_case: false
+        alias: market
+      params:
+        count:
+          type: int
+          default: 1000
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          market:
+            type: str
+          trade_date_utc:
+            type:
+            - str
+            - strptime
+            - "%Y-%m-%d"
+          trade_time_utc:
+            type:
+            - str
+            - strptime
+            - "%H:%M:%S"
+          timestamp:
+            type:
+            - float
+            - from_timestamp
+            - 0
+          trade_price:
+            type: float
+          trade_volume:
+            type: float
+          prev_closing_price:
+            type: float
+          change_price:
+            type: float
+          ask_bid: # ask or bid
+            type: str
+    mapping:
+    - key: time
+      path:
+      - timestamp
+      type:
+      - float
+      - from_timestamp
+      - 1
+    - key: price
+      path:
+      - trade_price
+      type:
+      - float
+    - key: amount
+      path:
+      - trade_volume
+      type:
+      - float
+    - key: direction
+      path:
+      - ask_bid
+      type:
+      - value
+      - map
+      - ASK
+      - sell
+      - BID
+      - buy
+    - key: id
+      path:
+        - sequential_id
+      type:
+        - float
+
+  tickers:
+    request:
+      template: ticker
+      pair_template:
+        template: "{second}-{first}"
+        lower_case: false
+        alias: markets
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          market:
+            type: str
+          trade_date:
+            type: str
+          trade_time:
+            type: str
+          trade_timestamp:
+            type: int
+          trade_price:
+            type: int
+    mapping:
+      - key: time
+        path:
+          - trade_timestamp
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: last_price
+        path:
+          - trade_price
+        type:
+          - float
+
+  order_books:
+    request:
+      template: orderbook
+      pair_template: # e.g. KRW-BTC
+        template: "{second}-{first}"
+        lower_case: false
+        alias: markets
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          market:
+            type: str
+          timestamp:
+            type:
+            - float
+            - from_timestamp
+            - 0
+          total_ask_size:
+            type: float
+          total_bid_size:
+            type: float
+          orderbook_units:
+            type: list
+            values:
+              type: dict
+              values:
+                ask_price:
+                  type: float
+                bid_price:
+                  type: float
+                ask_size:
+                  type: float
+                bid_size:
+                  type: float
+    mapping:
+    - key: time
+      path:
+      - timestamp
+      type:
+      - float
+      - from_timestamp
+      - 1
+    - key: id
+      path:
+        - timestamp
+      type:
+        - int
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: asks_price
+      path:
+      - orderbook_units
+      - ask_price
+      type:
+      - float
+    - key: bids_price
+      path:
+      - orderbook_units
+      - bid_price
+      type:
+      - float
+    - key: asks_amount
+      path:
+      - orderbook_units
+      - ask_size
+      type:
+      - float
+    - key: bids_amount
+      path:
+      - orderbook_units
+      - bid_size
+      type:
+      - float

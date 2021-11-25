@@ -1,0 +1,331 @@
+name: btse
+exchange: true
+
+rate_limit:
+  max: 900
+  unit: 60
+
+api_url: https://api.btse.com/spot/
+
+requests:
+  currency_pairs:
+    request:
+      template: api/v3.2/market_summary
+      pair_template: null
+      params: null
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          symbol:
+            type: str
+          base:
+            type: str
+          quote:
+            type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - base
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - quote
+        type:
+          - str
+
+  tickers:
+    request:
+      template: api/v3.2/market_summary
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          symbol:
+            type: str
+          base:
+            type: str
+          quote:
+            type: str
+          last:
+            type: float
+          lowestAsk:
+            type: float
+          highestBid:
+            type: float
+          volume:
+            type: float
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - base
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - quote
+        type:
+          - str
+      - key: last_price
+        path:
+          - last
+        type:
+          - float
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: best_bid
+        path:
+          - highestBid
+        type:
+          - float
+      - key: best_ask
+        path:
+          - lowestAsk
+        type:
+          - float
+      - key: daily_volume
+        path:
+          - volume
+        type:
+          - float
+
+  historic_rates:
+    request:
+      template: api/v3.2/ohlcv
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        resolution:
+          allowed:
+            minutes: 1
+            hours: 60
+            days: 1440
+            weeks: 10080
+            months: 43200
+          default: 1440
+        start:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 200
+        end:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestamp
+    response:
+      type: list
+      values:
+        type: list
+        values:
+          0:  #time
+            type: int
+          1:  #open
+            type: float
+          2:  #high
+            type: float
+          3:  #low
+            type: float
+          4:  #close
+            type: float
+          5: #volume
+            type: float
+    mapping:
+    - key: time
+      path:
+        - 0
+      type:
+        - float
+        - from_timestamp
+        - 0
+    - key: open
+      path:
+        - 1
+      type:
+        - float
+    - key: high
+      path:
+        - 2
+      type:
+        - float
+    - key: low
+      path:
+        - 3
+      type:
+        - float
+    - key: close
+      path:
+        - 4
+      type:
+        - float
+    - key: volume
+      path:
+        - 5
+      type:
+        - float
+
+
+  trades:
+    request:
+      template: api/v3.2/trades
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: false
+        alias: symbol
+      params:
+#        startTime:
+#          function: last_timestamp
+#          type:
+#            - timestamp
+#            - timedelta
+#            - interval
+#            -  200
+#            - datetime
+#        endTime:
+#          function: last_timestamp
+#          type:
+#            - timestmap
+#            - datetime
+        count:
+          default: 300
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          price:
+            type: float
+          size:
+            type: float
+          side:
+            type: str
+          serialId:
+            type: int
+          timestamp:
+            type: int
+
+    mapping:
+    - key: time
+      path:
+        - timestamp
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: id
+      path:
+        - serialId
+      type:
+        - int
+    - key: direction
+      path:
+        - side
+      type:
+        - str
+    - key: price
+      path:
+        - price
+      type:
+        - float
+    - key: amount
+      path:
+        - size
+      type:
+        - float
+
+  order_books:
+    request:
+      template: api/v3.2/orderbook/L2
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        depth:
+          default: 50
+
+    response:
+      type: dict
+      values:
+        timestamp:
+          type: int
+        buyQuote:
+          type: list
+          values:
+            type: dict
+            values:
+              price:
+                type: str
+              size:
+                type: str
+        sellQuote:
+          type: list
+          values:
+            type: dict
+            values:
+              price:
+                type: str
+              size:
+                type: str
+
+    mapping:
+    - key: time
+      path:
+        - timestamp
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: id
+      path:
+        - timestamp
+      type:
+        - int
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - buyQuote
+        - size
+      type:
+        - str
+        - float
+    - key: bids_price
+      path:
+        - buyQuote
+        - price
+      type:
+        - str
+        - float
+    - key: asks_amount
+      path:
+        - sellQuote
+        - size
+      type:
+        - str
+        - float
+    - key: asks_price
+      path:
+        - sellQuote
+        - price
+      type:
+        - str
+        - float

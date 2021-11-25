@@ -1,0 +1,322 @@
+name: zb
+is_exchange: true
+api_docs: https://www.zb.com/en/api
+api_url: http://api.zb.land/
+rate_limit:
+  max: 60
+  unit: 60
+
+requests:
+  currency_pairs:
+    request:
+      template: data/v1/markets
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: dict
+          values:
+            priceScale:
+              type: int
+
+    mapping:
+    - key: currency_pair_first
+      path:
+        - dict_key
+      type:
+        - str
+        - split
+        - "_"
+        - 0
+    - key: currency_pair_second
+      path:
+        - dict_key
+      type:
+        - str
+        - split
+        - "_"
+        - 1
+
+  tickers:
+    request:
+      template: data/v1/ticker
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: true
+        alias: market
+      params: null
+
+    response:
+      type: dict
+      values:
+        date:
+          type: int
+        ticker:
+          type: dict
+          values:
+            vol:
+              type: str
+            last:
+              type: str
+            buy:
+              type: str
+            sell:
+              type: str
+    mapping:
+      - key: time
+        path:
+          - date
+        type:
+          - str
+          - float
+          - from_timestamp
+          - 1
+      - key: last_price
+        path:
+          - ticker
+          - last
+        type:
+          - str
+          - float
+      - key: best_ask
+        path:
+          - ticker
+          - sell
+        type:
+          - str
+          - float
+      - key: best_bid
+        path:
+          - ticker
+          - buy
+        type:
+          - str
+          - float
+      - key: daily_volume
+        path:
+          - ticker
+          - vol
+        type:
+          - str
+          - float
+
+
+  order_books:
+    request:
+      template: data/v1/depth
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: true
+        alias: market
+      params:
+        size:
+          type: int
+          max: 50
+          default: 50
+    response:
+      type: dict
+      values:
+        timestamp:
+          type: int
+        bids:
+          type: list
+          values:
+            type: list
+            0: #price
+              type: float
+            1: #qty
+              type: float
+        asks:
+          type: list
+          values:
+            type: list
+            0:
+              type: float
+            1:
+              type: float
+    mapping:
+      - key: timestamp
+        path:
+          - timestamp
+        type:
+          - float
+          - from_timestamp
+          - 0
+      - key: id
+        path:
+          - timestamp
+        type:
+          - int
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_price
+        path:
+          - bids
+          - 0
+        type:
+          - float
+      - key: bids_amount
+        path:
+          - bids
+          - 1
+        type:
+          - float
+      - key: asks_price
+        path:
+          - asks
+          - 0
+        type:
+          - float
+      - key: asks_amount
+        path:
+          - asks
+          - 1
+        type:
+          - float
+
+  trades:
+    request:
+      template: data/v1/trades
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: true
+        alias: market
+      params: null
+    response:
+      type: list
+      value:
+        type: dict
+        values:
+          price:
+            type: str
+          amount:
+            typ: str
+          date:
+            type: int
+          type:
+            type: str
+          tid:
+            type: int
+    mapping:
+      - key: time
+        path:
+          - date
+        type:
+          - float
+          - from_timestamp
+          - 0
+      - key: direction
+        path:
+          - type
+        type:
+          - str
+      - key: id
+        path:
+          - tid
+        type:
+          - int
+      - key: price
+        path:
+          - price
+        type:
+          - str
+          - float
+      - key: amount
+        path:
+          - amount
+        type:
+          - str
+          - float
+
+  historic_rates:
+    request:
+      template: data/v1/kline
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: true
+        alias: market
+      params:
+        type:
+          allowed:
+            minutes: 1min
+            days: 1day
+            hours: 1hour
+            weeks: 1week
+          default: 1day
+        since:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedeltams
+            - interval
+            - 1000
+        limit:
+          type: int
+          max: 1000
+          default: 1000
+
+
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            0: #timestamp
+              type: int
+            1: #open
+              type: float
+            2: #high
+              type: float
+            3: #low
+              type: float
+            4: #close
+              type: float
+            5: #volume
+              type: float
+
+    mapping:
+      - key: time
+        path:
+          - data
+          - 0
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: open
+        path:
+          - data
+          - 1
+        type:
+          - float
+      - key: high
+        path:
+          - data
+          - 2
+        type:
+          - float
+      - key: low
+        path:
+          - data
+          - 3
+        type:
+          - float
+      - key: close
+        path:
+          - data
+          - 4
+        type:
+          - float
+      - key: volume
+        path:
+          - data
+          - 5
+        type:
+          - float
