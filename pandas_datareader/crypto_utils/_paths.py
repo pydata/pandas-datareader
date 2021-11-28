@@ -12,5 +12,7 @@ from pathlib import Path
 # sys.path.insert(0, os.path.dirname(__file__))
 
 all_paths = {
-    "yaml_path": Path(os.path.dirname(os.path.realpath(__file__))).joinpath("resources/"),
+    "yaml_path": Path(os.path.dirname(os.path.realpath(__file__))).joinpath(
+        "resources/"
+    ),
 }

@@ -28,7 +28,7 @@ from .data import (
     get_records_iex,
     get_summary_iex,
     get_tops_iex,
-    get_data_crypto
+    get_data_crypto,
 )
 
 PKG = os.path.dirname(__file__)

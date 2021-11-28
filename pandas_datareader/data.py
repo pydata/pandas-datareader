@@ -63,7 +63,7 @@ __all__ = [
     "get_dailysummary_iex",
     "get_data_stooq",
     "DataReader",
-    "get_data_crypto"
+    "get_data_crypto",
 ]
 
 
@@ -368,7 +368,7 @@ def DataReader(
         "av-intraday",
         "econdb",
         "naver",
-        *crypto_exchanges
+        *crypto_exchanges,
     ]
 
     if data_source not in expected_source:
@@ -709,5 +709,5 @@ def Options(symbol, data_source=None, session=None):
     else:
         raise NotImplementedError("currently only yahoo supported")
 
-crypto_exchanges = get_exchange_names()
 
+crypto_exchanges = get_exchange_names()

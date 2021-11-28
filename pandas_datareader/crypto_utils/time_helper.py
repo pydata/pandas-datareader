@@ -40,7 +40,7 @@ class TimeHelper:
         "hours": "hour",
         "days": "day",
         "weeks": "week",
-        "months": "month"
+        "months": "month",
     }
 
     @staticmethod
@@ -115,7 +115,9 @@ class TimeHelper:
         return date_time.replace(tzinfo=timezone.utc).timestamp() * (1000 ** int(unit))
 
     @staticmethod
-    def start_end_conversion(date_time: datetime, frequency: str, to_end: bool = True) -> datetime:
+    def start_end_conversion(
+        date_time: datetime, frequency: str, to_end: bool = True
+    ) -> datetime:
         """ Returns the beginning/end of a period.
 
         @param date_time: The datetime object to be converted.

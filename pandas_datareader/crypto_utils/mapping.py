@@ -88,10 +88,7 @@ class Mapping:
             type conversions within the method "extract_value()".
     """
 
-    def __init__(self,
-                 key: str,
-                 path: List[str],
-                 types: List[str]):
+    def __init__(self, key: str, path: List[str], types: List[str]):
         """ Constructor of Mapping.
 
         Constructor method for constructing method objects.
@@ -113,8 +110,12 @@ class Mapping:
         self.path = path
         self.types = types
 
-    def traverse_path(self, response: Dict[str, Any], path_queue: Deque[str],
-                      currency_pair_info: Tuple[str, str, str] = None) -> Any:
+    def traverse_path(
+        self,
+        response: Dict[str, Any],
+        path_queue: Deque[str],
+        currency_pair_info: Tuple[str, str, str] = None,
+    ) -> Any:
         """ Traverses the path on a response.
 
         Helper method for traversing the path on the given response dict (subset).
@@ -158,12 +159,14 @@ class Mapping:
 
         return traversed
 
-    def extract_value(self,
-                      response: Any,
-                      path_queue: Deque[str] = None,
-                      types_queue: Deque[str] = None,
-                      iterate: bool = True,
-                      currency_pair_info: Tuple[str, str, str] = (None, None, None)) -> Any:
+    def extract_value(
+        self,
+        response: Any,
+        path_queue: Deque[str] = None,
+        types_queue: Deque[str] = None,
+        iterate: bool = True,
+        currency_pair_info: Tuple[str, str, str] = (None, None, None),
+    ) -> Any:
         """ Extracts the value specified by "self.path".
 
         Extracts the value specified by the path sequence and converts it
@@ -218,17 +221,12 @@ class Mapping:
                 for item in response:
 
                     if is_scalar(item):
-                        return self.extract_value(response,
-                                                  path_queue,
-                                                  types_queue,
-                                                  iterate=False)
+                        return self.extract_value(
+                            response, path_queue, types_queue, iterate=False
+                        )
 
                     result.append(
-                        self.extract_value(
-                            item,
-                            deque(path_queue),
-                            deque(types_queue)
-                        )
+                        self.extract_value(item, deque(path_queue), deque(types_queue))
                     )
 
                 return result
@@ -243,18 +241,20 @@ class Mapping:
 
             else:
                 # Traverse path
-                response = self.traverse_path(response, path_queue, currency_pair_info=currency_pair_info)
+                response = self.traverse_path(
+                    response, path_queue, currency_pair_info=currency_pair_info
+                )
 
-        if types_queue and response is not None:  # None to allow to change 0 to boolean.
+        if (
+            types_queue and response is not None
+        ):  # None to allow to change 0 to boolean.
 
             if isinstance(response, list):
 
                 result = list()
 
                 for item in response:
-                    result.append(
-                        convert_type(item, deque(types_queue))
-                    )
+                    result.append(convert_type(item, deque(types_queue)))
 
                 # for dict_key special_case aka. test_extract_value_list_containing_dict_where_key_is_value() in test_mapping.py
                 if len(result) == 1:
@@ -277,7 +277,9 @@ class Mapping:
         return " / ".join(string_path) + " -> " + str(self.key)
 
 
-def extract_mappings(exchange_name: str, requests: Dict[str, Any]) -> Dict[str, List[Mapping]]:
+def extract_mappings(
+    exchange_name: str, requests: Dict[str, Any]
+) -> Dict[str, List[Mapping]]:
     """ Helper-Method which should be only called by the constructor.
     Extracts out of a given exchange .yaml-requests-section for each
     request the necessary mappings so the values can be extracted from
@@ -313,9 +315,13 @@ def extract_mappings(exchange_name: str, requests: Dict[str, Any]) -> Dict[str, 
 
                 try:
                     for entry in mapping:
-                        mapping_list.append(Mapping(entry["key"], entry["path"], entry["type"]))
+                        mapping_list.append(
+                            Mapping(entry["key"], entry["path"], entry["type"])
+                        )
                 except KeyError:
-                    print(f"Error loading mappings of {exchange_name} in {request}: {entry}")
+                    print(
+                        f"Error loading mappings of {exchange_name} in {request}: {entry}"
+                    )
                     break
 
                 response_mappings[request] = mapping_list
