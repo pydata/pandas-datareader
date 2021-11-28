@@ -45,9 +45,8 @@ class TimeHelper:
 
     @staticmethod
     def now() -> datetime:
-        """ Get the current datetime (UTC+0).
-
-        The accuracy is limited to milliseconds and the remaining microseconds are cleared.
+        """ Get the current datetime (UTC+0). The accuracy is limited to
+        milliseconds and the remaining microseconds are cleared.
 
         @return: The current datetime (UTC+0).
         @rtype: datetime

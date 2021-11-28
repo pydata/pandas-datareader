@@ -75,8 +75,8 @@ class TestCryptoReader:
             self.CryptoReader.read()
 
     def test_iterate_requests_until_end(self):
-        """ Tests to iterate the request with updated timestamps until no more timestamp is collected
-            or start time is reached."""
+        """ Tests to iterate the request with updated timestamps until
+        no more timestamp is collected or start time is reached."""
         # ToDo
         pass
 
@@ -176,7 +176,8 @@ class TestExchange:
             )
 
             for mapping in mappings:
-                # Check if the object dict contains all necessary keys and not-None values.
+                # Check if the object dict contains all necessary keys
+                # and not-None values.
                 assert all(
                     [
                         item in mapping.__dict__.keys()
@@ -212,7 +213,7 @@ class TestExchange:
             assert isinstance(self.CryptoReader.params, dict)
 
     def test_all_exchange_apis(self):
-        """ Test if the API of every exchange is correctly implemented and functional."""
+        """ Test if the API of every exchange is correctly implemented."""
         # ToDo
         pass
 
@@ -693,8 +694,8 @@ class TestMapping:
         assert result == ["USD", "EUR"]
 
     def test_extract_value_where_pair_can_not_be_split(self):
-        """ Test extract value for special case where value is currency pair but cannot be extracted
-           since there is no delimiter for splitting the pair."""
+        """ Test extract value for case where value is currency pair but cannot
+        be extracted since there is no delimiter for splitting the pair."""
         mapping = Mapping("first", [], ["first_currency"])
         result = mapping.extract_value(
             ["ETHBTC", "XRPBTC"], currency_pair_info=("XRP", "BTC", "XRPBTC")
@@ -716,7 +717,8 @@ class TestMapping:
         assert value_list == result
 
     def test_extract_value_list_containing_dict_with_key(self):
-        """ Test of extract value for a list that contains a dict for each index with a known key."""
+        """ Test of extract value for a list that contains a dict for each
+        index with a known key."""
 
         # list element directly holds value behind key
         mapping = Mapping("first_currency", ["first"], ["str"])
@@ -733,7 +735,8 @@ class TestMapping:
         value_list = ["BTC", "ETH", "XRP", "DOGE", "XSA", "TEST"]
         assert value_list == result
 
-        # list element holds dict that holds another dict which holds the value behind key
+        # list element holds dict that holds another dict which holds the
+        # value behind key
         mapping = Mapping(
             "first_currency",
             [
@@ -807,7 +810,8 @@ class TestMapping:
         assert value_list == result
 
     def test_extract_values_dict_values(self):
-        """ Test of extract values for the special case that each key of a dictionary holds the values."""
+        """ Test of extract values for the special case that each key of a
+        dictionary holds the values."""
         mapping = Mapping("first_currency", ["dict_values"], ["str"])
 
         extract_dict = {"1": "XRP", 2: "ETH", "3": "BTC", 4: "DOGE"}
@@ -886,7 +890,7 @@ class TestMapping:
 
     def test_extract_value_list_containing_dict_where_key_is_value(self):
         """ Test of extract value for a list that contains a dict that contains a dict.
-           The first dict only has one key, which is the value we search for."""
+        The first dict only has one key, which is the value we search for."""
         mapping = Mapping("second_currency", ["dict_key"], ["str", "split", "_", 1])
         extract_list = [
             {"btc_eth": {"other": "values"}},
@@ -899,8 +903,9 @@ class TestMapping:
         assert value_list == result
 
     def test_extract_value_list_containing_dict_where_pair_is_key_to_values(self):
-        """ Test of extract value for a list that contains dicts that hold a single dict.
-           The key is the formatted currency pair that is needed to gain access to the value."""
+        """ Test of extract value for a list that contains dicts that hold
+        a single dict. The key is the formatted currency pair that is needed
+        to gain access to the value."""
         mapping = Mapping("value", ["currency_pair", 1], ["str", "float"])
         extract_dict = {
             "btc_eth": {1: "123.456"},
@@ -910,7 +915,8 @@ class TestMapping:
         }
         value_list = [415.161, 112.131, 789.101, 123.456]
 
-        # note that currency pair infos are from bottom to top if compared to extract_dict
+        # note that currency pair infos are from bottom to top
+        # if compared to extract_dict
         currency_pair_infos = (
             ("doge", "BTC", "doge_btc"),
             ("xrp", "eth", "xrp_eth"),
@@ -928,7 +934,8 @@ class TestMapping:
         assert value_list == result
 
     def test_extract_value_dict_containing_list(self):
-        """ Test of extract value where the response is a dict and the known key contains a list of the values."""
+        """ Test of extract value where the response is a dict and the
+        known key contains a list of the values."""
         mapping = Mapping("first_currency", ["data"], ["str", "split", "_", 0])
         extract_dict = {
             "data": ["eth_btc", "usd_btc", "xrp_eth", "eth_xrp"],

@@ -107,7 +107,8 @@ TYPE_CONVERSIONS = {
     },
     ("none", "range"): {"function": lambda: range(1), "params": 0},
     ("value", "map"): {
-        # translate into buy/sell. Args: {0: 'buy', 1:'sell'} and arg[0] is the response value (i.e. 0/1)
+        # translate into buy/sell. Args: {0: 'buy', 1:'sell'} and arg[0]
+        # is the response value (i.e. 0/1)
         "function": lambda *args: {args[1]: args[2], args[3]: args[4]}[args[0]],
         "params": 4,
     },
@@ -182,9 +183,11 @@ TYPE_CONVERSIONS = {
     },
 }
 """
-    Type Conversions used to convert extracted values from the API-Response into the desired type ("first", "second").
-    The values are specified in the .yaml-file of each exchange under the "mapping" of each method.
-    The function is called in the Mapping Class of utilities.py under the method convert_types().
+    Type Conversions used to convert extracted values from the API-Response
+    into the desired type ("first", "second"). The values are specified in the 
+    .yaml-file of each exchange under the "mapping" of each method.
+    The function is called in the Mapping Class of utilities.py under 
+    the method convert_types().
 
     "first":
         The actual type extracted from the API-Request (.json)

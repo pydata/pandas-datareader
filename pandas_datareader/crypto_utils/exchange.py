@@ -21,8 +21,9 @@ from pandas_datareader.exceptions import EmptyResponseError
 
 
 class Exchange(_BaseReader, ABC):
-    """ Class for every exchange supported. The class extracts the request url, fits parameters,
-    extracts the values from the response json and performs type-conversions."""
+    """ Class for every exchange supported. The class extracts the request url,
+    fits parameters, extracts the values from the response json and
+    performs type-conversions."""
 
     def __init__(self, exchange_name: str, interval: str = "days", *args, **kwargs):
         """ Constructor.
@@ -86,7 +87,8 @@ class Exchange(_BaseReader, ABC):
         """ Formats the request url, inserts the currency-pair representation and/or
         extracts the parameters specified for the exchange and request.
 
-        @param request_type: The request type. Default: "historic_rates". Possible: "historic_rates", "currency_pairs".
+        @param request_type: The request type. Default: "historic_rates".
+                             Possible: "historic_rates", "currency_pairs".
         @return Tuple of formatted url and formatted parameters.
         """
 
@@ -132,7 +134,8 @@ class Exchange(_BaseReader, ABC):
     def param_dict(self, request_type: str):
         """ Extracts the request url from the yaml-file and implements the parameters.
 
-        @param request_type: Request name, default: "historic_rates". Possible: "historic_rates", "currency_pairs".
+        @param request_type: Request name, default: "historic_rates".
+                             Possible: "historic_rates", "currency_pairs".
         @return: Dict of the extracted url and parameters.
         """
 
@@ -159,13 +162,17 @@ class Exchange(_BaseReader, ABC):
             "type": self._type_con,
         }
 
-        # enumerate mapping dict to sort parameter values accordingly, i.e. {"allowed": 0, "function": 1, ...}
+        # enumerate mapping dict to sort parameter values accordingly,
+        # i.e. {"allowed": 0, "function": 1, ...}
         mapping_index = {val: key for key, val in enumerate(mapping.keys())}
 
         for param, options in parameters.items():
-            # Kick out all option keys which are not in the mapping dict or where required: False.
-            # Sort the dict options according to the mapping-keys to ensure the right order of function calls.
-            # Otherwise a (valid) specified value might be overwritten by the default value.
+            # - Kick out all option keys which are not in the mapping dict
+            #   or where required: False.
+            # - Sort the dict options according to the mapping-keys to ensure
+            #   the right order of function calls.
+            # - Otherwise a (valid) specified value might be overwritten
+            #   by the default value.
             options = {k: v for k, v in options.items() if k in mapping.keys()}
             options = OrderedDict(
                 sorted(options.items(), key=lambda x: mapping_index.get(x[0]))
@@ -173,7 +180,8 @@ class Exchange(_BaseReader, ABC):
 
             if not parameters[param].get("required", True):
                 continue
-            # Iterate over the functions and fill the params dict with values. Kwargs are needed only partially.
+            # Iterate over the functions and fill the params dict with values.
+            # Kwargs are needed only partially.
             kwargs = {"has_value": None, "currency_pairs": self.symbols}
             for key, val in options.items():
                 kwargs.update({"has_value": parameter.get(param, None)})
@@ -184,7 +192,8 @@ class Exchange(_BaseReader, ABC):
         self._param_dict = urls
 
     def _allowed(self, val: dict, **_: dict) -> Any:
-        """ Extract the configured value from all allowed values. If there is no match, return str "default".
+        """ Extract the configured value from all allowed values.
+        If there is no match, return str "default".
 
         @param val: dict of allowed key, value pairs.
         @param _: unused additional arguments needed in other methods.
@@ -249,15 +258,19 @@ class Exchange(_BaseReader, ABC):
         param_value = kwargs.get("has_value", None)
         conv_params = val
 
-        # to avoid conversion when only a type declaration was done. If a parameter is of type "int".
+        # to avoid conversion when only a type declaration was done.
+        # If a parameter is of type "int".
         if isinstance(conv_params, str) or len(conv_params) < 2:
             return param_value
 
-        # replace the key "interval" with the interval specified in the configuration file.
+        # replace the key "interval" with the interval specified
+        # in the configuration file.
         conv_params = [self.interval if x == "interval" else x for x in conv_params]
 
-        # return {cp: convert_type(param_value[cp], deque(conv_params)) for cp in currency_pairs}
-        # ToDo: Check if the above line works. The older version needed both if statements below.
+        # return {cp: convert_type(param_value[cp], deque(conv_params))
+        #             for cp in currency_pairs}
+        # ToDo: Check if the above line works.
+        #       The older version needed both if statements below.
         if isinstance(param_value, dict):
             return {
                 cp: convert_type(param_value[cp], deque(conv_params))
@@ -284,11 +297,12 @@ class Exchange(_BaseReader, ABC):
     def format_data(
         self, responses: Union[Dict, List]
     ) -> Tuple[Optional[List], Optional[List]]:
-        """ Extracts and formats the response data, according to the mapping keys and path.
-        Data is then ordered and returned as a tuple.
+        """ Extracts and formats the response data, according to the
+        mapping keys and path. Data is then ordered and returned as a tuple.
 
         @param responses: The response json
-        @return: Tuple of extracted and formatted data and a list of the mapping keys in the same order.
+        @return: Tuple of extracted and formatted data and a list of the
+                 mapping keys in the same order.
         """
 
         if not responses:
@@ -300,7 +314,7 @@ class Exchange(_BaseReader, ABC):
         )
         mapping_keys = [mapping.key for mapping in mappings]
 
-        # creating dictionary where key is the name of the mapping which holds an empty list
+        # creating dict where key is the name of the mapping which holds an empty list
         temp_results = dict(
             zip((key for key in mapping_keys), itertools.repeat([], len(mappings)))
         )
@@ -315,8 +329,9 @@ class Exchange(_BaseReader, ABC):
                 temp_results[mapping.key] = mapping.extract_value(responses)
 
                 if isinstance(temp_results[mapping.key], str):
-                    # Bugfix: if value is a single string, it is an iterable, and the string will
-                    # be split in every letter. Therefore it is put into a list.
+                    # Bugfix: if value is a single string, it is an iterable,
+                    # and the string will be split in every letter.
+                    # Therefore it is put into a list.
                     temp_results[mapping.key] = [temp_results[mapping.key]]
 
         except Exception:
@@ -325,15 +340,17 @@ class Exchange(_BaseReader, ABC):
 
         else:
             # CHANGE: One filed invalid -> all fields invalid.
-            # changed this in order to avoid responses kicked out just because of one invalid field.
-            # The response will be filtered out in the DB-Handler if the primary-keys are missing anyways.
+            # Changed this in order to avoid responses kicked out just because
+            # of one invalid field. The response will be filtered out
+            # in the DB-Handler if the primary-keys are missing anyways.
             if all(
                 value is None and not isinstance(value, datetime)
                 for value in list(temp_results.values())
             ):
                 return None, None
 
-            # asserting that the extracted lists for each mapping are having the same length
+            # asserting that the extracted lists for each mapping are
+            # having the same length
             assert (len(results[0]) == len(result) for result in temp_results)
 
             len_results = {
@@ -363,11 +380,10 @@ class Exchange(_BaseReader, ABC):
 
         Process is similar to @see{self.format_ticker()}.
 
-        @param response:
-            Raw json-response from the Rest-API of this exchange that needs be formatted.
-        @return:
-            Iterator containing tuples of the following structure:
-            (self.name, name of first currency-pair, name of second currency-pair)
+        @param response: Raw json-response from the Rest-API of this exchange
+                         that needs be formatted.
+        @return: Iterator containing tuples of the following structure:
+                (self.name, name of base currency, name of quote currency)
         """
 
         results = {"currency_pair_first": [], "currency_pair_second": []}
@@ -379,8 +395,8 @@ class Exchange(_BaseReader, ABC):
             results[mapping.key] = mapping.extract_value(response)
 
             if isinstance(results[mapping.key], str):
-                # If the result is only one currency, it will be split into every letter.
-                # To avoid this, put it into a list.
+                # If the result is only one currency, it will be split
+                # into every letter. To avoid this, put it into a list:
                 results[mapping.key] = [results[mapping.key]]
             results[mapping.key] = [item.lower() for item in results[mapping.key]]
 
@@ -413,7 +429,8 @@ class Exchange(_BaseReader, ABC):
         )
 
     def reset_request_start_date(self):
-        """ Reset the end date for the symbols in order to be able to restart a request from the end date."""
+        """ Reset the end date for the symbols in order to be able to restart
+        a request from the end date."""
 
         key = list(self.symbols.keys())[0]
         self.symbols.update({key: self.end})
@@ -421,7 +438,8 @@ class Exchange(_BaseReader, ABC):
     def get_rate_limit(self) -> Union[int, float]:
         """ Calculates the rate-limit of an exchange.
 
-        @return: The rate limit, i.e. time to "sleep" to not violate the limit in seconds.
+        @return: The rate limit, i.e. time to "sleep" to not violate the
+                 limit in seconds.
         """
         if self.yaml_file.get("rate_limit"):
             if self.yaml_file["rate_limit"]["max"] <= 0:
@@ -437,11 +455,12 @@ class Exchange(_BaseReader, ABC):
         return rate_limit
 
     def apply_currency_pair_format(self, currency_pair: str) -> str:
-        """ Helper method that applies the format described in the yaml for the specific
-        request on the given currency-pair.
+        """ Helper method that applies the format described in the yaml
+        for the specific request on the given currency-pair.
 
         @param currency_pair: String repr of the currency-pair
-        @return: String of the formatted currency-pair. Example: BTC and ETH -> "btc_eth"
+        @return: String of the formatted currency-pair.
+                 Example: BTC and ETH -> "btc_eth"
         """
         try:
             first, second = currency_pair.split("/")
@@ -474,5 +493,6 @@ class Exchange(_BaseReader, ABC):
 
         if isinstance(new_symbols, str):
             new_symbols = split_str_to_list(new_symbols)
-            # Create a new dict with new symbols as keys and the end timestamp as values.
+            # Create a new dict with new symbols as keys and
+            # the end timestamp as values.
             self.symbols = dict.fromkeys(new_symbols, self.end)

@@ -51,8 +51,9 @@ def convert_type(value: Any, types_queue: Deque[str]) -> Any:
         for _ in range(conversion["params"]):
             params.append(types_queue.popleft())
 
-        # Change here to avoid "None" as result value in the params when no value to convert is needed (i.e. when
-        # methods are called with ("none", ...).
+        # Change here to avoid "None" as result value in the params when no
+        # value to convert is needed (i.e. when methods are called with
+        # ("none", ...).
         # if not result and isinstance(result, (str, list)):
         try:
             if result is None:
@@ -125,7 +126,8 @@ class Mapping:
         @param path_queue: The queue of path traversal instructions.
         @type path_queue: deque
         @param currency_pair_info: The formatted String of a currency pair.
-                                   For special case that the key of a dictionary is the formatted currency pair string.
+                                   For special case that the key of a dictionary
+                                   is the formatted currency pair string.
         @type currency_pair_info: tuple[str, str, str]
 
         @return: The traversed response dict.
@@ -145,7 +147,7 @@ class Mapping:
         elif path_element == "list_values":
             traversed = list(response.values())
         elif path_element == []:
-            # Special case to extract multiple values from a single list ["USD","BTC",...]
+            # Case to extract multiple values from a single list ["USD","BTC",...]
             traversed = response
         elif path_element == "currency_pair" and currency_pair_info[2] is not None:
             traversed = response[currency_pair_info[2]]
@@ -200,7 +202,8 @@ class Mapping:
             return None
 
         if not path_queue:
-            # TODO: after integration tests, look if clause for first and second currency can be deleted!
+            # TODO: after integration tests, look if clause for first
+            #  and second currency can be deleted!
             if types_queue[0] == "first_currency":
                 return currency_pair_info[0]
             elif types_queue[0] == "second_currency":
@@ -256,7 +259,9 @@ class Mapping:
                 for item in response:
                     result.append(convert_type(item, deque(types_queue)))
 
-                # for dict_key special_case aka. test_extract_value_list_containing_dict_where_key_is_value() in test_mapping.py
+                # for dict_key special_case aka.
+                # test_extract_value_list_containing_dict_where_key_is_value()
+                # in test_mapping.py
                 if len(result) == 1:
                     result = result[0]
 
@@ -320,7 +325,8 @@ def extract_mappings(
                         )
                 except KeyError:
                     print(
-                        f"Error loading mappings of {exchange_name} in {request}: {entry}"
+                        f"Error loading mappings of {exchange_name} "
+                        f"in {request}: {entry}"
                     )
                     break
 
@@ -332,8 +338,8 @@ def extract_mappings(
 def is_scalar(value: Any) -> bool:
     """ Indicates whether a value is a scalar or not.
 
-    Convenience function returning a bool whether the provided value is a single value or not.
-    Strings count as scalar although they are iterable.
+    Convenience function returning a bool whether the provided value
+    is a single value or not. Strings count as scalar although they are iterable.
 
     @param value: The value to evaluate concerning whether it is a single value
                   or multiple values (iterable).

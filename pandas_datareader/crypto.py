@@ -20,16 +20,16 @@ from pandas_datareader.exceptions import EmptyResponseError
 
 class CryptoReader(Exchange, ABC):
     """ Class to request the data from a given exchange for a given currency-pair.
-    The class inherits from Exchange to extract and format the request urls, as well as to
-    extract and format the values from the response json. The requests are performed by
-    the _BaseReader.
+    The class inherits from Exchange to extract and format the request urls,
+    as well as to extract and format the values from the response json.
+    The requests are performed by the _BaseReader.
     """
 
     def __init__(
         self,
         exchange_name: str,
         symbols: Union[str, dict],
-        start: Union[str, datetime] = datetime(2009, 1, 1),
+        start: Union[str, datetime] = "2009-01-01",
         end: Union[str, datetime] = None,
         interval: str = "days",
         **kwargs,
@@ -68,10 +68,11 @@ class CryptoReader(Exchange, ABC):
         return resp.json()
 
     def read(self, new_symbols: str = None) -> pd.DataFrame:
-        """ Requests and extracts the data. Requests may be performed iteratively over time
-        to collect the full time-series.
+        """ Requests and extracts the data. Requests may be performed iteratively
+        over time to collect the full time-series.
 
-        @param new_symbols: New currency-pair to request, if they differ from the constructor.
+        @param new_symbols: New currency-pair to request, if they differ from
+                            the constructor.
         @return: pd.DataFrame of the returned data.
         """
 
@@ -81,14 +82,16 @@ class CryptoReader(Exchange, ABC):
         # Check if the provided currency-pair is listed on the exchange.
         if not self._check_symbols():
             raise KeyError(
-                f"The provided currency-pair is not listed on '{self.name.capitalize()}'. "
+                f"The provided currency-pair is not listed on "
+                f"'{self.name.capitalize()}'. "
                 f"Call CryptoReader.get_currency_pairs() for an overview."
             )
 
         result = list()
-        # Repeat until no "older" timestamp is delivered. Cryptocurrency exchanges often restrict the amount of
-        # data points returned by a single request, thus making it necessary to iterate backwards in time and merge
-        # the retrieved data.
+        # Repeat until no "older" timestamp is delivered.
+        # Cryptocurrency exchanges often restrict the amount of
+        # data points returned by a single request, thus making it
+        # necessary to iterate backwards in time and merge the retrieved data.
         while True:
             # perform request and extract data.
             resp = self._get_data()
@@ -114,16 +117,18 @@ class CryptoReader(Exchange, ABC):
             # Extract the minimum timestamp from the response for further requests.
             new_time = min(item[time_key] for item in data)
 
-            # Break the requesting if minimum timestamp is lower than initial start time.
+            # Break if min timestamp is lower than initial start time.
             if new_time.timestamp() <= self.start.timestamp():
                 break
             # Or continue requesting from the new timestamp.
             else:
                 self.symbols.update({list(self.symbols.keys())[0]: new_time})
 
-        # Move cursor to the next line to ensure that new print statements are executed correctly.
+        # Move cursor to the next line to ensure that
+        # new print statements are executed correctly.
         stdout.write("\n")
-        # If there is data put it into a pd.DataFrame, set index and cut it to fit the initial start/end time.
+        # If there is data put it into a pd.DataFrame,
+        # set index and cut it to fit the initial start/end time.
         if result:
             result = pd.DataFrame(result, columns=mappings)
             result = self._index_and_cut_dataframe(result)
@@ -175,7 +180,8 @@ class CryptoReader(Exchange, ABC):
 
         if currency_pairs is None:
             warnings.warn(
-                "Currency-pair request is dysfunctional. Check for valid symbols is skipped."
+                "Currency-pair request is dysfunctional. "
+                "Check for valid symbols is skipped."
             )
             return True
 
@@ -187,7 +193,8 @@ class CryptoReader(Exchange, ABC):
         )
 
     def _await_rate_limit(self):
-        """ Sleep time in order to not violate the rate limit, measured in requests per minute."""
+        """ Sleep time in order to not violate the rate limit,
+        measured in requests per minute."""
 
         time.sleep(self.rate_limit)
 
@@ -201,8 +208,9 @@ class CryptoReader(Exchange, ABC):
         # Reindex dataframe and cut it to the specified start and end dates.
         dataframe.set_index("time", inplace=True)
         dataframe.sort_index(inplace=True)
-        # Returned timestamps from the exchanges are converted into UTC and therefore timezone aware.
-        # Make start and end dates timezone aware in order to make them comparable.
+        # Returned timestamps from the exchanges are converted into UTC
+        # and therefore timezone aware. Make start and end dates
+        # timezone aware in order to make them comparable.
         dataframe = dataframe.loc[
             pytz.utc.localize(self.start) : pytz.utc.localize(self.end)
         ]

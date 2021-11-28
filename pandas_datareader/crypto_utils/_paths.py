@@ -6,7 +6,6 @@ This module is preparing the python path to access all modules.
 """
 
 import os
-import sys
 from pathlib import Path
 
 # sys.path.insert(0, os.path.dirname(__file__))
