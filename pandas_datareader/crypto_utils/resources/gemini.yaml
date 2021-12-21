@@ -19,7 +19,7 @@ requests:
       type: list
       values: # each available currency pair, i.e. "btcusd"
         type: str
-    mapping: # TODO split Methode
+    mapping: # TODO: split Methode is not save
     - key: currency_pair_first
       path:
         - []

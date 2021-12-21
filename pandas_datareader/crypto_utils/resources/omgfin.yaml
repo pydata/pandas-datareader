@@ -1,4 +1,4 @@
-#ToDO: HR endpoint is not really working. Frequently returning data is non-json format (status 503) which can not
+#HR endpoint is not really working. Frequently returning data is non-json format (status 503) which can not
 # be parsed.
 
 name: omgfin

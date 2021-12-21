@@ -23,7 +23,7 @@ class TestCryptoReader:
 
     exchange_name = "coinbase"
     symbols = "btc/usd"
-    CryptoReader = CryptoReader(exchange_name, symbols)
+    CryptoReader = CryptoReader(symbols=symbols, exchange_name=exchange_name)
 
     def test_get_all_exchanges(self):
         """ Test to return a list of all available exchanges."""
@@ -137,7 +137,29 @@ class TestExchange:
     # ToDo: Create test-exchange yaml file and use it instead for this class.
     exchange_name = "coinbase"
     symbols = "btc/usd"
-    CryptoReader = CryptoReader(exchange_name, symbols)
+    CryptoReader = CryptoReader(symbols=symbols, exchange_name=exchange_name)
+
+    def test_unknown_exchange_name(self):
+        """ Test for an unsupported exchange."""
+
+        with pytest.raises(ValueError):
+            yaml_loader("not_supported_exchange")
+
+    def test_correct_symbol_splitter(self):
+        """ Test to check for the correct symbol splitter."""
+
+        valid_symbols = ["btc-usd", "btc/usd", "btc-bitcoin/usd", "bitcoin/usd"]
+        invalid_symbols = ["btc$usd", "btc_usd", "btc-bitcoin-usd", "btc/bitcoin/usd"]
+
+        formatted_pairs = [
+            self.CryptoReader.apply_currency_pair_format(cp) for cp in valid_symbols
+        ]
+        assert all(
+            [isinstance(formatted_pair, str) for formatted_pair in formatted_pairs]
+        )
+
+        with pytest.raises(BaseException):
+            [self.CryptoReader.apply_currency_pair_format(cp) for cp in invalid_symbols]
 
     def test_extract_mappings(self):
         """ Test to extract the mapping keys and values from the yaml files."""

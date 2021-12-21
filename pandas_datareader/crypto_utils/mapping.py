@@ -203,7 +203,7 @@ class Mapping:
 
         if not path_queue:
             # TODO: after integration tests, look if clause for first
-            #  and second currency can be deleted!
+            #       and second currency can be deleted!
             if types_queue[0] == "first_currency":
                 return currency_pair_info[0]
             elif types_queue[0] == "second_currency":

@@ -464,11 +464,19 @@ class Exchange(_BaseReader, ABC):
         """
         try:
             first, second = currency_pair.split("/")
-        except ValueError as e:
-            raise Exception(
-                "Base and quote currency are indistinguishable."
-                " Currencies must be split by '/': %s" % currency_pair
-            ) from e
+
+        except ValueError:
+            try:
+                first, second = currency_pair.split("-")
+
+            except ValueError as e:
+                raise Exception(
+                    "Base and quote currency are indistinguishable."
+                    " Symbols must be split by either '/' or '-'."
+                    " Hyphenated currencies must be split by '/',"
+                    " i.e.: 'btc-bitcoin/usd'."
+                    " The currently provided symbols are: '%s'" % currency_pair
+                ) from e
 
         request_url_and_params = (
             self.yaml_file.get("requests").get("historic_rates").get("request")

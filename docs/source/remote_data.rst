@@ -770,7 +770,7 @@ The following endpoints are available:
 Cryptocurrency Data
 ===================
 
-Access historical data feed from the most popular and liquid exchanges and platforms and return OHLCV candles.
+Access historical data feed from the most popular and liquid exchanges, aggregating platforms, and return OHLCV candles.
 Platforms such as ``Coingecko`` or ``Coinpaprika`` return in addition the global turnover volume and market capitalization.
 
 The ``CryptoReader`` offers helpful methods to print all supported exchanges/platforms and their listed
@@ -792,17 +792,28 @@ Data can be retrieved with the ``DataReader`` class, which takes the following a
 .. ipython:: python
 
     import pandas_datareader.data as web
-    df = web.DataReader("btc/usd", "coinbase")
+    df = web.DataReader("btc-usd", "coinbase")
     df.head()
+                                 open    high     low   close       volume
+    time
+    2015-07-20 23:59:59+00:00  277.98  280.00  277.37  280.00   782.883420
+    2015-07-21 23:59:59+00:00  279.96  281.27  276.85  277.32  4943.559434
+    2015-07-22 23:59:59+00:00  277.33  278.54  275.01  277.89  4687.909383
+    2015-07-23 23:59:59+00:00  277.96  279.75  276.28  277.39  5306.919575
+    2015-07-24 23:59:59+00:00  277.23  291.52  276.43  289.12  7362.469083
 
 Additionally, the ``CryptoReader`` can be used directly:
 
 .. ipython:: python
 
     from pandas_datareader.crypto import CryptoReader
-    reader = CryptoReader("btc/usd", "coinbase", interval="minutes", start="2021-10-01", end="2021-10-31")
+    reader = CryptoReader("eth/usd", "coinbase", interval="minutes", start="2021-10-01", end="2021-10-05")
     df = reader.read()
     df.head()
-
-    df = reader.read("eth/usd")
-    df.head()
+                                   open      high       low     close     volume
+    time
+    2021-10-01 00:00:59+00:00  43828.89  43837.30  43802.92  43834.03   7.136981
+    2021-10-01 00:01:59+00:00  43834.88  43884.01  43834.88  43884.01  11.246865
+    2021-10-01 00:02:59+00:00  43884.01  43970.02  43804.29  43970.02  27.248120
+    2021-10-01 00:03:59+00:00  43970.02  43999.36  43918.60  43982.30  13.401548
+    2021-10-01 00:04:59+00:00  43980.72  44000.00  43946.80  43994.93  14.669717

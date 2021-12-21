@@ -1,4 +1,4 @@
-#ToDo: API Dokumentation nicht auffindbar. Historic Rates flexibeler Timestamp nicht implementiert.
+#API Dokumentation nicht auffindbar. Historic Rates flexibeler Timestamp nicht implementiert.
 name: bleutrade
 exchange: true
 api_url: https://bleutrade.com/api/v3/

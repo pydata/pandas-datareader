@@ -284,7 +284,7 @@ requests:
             days: 86400
           default: 86400
     response:
-      type: list # TODO: Header Entry?
+      type: list
       values:
         type: list
         values:

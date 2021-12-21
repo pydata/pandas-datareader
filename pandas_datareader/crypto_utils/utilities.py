@@ -222,10 +222,10 @@ def yaml_loader(exchange: str) -> Dict[str, Any]:
         ) as file:
             return yaml.load(file, Loader=yaml.FullLoader)
 
-    except FileNotFoundError:
-        print(
-            f"\nFile {path.joinpath('.'.join([exchange.lower(), 'yaml']))} not found."
-        )
+    except FileNotFoundError as exc:
+        raise ValueError(
+            "Exchange '%s' is not supported." % exchange.capitalize()
+        ) from exc
 
 
 def get_exchange_names() -> Optional[List[str]]:

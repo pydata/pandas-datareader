@@ -27,22 +27,25 @@ class CryptoReader(Exchange, ABC):
 
     def __init__(
         self,
-        exchange_name: str,
         symbols: Union[str, dict],
-        start: Union[str, datetime] = "2009-01-01",
+        exchange_name: str,
+        start: Union[str, datetime] = None,
         end: Union[str, datetime] = None,
         interval: str = "days",
         **kwargs,
     ):
         """ Constructor. Inherits from the Exchange and _BaseReader class.
 
-        @param exchange_name: String repr of the exchange name
         @param symbols: Currency pair to request (i.e. BTC-USD)
+        @param exchange_name: String repr of the exchange name
         @param start: The start time of the request, handed over to the BaseReader.
         @param end: The end time of the request, handed over to the BaseReader.
         @param interval: Candle interval (i.e. minutes, hours, days, weeks, months)
         @param **kwargs: Additional kw-arguments for the _BaseReader class.
         """
+
+        if not start:
+            start = datetime(2009, 1, 1)
 
         super(CryptoReader, self).__init__(
             exchange_name, interval, symbols, start, end, **kwargs
@@ -56,7 +59,6 @@ class CryptoReader(Exchange, ABC):
 
         # Extract and format the url and parameters for the request
         self.param_dict = "historic_rates"
-        # self.get_formatted_url_and_params(self.param_dict, *self.symbols.keys())
         self.url_and_params = "historic_rates"
 
         # Perform the request
@@ -80,7 +82,7 @@ class CryptoReader(Exchange, ABC):
             self.symbol_setter(new_symbols)
 
         # Check if the provided currency-pair is listed on the exchange.
-        if not self._check_symbols():
+        if not self._check_symbols:
             raise KeyError(
                 f"The provided currency-pair is not listed on "
                 f"'{self.name.capitalize()}'. "
@@ -88,6 +90,7 @@ class CryptoReader(Exchange, ABC):
             )
 
         result = list()
+        mappings = list()
         # Repeat until no "older" timestamp is delivered.
         # Cryptocurrency exchanges often restrict the amount of
         # data points returned by a single request, thus making it
@@ -170,6 +173,7 @@ class CryptoReader(Exchange, ABC):
             else resp
         )
 
+    @property
     def _check_symbols(self) -> bool:
         """ Checks if the specified currency-pair is listed on the exchange"""
 
@@ -185,10 +189,20 @@ class CryptoReader(Exchange, ABC):
             )
             return True
 
-        return all(
+        return any(
             [
-                (self.name, *symbol.lower().split("/")) in currency_pairs
-                for symbol in symbols
+                all(
+                    [
+                        (self.name, *symbol.lower().split("/")) in currency_pairs
+                        for symbol in symbols
+                    ]
+                ),
+                all(
+                    [
+                        (self.name, *symbol.lower().split("-")) in currency_pairs
+                        for symbol in symbols
+                    ]
+                ),
             ]
         )
 
