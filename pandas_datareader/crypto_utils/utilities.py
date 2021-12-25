@@ -20,21 +20,21 @@ from pandas_datareader.crypto_utils.time_helper import TimeHelper, TimeUnit
 import pandas_datareader.crypto_utils._paths as _paths
 
 TYPE_CONVERSIONS = {
-    ("float", "from_timestamp"): {"function": TimeHelper.from_timestamp, "params": 1,},
-    ("bool", "int"): {"function": int, "params": 0,},
-    ("float", "int"): {"function": int, "params": 0,},
-    ("int", "bool"): {"function": bool, "params": 0,},
+    ("float", "from_timestamp"): {"function": TimeHelper.from_timestamp, "params": 1},
+    ("bool", "int"): {"function": int, "params": 0},
+    ("float", "int"): {"function": int, "params": 0},
+    ("int", "bool"): {"function": bool, "params": 0},
     ("int", "div"): {
         "function": lambda integer, div: integer / (1 * div),
         "params": 1,
     },
-    ("any", "value"): {"function": lambda number: float(number) > 0, "params": 0,},
+    ("any", "value"): {"function": lambda number: float(number) > 0, "params": 0},
     ("str", "bool"): {
         "function": lambda string: string.lower() == "true",
         "params": 0,
     },
-    ("str", "int"): {"function": int, "params": 0,},
-    ("str", "float"): {"function": float, "params": 0,},
+    ("str", "int"): {"function": int, "params": 0},
+    ("str", "float"): {"function": float, "params": 0},
     ("str", "float_absolut"): {
         "function": lambda string: abs(float(string)),
         "params": 0,
@@ -67,9 +67,9 @@ TYPE_CONVERSIONS = {
         "function": lambda string, *args: string[args[0] : args[1]],
         "params": 2,
     },
-    ("str", "upper"): {"function": lambda string: string.upper(), "params": 0,},
-    ("str", "lower"): {"function": lambda string: string.lower(), "params": 0,},
-    ("str", "dateparser"): {"function": dateutil.parser.parse, "params": 0,},
+    ("str", "upper"): {"function": lambda string: string.upper(), "params": 0},
+    ("str", "lower"): {"function": lambda string: string.lower(), "params": 0},
+    ("str", "dateparser"): {"function": dateutil.parser.parse, "params": 0},
     ("datetime", "strftime"): {
         "function": lambda time, *args: datetime.datetime.strftime(time, args[0]),
         "params": 1,
@@ -111,7 +111,7 @@ TYPE_CONVERSIONS = {
         "function": lambda *args: args[0],
         "params": 1,
     },
-    ("none", "range"): {"function": lambda: range(1), "params": 0,},
+    ("none", "range"): {"function": lambda: range(1), "params": 0},
     ("value", "map"): {
         # translate into buy/sell. Args: {0: 'buy', 1:'sell'} and arg[0]
         # is the response value (i.e. 0/1)
@@ -190,9 +190,9 @@ TYPE_CONVERSIONS = {
 }
 """
     Type Conversions used to convert extracted values from the API-Response
-    into the desired type ("first", "second"). The values are specified in the 
+    into the desired type ("first", "second"). The values are specified in the
     .yaml-file of each exchange under the "mapping" of each method.
-    The function is called in the Mapping Class of utilities.py under 
+    The function is called in the Mapping Class of utilities.py under
     the method convert_types().
 
     "first":
