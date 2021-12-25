@@ -27,8 +27,8 @@ class CryptoReader(Exchange, ABC):
 
     def __init__(
         self,
-        symbols: Union[str, dict],
-        exchange_name: str,
+        symbols: Union[str, dict] = None,
+        exchange_name: str = None,
         start: Union[str, datetime] = None,
         end: Union[str, datetime] = None,
         interval: str = "days",
@@ -167,11 +167,14 @@ class CryptoReader(Exchange, ABC):
         except (requests.exceptions.MissingSchema, Exception):
             return None
 
-        return (
-            pd.DataFrame(resp, columns=["Exchange", "Base", "Quote"])
-            if not raw_data
-            else resp
-        )
+        if raw_data:
+            return resp
+
+        # create pd.DataFrame and apply upper case to values
+        data = pd.DataFrame(resp, columns=["Exchange", "Base", "Quote"])
+        data = data.apply(lambda x: x.str.upper(), axis=0)
+
+        return data
 
     @property
     def _check_symbols(self) -> bool:

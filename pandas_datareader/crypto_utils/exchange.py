@@ -92,7 +92,7 @@ class Exchange(_BaseReader, ABC):
         @return Tuple of formatted url and formatted parameters.
         """
 
-        currency_pair = list(self.symbols.keys())[0]
+        currency_pair = list(self.symbols.keys())[0] if self.symbols else " / "
         url = self.param_dict.get(request_type).get("url")
         pair_template = self.param_dict.get(request_type).get("pair_template")
         pair_formatted = self.apply_currency_pair_format(currency_pair)

@@ -770,7 +770,7 @@ The following endpoints are available:
 Cryptocurrency Data
 ===================
 
-Access historical data feed from the most popular and liquid exchanges, aggregating platforms, and return OHLCV candles.
+Access historical data feed from the most popular and liquid exchanges, data aggregating platforms, and return OHLCV candles.
 Platforms such as ``Coingecko`` or ``Coinpaprika`` return in addition the global turnover volume and market capitalization.
 
 The ``CryptoReader`` offers helpful methods to print all supported exchanges/platforms and their listed
@@ -780,6 +780,32 @@ currency-pairs:
 
     from pandas_datareader.crypto import CryptoReader
     CryptoReader.get_all_exchanges()
+
+    ['50x',
+     'alterdice',
+      ...]
+
+Or, if an exchange is selected but the supported cryptocurrency pairs are unknwon:
+
+.. ipython:: python
+
+    from pandas_datareder.crypto import CryptoReader
+
+    Reader = CryptoReader(exchange_name="coinbase")
+    Reader.get_currency_pairs()
+
+         Exchange   Base Quote
+    0    COINBASE  SUPER  USDT
+    1    COINBASE   COMP   USD
+    2    COINBASE  COVAL   USD
+    3    COINBASE    GTC   USD
+    4    COINBASE   ATOM   BTC
+    ..        ...    ...   ...
+    399  COINBASE    TRB   BTC
+    400  COINBASE    GRT   USD
+    401  COINBASE   BICO   USD
+    402  COINBASE    FET   USD
+    403  COINBASE    ORN   USD
 
 Data can be retrieved with the ``DataReader`` class, which takes the following arguments:
 
@@ -807,7 +833,7 @@ Additionally, the ``CryptoReader`` can be used directly:
 .. ipython:: python
 
     from pandas_datareader.crypto import CryptoReader
-    reader = CryptoReader("eth/usd", "coinbase", interval="minutes", start="2021-10-01", end="2021-10-05")
+    reader = CryptoReader("eth-usd", "coinbase", interval="minutes", start="2021-10-01", end="2021-10-05")
     df = reader.read()
     df.head()
                                    open      high       low     close     volume

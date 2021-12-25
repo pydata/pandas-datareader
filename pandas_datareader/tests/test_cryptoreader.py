@@ -6,6 +6,7 @@ Test module for the classes:
     - Exchange,
     - Mapping.
 """
+import itertools
 
 import pytest
 import datetime
@@ -14,7 +15,12 @@ import pandas as pd
 from pandas_datareader.crypto import CryptoReader
 from pandas_datareader.crypto_utils.mapping import Mapping
 from pandas_datareader.crypto_utils.mapping import extract_mappings
-from pandas_datareader.crypto_utils.utilities import yaml_loader, sort_columns
+from pandas_datareader.crypto_utils.utilities import (
+    yaml_loader,
+    sort_columns,
+    replace_list_item,
+    split_str_to_list,
+)
 from pandas_datareader.exceptions import EmptyResponseError
 
 
@@ -80,22 +86,6 @@ class TestCryptoReader:
         # ToDo
         pass
 
-    def test_sort_result_columns(self):
-        """ Test to sort the columns of the response."""
-
-        ordered_cols = ["open", "high", "low", "close"]
-        response = pd.DataFrame(
-            {
-                "high": range(0, 5),
-                "close": range(0, 5),
-                "open": range(0, 5),
-                "low": range(0, 5),
-            }
-        )
-        response = sort_columns(dataframe=response)
-
-        assert all(ordered_cols == response.columns)
-
     def test_ensure_correct_column_names(self):
         """ Test to ensure specific column names."""
 
@@ -111,7 +101,7 @@ class TestCryptoReader:
 
         assert response.columns == "low"
 
-    def test_cut_response_and_set_index(self):
+    def test_index_and_cut_dataframe(self):
         """ Test to cut the response to the initially defined start/end dates."""
 
         response = pd.DataFrame(
@@ -130,6 +120,15 @@ class TestCryptoReader:
         assert min(response.index).to_timestamp() == self.CryptoReader.start
         assert max(response.index).to_timestamp() == self.CryptoReader.end
 
+    def test_get_currency_pairs(self):
+        """ Test to retrieve all listed currency-pairs."""
+
+        temp_reader = CryptoReader(exchange_name="coinbase")
+        pairs = temp_reader.get_currency_pairs()
+
+        assert isinstance(pairs, pd.DataFrame)
+        assert pairs.empty is False
+
 
 class TestExchange:
     """ Unit tests for the Exchange class."""
@@ -138,12 +137,6 @@ class TestExchange:
     exchange_name = "coinbase"
     symbols = "btc/usd"
     CryptoReader = CryptoReader(symbols=symbols, exchange_name=exchange_name)
-
-    def test_unknown_exchange_name(self):
-        """ Test for an unsupported exchange."""
-
-        with pytest.raises(ValueError):
-            yaml_loader("not_supported_exchange")
 
     def test_correct_symbol_splitter(self):
         """ Test to check for the correct symbol splitter."""
@@ -1003,3 +996,49 @@ class TestMapping:
         value_list = ["btc", "xrp", "usd", "eth"]
         result = mapping.extract_value(extract_dict)
         assert value_list == result
+
+
+class TestUtilities:
+    """ Test class for the utility functions."""
+
+    def test_yaml_loader(self):
+        """ Test the yaml-file loader. """
+
+        with pytest.raises(ValueError):
+            # Should except the FileNotFoundError and raise a ValueError instead.
+            yaml_loader("some_unsupported_exchange")
+            # Raise a ValueError directly.
+            yaml_loader()
+
+    def test_replace_list_item(self):
+        """ Test to replace a specific value form a list."""
+
+        condition = 5
+        replace_list = [1, 5, 6, 7, 8, 9]
+        new_list = replace_list_item(replace_list, condition, 999)
+
+        assert new_list == [1, 999, 6, 7, 8, 9]
+
+    def test_split_str_to_list(self):
+        """ Test split a string into a list"""
+
+        string = "btc- usd, btc-usd,btc - usd,  btc-u s d  ,  btc-usd"
+        list_values = split_str_to_list(string)
+
+        assert list_values == list(itertools.repeat("btc-usd", 5))
+
+    def test_sort_columns(self):
+        """ Test to sort the columns of the response."""
+
+        ordered_cols = ["open", "high", "low", "close"]
+        response = pd.DataFrame(
+            {
+                "high": range(0, 5),
+                "close": range(0, 5),
+                "open": range(0, 5),
+                "low": range(0, 5),
+            }
+        )
+        response = sort_columns(dataframe=response)
+
+        assert all(ordered_cols == response.columns)
