@@ -785,11 +785,9 @@ currency-pairs:
      'alterdice',
       ...]
 
-Or, if an exchange is selected but the supported cryptocurrency pairs are unknwon:
+And, if an exchange is selected but the supported cryptocurrency pairs are unknown:
 
 .. ipython:: python
-
-    from pandas_datareder.crypto import CryptoReader
 
     Reader = CryptoReader(exchange_name="coinbase")
     Reader.get_currency_pairs()
@@ -807,17 +805,33 @@ Or, if an exchange is selected but the supported cryptocurrency pairs are unknwo
     402  COINBASE    FET   USD
     403  COINBASE    ORN   USD
 
-Data can be retrieved with the ``DataReader`` class, which takes the following arguments:
+The CryptoReader class takes the following arguments:
 
-* ``name`` - the currency-pair of interest
-* ``data_source`` - the name of the exchange or platform
+* ``symbols`` - the currency-pair of interest
+* ``exchange_name`` - the name of the exchange or platform
 * ``start`` - start date
 * ``end`` - end date
 * ``interval`` - the candle interval (e.g. "minutes", "hours", "days")
+* ``**kwargs`` - Additional arguments passes to the parent classes
+
+There are several ways to retrieve cryptocurrency data, with identical arguments:
 
 .. ipython:: python
 
     import pandas_datareader.data as web
+    web.DataReader(...)
+
+    import pandas_datareader as pdr
+    pdr.get_data_crypto(...)
+
+    from pandas_datareader.crypto import CryptoReader
+    Reader = CryptoReader(...)
+    Reader.read()
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+
     df = web.DataReader("btc-usd", "coinbase")
     df.head()
                                  open    high     low   close       volume
@@ -833,13 +847,22 @@ Additionally, the ``CryptoReader`` can be used directly:
 .. ipython:: python
 
     from pandas_datareader.crypto import CryptoReader
-    reader = CryptoReader("eth-usd", "coinbase", interval="minutes", start="2021-10-01", end="2021-10-05")
+
+    reader = CryptoReader("eth-usd", "coinbase", interval="minutes", start="2021-10-01", end="2021-10-02")
     df = reader.read()
-    df.head()
-                                   open      high       low     close     volume
+    print(df)
+
+                                  open     high      low    close      volume
     time
-    2021-10-01 00:00:59+00:00  43828.89  43837.30  43802.92  43834.03   7.136981
-    2021-10-01 00:01:59+00:00  43834.88  43884.01  43834.88  43884.01  11.246865
-    2021-10-01 00:02:59+00:00  43884.01  43970.02  43804.29  43970.02  27.248120
-    2021-10-01 00:03:59+00:00  43970.02  43999.36  43918.60  43982.30  13.401548
-    2021-10-01 00:04:59+00:00  43980.72  44000.00  43946.80  43994.93  14.669717
+    2021-10-01 00:00:59+00:00  3001.14  3001.42  2998.49  2999.89  100.564601
+    2021-10-01 00:01:59+00:00  2999.67  3005.99  2999.67  3005.99   91.007463
+    2021-10-01 00:02:59+00:00  3006.00  3015.14  3001.83  3014.67  494.276213
+    2021-10-01 00:03:59+00:00  3015.13  3020.19  3011.47  3020.19  174.329287
+    2021-10-01 00:04:59+00:00  3019.60  3026.60  3015.58  3024.96  131.651872
+                                ...      ...      ...      ...         ...
+    2021-10-01 23:55:59+00:00  3305.32  3307.15  3301.70  3306.91   49.974808
+    2021-10-01 23:56:59+00:00  3306.90  3308.94  3306.05  3307.74   24.950854
+    2021-10-01 23:57:59+00:00  3308.18  3309.99  3307.31  3309.66   28.768391
+    2021-10-01 23:58:59+00:00  3309.97  3311.25  3308.18  3311.23  131.851763
+    2021-10-01 23:59:59+00:00  3311.23  3311.72  3308.70  3311.16   72.940978
+    [1444 rows x 5 columns]

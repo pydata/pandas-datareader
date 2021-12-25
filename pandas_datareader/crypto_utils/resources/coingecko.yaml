@@ -51,6 +51,10 @@ requests:
         days:
           type: int
           default: max
+        interval:
+          allowed:
+            days: daily
+          default: daily
 
     response:
       type: dict

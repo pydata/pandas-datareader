@@ -309,5 +309,5 @@ def print_timestamp(timestamp):
     @param timestamp: The timestamp
     """
 
-    stdout.write("Requesting from: \r{}".format(timestamp))
+    stdout.write("Requesting from: {}\r".format(timestamp))
     stdout.flush()

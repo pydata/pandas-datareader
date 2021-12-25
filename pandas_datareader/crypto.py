@@ -84,9 +84,10 @@ class CryptoReader(Exchange, ABC):
         # Check if the provided currency-pair is listed on the exchange.
         if not self._check_symbols:
             raise KeyError(
-                f"The provided currency-pair is not listed on "
-                f"'{self.name.capitalize()}'. "
-                f"Call CryptoReader.get_currency_pairs() for an overview."
+                "The provided currency-pair is not listed on "
+                "'%s'. "
+                "Call CryptoReader.get_currency_pairs() for an overview."
+                % self.name.capitalize()
             )
 
         result = list()
@@ -108,7 +109,8 @@ class CryptoReader(Exchange, ABC):
             if result == data or all([datapoint in result for datapoint in data]):
                 break
 
-            print_timestamp(list(self.symbols.values())[0])
+            if self.interval == "minutes":
+                print_timestamp(list(self.symbols.values())[0])
 
             # Append new data to the result list
             result = result + data

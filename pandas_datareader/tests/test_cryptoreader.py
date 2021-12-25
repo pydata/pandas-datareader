@@ -80,12 +80,6 @@ class TestCryptoReader:
             self.CryptoReader.symbols = {" - ": datetime.datetime.today()}
             self.CryptoReader.read()
 
-    def test_iterate_requests_until_end(self):
-        """ Tests to iterate the request with updated timestamps until
-        no more timestamp is collected or start time is reached."""
-        # ToDo
-        pass
-
     def test_ensure_correct_column_names(self):
         """ Test to ensure specific column names."""
 
@@ -133,7 +127,6 @@ class TestCryptoReader:
 class TestExchange:
     """ Unit tests for the Exchange class."""
 
-    # ToDo: Create test-exchange yaml file and use it instead for this class.
     exchange_name = "coinbase"
     symbols = "btc/usd"
     CryptoReader = CryptoReader(symbols=symbols, exchange_name=exchange_name)
@@ -226,16 +219,6 @@ class TestExchange:
             assert isinstance(self.CryptoReader.url_and_params, dict)
             assert isinstance(self.CryptoReader.url, str)
             assert isinstance(self.CryptoReader.params, dict)
-
-    def test_all_exchange_apis(self):
-        """ Test if the API of every exchange is correctly implemented."""
-        # ToDo
-        pass
-
-    def test_extract_values_from_response(self):
-        """ Tests to correctly extract the values from a specified response."""
-        # ToDo
-        pass
 
     def test_empty_response(self):
         """ Test the behavior for an valid but empty response."""

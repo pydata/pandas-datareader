@@ -269,8 +269,8 @@ class Exchange(_BaseReader, ABC):
 
         # return {cp: convert_type(param_value[cp], deque(conv_params))
         #             for cp in currency_pairs}
-        # ToDo: Check if the above line works.
-        #       The older version needed both if statements below.
+        # Check if the above line works.
+        # The older version needed both if statements below.
         if isinstance(param_value, dict):
             return {
                 cp: convert_type(param_value[cp], deque(conv_params))
