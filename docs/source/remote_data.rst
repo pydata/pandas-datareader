@@ -290,7 +290,7 @@ performances through the top-level function ``get_sector_performance_av``.
 
 
 
-.. _remote_data.enigma:
+.. _remote_data.econdb:
 
 Econdb
 ======
@@ -329,7 +329,7 @@ engine, or discovered by exploring the `tree <https://www.econdb.com/tree/>`__
 of available statistical sources.
 
 
-.. _remote_data.econdb:
+.. _remote_data.enigma:
 
 Enigma
 ======
