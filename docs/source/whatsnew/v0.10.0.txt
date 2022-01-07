@@ -1,0 +1,31 @@
+.. _whatsnew_0100:
+
+v0.10.0 (July 11, 2021)
+---------------------------
+
+Highlights include:
+
+Bug Fixes
+~~~~~~~~~
+
+- Fixed Yahoo readers which now require headers
+- Fixed other reader
+- Improved compatibility with pandas
+
+Contributors
+~~~~~~~~~~~~
+Thanks to all of the contributors for the 0.10.0 release (based on git log):
+
+- Igor Molnar
+- Kevin Sheppard
+- galashour
+- David Kim
+- Kim Philipp Jablonski
+- Tim Gates
+- Jeff Hale
+- Lukas Halim
+- Simon Garisch
+- Dmitry Alekseev
+
+These lists of names are automatically generated based on git log, and may not
+be complete.

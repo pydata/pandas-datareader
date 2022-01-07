@@ -1,0 +1,86 @@
+# Python package
+# Create and test a Python package on multiple Python versions.
+# Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/python
+
+parameters:
+  # defaults for any parameters that are not specified
+  name: ''
+  vmImage: ''
+  coverage: true
+
+jobs:
+
+- job: ${{ parameters.name }}Test
+  pool:
+    vmImage: ${{ parameters.vmImage }}
+  strategy:
+    matrix:
+      ${{ if eq(parameters.name, 'Linux') }}:
+        python37_legacy:
+          python.version: '3.7'
+          PANDAS: 1.0.5
+        python38_legacy:
+          python.version: '3.8'
+          PANDAS: 1.1.5
+        python38_recent:
+          python.version: '3.8'
+          PANDAS: 1.2.5
+        python39_latest:
+          python.version: '3.9'
+
+    # maxParallel: 10
+
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(python.version)'
+    displayName: 'Use Python $(python.version)'
+
+  - script: |
+      python -m pip install pip setuptools -U      
+      python -m pip install -r requirements.txt
+      python -m pip install -r requirements-dev.txt
+
+      if [[ -n ${PANDAS} ]]; then 
+        python -m pip install pandas==${PANDAS}
+      fi;
+    displayName: 'Install dependencies'
+
+  - script: |
+      python -m pip install -e . -v --no-build-isolation
+    displayName: 'Install'
+
+  - script: python -m pip list
+    displayName: 'List Configuration (PyPI)'
+
+  - script: |
+     black --check pandas_datareader
+     isort --check pandas_datareader
+     flake8 pandas_datareader
+    displayName: 'Check style and formatting'
+
+  - script: |
+      echo "Testing editable install"
+      if [[ ${COVERAGE} == "true" ]]; then
+        export COVERAGE_OPTS="--cov-config .coveragerc --cov=pandas_datareader --cov-report xml:coverage.xml --cov-report term"
+      fi
+      echo pytest -m "${PYTEST_PATTERN}" --junitxml=junit/test-results.xml -n auto --durations=25 ${COVERAGE_OPTS} pandas_datareader/tests
+      pytest -m "${PYTEST_PATTERN}" --junitxml=junit/test-results.xml -n auto --durations=25 ${COVERAGE_OPTS} pandas_datareader/tests
+    displayName: 'Run tests'
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFiles: '**/test-results.xml'
+      testRunTitle: 'Python $(python.version)'
+    condition: succeededOrFailed()
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
+    condition: eq(variables['coverage'], 'true')
+
+  - bash: bash <(curl -s https://codecov.io/bash)
+    displayName: 'CodeCov upload'
+    condition: eq(variables['coverage'], 'true')

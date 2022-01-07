@@ -35,7 +35,7 @@ class NaverDailyReader(_DailyBaseReader):
         if not isinstance(symbols, string_types):
             raise NotImplementedError("Bulk-fetching is not implemented")
 
-        super(NaverDailyReader, self).__init__(
+        super().__init__(
             symbols=symbols,
             start=start,
             end=end,

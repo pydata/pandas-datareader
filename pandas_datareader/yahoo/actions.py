@@ -12,7 +12,7 @@ class YahooActionReader(YahooDailyReader):
     """
 
     def read(self):
-        data = super(YahooActionReader, self).read()
+        data = super().read()
         actions = {}
         if isinstance(data.columns, MultiIndex):
             data = data.swaplevel(0, 1, axis=1)

@@ -1,9 +1,10 @@
-black==19.10b0; python_version > '3.5'
+black==21.5b1; python_version > '3.5'
 flake8-bugbear; python_version > '3.5'
 coverage
 codecov
 coveralls
 flake8
 pytest
+pytest-xdist
 pytest-cov
 wrapt

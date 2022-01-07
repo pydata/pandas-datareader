@@ -5,6 +5,7 @@ from pandas import DataFrame
 
 from pandas_datareader.base import _BaseReader
 from pandas_datareader.compat import string_types
+from pandas_datareader.yahoo.headers import DEFAULT_HEADERS
 
 _DEFAULT_PARAMS = {
     "lang": "en-US",
@@ -16,6 +17,28 @@ _DEFAULT_PARAMS = {
 class YahooQuotesReader(_BaseReader):
 
     """Get current yahoo quote"""
+
+    def __init__(
+        self,
+        symbols=None,
+        start=None,
+        end=None,
+        retry_count=3,
+        pause=0.1,
+        session=None,
+    ):
+        super().__init__(
+            symbols=symbols,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        )
+        if session is not None:
+            self.headers = session.headers
+        else:
+            self.headers = DEFAULT_HEADERS
 
     @property
     def url(self):

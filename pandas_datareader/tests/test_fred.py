@@ -72,7 +72,9 @@ class TestFred(object):
         )
         expected.index.rename("DATE", inplace=True)
         expected.index.freq = "MS"
-        tm.assert_frame_equal(received, expected, check_less_precise=True)
+        np.testing.assert_allclose(received, expected)
+        tm.assert_index_equal(received.index, expected.index)
+        tm.assert_index_equal(received.columns, expected.columns)
 
     def test_fred_multi_bad_series(self):
         names = ["NOTAREALSERIES", "CPIAUCSL", "ALSO FAKE"]

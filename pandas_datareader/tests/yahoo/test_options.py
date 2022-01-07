@@ -9,7 +9,7 @@ import pytest
 from pandas_datareader import data as web
 
 
-@pytest.yield_fixture
+@pytest.fixture
 def aapl():
     aapl = web.Options("aapl", "yahoo")
     yield aapl

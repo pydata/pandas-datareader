@@ -20,7 +20,7 @@ Enhancements
   from every trading board (ver. 0.9.0 behaviour)
 - Docs for MOEX reedited
 
-.. _whatsnew_080.bug_fixes:
+.. _whatsnew_091.bug_fixes:
 
 Bug Fixes
 ~~~~~~~~~

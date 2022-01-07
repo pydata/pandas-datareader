@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from pandas import testing as tm
 import pytest
@@ -48,49 +49,49 @@ class TestFamaFrench(object):
             {
                 "Mkt-RF": [
                     -3.36,
-                    3.4,
+                    3.40,
                     6.31,
-                    2.0,
+                    2.00,
                     -7.89,
-                    -5.56,
+                    -5.57,
                     6.93,
                     -4.77,
                     9.54,
                     3.88,
-                    0.6,
+                    0.60,
                     6.82,
                 ],
                 "SMB": [
-                    0.38,
-                    1.2,
-                    1.42,
-                    4.98,
-                    0.05,
-                    -1.97,
-                    0.16,
-                    -3.00,
-                    3.92,
-                    1.15,
-                    3.70,
-                    0.7,
+                    0.37,
+                    1.19,
+                    1.44,
+                    4.86,
+                    0.14,
+                    -1.84,
+                    0.18,
+                    -3.02,
+                    3.93,
+                    1.07,
+                    3.78,
+                    0.68,
                 ],
                 "HML": [
-                    0.31,
-                    3.16,
-                    2.1,
-                    2.81,
-                    -2.38,
-                    -4.5,
-                    -0.27,
-                    -1.95,
-                    -3.12,
-                    -2.59,
-                    -0.9,
-                    3.81,
+                    0.33,
+                    3.19,
+                    2.11,
+                    2.91,
+                    -2.39,
+                    -4.52,
+                    -0.36,
+                    -1.90,
+                    -3.23,
+                    -2.46,
+                    -0.95,
+                    3.64,
                 ],
                 "RF": [
-                    0.0,
-                    0.0,
+                    0.00,
+                    0.00,
                     0.01,
                     0.01,
                     0.01,
@@ -106,7 +107,10 @@ class TestFamaFrench(object):
             index=pd.period_range("2010-01-01", "2010-12-01", freq="M", name="Date"),
             columns=["Mkt-RF", "SMB", "HML", "RF"],
         )
-        tm.assert_frame_equal(results[0], exp, check_less_precise=0)
+        received = results[0]
+        np.testing.assert_allclose(received, exp)
+        tm.assert_index_equal(received.index, exp.index)
+        tm.assert_index_equal(received.columns, exp.columns)
 
     def test_me_breakpoints(self):
         results = web.DataReader(

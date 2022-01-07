@@ -38,7 +38,7 @@ class _BaseReader(object):
     pause : float, default 0.1
         Time, in seconds, of the pause between retries.
     session : Session, default None
-        requests.sessions.Session instance to be used
+        requests.sessions.Session instance to be used.
     freq : {str, None}
         Frequency to use in select readers
     """
@@ -70,8 +70,9 @@ class _BaseReader(object):
         self.pause = pause
         self.timeout = timeout
         self.pause_multiplier = 1
-        self.session = _init_session(session, retry_count)
+        self.session = _init_session(session)
         self.freq = freq
+        self.headers = None
 
     def close(self):
         """Close network session"""
@@ -102,7 +103,7 @@ class _BaseReader(object):
             self.close()
 
     def _read_one_data(self, url, params):
-        """ read one data from specified URL """
+        """read one data from specified URL"""
         if self._format == "string":
             out = self._read_url_as_StringIO(url, params=params)
         elif self._format == "json":
@@ -139,7 +140,7 @@ class _BaseReader(object):
         return response.content
 
     def _get_response(self, url, params=None, headers=None):
-        """ send raw HTTP request to get requests.Response from the specified url
+        """send raw HTTP request to get requests.Response from the specified url
         Parameters
         ----------
         url : str
@@ -147,8 +148,7 @@ class _BaseReader(object):
         params : dict or None
             parameters passed to the URL
         """
-
-        # initial attempt + retry
+        headers = headers or self.headers
         pause = self.pause
         last_response_text = ""
         for _ in range(self.retry_count + 1):
@@ -181,7 +181,7 @@ class _BaseReader(object):
         raise RemoteDataError(msg)
 
     def _get_crumb(self, *args):
-        """ To be implemented by subclass """
+        """To be implemented by subclass"""
         raise NotImplementedError("Subclass has not implemented method.")
 
     def _output_error(self, out):
@@ -221,7 +221,7 @@ class _BaseReader(object):
 
 
 class _DailyBaseReader(_BaseReader):
-    """ Base class for Google / Yahoo daily reader """
+    """Base class for Google / Yahoo daily reader"""
 
     def __init__(
         self,
@@ -302,7 +302,7 @@ def _in_chunks(seq, size):
 
 class _OptionBaseReader(_BaseReader):
     def __init__(self, symbol, session=None):
-        """ Instantiates options_data with a ticker saved as symbol """
+        """Instantiates options_data with a ticker saved as symbol"""
         self.symbol = symbol.upper()
         super(_OptionBaseReader, self).__init__(symbols=symbol, session=session)
 

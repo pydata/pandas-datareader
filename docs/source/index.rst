@@ -9,7 +9,7 @@ pandas-datareader
 
 .. include:: _version.txt
 
-Up to date remote data access for pandas, works for multiple versions of pandas.
+Up-to-date remote data access for pandas. Works for multiple versions of pandas.
 
 
 Quick Start

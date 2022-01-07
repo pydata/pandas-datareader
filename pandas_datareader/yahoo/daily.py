@@ -8,6 +8,7 @@ from pandas import DataFrame, isnull, notnull, to_datetime
 
 from pandas_datareader._utils import RemoteDataError
 from pandas_datareader.base import _DailyBaseReader
+from pandas_datareader.yahoo.headers import DEFAULT_HEADERS
 
 
 class YahooDailyReader(_DailyBaseReader):
@@ -34,7 +35,9 @@ class YahooDailyReader(_DailyBaseReader):
         Time, in seconds, to pause between consecutive queries of chunks. If
         single value given for symbol, represents the pause between retries.
     session : Session, default None
-        requests.sessions.Session instance to be used
+        requests.sessions.Session instance to be used. Passing a session
+        is an advanced usage and you must set any required
+        headers in the session directly.
     adjust_price : bool, default False
         If True, adjusts all prices in hist_data ('Open', 'High', 'Low',
         'Close') based on 'Adj Close' price. Adds 'Adj_Ratio' column and drops
@@ -67,7 +70,7 @@ class YahooDailyReader(_DailyBaseReader):
         get_actions=False,
         adjust_dividends=True,
     ):
-        super(YahooDailyReader, self).__init__(
+        super().__init__(
             symbols=symbols,
             start=start,
             end=end,
@@ -80,17 +83,10 @@ class YahooDailyReader(_DailyBaseReader):
         # Ladder up the wait time between subsequent requests to improve
         # probability of a successful retry
         self.pause_multiplier = 2.5
-
-        self.headers = {
-            "Connection": "keep-alive",
-            "Expires": str(-1),
-            "Upgrade-Insecure-Requests": str(1),
-            # Google Chrome:
-            "User-Agent": (
-                "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 "
-                "(KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36"
-            ),
-        }
+        if session is None:
+            self.headers = DEFAULT_HEADERS
+        else:
+            self.headers = session.headers
 
         self.adjust_price = adjust_price
         self.ret_index = ret_index
@@ -144,13 +140,13 @@ class YahooDailyReader(_DailyBaseReader):
         return params
 
     def _read_one_data(self, url, params):
-        """ read one data from specified symbol """
+        """read one data from specified symbol"""
 
         symbol = params["symbol"]
         del params["symbol"]
         url = url.format(symbol)
 
-        resp = self._get_response(url, params=params)
+        resp = self._get_response(url, params=params, headers=self.headers)
         ptrn = r"root\.App\.main = (.*?);\n}\(this\)\);"
         try:
             j = json.loads(re.search(ptrn, resp.text, re.DOTALL).group(1))

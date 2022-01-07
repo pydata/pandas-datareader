@@ -234,7 +234,7 @@ def _read_sdmx_dsd(path_or_buf):
 
 
 def _read_zipped_sdmx(path_or_buf):
-    """ Unzipp data contains SDMX-XML """
+    """Unzipp data contains SDMX-XML"""
     data = _read_content(path_or_buf)
 
     zp = BytesIO()

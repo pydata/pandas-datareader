@@ -1,5 +1,6 @@
 import os
 
+import pandas as pd
 import pytest
 
 from pandas_datareader import data as web
@@ -51,7 +52,7 @@ class TestQuandl(object):
                 "AdjVolume",
             ],
         )
-        assert df.Close.at[self.day10] == 7.70
+        assert df.Close.at[pd.to_datetime(self.day10)] == 7.70
 
     def test_db_fse_frankfurt(self):
         # ALV_X: Allianz SE
@@ -73,7 +74,7 @@ class TestQuandl(object):
                 "DailyTurnover",
             ],
         )
-        assert df.Close.at[self.day10] == 159.45
+        assert df.Close.at[pd.to_datetime(self.day10)] == 159.45
 
     def test_fse_eon(self):
         # EON_X: E.on Se
@@ -95,7 +96,7 @@ class TestQuandl(object):
                 "High",
             ],
         )
-        assert df.Close.at[self.day2] == 14.03
+        assert df.Close.at[pd.to_datetime(self.day2)] == 14.03
 
     def test_db_euronext_be_fr_nl_pt(self):
         # FP: Total SA
@@ -105,7 +106,7 @@ class TestQuandl(object):
             "EURONEXT/FP", "quandl", self.start2, self.end2, api_key=TEST_API_KEY
         )
         self.check_headers(df, ["Open", "High", "Low", "Last", "Turnover", "Volume"])
-        assert df.Last.at[self.day2] == 42.525
+        assert df.Last.at[pd.to_datetime(self.day2)] == 42.525
         df2 = web.DataReader("FP.FR", "quandl", self.start2, self.end2)
         assert (df.Last == df2.Last).all()
 
@@ -132,7 +133,7 @@ class TestQuandl(object):
             ],
         )
         # as of 2017-06-11, Price == LastClose, all others are NaN
-        assert df.NominalPrice.at[self.day2] == 74.0
+        assert df.NominalPrice.at[pd.to_datetime(self.day2)] == 74.0
 
     def test_db_nse_in(self):
         # TCS: Tata Consutancy Services
@@ -151,7 +152,7 @@ class TestQuandl(object):
                 "TurnoverLacs",
             ],
         )
-        assert df.Close.at[self.day10] == 1259.05
+        assert df.Close.at[pd.to_datetime(self.day10)] == 1259.05
 
     def test_db_tse_jp(self):
         # TSE/6758: Sony Corp.
@@ -159,7 +160,7 @@ class TestQuandl(object):
             "TSE/6758", "quandl", self.start10, self.end10, api_key=TEST_API_KEY
         )
         self.check_headers(df, ["Open", "High", "Low", "Close", "Volume"])
-        assert df.Close.at[self.day10] == 5190.0
+        assert df.Close.at[pd.to_datetime(self.day10)] == 5190.0
 
         df2 = web.get_data_quandl(
             "TSE/6758", self.start10, self.end10, api_key=TEST_API_KEY
@@ -188,4 +189,4 @@ class TestQuandl(object):
                 "LotSize",
             ],
         )
-        assert df.High.at[self.day2] == 91.9
+        assert df.High.at[pd.to_datetime(self.day2)] == 91.9

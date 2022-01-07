@@ -9,6 +9,21 @@ pytestmark = pytest.mark.stable
 
 
 class TestEcondb(object):
+    def test_infer_start_end_from_symbols(self):
+        df = web.DataReader(
+            (
+                "dataset=NAMQ_10_GDP&v=Geopolitical entity (reporting)"
+                "&h=TIME&from=2010-02-01&to=2018-10-01&GEO=[AL,AT,BE,BA,"
+                "BG,HR,CY,CZ,DK,EE,EA19,FI,FR,DE,EL,HU,IS,IE,IT,XK,LV,LT,"
+                "LU,MT,ME,NL,MK,NO,PL,PT,RO,RS,SK,SI,ES,SE,CH,TR,UK]"
+                "&NA_ITEM=[B1GQ]&S_ADJ=[SCA]&UNIT=[CLV10_MNAC]"
+            ),
+            "econdb",
+        )
+        assert df.index[0].year == 2010
+        assert df.index[-1].year == 2018
+
+    @pytest.mark.xfail(reason="Dataset does not exist on Econdb")
     def test_get_cdh_e_fos(self):
         # EUROSTAT
         # Employed doctorate holders in non managerial and non professional
@@ -38,12 +53,12 @@ class TestEcondb(object):
         # TOURISM_INBOUND
 
         df = web.DataReader(
-            "dataset=OE_TOURISM_INBOUND&COUNTRY=JPN,USA&" "VARIABLE=INB_ARRIVALS_TOTAL",
+            "dataset=OE_TOURISM_INBOUND&COUNTRY=JPN,USA&VARIABLE=INB_ARRIVALS_TOTAL",
             "econdb",
             start=pd.Timestamp("2008-01-01"),
             end=pd.Timestamp("2012-01-01"),
         )
-        df = df.astype(np.float)
+        df = df.astype(float)
         jp = np.array([8351000, 6790000, 8611000, 6219000, 8368000], dtype=float)
         us = np.array(
             [175702304, 160507424, 164079728, 167600272, 171320416], dtype=float
@@ -79,7 +94,6 @@ class TestEcondb(object):
         assert df.loc["2010-05-01"][0] == 217.3
 
     def test_australia_gdp(self):
-
         df = web.DataReader(
             "dataset=ABS_GDP&to=2019-09-01&from=1959-09-01&h=TIME&v=Indicator", "econdb"
         )
