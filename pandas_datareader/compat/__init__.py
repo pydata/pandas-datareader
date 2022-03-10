@@ -1,5 +1,4 @@
-from distutils.version import LooseVersion
-from functools import reduce
+from packaging import version
 from io import StringIO
 from urllib.error import HTTPError
 
@@ -10,9 +9,9 @@ from pandas.testing import assert_frame_equal
 
 PANDAS_VERSION = LooseVersion(pd.__version__)
 
-PANDAS_0210 = PANDAS_VERSION >= LooseVersion("0.21.0")
-PANDAS_0220 = PANDAS_VERSION >= LooseVersion("0.22.0")
-PANDAS_0230 = PANDAS_VERSION >= LooseVersion("0.23.0")
+PANDAS_0210 = PANDAS_VERSION >= version.parse("0.21.0")
+PANDAS_0220 = PANDAS_VERSION >= version.parse("0.22.0")
+PANDAS_0230 = PANDAS_VERSION >= version.parse("0.23.0")
 
 __all__ = [
     "HTTPError",
