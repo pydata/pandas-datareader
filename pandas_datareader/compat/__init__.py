@@ -7,7 +7,7 @@ from pandas.api.types import is_list_like, is_number
 from pandas.io import common as com
 from pandas.testing import assert_frame_equal
 
-PANDAS_VERSION = LooseVersion(pd.__version__)
+PANDAS_VERSION = version.parse(pd.__version__)
 
 PANDAS_0210 = PANDAS_VERSION >= version.parse("0.21.0")
 PANDAS_0220 = PANDAS_VERSION >= version.parse("0.22.0")
