@@ -169,7 +169,6 @@ class YahooDailyReader(_DailyBaseReader):
         prices = prices.sort_index().dropna(how="all")
         prices = prices[~prices.index.duplicated()]
 
-
         if self.ret_index:
             prices["Ret_Index"] = _calc_return_index(prices["Adj Close"])
         if self.adjust_price:
