@@ -56,10 +56,11 @@ class FamaFrenchReader(_BaseReader):
 
         with tempfile.TemporaryFile() as tmpf:
             tmpf.write(raw)
-
             with ZipFile(tmpf, "r") as zf:
-                data = zf.open(zf.namelist()[0]).read().decode()
-
+                try:                
+                    data = zf.open(zf.namelist()[0]).read().decode()
+                except UnicodeDecodeError:
+                    data = zf.open(zf.namelist()[0]).read().decode(encoding="cp1252")
         return data
 
     def read(self):
