@@ -57,7 +57,7 @@ class AVForexReader(AlphaVantage):
                 "Please input a currency pair "
                 "formatted 'FROM/TO' or a list of "
                 "currency symbols"
-            )
+            ) from None
 
     @property
     def function(self):
@@ -90,7 +90,7 @@ class AVForexReader(AlphaVantage):
         try:
             df = pd.DataFrame.from_dict(out[self.data_key], orient="index")
         except KeyError:
-            raise RemoteDataError()
+            raise RemoteDataError() from None
         df.sort_index(ascending=True, inplace=True)
         df.index = [id[3:] for id in df.index]
         return df

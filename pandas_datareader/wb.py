@@ -651,10 +651,10 @@ class WorldBankReader(_BaseReader):
                 df.columns = ["country", "iso_code", "year", indicator]
                 data.append(df)
 
-            except ValueError as e:
-                msg = str(e) + " Indicator: " + indicator
+            except ValueError as err:
+                msg = str(err) + " Indicator: " + indicator
                 if self.errors == "raise":
-                    raise ValueError(msg)
+                    raise ValueError(msg) from err
                 elif self.errors == "warn":
                     warnings.warn(msg)
 

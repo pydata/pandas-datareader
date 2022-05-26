@@ -1,5 +1,5 @@
-black==21.5b1; python_version > '3.5'
-flake8-bugbear; python_version > '3.5'
+black==22.3.0
+flake8-bugbear
 coverage
 codecov
 coveralls

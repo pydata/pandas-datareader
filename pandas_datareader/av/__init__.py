@@ -76,12 +76,12 @@ class AlphaVantage(_BaseReader):
                     "The requested symbol {} could not be "
                     "retrieved. Check valid ticker"
                     ".".format(self.symbols)
-                )
+                ) from None
             else:
                 raise RemoteDataError(
                     " Their was an issue from the data vendor "
                     "side, here is their response: {}".format(out)
-                )
+                ) from None
         df = df[sorted(df.columns)]
         df.columns = [id[3:] for id in df.columns]
         return df

@@ -143,8 +143,10 @@ class Options(_OptionBaseReader):
         try:
             calls = result["options"]["calls"]
             puts = result["options"]["puts"]
-        except IndexError:
-            raise RemoteDataError("Option json not available " "for url: %s" % url)
+        except IndexError as err:
+            raise RemoteDataError(
+                "Option json not available " "for url: %s" % url
+            ) from err
 
         self.underlying_price = (
             result["quote"]["regularMarketPrice"]

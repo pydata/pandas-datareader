@@ -290,7 +290,7 @@ class _DailyBaseReader(_BaseReader):
         except AttributeError:
             # cannot construct a panel with just 1D nans indicating no data
             msg = "No data fetched using {0!r}"
-            raise RemoteDataError(msg.format(self.__class__.__name__))
+            raise RemoteDataError(msg.format(self.__class__.__name__)) from None
 
 
 def _in_chunks(seq, size):
