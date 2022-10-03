@@ -10,12 +10,29 @@ class EcondbReader(_BaseReader):
     _format = None
     _show = "labels"
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(
+        self,
+        symbols,
+        start=None,
+        end=None,
+        retry_count=3,
+        pause=0.1,
+        session=None,
+        freq=None,
+    ):
+        super(EcondbReader, self).__init__(
+            symbols=symbols,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+            freq=freq,
+        )
         params = dict(s.split("=") for s in self.symbols.split("&"))
-        if "from" in params and not kwargs.get("start"):
+        if "from" in params and not start:
             self.start = pd.to_datetime(params["from"], format="%Y-%m-%d")
-        if "to" in params and not kwargs.get("end"):
+        if "to" in params and not end:
             self.end = pd.to_datetime(params["to"], format="%Y-%m-%d")
 
     @property
