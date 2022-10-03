@@ -83,7 +83,7 @@ class EcondbReader(_BaseReader):
         if self._show == "labels":
 
             def show_func(x):
-                return x[x.find(":") + 1:]
+                return x[x.find(":") + 1 :]
 
         elif self._show == "codes":
 

@@ -26,13 +26,17 @@ class TestEcondb(object):
         assert df.index[0].year == 2010
         assert df.index[-1].year == 2018
 
-    tickers = [f'{sec}{geo}' for sec in ['RGDP', 'CPI', 'URATE']
-               for geo in ['US', 'UK', 'ES', 'AR']]
+    tickers = [
+        f"{sec}{geo}"
+        for sec in ["RGDP", "CPI", "URATE"]
+        for geo in ["US", "UK", "ES", "AR"]
+    ]
 
     @pytest.mark.parametrize("ticker", tickers)
     def test_fetch_single_ticker_series(self, ticker):
         df = web.DataReader(
-            f"ticker={ticker}", "econdb",
+            f"ticker={ticker}",
+            "econdb",
             start=pd.Timestamp("2010-01-01"),
             end=pd.Timestamp("2013-01-27"),
         )
@@ -52,35 +56,39 @@ class TestEcondb(object):
 
     def test_filtered_dataset(self):
         df = web.DataReader(
-            '&'.join([
-                'dataset=PRC_HICP_MIDX',
-                'v=Geopolitical entity (reporting)',
-                'h=TIME',
-                'from=2022-03-01',
-                'to=2022-09-01',
-                'COICOP=[CP00]',
-                'FREQ=[M]',
-                'GEO=[ES,AT,CZ,IT,CH]',
-                'UNIT=[I15]'
-            ]),
-            'econdb'
+            "&".join(
+                [
+                    "dataset=PRC_HICP_MIDX",
+                    "v=Geopolitical entity (reporting)",
+                    "h=TIME",
+                    "from=2022-03-01",
+                    "to=2022-09-01",
+                    "COICOP=[CP00]",
+                    "FREQ=[M]",
+                    "GEO=[ES,AT,CZ,IT,CH]",
+                    "UNIT=[I15]",
+                ]
+            ),
+            "econdb",
         )
         assert df.shape[1] == 5
         assert isinstance(df.index, pd.DatetimeIndex)
 
     def test_australia_gdp(self):
         df = web.DataReader(
-            '&'.join([
-                'dataset=ABS_GDP',
-                '4=[7]',
-                '6=[11]',
-                '16=[1267]',
-                'v=TIME',
-                'h=Indicator',
-                'from=2019-10-01',
-                'to=2022-06-01',
-                'GEO=[13]'
-            ]),
-            'econdb'
+            "&".join(
+                [
+                    "dataset=ABS_GDP",
+                    "4=[7]",
+                    "6=[11]",
+                    "16=[1267]",
+                    "v=TIME",
+                    "h=Indicator",
+                    "from=2019-10-01",
+                    "to=2022-06-01",
+                    "GEO=[13]",
+                ]
+            ),
+            "econdb",
         )
         assert_equal(df.squeeze().loc["2020-10-01"], 508603)
