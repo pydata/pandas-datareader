@@ -41,6 +41,7 @@ from pandas_datareader.yahoo.quotes import YahooQuotesReader
 
 __all__ = [
     "get_components_yahoo",
+    "get_data_econdb",
     "get_data_enigma",
     "get_data_famafrench",
     "get_data_fred",
@@ -78,6 +79,10 @@ def get_data_famafrench(*args, **kwargs):
 
 def get_data_yahoo(*args, **kwargs):
     return YahooDailyReader(*args, **kwargs).read()
+
+
+def get_data_econdb(*args, **kwargs):
+    return EcondbReader(*args, **kwargs).read()
 
 
 def get_data_enigma(*args, **kwargs):
