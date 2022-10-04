@@ -12,6 +12,22 @@ def assert_equal(x, y):
 
 
 class TestEcondb(object):
+
+    def test_override_start_end(self):
+        df = web.DataReader(
+            '&'.join([
+                'dataset=RBI_BULLETIN',
+                'v=TIME',
+                'h=Indicator',
+                'from=2022-01-01',
+                'to=2022-07-01'
+            ]),
+            'econdb',
+            start='2020-01-01',
+            end='2022-01-01'
+        )
+        assert isinstance(df.index, pd.DatetimeIndex)
+
     def test_infer_start_end_from_symbols(self):
         df = web.DataReader(
             (
