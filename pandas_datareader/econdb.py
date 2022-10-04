@@ -90,13 +90,13 @@ class EcondbReader(_BaseReader):
             def show_func(x):
                 return x[: x.find(":")]
 
-        unique_keys = {k for s in results for k in s['additional_metadata']}
+        unique_keys = {k for s in results for k in s["additional_metadata"]}
         for entry in results:
             series = pd.DataFrame(entry["data"])[["dates", "values"]].set_index("dates")
             head = entry["additional_metadata"]
             for k in unique_keys:
                 if k not in head:
-                    head[k] = '-1:None'
+                    head[k] = "-1:None"
             if head != "":  # this additional metadata is not blank
                 series.columns = pd.MultiIndex.from_tuples(
                     [[show_func(x) for x in head.values()]],
