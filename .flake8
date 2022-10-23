@@ -1,0 +1,10 @@
+[flake8]
+ignore = B904
+exclude =
+    docs/,
+    build/,
+    dist/,
+    .tox/,
+    .venv/,
+    .pytest_cache/,
+    .ipynb_checkpoints/,

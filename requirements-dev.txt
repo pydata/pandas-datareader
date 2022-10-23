@@ -1,5 +1,5 @@
-black==21.5b1; python_version > '3.5'
-flake8-bugbear; python_version > '3.5'
+black
+flake8-bugbear
 coverage
 codecov
 coveralls
@@ -8,3 +8,5 @@ pytest
 pytest-xdist
 pytest-cov
 wrapt
+tox
+isort

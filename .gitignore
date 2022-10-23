@@ -13,3 +13,4 @@ docs/build
 env/
 .pytest_cache/
 .vscode/
+.venv/

@@ -100,7 +100,7 @@ class TestYahooOptions(object):
             ]
         )
         tm.assert_index_equal(df.columns, exp_columns)
-        assert df.index.names == [u"Strike", u"Expiry", u"Type", u"Symbol"]
+        assert df.index.names == ["Strike", "Expiry", "Type", "Symbol"]
 
         dtypes = [
             np.dtype(x)
