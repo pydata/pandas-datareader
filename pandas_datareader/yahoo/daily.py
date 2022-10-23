@@ -153,7 +153,7 @@ class YahooDailyReader(_DailyBaseReader):
             data = j["context"]["dispatcher"]["stores"]["HistoricalPriceStore"]
         except KeyError:
             msg = "No data fetched for symbol {} using {}"
-            raise RemoteDataError(msg.format(symbol, self.__class__.__name__))
+            raise RemoteDataError(msg.format(symbol, self.__class__.__name__)) from None
 
         # price data
         prices = DataFrame(data["prices"])

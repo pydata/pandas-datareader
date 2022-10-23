@@ -55,7 +55,7 @@ class FredReader(_BaseReader):
                     raise IOError(
                         "Failed to get the data. Check that "
                         "{0!r} is a valid FRED series.".format(name)
-                    )
+                    ) from None
                 raise
 
         df = concat(

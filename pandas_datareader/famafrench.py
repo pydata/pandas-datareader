@@ -146,11 +146,11 @@ class FamaFrenchReader(_BaseReader):
         """
         try:
             from lxml.html import document_fromstring
-        except ImportError:
+        except ImportError as err:
             raise ImportError(
                 "Please install lxml if you want to use the "
                 "get_datasets_famafrench function"
-            )
+            ) from err
 
         response = self.session.get(_URL + "data_library.html")
         root = document_fromstring(response.content)
