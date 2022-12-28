@@ -17,11 +17,14 @@ from pandas_datareader.yahoo.headers import DEFAULT_HEADERS
 
 
 def decrypt_cryptojs_aes(data):
-    encrypted_stores = data['context']['dispatcher']['stores']
+    encrypted_stores = data["context"]["dispatcher"]["stores"]
     _cs = data["_cs"]
     _cr = data["_cr"]
 
-    _cr = b"".join(int.to_bytes(i, length=4, byteorder="big", signed=True) for i in json.loads(_cr)["words"])
+    _cr = b"".join(
+        int.to_bytes(i, length=4, byteorder="big", signed=True)
+        for i in json.loads(_cr)["words"]
+    )
     password = hashlib.pbkdf2_hmac("sha1", _cs.encode("utf8"), _cr, 1, dklen=32).hex()
 
     encrypted_stores = b64decode(encrypted_stores)
@@ -30,12 +33,12 @@ def decrypt_cryptojs_aes(data):
     encrypted_stores = encrypted_stores[16:]
 
     def EVPKDF(
-            password,
-            salt,
-            keySize=32,
-            ivSize=16,
-            iterations=1,
-            hashAlgorithm="md5",
+        password,
+        salt,
+        keySize=32,
+        ivSize=16,
+        iterations=1,
+        hashAlgorithm="md5",
     ) -> tuple:
         """OpenSSL EVP Key Derivation Function
         Args:
@@ -74,7 +77,9 @@ def decrypt_cryptojs_aes(data):
         key, iv = key_iv[:keySize], key_iv[keySize:final_length]
         return key, iv
 
-    key, iv = EVPKDF(password, salt, keySize=32, ivSize=16, iterations=1, hashAlgorithm="md5")
+    key, iv = EVPKDF(
+        password, salt, keySize=32, ivSize=16, iterations=1, hashAlgorithm="md5"
+    )
 
     cipher = AES.new(key, AES.MODE_CBC, iv=iv)
     plaintext = cipher.decrypt(encrypted_stores)
@@ -129,19 +134,19 @@ class YahooDailyReader(_DailyBaseReader):
     """
 
     def __init__(
-            self,
-            symbols=None,
-            start=None,
-            end=None,
-            retry_count=3,
-            pause=0.1,
-            session=None,
-            adjust_price=False,
-            ret_index=False,
-            chunksize=1,
-            interval="d",
-            get_actions=False,
-            adjust_dividends=True,
+        self,
+        symbols=None,
+        start=None,
+        end=None,
+        retry_count=3,
+        pause=0.1,
+        session=None,
+        adjust_price=False,
+        ret_index=False,
+        chunksize=1,
+        interval="d",
+        get_actions=False,
+        adjust_dividends=True,
     ):
         super().__init__(
             symbols=symbols,
@@ -225,10 +230,12 @@ class YahooDailyReader(_DailyBaseReader):
             j = json.loads(re.search(ptrn, resp.text, re.DOTALL).group(1))
 
             if "_cs" in j and "_cr" in j:
-                new_j = decrypt_cryptojs_aes(j)  # returns j["context"]["dispatcher"]["stores"]
+                new_j = decrypt_cryptojs_aes(
+                    j
+                )  # returns j["context"]["dispatcher"]["stores"]
                 # from old code
 
-            data = new_j['HistoricalPriceStore']
+            data = new_j["HistoricalPriceStore"]
 
         except KeyError:
             msg = "No data fetched for symbol {} using {}"
