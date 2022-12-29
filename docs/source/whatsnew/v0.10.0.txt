@@ -11,6 +11,7 @@ Bug Fixes
 - Fixed Yahoo readers which now require headers
 - Fixed other reader
 - Improved compatibility with pandas
+- Decoding stores from Yahoo that were encrypted
 
 Contributors
 ~~~~~~~~~~~~
@@ -26,6 +27,7 @@ Thanks to all of the contributors for the 0.10.0 release (based on git log):
 - Lukas Halim
 - Simon Garisch
 - Dmitry Alekseev
+- Raphael Frach
 
 These lists of names are automatically generated based on git log, and may not
 be complete.
