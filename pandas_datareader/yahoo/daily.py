@@ -18,16 +18,11 @@ from pandas_datareader.yahoo.headers import DEFAULT_HEADERS
 
 def decrypt_cryptojs_aes(data):
     encrypted_stores = data["context"]["dispatcher"]["stores"]
-    _cs = data["_cs"]
-    _cr = data["_cr"]
-
-    _cr = b"".join(
-        int.to_bytes(i, length=4, byteorder="big", signed=True)
-        for i in json.loads(_cr)["words"]
-    )
-    password = hashlib.pbkdf2_hmac("sha1", _cs.encode("utf8"), _cr, 1, dklen=32).hex()
+    password_key = next(key for key in data.keys() if key not in ["context", "plugins"])
+    password = data[password_key]
 
     encrypted_stores = b64decode(encrypted_stores)
+    
     assert encrypted_stores[0:8] == b"Salted__"
     salt = encrypted_stores[8:16]
     encrypted_stores = encrypted_stores[16:]
@@ -229,11 +224,9 @@ class YahooDailyReader(_DailyBaseReader):
         try:
             j = json.loads(re.search(ptrn, resp.text, re.DOTALL).group(1))
 
-            if "_cs" in j and "_cr" in j:
-                new_j = decrypt_cryptojs_aes(
-                    j
-                )  # returns j["context"]["dispatcher"]["stores"]
-                # from old code
+            new_j = decrypt_cryptojs_aes(
+                j
+            )
 
             data = new_j["HistoricalPriceStore"]
 
