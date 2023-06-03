@@ -69,7 +69,7 @@ def _download_nasdaq_symbols(timeout):
     with warnings.catch_warnings(record=True):
         data = read_csv(
             StringIO("\n".join(lines[:-1])),
-            "|",
+            sep=_DELIMITER,
             dtype=_TICKER_DTYPE,
             converters=converter_map,
             index_col=1,
