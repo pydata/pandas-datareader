@@ -129,7 +129,7 @@ class TiingoIEXHistoricalReader(_BaseReader):
                 dfs.append(self._read_one_data(self.url, self.params))
             finally:
                 self.close()
-        return pd.concat(objs = dfs, axis = self._concat_axis)
+        return pd.concat(dfs, axis=self._concat_axis)
 
 
 class TiingoDailyReader(_BaseReader):
@@ -231,7 +231,7 @@ class TiingoDailyReader(_BaseReader):
                 dfs.append(self._read_one_data(self.url, self.params))
             finally:
                 self.close()
-        return pd.concat(objs= dfs, axis = self._concat_axis)  
+        return pd.concat(dfs, axis=self._concat_axis)  
 
 
 class TiingoMetaDataReader(TiingoDailyReader):
