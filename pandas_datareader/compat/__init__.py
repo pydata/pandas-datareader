@@ -1,4 +1,5 @@
 from packaging import version
+from functools import reduce
 from io import StringIO
 from urllib.error import HTTPError
 
