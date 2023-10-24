@@ -59,6 +59,8 @@ class FredReader(_BaseReader):
                 raise
 
         df = concat(
-            [fetch_data(url, n) for url, n in zip(urls, names)], axis=1, join="outer"
+            [fetch_data(url, n) for url, n in zip(urls, names, strict=True)],
+            axis=1,
+            join="outer",
         )
         return df

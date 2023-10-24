@@ -175,7 +175,6 @@ class YahooDailyReader(_DailyBaseReader):
 
         # dividends & splits data
         if self.get_actions and data["eventsData"]:
-
             actions = DataFrame(data["eventsData"])
             actions.columns = [col.capitalize() for col in actions.columns]
             actions["Date"] = to_datetime(

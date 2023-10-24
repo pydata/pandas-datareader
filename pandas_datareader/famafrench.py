@@ -75,7 +75,6 @@ class FamaFrenchReader(_BaseReader):
         return super(FamaFrenchReader, self).read()
 
     def _read_one_data(self, url, params):
-
         params = {
             "index_col": 0,
             "parse_dates": [0],
@@ -84,7 +83,6 @@ class FamaFrenchReader(_BaseReader):
 
         # headers in these files are not valid
         if self.symbols.endswith("_Breakpoints"):
-
             if self.symbols.find("-") > -1:
                 c = ["<=0", ">0"]
             else:

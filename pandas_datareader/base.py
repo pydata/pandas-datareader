@@ -57,7 +57,6 @@ class _BaseReader(object):
         session=None,
         freq=None,
     ):
-
         self.symbols = symbols
 
         start, end = _sanitize_dates(start or self.default_start_date, end)

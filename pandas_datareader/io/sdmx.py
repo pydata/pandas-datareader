@@ -97,7 +97,6 @@ def read_sdmx(path_or_buf, dtype="float64", dsd=None):
 
 
 def _construct_series(values, name, dsd=None):
-
     # ts defines attributes to be handled as times
     times = dsd.ts if dsd is not None else []
 
@@ -105,7 +104,6 @@ def _construct_series(values, name, dsd=None):
         raise ValueError("Data contains no 'Series'")
     results = []
     for value in values:
-
         if name in times:
             tvalue = [v[0] for v in value]
             try:
@@ -121,7 +119,6 @@ def _construct_series(values, name, dsd=None):
 
 
 def _construct_index(keys, dsd=None):
-
     # code defines a mapping to key's internal code to its representation
     codes = dsd.codes if dsd is not None else {}
 

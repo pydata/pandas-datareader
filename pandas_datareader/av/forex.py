@@ -30,7 +30,6 @@ class AVForexReader(AlphaVantage):
     def __init__(
         self, symbols=None, retry_count=3, pause=0.1, session=None, api_key=None
     ):
-
         super(AVForexReader, self).__init__(
             symbols=symbols,
             start=None,

@@ -137,7 +137,6 @@ class Options(_OptionBaseReader):
         ).sort_index()
 
     def _option_from_url(self, url):
-
         jd = self._parse_url(url)
         result = jd["optionChain"]["result"]
         try:
@@ -620,7 +619,6 @@ class Options(_OptionBaseReader):
         return self._load_data()
 
     def _get_data_in_date_range(self, dates, call=True, put=True):
-
         to_ret = Series({"call": call, "put": put})
         to_ret = to_ret[to_ret].index
 

@@ -13,7 +13,6 @@ pytestmark = pytest.mark.stable
 
 class TestFred(object):
     def test_fred(self):
-
         # Raises an exception when DataReader can't
         # get a 200 response from FRED.
 

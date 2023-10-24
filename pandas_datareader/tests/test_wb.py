@@ -21,7 +21,6 @@ pytestmark = pytest.mark.stable
 
 class TestWB(object):
     def test_wdi_search(self):
-
         # Test that a name column exists, and that some results were returned
         # ...without being too strict about what the actual contents of the
         # results actually are.  The fact that there are some, is good enough.
@@ -45,7 +44,6 @@ class TestWB(object):
             assert result.name.str.contains("GDP").any()
 
     def test_wdi_download(self):
-
         # Test a bad indicator with double (US), triple (USA),
         # standard (CA, MX), non standard (KSV),
         # duplicated (US, US, USA), and unknown (BLA) country codes
@@ -101,7 +99,6 @@ class TestWB(object):
         tm.assert_frame_equal(result, expected)
 
     def test_wdi_download_str(self):
-
         # These are the expected results, rounded (robust against
         # data revisions in the future).
         expected = {
@@ -176,7 +173,6 @@ class TestWB(object):
             assert len(result) == 2
 
     def test_wdi_download_w_retired_indicator(self):
-
         cntry_codes = ["CA", "MX", "US"]
         # Despite showing up in the search feature, and being listed online,
         # the api calls to GDPPCKD don't work in their own query builder, nor
@@ -209,7 +205,6 @@ class TestWB(object):
                 pytest.skip("Invalid results")
 
     def test_wdi_download_w_crash_inducing_countrycode(self):
-
         cntry_codes = ["CA", "MX", "US", "XXX"]
         inds = ["NY.GDP.PCAP.CD"]
 

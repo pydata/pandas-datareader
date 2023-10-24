@@ -17,19 +17,19 @@ jobs:
   strategy:
     matrix:
       ${{ if eq(parameters.name, 'Linux') }}:
-        python36_legacy:
-          python.version: '3.6'
-          PANDAS: 1.0.5
-        python37_legacy:
-          python.version: '3.7'
-          PANDAS: 1.1.5
-        python38_recent:
+        python38_legacy:
           python.version: '3.8'
-          PANDAS: 1.2.5
-        python39_latest:
+          PANDAS: 1.5.3
+        python39_legacy:
           python.version: '3.9'
-
-    # maxParallel: 10
+          PANDAS: 1.5.3
+        python310_recent:
+          python.version: '3.9'
+          PANDAS: 2.0.3
+        python311_latest:
+          python.version: '3.11'
+        python312_latest:
+          python.version: '3.12'
 
   steps:
   - task: UsePythonVersion@0
@@ -41,14 +41,13 @@ jobs:
       python -m pip install pip setuptools -U      
       python -m pip install -r requirements.txt
       python -m pip install -r requirements-dev.txt
-
       if [[ -n ${PANDAS} ]]; then 
         python -m pip install pandas==${PANDAS}
       fi;
     displayName: 'Install dependencies'
 
   - script: |
-      python -m pip install -e . -v --no-build-isolation
+      python -m pip install -e . -vv
     displayName: 'Install'
 
   - script: python -m pip list

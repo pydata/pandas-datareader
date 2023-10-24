@@ -562,7 +562,6 @@ class WorldBankReader(_BaseReader):
         session=None,
         errors="warn",
     ):
-
         if symbols is None:
             symbols = ["NY.GDP.MKTP.CD", "NY.GNS.ICTR.ZS"]
         elif isinstance(symbols, string_types):
@@ -820,7 +819,7 @@ def download(
     end=2005,
     freq=None,
     errors="warn",
-    **kwargs
+    **kwargs,
 ):
     """
     Download data series from the World Bank's World Development Indicators
@@ -865,7 +864,7 @@ def download(
         end=end,
         freq=freq,
         errors=errors,
-        **kwargs
+        **kwargs,
     ).read()
 
 
