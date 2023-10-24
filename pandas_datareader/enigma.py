@@ -3,7 +3,7 @@ import time
 
 import pandas as pd
 
-from pandas_datareader.base import _BaseReader, string_types
+from pandas_datareader.base import _BaseReader
 from pandas_datareader.compat import StringIO
 from pandas_datareader.exceptions import DEP_ERROR_MSG, ImmediateDeprecationError
 
@@ -71,7 +71,7 @@ class EnigmaReader(_BaseReader):
             self._api_key = api_key
 
         self._dataset_id = dataset_id
-        if not isinstance(self._dataset_id, string_types):
+        if not isinstance(self._dataset_id, str):
             raise ValueError(
                 "The Enigma dataset_id must be a string (ex: "
                 "'bedaf052-5fcd-4758-8d27-048ce8746c6a')"

@@ -1,6 +1,5 @@
 from pandas import DataFrame, MultiIndex
 
-from pandas_datareader.compat import concat
 from pandas_datareader.yahoo.daily import YahooDailyReader
 
 
@@ -35,7 +34,7 @@ def _get_one_action(data):
         dividends = DataFrame(data["Dividends"]).dropna()
         dividends["action"] = "DIVIDEND"
         dividends = dividends.rename(columns={"Dividends": "value"})
-        actions = concat([actions, dividends], sort=True)
+        actions = pd.concat([actions, dividends], sort=True, axis=1)
         actions = actions.sort_index(ascending=False)
 
     if "Splits" in data.columns:

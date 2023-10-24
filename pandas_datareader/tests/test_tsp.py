@@ -4,7 +4,7 @@ import pytest
 
 from pandas_datareader import tsp as tsp
 
-pytestmark = pytest.mark.stable
+pytestmark = pytest.mark.skip(reason="TSP API has changed")
 
 
 class TestTSPFunds(object):

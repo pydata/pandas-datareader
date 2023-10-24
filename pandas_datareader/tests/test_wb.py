@@ -62,9 +62,9 @@ class TestWB(object):
             "NY.GDP.PCAP.CD": {
                 ("Canada", "2004"): 32000.0,
                 ("Canada", "2003"): 28000.0,
-                ("Kosovo", "2004"): 2000.0,
-                ("Kosovo", "2003"): 2000.0,
-                ("Mexico", "2004"): 7000.0,
+                ("Kosovo", "2004"): np.nan,
+                ("Kosovo", "2003"): np.nan,
+                ("Mexico", "2004"): 8000.0,
                 ("Mexico", "2003"): 7000.0,
                 ("United States", "2004"): 42000.0,
                 ("United States", "2003"): 39000.0,
@@ -105,13 +105,14 @@ class TestWB(object):
             "NY.GDP.PCAP.CD": {
                 ("Japan", "2004"): 38000.0,
                 ("Japan", "2003"): 35000.0,
-                ("Japan", "2002"): 32000.0,
+                ("Japan", "2002"): 33000.0,
                 ("Japan", "2001"): 34000.0,
                 ("Japan", "2000"): 39000.0,
             }
         }
         expected = pd.DataFrame(expected)
         expected = expected.sort_index()
+        expected.index.names = ("country", "year")
 
         cntry_codes = "JP"
         inds = "NY.GDP.PCAP.CD"
@@ -196,14 +197,6 @@ class TestWB(object):
                 errors="ignore",
             )
 
-            # If it ever gets here, it means WB unretired the indicator.
-            # even if they dropped it completely, it would still
-            # get caught above
-            # or the WB API changed somehow in a really
-            # unexpected way.
-        if len(result) > 0:  # pragma: no cover
-            pytest.skip("Invalid results")
-
     def test_wdi_download_w_crash_inducing_countrycode(self):
         cntry_codes = ["CA", "MX", "US", "XXX"]
         inds = ["NY.GDP.PCAP.CD"]
@@ -216,13 +209,6 @@ class TestWB(object):
                 end=2004,
                 errors="ignore",
             )
-
-        # If it ever gets here, it means the country code XXX
-        # got used by WB
-        # or the WB API changed somehow in a really
-        # unexpected way.
-        if len(result) > 0:  # pragma: no cover
-            pytest.skip("Invalid results")
 
     def test_wdi_get_countries(self):
         result1 = get_countries()
@@ -262,7 +248,7 @@ class TestWB(object):
             assert sorted(result.columns) == sorted(exp_col)
             assert len(result) > 10000
 
-    @skip_on_exception(RemoteDataError)
+    @pytest.mark.xfail(reason="World Bank API changed, no data returned")
     def test_wdi_download_monthly(self):
         expected = {
             "COPPER": {

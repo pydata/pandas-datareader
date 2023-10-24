@@ -7,7 +7,7 @@ import zipfile
 
 import pandas as pd
 
-from pandas_datareader.compat import HTTPError, str_to_bytes
+from pandas_datareader.compat import HTTPError
 from pandas_datareader.io.util import _read_content
 
 _STRUCTURE = "{http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure}"
@@ -234,8 +234,10 @@ def _read_zipped_sdmx(path_or_buf):
     """Unzipp data contains SDMX-XML"""
     data = _read_content(path_or_buf)
 
+    if not isinstance(data, bytes):
+        data = data.encode("ascii")
     zp = BytesIO()
-    zp.write(str_to_bytes(data))
+    zp.write(data)
     f = zipfile.ZipFile(zp)
     files = f.namelist()
     assert len(files) == 1
