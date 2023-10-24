@@ -16,20 +16,19 @@ jobs:
     vmImage: ${{ parameters.vmImage }}
   strategy:
     matrix:
-      ${{ if eq(parameters.name, 'Linux') }}:
-        python38_legacy:
-          python.version: '3.8'
-          PANDAS: 1.5.3
-        python39_legacy:
-          python.version: '3.9'
-          PANDAS: 1.5.3
-        python310_recent:
-          python.version: '3.9'
-          PANDAS: 2.0.3
-        python311_latest:
-          python.version: '3.11'
-        python312_latest:
-          python.version: '3.12'
+      python38_legacy:
+        python.version: '3.8'
+        PANDAS: 1.5.3
+      python39_legacy:
+        python.version: '3.9'
+        PANDAS: 1.5.3
+      python310_recent:
+        python.version: '3.9'
+        PANDAS: 2.0.3
+      python311_latest:
+        python.version: '3.11'
+      python312_latest:
+        python.version: '3.12'
 
   steps:
   - task: UsePythonVersion@0
