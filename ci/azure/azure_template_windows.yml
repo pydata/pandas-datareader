@@ -41,13 +41,16 @@ jobs:
       python -m pip install -r requirements.txt
       python -m pip install -r requirements-dev.txt
 
-      if [[ -n ${PANDAS} ]]; then 
-        python -m pip install pandas==${PANDAS}
-      fi;
     displayName: 'Install dependencies'
 
+  - powershell: |
+      if ($null -ne $env:PANDAS) {
+        python -m pip install pandas==${PANDAS}
+      }
+    displayName: 'Update pandas (if needed)'
+
   - script: |
-      python -m pip install -e . -v --no-build-isolation
+      python -m pip install -e . -vv
     displayName: 'Install'
 
   - script: python -m pip list
