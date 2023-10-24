@@ -706,9 +706,7 @@ class Options(_OptionBaseReader):
         """
         jd = json.loads(self._read_url_as_StringIO(url).read())
         if jd is None:  # pragma: no cover
-            raise RemoteDataError(
-                f"Parsed URL {url!r} is not a valid json object"
-            )
+            raise RemoteDataError(f"Parsed URL {url!r} is not a valid json object")
         return jd
 
     def _process_data(self, jd):

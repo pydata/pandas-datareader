@@ -56,9 +56,7 @@ class QuandlReader(_DailyBaseReader):
         chunksize=25,
         api_key=None,
     ):
-        super().__init__(
-            symbols, start, end, retry_count, pause, session, chunksize
-        )
+        super().__init__(symbols, start, end, retry_count, pause, session, chunksize)
         if api_key is None:
             api_key = os.getenv("QUANDL_API_KEY")
         if not api_key or not isinstance(api_key, str):

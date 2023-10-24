@@ -60,9 +60,7 @@ def _download_nasdaq_symbols(timeout):
         raise RemoteDataError("Missing expected footer. Found %r" % lines[-1])
 
     # Convert Y/N to True/False.
-    converter_map = {
-        col: _bool_converter for col, t in _TICKER_DTYPE if t is bool
-    }
+    converter_map = {col: _bool_converter for col, t in _TICKER_DTYPE if t is bool}
 
     # For pandas >= 0.20.0, the Python parser issues a warning if
     # both a converter and dtype are specified for the same column.

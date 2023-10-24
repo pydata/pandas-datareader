@@ -85,7 +85,7 @@ class Deep(IEX):
         if self.sub in fmap:
             return getattr(self, fmap[self.sub])(out)
         else:
-            raise f"Invalid service specified: {self.sub}."
+            raise ValueError(f"Invalid service specified: {self.sub}.")
 
     def _read_system_event(self, out):
         # Map the response code to a string output per the API docs.
