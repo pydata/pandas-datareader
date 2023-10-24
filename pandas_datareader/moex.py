@@ -39,7 +39,7 @@ class MoexReader(_DailyBaseReader):
     """
 
     def __init__(self, *args, **kwargs):
-        super(MoexReader, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.start = self.start.date()
         self.end_dt = self.end
         self.end = self.end.date()
@@ -105,7 +105,7 @@ class MoexReader(_DailyBaseReader):
             text = self._sanitize_response(response)
             if len(text) == 0:
                 service = self.__class__.__name__
-                raise IOError(
+                raise OSError(
                     "{} request returned no data; check URL for invalid "
                     "inputs: {}".format(service, self.__url_metadata)
                 )
@@ -133,7 +133,7 @@ class MoexReader(_DailyBaseReader):
                         boards[symbol_U] = fields[1]
 
             if symbol not in markets_n_engines:
-                raise IOError(
+                raise OSError(
                     "{} request returned no metadata: {}\n"
                     "Typo in the security symbol `{}`?".format(
                         self.__class__.__name__,
@@ -196,7 +196,7 @@ class MoexReader(_DailyBaseReader):
             self.close()
 
         if len(dfs) == 0:
-            raise IOError(
+            raise OSError(
                 "{} returned no data; "
                 "check URL or correct a date".format(self.__class__.__name__)
             )
@@ -225,7 +225,7 @@ class MoexReader(_DailyBaseReader):
         text = self._sanitize_response(response)
         if len(text) == 0:
             service = self.__class__.__name__
-            raise IOError(
+            raise OSError(
                 "{} request returned no data; check URL for invalid "
                 "inputs: {}".format(service, self.url)
             )

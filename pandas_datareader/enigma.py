@@ -55,7 +55,7 @@ class EnigmaReader(_BaseReader):
     ):
         raise ImmediateDeprecationError(DEP_ERROR_MSG.format("Enigma"))
 
-        super(EnigmaReader, self).__init__(
+        super().__init__(
             symbols=[], retry_count=retry_count, pause=pause, session=session
         )
         if api_key is None:
@@ -78,7 +78,7 @@ class EnigmaReader(_BaseReader):
             )
 
         headers = {
-            "Authorization": "Bearer {0}".format(self._api_key),
+            "Authorization": f"Bearer {self._api_key}",
             "User-Agent": "pandas-datareader",
         }
         self.session.headers.update(headers)
@@ -101,7 +101,7 @@ class EnigmaReader(_BaseReader):
 
     def _get(self, url):
         """HTTP GET Request with Retry Logic"""
-        url = "{0}/{1}".format(self._base_url, url)
+        url = f"{self._base_url}/{url}"
         attempts = 0
         while True:
             try:
@@ -125,12 +125,12 @@ class EnigmaReader(_BaseReader):
         """Get the Dataset Model of this EnigmaReader's dataset
         https://docs.public.enigma.com/resources/dataset/index.html
         """
-        url = "datasets/{0}?row_limit=0".format(dataset_id)
+        url = f"datasets/{dataset_id}?row_limit=0"
         response = self._get(url)
         return response.json()
 
     def get_snapshot_export(self, snapshot_id):
         """Return raw CSV of a dataset"""
-        url = "export/{0}".format(snapshot_id)
+        url = f"export/{snapshot_id}"
         response = self._get(url)
         return response.content

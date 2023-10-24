@@ -56,7 +56,7 @@ class QuandlReader(_DailyBaseReader):
         chunksize=25,
         api_key=None,
     ):
-        super(QuandlReader, self).__init__(
+        super().__init__(
             symbols, start, end, retry_count, pause, session, chunksize
         )
         if api_key is None:
@@ -93,7 +93,7 @@ class QuandlReader(_DailyBaseReader):
             "order": "asc",
             "api_key": self.api_key,
         }
-        paramstring = "&".join(["%s=%s" % (k, v) for k, v in params.items()])
+        paramstring = "&".join([f"{k}={v}" for k, v in params.items()])
         url = "{url}{dataset}/{symbol}.csv?{params}"
         return url.format(
             url=self._BASE_URL, dataset=datasetname, symbol=symbol, params=paramstring
@@ -134,7 +134,7 @@ class QuandlReader(_DailyBaseReader):
 
     def read(self):
         """Read data"""
-        df = super(QuandlReader, self).read()
+        df = super().read()
         df.rename(
             columns=lambda n: n.replace(" ", "")
             .replace(".", "")

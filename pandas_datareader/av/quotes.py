@@ -36,7 +36,7 @@ class AVQuotesReader(AlphaVantage):
                 raise ValueError("Up to 100 symbols at once are allowed.")
             else:
                 syms = symbols
-        super(AVQuotesReader, self).__init__(
+        super().__init__(
             symbols=syms,
             start=None,
             end=None,
@@ -76,6 +76,6 @@ class AVQuotesReader(AlphaVantage):
                 df["volume"] = [np.nan * len(self.symbols)]
             result.append(df)
         if len(result) != len(self.symbols):
-            raise ValueError("Not all symbols downloaded. Check valid " "ticker(s).")
+            raise ValueError("Not all symbols downloaded. Check valid ticker(s).")
         else:
             return pd.concat(result)

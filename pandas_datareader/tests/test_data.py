@@ -6,7 +6,7 @@ from pandas_datareader.data import DataReader
 pytestmark = pytest.mark.stable
 
 
-class TestDataReader(object):
+class TestDataReader:
     def test_read_iex(self):
         gs = DataReader("GS", "iex-last")
         assert isinstance(gs, DataFrame)

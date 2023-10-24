@@ -11,7 +11,7 @@ def assert_equal(x, y):
     assert np.isclose(x, y, rtol=1e-2)
 
 
-class TestEcondb(object):
+class TestEcondb:
     def test_override_start_end(self):
         df = web.DataReader(
             "&".join(

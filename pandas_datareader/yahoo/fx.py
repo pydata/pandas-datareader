@@ -78,7 +78,7 @@ class YahooFXReader(YahooDailyReader):
 
     def _read_one_data(self, symbol):
         """read one data from specified URL"""
-        url = "https://query1.finance.yahoo.com/v8/finance/chart/{}=X".format(symbol)
+        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}=X"
         params = self._get_params(symbol)
 
         resp = self._get_response(url, params=params)
@@ -100,7 +100,7 @@ class YahooFXReader(YahooDailyReader):
                 df["PairCode"] = sym
                 stocks[sym] = df
                 passed.append(sym)
-            except IOError:
+            except OSError:
                 msg = "Failed to read symbol: {0!r}, replacing with NaN."
                 warnings.warn(msg.format(sym), SymbolWarning, stacklevel=2)
                 failed.append(sym)

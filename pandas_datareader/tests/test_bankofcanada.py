@@ -8,13 +8,13 @@ from pandas_datareader._utils import RemoteDataError
 pytestmark = pytest.mark.stable
 
 
-class TestBankOfCanada(object):
+class TestBankOfCanada:
     @staticmethod
     def get_symbol(currency_code, inverted=False):
         if inverted:
-            return "FXCAD{}".format(currency_code)
+            return f"FXCAD{currency_code}"
         else:
-            return "FX{}CAD".format(currency_code)
+            return f"FX{currency_code}CAD"
 
     def check_bankofcanada_count(self, code):
         start, end = date.today() - timedelta(days=30), date.today()

@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import collections
 from io import BytesIO
 import time
@@ -167,14 +165,14 @@ def _get_child(element, key):
     if len(elements) == 1:
         return elements[0]
     elif len(elements) == 0:
-        raise ValueError("Element {0} contains " "no {1}".format(element.tag, key))
+        raise ValueError(f"Element {element.tag} contains no {key}")
     else:
         raise ValueError(
-            "Element {0} contains " "multiple {1}".format(element.tag, key)
+            f"Element {element.tag} contains multiple {key}"
         )
 
 
-_NAME_EN = ".//{0}Name[@{1}lang='en']".format(_COMMON, _XML)
+_NAME_EN = f".//{_COMMON}Name[@{_XML}lang='en']"
 
 
 def _get_english_name(element):
@@ -201,7 +199,7 @@ def _read_sdmx_dsd(path_or_buf):
 
     xdata = _read_content(path_or_buf)
 
-    from xml.etree import cElementTree as ET
+    from xml.etree import ElementTree as ET
 
     root = ET.fromstring(xdata)
 

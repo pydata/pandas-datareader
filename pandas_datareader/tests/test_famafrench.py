@@ -9,7 +9,7 @@ from pandas_datareader.famafrench import get_available_datasets
 pytestmark = pytest.mark.stable
 
 
-class TestFamaFrench(object):
+class TestFamaFrench:
     def test_get_data(self):
         keys = [
             "F-F_Research_Data_Factors",

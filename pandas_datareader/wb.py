@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from functools import reduce
 import warnings
 
@@ -567,7 +565,7 @@ class WorldBankReader(_BaseReader):
         elif isinstance(symbols, str):
             symbols = [symbols]
 
-        super(WorldBankReader, self).__init__(
+        super().__init__(
             symbols=symbols,
             start=start,
             end=end,
@@ -597,7 +595,7 @@ class WorldBankReader(_BaseReader):
         freq_symbols = ["M", "Q", "A", None]
 
         if freq not in freq_symbols:
-            msg = "The frequency `{0}` is not in the accepted " "list.".format(freq)
+            msg = f"The frequency `{freq}` is not in the accepted list."
             raise ValueError(msg)
 
         self.freq = freq
@@ -615,7 +613,7 @@ class WorldBankReader(_BaseReader):
         """Parameters to use in API calls"""
         if self.freq == "M":
             return {
-                "date": "{0}M{1:02d}:{2}M{3:02d}".format(
+                "date": "{}M{:02d}:{}M{:02d}".format(
                     self.start.year, self.start.month, self.end.year, self.end.month
                 ),
                 "per_page": 25000,
@@ -623,7 +621,7 @@ class WorldBankReader(_BaseReader):
             }
         elif self.freq == "Q":
             return {
-                "date": "{0}Q{1}:{2}Q{3}".format(
+                "date": "{}Q{}:{}Q{}".format(
                     self.start.year, self.start.quarter, self.end.year, self.end.quarter
                 ),
                 "per_page": 25000,
@@ -631,7 +629,7 @@ class WorldBankReader(_BaseReader):
             }
         else:
             return {
-                "date": "{0}:{1}".format(self.start.year, self.end.year),
+                "date": f"{self.start.year}:{self.end.year}",
                 "per_page": 25000,
                 "format": "json",
             }
@@ -770,7 +768,7 @@ class WorldBankReader(_BaseReader):
 
         # Clean output
         data = data.sort_values(by="id")
-        data.index = pd.Index(list(range((data.shape[0]))))
+        data.index = pd.Index(list(range(data.shape[0])))
 
         # cache
         _cached_series = data.copy()

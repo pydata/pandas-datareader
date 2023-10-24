@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 #
 # pandas-datareader documentation build configuration file, created by
 # sphinx-quickstart on Thu Jan 18 13:34:14 2018.

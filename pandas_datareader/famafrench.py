@@ -72,7 +72,7 @@ class FamaFrenchReader(_BaseReader):
             A dictionary of DataFrames. Tables are accessed by integer keys.
             See df['DESCR'] for a description of the data set.
         """
-        return super(FamaFrenchReader, self).read()
+        return super().read()
 
     def _read_one_data(self, url, params):
         params = {
@@ -120,15 +120,15 @@ class FamaFrenchReader(_BaseReader):
             datasets[i] = df
 
             title = src[:start].replace("\r\n", " ").strip()
-            shape = "({0} rows x {1} cols)".format(*df.shape)
-            table_desc.append("{0} {1}".format(title, shape).strip())
+            shape = "({} rows x {} cols)".format(*df.shape)
+            table_desc.append(f"{title} {shape}".strip())
 
-        descr = "{0}\n{1}\n\n".format(
+        descr = "{}\n{}\n\n".format(
             self.symbols.replace("_", " "), len(self.symbols) * "-"
         )
         if doc_chunks:
             descr += " ".join(doc_chunks).replace(2 * " ", " ") + "\n\n"
-        table_descr = map(lambda x: "{0:3} : {1}".format(*x), enumerate(table_desc))
+        table_descr = map(lambda x: "{:3} : {}".format(*x), enumerate(table_desc))
         datasets["DESCR"] = descr + "\n".join(table_descr)
 
         return datasets

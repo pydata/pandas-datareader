@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from pandas_datareader.base import _BaseReader
 
 
@@ -18,7 +16,7 @@ class BankOfCanadaReader(_BaseReader):
         if not isinstance(self.symbols, str):
             raise ValueError("data name must be string")
 
-        return "{0}/{1}/csv".format(self._URL, self.symbols)
+        return f"{self._URL}/{self.symbols}/csv"
 
     @property
     def params(self):
