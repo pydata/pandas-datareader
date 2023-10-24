@@ -72,14 +72,14 @@ class TestYahoo:
         assert df["longName"][0] == "Royal Gold, Inc."
 
     @pytest.mark.skip(
-        "Unreliable test, receive partial " "components back for dow_jones"
+        "Unreliable test, receive partial components back for dow_jones"
     )
     def test_get_components_dow_jones(self):  # pragma: no cover
         df = web.get_components_yahoo("^DJI")  # Dow Jones
         assert isinstance(df, pd.DataFrame)
         assert len(df) == 30
 
-    @pytest.mark.skip("Unreliable test, receive partial " "components back for dax")
+    @pytest.mark.skip("Unreliable test, receive partial components back for dax")
     def test_get_components_dax(self):  # pragma: no cover
         df = web.get_components_yahoo("^GDAXI")  # DAX
         assert isinstance(df, pd.DataFrame)
@@ -88,7 +88,7 @@ class TestYahoo:
         assert df[df.name.str.contains("adidas", case=False)].index == "ADS.DE"
 
     @pytest.mark.skip(
-        "Unreliable test, receive partial " "components back for nasdaq_100"
+        "Unreliable test, receive partial components back for nasdaq_100"
     )
     def test_get_components_nasdaq_100(self):  # pragma: no cover
         # As of 7/12/13, the conditional will

@@ -154,7 +154,7 @@ class TestWB:
         cntry_codes = ["USA"]
         inds = ["NY.GDP.PCAP.CD", "BAD_INDICATOR"]
 
-        msg = "The provided parameter value is not valid\\. " "Indicator: BAD_INDICATOR"
+        msg = "The provided parameter value is not valid\\. Indicator: BAD_INDICATOR"
         with pytest.raises(ValueError, match=msg):
             download(
                 country=cntry_codes,

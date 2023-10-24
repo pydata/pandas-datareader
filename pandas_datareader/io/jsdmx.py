@@ -68,7 +68,7 @@ def _fix_quarter_values(value):
     if not m:
         return value
     quarter, year = m.groups()
-    value = "{}Q{}".format(quarter, year)
+    value = f"{quarter}Q{year}"
     return value
 
 

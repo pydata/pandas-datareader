@@ -165,10 +165,10 @@ def _get_child(element, key):
     if len(elements) == 1:
         return elements[0]
     elif len(elements) == 0:
-        raise ValueError("Element {} contains " "no {}".format(element.tag, key))
+        raise ValueError(f"Element {element.tag} contains no {key}")
     else:
         raise ValueError(
-            "Element {} contains " "multiple {}".format(element.tag, key)
+            f"Element {element.tag} contains multiple {key}"
         )
 
 

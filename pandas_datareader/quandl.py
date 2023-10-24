@@ -93,7 +93,7 @@ class QuandlReader(_DailyBaseReader):
             "order": "asc",
             "api_key": self.api_key,
         }
-        paramstring = "&".join(["{}={}".format(k, v) for k, v in params.items()])
+        paramstring = "&".join([f"{k}={v}" for k, v in params.items()])
         url = "{url}{dataset}/{symbol}.csv?{params}"
         return url.format(
             url=self._BASE_URL, dataset=datasetname, symbol=symbol, params=paramstring

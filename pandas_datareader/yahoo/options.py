@@ -62,7 +62,7 @@ class Options(_OptionBaseReader):
     >>> all_data = aapl.get_all_data()
     """
 
-    _OPTIONS_BASE_URL = "https://query1.finance.yahoo.com/" "v7/finance/options/{sym}"
+    _OPTIONS_BASE_URL = "https://query1.finance.yahoo.com/v7/finance/options/{sym}"
 
     def get_options_data(self, month=None, year=None, expiry=None):
         """
@@ -144,7 +144,7 @@ class Options(_OptionBaseReader):
             puts = result["options"]["puts"]
         except IndexError as exc:
             raise RemoteDataError(
-                "Option json not available " "for url: %s" % url
+                "Option json not available for url: %s" % url
             ) from exc
 
         self.underlying_price = (
@@ -479,7 +479,7 @@ class Options(_OptionBaseReader):
                 if expiry.year == year and expiry.month == month
             ]
             if len(expiry) == 0:
-                raise ValueError("No expiries available " "in %s-%s" % (year, month))
+                raise ValueError("No expiries available in {}-{}".format(year, month))
 
         return expiry
 
@@ -707,7 +707,7 @@ class Options(_OptionBaseReader):
         jd = json.loads(self._read_url_as_StringIO(url).read())
         if jd is None:  # pragma: no cover
             raise RemoteDataError(
-                "Parsed URL {!r} is not " "a valid json object".format(url)
+                f"Parsed URL {url!r} is not a valid json object"
             )
         return jd
 

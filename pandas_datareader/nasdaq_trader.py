@@ -42,7 +42,7 @@ def _download_nasdaq_symbols(timeout):
         ftp_session.login()
     except all_errors as err:
         raise RemoteDataError(
-            "Error connecting to {!r}: {}".format(_NASDAQ_FTP_SERVER, err)
+            f"Error connecting to {_NASDAQ_FTP_SERVER!r}: {err}"
         ) from err
 
     lines = []
@@ -50,7 +50,7 @@ def _download_nasdaq_symbols(timeout):
         ftp_session.retrlines("RETR " + _NASDAQ_TICKER_LOC, lines.append)
     except all_errors as err:
         raise RemoteDataError(
-            "Error downloading from {!r}: {}".format(_NASDAQ_FTP_SERVER, err)
+            f"Error downloading from {_NASDAQ_FTP_SERVER!r}: {err}"
         ) from err
     finally:
         ftp_session.close()
@@ -96,12 +96,12 @@ def get_nasdaq_symbols(retry_count=3, timeout=30, pause=None):
     global _ticker_cache
 
     if timeout < 0:
-        raise ValueError("timeout must be >= 0, not {!r}".format(timeout))
+        raise ValueError(f"timeout must be >= 0, not {timeout!r}")
 
     if pause is None:
         pause = timeout / 3
     elif pause < 0:
-        raise ValueError("pause must be >= 0, not {!r}".format(pause))
+        raise ValueError(f"pause must be >= 0, not {pause!r}")
 
     if _ticker_cache is None:
         while retry_count > 0:
