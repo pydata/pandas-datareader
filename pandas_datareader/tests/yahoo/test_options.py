@@ -18,7 +18,6 @@ def aapl():
 
 @pytest.fixture
 def month():
-
     # AAPL has monthlies
     today = datetime.today()
     month = today.month + 1
@@ -31,7 +30,6 @@ def month():
 
 @pytest.fixture
 def year():
-
     # AAPL has monthlies
     today = datetime.today()
     year = today.year
@@ -100,7 +98,7 @@ class TestYahooOptions(object):
             ]
         )
         tm.assert_index_equal(df.columns, exp_columns)
-        assert df.index.names == [u"Strike", u"Expiry", u"Type", u"Symbol"]
+        assert df.index.names == ["Strike", "Expiry", "Type", "Symbol"]
 
         dtypes = [
             np.dtype(x)

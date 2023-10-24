@@ -7,7 +7,7 @@ import zipfile
 
 import pandas as pd
 
-from pandas_datareader.compat import HTTPError, str_to_bytes
+from pandas_datareader.compat import HTTPError
 from pandas_datareader.io.util import _read_content
 
 _STRUCTURE = "{http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure}"
@@ -53,11 +53,11 @@ def read_sdmx(path_or_buf, dtype="float64", dsd=None):
 
     try:
         structure = _get_child(root, _MESSAGE + "Structure")
-    except ValueError:
+    except ValueError as exc:
         # get zipped path
         result = list(root.iter(_COMMON + "Text"))[1].text
         if not result.startswith("http"):
-            raise ValueError(result)
+            raise ValueError(result) from exc
 
         for _ in range(60):
             # wait zipped data is prepared
@@ -72,7 +72,7 @@ def read_sdmx(path_or_buf, dtype="float64", dsd=None):
             "Unable to download zipped data within 60 secs, "
             "please download it manually from: {0}"
         )
-        raise ValueError(msg.format(result))
+        raise ValueError(msg.format(result)) from exc
 
     idx_name = structure.get("dimensionAtObservation")
     dataset = _get_child(root, _DATASET)
@@ -97,7 +97,6 @@ def read_sdmx(path_or_buf, dtype="float64", dsd=None):
 
 
 def _construct_series(values, name, dsd=None):
-
     # ts defines attributes to be handled as times
     times = dsd.ts if dsd is not None else []
 
@@ -105,7 +104,6 @@ def _construct_series(values, name, dsd=None):
         raise ValueError("Data contains no 'Series'")
     results = []
     for value in values:
-
         if name in times:
             tvalue = [v[0] for v in value]
             try:
@@ -121,7 +119,6 @@ def _construct_series(values, name, dsd=None):
 
 
 def _construct_index(keys, dsd=None):
-
     # code defines a mapping to key's internal code to its representation
     codes = dsd.codes if dsd is not None else {}
 
@@ -237,8 +234,10 @@ def _read_zipped_sdmx(path_or_buf):
     """Unzipp data contains SDMX-XML"""
     data = _read_content(path_or_buf)
 
+    if not isinstance(data, bytes):
+        data = data.encode("ascii")
     zp = BytesIO()
-    zp.write(str_to_bytes(data))
+    zp.write(data)
     f = zipfile.ZipFile(zp)
     files = f.namelist()
     assert len(files) == 1

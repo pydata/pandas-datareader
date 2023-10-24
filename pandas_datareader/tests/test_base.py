@@ -23,9 +23,9 @@ class TestBaseReader(object):
             base._BaseReader([]).url
 
     def test_invalid_format(self):
+        b = base._BaseReader([])
+        b._format = "IM_NOT_AN_IMPLEMENTED_TYPE"
         with pytest.raises(NotImplementedError):
-            b = base._BaseReader([])
-            b._format = "IM_NOT_AN_IMPLEMENTED_TYPE"
             b._read_one_data("a", None)
 
     def test_default_start_date(self):
@@ -35,6 +35,6 @@ class TestBaseReader(object):
 
 class TestDailyBaseReader(object):
     def test_get_params(self):
+        b = base._DailyBaseReader()
         with pytest.raises(NotImplementedError):
-            b = base._DailyBaseReader()
             b._get_params()

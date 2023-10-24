@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from functools import reduce
 import warnings
 
 import numpy as np
 import pandas as pd
 
 from pandas_datareader.base import _BaseReader
-from pandas_datareader.compat import lrange, reduce, string_types
 
 # This list of country codes was pulled from wikipedia during October 2014.
 # While some exceptions do exist, it is the best proxy for countries supported
@@ -562,10 +562,9 @@ class WorldBankReader(_BaseReader):
         session=None,
         errors="warn",
     ):
-
         if symbols is None:
             symbols = ["NY.GDP.MKTP.CD", "NY.GNS.ICTR.ZS"]
-        elif isinstance(symbols, string_types):
+        elif isinstance(symbols, str):
             symbols = [symbols]
 
         super(WorldBankReader, self).__init__(
@@ -579,7 +578,7 @@ class WorldBankReader(_BaseReader):
 
         if countries is None:
             countries = ["MX", "CA", "US"]
-        elif isinstance(countries, string_types):
+        elif isinstance(countries, str):
             countries = [countries]
 
         bad_countries = np.setdiff1d(countries, country_codes)
@@ -590,7 +589,9 @@ class WorldBankReader(_BaseReader):
                 raise ValueError("Invalid Country Code(s): %s" % tmp)
             if errors == "warn":
                 warnings.warn(
-                    "Non-standard ISO " "country codes: %s" % tmp, UserWarning
+                    "Non-standard ISO country codes: %s" % tmp,
+                    UserWarning,
+                    stacklevel=2,
                 )
 
         freq_symbols = ["M", "Q", "A", None]
@@ -654,9 +655,9 @@ class WorldBankReader(_BaseReader):
             except ValueError as e:
                 msg = str(e) + " Indicator: " + indicator
                 if self.errors == "raise":
-                    raise ValueError(msg)
+                    raise ValueError(msg) from e
                 elif self.errors == "warn":
-                    warnings.warn(msg)
+                    warnings.warn(msg, stacklevel=2)
 
         # Confirm we actually got some data, and build Dataframe
         if len(data) > 0:
@@ -769,7 +770,7 @@ class WorldBankReader(_BaseReader):
 
         # Clean output
         data = data.sort_values(by="id")
-        data.index = pd.Index(lrange(data.shape[0]))
+        data.index = pd.Index(list(range((data.shape[0]))))
 
         # cache
         _cached_series = data.copy()
@@ -820,7 +821,7 @@ def download(
     end=2005,
     freq=None,
     errors="warn",
-    **kwargs
+    **kwargs,
 ):
     """
     Download data series from the World Bank's World Development Indicators
@@ -865,7 +866,7 @@ def download(
         end=end,
         freq=freq,
         errors=errors,
-        **kwargs
+        **kwargs,
     ).read()
 
 

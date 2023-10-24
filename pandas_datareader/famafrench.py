@@ -6,7 +6,7 @@ from zipfile import ZipFile
 from pandas import read_csv, to_datetime
 
 from pandas_datareader.base import _BaseReader
-from pandas_datareader.compat import StringIO, lmap
+from pandas_datareader.compat import StringIO
 
 _URL = "http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/"
 _URL_PREFIX = "ftp/"
@@ -75,7 +75,6 @@ class FamaFrenchReader(_BaseReader):
         return super(FamaFrenchReader, self).read()
 
     def _read_one_data(self, url, params):
-
         params = {
             "index_col": 0,
             "parse_dates": [0],
@@ -84,13 +83,12 @@ class FamaFrenchReader(_BaseReader):
 
         # headers in these files are not valid
         if self.symbols.endswith("_Breakpoints"):
-
             if self.symbols.find("-") > -1:
                 c = ["<=0", ">0"]
             else:
                 c = ["Count"]
             r = list(range(0, 105, 5))
-            params["names"] = ["Date"] + c + list(zip(r, r[1:]))
+            params["names"] = ["Date"] + c + list(zip(r, r[1:], strict=True))
 
             if self.symbols != "Prior_2-12_Breakpoints":
                 params["skiprows"] = 1
@@ -146,11 +144,11 @@ class FamaFrenchReader(_BaseReader):
         """
         try:
             from lxml.html import document_fromstring
-        except ImportError:
+        except ImportError as exc:
             raise ImportError(
                 "Please install lxml if you want to use the "
                 "get_datasets_famafrench function"
-            )
+            ) from exc
 
         response = self.session.get(_URL + "data_library.html")
         root = document_fromstring(response.content)
@@ -164,4 +162,4 @@ class FamaFrenchReader(_BaseReader):
             if ds.startswith(_URL_PREFIX) and ds.endswith(_URL_SUFFIX)
         ]
 
-        return lmap(lambda x: x[len(_URL_PREFIX) : -len(_URL_SUFFIX)], datasets)
+        return list(map(lambda x: x[len(_URL_PREFIX) : -len(_URL_SUFFIX)], datasets))

@@ -137,14 +137,15 @@ class Options(_OptionBaseReader):
         ).sort_index()
 
     def _option_from_url(self, url):
-
         jd = self._parse_url(url)
         result = jd["optionChain"]["result"]
         try:
             calls = result["options"]["calls"]
             puts = result["options"]["puts"]
-        except IndexError:
-            raise RemoteDataError("Option json not available " "for url: %s" % url)
+        except IndexError as exc:
+            raise RemoteDataError(
+                "Option json not available " "for url: %s" % url
+            ) from exc
 
         self.underlying_price = (
             result["quote"]["regularMarketPrice"]
@@ -562,7 +563,7 @@ class Options(_OptionBaseReader):
                       on Yahoo and may change.
 
         """
-        warnings.warn("get_forward_data() is deprecated", FutureWarning)
+        warnings.warn("get_forward_data() is deprecated", FutureWarning, stacklevel=2)
         end_date = dt.date.today() + MonthEnd(months)
         dates = [date for date in self.expiry_dates if date <= end_date.date()]
         data = self._get_data_in_date_range(dates, call=call, put=put)
@@ -620,7 +621,6 @@ class Options(_OptionBaseReader):
         return self._load_data()
 
     def _get_data_in_date_range(self, dates, call=True, put=True):
-
         to_ret = Series({"call": call, "put": put})
         to_ret = to_ret[to_ret].index
 

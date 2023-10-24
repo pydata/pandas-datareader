@@ -70,18 +70,18 @@ class AlphaVantage(_BaseReader):
     def _read_lines(self, out):
         try:
             df = pd.DataFrame.from_dict(out[self.data_key], orient="index")
-        except KeyError:
+        except KeyError as exc:
             if "Error Message" in out:
                 raise ValueError(
                     "The requested symbol {} could not be "
                     "retrieved. Check valid ticker"
                     ".".format(self.symbols)
-                )
+                ) from exc
             else:
                 raise RemoteDataError(
                     " Their was an issue from the data vendor "
                     "side, here is their response: {}".format(out)
-                )
+                ) from exc
         df = df[sorted(df.columns)]
         df.columns = [id[3:] for id in df.columns]
         return df

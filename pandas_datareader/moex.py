@@ -1,9 +1,10 @@
 import datetime as dt
+from io import StringIO
 
 import pandas as pd
 
 from pandas_datareader.base import _DailyBaseReader
-from pandas_datareader.compat import StringIO, binary_type, concat, is_list_like
+from pandas_datareader.compat import is_list_like
 
 
 class MoexReader(_DailyBaseReader):
@@ -108,7 +109,7 @@ class MoexReader(_DailyBaseReader):
                     "{} request returned no data; check URL for invalid "
                     "inputs: {}".format(service, self.__url_metadata)
                 )
-            if isinstance(text, binary_type):
+            if isinstance(text, bytes):
                 text = text.decode("windows-1251")
 
             header_str = "secid;boardid;"
@@ -200,7 +201,7 @@ class MoexReader(_DailyBaseReader):
                 "check URL or correct a date".format(self.__class__.__name__)
             )
         elif len(dfs) > 1:
-            b = concat(dfs, axis=0, join="outer", sort=True)
+            b = pd.concat(dfs, axis=0, join="outer", sort=True)
         else:
             b = dfs[0]
         return b
@@ -213,7 +214,7 @@ class MoexReader(_DailyBaseReader):
         for secid in list(set(b["SECID"].tolist())):
             part = b[b["BOARDID"] == boards[secid]]
             parts.append(part)
-        result = pd.concat(parts)
+        result = pd.concat(parts, axis=0)
         result = result.drop_duplicates()
         return result
 
@@ -228,7 +229,7 @@ class MoexReader(_DailyBaseReader):
                 "{} request returned no data; check URL for invalid "
                 "inputs: {}".format(service, self.url)
             )
-        if isinstance(text, binary_type):
+        if isinstance(text, bytes):
             text = text.decode("windows-1251")
         return text
 

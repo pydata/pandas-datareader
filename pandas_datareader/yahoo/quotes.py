@@ -4,7 +4,6 @@ import json
 from pandas import DataFrame
 
 from pandas_datareader.base import _BaseReader
-from pandas_datareader.compat import string_types
 from pandas_datareader.yahoo.headers import DEFAULT_HEADERS
 
 _DEFAULT_PARAMS = {
@@ -45,7 +44,7 @@ class YahooQuotesReader(_BaseReader):
         return "https://query1.finance.yahoo.com/v7/finance/quote"
 
     def read(self):
-        if isinstance(self.symbols, string_types):
+        if isinstance(self.symbols, str):
             return self._read_one_data(self.url, self.params(self.symbols))
         else:
             data = OrderedDict()

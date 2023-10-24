@@ -34,7 +34,7 @@ class TestYahoo(object):
         start = datetime(2010, 1, 1)
         end = datetime(2013, 1, 27)
 
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             web.DataReader("NON EXISTENT TICKER", "yahoo", start, end)
 
     def test_get_quote_series(self):

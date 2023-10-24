@@ -31,9 +31,9 @@ def read_jsdmx(path_or_buf):
 
     try:
         import simplejson as json
-    except ImportError:
+    except ImportError as exc:
         if sys.version_info[:2] < (2, 7):
-            raise ImportError("simplejson is required in python 2.6")
+            raise ImportError("simplejson is required in python 2.6") from exc
         import json
 
     if isinstance(jdata, dict):

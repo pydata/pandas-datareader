@@ -5,7 +5,6 @@ import warnings
 from pandas import DataFrame, Series, concat, to_datetime
 
 from pandas_datareader._utils import RemoteDataError, SymbolWarning
-from pandas_datareader.compat import string_types
 from pandas_datareader.yahoo.daily import YahooDailyReader
 
 
@@ -58,7 +57,7 @@ class YahooFXReader(YahooDailyReader):
         """Read data"""
         try:
             # If a single symbol, (e.g., 'GOOG')
-            if isinstance(self.symbols, (string_types, int)):
+            if isinstance(self.symbols, (str, int)):
                 df = self._read_one_data(self.symbols)
 
             # Or multiple symbols, (e.g., ['GOOG', 'AAPL', 'MSFT'])
@@ -103,7 +102,7 @@ class YahooFXReader(YahooDailyReader):
                 passed.append(sym)
             except IOError:
                 msg = "Failed to read symbol: {0!r}, replacing with NaN."
-                warnings.warn(msg.format(sym), SymbolWarning)
+                warnings.warn(msg.format(sym), SymbolWarning, stacklevel=2)
                 failed.append(sym)
 
         if len(passed) == 0:

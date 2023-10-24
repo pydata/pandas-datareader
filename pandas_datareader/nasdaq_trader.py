@@ -41,7 +41,9 @@ def _download_nasdaq_symbols(timeout):
         ftp_session = FTP(_NASDAQ_FTP_SERVER, timeout=timeout)
         ftp_session.login()
     except all_errors as err:
-        raise RemoteDataError("Error connecting to %r: %s" % (_NASDAQ_FTP_SERVER, err))
+        raise RemoteDataError(
+            "Error connecting to %r: %s" % (_NASDAQ_FTP_SERVER, err)
+        ) from err
 
     lines = []
     try:
@@ -49,7 +51,7 @@ def _download_nasdaq_symbols(timeout):
     except all_errors as err:
         raise RemoteDataError(
             "Error downloading from %r: %s" % (_NASDAQ_FTP_SERVER, err)
-        )
+        ) from err
     finally:
         ftp_session.close()
 

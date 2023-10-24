@@ -31,15 +31,13 @@ class TestIEX(object):
         df = get_last_iex("INVALID TICKER")
         assert df.shape[0] == 0
 
-    @pytest.mark.xfail(
-        reason="IEX daily history API is returning 500 as of " "Jan 2018"
-    )
+    @pytest.mark.xfail(reason="IEX daily history API is returning 500 as of Jan 2018")
     def test_daily(self):
-        with pytest.warns(UnstableAPIWarning):
+        with pytest.warns(UnstableAPIWarning, match="Daily statistics"):
             df = get_dailysummary_iex(
                 start=datetime(2017, 5, 5), end=datetime(2017, 5, 6)
             )
-            assert df["routedVolume"].iloc[0] == 39974788
+        assert df["routedVolume"].iloc[0] == 39974788
 
     def test_symbols(self):
         df = get_iex_symbols()

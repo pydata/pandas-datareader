@@ -1,4 +1,5 @@
 import datetime
+from io import StringIO
 import time
 from urllib.parse import urlencode
 import warnings
@@ -12,13 +13,6 @@ from pandas_datareader._utils import (
     SymbolWarning,
     _init_session,
     _sanitize_dates,
-)
-from pandas_datareader.compat import (
-    PANDAS_0230,
-    StringIO,
-    binary_type,
-    bytes_to_str,
-    string_types,
 )
 
 
@@ -57,7 +51,6 @@ class _BaseReader(object):
         session=None,
         freq=None,
     ):
-
         self.symbols = symbols
 
         start, end = _sanitize_dates(start or self.default_start_date, end)
@@ -125,8 +118,8 @@ class _BaseReader(object):
                 "{} request returned no data; check URL for invalid "
                 "inputs: {}".format(service, self.url)
             )
-        if isinstance(text, binary_type):
-            out.write(bytes_to_str(text))
+        if isinstance(text, bytes):
+            out.write(text.decode("utf-8"))
         else:
             out.write(text)
         out.seek(0)
@@ -249,7 +242,7 @@ class _DailyBaseReader(_BaseReader):
     def read(self):
         """Read data"""
         # If a single symbol, (e.g., 'GOOG')
-        if isinstance(self.symbols, (string_types, int)):
+        if isinstance(self.symbols, (str, int)):
             df = self._read_one_data(self.url, params=self._get_params(self.symbols))
         # Or multiple symbols, (e.g., ['GOOG', 'AAPL', 'MSFT'])
         elif isinstance(self.symbols, DataFrame):
@@ -269,7 +262,7 @@ class _DailyBaseReader(_BaseReader):
                     passed.append(sym)
                 except (IOError, KeyError):
                     msg = "Failed to read symbol: {0!r}, replacing with NaN."
-                    warnings.warn(msg.format(sym), SymbolWarning)
+                    warnings.warn(msg.format(sym), SymbolWarning, stacklevel=2)
                     failed.append(sym)
 
         if len(passed) == 0:
@@ -281,16 +274,13 @@ class _DailyBaseReader(_BaseReader):
                 df_na[:] = np.nan
                 for sym in failed:
                     stocks[sym] = df_na
-            if PANDAS_0230:
                 result = concat(stocks, sort=True).unstack(level=0)
-            else:
-                result = concat(stocks).unstack(level=0)
-            result.columns.names = ["Attributes", "Symbols"]
+                result.columns.names = ["Attributes", "Symbols"]
             return result
-        except AttributeError:
+        except AttributeError as exc:
             # cannot construct a panel with just 1D nans indicating no data
             msg = "No data fetched using {0!r}"
-            raise RemoteDataError(msg.format(self.__class__.__name__))
+            raise RemoteDataError(msg.format(self.__class__.__name__)) from exc
 
 
 def _in_chunks(seq, size):
