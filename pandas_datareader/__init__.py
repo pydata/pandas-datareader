@@ -8,6 +8,7 @@ from .data import (
     get_components_yahoo,
     get_dailysummary_iex,
     get_data_alphavantage,
+    get_data_econdb,
     get_data_enigma,
     get_data_famafrench,
     get_data_fred,
@@ -38,6 +39,7 @@ del get_versions
 __all__ = [
     "__version__",
     "get_components_yahoo",
+    "get_data_econdb",
     "get_data_enigma",
     "get_data_famafrench",
     "get_data_yahoo",
