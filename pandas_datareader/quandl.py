@@ -35,7 +35,7 @@ class QuandlReader(_DailyBaseReader):
         Time, in seconds, to pause between consecutive queries of chunks. If
         single value given for symbol, represents the pause between retries.
     chunksize : int, default 25
-        Number of symbols to download consecutively before intiating pause.
+        Number of symbols to download consecutively before initiating pause.
     session : Session, default None
         requests.sessions.Session instance to be used
     api_key : str, optional
