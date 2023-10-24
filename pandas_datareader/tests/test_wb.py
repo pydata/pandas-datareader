@@ -149,8 +149,8 @@ class TestWB(object):
             result = download(
                 country=cntry_codes, indicator=inds, start=2003, end=2004, errors="warn"
             )
-            assert isinstance(result, pd.DataFrame)
-            assert len(result), 2
+        assert isinstance(result, pd.DataFrame)
+        assert len(result), 2
 
         cntry_codes = ["USA"]
         inds = ["NY.GDP.PCAP.CD", "BAD_INDICATOR"]
@@ -169,8 +169,8 @@ class TestWB(object):
             result = download(
                 country=cntry_codes, indicator=inds, start=2003, end=2004, errors="warn"
             )
-            assert isinstance(result, pd.DataFrame)
-            assert len(result) == 2
+        assert isinstance(result, pd.DataFrame)
+        assert len(result) == 2
 
     def test_wdi_download_w_retired_indicator(self):
         cntry_codes = ["CA", "MX", "US"]
@@ -201,8 +201,8 @@ class TestWB(object):
             # get caught above
             # or the WB API changed somehow in a really
             # unexpected way.
-            if len(result) > 0:  # pragma: no cover
-                pytest.skip("Invalid results")
+        if len(result) > 0:  # pragma: no cover
+            pytest.skip("Invalid results")
 
     def test_wdi_download_w_crash_inducing_countrycode(self):
         cntry_codes = ["CA", "MX", "US", "XXX"]
@@ -217,12 +217,12 @@ class TestWB(object):
                 errors="ignore",
             )
 
-            # If it ever gets here, it means the country code XXX
-            # got used by WB
-            # or the WB API changed somehow in a really
-            # unexpected way.
-            if len(result) > 0:  # pragma: no cover
-                pytest.skip("Invalid results")
+        # If it ever gets here, it means the country code XXX
+        # got used by WB
+        # or the WB API changed somehow in a really
+        # unexpected way.
+        if len(result) > 0:  # pragma: no cover
+            pytest.skip("Invalid results")
 
     def test_wdi_get_countries(self):
         result1 = get_countries()

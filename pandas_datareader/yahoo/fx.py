@@ -103,7 +103,7 @@ class YahooFXReader(YahooDailyReader):
                 passed.append(sym)
             except IOError:
                 msg = "Failed to read symbol: {0!r}, replacing with NaN."
-                warnings.warn(msg.format(sym), SymbolWarning)
+                warnings.warn(msg.format(sym), SymbolWarning, stacklevel=2)
                 failed.append(sym)
 
         if len(passed) == 0:

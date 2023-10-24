@@ -53,11 +53,11 @@ def read_sdmx(path_or_buf, dtype="float64", dsd=None):
 
     try:
         structure = _get_child(root, _MESSAGE + "Structure")
-    except ValueError:
+    except ValueError as exc:
         # get zipped path
         result = list(root.iter(_COMMON + "Text"))[1].text
         if not result.startswith("http"):
-            raise ValueError(result)
+            raise ValueError(result) from exc
 
         for _ in range(60):
             # wait zipped data is prepared
@@ -72,7 +72,7 @@ def read_sdmx(path_or_buf, dtype="float64", dsd=None):
             "Unable to download zipped data within 60 secs, "
             "please download it manually from: {0}"
         )
-        raise ValueError(msg.format(result))
+        raise ValueError(msg.format(result)) from exc
 
     idx_name = structure.get("dimensionAtObservation")
     dataset = _get_child(root, _DATASET)

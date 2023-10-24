@@ -23,8 +23,9 @@ class DailySummaryReader(IEX):
         import warnings
 
         warnings.warn(
-            "Daily statistics is not working due to issues with the " "IEX API",
+            "Daily statistics is not working due to issues with the IEX API",
             UnstableAPIWarning,
+            stacklevel=2,
         )
         self.curr_date = start
         super(DailySummaryReader, self).__init__(

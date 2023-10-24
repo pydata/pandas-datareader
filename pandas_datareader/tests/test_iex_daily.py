@@ -25,17 +25,17 @@ class TestIEXDaily(object):
         return datetime(2017, 5, 24)
 
     def test_iex_bad_symbol(self):
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             web.DataReader("BADTICKER", "iex,", self.start, self.end)
 
     def test_iex_bad_symbol_list(self):
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             web.DataReader(["AAPL", "BADTICKER"], "iex", self.start, self.end)
 
     def test_daily_invalid_date(self):
         start = datetime(2000, 1, 5)
         end = datetime(2017, 5, 24)
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             web.DataReader(["AAPL", "TSLA"], "iex", start, end)
 
     def test_single_symbol(self):

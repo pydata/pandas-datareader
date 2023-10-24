@@ -268,7 +268,7 @@ class _DailyBaseReader(_BaseReader):
                     passed.append(sym)
                 except (IOError, KeyError):
                     msg = "Failed to read symbol: {0!r}, replacing with NaN."
-                    warnings.warn(msg.format(sym), SymbolWarning)
+                    warnings.warn(msg.format(sym), SymbolWarning, stacklevel=2)
                     failed.append(sym)
 
         if len(passed) == 0:
@@ -286,10 +286,10 @@ class _DailyBaseReader(_BaseReader):
                 result = concat(stocks).unstack(level=0)
             result.columns.names = ["Attributes", "Symbols"]
             return result
-        except AttributeError:
+        except AttributeError as exc:
             # cannot construct a panel with just 1D nans indicating no data
             msg = "No data fetched using {0!r}"
-            raise RemoteDataError(msg.format(self.__class__.__name__))
+            raise RemoteDataError(msg.format(self.__class__.__name__)) from exc
 
 
 def _in_chunks(seq, size):

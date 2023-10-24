@@ -71,8 +71,8 @@ class IEX(_BaseReader):
         """
         try:
             content = json.loads(out.text)
-        except Exception:
-            raise TypeError("Failed to interpret response as JSON.")
+        except Exception as exc:
+            raise TypeError("Failed to interpret response as JSON.") from exc
 
         for key, string in content.items():
             e = "IEX Output error encountered: {}".format(string)

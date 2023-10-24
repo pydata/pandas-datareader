@@ -54,7 +54,7 @@ class TestFred(object):
 
     def test_invalid_series(self):
         name = "NOT A REAL SERIES"
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             web.get_data_fred(name)
 
     def test_fred_multi(self):  # pragma: no cover

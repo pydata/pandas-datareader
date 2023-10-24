@@ -589,7 +589,9 @@ class WorldBankReader(_BaseReader):
                 raise ValueError("Invalid Country Code(s): %s" % tmp)
             if errors == "warn":
                 warnings.warn(
-                    "Non-standard ISO " "country codes: %s" % tmp, UserWarning
+                    "Non-standard ISO country codes: %s" % tmp,
+                    UserWarning,
+                    stacklevel=2,
                 )
 
         freq_symbols = ["M", "Q", "A", None]
@@ -653,9 +655,9 @@ class WorldBankReader(_BaseReader):
             except ValueError as e:
                 msg = str(e) + " Indicator: " + indicator
                 if self.errors == "raise":
-                    raise ValueError(msg)
+                    raise ValueError(msg) from e
                 elif self.errors == "warn":
-                    warnings.warn(msg)
+                    warnings.warn(msg, stacklevel=2)
 
         # Confirm we actually got some data, and build Dataframe
         if len(data) > 0:

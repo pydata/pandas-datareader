@@ -88,7 +88,7 @@ class FamaFrenchReader(_BaseReader):
             else:
                 c = ["Count"]
             r = list(range(0, 105, 5))
-            params["names"] = ["Date"] + c + list(zip(r, r[1:]))
+            params["names"] = ["Date"] + c + list(zip(r, r[1:], strict=True))
 
             if self.symbols != "Prior_2-12_Breakpoints":
                 params["skiprows"] = 1
@@ -144,11 +144,11 @@ class FamaFrenchReader(_BaseReader):
         """
         try:
             from lxml.html import document_fromstring
-        except ImportError:
+        except ImportError as exc:
             raise ImportError(
                 "Please install lxml if you want to use the "
                 "get_datasets_famafrench function"
-            )
+            ) from exc
 
         response = self.session.get(_URL + "data_library.html")
         root = document_fromstring(response.content)

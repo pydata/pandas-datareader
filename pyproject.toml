@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "pandas-datareader"
 dynamic = ["version", "dependencies", "readme"]
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 license = {file = "LICENSE.md"}
 description = 'Pandas-compatible data readers. Formerly a component of pandas.'
 authors = [
@@ -41,7 +41,6 @@ package-dir = {"" = "."}
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
 readme = {file = ["README.md"], content-type = "text/markdown"}
-
 
 [tool.setuptools_scm]
 version_file = "pandas_datareader/_version.py"

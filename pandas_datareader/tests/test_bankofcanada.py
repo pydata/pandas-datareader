@@ -42,7 +42,9 @@ class TestBankOfCanada(object):
             date.today(),
         )
 
-        pairs = zip((1 / df)[symbol].tolist(), df_i[symbol_inverted].tolist())
+        pairs = zip(
+            (1 / df)[symbol].tolist(), df_i[symbol_inverted].tolist(), strict=True
+        )
         assert all(a - b < 0.01 for a, b in pairs)
 
     def test_bankofcanada_usd_count(self):
