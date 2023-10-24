@@ -64,7 +64,10 @@ def test_tiingo_metadata(symbols):
 
 
 def test_tiingo_no_api_key(symbols):
-    from test.support import EnvironmentVarGuard
+    try:
+        from test.support.os_helper import EnvironmentVarGuard
+    except ImportError:
+        from test.support import EnvironmentVarGuard
 
     env = EnvironmentVarGuard()
     env.unset("TIINGO_API_KEY")
