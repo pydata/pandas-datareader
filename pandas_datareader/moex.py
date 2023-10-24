@@ -209,10 +209,11 @@ class MoexReader(_DailyBaseReader):
         """Read data from the primary board for each ticker"""
         markets_n_engines, boards = self._get_metadata()
         b = self.read_all_boards()
-        result = pd.DataFrame()
+        parts = []
         for secid in list(set(b["SECID"].tolist())):
             part = b[b["BOARDID"] == boards[secid]]
-            result = result.append(part)
+            parts.append(part)
+        result = pd.concat(parts)
         result = result.drop_duplicates()
         return result
 
