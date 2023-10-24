@@ -28,7 +28,7 @@ class MoexReader(_DailyBaseReader):
         Time, in seconds, to pause between consecutive queries of chunks. If
         single value given for symbol, represents the pause between retries.
     chunksize : int, default 25
-        The number of symbols to download consecutively before intiating pause.
+        The number of symbols to download consecutively before initiating pause.
     session : Session, default None
         requests.sessions.Session instance to be used
 
