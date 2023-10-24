@@ -58,8 +58,7 @@ class FamaFrenchReader(_BaseReader):
             tmpf.write(raw)
 
             with ZipFile(tmpf, "r") as zf:
-                data = zf.open(zf.namelist()[0]).read().decode('utf-8','ignore')
-
+                data = zf.open(zf.namelist()[0]).read().decode("utf-8", "ignore")
 
         return data
 
@@ -89,7 +88,7 @@ class FamaFrenchReader(_BaseReader):
             else:
                 c = ["Count"]
             r = list(range(0, 105, 5))
-            params["names"] = ["Date"] + c + list(zip(r, r[1:], strict=True))
+            params["names"] = ["Date"] + c + list(zip(r, r[1:], strict=False))
 
             if self.symbols != "Prior_2-12_Breakpoints":
                 params["skiprows"] = 1

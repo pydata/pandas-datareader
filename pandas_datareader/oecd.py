@@ -12,13 +12,13 @@ class OECDReader(_BaseReader):
     @property
     def url(self):
         """API URL"""
-        url = "http://stats.oecd.org/SDMX-JSON/data"
+        url = "https://stats.oecd.org/SDMX-JSON/data"
 
         if not isinstance(self.symbols, str):
             raise ValueError("data name must be string")
 
         # API: https://data.oecd.org/api/sdmx-json-documentation/
-        return "{0}/{1}/all/all?".format(url, self.symbols)
+        return "{0}/{1}/all/all".format(url, self.symbols)
 
     def _read_lines(self, out):
         """read one data from specified URL"""
