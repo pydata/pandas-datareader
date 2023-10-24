@@ -1,3 +1,4 @@
+import pandas as pd
 from pandas import DataFrame, MultiIndex
 
 from pandas_datareader.yahoo.daily import YahooDailyReader
@@ -42,7 +43,7 @@ def _get_one_action(data):
         splits = DataFrame(data["Splits"]).dropna()
         splits["action"] = "SPLIT"
         splits = splits.rename(columns={"Splits": "value"})
-        actions = concat([actions, splits], sort=True)
+        actions = pd.concat([actions, splits], sort=True, axis=1)
         actions = actions.sort_index(ascending=False)
 
     return actions

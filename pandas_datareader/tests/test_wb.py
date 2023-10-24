@@ -6,8 +6,6 @@ from pandas import testing as tm
 import pytest
 import requests
 
-from pandas_datareader._testing import skip_on_exception
-from pandas_datareader._utils import RemoteDataError
 from pandas_datareader.wb import (
     WorldBankReader,
     download,
@@ -189,7 +187,7 @@ class TestWB(object):
         inds = ["GDPPCKD"]
 
         with pytest.raises(ValueError):
-            result = download(
+            download(
                 country=cntry_codes,
                 indicator=inds,
                 start=2003,
@@ -202,7 +200,7 @@ class TestWB(object):
         inds = ["NY.GDP.PCAP.CD"]
 
         with pytest.raises(ValueError):
-            result = download(
+            download(
                 country=cntry_codes,
                 indicator=inds,
                 start=2003,
