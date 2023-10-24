@@ -707,7 +707,7 @@ class Options(_OptionBaseReader):
         jd = json.loads(self._read_url_as_StringIO(url).read())
         if jd is None:  # pragma: no cover
             raise RemoteDataError(
-                "Parsed URL {0!r} is not " "a valid json object".format(url)
+                "Parsed URL {!r} is not " "a valid json object".format(url)
             )
         return jd
 

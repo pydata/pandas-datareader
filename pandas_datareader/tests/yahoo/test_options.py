@@ -66,7 +66,7 @@ def data1(aapl, json1):
     return aapl._process_data(aapl._parse_url(json1))
 
 
-class TestYahooOptions(object):
+class TestYahooOptions:
     @classmethod
     def setup_class(cls):
         pytest.skip("Skip all Yahoo! tests.")

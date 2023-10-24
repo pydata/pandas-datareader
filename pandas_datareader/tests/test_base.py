@@ -8,7 +8,7 @@ from pandas_datareader import base as base
 pytestmark = pytest.mark.stable
 
 
-class TestBaseReader(object):
+class TestBaseReader:
     def test_requests_not_monkey_patched(self):
         assert not hasattr(requests.Session(), "stor")
 
@@ -33,7 +33,7 @@ class TestBaseReader(object):
         assert b.default_start_date == dt.date.today() - dt.timedelta(days=365 * 5)
 
 
-class TestDailyBaseReader(object):
+class TestDailyBaseReader:
     def test_get_params(self):
         b = base._DailyBaseReader()
         with pytest.raises(NotImplementedError):

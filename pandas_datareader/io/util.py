@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import os
 
 from pandas_datareader.compat import get_filepath_or_buffer
@@ -19,7 +17,7 @@ def _read_content(path_or_buf):
             exists = False
 
         if exists:
-            with open(filepath_or_buffer, "r") as fh:
+            with open(filepath_or_buffer) as fh:
                 data = fh.read()
         else:
             data = filepath_or_buffer

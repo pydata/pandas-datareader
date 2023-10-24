@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import pandas as pd
 
 from pandas_datareader.base import _BaseReader
@@ -26,7 +24,7 @@ class EurostatReader(_BaseReader):
         if not isinstance(self.symbols, str):
             raise ValueError("data name must be string")
 
-        return "{0}/datastructure/ESTAT/DSD_{1}".format(self._URL, self.symbols)
+        return f"{self._URL}/datastructure/ESTAT/DSD_{self.symbols}"
 
     def _read_one_data(self, url, params):
         resp_dsd = self._get_response(self.dsd_url)

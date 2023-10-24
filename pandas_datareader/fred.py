@@ -34,7 +34,7 @@ class FredReader(_BaseReader):
         else:
             names = self.symbols
 
-        urls = ["{}?id={}".format(self.url, n) for n in names]
+        urls = [f"{self.url}?id={n}" for n in names]
 
         def fetch_data(url, name):
             """Utillity to fetch data"""
@@ -52,9 +52,9 @@ class FredReader(_BaseReader):
                 return data.truncate(self.start, self.end)
             except KeyError as exc:  # pragma: no cover
                 if data.iloc[3].name[7:12] == "Error":
-                    raise IOError(
+                    raise OSError(
                         "Failed to get the data. Check that "
-                        "{0!r} is a valid FRED series.".format(name)
+                        "{!r} is a valid FRED series.".format(name)
                     ) from exc
                 raise
 

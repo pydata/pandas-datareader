@@ -29,7 +29,7 @@ class AlphaVantage(_BaseReader):
         session=None,
         api_key=None,
     ):
-        super(AlphaVantage, self).__init__(
+        super().__init__(
             symbols=symbols,
             start=start,
             end=end,

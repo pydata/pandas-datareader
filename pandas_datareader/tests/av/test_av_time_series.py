@@ -17,7 +17,7 @@ pytestmark = [
 ]
 
 
-class TestAVTimeSeries(object):
+class TestAVTimeSeries:
     @classmethod
     def setup_class(cls):
         pytest.importorskip("lxml")

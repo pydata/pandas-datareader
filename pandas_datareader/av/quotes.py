@@ -36,7 +36,7 @@ class AVQuotesReader(AlphaVantage):
                 raise ValueError("Up to 100 symbols at once are allowed.")
             else:
                 syms = symbols
-        super(AVQuotesReader, self).__init__(
+        super().__init__(
             symbols=syms,
             start=None,
             end=None,

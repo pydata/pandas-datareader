@@ -71,7 +71,7 @@ class IEXDailyReader(_DailyBaseReader):
         else:
             self.sandbox = False
         self.api_key = api_key
-        super(IEXDailyReader, self).__init__(
+        super().__init__(
             symbols=symbols,
             start=start,
             end=end,

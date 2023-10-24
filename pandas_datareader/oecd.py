@@ -18,7 +18,7 @@ class OECDReader(_BaseReader):
             raise ValueError("data name must be string")
 
         # API: https://data.oecd.org/api/sdmx-json-documentation/
-        return "{0}/{1}/all/all".format(url, self.symbols)
+        return f"{url}/{self.symbols}/all/all"
 
     def _read_lines(self, out):
         """read one data from specified URL"""

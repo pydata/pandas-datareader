@@ -7,7 +7,7 @@ from pandas_datareader import tsp as tsp
 pytestmark = pytest.mark.skip(reason="TSP API has changed")
 
 
-class TestTSPFunds(object):
+class TestTSPFunds:
     def test_get_allfunds(self):
         tspdata = tsp.TSPReader(start="2015-11-2", end="2015-11-2").read()
 
@@ -25,7 +25,7 @@ class TestTSPFunds(object):
         assert tspdata.columns.values.tolist() == ["I Fund"]
 
     def test_sanitize_response(self):
-        class response(object):
+        class response:
             pass
 
         r = response()

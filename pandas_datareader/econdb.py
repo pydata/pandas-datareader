@@ -50,7 +50,7 @@ class EcondbReader(_BaseReader):
         session=None,
         freq=None,
     ):
-        super(EcondbReader, self).__init__(
+        super().__init__(
             symbols=symbols,
             start=start,
             end=end,
@@ -71,7 +71,7 @@ class EcondbReader(_BaseReader):
         if not isinstance(self.symbols, str):
             raise ValueError("data name must be string")
 
-        return "{0}?{1}&format=json&page_size=500&expand=both".format(
+        return "{}?{}&format=json&page_size=500&expand=both".format(
             self._URL, self.symbols
         )
 

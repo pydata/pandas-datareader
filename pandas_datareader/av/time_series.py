@@ -55,7 +55,7 @@ class AVTimeSeriesReader(AlphaVantage):
         api_key=None,
     ):
         self._func = function
-        super(AVTimeSeriesReader, self).__init__(
+        super().__init__(
             symbols=symbols,
             start=start,
             end=end,
@@ -111,7 +111,7 @@ class AVTimeSeriesReader(AlphaVantage):
         return p
 
     def _read_lines(self, out):
-        data = super(AVTimeSeriesReader, self)._read_lines(out)
+        data = super()._read_lines(out)
         # reverse since alphavantage returns descending by date
         data = data[::-1]
         start_str = self.start.strftime("%Y-%m-%d")

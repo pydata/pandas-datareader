@@ -11,7 +11,7 @@ from pandas_datareader.iex.daily import IEXDailyReader
 @pytest.mark.skipif(
     os.getenv("IEX_SANDBOX") != "enable", reason="All tests must be run in sandbox mode"
 )
-class TestIEXDaily(object):
+class TestIEXDaily:
     @classmethod
     def setup_class(cls):
         pytest.importorskip("lxml")

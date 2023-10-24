@@ -1,6 +1,5 @@
 # pylint: disable-msg=E1101,W0613,W0603
 
-from __future__ import unicode_literals
 
 from collections import OrderedDict
 import itertools
@@ -69,7 +68,7 @@ def _fix_quarter_values(value):
     if not m:
         return value
     quarter, year = m.groups()
-    value = "%sQ%s" % (quarter, year)
+    value = "{}Q{}".format(quarter, year)
     return value
 
 

@@ -171,7 +171,7 @@ class TiingoDailyReader(_BaseReader):
         freq=None,
         api_key=None,
     ):
-        super(TiingoDailyReader, self).__init__(
+        super().__init__(
             symbols, start, end, retry_count, pause, timeout, session, freq
         )
         if isinstance(self.symbols, str):
@@ -271,7 +271,7 @@ class TiingoMetaDataReader(TiingoDailyReader):
         freq=None,
         api_key=None,
     ):
-        super(TiingoMetaDataReader, self).__init__(
+        super().__init__(
             symbols, start, end, retry_count, pause, timeout, session, freq, api_key
         )
         self._concat_axis = 1

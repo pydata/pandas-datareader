@@ -17,7 +17,7 @@ from pandas_datareader.wb import (
 pytestmark = pytest.mark.stable
 
 
-class TestWB(object):
+class TestWB:
     def test_wdi_search(self):
         # Test that a name column exists, and that some results were returned
         # ...without being too strict about what the actual contents of the

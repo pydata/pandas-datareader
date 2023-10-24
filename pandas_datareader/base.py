@@ -16,7 +16,7 @@ from pandas_datareader._utils import (
 )
 
 
-class _BaseReader(object):
+class _BaseReader:
     """
     Parameters
     ----------
@@ -114,7 +114,7 @@ class _BaseReader(object):
         out = StringIO()
         if len(text) == 0:
             service = self.__class__.__name__
-            raise IOError(
+            raise OSError(
                 "{} request returned no data; check URL for invalid "
                 "inputs: {}".format(service, self.url)
             )
@@ -167,9 +167,9 @@ class _BaseReader(object):
 
         if params is not None and len(params) > 0:
             url = url + "?" + urlencode(params)
-        msg = "Unable to read URL: {0}".format(url)
+        msg = f"Unable to read URL: {url}"
         if last_response_text:
-            msg += "\nResponse Text:\n{0}".format(last_response_text)
+            msg += f"\nResponse Text:\n{last_response_text}"
 
         raise RemoteDataError(msg)
 
@@ -226,7 +226,7 @@ class _DailyBaseReader(_BaseReader):
         session=None,
         chunksize=25,
     ):
-        super(_DailyBaseReader, self).__init__(
+        super().__init__(
             symbols=symbols,
             start=start,
             end=end,
@@ -260,7 +260,7 @@ class _DailyBaseReader(_BaseReader):
                 try:
                     stocks[sym] = self._read_one_data(self.url, self._get_params(sym))
                     passed.append(sym)
-                except (IOError, KeyError):
+                except (OSError, KeyError):
                     msg = "Failed to read symbol: {0!r}, replacing with NaN."
                     warnings.warn(msg.format(sym), SymbolWarning, stacklevel=2)
                     failed.append(sym)
@@ -294,7 +294,7 @@ class _OptionBaseReader(_BaseReader):
     def __init__(self, symbol, session=None):
         """Instantiates options_data with a ticker saved as symbol"""
         self.symbol = symbol.upper()
-        super(_OptionBaseReader, self).__init__(symbols=symbol, session=session)
+        super().__init__(symbols=symbol, session=session)
 
     def get_options_data(self, month=None, year=None, expiry=None):
         """

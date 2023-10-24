@@ -17,7 +17,7 @@ XFAIL_REASON = "Known connection failures on Yahoo when testing!"
 pytestmark = pytest.mark.stable
 
 
-class TestYahoo(object):
+class TestYahoo:
     @classmethod
     def setup_class(cls):
         pytest.importorskip("lxml")

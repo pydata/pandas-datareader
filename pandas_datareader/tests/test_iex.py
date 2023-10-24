@@ -14,7 +14,7 @@ from pandas_datareader.data import (
 from pandas_datareader.exceptions import UnstableAPIWarning
 
 
-class TestIEX(object):
+class TestIEX:
     @classmethod
     def setup_class(cls):
         pytest.importorskip("lxml")

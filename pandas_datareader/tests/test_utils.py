@@ -6,7 +6,7 @@ import pytest
 from pandas_datareader._utils import _sanitize_dates
 
 
-class TestUtils(object):
+class TestUtils:
     @pytest.mark.parametrize(
         "input_date",
         [

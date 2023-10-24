@@ -51,11 +51,11 @@ def _get_one_action(data):
 
 class YahooDivReader(YahooActionReader):
     def read(self):
-        data = super(YahooDivReader, self).read()
+        data = super().read()
         return data[data["action"] == "DIVIDEND"]
 
 
 class YahooSplitReader(YahooActionReader):
     def read(self):
-        data = super(YahooSplitReader, self).read()
+        data = super().read()
         return data[data["action"] == "SPLIT"]
