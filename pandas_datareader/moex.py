@@ -214,7 +214,7 @@ class MoexReader(_DailyBaseReader):
         for secid in list(set(b["SECID"].tolist())):
             part = b[b["BOARDID"] == boards[secid]]
             parts.append(part)
-        result = pd.concat(parts)
+        result = pd.concat(parts, axis=0)
         result = result.drop_duplicates()
         return result
 
