@@ -38,7 +38,7 @@ for the latest changes in master.
 
 Using pandas datareader requires the following packages:
 
--   pandas>=1.0
+-   pandas>=1.5.3
 -   lxml
 -   requests>=2.19.0
 

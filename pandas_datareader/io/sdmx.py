@@ -167,9 +167,7 @@ def _get_child(element, key):
     elif len(elements) == 0:
         raise ValueError(f"Element {element.tag} contains no {key}")
     else:
-        raise ValueError(
-            f"Element {element.tag} contains multiple {key}"
-        )
+        raise ValueError(f"Element {element.tag} contains multiple {key}")
 
 
 _NAME_EN = f".//{_COMMON}Name[@{_XML}lang='en']"
