@@ -27,7 +27,6 @@ class StooqDailyReader(_DailyBaseReader):
         Number of symbols to download consecutively before initiating pause.
     session : Session, default None
         requests.sessions.Session instance to be used
-    freq: string, d, w, m ,q, y for daily, weekly, monthly, quarterly, yearly
 
     Notes
     -----
