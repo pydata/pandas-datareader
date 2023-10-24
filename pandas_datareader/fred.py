@@ -21,7 +21,7 @@ class FredReader(_BaseReader):
         -------
         data : DataFrame
             If multiple names are passed for "series" then the index of the
-            DataFrame is the outer join of the indicies of each series.
+            DataFrame is the outer join of the indices of each series.
         """
         try:
             return self._read()
@@ -37,7 +37,7 @@ class FredReader(_BaseReader):
         urls = [f"{self.url}?id={n}" for n in names]
 
         def fetch_data(url, name):
-            """Utillity to fetch data"""
+            """Utility to fetch data"""
             resp = self._read_url_as_StringIO(url)
             data = read_csv(
                 resp,
