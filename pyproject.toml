@@ -7,7 +7,7 @@ name = "pandas-datareader"
 dynamic = ["version", "dependencies", "readme"]
 requires-python = ">=3.8"
 license = {file = "LICENSE.md"}
-description = 'Pandas-compatible data readers. Formerly a component of pandas.'
+description = "Pandas-compatible data readers. Formerly a component of pandas."
 authors = [
   {name = "The PyData Development Team", email = "pydata@googlegroups.com"},
 ]
@@ -85,3 +85,12 @@ ignore = ["E203", "E266", "E501", "W503"]
 max-line-length = 88
 max-complexity = 18
 select = ["B","C","E","F","W","T4","B9"]
+
+[tool.black]
+target-version = ["py38", "py39", "py310","py311","py312"]
+required-version = "23.10.1"
+exclude = """
+(
+  pandas_datareader/_version.py
+)
+"""
