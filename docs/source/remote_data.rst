@@ -44,6 +44,7 @@ Currently the following sources are supported:
     - :ref:`Tiingo<remote_data.tiingo>`
     - :ref:`World Bank<remote_data.wb>`
     - :ref:`Yahoo Finance<remote_data.yahoo>`
+    - :ref:`Brazilian Central Bank (BCB)<remote_data.bcb>`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
 
@@ -807,3 +808,27 @@ The following endpoints are available:
 
    dividends = web.DataReader('IBM', 'yahoo-dividends', start, end) 
    dividends.head()
+
+.. _remote_data.bcb:
+
+BCB
+====
+
+An interface to structure the information provided by the
+`Brazilian Central Bank <https://www.bcb.gov.br/>`__.
+This interfaces the `Brazilian Central Bank web services <https://www3.bcb.gov.br/sgspub>`__
+to provide data formatted into pandas' DataFrame.
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+    from datetime import datetime
+    start = datetime(2021, 1, 4)
+    end = datetime(2021, 9, 1)
+    USD_BRL = web.DataReader(1, "bcb", start, end)
+    USD_BRL.head()
+
+    # Multiple series:
+    # IPCA: 433 IGPM: 189
+    inflation = web.DataReader(["433", "189"], "bcb", start, end)
+    inflation.head()
