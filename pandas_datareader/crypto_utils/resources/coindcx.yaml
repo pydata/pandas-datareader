@@ -1,0 +1,221 @@
+# Structure of Order-Books not applicable to our program. Tickers not with single request, while CP are not separated.
+
+name: coindcx
+exchange: true
+
+rate_limit: null
+
+api_url: "" #Base URL differs
+
+requests:
+  currency_pairs:
+    request:
+      template: https://api.coindcx.com/exchange/v1/markets_details
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          base_currency_short_name:
+            type: str
+          target_currency_short_name:
+            type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - target_currency_short_name
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - base_currency_short_name
+        type:
+          - str
+
+  historic_rates:
+    request:
+      template: https://public.coindcx.com/market_data/candles
+      pair_template:
+        template: "B-{first}_{second}"
+        lower_case: false
+        alias: pair
+      params:
+        limit:
+          dafault: 1000
+        interval:
+          allowed:
+            minutes: 1m
+            hours: 1h
+            days: 1d
+            weeks: 1w
+#            months: 1M
+          default: 1d
+        endTime:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestampms
+        startTime:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedeltams
+            - interval
+            - 1000
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          open:
+            type: float
+          high:
+            type: float
+          low:
+            type: float
+          close:
+            type: float
+          volume:
+            type: float
+          time:
+            type: int
+    mapping:
+    - key: time
+      path:
+        - time
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: open
+      path:
+        - open
+      type:
+        - float
+    - key: high
+      path:
+        - high
+      type:
+        - float
+    - key: low
+      path:
+        - low
+      type:
+        - float
+    - key: close
+      path:
+        - close
+      type:
+        - float
+    - key: volume
+      path:
+        - volume
+      type:
+        - float
+
+  trades:
+    request:
+      template: https://public.coindcx.com/market_data/trade_history
+      pair_template:
+        template: "B-{first}_{second}"
+        lower_case: false
+        alias: pair
+      params:
+        limit:
+          default: 100
+          max: 500
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          p:
+            type: float
+          q:
+            type: float
+          s:
+            type: str
+          T:
+            type: int
+          m:
+            type: str
+
+    mapping:
+    - key: direction
+      path:
+        - m
+      type:
+        - value
+        - map
+        - True
+        - sell
+        - False
+        - buy
+    - key: time
+      path:
+        - T
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: id
+      path:
+        - T
+      type:
+        - int
+
+    - key: price
+      path:
+        - p
+      type:
+        - float
+    - key: amount
+      path:
+        - q
+      type:
+        - float
+#
+#  order_books:
+#    request:
+#      template: /market_data/orderbook
+#      pair_template:
+#        template: "B{first}_{second}"
+#        lower_case: false
+#        alias: pair
+#      params: null
+#
+#    response:
+#      type: dict
+#      values:
+#        bids:
+#          type: dict
+#          values:
+#
+#
+#    mapping:
+#    - key: time
+#      path:
+#      type:
+#    - key: id
+#      path:
+#      type:
+#    - key: position
+#      path: []
+#      type:
+#        - none
+#        - range
+#    - key: bids_amount
+#      path:
+#      type:
+#    - key: bids_price
+#      path:
+#      type:
+#    - key: asks_amount
+#      path:
+#      type:
+#    - key: asks_price
+#      path:
+#      type:

@@ -1,0 +1,423 @@
+name: huobi
+exchange: true
+api_docs: https://huobiapi.github.io/docs/spot/v1/en/
+api_url: https://api.huobi.pro/
+rate_limit:
+  max: 100
+  unit: 10
+requests:
+  currency_pairs:
+    request:
+      template: v1/common/symbols
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        status:
+          type: str
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              base-currency:
+                type: str
+              quote-currency:
+                type: str
+              price-precision:
+                type: int
+              amoint_precision:
+                type: int
+              symbol-partition:
+                type: str
+              symbol:
+                type: str
+              state:
+                type: str
+              value-precision:
+                type: int
+              min-order-amt:
+                type: float
+              max-oder-amt:
+                type: float
+              min-order-value:
+                type: float
+              laverage-ratio:
+                type: int
+    mapping:
+      - key: currency_pair_first
+        path:
+        - data
+        - base-currency
+        type:
+        - str
+        - upper
+      - key: currency_pair_second
+        path:
+        - data
+        - quote-currency
+        type:
+        - str
+        - upper
+
+  historic_rates:
+    request:
+      template: market/history/kline
+      pair_template: # i.e. BTC_CQ
+        template: "{first}{second}"
+        lower_case: true
+        alias: symbol
+      params:
+        period:
+          type: str
+          allowed:
+            minutes: 1min
+            hours: 60min
+            days: 1day
+            weeks: 1week
+            months: 1mon
+          default: 1day
+        size:
+          type: int
+          min: 1
+          max: 2000
+          default: 2000
+    response:
+      type: dict
+      values:
+        status:
+          type: str
+          allowed:
+          - ok
+          - error
+        ch: # channel format, i.e. "market.btcusdt.kline.1day"
+          type: str
+        ts: # timestamp in millisecond
+          type:
+          - int
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              id:
+                type: int
+              amount:
+                type: float
+              count:
+                type: int
+              open:
+                type: float
+              close:
+                type: float
+              low:
+                type: float
+              high:
+                type: float
+              vol:
+                type: float
+    mapping:
+    - key: time
+      path:
+      - data
+      - id
+      type:
+      - float
+      - from_timestamp
+      - 0
+    - key: open
+      path:
+      - data
+      - open
+      type:
+      - float
+    - key: close
+      path:
+      - data
+      - close
+      type:
+      - float
+    - key: low
+      path:
+      - data
+      - low
+      type:
+      - float
+    - key: high
+      path:
+      - data
+      - high
+      type:
+      - float
+    - key: volume
+      path:
+      - data
+      - vol
+      type:
+      - float
+
+  tickers:
+    request:
+      template: market/detail/merged
+      pair_template: # i.e. BTC_CQ
+        template: "{first}{second}"
+        lower_case: true
+        alias: symbol
+      params: null
+    response:
+      type: dict
+      values:
+        status:
+          type: str
+        ch: # channel format, i.e. "market.btcusdt.kline.1day"
+          type: str
+        ts: # timestamp in millisecond
+          type:
+          - int
+        tick:
+          type: dict
+          values:
+            amount:
+              type: float
+            open:  # daily Kline, opening price
+              type: float
+            close: # daily Kline, closing price
+              type: float
+            high:  # daily Kline,the maxmum price
+              type: float
+            id:
+              type: int
+            count:
+               type: int
+            low:   # daily Kline, the minimum price
+              type: float
+            version:
+              type: int
+            ask:
+              type: list
+              values:
+                0:
+                  type: float
+                1:
+                  type: float
+            bid:
+              type: list
+              values:
+                0: # price
+                  type: float
+                1: # size
+                  type: float
+            vol:
+              type: float
+    mapping:
+    - key: time
+      path:
+      - ts
+      type:
+      - float
+      - from_timestamp
+      - 1
+    - key: daily_volume
+      path:
+      - tick
+      - vol
+      type:
+      - float
+    - key: best_ask
+      path:
+      - tick
+      - ask
+      - 0
+      type:
+      - float
+    - key: best_bid
+      path:
+      - tick
+      - bid
+      - 0
+      type:
+      - float
+
+  order_books:
+    request:
+      template: market/depth
+      pair_template: # i.e. BTC_CQ
+        template: "{first}{second}"
+        lower_case: true
+        alias: symbol
+      params:
+        type:
+          type: str
+          default: step0 #aggregation level (step5 -->max. aggregation)
+    response:
+      type: dict
+      values:
+        status:
+          type: str
+        ch:
+          type: str
+        ts: # timestamp in millisecond
+          type:
+          - int
+        tick: # Depth
+           type: dict
+           values:
+             id:
+               type: int
+             ts:
+               type:
+               - int
+             bids:
+               type: list
+               values:
+                 type: list
+                 values:
+                   0: # price
+                     type: int
+                   1: # amount
+                     type: float
+             asks:
+               type: list
+               values:
+                 type: list
+                 values:
+                   0: # price
+                     type: int
+                   1: # amount
+                     type: float
+    mapping:
+     - key: time
+       path:
+       - tick
+       - ts
+       type:
+       - float
+       - from_timestamp
+       - 1
+     - key: bids_price
+       path:
+       - tick
+       - bids
+       - 0
+       type:
+       - int
+     - key: bids_amount
+       path:
+       - tick
+       - bids
+       - 1
+       type:
+       - float
+     - key: asks_price
+       path:
+       - tick
+       - asks
+       - 0
+       type:
+       - int
+     - key: asks_amount
+       path:
+       - tick
+       - asks
+       - 1
+       type:
+       - float
+     - key: id
+       path:
+        - tick
+        - version
+       type:
+         - int
+     - key: position
+       path: []
+       type:
+       - none
+       - range
+
+# Probleme mit der resoponse. Die können wir nicht mappen, da manchmal zu einem Zeitpunkt mehrere Trades zurückkommen.
+#  trades:
+#    request:
+#      template: market/history/trade
+#      pair_template: # i.e. BTC_CQ
+#        template: "{first}{second}"
+#        alias: symbol
+#        lower_case: true
+#      params:
+#        size:
+#          type: int
+#          default: 5
+#    response:
+#      type: dict
+#      values:
+#        status:
+#          type: str
+#        ch:
+#          type: str
+#        ts:
+#          type: int
+#        data:
+#          type: list
+#          values:
+#            type: dict
+#            values:
+#              id:
+#                type: int
+#              ts: # timestamp
+#                type: int
+#              data:
+#                type: list
+#                values:
+#                  type: dict
+#                  values:
+#                    id:
+#                      type: int
+#                    ts:
+#                      type: int
+#                    trade-id:
+#                      type: int
+#                    amount:
+#                      type: float
+#                    price:
+#                      type:
+#                      - int
+#                    direction:
+#                      type: str
+#
+#    mapping:
+#    - key: price
+#      path:
+#      - data
+#      - data
+#      - price
+#      type:
+#      - float
+#    - key: amount
+#      path:
+#      - data
+#      - data
+#      - amount
+#      type:
+#      - float
+#    - key: direction
+#      path:
+#      - data
+#      - data
+#      - direction
+#      type:
+#      - str
+#    - key: time
+#      path:
+#      - data
+#      - data
+#      - ts
+#      type:
+#      - int
+#      - Afrom_timestamp
+#    - key: id
+#      path:
+#      - data
+#      - data
+#      - trade-id
+#      type:
+#      - int

@@ -1,0 +1,420 @@
+name: bithumb
+exchange: true
+api_url: https://global-openapi.bithumb.pro/openapi/v1/
+rate_limit:
+  max: 20
+  unit: 1
+requests:
+
+  currency_pairs:
+    request:
+      template: spot/ticker
+      pair_template: null
+      params:
+        symbol:
+          type: str
+          default: ALL
+    response:
+      response:
+        type: dict
+        values:
+          data:
+            type: list
+            values:
+              type: dict
+              values:
+                p: # dict_key
+                  type: dict
+                ver:
+                  type: str
+                vol:
+                  type: str
+                c:
+                  type: str
+                s:
+                  type: str
+                t:
+                  type: str
+                v:
+                  type: str
+                h:
+                  type: str
+                l:
+                  type: str
+                lev:
+                  type: str
+          code:
+            type: str
+          msg:
+            type: str
+          timestamp:
+            type: int
+          startTime:
+            type: null
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - data
+          - s
+        type:
+          - str
+          - split
+          - "-"
+          - 0
+      - key: currency_pair_second
+        path:
+          - data
+          - s
+        type:
+          - str
+          - split
+          - "-"
+          - 1
+
+  tickers:
+    request:
+      template: spot/ticker
+      pair_template: null
+      params:
+        symbol:
+          type: str
+          default: ALL
+    response:
+      response:
+        type: dict
+        values:
+          data:
+            type: list
+            values:
+              type: dict
+              values:
+                p: # dict_key
+                  type: dict
+                ver:
+                  type: str
+                vol:
+                  type: str
+                c:
+                  type: str
+                s:
+                  type: str
+                t:
+                  type: str
+                v:
+                  type: str
+                h:
+                  type: str
+                l:
+                  type: str
+                lev:
+                  type: str
+            code:
+              type: str
+            msg:
+              type: str
+            timestamp:
+              type: int
+            startTime:
+              type: null
+    mapping:
+      - key: time
+        path:
+          - timestamp
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: currency_pair_first
+        path:
+          - data
+          - s
+        type:
+          - str
+          - split
+          - "-"
+          - 0
+      - key: currency_pair_second
+        path:
+          - data
+          - s
+        type:
+          - str
+          - split
+          - "-"
+          - 1
+      - key: last_price
+        path:
+          - data
+          - h
+        type:
+          - str
+          - float
+      - key: daily_volume
+        path:
+          - data
+          - v
+        type:
+          - str
+          - float
+
+  order_books:
+    request:
+      template: spot/orderBook
+      pair_template: # e.g. BTC
+        template: "{first}-{second}"
+        alias: symbol
+        lower_case: false
+      params: null
+    response:
+      type: dict
+      values:
+        data:
+          type: dict
+          values:
+            symbol:
+              type: str
+            b:
+              type: list
+              values:
+                type: list
+                values:
+                  0:
+                    type: str
+                  1:
+                    type: str
+            s:
+              type: list
+              values:
+                type: list
+                values:
+                  0:
+                    type: str
+                  1:
+                    type: str
+            code:
+              type: str
+            msg:
+              type: str
+            timestamp:
+              type: int
+            startTime:
+              type: null
+            ver:
+              type: str
+
+    mapping:
+    - key: time
+      path:
+        - timestamp
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: bids_price
+      path:
+        - data
+        - b
+        - 0
+      type:
+        - str
+        - float
+    - key: bids_amount
+      path:
+        - data
+        - b
+        - 1
+      type:
+        - str
+        - float
+    - key: asks_amount
+      path:
+        - data
+        - s
+        - 1
+      type:
+        - str
+        - float
+    - key: asks_price
+      path:
+        - data
+        - s
+        - 0
+      type:
+        - str
+        - float
+    - key: id
+      path:
+        - data
+        - ver
+      type:
+        - str
+        - int
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+
+  trades:
+    request:
+      template: spot/trades
+      pair_template: # e.g. BTC
+        template: "{first}-{second}"
+        alias: symbol
+        lower_case: false
+      params: null
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              p:
+                type: str
+              ver:
+                type: str
+              s:
+                type: str
+              t:
+                type: str
+              v:
+                type: str
+    mapping:
+    - key: time
+      path:
+      - data
+      - t
+      type:
+      - str
+      - float
+      - from_timestamp
+      - 0
+    - key: id
+      path:
+      - data
+      - ver
+      type:
+      - str
+      - int
+    - key: amount
+      path:
+      - data
+      - v
+      type:
+      - str
+      - float
+    - key: price
+      path:
+      - data
+      - p
+      type:
+      - str
+      - float
+    - key: direction
+      path:
+        - data
+        - s
+      type:
+        - str
+
+  historic_rates:
+    request:
+      template: spot/kline
+      pair_template:
+        template: "{first}-{second}"
+        alias: symbol
+        lower_case: false
+      params:
+        type:
+          allowed:
+            minutes: m1
+            hours: h1
+            days: d1
+            weeks: w1
+            months: M1
+          default: m1
+        start:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 1000
+        end:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestamp
+
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              c:
+                type: str
+              s:
+                type: str
+              t:
+                type: str
+              v:
+                type: str
+              h:
+                type: str
+              time:
+                type: str
+              l:
+                type: str
+              o:
+                type: str
+    mapping:
+      - key: time
+        path:
+          - data
+          - time
+        type:
+          - str
+          - float
+          - from_timestamp
+          - 0
+      - key: open
+        path:
+          - data
+          - o
+        type:
+          - str
+          - float
+      - key: high
+        path:
+          - data
+          - h
+        type:
+          - str
+          - float
+      - key: low
+        path:
+          - data
+          - l
+        type:
+          - str
+          - float
+      - key: close
+        path:
+          - data
+          - c
+        type:
+          - str
+          - float
+      - key: volume
+        path:
+          - data
+          - v
+        type:
+          - str
+          - float

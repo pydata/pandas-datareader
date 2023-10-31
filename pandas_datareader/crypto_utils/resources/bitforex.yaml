@@ -1,0 +1,335 @@
+name: bitforex
+exchange: true
+
+rate_limit: null
+
+api_url: https://api.bitforex.com/api/v1/market/
+
+requests:
+  currency_pairs:
+    request:
+      template: symbols
+      pair_template: null
+      params: null
+
+    response:
+      type: list
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              symbol:
+                type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - data
+          - symbol
+        type:
+          - str
+          - split
+          - "-"
+          - 2
+      - key: currency_pair_second
+        path:
+          - data
+          - symbol
+        type:
+          - str
+          - split
+          - "-"
+          - 1
+
+  tickers:
+    request:
+      template: ticker
+      pair_template:
+        template: "coin-{second}-{first}"
+        alias: symbol
+        lower_case: true
+      params: null
+    response:
+      type: dict
+      values:
+        data:
+          type: dict
+          values:
+            buy:
+              type: float
+            date:
+              type: int
+            last:
+              type: float
+            sell:
+              type: float
+            vol:
+              type: float
+    mapping:
+      - key: last_price
+        path:
+          - data
+          - last
+        type:
+          - float
+      - key: time
+        path:
+          - data
+          - date
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: best_bid
+        path:
+          - data
+          - buy
+        type:
+          - float
+      - key: best_ask
+        path:
+          - data
+          - sell
+        type:
+          - float
+      - key: daily_volume
+        path:
+          - data
+          - vol
+        type:
+          - float
+
+  historic_rates:
+    request:
+      template: kline
+      pair_template:
+        template: "coin-{second}-{first}"
+        lower_case: true
+        alias: symbol
+      params:
+        size:
+          max: 600
+          default: 600
+        ktype:
+          allowed:
+            minutes: 1min
+            hours: 1hour
+            days: 1day
+            weeks: 1week
+            months: 1month
+          default: 1day
+
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              close:
+                type: float
+              open:
+                type: float
+              high:
+                type: float
+              low:
+                type: float
+              time:
+                type: float
+              vol:
+                type: float
+
+    mapping:
+    - key: time
+      path:
+        - data
+        - time
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: open
+      path:
+        - data
+        - open
+      type:
+        - float
+    - key: high
+      path:
+        - data
+        - high
+      type:
+        - float
+    - key: low
+      path:
+        - data
+        - low
+      type:
+        - float
+    - key: close
+      path:
+        - data
+        - close
+      type:
+        - float
+    - key: volume
+      path:
+        - data
+        - vol
+      type:
+        - float
+
+
+  trades:
+    request:
+      template: trades
+      pair_template:
+        template: "coin-{second}-{first}"
+        lower_case: true
+        alias: symbol
+      params:
+        size:
+          max: 600
+          default: 200
+
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              amount:
+                type: float
+              direction:
+                type: int
+              price:
+                type: float
+              tid:
+                type: int
+              time:
+                type: int
+
+    mapping:
+    - key: time
+      path:
+        - data
+        - time
+      type:
+        - float
+        - from_timestamp
+        - 1
+    - key: id
+      path:
+        - data
+        - tid
+      type:
+        - int
+    - key: direction
+      path:
+        - direction
+      type:
+        - value
+        - map
+        - 1
+        - buy
+        - 2
+        - sell
+    - key: price
+      path:
+        - data
+        - price
+      type:
+        - float
+    - key: amount
+      path:
+        - data
+        - amount
+      type:
+        - float
+
+  order_books:
+    request:
+      template: depth
+      pair_template:
+        template: "coin-{second}-{first}"
+        lower_case: true
+        alias: symbol
+      params:
+        size:
+          max: 200
+          default: 50
+
+    response:
+      type: dict
+      values:
+        data:
+          type: dict
+          values:
+            asks:
+              type: list
+              values:
+                type: dict
+                values:
+                  amount:
+                    type: float
+                  price:
+                    type: float
+            bids:
+              type: list
+              values:
+                type: dict
+                values:
+                  amount:
+                    type: float
+                  price:
+                    type: float
+
+    mapping:
+    - key: time
+      path: []
+      type:
+        - none
+        - now
+    - key: id
+      path: []
+      type:
+        - none
+        - now_timestamp
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - data
+        - bids
+        - amount
+      type:
+        - float
+    - key: bids_price
+      path:
+        - data
+        - bids
+        - price
+      type:
+        - float
+    - key: asks_amount
+      path:
+        - data
+        - asks
+        - amount
+      type:
+        - float
+    - key: asks_price
+      path:
+        - data
+        - asks
+        - price
+      type:
+        - float

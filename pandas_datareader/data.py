@@ -3,7 +3,7 @@ Module contains tools for collecting data from various remote sources
 """
 
 # flake8: noqa
-
+import os
 import warnings
 
 from pandas.util._decorators import deprecate_kwarg
@@ -38,6 +38,8 @@ from pandas_datareader.yahoo.components import _get_data as get_components_yahoo
 from pandas_datareader.yahoo.daily import YahooDailyReader
 from pandas_datareader.yahoo.options import Options as YahooOptions
 from pandas_datareader.yahoo.quotes import YahooQuotesReader
+from pandas_datareader.crypto import CryptoReader
+from pandas_datareader.crypto_utils.utilities import get_exchange_names
 
 __all__ = [
     "get_components_yahoo",
@@ -62,6 +64,7 @@ __all__ = [
     "get_dailysummary_iex",
     "get_data_stooq",
     "DataReader",
+    "get_data_crypto",
 ]
 
 
@@ -139,6 +142,10 @@ def get_exchange_rate_av(*args, **kwargs):
 
 def get_sector_performance_av(*args, **kwargs):
     return AVSectorPerformanceReader(*args, **kwargs).read()
+
+
+def get_data_crypto(*args, **kwargs):
+    return CryptoReader(*args, **kwargs).read()
 
 
 def get_markets_iex(*args, **kwargs):
@@ -285,6 +292,7 @@ def DataReader(
     pause=0.1,
     session=None,
     api_key=None,
+    **kwargs
 ):
     """
     Imports data from a number of online sources.
@@ -365,6 +373,7 @@ def DataReader(
         "av-intraday",
         "econdb",
         "naver",
+        *crypto_exchanges,
     ]
 
     if data_source not in expected_source:
@@ -675,6 +684,18 @@ def DataReader(
             session=session,
         ).read()
 
+    elif data_source in crypto_exchanges:
+        return CryptoReader(
+            exchange_name=data_source,
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+            **kwargs
+        ).read()
+
     else:
         msg = "data_source=%r is not implemented" % data_source
         raise NotImplementedError(msg)
@@ -694,3 +715,6 @@ def Options(symbol, data_source=None, session=None):
         return YahooOptions(symbol, session=session)
     else:
         raise NotImplementedError("currently only yahoo supported")
+
+
+crypto_exchanges = get_exchange_names()

@@ -1,0 +1,288 @@
+name: coinlist
+exchange: true
+
+rate_limit:
+  max: 200
+  unit: 60
+
+api_url: http://trade-api.coinlist.co/v1/
+
+requests:
+  currency_pairs:
+    request:
+      template: symbols
+      pair_template: null
+      params: null
+
+    response:
+      type: list
+      values:
+        symbols:
+          type: list
+          values:
+            type: dict
+            values:
+              symbol:
+                type: str
+              base_currency:
+                type: str
+              quote_currency:
+                type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - symbols
+          - base_currency
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - symbols
+          - quote_currency
+        type:
+          - str
+
+  tickers:
+    request:
+      template: symbols/summary
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        currency_pair:
+          type: dict
+          values:
+            last_price:
+              type: str
+            lowest_ask:
+              type: str
+            highest_bid:
+              type: str
+            volume_base_24h:
+              type: str
+            volume_quote_24h:
+              type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "-"
+          - 0
+      - key: currency_pair_second
+        path:
+          - dict_key
+        type:
+          - str
+          - split
+          - "-"
+          - 1
+      - key: last_price
+        path:
+          - dict_values
+          - last_price
+        type:
+          - str
+          - float
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: best_bid
+        path:
+          - dict_values
+          - highest_bid
+        type:
+          - str
+          - float
+      - key: best_ask
+        path:
+          - dict_values
+          - lowest_ask
+        type:
+          - str
+          - float
+      - key: daily_volume
+        path:
+          - dict_values
+          - volume_base_24h
+        type:
+          - str
+          - float
+
+  historic_rates:
+    request:
+      template: symbols/{currency_pair}/candles
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: false
+      params:
+        granularity:
+          allowed:
+            minutes: 1m
+            hours: 30m
+          default: 30m
+#        start_time:
+#          function: last_timestamp
+#          type:
+#            - datetime
+#            - timedelta
+#            - interval
+#            - 300
+#            - format
+#            - "%Y-%m%dT%H:%M:%S.%fZ"
+        end_time:
+          function: last_timestamp
+          type:
+            - datetime
+            - format
+            - "%Y-%m-%dT%H:%M:%S.%fZ"
+    response:
+      type: dict
+      values:
+        candles:
+          type: list
+          values:
+            type: list
+            values:
+              0: #time
+                type: str
+              1: #open
+                type: str
+              2: #high
+                type: str
+              3: # low
+                type: str
+              4: #close
+                type: str
+              5: #volume
+                type: str
+    mapping:
+    - key: time
+      path:
+        - candles
+        - 0
+      type:
+        - str
+        - dateparser
+    - key: open
+      path:
+        - candles
+        - 1
+      type:
+        - str
+        - float
+    - key: high
+      path:
+        - candles
+        - 2
+      type:
+        - str
+        - float
+    - key: low
+      path:
+        - candles
+        - 3
+      type:
+        - str
+        - float
+    - key: close
+      path:
+        - candles
+        - 4
+      type:
+        - str
+        - float
+    - key: volume
+      path:
+        - candles
+        - 5
+      type:
+        - str
+        - float
+
+  order_books:
+    request:
+      template: symbols/{currency_pair}/book
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: false
+      params: null
+
+    response:
+      type: dict
+      values:
+        call_time:
+          type: str
+        after_auction_code:
+          type: str
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0:
+                type: str
+              1:
+                type: str
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0: #price
+                type: str
+              1: #qty
+                type: str
+
+    mapping:
+    - key: time
+      path:
+        - call_time
+      type:
+        - str
+        - dateparser
+    - key: id
+      path: []
+      type:
+        - none
+        - now_timestamp
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - bids
+        - 1
+      type:
+        - str
+        - float
+    - key: bids_price
+      path:
+        - bids
+        - 0
+      type:
+        - str
+        - float
+    - key: asks_amount
+      path:
+        - asks
+        - 1
+      type:
+        - str
+        - float
+    - key: asks_price
+      path:
+        - asks
+        - 0
+      type:
+        - str
+        - float

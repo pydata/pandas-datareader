@@ -44,6 +44,7 @@ Currently the following sources are supported:
     - :ref:`Tiingo<remote_data.tiingo>`
     - :ref:`World Bank<remote_data.wb>`
     - :ref:`Yahoo Finance<remote_data.yahoo>`
+    - :ref:`Cryptocurrency Data<remote_data.crypto>`
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
 
@@ -807,3 +808,106 @@ The following endpoints are available:
 
    dividends = web.DataReader('IBM', 'yahoo-dividends', start, end) 
    dividends.head()
+
+
+.. _remote_data.crypto:
+
+Cryptocurrency Data
+===================
+
+Access historical data feed from the most popular and liquid exchanges, data aggregating platforms, and return OHLCV candles.
+Platforms such as ``Coingecko`` or ``Coinpaprika`` return in addition the global turnover volume and market capitalization.
+
+The ``CryptoReader`` offers helpful methods to print all supported exchanges/platforms and their listed
+currency-pairs:
+
+.. ipython:: python
+
+    from pandas_datareader.crypto import CryptoReader
+    CryptoReader.get_all_exchanges()
+
+    ['50x',
+     'alterdice',
+      ...]
+
+And, if an exchange is selected but the supported cryptocurrency pairs are unknown:
+
+.. ipython:: python
+
+    Reader = CryptoReader(exchange_name="coinbase")
+    Reader.get_currency_pairs()
+
+         Exchange   Base Quote
+    0    COINBASE  SUPER  USDT
+    1    COINBASE   COMP   USD
+    2    COINBASE  COVAL   USD
+    3    COINBASE    GTC   USD
+    4    COINBASE   ATOM   BTC
+    ..        ...    ...   ...
+    399  COINBASE    TRB   BTC
+    400  COINBASE    GRT   USD
+    401  COINBASE   BICO   USD
+    402  COINBASE    FET   USD
+    403  COINBASE    ORN   USD
+
+The CryptoReader class takes the following arguments:
+
+* ``symbols`` - the currency-pair of interest
+* ``exchange_name`` - the name of the exchange or platform
+* ``start`` - start date
+* ``end`` - end date
+* ``interval`` - the candle interval (e.g. "minutes", "hours", "days")
+* ``**kwargs`` - Additional arguments passes to the parent classes
+
+There are several ways to retrieve cryptocurrency data, with identical arguments:
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+    web.DataReader(...)
+
+    import pandas_datareader as pdr
+    pdr.get_data_crypto(...)
+
+    from pandas_datareader.crypto import CryptoReader
+    Reader = CryptoReader(...)
+    Reader.read()
+
+.. ipython:: python
+
+    import pandas_datareader.data as web
+
+    df = web.DataReader("btc-usd", "coinbase")
+    df.head()
+                                 open    high     low   close       volume
+    time
+    2015-07-20 23:59:59+00:00  277.98  280.00  277.37  280.00   782.883420
+    2015-07-21 23:59:59+00:00  279.96  281.27  276.85  277.32  4943.559434
+    2015-07-22 23:59:59+00:00  277.33  278.54  275.01  277.89  4687.909383
+    2015-07-23 23:59:59+00:00  277.96  279.75  276.28  277.39  5306.919575
+    2015-07-24 23:59:59+00:00  277.23  291.52  276.43  289.12  7362.469083
+
+Additionally, the ``CryptoReader`` can be used directly:
+
+.. ipython:: python
+
+    from pandas_datareader.crypto import CryptoReader
+
+    reader = CryptoReader("eth-usd", "coinbase", interval="minutes", start="2021-10-01", end="2021-10-02")
+    df = reader.read()
+    print(df)
+
+                                  open     high      low    close      volume
+    time
+    2021-10-01 00:00:59+00:00  3001.14  3001.42  2998.49  2999.89  100.564601
+    2021-10-01 00:01:59+00:00  2999.67  3005.99  2999.67  3005.99   91.007463
+    2021-10-01 00:02:59+00:00  3006.00  3015.14  3001.83  3014.67  494.276213
+    2021-10-01 00:03:59+00:00  3015.13  3020.19  3011.47  3020.19  174.329287
+    2021-10-01 00:04:59+00:00  3019.60  3026.60  3015.58  3024.96  131.651872
+                                ...      ...      ...      ...         ...
+    2021-10-01 23:55:59+00:00  3305.32  3307.15  3301.70  3306.91   49.974808
+    2021-10-01 23:56:59+00:00  3306.90  3308.94  3306.05  3307.74   24.950854
+    2021-10-01 23:57:59+00:00  3308.18  3309.99  3307.31  3309.66   28.768391
+    2021-10-01 23:58:59+00:00  3309.97  3311.25  3308.18  3311.23  131.851763
+    2021-10-01 23:59:59+00:00  3311.23  3311.72  3308.70  3311.16   72.940978
+    [1444 rows x 5 columns]

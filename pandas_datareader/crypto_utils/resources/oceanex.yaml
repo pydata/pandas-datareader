@@ -1,0 +1,380 @@
+name: oceanex
+exchange: true
+
+rate_limit:
+  max: 3000
+  unit: 60
+
+api_url: https://api.oceanex.pro/v1/
+
+requests:
+  currency_pairs:
+    request:
+      template: markets
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              name:
+                type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - data
+          - name
+        type:
+          - str
+          - split
+          - "/"
+          - 0
+      - key: currency_pair_second
+        path:
+          - data
+          - name
+        type:
+          - str
+          - split
+          - "/"
+          - 1
+
+  tickers:
+    request:
+      template: tickers
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        data:
+          type: dict
+          values:
+            currency_pair:
+              type: dict
+              values:
+                base_unit:
+                  type: str
+                quote_unit:
+                  type: str
+                at:
+                  type: int
+                sell:
+                  type: str
+                buy:
+                  type: str
+                last:
+                  type: str
+                volume:
+                  type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - data
+          - dict_values
+          - base_unit
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - data
+          - dict_values
+          - quote_unit
+        type:
+          - str
+      - key: last_price
+        path:
+          - data
+          - dict_values
+          - last
+        type:
+          - str
+          - float
+      - key: time
+        path:
+          - data
+          - dict_values
+          - at
+        type:
+          - float
+          - from_timestamp
+          - 0
+      - key: best_bid
+        path:
+          - data
+          - dict_values
+          - buy
+        type:
+          - str
+          - float
+      - key: best_ask
+        path:
+          - data
+          - dict_values
+          - sell
+        type:
+          - str
+          - float
+      - key: daily_volume
+        path:
+          - data
+          - dict_values
+          - volume
+        type:
+          - str
+          - float
+
+  historic_rates:
+    request:
+      template: k
+      pair_template:
+        template: "{first}{second}"
+        lower_case: true
+        alias: market
+      params:
+        limit:
+          max: null
+          default: 10000
+        period:
+          allowed:
+            minutes: 1
+            hours: 60
+            days: 1440
+          default: 1440 #daily
+        timestamp:
+          function: last_timestamp # data after that timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 10000
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: list
+            values:
+              0: # timestamp
+                type: int
+              1: #open
+                type: float
+              2: #high
+                type: float
+              3: #low
+                type: float
+              4: #close
+                type: float
+              5: #vol
+                type: float
+
+    mapping:
+    - key: time
+      path:
+        - data
+        - 0
+      type:
+        - float
+        - from_timestamp
+        - 0
+    - key: open
+      path:
+        - data
+        - 1
+      type:
+        - float
+    - key: high
+      path:
+        - data
+        - 2
+      type:
+        - float
+    - key: low
+      path:
+        - data
+        - 3
+      type:
+        - float
+    - key: close
+      path:
+        - data
+        - 4
+      type:
+        - float
+    - key: volume
+      path:
+        - data
+        - 5
+      type:
+        - float
+
+
+  trades:
+    request:
+      template: trades
+      pair_template:
+        template: "{first}{second}"
+        lower_case: true
+        alias: market
+      params:
+        limit:
+          default: 200
+
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              id:
+                type: int
+              price:
+                type: str
+              volume:
+                type: str
+              side:
+                type: str
+              created_on:
+                type: int
+
+
+    mapping:
+    - key: time
+      path:
+        - data
+        - created_on
+      type:
+        - float
+        - from_timestamp
+        - 0
+    - key: id
+      path:
+        - data
+        - id
+      type:
+        - int
+    - key: direction
+      path:
+        - data
+        - side
+      type:
+        - value
+        - map
+        - bid
+        - buy
+        - ask
+        - sell
+    - key: price
+      path:
+        - data
+        - price
+      type:
+        - str
+        - float
+    - key: amount
+      path:
+        - data
+        - volume
+      type:
+        - str
+        - float
+
+  order_books:
+    request:
+      template: order_book
+      pair_template:
+        template: "{first}{second}"
+        lower_case: true
+        alias: market
+      params:
+        limit:
+          max: 300
+          default: 50
+
+    response:
+      type: dict
+      values:
+        data:
+          type: dict
+          values:
+            timestamp:
+              type: int
+            asks:
+              type: list
+              values:
+                type: list
+                values:
+                  0: # price
+                    type: str
+                  1: #qty
+                    type: str
+            bids:
+              type: list
+              values:
+                type: list
+                values:
+                  0: # price
+                    type: str
+                  1: #qty
+                    type: str
+    mapping:
+    - key: time
+      path:
+        - data
+        - timestamp
+      type:
+        - float
+        - from_timestamp
+        - 0
+    - key: id
+      path:
+        - data
+        - timestamp
+      type:
+        - int
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - data
+        - bids
+        - 1
+      type:
+        - str
+        - float
+    - key: bids_price
+      path:
+        - data
+        - bids
+        - 0
+      type:
+        - str
+        - float
+    - key: asks_amount
+      path:
+        - data
+        - asks
+        - 1
+      type:
+        - str
+        - float
+    - key: asks_price
+      path:
+        - data
+        - asks
+        - 0
+      type:
+        - str
+        - float

@@ -1,0 +1,416 @@
+name: bibox
+exchange: true
+api_url: https://api.bibox.com/v1/mdata
+rate_limit: null
+requests:
+
+  tickers:
+    request:
+      template: ""
+      pair_template: null
+      params:
+        cmd:
+          type: str
+          default: marketAll
+    response:
+      type: dict
+      values:
+
+        type: list
+        values:
+          result:
+            type: dict
+            values:
+
+              buy:
+                type: int
+              high:
+                type: int
+              last:
+                type: float
+              low:
+                type: int
+              sell:
+                type: int
+              vol24H:
+                type: float
+              last_cny:
+                type: int
+              last_usd:
+                type: int
+          cmd:
+            type: str
+    mapping:
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: currency_pair_first
+        path:
+          - result
+          - coin_symbol
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - result
+          - currency_symbol
+        type:
+          - str
+      - key: daily_volume
+        path:
+          - result
+          - vol24H
+        type:
+          - str
+          - float
+      - key: last_price
+        path:
+          - result
+          - last
+        type:
+          - str
+          - float
+
+  currency_pairs:
+    request:
+      template: ""
+      pair_template: null
+      params:
+        cmd:
+          type: str
+          default: pairList
+    response:
+      type: dict
+      values:
+        result:
+          type: list
+          values:
+            type: dict
+            values:
+              id:
+                type: int
+              pair: # e.g. BIX_BTC
+                type: str
+              is_hide:
+                type: int
+        cmd:
+          type: str
+        ver:
+          type: str
+    mapping:
+    - key: currency_pair_first
+      path:
+      - result
+      - pair
+      type:
+      - str
+      - split
+      - "_"
+      - 0
+    - key: currency_pair_second
+      path:
+      - result
+      - pair
+      type:
+      - str
+      - split
+      - "_"
+      - 1
+
+  historic_rates:
+    request:
+      template: ""
+      pair_template: # pairs, example: BIX_BTC
+        template: "{first}_{second}"
+        lower_case: false
+        alias: pair
+      params:
+        cmd:
+          type: str
+          default: kline
+        period: # k line period
+          allowed:
+            minutes: 1min
+            hours: 1hour
+            days: day
+            weeks: week
+          default: day
+        size: # how many, 1-1000, if not passed will return 1000
+          type: int
+          default: 1000
+    response:
+      type: dict
+      values:
+        result:
+          type: list
+          values:
+            type: dict
+            values:
+              time:
+                type:
+                - float
+                - from_timestamp
+                - 0
+              open:
+                type:
+                - str
+                - float
+              high:
+                type:
+                - str
+                - float
+              low:
+                type:
+                - str
+                - float
+              close:
+                type:
+                - str
+                - float
+              vol:
+                type:
+                - str
+                - int
+        cmd:
+          type: str
+        ver:
+          type: str
+    mapping:
+    - key: time
+      path:
+      - result
+      - time
+      type:
+      - float
+      - from_timestamp
+      - 1
+    - key: open
+      path:
+      - result
+      - open
+      type:
+      - str
+      - float
+    - key: high
+      path:
+      - result
+      - high
+      type:
+      - str
+      - float
+    - key: low
+      path:
+      - result
+      - low
+      type:
+      - str
+      - float
+    - key: close
+      path:
+      - result
+      - close
+      type:
+      - str
+      - float
+    - key: volume
+      path:
+      - result
+      - vol
+      type:
+      - str
+      - float
+
+  order_books:
+     request:
+       template: ""
+       pair_template: # pairs, example: BIX_BTC
+         template: "{first}_{second}"
+         lower_case: false
+         alias: pair
+       params:
+         cmd:
+           type: str
+           default: depth
+         size: # how many, 1-200, if not passed will return 200
+           type: int
+           default: 200
+     response:
+       type: dict
+       values:
+         result:
+           type: dict
+           values:
+             update_time:
+               type:
+               - float
+               - from_timestamp
+               - 0
+             asks:
+               type: list
+               values:
+                 type: dict
+                 values:
+                   price:
+                     type:
+                     - str
+                     - float
+                   volume:
+                     type:
+                     - str
+                     - float
+             bids:
+               type: list
+               values:
+                 type: dict
+                 values:
+                   price:
+                     type:
+                     - str
+                     - float
+                   volume:
+                     type:
+                     - str
+                     - float
+             pair:
+               type: str
+         cmd:
+           type: str
+         ver:
+           type: str
+     mapping:
+     - key: time
+       path:
+       - result
+       - update_time
+       type:
+       - float
+       - from_timestamp
+       - 1
+     - key: asks_price
+       path:
+       - result
+       - asks
+       - price
+       type:
+       - str
+       - float
+     - key: asks_amount
+       path:
+       - result
+       - asks
+       - volume
+       type:
+       - str
+       - float
+     - key: bids_price
+       path:
+       - result
+       - bids
+       - price
+       type:
+       - str
+       - float
+     - key: bids_amount
+       path:
+       - result
+       - bids
+       - volume
+       type:
+       - str
+       - float
+     - key: id
+       path:
+         - result
+         - update_time
+       type:
+         - int
+     - key: position
+       path: []
+       type:
+         - none
+         - range
+
+  trades:
+    request:
+      template: ""
+      pair_template: # pairs, example: BIX_BTC
+        template: "{first}_{second}"
+        lower_case: false
+        alias: pair
+      params:
+        cmd:
+          type: str
+          default: deals
+        size: # how many, 1-200, if not passed will return 200
+          type: int
+          default: 200
+    response:
+      type: dict
+      values:
+        result:
+          type: list
+          values:
+            type: dict
+            values:
+              id:
+                type: int
+              pair:
+                type: str
+              price:
+                type:
+                - str
+              amount:
+                type:
+                - str
+              time:
+                type:
+                - str
+              side: # transaction side, 1-bid, 2-ask
+                type: int
+        cmd:
+          type: str
+    mapping:
+    - key: price
+      path:
+      - result
+      - price
+      type:
+      - str
+      - float
+    - key: amount
+      path:
+      - result
+      - amount
+      type:
+      - str
+      - float
+    - key: time
+      path:
+      - result
+      - time
+      type:
+      - str
+      - float
+      - from_timestamp
+      - 1
+    - key: direction
+      path:
+      - result
+      - side
+      type:
+      - value
+      - map
+      - 1
+      - buy
+      - 2
+      - sell
+    - key: id
+      path:
+      - result
+      - time
+      type:
+      - str
+      - int
+

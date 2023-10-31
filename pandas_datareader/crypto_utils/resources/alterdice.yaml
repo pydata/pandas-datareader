@@ -1,0 +1,305 @@
+name: alterdice
+exchange: true
+
+rate_limit: null
+
+api_url: ""
+
+requests:
+  currency_pairs:
+    request:
+      template: https://api.alterdice.com/v1/public/symbols
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              id:
+                type: int
+              base:
+                type: str
+              quote:
+                type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - data
+          - base
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - data
+          - quote
+        type:
+          - str
+
+  tickers:
+    request:
+      template: https://api.alterdice.com/v1/public/ticker
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: pair
+      params: null
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              last:
+                type: str
+              volume_24H:
+                type: str
+
+    mapping:
+      - key: last_price
+        path:
+          - data
+          - last
+        type:
+          - str
+          - float
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: daily_volume
+        path:
+          - data
+          - volume_24H
+        type:
+          - str
+          - float
+
+  historic_rates:
+    request:
+      template: https://socket.alterdice.com/graph/hist
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: t
+      params:
+        r:
+          allowed:
+            hours: 60
+            days: D
+            weeks: W
+          default: D
+        end:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestamp
+        limit:
+          default: 1000
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          low: #
+            type: int
+          high:
+            type: int
+          volume:
+            type: int
+          time:
+            type: int
+          open:
+            type: int
+          close:
+            type: int
+
+    mapping:
+    - key: time
+      path:
+        - time
+      type:
+        - float
+        - from_timestamp
+        - 0
+    - key: open
+      path:
+        - open
+      type:
+        - int
+        - div
+        - 100000000
+    - key: high
+      path:
+         - high
+      type:
+        - int
+        - div
+        - 100000000
+    - key: low
+      path:
+        - low
+      type:
+        - int
+        - div
+        - 100000000
+    - key: close
+      path:
+        - close
+      type:
+        - int
+        - div
+        - 100000000
+    - key: volume
+      path:
+        - volume
+      type:
+        - int
+        - div
+        - 100000000
+
+
+  trades:
+    request:
+      template: https://api.alterdice.com/v1/public/trades
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: pair
+      params: null
+
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              volume:
+                type: float
+              price:
+                type: float
+              timestamp:
+                type: int
+              type:
+                type: str
+    mapping:
+    - key: time
+      path:
+        - data
+        - timestamp
+      type:
+        - float
+        - from_timestamp
+        - 0
+    - key: id
+      path:
+        - data
+        - timestamp
+      type:
+        - int
+    - key: direction
+      path:
+        - data
+        - type
+      type:
+        - str
+    - key: price
+      path:
+        - data
+        - price
+      type:
+        - float
+    - key: amount
+      path:
+        - data
+        - volume
+      type:
+        - float
+
+  order_books:
+    request:
+      template: https://api.alterdice.com/v1/public/book
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: pair
+      params: null
+
+    response:
+      type: dict
+      values:
+        data:
+          type: dict
+          buy:
+            type: list
+            values:
+              type: dict
+              values:
+                volume:
+                  type: float
+                rate:
+                  type: float
+          sell:
+            type: list
+            values:
+              type: dict
+              values:
+                volume:
+                  type: float
+                rate:
+                  type: float
+
+    mapping:
+    - key: time
+      path: []
+      type:
+        - none
+        - now
+    - key: id
+      path: []
+      type:
+        - none
+        - now_timestamp
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+        - data
+        - buy
+        - volume
+      type:
+        - float
+    - key: bids_price
+      path:
+        - data
+        - buy
+        - rate
+      type:
+        - float
+    - key: asks_amount
+      path:
+        - data
+        - sell
+        - volume
+      type:
+        - float
+    - key: asks_price
+      path:
+        - data
+        - sell
+        - rate
+      type:
+        - float

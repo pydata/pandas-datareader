@@ -1,0 +1,313 @@
+name: crex24
+exchange: true
+api_url: https://api.crex24.com/v2/public/
+rate_limit: null
+
+requests:
+
+  currency_pairs:
+    request:
+      template: instruments
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          symbol:
+            type: str
+          baseCurrency:
+            type: str
+          quoteCurrency:
+            type: str
+
+            
+    mapping:
+    - key: currency_pair_first
+      path:
+      - baseCurrency
+      type:
+      - str
+    - key: currency_pair_second
+      path:
+      - quoteCurrency
+      type:
+      - str
+
+  tickers:
+    request:
+      template: tickers
+      pair_template: null
+      params: null
+    
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          instrument:
+            type: str
+          last:
+            type: float
+          percentChange:
+            type: float
+          low:
+            type: float
+          high:
+            type: float
+          baseVolume:
+            type: float
+          quoteVolume:
+            type: float
+          volumeInBtc:
+            type: float
+          volumeInUsd:
+            type: float
+          ask:
+            type: float
+          bid:
+            type: float
+          timestamp: 
+            type: str
+            
+    mapping:
+    - key: time
+      path:
+      - timestamp
+      type:
+      - str
+      - dateparser
+    - key: currency_pair_first
+      path:
+      - instrument
+      type:
+      - str
+      - split
+      - "-"
+      - 0
+    - key: currency_pair_second
+      path:
+      - instrument
+      type:
+      - str
+      - split
+      - "-"
+      - 1
+    - key: last_price
+      path:
+      - last
+      type:
+      - float
+    - key: best_ask
+      path:
+      - ask
+      type:
+      - float
+    - key: best_bid
+      path:
+      - bid
+      type:
+      - float  
+    - key: daily_volume
+      path:
+        - baseVolume
+      type:
+        - float
+
+  historic_rates:
+    request:
+      template: ohlcv
+      pair_template: 
+        template: "{first}-{second}"
+        lower_case: false
+        alias: instrument
+      params:
+        granularity:
+          allowed:
+            minutes: 1m
+            hours: 1h
+            days: 1d
+            weeks: 1w
+          default: 1d
+        limit:
+          type: int
+          default: 1000 #between 1-1000, if not specified, default is 100. 
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          timestamp:
+            type: str
+          open:
+            type: float
+          high:
+            type: float
+          low:
+            type: float
+          close:
+            type: float
+          volume:
+            type: float
+    mapping:
+    - key: time
+      path:
+      - timestamp
+      type:
+      - str
+      - dateparser
+    - key: open
+      path:
+      - open
+      type:
+      - float
+    - key: high
+      path:
+      - high
+      type:
+      - float
+    - key: low
+      path:
+      - low
+      type:
+      - float
+    - key: close
+      path:
+      - close
+      type:
+      - float
+    - key: volume
+      path:
+      - volume
+      type:
+      - float
+
+  trades:
+    request:
+      template: recentTrades
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: false
+        alias: instrument
+      params:
+        limit:
+          type: int
+          default: 1000
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          timestamp:
+            type: str
+          price:
+            type: float
+          volume:
+            type: float
+          side:
+            type: float
+    mapping:
+      - key: id
+        path:
+          - timestamp
+        type:
+          - str
+          - dateparser
+          - totimestamp
+      - key: time
+        path:
+          - timestamp
+        type:
+          - str
+          - dateparser
+      - key: direction
+        path:
+          - side
+        type:
+          - str
+      - key: price
+        path:
+          - price
+        type:
+          - float
+      - key: amount
+        path:
+          - volume
+        type:
+          - float
+          
+          
+  order_books:
+    request:
+      template: orderBook
+      pair_template:
+        template: "{first}-{second}"
+        lower_case: false
+        alias: instrument
+      params:
+        limit:
+          type: int
+          default: 50
+    response:
+      type: dict
+      values:
+        buyLevels:
+          type: list
+          values:
+            type: dict
+            values:
+              price:
+                type: float
+              volume:
+                type: float
+        sellLevels:
+          type: list
+          values:
+            type: dict
+            values:
+              price:
+                type: float
+              volume:
+                type: float
+    mapping:
+      - key: id
+        path: []
+        type:
+          - none
+          - now_timestamp
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: position
+        path: []
+        type:
+          - none
+          - now
+      - key: bids_amount
+        path:
+          - buyLevels
+          - volume
+        type:
+          - float
+      - key: bids_price
+        path:
+          - buyLevels
+          - price
+        type:
+          - float
+      - key: asks_amount
+        path:
+          - sellLevels
+          - volume
+        type:
+          - float
+      - key: asks_price
+        path:
+          - sellLevels
+          - price
+        type:
+          - float

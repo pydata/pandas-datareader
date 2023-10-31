@@ -1,0 +1,338 @@
+name: bitwell
+exchange: true
+rate_limit: null
+
+api_url: https://openapi.bitwellex.com
+
+requests:
+  currency_pairs:
+    request:
+      template: /pub/openapi/v1/symbol/spot/all
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              base_asset:
+                type: str
+              quote_asset:
+                type: str
+
+    mapping:
+      - key: currency_pair_first
+        path:
+          - data
+          - quote_asset
+        type:
+          - str
+      - key: currency_pair_second
+        path:
+          - data
+          - base_asset
+        type:
+          - str
+
+  tickers:
+    request:
+      template: /pub/openapi/v1/hq/quote
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: symbol
+      params: null
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              time:
+                type: int
+              highest_bid:
+                type: float
+              lowest_ask:
+                type: float
+              trade:
+                type: float
+              volume_24:
+                type: float
+    mapping:
+      - key: time
+        path:
+          - data
+          - time
+        type:
+          - float
+          - from_timestamp
+          - 2
+      - key: best_bid
+        path:
+          - data
+          - highest_bid
+        type:
+          - float
+      - key: best_ask
+        path:
+          - data
+          - lowest_ask
+        type:
+          - float
+      - key: last_price
+        path:
+          - data
+          - trade
+        type:
+          - float
+      - key: daily_volume
+        path:
+          - data
+          - volume_24
+        type:
+          - float
+
+
+
+  historic_rates:
+    request:
+      template: /pub/openapi/v1/hq/kline
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        type:
+          allowed:
+            minutes: 3
+            hours: 2
+            days: 1
+          default: 1 #day
+        num:
+          type: int
+          max: 2880
+          default: 2000
+        ts:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestamp
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              time:
+                type: int
+              open:
+                type: float
+              high:
+                type: float
+              low:
+                type: float
+              close:
+                type: float
+              volume:
+                type: float
+    mapping:
+      - key: time
+        path:
+          - data
+          - time
+        type:
+          - float
+          - from_timestamp
+          - 0
+      - key: open
+        path:
+          - data
+          - open
+        type:
+          - float
+      - key: high
+        path:
+          - data
+          - high
+        type:
+          - float
+      - key: low
+        path:
+          - data
+          - low
+        type:
+          - float
+      - key: close
+        path:
+          - data
+          - close
+        type:
+          - float
+      - key: volume
+        path:
+          - data
+          - volume
+        type:
+          - float
+
+
+  order_books:
+    request:
+      template: /pub/openapi/v1/hq/orderbook
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: symbol
+      params: null
+
+    response:
+      type: dict
+      values:
+        data:
+          type: dict
+          values:
+            ask:
+              type: list
+              values:
+                type: list
+                values:
+                  0:
+                    type: float
+                  1:
+                    type: float
+            bid:
+              type: list
+              values:
+                type: list
+                values:
+                  0:
+                    type: float
+                  1:
+                    type: float
+            sn:
+              type: int
+            time:
+              type: int
+
+    mapping:
+      - key: id
+        path:
+          - data
+          - sn
+        type:
+          - int
+      - key: time
+        path:
+          - data
+          - time
+        type:
+          - float
+          - from_timestamp
+          - 2
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_amount
+        path:
+          - data
+          - bid
+          - 1
+        type:
+          - float
+      - key: asks_amount
+        path:
+          - data
+          - ask
+          - 1
+        type:
+          - float
+      - key: bids_price
+        path:
+          - data
+          - bid
+          - 0
+        type:
+          - float
+      - key: asks_price
+        path:
+          - data
+          - ask
+          - 0
+        type:
+          - float
+
+  trades:
+    request:
+      template: /pub/openapi/v1/hq/transaction
+      pair_template:
+        template: "{first}_{second}"
+        lower_case: false
+        alias: symbol
+      params: null
+
+    response:
+      type: dict
+      values:
+        data:
+          type: list
+          values:
+            type: dict
+            values:
+              time_us:
+                type: int
+              price:
+                type: float
+              amount:
+                type: float
+              volume:
+                type: float
+              direction:
+                type: int
+    mapping:
+      - key: id
+        path:
+          - data
+          - sn
+        type:
+          - int
+      - key: time
+        path:
+          - data
+          - time_us
+        type:
+          - float
+          - from_timestamp
+          - 2
+      - key: price
+        path:
+          - data
+          - price
+        type:
+          - float
+      - key: amount
+        path:
+          - data
+          - volume
+        type:
+          - float
+      - key: direction
+        path:
+          - data
+          - direction
+        type:
+          - value
+          - map
+          - 1
+          - sell
+          - 2
+          - buy

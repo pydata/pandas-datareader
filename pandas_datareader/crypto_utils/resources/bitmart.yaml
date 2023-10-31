@@ -1,0 +1,409 @@
+name: bitmart
+exchange: true
+api_url: https://api-cloud.bitmart.com/spot/v1/
+rate_limit:
+  max: 600 # 3-90
+  unit: 60
+requests:
+
+  currency_pairs:
+    request:
+      template: symbols
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        data:
+          type: dict
+          values:
+            symbols:
+              type: list
+              values:
+                type: str
+    mapping:
+    - key: currency_pair_first
+      path:
+      - data
+      - symbols
+      type:
+      - str
+      - split
+      - "_"
+      - 0
+    - key: currency_pair_second
+      path:
+      - data
+      - symbols
+      type:
+      - str
+      - split
+      - "_"
+      - 1
+      
+
+  tickers:
+    request:
+      template: ticker
+      pair_template: null
+      params: null
+    response:
+      type: dict
+      values:
+        data:
+          type: dict
+          values:
+            tickers:
+              type: list
+              values:
+                type: dict
+                values:
+                  symbol:
+                    type: str
+                  last_price:
+                    type: str
+                  quote_volume:
+                    type: str
+                  base_volume:
+                    type: str
+                  best_ask:
+                    type: str
+                  best_bid:
+                    type: str
+    mapping:
+    - key: time
+      path: []
+      type:
+        - none
+        - now
+    - key: currency_pair_first
+      path:
+        - data
+        - tickers
+        - symbol
+      type:
+        - str
+        - split
+        - "_"
+        - 0
+    - key: currency_pair_second
+      path:
+        - data
+        - tickers
+        - symbol
+      type:
+        - str
+        - split
+        - "_"
+        - 1
+
+    - key: last_price
+      path:
+        - data
+        - tickers
+        - last_price
+      type:
+        - str
+        - float
+    - key: best_ask
+      path:
+        - data
+        - tickers
+        - best_ask
+      type:
+        - str
+        - float
+    - key: best_bid
+      path:
+        - data
+        - tickers
+        - best_bid
+      type:
+        - str
+        - float
+    - key: daily_volume
+      path:
+        - data
+        - tickers
+        - base_volume
+      type:
+        - str
+        - float
+
+
+  historic_rates:
+    request:
+      template: symbols/kline
+      pair_template: # e.g. BMX_ETH
+        template: "{first}_{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        step: # in minutes
+          allowed:
+            minutes: 1
+            hours: 60
+            days: 1440
+            weeks: 10080
+            months: 43200
+          default: 1440 # 1d
+
+        from:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 500
+        to: # in milliseconds
+          function: last_timestamp
+          type:
+            - datetime
+            - timestamp
+
+    response:
+      type: dict
+      values:
+        data:
+          type: dict
+          values:
+            klines:
+              type: list
+              values:
+                type: dict
+                values:
+                  last_price:
+                    type: str
+                  timestamp:
+                    type: int
+                  volume:
+                    type: str
+                  open:
+                    type: str
+                  close:
+                    type: str
+                  high:
+                    type: str
+                  low:
+                    type: str
+    mapping:
+    - key: time
+      path:
+      - data
+      - klines
+      - timestamp
+      type:
+      - float
+      - from_timestamp
+      - 0
+    - key: open
+      path:
+      - data
+      - klines
+      - open
+      type:
+      - str
+      - float
+    - key: high
+      path:
+      - data
+      - klines
+      - high
+      type:
+      - str
+      - float
+    - key: low
+      path:
+      - data
+      - klines
+      - low
+      type:
+      - str
+      - float
+    - key: close
+      path:
+      - data
+      - klines
+      - close
+      type:
+      - str
+      - float
+    - key: volume
+      path:
+      - data
+      - klines
+      - volume
+      type:
+      - str
+      - float
+
+  order_books:
+    request:
+      template: symbols/book
+      pair_template: # e.g. BMX_ETH
+        template: "{first}_{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        precision: # Price precision whose range is defined in symbol details
+          type: int
+          required: false
+        size:
+           type: int
+           max: 200
+           default: 50
+
+    response:
+      type: dict
+      values:
+        trace:
+          type: str
+        data:
+          type: dict
+          values:
+            buya:
+              type: list
+              values:
+                type: dict
+                values:
+                  amount:
+                    type: str
+                  total:
+                    type: str
+                  price:
+                    type: str
+                  count:
+                    type: str
+            sells:
+              type: list
+              values:
+                type: dict
+                values:
+                  amount:
+                    type: str
+                  total:
+                    type: str
+                  price:
+                    type: str
+                  count:
+                    type: str
+
+    mapping:
+    - key: time
+      path: []
+      type:
+        - none
+        - now
+    - key: id
+      path: []
+      type:
+        - none
+        - now_timestamp
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: bids_amount
+      path:
+      - data
+      - buys
+      - amount
+      type:
+      - str
+      - float
+    - key: bids_price
+      path:
+      - data
+      - buys
+      - price
+      type:
+      - str
+      - float
+    - key: asks_amount
+      path:
+      - data
+      - sells
+      - amount
+      type:
+      - str
+      - float
+    - key: asks_price
+      path:
+      - data
+      - sells
+      - price
+      type:
+      - str
+      - float
+
+  trades:
+    request:
+      template: symbols/trades
+      pair_template: # e.g. BMX_ETH
+        template: "{first}_{second}"
+        lower_case: false
+        alias: symbol
+      params: null
+    response:
+      type: dict
+      values:
+        data:
+          type: dict
+          values:
+            trades:
+              type: list
+              values:
+                type: dict
+                values:
+                  amount:
+                    type: str
+                  order_time:
+                    type: str
+                  price:
+                    type: str
+                  count:
+                    type: str
+                  type:
+                    type: str
+    mapping:
+    - key: amount
+      path:
+      - data
+      - trades
+      - amount
+      type:
+      - str
+      - float
+    - key: id
+      path:
+        - data
+        - trades
+        - order_time
+      type:
+        - str
+        - int
+    - key: time
+      path:
+      - data
+      - trades
+      - order_time
+      type:
+      - float
+      - from_timestamp
+      - 1
+    - key: price
+      path:
+      - data
+      - trades
+      - price
+      type:
+      - str
+      - float
+    - key: direction
+      path:
+      - data
+      - trades
+      - type
+      type:
+      - str

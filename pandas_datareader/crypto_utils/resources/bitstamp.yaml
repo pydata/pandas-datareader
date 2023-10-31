@@ -1,0 +1,401 @@
+name: bitstamp
+exchange: true
+api_url: https://www.bitstamp.net/api/v2/
+rate_limit:
+  max: 60
+  unit: 60
+requests:
+  currency_pairs:
+    request:
+      template: trading-pairs-info/
+      values: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          base_decimals:
+            type: int
+          minimum_order:
+            type: str
+          name: # e.g. LTC/USD
+            type: str
+          counter_decimals:
+            type: int
+          trading:
+            type: str
+          url_symbol: # e.g. ltcusd
+            type: str
+          description: # e.g. Litecoin / U.S. dollar
+            type: str
+    mapping:
+    - key: currency_pair_first
+      path:
+      - name
+      - 0
+      type:
+      - str
+      - split
+      - "/"
+      - 0
+    - key: currency_pair_second
+      path:
+      - name
+      - 1
+      type:
+      - str
+      - split
+      - "/"
+      - 1
+
+  tickers:
+    request:
+      template: ticker/{currency_pair}/
+      pair_template: # e.g. btcusd
+        template: "{first}{second}"
+        lower_case: true
+      params: null
+    response:
+      type: dict
+      values:
+        last:
+          type:
+          - str
+          - float
+        high:
+          type:
+          - str
+          - float
+        low:
+          type:
+          - str
+          - float
+        vwap:
+          type:
+          - str
+          - float
+        volume:
+          type:
+          - str
+          - float
+        bid:
+          type:
+          - str
+          - float
+        ask:
+          type:
+          - str
+          - float
+        timestamp:
+          type:
+          - str
+          - float
+          - from_timestamp
+          - 0
+        open:
+          type:
+          - str
+          - float
+    mapping:
+    - key: last_price
+      path:
+      - last
+      type:
+      - str
+      - float
+    - key: daily_volume
+      path:
+      - volume
+      type:
+      - str
+      - float
+    - key: best_bid
+      path:
+      - bid
+      type:
+      - str
+      - float
+    - key: best_ask
+      path:
+      - ask
+      type:
+      - str
+      - float
+    - key: time
+      path:
+      - timestamp
+      type:
+      - str
+      - float
+      - from_timestamp
+      - 0
+
+  historic_rates:
+    request:
+      template: ohlc/{currency_pair}/
+      pair_template:
+        template: '{first}{second}'
+        lower_case: true
+      params:
+        step:
+          type: int
+          allowed:
+            minutes: 60
+            hours: 3600
+            days: 86400
+            weeks: 259200
+          default: 86400
+        limit:
+          type: int
+          default: 1000 #limit between 1 and 1000
+        end:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestamp
+    response:
+      type: dict
+      values:
+        data:
+          type: dict
+          values:
+            pair:
+              - str
+            ohlc:
+              type: list
+              values:
+                high:
+                  - str
+                  - float
+                timestamp:
+                  - str
+                  - float
+                  - from_timestamp
+                  - 0
+                volume:
+                  - str
+                  - float
+                low:
+                  - str
+                  - float
+                open:
+                  - str
+                  - float
+                close:
+                  - str
+                  - float
+    mapping:
+      - key: open
+        path:
+          - data
+          - ohlc
+          - open
+        type:
+          - str
+          - float
+      - key: close
+        path:
+          - data
+          - ohlc
+          - close
+        type:
+          - str
+          - float
+      - key: high
+        path:
+          - data
+          - ohlc
+          - high
+        type:
+          - str
+          - float
+      - key: low
+        path:
+          - data
+          - ohlc
+          - low
+        type:
+          - str
+          - float
+      - key: volume
+        path:
+          - data
+          - ohlc
+          - volume
+        type:
+          - str
+          - float
+      - key: time
+        path:
+          - data
+          - ohlc
+          - timestamp
+        type:
+          - str
+          - float
+          - from_timestamp
+          - 0
+
+  order_books:
+     request:
+       template: order_book/{currency_pair}
+       pair_template: # e.g. btcusd
+         template: "{first}{second}"
+         lower_case: true
+       params:
+         group:
+           type: int
+           default: 1
+     response:
+       type: dict
+       values:
+         timestamp:
+           type:
+           - str
+           - float
+           - from_timestamp
+           - 0
+         bids:
+           type: list
+           values:
+             type: list
+             values:
+               0: # price
+                 type:
+                 - str
+                 - float
+               1: # amount
+                 type:
+                 - str
+                 - float
+         asks:
+           type: list
+           values:
+             type: list
+             values:
+               0: # price
+                 type:
+                 - str
+                 - float
+               1: # amount
+                 type:
+                 - str
+                 - float
+     mapping:
+     - key: time
+       path:
+       - timestamp
+       type:
+       - str
+       - float
+       - from_timestamp
+       - 0
+     - key: bids_price
+       path:
+       - bids
+       - 0
+       type:
+       - str
+       - float
+     - key: bids_amount
+       path:
+       - bids
+       - 1
+       type:
+       - str
+       - float
+     - key: asks_price
+       path:
+       - asks
+       - 0
+       type:
+       - str
+       - float
+     - key: asks_amount
+       path:
+       - asks
+       - 1
+       type:
+       - str
+       - float
+     - key: id
+       path:
+         - timestamp
+       type:
+         - str
+         - int
+     - key: position
+       path: []
+       type:
+         - none
+         - range
+
+  trades:
+    request:
+      template: transactions/{currency_pair}
+      pair_template: # e.g. btcusd
+        template: "{first}{second}"
+        lower_case: true
+      params:
+        time:
+          type: str
+          default: hour
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          date:
+            type:
+            - str
+          tid:
+            type:
+            - str
+          price:
+            type:
+            - str
+          amount:
+            type:
+            - str
+          type: # 0 (buy) or 1 (sell).
+            type:
+            - int
+    mapping:
+    - key: time
+      path:
+      - date
+      type:
+      - str
+      - float
+      - from_timestamp
+      - 0
+    - key: price
+      path:
+      - price
+      type:
+      - str
+      - float
+    - key: amount
+      path:
+      - amount
+      type:
+      - str
+      - float
+    - key: direction
+      path:
+      - type
+      type:
+        - value
+        - map
+        - "0"
+        - buy
+        - "1"
+        - sell
+    - key: id
+      path:
+        - tid
+      type:
+        - str
+        - int
+

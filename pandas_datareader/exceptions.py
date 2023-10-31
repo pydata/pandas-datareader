@@ -16,3 +16,7 @@ See https://github.com/pydata/pandas-datareader/issues
 
 class ImmediateDeprecationError(Exception):
     pass
+
+
+class EmptyResponseError(Exception):
+    pass

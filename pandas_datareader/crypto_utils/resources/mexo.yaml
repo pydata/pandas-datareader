@@ -1,0 +1,304 @@
+name: mexo
+is_exchange: true
+api_docs: https://github.com/mexo-tech/Mexo-OpenApi/blob/master/doc/rest-api.md
+api_url: https://api.mexo.io/
+rate_limit:
+  max: 1500
+  unit: 60
+
+requests:
+  currency_pairs:
+    request:
+      template: openapi/v1/brokerInfo
+      pair_template: null
+      params: null
+
+    response:
+      type: dict
+      values:
+        symbols:
+          type: list
+          values:
+            type: dict
+            values:
+              baseAsset:
+                type: str
+              quoteAsset:
+                type: str
+
+    mapping:
+    - key: currency_pair_first
+      path:
+        - symbols
+        - baseAsset
+      type:
+        - str
+    - key: currency_pair_second
+      path:
+        - symbols
+        - quoteAsset
+      type:
+        - str
+
+  tickers:
+    request:
+      template: openapi/quote/v1/ticker/price
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbol
+      params: null
+
+    response:
+      type: dict
+      values:
+        symbol:
+          type: str
+        price:
+          type: str
+    mapping:
+      - key: time
+        path: []
+        type:
+          - none
+          - now
+      - key: last_price
+        path:
+          - price
+        type:
+          - str
+          - float
+
+  order_books:
+    request:
+      template: openapi/quote/v1/depth
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        limit:
+          type: int
+          max: 100
+          default: 100
+    response:
+      type: dict
+      values:
+        time:
+          type: int
+        bids:
+          type: list
+          values:
+            type: list
+            0: #price
+              type: str
+            1: #qty
+              type: str
+        asks:
+          type: list
+          values:
+            type: list
+            0:
+              type: str
+            1:
+              type: str
+    mapping:
+      - key: time
+        path:
+          - time
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: id
+        path:
+          - time
+        type:
+          - int
+      - key: position
+        path: []
+        type:
+          - none
+          - range
+      - key: bids_price
+        path:
+          - bids
+          - 0
+        type:
+          - str
+          - float
+      - key: bids_amount
+        path:
+          - bids
+          - 1
+        type:
+          - str
+          - float
+      - key: asks_price
+        path:
+          - asks
+          - 0
+        type:
+          - str
+          - float
+      - key: asks_amount
+        path:
+          - asks
+          - 1
+        type:
+          - str
+          - float
+
+  trades:
+    request:
+      template: openapi/quote/v1/trades
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        limit:
+          type: int
+          max: 1000
+          default: 500
+    response:
+      type: list
+      value:
+        type: dict
+        values:
+          price:
+            type: str
+          qty:
+            typ: str
+          time:
+            type: int
+          isBuyerMaker:
+            type: bool
+    mapping:
+      - key: time
+        path:
+          - time
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: direction
+        path:
+          - isBuyerMaker
+        type:
+          - value
+          - map
+          - True
+          - sell
+          - False
+          - buy
+      - key: id
+        path:
+          - time
+        type:
+          - int
+      - key: price
+        path:
+          - price
+        type:
+          - str
+          - float
+      - key: amount
+        path:
+          - qty
+        type:
+          - str
+          - float
+
+  historic_rates:
+    request:
+      template: openapi/quote/v1/klines
+      pair_template:
+        template: "{first}{second}"
+        lower_case: false
+        alias: symbol
+      params:
+        interval:
+          allowed:
+            minutes: 1m
+            hours: 1h
+            days: 1d
+            weeks: 1w
+            months: 1M
+          default: 1d
+        limit:
+          type: int
+          max: 1000
+          default: 1000
+        endTime:
+          function: last_timestamp
+          type:
+            - datetime
+            - timestampms
+
+    response:
+      type: list
+      values:
+        type: list
+        values:
+          0: #timestamp
+            type: int
+          1: #open
+            type: str
+          2: #high
+            type: str
+          3: #low
+            type: str
+          4: #close
+            type: str
+          5: #volume
+            type: str
+          6: #close time
+            type: int
+          7: # quote Asset volume
+            type: str
+          8: # number of trades
+            type: int
+          9: # taker buy base asset volume
+            type: str
+          10: # taker buy quote asset volume
+            type: str
+
+    mapping:
+      - key: time
+        path:
+          - 0
+        type:
+          - float
+          - from_timestamp
+          - 1
+      - key: open
+        path:
+          - 1
+        type:
+          - str
+          - float
+      - key: high
+        path:
+          - 2
+        type:
+          - str
+          - float
+      - key: low
+        path:
+          - 3
+        type:
+          - str
+          - float
+      - key: close
+        path:
+          - 4
+        type:
+          - str
+          - float
+      - key: volume
+        path:
+          - 5
+        type:
+          - str
+          - float

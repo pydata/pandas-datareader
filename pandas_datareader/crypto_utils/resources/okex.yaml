@@ -1,0 +1,360 @@
+name: okex
+exchange: true
+
+api_url: https://www.okex.com/api/spot/v3/
+rate_limit:
+  max: 20
+  unit: 2
+requests:
+  currency_pairs:
+    request:
+      template: instruments
+      pair_template: null
+      params: null
+
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          base_currency:
+            type: str
+          category:
+            type: str
+          instrument_id:
+            type: str
+          min_size:
+            type: str
+          quote_currency:
+            type: str
+          size_increment:
+            type: str
+          tick_size:
+            type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - base_currency
+        type:
+          - str
+          - lower
+      - key: currency_pair_second
+        path:
+          - quote_currency
+        type:
+          - str
+          - lower
+
+
+  tickers:
+    request:
+      template: instruments/ticker
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          best_ask:
+            type: str
+          best_bid:
+            type: str
+          instrument_id:
+            type: str
+          product_id:
+            type: str
+          last:
+            type: str
+          last_qty:
+            type: str
+          ask:
+            type: str
+          best_ask_size:
+            type: str
+          bid:
+            type: str
+          best_bid_size:
+            type: str
+          open:
+            type: str
+          open_24h:
+            type: str
+          high_24h:
+            type: str
+          low_24h:
+            type: str
+          base_volume_24h:
+            type: str
+          timestamp:
+            type: str
+          qutote_volume_24h:
+            type: str
+
+    mapping:
+    - key: currency_pair_first
+      path:
+        - instrument_id
+      type:
+        - str
+        - split
+        - "-"
+        - 0
+    - key: currency_pair_second
+      path:
+        - instrument_id
+      type:
+        - str
+        - split
+        - "-"
+        - 1
+    - key: best_bid
+      path:
+        - best_bid
+      type:
+      - str
+      - float
+    - key: last_price
+      path:
+        - last
+      type:
+      - str
+      - float
+    - key: best_ask
+      path:
+        - best_ask
+      type:
+      - str
+      - float
+    - key: daily_volume
+      path:
+      - base_volume_24h
+      type:
+      - str
+      - float
+#
+  order_books:
+    request:
+      template: instruments/{currency_pair}/book
+      pair_template: # e.g. btc_usd
+        template: "{first}-{second}"
+        lower_case: false
+      params:
+        size:
+          min: 1
+          max: 200
+          default: 50
+    response:
+      type: dict
+      values:
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type: float
+              1: # size
+                type: float
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type: float
+              1: # size
+                type: float
+    mapping:
+    - key: time
+      path: []
+      type:
+      - none
+      - now
+    - key: id
+      path: []
+      type:
+        - none
+        - now_timestamp
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: asks_price
+      path:
+      - asks
+      - 0
+      type:
+      - float
+    - key: asks_amount
+      path:
+      - asks
+      - 1
+      type:
+      - float
+    - key: bids_price
+      path:
+      - bids
+      - 0
+      type:
+      - float
+    - key: bids_amount
+      path:
+      - bids
+      - 1
+      type:
+      - float
+
+  trades:
+    request:
+      template: instruments/{currency_pair}/trades
+      pair_template: # e.g. btc_usd
+        template: "{first}-{second}"
+        lower_case: false
+      params:
+        limit: # get recently 60 pieces of data starting from the given tid (optional)
+          type: str
+          required: false
+          default: 100
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          0:
+            type: str
+          1:
+            type: str
+          2:
+            type: str
+          3:
+            type: str
+          4:
+            type: str
+          5:
+            type: str
+    mapping:
+    - key: time
+      path:
+      - dict_values
+      - 1
+      type:
+      - str
+      - strptime
+      - "%Y-%m-%dT%H:%M:%S.%fZ"
+    - key: price
+      path:
+      - dict_values
+      - 3
+      type:
+      - str
+      - float
+    - key: amount
+      path:
+      - dict_values
+      - 4
+      type:
+      - str
+      - float
+    - key: direction
+      path:
+      - dict_values
+      - 5
+      type:
+      - str
+    - key: id
+      path:
+      - dict_values
+      - 2
+      type:
+      - str
+      - int
+
+  historic_rates:
+    request:
+      template: instruments/{currency_pair}/candles
+      pair_template: # e.g. btc_usd
+        template: "{first}-{second}"
+        lower_case: false
+      params:
+        granularity:
+          allowed:
+            minutes: 60
+            hours: 3600
+            days: 86400
+            weeks: 604800
+          default: 86400 # 1day
+        limit:
+          default: 300
+        start:
+          function: last_timestamp
+          type:
+            - datetime
+            - timedelta
+            - interval
+            - 300
+            - from_timestamp
+            - 0
+            - "%Y-%m-%dT%H:%M:%S.%fZ"
+        end:
+          function: last_timestamp
+          type:
+            - datetime
+            - format
+            - "%Y-%m-%dT%H:%M:%S.%fZ"
+    response:
+     type: list
+     values:
+       type: list
+       values:
+         0:
+           type: str
+         1:
+           type: str
+         2:
+           type: str
+         3:
+           type: str
+         4:
+           type: str
+         5:
+           type: str
+    mapping:
+    - key: time
+      path:
+      - 0
+      type:
+      - str
+      - strptime
+      - "%Y-%m-%dT%H:%M:%S.%fZ"
+    - key: open
+      path:
+      - 1
+      type:
+      - str
+      - float
+    - key: high
+      path:
+      - 2
+      type:
+      - str
+      - float
+    - key: low
+      path:
+      - 3
+      type:
+      - str
+      - float
+    - key: close
+      path:
+      - 4
+      type:
+      - str
+      - float
+    - key: volume
+      path:
+      - 5
+      type:
+      - str
+      - float

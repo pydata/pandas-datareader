@@ -1,0 +1,338 @@
+name: okcoin
+exchange: true
+
+api_url: https://www.okcoin.com/api/spot/v3/
+rate_limit:
+  max: 360
+  unit: 60
+
+requests:
+  currency_pairs:
+    request:
+      template: instruments
+      pair_template: null
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          base_currency:
+            type: str
+          quote_currency:
+            type: str
+    mapping:
+    - key: currency_pair_first
+      path:
+        - base_currency
+      type:
+        - str
+    - key: currency_pair_second
+      path:
+        - quote_currency
+      type:
+        - str
+
+
+  tickers:
+    request:
+      template: instruments/ticker
+      pair_template: null #
+      params: null
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          instrument_id:
+            type: str
+          last:
+            type: str
+          bid:
+            type: str
+          ask:
+            type: str
+          base_volume_24h:
+            type: str
+          timestamp:
+            type: str
+          quote_volume_24h:
+            type: str
+    mapping:
+      - key: currency_pair_first
+        path:
+          - product_id
+        type:
+          - str
+          - split
+          - "-"
+          - 0
+      - key: currency_pair_second
+        path:
+          - product_id
+        type:
+          - str
+          - split
+          - "-"
+          - 1
+      - key: time
+        path:
+          - timestamp
+        type:
+          - str
+          - dateparser
+      - key: last_price
+        path:
+          - last
+        type:
+          - str
+          - float
+      - key: best_ask
+        path:
+          - ask
+        type:
+          - str
+          - float
+      - key: best_bid
+        path:
+          - bid
+        type:
+          - str
+          - float
+      - key: daily_volume
+        path:
+          - base_volume_24h
+        type:
+          - str
+          - float
+
+  order_books:
+    request:
+      template: instruments/{currency_pair}/book
+      pair_template: # e.g. btc_usd
+        template: "{first}-{second}"
+        lower_case: false
+      params:
+        size:
+          type: int
+          min: 1
+          max: 200
+          required: false
+          default: 50
+        merge:
+          type: int
+          possible:
+          - 1
+          - 0.1
+          required: false
+    response:
+      type: dict
+      values:
+        asks:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type: str
+              1: # size
+                type: str
+        bids:
+          type: list
+          values:
+            type: list
+            values:
+              0: # price
+                type: str
+              1: # size
+                type: str
+        timestamp:
+          type: str
+    mapping:
+    - key: time
+      path:
+        - timestamp
+      type:
+        - str
+        - dateparser
+    - key: id
+      path:
+        - timestamp
+      type:
+        - str
+        - dateparser
+        - totimestamp
+    - key: position
+      path: []
+      type:
+        - none
+        - range
+    - key: asks_price
+      path:
+      - asks
+      - 0
+      type:
+      - str
+      - float
+    - key: asks_amount
+      path:
+      - asks
+      - 1
+      type:
+      - str
+      - float
+    - key: bids_price
+      path:
+      - bids
+      - 0
+      type:
+      - str
+      - float
+    - key: bids_amount
+      path:
+      - bids
+      - 1
+      type:
+      - str
+      - float
+
+  trades:
+    request:
+      template: instruments/{currency_pair}/trades
+      pair_template: # e.g. btc_usd
+        template: "{first}-{second}"
+        lower_case: false
+      params:
+        limit:
+          type: int
+          max: 100
+          default: 100
+    response:
+      type: list
+      values:
+        type: dict
+        values:
+          timestamp:
+            type: str
+          price:
+            type: str
+          size:
+            type: str
+          trade_id:
+            type: str
+          side:
+            type: str
+    mapping:
+    - key: time
+      path:
+      - timestamp
+      type:
+      - str
+      - dateparser
+    - key: id
+      path:
+      - timestamp
+      type:
+      - str
+      - dateparser
+      - totimestamp
+    - key: price
+      path:
+      - price
+      type:
+      - str
+      - float
+    - key: amount
+      path:
+      - size
+      type:
+      - str
+    - key: direction
+      path:
+      - side
+      type:
+      - str
+
+  historic_rates:
+    request:
+      template: instruments/{currency_pair}/candles
+      pair_template: # e.g. btc_usd
+        template: "{first}-{second}"
+        lower_case: false
+      params:
+        granularity:
+          allowed:
+            minutes: 60
+            hours: 3600
+            days: 86400
+            weeks: 604800
+          default: 86400 # 1 day
+#        start: #returns only the last 200 entries until end or "today".
+#          function: last_timestamp
+#          type:
+#            - datetime
+#            - timedelta
+#            - interval
+#            - 1000
+#            - fromtimestamp
+#            - "%Y-%m-%dT%H:%M:%S.%fZ"
+        end:
+          function: last_timestamp
+          type:
+            - datetime
+            - format
+            - "%Y-%m-%dT%H:%M:%S.%fZ"  # e.g. 2020-11-10T16:00:00.000Z
+    response:
+      type: list
+      values:
+        type: list
+        values:
+          0: # timestamp
+            type: str
+          1: # open
+            type: str
+          2: # high
+            type: str
+          3: # low
+            type: str
+          4: # close
+            type: str
+          5: # volume
+            type: str
+    mapping:
+    - key: time
+      path:
+      - 0
+      type:
+      - str
+      - dateparser
+    - key: open
+      path:
+      - 1
+      type:
+      - str
+      - float
+    - key: high
+      path:
+      - 2
+      type:
+      - str
+      - float
+    - key: low
+      path:
+      - 3
+      type:
+      - str
+      - float
+    - key: close
+      path:
+      - 4
+      type:
+      - str
+      - float
+    - key: volume
+      path:
+      - 5
+      type:
+      - str
+      - float
