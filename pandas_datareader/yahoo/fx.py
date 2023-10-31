@@ -1,5 +1,6 @@
 import json
 import time
+import datetime
 import warnings
 
 from pandas import DataFrame, Series, concat, to_datetime
@@ -38,7 +39,8 @@ class YahooFXReader(YahooDailyReader):
     """
 
     def _get_params(self, symbol):
-        unix_start = int(time.mktime(self.start.timetuple()))
+        unix_zero = datetime.datetime(1970, 1, 1, 8)
+        unix_start = int((self.start - unix_zero).total_seconds())
         day_end = self.end.replace(hour=23, minute=59, second=59)
         unix_end = int(time.mktime(day_end.timetuple()))
 
