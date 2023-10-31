@@ -155,6 +155,10 @@ class YahooDailyReader(_DailyBaseReader):
 
         # price data
         prices = DataFrame(data["prices"])
+        if "Date" not in prices.columns:
+            return DataFrame(
+                columns=["Date", "High", "Low", "Open", "Close", "Volume", "Adjclose"]
+            )
         prices.columns = [col.capitalize() for col in prices.columns]
         prices["Date"] = to_datetime(to_datetime(prices["Date"], unit="s").dt.date)
 
