@@ -29,6 +29,8 @@ from .data import (
     get_records_iex,
     get_summary_iex,
     get_tops_iex,
+    get_custom_datareader,
+    register_custom_datareader,
 )
 
 PKG = os.path.dirname(__file__)
@@ -61,6 +63,8 @@ __all__ = [
     "get_data_tiingo",
     "get_iex_data_tiingo",
     "get_data_alphavantage",
+    "get_custom_datareader",
+    "register_custom_datareader",
     "test",
 ]
 
