@@ -33,6 +33,7 @@ from pandas_datareader.tiingo import (
     TiingoIEXHistoricalReader,
     TiingoQuoteReader,
 )
+from pandas_datareader.tse import TSEReader
 from pandas_datareader.yahoo.actions import YahooActionReader, YahooDivReader
 from pandas_datareader.yahoo.components import _get_data as get_components_yahoo
 from pandas_datareader.yahoo.daily import YahooDailyReader
@@ -47,6 +48,7 @@ __all__ = [
     "get_data_fred",
     "get_data_moex",
     "get_data_quandl",
+    "get_data_tse",
     "get_data_yahoo",
     "get_data_yahoo_actions",
     "get_nasdaq_symbols",
@@ -275,6 +277,38 @@ def get_iex_book(*args, **kwargs):
     return IEXDeep(*args, **kwargs).read()
 
 
+def get_data_tse(*args, **kwargs):
+    """
+    Tehran stock exchange daily data
+
+    Returns DataFrame of historical data from the Tehran Stock Exchange
+    open data service, over date range, start to end.
+
+    Parameters
+    ----------
+    symbols : {int, str, List[str], List[int]}
+        The symbols can be persian symbol code or instrument id.
+        This argument can be obtained from tsetmc.com site.
+    start : string, int, date, datetime, Timestamp
+        Starting date. Parses many different kind of date
+        default value is 5 years ago
+        representations (e.g., 'JAN-01-2010', '1/1/10', 'Jan, 1, 1980')
+    end : string, int, date, datetime, Timestamp
+        Ending date
+    retry_count : int, default 3
+        Number of times to retry query request.
+    pause : float, default 0.1
+        Time, in seconds, of the pause between retries.
+    session : Session, default None
+        requests.sessions.Session instance to be used.
+    adjust_price : bool, default False
+        If True, adjusts all prices in hist_data ('Open', 'High', 'Low',
+        'Close') based on 'Adj Close' and 'Yesterday' price.
+    interval: string, d, w, m for daily, weekly, monthly
+    """
+    return TSEReader(*args, **kwargs).read()
+
+
 @deprecate_kwarg("access_key", "api_key")
 def DataReader(
     name,
@@ -365,6 +399,7 @@ def DataReader(
         "av-intraday",
         "econdb",
         "naver",
+        "tse",
     ]
 
     if data_source not in expected_source:
@@ -673,6 +708,19 @@ def DataReader(
             retry_count=retry_count,
             pause=pause,
             session=session,
+        ).read()
+
+    elif data_source == "tse":
+        return TSEReader(
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+            adjust_price=False,
+            chunksize=10,
+            interval="d",
         ).read()
 
     else:
