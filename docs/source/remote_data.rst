@@ -807,3 +807,29 @@ The following endpoints are available:
 
    dividends = web.DataReader('IBM', 'yahoo-dividends', start, end) 
    dividends.head()
+
+MacroVar Finance & Economic Data
+==================
+`Macrovar <https://macrovar.com/macrovar-database/`_ provides financial and macroeconomic historical data.
+
+.. ipython:: python
+
+   import requests
+   data = {'api_key':'1fe5d86a-4ca6-11ee-bc70-6cb311235740', 'query':'greece manufacturing pmi'}
+   r = requests.post('https://api.macrovar.com/api/search', json=data)
+   dt=r.json()
+   print(dt)
+
+.. Endpoints
+
+/search Returns all available securities and macroeconomic indicators - inputs: api_key, symbol and/or indicator name > returns list
+/markets Get the most recent data of a specific market - inputs: api_key, symbol (required), start (optional), end (optional) – returns data
+/macro Get the most recent data of a specific macroeconomic variable - inputs: api_key, symbol (required), start (optional), end (optional) – returns data
+/calendar Get list of calendar events - inputs: api_key, Start Date (optional), End Date (optional) - returns events
+/news Get list of news - inputs: api_key, Start Date (optional), End Date (optional) - returns news
+/strategies Get details of an investment strategy - inputs: api_key, strategy (optional) - returns investment strategy
+/content Get details on specific information - inputs: api_key, keywords - returns information on specific information
+/research Get latest research of MacroVar - inputs: api_key, keywords - returns latest research
+/countries Get a summary of country information - inputs: api_key, keywords - returns countries information
+/sectors Get a summary of sector information - inputs: api_key, keywords - returns sector information
+/risk Get a summary of risk information - inputs: api_key, keywords - returns risk information
