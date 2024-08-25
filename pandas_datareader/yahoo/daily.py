@@ -1,6 +1,8 @@
 import json
 import re
 import time
+from bs4 import BeautifulSoup
+from collections import defaultdict
 
 from pandas import DataFrame, isnull, notnull, to_datetime
 
@@ -145,10 +147,24 @@ class YahooDailyReader(_DailyBaseReader):
         url = url.format(symbol)
 
         resp = self._get_response(url, params=params, headers=self.headers)
-        ptrn = r"root\.App\.main = (.*?);\n}\(this\)\);"
         try:
-            j = json.loads(re.search(ptrn, resp.text, re.DOTALL).group(1))
-            data = j["context"]["dispatcher"]["stores"]["HistoricalPriceStore"]
+            html_content = resp.text
+            soup = BeautifulSoup(html_content, "html.parser")
+            table = soup.select_one("table.yf-ewueuo")
+            table_data = []
+            for row in table.find_all("tr"):
+                try:
+                    columns = row.find_all("td") or row.find_all("th")
+                    row_data = [col.contents[0].strip() for col in columns]
+                    if row_data:
+                        table_data.append(row_data)
+                except:
+                    pass
+
+            data = {"prices": defaultdict(list)}
+            for j in range(len(table_data[0])):
+                for i in range(1, len(table_data)):
+                    data["prices"][table_data[0][j]].append(table_data[i][j])
         except KeyError as exc:
             msg = "No data fetched for symbol {} using {}"
             raise RemoteDataError(msg.format(symbol, self.__class__.__name__)) from exc
@@ -156,12 +172,12 @@ class YahooDailyReader(_DailyBaseReader):
         # price data
         prices = DataFrame(data["prices"])
         prices.columns = [col.capitalize() for col in prices.columns]
-        prices["Date"] = to_datetime(to_datetime(prices["Date"], unit="s").dt.date)
+        prices["Date"] = to_datetime(to_datetime(prices["Date"], format='%b %d, %Y').dt.date)
 
         if "Data" in prices.columns:
             prices = prices[prices["Data"].isnull()]
-        prices = prices[["Date", "High", "Low", "Open", "Close", "Volume", "Adjclose"]]
-        prices = prices.rename(columns={"Adjclose": "Adj Close"})
+        prices = prices[["Date", "High", "Low", "Open", "Close", "Volume", "Adj close"]]
+        prices = prices.rename(columns={"Adj close": "Adj Close"})
 
         prices = prices.set_index("Date")
         prices = prices.sort_index().dropna(how="all")
