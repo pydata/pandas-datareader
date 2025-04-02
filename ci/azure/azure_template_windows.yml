@@ -47,10 +47,10 @@ jobs:
 
   - powershell: |
       if ($null -ne $env:NUMPY) {
-        python -m pip install numpy==${NUMPY}
+        python -m pip install numpy==$env:NUMPY
       }
       if ($null -ne $env:PANDAS) {
-        python -m pip install pandas==${PANDAS}
+        python -m pip install pandas==$env:PANDAS
       }
     displayName: 'Update numpy and pandas (if needed)'
 
