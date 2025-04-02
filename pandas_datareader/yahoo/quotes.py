@@ -14,7 +14,6 @@ _DEFAULT_PARAMS = {
 
 
 class YahooQuotesReader(_BaseReader):
-
     """Get current yahoo quote"""
 
     def __init__(

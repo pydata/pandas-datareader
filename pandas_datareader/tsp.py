@@ -2,7 +2,6 @@ from pandas_datareader.base import _BaseReader
 
 
 class TSPReader(_BaseReader):
-
     """
     Returns DataFrame of historical TSP fund prices from symbols, over date
     range, start to end.

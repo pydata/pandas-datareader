@@ -15,7 +15,6 @@ from pandas_datareader.base import _DailyBaseReader
 
 
 class IEXDailyReader(_DailyBaseReader):
-
     """
     Returns DataFrame of historical stock prices
     from symbols, over date range, start to end. To avoid being penalized by

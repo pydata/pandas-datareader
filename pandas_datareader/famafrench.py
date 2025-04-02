@@ -78,8 +78,6 @@ class FamaFrenchReader(_BaseReader):
     def _read_one_data(self, url, params):
         params = {
             "index_col": 0,
-            "parse_dates": [0],
-            "date_parser": _parse_date_famafrench,
         }
 
         # headers in these files are not valid
@@ -111,12 +109,14 @@ class FamaFrenchReader(_BaseReader):
             start = 0 if not match else match.start()
 
             df = read_csv(StringIO("Date" + src[start:]), **params)
-            try:
-                idx_name = df.index.name  # hack for pandas 0.16.2
-                df = df.to_period(df.index.inferred_freq[:1])
-                df.index.name = idx_name
-            except Exception:
-                pass
+            if df.index.min() > 190000:
+                df.index = to_datetime(df.index.astype(str), format="%Y%m").to_period(
+                    freq="M"
+                )
+            else:
+                df.index = to_datetime(df.index.astype(str), format="%Y").to_period(
+                    freq="Y"
+                )
             df = df.truncate(self.start, self.end)
             datasets[i] = df
 

@@ -88,7 +88,7 @@ select = ["B","C","E","F","W","T4","B9"]
 
 [tool.black]
 target-version = ["py38", "py39", "py310","py311","py312"]
-required-version = "23.10.1"
+required-version = "25.1.0"
 exclude = """
 (
   pandas_datareader/_version.py

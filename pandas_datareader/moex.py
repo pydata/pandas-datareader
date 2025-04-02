@@ -197,8 +197,9 @@ class MoexReader(_DailyBaseReader):
 
         if len(dfs) == 0:
             raise OSError(
-                "{} returned no data; "
-                "check URL or correct a date".format(self.__class__.__name__)
+                "{} returned no data; check URL or correct a date".format(
+                    self.__class__.__name__
+                )
             )
         elif len(dfs) > 1:
             b = pd.concat(dfs, axis=0, join="outer", sort=True)
@@ -226,8 +227,9 @@ class MoexReader(_DailyBaseReader):
         if len(text) == 0:
             service = self.__class__.__name__
             raise OSError(
-                "{} request returned no data; check URL for invalid "
-                "inputs: {}".format(service, self.url)
+                "{} request returned no data; check URL for invalid inputs: {}".format(
+                    service, self.url
+                )
             )
         if isinstance(text, bytes):
             text = text.decode("windows-1251")

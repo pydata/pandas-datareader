@@ -35,13 +35,13 @@ class TestFred:
         start = datetime(2010, 1, 1)
         end = datetime(2013, 1, 27)
         df = web.DataReader("DFII5", "fred", start, end)
-        assert pd.isnull(df.loc["2010-01-01"][0])
+        assert pd.isnull(df.loc["2010-01-01"].iloc[0])
 
     def test_fred_parts(self):  # pragma: no cover
         start = datetime(2010, 1, 1)
         end = datetime(2013, 1, 27)
         df = web.get_data_fred("CPIAUCSL", start, end)
-        assert df.loc["2010-05-01"][0] == 217.29
+        assert df.loc["2010-05-01"].iloc[0] == 217.29
 
         t = df.CPIAUCSL.values
         assert np.issubdtype(t.dtype, np.floating)

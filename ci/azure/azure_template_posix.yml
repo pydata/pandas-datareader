@@ -16,19 +16,19 @@ jobs:
     vmImage: ${{ parameters.vmImage }}
   strategy:
     matrix:
-      python38_legacy:
-        python.version: '3.8'
-        PANDAS: 1.5.3
       python39_legacy:
         python.version: '3.9'
         PANDAS: 1.5.3
-      python310_recent:
+      python310_legacy:
         python.version: '3.9'
         PANDAS: 2.0.3
       python311_latest:
         python.version: '3.11'
+        PANDAS: 2.1.4
       python312_latest:
         python.version: '3.12'
+      python313_latest:
+        python.version: '3.13'
 
   steps:
   - task: UsePythonVersion@0
