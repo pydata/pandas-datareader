@@ -6,7 +6,7 @@ from zipfile import ZipFile
 from pandas import read_csv, to_datetime
 
 from pandas_datareader.base import _BaseReader
-from pandas_datareader.compat import StringIO
+from pandas_datareader.compat import PYTHON_LT_3_10, StringIO
 
 _URL = "http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/"
 _URL_PREFIX = "ftp/"
@@ -87,7 +87,8 @@ class FamaFrenchReader(_BaseReader):
             else:
                 c = ["Count"]
             r = list(range(0, 105, 5))
-            params["names"] = ["Date"] + c + list(zip(r, r[1:], strict=False))
+            kwargs = {} if PYTHON_LT_3_10 else {"strict": False}
+            params["names"] = ["Date"] + c + list(zip(r, r[1:], **kwargs))
 
             if self.symbols != "Prior_2-12_Breakpoints":
                 params["skiprows"] = 1

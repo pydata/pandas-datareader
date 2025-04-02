@@ -1,4 +1,5 @@
 from io import StringIO
+import sys
 from urllib.error import HTTPError
 
 from pandas.api.types import is_list_like, is_number
@@ -12,7 +13,7 @@ __all__ = [
     "assert_frame_equal",
     "is_list_like",
     "is_number",
-    "reduce",
+    "PYTHON_LT_3_10",
 ]
 
 
@@ -31,3 +32,6 @@ def get_filepath_or_buffer(filepath_or_buffer, encoding=None, compression=None):
             filepath_or_buffer, encoding=encoding, compression=None
         )
         return tmp
+
+
+PYTHON_LT_3_10 = sys.version_info <= (3, 10)
