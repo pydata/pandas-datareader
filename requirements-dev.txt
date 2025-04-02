@@ -5,7 +5,7 @@ coverage
 codecov
 coveralls
 flake8
-pytest
+pytest>=7.3.0,<8
 pytest-xdist
 pytest-cov
 wrapt
