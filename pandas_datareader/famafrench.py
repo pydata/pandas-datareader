@@ -87,8 +87,12 @@ class FamaFrenchReader(_BaseReader):
             else:
                 c = ["Count"]
             r = list(range(0, 105, 5))
-            kwargs = {} if PYTHON_LT_3_10 else {"strict": False}
-            params["names"] = ["Date"] + c + list(zip(r, r[1:], **kwargs))
+
+            if PYTHON_LT_3_10:
+                additional_params = list(zip(r, r[1:]))  # noqa: B905
+            else:
+                additional_params = list(zip(r, r[1:], strict=False))
+            params["names"] = ["Date"] + c + additional_params
 
             if self.symbols != "Prior_2-12_Breakpoints":
                 params["skiprows"] = 1
