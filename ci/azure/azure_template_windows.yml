@@ -68,8 +68,8 @@ jobs:
 
   - script: |
       echo "Testing editable install"
-      echo pytest -m "${PYTEST_PATTERN}" --junitxml=junit/test-results.xml -n auto --durations=25 pandas_datareader/tests
-      pytest -m "${PYTEST_PATTERN}" --junitxml=junit/test-results.xml -n auto --durations=25 pandas_datareader/tests
+      echo pytest --durations=25 pandas_datareader/tests
+      pytest --durations=25 pandas_datareader/tests
     displayName: 'Run tests'
 
   - task: PublishTestResults@2
