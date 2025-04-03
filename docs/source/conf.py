@@ -68,10 +68,10 @@ author = "The PyData Development Team"
 #
 # The short X.Y version.
 version = pdr.__version__.split("+")[0]
+
 if "+" in pdr.__version__:
-    commit = pdr.__version__.split("+")[1]
-    commits_since_tag, commit_hash = commit.split(".")[:2]
-    commit_hash = commit_hash[1:]
+    commit = pdr.__version__.split("dev")[1]
+    commits_since_tag, commit_hash = commit.split("+")
     commit = " (+" + commits_since_tag + ", " + commit_hash + ")"
     version += commit
 # The full version, including alpha/beta/rc tags.
@@ -204,6 +204,6 @@ intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
 
 
 extlinks = {
-    "issue": ("https://github.com/pydata/pandas-datareader/issues/%s", "GH"),
-    "wiki": ("https://github.com/pydata/pandas-datareader/wiki/%s", "wiki "),
+    "issue": ("https://github.com/pydata/pandas-datareader/issues/%s", "GH %s"),
+    "wiki": ("https://github.com/pydata/pandas-datareader/wiki/%s", "wiki %s"),
 }
