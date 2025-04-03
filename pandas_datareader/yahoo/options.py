@@ -66,7 +66,6 @@ class Options(_OptionBaseReader):
 
     def get_options_data(self, month=None, year=None, expiry=None):
         """
-        ***Experimental***
         Gets call/put data for the stock with the expiration data in the
         given month and year
 
@@ -184,7 +183,6 @@ class Options(_OptionBaseReader):
 
     def get_call_data(self, month=None, year=None, expiry=None):
         """
-        ***Experimental***
         Gets call/put data for the stock with the expiration data in the
         given month and year
 
@@ -254,7 +252,6 @@ class Options(_OptionBaseReader):
 
     def get_put_data(self, month=None, year=None, expiry=None):
         """
-        ***Experimental***
         Gets put data for the stock with the expiration data in the
         given month and year
 
@@ -328,7 +325,6 @@ class Options(_OptionBaseReader):
         self, above_below=2, call=True, put=False, month=None, year=None, expiry=None
     ):
         """
-        ***Experimental***
         Returns a DataFrame of options that are near the current stock price.
 
         Parameters
@@ -506,7 +502,6 @@ class Options(_OptionBaseReader):
         self, months, call=True, put=False, near=False, above_below=2
     ):  # pragma: no cover
         """
-        ***Experimental***
         Gets either call, put, or both data for months starting in the current
         month and going out in the future a specified amount of time.
 
@@ -573,7 +568,6 @@ class Options(_OptionBaseReader):
 
     def get_all_data(self, call=True, put=True):
         """
-        ***Experimental***
         Gets either call, put, or both data for all available months starting
         in the current month.
 

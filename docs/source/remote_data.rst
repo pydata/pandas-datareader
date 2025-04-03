@@ -25,25 +25,33 @@ Remote Data Access
 
 Functions from :mod:`pandas_datareader.data` and :mod:`pandas_datareader.wb`
 extract data from various Internet sources into a pandas DataFrame.
-Currently the following sources are supported:
+Currently the following sources are supported and tested:
 
-    - :ref:`Alpha Vantage<remote_data.alphavantage>`
-    - :ref:`Econdb<remote_data.econdb>`
-    - :ref:`Enigma<remote_data.enigma>`
-    - :ref:`Eurostat<remote_data.eurostat>`
-    - :ref:`IEX<remote_data.iex>`
+    - :ref:`St.Louis FED (FRED)<remote_data.fred>`
     - :ref:`Kenneth French's data library<remote_data.ff>`
+    - :ref:`Stooq<remote_data.stooq>`
+    - :ref:`Enigma<remote_data.enigma>`
     - :ref:`MOEX<remote_data.moex>`
     - :ref:`Nasdaq Trader symbol definitions<remote_data.nasdaq_symbols>`
     - :ref:`Naver Finance<remote_data.naver>`
-    - :ref:`OECD<remote_data.oecd>`
+
+
+The following sources may not be working since they require an API key for testing:
+
+    - :ref:`Alpha Vantage<remote_data.alphavantage>`
     - :ref:`Quandl<remote_data.quandl>`
-    - :ref:`St.Louis FED (FRED)<remote_data.fred>`
-    - :ref:`Stooq<remote_data.stooq>`
-    - :ref:`Thrift Savings Plan<remote_data.tsp>`
     - :ref:`Tiingo<remote_data.tiingo>`
-    - :ref:`World Bank<remote_data.wb>`
+    - :ref:`IEX<remote_data.iex>`
+
+The following sources have been previously supported but are fully working in the current version:
+
     - :ref:`Yahoo Finance<remote_data.yahoo>`
+    - :ref:`Eurostat<remote_data.eurostat>`
+    - :ref:`OECD<remote_data.oecd>`
+    - :ref:`Econdb<remote_data.econdb>`
+    - :ref:`World Bank<remote_data.wb>`
+    - :ref:`Thrift Savings Plan<remote_data.tsp>`
+
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
 
@@ -447,6 +455,7 @@ FRED
 ====
 
 .. ipython:: python
+   :okexcept:
 
     import pandas_datareader.data as web
     import datetime
@@ -470,6 +479,7 @@ Access datasets from the `Fama/French Data Library
 The ``get_available_datasets`` function returns a list of all available datasets.
 
 .. ipython:: python
+   :okexcept:
 
     from pandas_datareader.famafrench import get_available_datasets
     import pandas_datareader.data as web
@@ -650,6 +660,11 @@ See docstrings for more info.
 OECD
 ====
 
+.. warning::
+
+    The OECD reader is currently not working. PRs to fix are welcome.
+
+
 `OECD Statistics <http://stats.oecd.org/>`__ are available via ``DataReader``.
 You have to specify OECD's data set code.
 
@@ -658,6 +673,7 @@ example is to download 'Trade Union Density' data which set code is 'TUD'.
 
 
 .. ipython:: python
+   :okexcept:
 
     import pandas_datareader.data as web
     import datetime
@@ -673,6 +689,11 @@ example is to download 'Trade Union Density' data which set code is 'TUD'.
 Eurostat
 ========
 
+.. warning::
+
+    The Eurostat reader is currently not working. PRs to fix are welcome.
+
+
 `Eurostat <http://ec.europa.eu/eurostat/>`__ are available via ``DataReader``.
 
 Get `Rail accidents by type of accident (ERA data) <http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=tran_sf_railac&lang=en>`_ data. The result will be a ``DataFrame`` which has ``DatetimeIndex`` as index and ``MultiIndex`` of attributes or countries as column. The target URL is:
@@ -682,6 +703,7 @@ Get `Rail accidents by type of accident (ERA data) <http://appsso.eurostat.ec.eu
 You can specify dataset ID 'tran_sf_railac' to get corresponding data via ``DataReader``.
 
 .. ipython:: python
+   :okexcept:
 
     import pandas_datareader.data as web
 
@@ -693,9 +715,15 @@ You can specify dataset ID 'tran_sf_railac' to get corresponding data via ``Data
 Thrift Savings Plan (TSP) Fund Data
 ===================================
 
+.. warning::
+
+    The TSP reader is currently not working. PRs to fix are welcome.
+
+
 Download mutual fund index prices for the Thrift Savings Plan (TSP).
 
 .. ipython:: python
+   :okexcept:
 
     import pandas_datareader.tsp as tsp
     tspreader = tsp.TSPReader(start='2015-10-1', end='2015-12-31')
@@ -738,6 +766,7 @@ Stooq Index Data
 Google finance doesn't provide common index data download. The Stooq site has the data for download.
 
 .. ipython:: python
+   :okexcept:
 
     import pandas_datareader.data as web
     f = web.DataReader('^DJI', 'stooq')
@@ -753,6 +782,7 @@ The Moscow Exchange (MOEX) provides historical data.
 ``pandas_datareader.moex.MoexReader(*args).read()``
 
 .. ipython:: python
+   :okexcept:
 
    import pandas_datareader as pdr
    f = pdr.get_data_moex(['USD000UTSTOM', 'MAGN'], '2020-07-02', '2020-07-07')
@@ -772,6 +802,7 @@ Naver Finance Data
 (`KOSPI`_, `KOSDAQ`_) historical data.
 
 .. ipython:: python
+   :okexcept:
 
    import pandas_datareader.data as web
    df = web.DataReader('005930', 'naver', start='2019-09-10', end='2019-10-09')
@@ -784,6 +815,12 @@ Naver Finance Data
 
 Yahoo Finance Data
 ==================
+
+.. warning::
+
+    The Yahoo Finance reader is currently not working. PRs to fix are welcome.
+
+
 Yahoo Finance provides stock market data
 
 The following endpoints are available:
@@ -793,6 +830,7 @@ The following endpoints are available:
 * ``yahoo-dividends`` - retrieve historical dividends
 
 .. ipython:: python
+   :okexcept:
 
    import pandas_datareader.data as web
    import pandas as pd

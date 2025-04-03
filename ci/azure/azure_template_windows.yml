@@ -69,7 +69,7 @@ jobs:
   - script: |
       echo "Testing editable install"
       echo pytest --durations=25 pandas_datareader/tests
-      pytest --durations=25 pandas_datareader/tests
+      pytest --durations=25 --cov-config .coveragerc --cov=pandas_datareader --cov-report xml:coverage.xml --cov-report term --junitxml=junit/test-results.xml pandas_datareader/tests
     displayName: 'Run tests'
 
   - task: PublishTestResults@2

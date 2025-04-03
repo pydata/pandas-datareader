@@ -187,6 +187,7 @@ class TestOECD:
             expected = pd.Series(values, index=index, name=label)
             tm.assert_series_equal(df[label], expected)
 
+    @pytest.mark.xfail(reason="Changes in API need fixes")
     def test_get_tourism(self):
         df = web.DataReader(
             "TOURISM_INBOUND",
