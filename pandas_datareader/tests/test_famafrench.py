@@ -32,8 +32,10 @@ class TestFamaFrench:
 
     def test_index(self):
         ff = web.DataReader("F-F_Research_Data_Factors", "famafrench")
-        assert ff[0].index.freq == "M"
-        assert ff[1].index.freq == "A-DEC"
+        # M is for legacy pandas < 2
+        assert ff[0].index.freq.name in ("ME", "M")
+        # A-DEC is for legacy pandas < 2
+        assert ff[1].index.freq.name in ("YE-DEC", "A-DEC")
 
     def test_f_f_research(self):
         results = web.DataReader(
@@ -49,49 +51,49 @@ class TestFamaFrench:
             {
                 "Mkt-RF": [
                     -3.36,
-                    3.40,
+                    3.4,
                     6.31,
-                    2.00,
+                    2.0,
                     -7.89,
                     -5.57,
                     6.93,
                     -4.77,
                     9.54,
                     3.88,
-                    0.60,
+                    0.6,
                     6.82,
                 ],
                 "SMB": [
-                    0.40,
+                    0.4,
                     1.19,
                     1.48,
                     4.87,
                     0.09,
-                    -1.82,
-                    0.20,
-                    -3.00,
+                    -1.81,
+                    0.2,
+                    -3.0,
                     3.96,
-                    1.14,
-                    3.77,
+                    1.13,
+                    3.76,
                     0.73,
                 ],
                 "HML": [
                     0.43,
-                    3.23,
+                    3.22,
                     2.21,
                     2.89,
                     -2.44,
-                    -4.70,
+                    -4.7,
                     -0.31,
-                    -1.90,
+                    -1.9,
                     -3.16,
-                    -2.43,
+                    -2.42,
                     -0.96,
-                    3.70,
+                    3.69,
                 ],
                 "RF": [
-                    0.00,
-                    0.00,
+                    0.0,
+                    0.0,
                     0.01,
                     0.01,
                     0.01,
@@ -114,7 +116,7 @@ class TestFamaFrench:
 
     def test_me_breakpoints(self):
         results = web.DataReader(
-            "ME_Breakpoints", "famafrench", start="2010-01-01", end="2010-12-01"
+            "ME_Breakpoints", "famafrench", start="2010-01-01", end="2010-12-31"
         )
         assert isinstance(results, dict)
         assert len(results) == 2

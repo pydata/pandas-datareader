@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "pandas-datareader"
 dynamic = ["version", "dependencies", "readme"]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 license = {file = "LICENSE.md"}
 description = "Pandas-compatible data readers. Formerly a component of pandas."
 authors = [
@@ -20,11 +20,11 @@ classifiers =[
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering"
 ]
 
@@ -85,10 +85,11 @@ ignore = ["E203", "E266", "E501", "W503"]
 max-line-length = 88
 max-complexity = 18
 select = ["B","C","E","F","W","T4","B9"]
+exclude = "pandas_datareader/_version.py"
 
 [tool.black]
 target-version = ["py38", "py39", "py310","py311","py312"]
-required-version = "23.10.1"
+required-version = "25.1.0"
 exclude = """
 (
   pandas_datareader/_version.py

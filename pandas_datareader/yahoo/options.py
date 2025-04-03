@@ -479,7 +479,7 @@ class Options(_OptionBaseReader):
                 if expiry.year == year and expiry.month == month
             ]
             if len(expiry) == 0:
-                raise ValueError("No expiries available in {}-{}".format(year, month))
+                raise ValueError(f"No expiries available in {year}-{month}")
 
         return expiry
 

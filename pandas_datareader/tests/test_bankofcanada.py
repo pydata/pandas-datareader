@@ -41,10 +41,15 @@ class TestBankOfCanada:
             date.today() - timedelta(days=30),
             date.today(),
         )
-
-        pairs = zip(
-            (1 / df)[symbol].tolist(), df_i[symbol_inverted].tolist(), strict=True
-        )
+        try:
+            pairs = zip(
+                (1 / df)[symbol].tolist(), df_i[symbol_inverted].tolist(), strict=True
+            )
+        except TypeError:
+            # Python 3.9 only
+            pairs = zip(  # noqa: B905
+                (1 / df)[symbol].tolist(), df_i[symbol_inverted].tolist()
+            )
         assert all(a - b < 0.01 for a, b in pairs)
 
     def test_bankofcanada_usd_count(self):

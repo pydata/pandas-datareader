@@ -520,7 +520,6 @@ country_codes = [
 
 
 class WorldBankReader(_BaseReader):
-
     """
     Download data series from the World Bank's World Development Indicators
 

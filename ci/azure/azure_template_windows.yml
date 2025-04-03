@@ -7,7 +7,6 @@ parameters:
   # defaults for any parameters that are not specified
   name: ''
   vmImage: ''
-  coverage: true
 
 jobs:
 
@@ -16,19 +15,21 @@ jobs:
     vmImage: ${{ parameters.vmImage }}
   strategy:
     matrix:
-      python38_legacy:
-        python.version: '3.8'
-        PANDAS: 1.5.3
       python39_legecy:
         python.version: '3.9'
         PANDAS: 1.5.3
+        NUMPY: 1.23.4
       python310_recent:
         python.version: '3.10'
-        PANDAS: 2.0.3
+        NUMPY: 1.24.4
       python311_latest:
         python.version: '3.11'
+        PANDAS: 2.1.4
+        NUMPY: 1.26.4
       python312_latest:
         python.version: '3.12'
+      python313_latest:
+        python.version: '3.13'
 
   steps:
   - task: UsePythonVersion@0
@@ -44,10 +45,13 @@ jobs:
     displayName: 'Install dependencies'
 
   - powershell: |
-      if ($null -ne $env:PANDAS) {
-        python -m pip install pandas==${PANDAS}
+      if ($null -ne $env:NUMPY) {
+        python -m pip install numpy==$env:NUMPY
       }
-    displayName: 'Update pandas (if needed)'
+      if ($null -ne $env:PANDAS) {
+        python -m pip install pandas==$env:PANDAS
+      }
+    displayName: 'Update numpy and pandas (if needed)'
 
   - script: |
       python -m pip install -e . -vv
@@ -64,11 +68,8 @@ jobs:
 
   - script: |
       echo "Testing editable install"
-      if [[ ${COVERAGE} == "true" ]]; then
-        export COVERAGE_OPTS="--cov-config .coveragerc --cov=pandas_datareader --cov-report xml:coverage.xml --cov-report term"
-      fi
-      echo pytest -m "${PYTEST_PATTERN}" --junitxml=junit/test-results.xml -n auto --durations=25 ${COVERAGE_OPTS} pandas_datareader/tests
-      pytest -m "${PYTEST_PATTERN}" --junitxml=junit/test-results.xml -n auto --durations=25 ${COVERAGE_OPTS} pandas_datareader/tests
+      echo pytest --durations=25 pandas_datareader/tests
+      pytest --durations=25 pandas_datareader/tests
     displayName: 'Run tests'
 
   - task: PublishTestResults@2
@@ -76,13 +77,3 @@ jobs:
       testResultsFiles: '**/test-results.xml'
       testRunTitle: 'Python $(python.version)'
     condition: succeededOrFailed()
-
-  - task: PublishCodeCoverageResults@1
-    inputs:
-      codeCoverageTool: Cobertura
-      summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
-    condition: eq(variables['coverage'], 'true')
-
-  - bash: bash <(curl -s https://codecov.io/bash)
-    displayName: 'CodeCov upload'
-    condition: eq(variables['coverage'], 'true')

@@ -6,7 +6,7 @@ from zipfile import ZipFile
 from pandas import read_csv, to_datetime
 
 from pandas_datareader.base import _BaseReader
-from pandas_datareader.compat import StringIO
+from pandas_datareader.compat import PYTHON_LT_3_10, StringIO
 
 _URL = "http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/"
 _URL_PREFIX = "ftp/"
@@ -57,7 +57,7 @@ class FamaFrenchReader(_BaseReader):
         with tempfile.TemporaryFile() as tmpf:
             tmpf.write(raw)
             with ZipFile(tmpf, "r") as zf:
-                try:                
+                try:
                     data = zf.open(zf.namelist()[0]).read().decode("utf-8", "ignore")
                 except UnicodeDecodeError:
                     data = zf.open(zf.namelist()[0]).read().decode(encoding="cp1252")
@@ -78,8 +78,6 @@ class FamaFrenchReader(_BaseReader):
     def _read_one_data(self, url, params):
         params = {
             "index_col": 0,
-            "parse_dates": [0],
-            "date_parser": _parse_date_famafrench,
         }
 
         # headers in these files are not valid
@@ -89,7 +87,12 @@ class FamaFrenchReader(_BaseReader):
             else:
                 c = ["Count"]
             r = list(range(0, 105, 5))
-            params["names"] = ["Date"] + c + list(zip(r, r[1:], strict=False))
+
+            if PYTHON_LT_3_10:
+                additional_params = list(zip(r, r[1:]))  # noqa: B905
+            else:
+                additional_params = list(zip(r, r[1:], strict=False))
+            params["names"] = ["Date"] + c + additional_params
 
             if self.symbols != "Prior_2-12_Breakpoints":
                 params["skiprows"] = 1
@@ -111,12 +114,14 @@ class FamaFrenchReader(_BaseReader):
             start = 0 if not match else match.start()
 
             df = read_csv(StringIO("Date" + src[start:]), **params)
-            try:
-                idx_name = df.index.name  # hack for pandas 0.16.2
-                df = df.to_period(df.index.inferred_freq[:1])
-                df.index.name = idx_name
-            except Exception:
-                pass
+            if df.index.min() > 190000:
+                df.index = to_datetime(df.index.astype(str), format="%Y%m").to_period(
+                    freq="M"
+                )
+            else:
+                df.index = to_datetime(df.index.astype(str), format="%Y").to_period(
+                    freq="Y"
+                )
             df = df.truncate(self.start, self.end)
             datasets[i] = df
 

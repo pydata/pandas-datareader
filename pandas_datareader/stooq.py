@@ -2,7 +2,6 @@ from pandas_datareader.base import _DailyBaseReader
 
 
 class StooqDailyReader(_DailyBaseReader):
-
     """
     Returns DataFrame/dict of Dataframes of historical stock prices from
     symbols, over date range, start to end.

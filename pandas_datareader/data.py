@@ -683,8 +683,7 @@ def DataReader(
 def Options(symbol, data_source=None, session=None):
     if data_source is None:
         warnings.warn(
-            "Options(symbol) is deprecated, use Options(symbol,"
-            " data_source) instead",
+            "Options(symbol) is deprecated, use Options(symbol, data_source) instead",
             FutureWarning,
             stacklevel=2,
         )

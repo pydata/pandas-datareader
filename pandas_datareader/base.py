@@ -115,8 +115,9 @@ class _BaseReader:
         if len(text) == 0:
             service = self.__class__.__name__
             raise OSError(
-                "{} request returned no data; check URL for invalid "
-                "inputs: {}".format(service, self.url)
+                "{} request returned no data; check URL for invalid inputs: {}".format(
+                    service, self.url
+                )
             )
         if isinstance(text, bytes):
             out.write(text.decode("utf-8"))
