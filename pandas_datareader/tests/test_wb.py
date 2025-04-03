@@ -6,8 +6,6 @@ from pandas import testing as tm
 import pytest
 import requests
 
-from pandas_datareader._testing import skip_on_exception
-from pandas_datareader._utils import RemoteDataError
 from pandas_datareader.wb import (
     WorldBankReader,
     download,
@@ -19,9 +17,8 @@ from pandas_datareader.wb import (
 pytestmark = pytest.mark.stable
 
 
-class TestWB(object):
+class TestWB:
     def test_wdi_search(self):
-
         # Test that a name column exists, and that some results were returned
         # ...without being too strict about what the actual contents of the
         # results actually are.  The fact that there are some, is good enough.
@@ -45,7 +42,6 @@ class TestWB(object):
             assert result.name.str.contains("GDP").any()
 
     def test_wdi_download(self):
-
         # Test a bad indicator with double (US), triple (USA),
         # standard (CA, MX), non standard (KSV),
         # duplicated (US, US, USA), and unknown (BLA) country codes
@@ -64,9 +60,9 @@ class TestWB(object):
             "NY.GDP.PCAP.CD": {
                 ("Canada", "2004"): 32000.0,
                 ("Canada", "2003"): 28000.0,
-                ("Kosovo", "2004"): 2000.0,
-                ("Kosovo", "2003"): 2000.0,
-                ("Mexico", "2004"): 7000.0,
+                ("Kosovo", "2004"): np.nan,
+                ("Kosovo", "2003"): np.nan,
+                ("Mexico", "2004"): 8000.0,
                 ("Mexico", "2003"): 7000.0,
                 ("United States", "2004"): 42000.0,
                 ("United States", "2003"): 39000.0,
@@ -101,20 +97,20 @@ class TestWB(object):
         tm.assert_frame_equal(result, expected)
 
     def test_wdi_download_str(self):
-
         # These are the expected results, rounded (robust against
         # data revisions in the future).
         expected = {
             "NY.GDP.PCAP.CD": {
                 ("Japan", "2004"): 38000.0,
                 ("Japan", "2003"): 35000.0,
-                ("Japan", "2002"): 32000.0,
+                ("Japan", "2002"): 33000.0,
                 ("Japan", "2001"): 34000.0,
                 ("Japan", "2000"): 39000.0,
             }
         }
         expected = pd.DataFrame(expected)
         expected = expected.sort_index()
+        expected.index.names = ("country", "year")
 
         cntry_codes = "JP"
         inds = "NY.GDP.PCAP.CD"
@@ -152,13 +148,13 @@ class TestWB(object):
             result = download(
                 country=cntry_codes, indicator=inds, start=2003, end=2004, errors="warn"
             )
-            assert isinstance(result, pd.DataFrame)
-            assert len(result), 2
+        assert isinstance(result, pd.DataFrame)
+        assert len(result), 2
 
         cntry_codes = ["USA"]
         inds = ["NY.GDP.PCAP.CD", "BAD_INDICATOR"]
 
-        msg = "The provided parameter value is not valid\\. " "Indicator: BAD_INDICATOR"
+        msg = "The provided parameter value is not valid\\. Indicator: BAD_INDICATOR"
         with pytest.raises(ValueError, match=msg):
             download(
                 country=cntry_codes,
@@ -172,11 +168,10 @@ class TestWB(object):
             result = download(
                 country=cntry_codes, indicator=inds, start=2003, end=2004, errors="warn"
             )
-            assert isinstance(result, pd.DataFrame)
-            assert len(result) == 2
+        assert isinstance(result, pd.DataFrame)
+        assert len(result) == 2
 
     def test_wdi_download_w_retired_indicator(self):
-
         cntry_codes = ["CA", "MX", "US"]
         # Despite showing up in the search feature, and being listed online,
         # the api calls to GDPPCKD don't work in their own query builder, nor
@@ -192,7 +187,7 @@ class TestWB(object):
         inds = ["GDPPCKD"]
 
         with pytest.raises(ValueError):
-            result = download(
+            download(
                 country=cntry_codes,
                 indicator=inds,
                 start=2003,
@@ -200,34 +195,18 @@ class TestWB(object):
                 errors="ignore",
             )
 
-            # If it ever gets here, it means WB unretired the indicator.
-            # even if they dropped it completely, it would still
-            # get caught above
-            # or the WB API changed somehow in a really
-            # unexpected way.
-            if len(result) > 0:  # pragma: no cover
-                pytest.skip("Invalid results")
-
     def test_wdi_download_w_crash_inducing_countrycode(self):
-
         cntry_codes = ["CA", "MX", "US", "XXX"]
         inds = ["NY.GDP.PCAP.CD"]
 
         with pytest.raises(ValueError):
-            result = download(
+            download(
                 country=cntry_codes,
                 indicator=inds,
                 start=2003,
                 end=2004,
                 errors="ignore",
             )
-
-            # If it ever gets here, it means the country code XXX
-            # got used by WB
-            # or the WB API changed somehow in a really
-            # unexpected way.
-            if len(result) > 0:  # pragma: no cover
-                pytest.skip("Invalid results")
 
     def test_wdi_get_countries(self):
         result1 = get_countries()
@@ -267,7 +246,7 @@ class TestWB(object):
             assert sorted(result.columns) == sorted(exp_col)
             assert len(result) > 10000
 
-    @skip_on_exception(RemoteDataError)
+    @pytest.mark.xfail(reason="World Bank API changed, no data returned")
     def test_wdi_download_monthly(self):
         expected = {
             "COPPER": {

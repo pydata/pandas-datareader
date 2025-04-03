@@ -15,7 +15,7 @@ pytestmark = [
 ]
 
 
-class TestAlphaVantageForex(object):
+class TestAlphaVantageForex:
     @classmethod
     def setup_class(cls):
         pytest.importorskip("lxml")

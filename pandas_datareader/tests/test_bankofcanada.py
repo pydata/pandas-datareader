@@ -8,13 +8,13 @@ from pandas_datareader._utils import RemoteDataError
 pytestmark = pytest.mark.stable
 
 
-class TestBankOfCanada(object):
+class TestBankOfCanada:
     @staticmethod
     def get_symbol(currency_code, inverted=False):
         if inverted:
-            return "FXCAD{}".format(currency_code)
+            return f"FXCAD{currency_code}"
         else:
-            return "FX{}CAD".format(currency_code)
+            return f"FX{currency_code}CAD"
 
     def check_bankofcanada_count(self, code):
         start, end = date.today() - timedelta(days=30), date.today()
@@ -42,7 +42,9 @@ class TestBankOfCanada(object):
             date.today(),
         )
 
-        pairs = zip((1 / df)[symbol].tolist(), df_i[symbol_inverted].tolist())
+        pairs = zip(
+            (1 / df)[symbol].tolist(), df_i[symbol_inverted].tolist(), strict=True
+        )
         assert all(a - b < 0.01 for a, b in pairs)
 
     def test_bankofcanada_usd_count(self):

@@ -1,13 +1,14 @@
 import os
 import sys
 
-from ._version import get_versions
+from ._version import __version__
 from .data import (
     DataReader,
     Options,
     get_components_yahoo,
     get_dailysummary_iex,
     get_data_alphavantage,
+    get_data_econdb,
     get_data_enigma,
     get_data_famafrench,
     get_data_fred,
@@ -32,12 +33,10 @@ from .data import (
 
 PKG = os.path.dirname(__file__)
 
-__version__ = get_versions()["version"]
-del get_versions
-
 __all__ = [
     "__version__",
     "get_components_yahoo",
+    "get_data_econdb",
     "get_data_enigma",
     "get_data_famafrench",
     "get_data_yahoo",

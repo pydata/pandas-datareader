@@ -1,9 +1,10 @@
 import datetime as dt
+from io import StringIO
 
 import pandas as pd
 
 from pandas_datareader.base import _DailyBaseReader
-from pandas_datareader.compat import StringIO, binary_type, concat, is_list_like
+from pandas_datareader.compat import is_list_like
 
 
 class MoexReader(_DailyBaseReader):
@@ -27,7 +28,7 @@ class MoexReader(_DailyBaseReader):
         Time, in seconds, to pause between consecutive queries of chunks. If
         single value given for symbol, represents the pause between retries.
     chunksize : int, default 25
-        The number of symbols to download consecutively before intiating pause.
+        The number of symbols to download consecutively before initiating pause.
     session : Session, default None
         requests.sessions.Session instance to be used
 
@@ -38,7 +39,7 @@ class MoexReader(_DailyBaseReader):
     """
 
     def __init__(self, *args, **kwargs):
-        super(MoexReader, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.start = self.start.date()
         self.end_dt = self.end
         self.end = self.end.date()
@@ -104,11 +105,11 @@ class MoexReader(_DailyBaseReader):
             text = self._sanitize_response(response)
             if len(text) == 0:
                 service = self.__class__.__name__
-                raise IOError(
+                raise OSError(
                     "{} request returned no data; check URL for invalid "
                     "inputs: {}".format(service, self.__url_metadata)
                 )
-            if isinstance(text, binary_type):
+            if isinstance(text, bytes):
                 text = text.decode("windows-1251")
 
             header_str = "secid;boardid;"
@@ -132,7 +133,7 @@ class MoexReader(_DailyBaseReader):
                         boards[symbol_U] = fields[1]
 
             if symbol not in markets_n_engines:
-                raise IOError(
+                raise OSError(
                     "{} request returned no metadata: {}\n"
                     "Typo in the security symbol `{}`?".format(
                         self.__class__.__name__,
@@ -195,12 +196,12 @@ class MoexReader(_DailyBaseReader):
             self.close()
 
         if len(dfs) == 0:
-            raise IOError(
+            raise OSError(
                 "{} returned no data; "
                 "check URL or correct a date".format(self.__class__.__name__)
             )
         elif len(dfs) > 1:
-            b = concat(dfs, axis=0, join="outer", sort=True)
+            b = pd.concat(dfs, axis=0, join="outer", sort=True)
         else:
             b = dfs[0]
         return b
@@ -209,10 +210,11 @@ class MoexReader(_DailyBaseReader):
         """Read data from the primary board for each ticker"""
         markets_n_engines, boards = self._get_metadata()
         b = self.read_all_boards()
-        result = pd.DataFrame()
+        parts = []
         for secid in list(set(b["SECID"].tolist())):
             part = b[b["BOARDID"] == boards[secid]]
-            result = result.append(part)
+            parts.append(part)
+        result = pd.concat(parts, axis=0)
         result = result.drop_duplicates()
         return result
 
@@ -223,11 +225,11 @@ class MoexReader(_DailyBaseReader):
         text = self._sanitize_response(response)
         if len(text) == 0:
             service = self.__class__.__name__
-            raise IOError(
+            raise OSError(
                 "{} request returned no data; check URL for invalid "
                 "inputs: {}".format(service, self.url)
             )
-        if isinstance(text, binary_type):
+        if isinstance(text, bytes):
             text = text.decode("windows-1251")
         return text
 

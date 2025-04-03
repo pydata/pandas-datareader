@@ -1,6 +1,5 @@
 # pylint: disable-msg=E1101,W0613,W0603
 
-from __future__ import unicode_literals
 
 from collections import OrderedDict
 import itertools
@@ -31,9 +30,9 @@ def read_jsdmx(path_or_buf):
 
     try:
         import simplejson as json
-    except ImportError:
+    except ImportError as exc:
         if sys.version_info[:2] < (2, 7):
-            raise ImportError("simplejson is required in python 2.6")
+            raise ImportError("simplejson is required in python 2.6") from exc
         import json
 
     if isinstance(jdata, dict):
@@ -69,7 +68,7 @@ def _fix_quarter_values(value):
     if not m:
         return value
     quarter, year = m.groups()
-    value = "%sQ%s" % (quarter, year)
+    value = f"{quarter}Q{year}"
     return value
 
 

@@ -62,7 +62,7 @@ class Options(_OptionBaseReader):
     >>> all_data = aapl.get_all_data()
     """
 
-    _OPTIONS_BASE_URL = "https://query1.finance.yahoo.com/" "v7/finance/options/{sym}"
+    _OPTIONS_BASE_URL = "https://query1.finance.yahoo.com/v7/finance/options/{sym}"
 
     def get_options_data(self, month=None, year=None, expiry=None):
         """
@@ -137,14 +137,15 @@ class Options(_OptionBaseReader):
         ).sort_index()
 
     def _option_from_url(self, url):
-
         jd = self._parse_url(url)
         result = jd["optionChain"]["result"]
         try:
             calls = result["options"]["calls"]
             puts = result["options"]["puts"]
-        except IndexError:
-            raise RemoteDataError("Option json not available " "for url: %s" % url)
+        except IndexError as exc:
+            raise RemoteDataError(
+                "Option json not available for url: %s" % url
+            ) from exc
 
         self.underlying_price = (
             result["quote"]["regularMarketPrice"]
@@ -478,7 +479,7 @@ class Options(_OptionBaseReader):
                 if expiry.year == year and expiry.month == month
             ]
             if len(expiry) == 0:
-                raise ValueError("No expiries available " "in %s-%s" % (year, month))
+                raise ValueError("No expiries available in {}-{}".format(year, month))
 
         return expiry
 
@@ -562,7 +563,7 @@ class Options(_OptionBaseReader):
                       on Yahoo and may change.
 
         """
-        warnings.warn("get_forward_data() is deprecated", FutureWarning)
+        warnings.warn("get_forward_data() is deprecated", FutureWarning, stacklevel=2)
         end_date = dt.date.today() + MonthEnd(months)
         dates = [date for date in self.expiry_dates if date <= end_date.date()]
         data = self._get_data_in_date_range(dates, call=call, put=put)
@@ -620,7 +621,6 @@ class Options(_OptionBaseReader):
         return self._load_data()
 
     def _get_data_in_date_range(self, dates, call=True, put=True):
-
         to_ret = Series({"call": call, "put": put})
         to_ret = to_ret[to_ret].index
 
@@ -706,9 +706,7 @@ class Options(_OptionBaseReader):
         """
         jd = json.loads(self._read_url_as_StringIO(url).read())
         if jd is None:  # pragma: no cover
-            raise RemoteDataError(
-                "Parsed URL {0!r} is not " "a valid json object".format(url)
-            )
+            raise RemoteDataError(f"Parsed URL {url!r} is not a valid json object")
         return jd
 
     def _process_data(self, jd):

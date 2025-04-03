@@ -1,5 +1,3 @@
-from __future__ import division
-
 import json
 import re
 import time
@@ -151,9 +149,9 @@ class YahooDailyReader(_DailyBaseReader):
         try:
             j = json.loads(re.search(ptrn, resp.text, re.DOTALL).group(1))
             data = j["context"]["dispatcher"]["stores"]["HistoricalPriceStore"]
-        except KeyError:
+        except KeyError as exc:
             msg = "No data fetched for symbol {} using {}"
-            raise RemoteDataError(msg.format(symbol, self.__class__.__name__))
+            raise RemoteDataError(msg.format(symbol, self.__class__.__name__)) from exc
 
         # price data
         prices = DataFrame(data["prices"])
@@ -184,7 +182,6 @@ class YahooDailyReader(_DailyBaseReader):
 
         # dividends & splits data
         if self.get_actions and data["eventsData"]:
-
             actions = DataFrame(data["eventsData"])
             actions.columns = [col.capitalize() for col in actions.columns]
             actions["Date"] = to_datetime(

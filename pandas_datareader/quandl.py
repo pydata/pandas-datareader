@@ -35,7 +35,7 @@ class QuandlReader(_DailyBaseReader):
         Time, in seconds, to pause between consecutive queries of chunks. If
         single value given for symbol, represents the pause between retries.
     chunksize : int, default 25
-        Number of symbols to download consecutively before intiating pause.
+        Number of symbols to download consecutively before initiating pause.
     session : Session, default None
         requests.sessions.Session instance to be used
     api_key : str, optional
@@ -56,9 +56,7 @@ class QuandlReader(_DailyBaseReader):
         chunksize=25,
         api_key=None,
     ):
-        super(QuandlReader, self).__init__(
-            symbols, start, end, retry_count, pause, session, chunksize
-        )
+        super().__init__(symbols, start, end, retry_count, pause, session, chunksize)
         if api_key is None:
             api_key = os.getenv("QUANDL_API_KEY")
         if not api_key or not isinstance(api_key, str):
@@ -93,7 +91,7 @@ class QuandlReader(_DailyBaseReader):
             "order": "asc",
             "api_key": self.api_key,
         }
-        paramstring = "&".join(["%s=%s" % (k, v) for k, v in params.items()])
+        paramstring = "&".join([f"{k}={v}" for k, v in params.items()])
         url = "{url}{dataset}/{symbol}.csv?{params}"
         return url.format(
             url=self._BASE_URL, dataset=datasetname, symbol=symbol, params=paramstring
@@ -134,7 +132,7 @@ class QuandlReader(_DailyBaseReader):
 
     def read(self):
         """Read data"""
-        df = super(QuandlReader, self).read()
+        df = super().read()
         df.rename(
             columns=lambda n: n.replace(" ", "")
             .replace(".", "")

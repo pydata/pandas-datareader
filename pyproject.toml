@@ -1,0 +1,96 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm>=8,<9", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pandas-datareader"
+dynamic = ["version", "dependencies", "readme"]
+requires-python = ">=3.8"
+license = {file = "LICENSE.md"}
+description = "Pandas-compatible data readers. Formerly a component of pandas."
+authors = [
+  {name = "The PyData Development Team", email = "pydata@googlegroups.com"},
+]
+classifiers =[
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering"
+]
+
+[project.urls]
+Homepage = "https://pandas.pydata.org"
+Documentation = "https://pandas-datareader.readthedocs.io/en/latest/"
+Repository = "https://github.com/pydata/pandas-datareader.git"
+"Bug Tracker" = "https://github.com/pydata/pandas-datareader/issues"
+
+
+[tool.setuptools]
+package-dir = {"" = "."}
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+readme = {file = ["README.md"], content-type = "text/markdown"}
+
+[tool.setuptools_scm]
+version_file = "pandas_datareader/_version.py"
+
+[tool.isort]
+profile="black"
+known_compat="pandas_datareader.compat.*"
+sections=["FUTURE","COMPAT","STDLIB","THIRDPARTY","FIRSTPARTY","LOCALFOLDER"]
+known_first_party="pandas_datareader"
+known_third_party=["numpy","pandas","pytest","requests"]
+combine_as_imports = true
+force_sort_within_sections = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = ["pandas_datareader"]
+markers = [
+    "stable: mark a test as applying to a stable reader",
+    "requires_api_key: mark a test as requiring an API key",
+    "alpha_vantage: mark a test of the AlphaVantage reader",
+    "quandl: mark a test of the Quandl reader"
+    ]
+filterwarnings =[
+    "ignore:`np.bool` is a deprecated alias:DeprecationWarning:pandas.core.indexes",
+    "ignore:`np.object` is a deprecated alias:DeprecationWarning:pandas.core.indexes",
+    "ignore:`np.float` is a deprecated alias:DeprecationWarning:pandas.core.indexes",
+    "ignore:`np.complex` is a deprecated alias:DeprecationWarning:pandas.core.indexes",
+    "ignore:`np.bool` is a deprecated alias:DeprecationWarning:pandas.core.internals.blocks",
+    "ignore:`np.object` is a deprecated alias:DeprecationWarning:pandas.core.internals.blocks",
+    "ignore:`np.object` is a deprecated alias:DeprecationWarning:pandas.core.internals.construction",
+    "ignore:`np.object` is a deprecated alias:DeprecationWarning:pandas.io.parsers",
+    "ignore:`np.object` is a deprecated alias:DeprecationWarning:pandas.core.dtypes.cast",
+    "ignore:`np.float` is a deprecated alias:DeprecationWarning:pandas.core.internals.blocks",
+    "ignore:`np.complex` is a deprecated alias:DeprecationWarning:pandas.core.internals.blocks",
+    "ignore:Converting `np.inexact` or `np.floating` to a dtype:DeprecationWarning:pandas.core.indexes",
+]
+
+
+[tool.flake8]
+ignore = ["E203", "E266", "E501", "W503"]
+max-line-length = 88
+max-complexity = 18
+select = ["B","C","E","F","W","T4","B9"]
+
+[tool.black]
+target-version = ["py38", "py39", "py310","py311","py312"]
+required-version = "23.10.1"
+exclude = """
+(
+  pandas_datareader/_version.py
+)
+"""

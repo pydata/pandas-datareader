@@ -7,7 +7,6 @@ import pandas as pd
 from pandas import testing as tm
 import pytest
 
-from pandas_datareader.compat import PANDAS_0210
 from pandas_datareader.io import read_jsdmx
 
 pytestmark = pytest.mark.stable
@@ -18,7 +17,6 @@ def dirpath(datapath):
     return datapath("io", "data")
 
 
-@pytest.mark.skipif(not PANDAS_0210, reason="Broken on old pandas")
 def test_tourism(dirpath):
     # OECD -> Industry and Services -> Inbound Tourism
     result = read_jsdmx(os.path.join(dirpath, "jsdmx", "tourism.json"))
@@ -74,7 +72,6 @@ def test_tourism(dirpath):
     tm.assert_frame_equal(jp[visitors], expected)
 
 
-@pytest.mark.skipif(not PANDAS_0210, reason="Broken on old pandas")
 def test_land_use(dirpath):
     # OECD -> Environment -> Resources Land Use
     result = read_jsdmx(os.path.join(dirpath, "jsdmx", "land_use.json"))
@@ -148,7 +145,6 @@ def test_land_use(dirpath):
     tm.assert_frame_equal(result[exp_col], expected)
 
 
-@pytest.mark.skipif(not PANDAS_0210, reason="Broken on old pandas")
 def test_quartervalue(dirpath):
     # https://stats.oecd.org/sdmx-json/data/QNA/AUS+AUT+BEL+CAN+CHL.GDP+B1_
     #    GE.CUR+VOBARSA.Q/all?startTime=2009-Q1&endTime=2011-Q4
@@ -170,7 +166,7 @@ def test_quartervalue(dirpath):
             "2011-10-01",
         ],
         dtype="datetime64[ns]",
-        name=u"Period",
+        name="Period",
         freq=None,
     )
     tm.assert_index_equal(result.index, expected)

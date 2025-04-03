@@ -41,15 +41,17 @@ def _download_nasdaq_symbols(timeout):
         ftp_session = FTP(_NASDAQ_FTP_SERVER, timeout=timeout)
         ftp_session.login()
     except all_errors as err:
-        raise RemoteDataError("Error connecting to %r: %s" % (_NASDAQ_FTP_SERVER, err))
+        raise RemoteDataError(
+            f"Error connecting to {_NASDAQ_FTP_SERVER!r}: {err}"
+        ) from err
 
     lines = []
     try:
         ftp_session.retrlines("RETR " + _NASDAQ_TICKER_LOC, lines.append)
     except all_errors as err:
         raise RemoteDataError(
-            "Error downloading from %r: %s" % (_NASDAQ_FTP_SERVER, err)
-        )
+            f"Error downloading from {_NASDAQ_FTP_SERVER!r}: {err}"
+        ) from err
     finally:
         ftp_session.close()
 
@@ -58,9 +60,7 @@ def _download_nasdaq_symbols(timeout):
         raise RemoteDataError("Missing expected footer. Found %r" % lines[-1])
 
     # Convert Y/N to True/False.
-    converter_map = dict(
-        (col, _bool_converter) for col, t in _TICKER_DTYPE if t is bool
-    )
+    converter_map = {col: _bool_converter for col, t in _TICKER_DTYPE if t is bool}
 
     # For pandas >= 0.20.0, the Python parser issues a warning if
     # both a converter and dtype are specified for the same column.
@@ -69,7 +69,7 @@ def _download_nasdaq_symbols(timeout):
     with warnings.catch_warnings(record=True):
         data = read_csv(
             StringIO("\n".join(lines[:-1])),
-            "|",
+            sep="|",
             dtype=_TICKER_DTYPE,
             converters=converter_map,
             index_col=1,
@@ -94,12 +94,12 @@ def get_nasdaq_symbols(retry_count=3, timeout=30, pause=None):
     global _ticker_cache
 
     if timeout < 0:
-        raise ValueError("timeout must be >= 0, not %r" % (timeout,))
+        raise ValueError(f"timeout must be >= 0, not {timeout!r}")
 
     if pause is None:
         pause = timeout / 3
     elif pause < 0:
-        raise ValueError("pause must be >= 0, not %r" % (pause,))
+        raise ValueError(f"pause must be >= 0, not {pause!r}")
 
     if _ticker_cache is None:
         while retry_count > 0:

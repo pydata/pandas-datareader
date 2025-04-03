@@ -21,7 +21,7 @@ class FredReader(_BaseReader):
         -------
         data : DataFrame
             If multiple names are passed for "series" then the index of the
-            DataFrame is the outer join of the indicies of each series.
+            DataFrame is the outer join of the indices of each series.
         """
         try:
             return self._read()
@@ -34,10 +34,10 @@ class FredReader(_BaseReader):
         else:
             names = self.symbols
 
-        urls = ["{}?id={}".format(self.url, n) for n in names]
+        urls = [f"{self.url}?id={n}" for n in names]
 
         def fetch_data(url, name):
-            """Utillity to fetch data"""
+            """Utility to fetch data"""
             resp = self._read_url_as_StringIO(url)
             data = read_csv(
                 resp,
@@ -50,15 +50,17 @@ class FredReader(_BaseReader):
             )
             try:
                 return data.truncate(self.start, self.end)
-            except KeyError:  # pragma: no cover
+            except KeyError as exc:  # pragma: no cover
                 if data.iloc[3].name[7:12] == "Error":
-                    raise IOError(
+                    raise OSError(
                         "Failed to get the data. Check that "
-                        "{0!r} is a valid FRED series.".format(name)
-                    )
+                        "{!r} is a valid FRED series.".format(name)
+                    ) from exc
                 raise
 
         df = concat(
-            [fetch_data(url, n) for url, n in zip(urls, names)], axis=1, join="outer"
+            [fetch_data(url, n) for url, n in zip(urls, names, strict=True)],
+            axis=1,
+            join="outer",
         )
         return df

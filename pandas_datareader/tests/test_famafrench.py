@@ -9,7 +9,7 @@ from pandas_datareader.famafrench import get_available_datasets
 pytestmark = pytest.mark.stable
 
 
-class TestFamaFrench(object):
+class TestFamaFrench:
     def test_get_data(self):
         keys = [
             "F-F_Research_Data_Factors",
@@ -62,32 +62,32 @@ class TestFamaFrench(object):
                     6.82,
                 ],
                 "SMB": [
-                    0.37,
+                    0.40,
                     1.19,
-                    1.44,
-                    4.86,
-                    0.14,
-                    -1.84,
-                    0.18,
-                    -3.02,
-                    3.93,
-                    1.07,
-                    3.78,
-                    0.68,
+                    1.48,
+                    4.87,
+                    0.09,
+                    -1.82,
+                    0.20,
+                    -3.00,
+                    3.96,
+                    1.14,
+                    3.77,
+                    0.73,
                 ],
                 "HML": [
-                    0.33,
-                    3.19,
-                    2.11,
-                    2.91,
-                    -2.39,
-                    -4.52,
-                    -0.36,
+                    0.43,
+                    3.23,
+                    2.21,
+                    2.89,
+                    -2.44,
+                    -4.70,
+                    -0.31,
                     -1.90,
-                    -3.23,
-                    -2.46,
-                    -0.95,
-                    3.64,
+                    -3.16,
+                    -2.43,
+                    -0.96,
+                    3.70,
                 ],
                 "RF": [
                     0.00,

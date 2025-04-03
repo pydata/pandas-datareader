@@ -17,7 +17,7 @@ pytestmark = [
 ]
 
 
-class TestQuandl(object):
+class TestQuandl:
     # we test data from 10 years back where possible, 2 years otherwise, or...
     start10 = "2007-01-01"  # over ten years back
     end10 = "2007-01-05"

@@ -13,18 +13,16 @@ trigger:
 
 variables:
   PYTHONHASHSEED: 12345678
-  SETUPTOOLS_USE_DISTUTILS: "stdlib"
   coverage: true
-  RANDOMGEN_CYTHON_COVERAGE: true
 
 jobs:
     
 - template: ci/azure/azure_template_posix.yml
   parameters:
     name: Linux
-    vmImage: ubuntu-20.04
+    vmImage: ubuntu-latest
 
 - template: ci/azure/azure_template_windows.yml
   parameters:
     name: Windows
-    vmImage: windows-2019
+    vmImage: windows-latest

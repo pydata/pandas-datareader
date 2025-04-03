@@ -129,7 +129,7 @@ class TiingoIEXHistoricalReader(_BaseReader):
                 dfs.append(self._read_one_data(self.url, self.params))
             finally:
                 self.close()
-        return pd.concat(dfs, self._concat_axis)
+        return pd.concat(dfs, axis=self._concat_axis)
 
 
 class TiingoDailyReader(_BaseReader):
@@ -171,7 +171,7 @@ class TiingoDailyReader(_BaseReader):
         freq=None,
         api_key=None,
     ):
-        super(TiingoDailyReader, self).__init__(
+        super().__init__(
             symbols, start, end, retry_count, pause, timeout, session, freq
         )
         if isinstance(self.symbols, str):
@@ -231,7 +231,7 @@ class TiingoDailyReader(_BaseReader):
                 dfs.append(self._read_one_data(self.url, self.params))
             finally:
                 self.close()
-        return pd.concat(dfs, self._concat_axis)
+        return pd.concat(dfs, axis=self._concat_axis)
 
 
 class TiingoMetaDataReader(TiingoDailyReader):
@@ -271,7 +271,7 @@ class TiingoMetaDataReader(TiingoDailyReader):
         freq=None,
         api_key=None,
     ):
-        super(TiingoMetaDataReader, self).__init__(
+        super().__init__(
             symbols, start, end, retry_count, pause, timeout, session, freq, api_key
         )
         self._concat_axis = 1

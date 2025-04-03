@@ -6,7 +6,7 @@ from pandas_datareader import data as web
 pytestmark = pytest.mark.stable
 
 
-class TestMoex(object):
+class TestMoex:
     def test_moex_datareader(self):
         try:
             df = web.DataReader(

@@ -56,7 +56,7 @@ class TSPReader(_BaseReader):
         pause=0.1,
         session=None,
     ):
-        super(TSPReader, self).__init__(
+        super().__init__(
             symbols=symbols,
             start=start,
             end=end,
@@ -73,7 +73,7 @@ class TSPReader(_BaseReader):
 
     def read(self):
         """read one data from specified URL"""
-        df = super(TSPReader, self).read()
+        df = super().read()
         df.columns = map(lambda x: x.strip(), df.columns)
         df.drop(columns=self.all_symbols - set(self.symbols), inplace=True)
         return df

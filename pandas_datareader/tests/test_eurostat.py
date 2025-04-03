@@ -8,7 +8,7 @@ from pandas_datareader import data as web
 pytestmark = pytest.mark.stable
 
 
-class TestEurostat(object):
+class TestEurostat:
     def test_get_ert_h_eur_a(self):
         # Former euro area national currencies vs. euro/ECU
         # annual data (ert_h_eur_a)

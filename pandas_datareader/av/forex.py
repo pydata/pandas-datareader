@@ -30,8 +30,7 @@ class AVForexReader(AlphaVantage):
     def __init__(
         self, symbols=None, retry_count=3, pause=0.1, session=None, api_key=None
     ):
-
-        super(AVForexReader, self).__init__(
+        super().__init__(
             symbols=symbols,
             start=None,
             end=None,
@@ -57,7 +56,7 @@ class AVForexReader(AlphaVantage):
                 "Please input a currency pair "
                 "formatted 'FROM/TO' or a list of "
                 "currency symbols"
-            )
+            ) from e
 
     @property
     def function(self):
@@ -80,7 +79,7 @@ class AVForexReader(AlphaVantage):
                 "from_currency": self.from_curr[pair],
                 "to_currency": self.to_curr[pair],
             }
-            data = super(AVForexReader, self).read()
+            data = super().read()
             result.append(data)
         df = pd.concat(result, axis=1)
         df.columns = self.symbols
@@ -89,8 +88,8 @@ class AVForexReader(AlphaVantage):
     def _read_lines(self, out):
         try:
             df = pd.DataFrame.from_dict(out[self.data_key], orient="index")
-        except KeyError:
-            raise RemoteDataError()
+        except KeyError as exc:
+            raise RemoteDataError() from exc
         df.sort_index(ascending=True, inplace=True)
         df.index = [id[3:] for id in df.index]
         return df

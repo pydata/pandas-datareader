@@ -18,7 +18,6 @@ def aapl():
 
 @pytest.fixture
 def month():
-
     # AAPL has monthlies
     today = datetime.today()
     month = today.month + 1
@@ -31,7 +30,6 @@ def month():
 
 @pytest.fixture
 def year():
-
     # AAPL has monthlies
     today = datetime.today()
     year = today.year
@@ -68,7 +66,7 @@ def data1(aapl, json1):
     return aapl._process_data(aapl._parse_url(json1))
 
 
-class TestYahooOptions(object):
+class TestYahooOptions:
     @classmethod
     def setup_class(cls):
         pytest.skip("Skip all Yahoo! tests.")
@@ -100,7 +98,7 @@ class TestYahooOptions(object):
             ]
         )
         tm.assert_index_equal(df.columns, exp_columns)
-        assert df.index.names == [u"Strike", u"Expiry", u"Type", u"Symbol"]
+        assert df.index.names == ["Strike", "Expiry", "Type", "Symbol"]
 
         dtypes = [
             np.dtype(x)

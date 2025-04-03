@@ -11,9 +11,8 @@ from pandas_datareader._utils import RemoteDataError
 pytestmark = pytest.mark.stable
 
 
-class TestFred(object):
+class TestFred:
     def test_fred(self):
-
         # Raises an exception when DataReader can't
         # get a 200 response from FRED.
 
@@ -55,7 +54,7 @@ class TestFred(object):
 
     def test_invalid_series(self):
         name = "NOT A REAL SERIES"
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             web.get_data_fred(name)
 
     def test_fred_multi(self):  # pragma: no cover

@@ -10,7 +10,7 @@ pytestmark = pytest.mark.requires_api_key
 TEST_API_KEY = "DEPRECATED"
 
 
-class TestEnigma(object):
+class TestEnigma:
     @property
     def dataset_id(self):
         """

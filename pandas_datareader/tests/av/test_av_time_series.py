@@ -17,7 +17,7 @@ pytestmark = [
 ]
 
 
-class TestAVTimeSeries(object):
+class TestAVTimeSeries:
     @classmethod
     def setup_class(cls):
         pytest.importorskip("lxml")
@@ -114,7 +114,6 @@ class TestAVTimeSeries(object):
 
     @staticmethod
     def _helper_df_weekly_monthly(df, adj=False):
-
         expected1 = df.loc["2015-02-27"]
         assert expected1["close"] == 128.46
         assert expected1["high"] == 133.60

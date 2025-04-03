@@ -46,8 +46,8 @@ def _sanitize_dates(start, end):
     try:
         start = to_datetime(start)
         end = to_datetime(end)
-    except (TypeError, ValueError):
-        raise ValueError("Invalid date format.")
+    except (TypeError, ValueError) as exc:
+        raise ValueError("Invalid date format.") from exc
     if start > end:
         raise ValueError("start must be an earlier date than end")
     return start, end

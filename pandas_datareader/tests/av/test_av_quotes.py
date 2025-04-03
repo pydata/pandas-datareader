@@ -8,7 +8,7 @@ pytestmark = [
 ]
 
 
-class TestAVQuotes(object):
+class TestAVQuotes:
     @classmethod
     def setup_class(cls):
         pytest.importorskip("lxml")

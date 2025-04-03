@@ -26,6 +26,7 @@ def test_stooq_sp500():
     assert f.shape[0] > 0
 
 
+@pytest.mark.xfail(reason="No longer works as of Otober 2023")
 def test_stooq_clx19f():
     f = get_data_stooq("CLX26.F", start="20200101", end="20200115")
     assert f.shape[0] > 0

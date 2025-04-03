@@ -39,7 +39,7 @@ class Deep(IEX):
         else:
             symbols = [s.lower() for s in symbols]
 
-        super(Deep, self).__init__(
+        super().__init__(
             symbols=symbols,
             start=start,
             end=end,
@@ -53,7 +53,7 @@ class Deep(IEX):
     def service(self):
         """Service endpoint"""
         ss = "/" + self.sub if self.sub is not None else ""
-        return "deep{}".format(ss)
+        return f"deep{ss}"
 
     def _read_lines(self, out):
         """
@@ -85,7 +85,7 @@ class Deep(IEX):
         if self.sub in fmap:
             return getattr(self, fmap[self.sub])(out)
         else:
-            raise "Invalid service specified: {}.".format(self.sub)
+            raise ValueError(f"Invalid service specified: {self.sub}.")
 
     def _read_system_event(self, out):
         # Map the response code to a string output per the API docs.

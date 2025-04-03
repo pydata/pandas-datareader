@@ -23,11 +23,12 @@ class DailySummaryReader(IEX):
         import warnings
 
         warnings.warn(
-            "Daily statistics is not working due to issues with the " "IEX API",
+            "Daily statistics is not working due to issues with the IEX API",
             UnstableAPIWarning,
+            stacklevel=2,
         )
         self.curr_date = start
-        super(DailySummaryReader, self).__init__(
+        super().__init__(
             symbols=symbols,
             start=start,
             end=end,
@@ -60,7 +61,7 @@ class DailySummaryReader(IEX):
         dfs = []
         for date in (self.start + timedelta(n) for n in range(tlen.days)):
             self.curr_date = date
-            tdf = super(DailySummaryReader, self).read()
+            tdf = super().read()
             dfs.append(tdf)
         return pd.concat(dfs)
 
@@ -74,7 +75,7 @@ class MonthlySummaryReader(IEX):
         self.curr_date = start
         self.date_format = "%Y%m"
 
-        super(MonthlySummaryReader, self).__init__(
+        super().__init__(
             symbols=symbols,
             start=start,
             end=end,
@@ -117,7 +118,7 @@ class MonthlySummaryReader(IEX):
 
         for date in lrange:
             self.curr_date = date
-            tdf = super(MonthlySummaryReader, self).read()
+            tdf = super().read()
 
             # We may not return data if this was a weekend/holiday:
             if not tdf.empty:
@@ -136,7 +137,7 @@ class RecordsReader(IEX):
     def __init__(
         self, symbols=None, start=None, end=None, retry_count=3, pause=0.1, session=None
     ):
-        super(RecordsReader, self).__init__(
+        super().__init__(
             symbols=symbols,
             start=start,
             end=end,
@@ -177,7 +178,7 @@ class RecentReader(IEX):
     def __init__(
         self, symbols=None, start=None, end=None, retry_count=3, pause=0.1, session=None
     ):
-        super(RecentReader, self).__init__(
+        super().__init__(
             symbols=symbols,
             start=start,
             end=end,

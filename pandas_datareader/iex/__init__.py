@@ -22,7 +22,7 @@ class IEX(_BaseReader):
     def __init__(
         self, symbols=None, start=None, end=None, retry_count=3, pause=0.1, session=None
     ):
-        super(IEX, self).__init__(
+        super().__init__(
             symbols=symbols,
             start=start,
             end=end,
@@ -41,11 +41,11 @@ class IEX(_BaseReader):
     def url(self):
         """API URL"""
         qstring = urlencode(self._get_params(self.symbols))
-        return "https://api.iextrading.com/1.0/{}?{}".format(self.service, qstring)
+        return f"https://api.iextrading.com/1.0/{self.service}?{qstring}"
 
     def read(self):
         """Read data"""
-        df = super(IEX, self).read()
+        df = super().read()
         if isinstance(df, pd.DataFrame):
             df = df.squeeze()
             if not isinstance(df, pd.DataFrame):
@@ -71,11 +71,11 @@ class IEX(_BaseReader):
         """
         try:
             content = json.loads(out.text)
-        except Exception:
-            raise TypeError("Failed to interpret response as JSON.")
+        except Exception as exc:
+            raise TypeError("Failed to interpret response as JSON.") from exc
 
         for key, string in content.items():
-            e = "IEX Output error encountered: {}".format(string)
+            e = f"IEX Output error encountered: {string}"
             if key == "error":
                 raise Exception(e)
 
