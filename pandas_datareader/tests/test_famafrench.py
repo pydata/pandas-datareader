@@ -32,8 +32,10 @@ class TestFamaFrench:
 
     def test_index(self):
         ff = web.DataReader("F-F_Research_Data_Factors", "famafrench")
-        assert ff[0].index.freq.name == "ME"
-        assert ff[1].index.freq.name == "YE-DEC"
+        # M is for legacy pandas < 2
+        assert ff[0].index.freq.name in ("ME", "M")
+        # A-DEC is for legacy pandas < 2
+        assert ff[1].index.freq.name in ("YE-DEC", "A-DEC")
 
     def test_f_f_research(self):
         results = web.DataReader(

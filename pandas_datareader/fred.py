@@ -58,8 +58,13 @@ class FredReader(_BaseReader):
                     ) from exc
                 raise
 
+        try:
+            data = [fetch_data(url, n) for url, n in zip(urls, names, strict=True)]
+        except TypeError:
+            # Python 3.9 only
+            data = [fetch_data(url, n) for url, n in zip(urls, names)]  # noqa: B905
         df = concat(
-            [fetch_data(url, n) for url, n in zip(urls, names, strict=True)],
+            data,
             axis=1,
             join="outer",
         )

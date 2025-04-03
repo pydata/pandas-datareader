@@ -43,5 +43,5 @@ def test_stooq_googl():
 
 
 def test_get_data_ibm():
-    f = get_data_stooq("IBM.UK")
+    f = get_data_stooq("IBM.DE")
     assert f.shape[0] > 0
