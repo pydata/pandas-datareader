@@ -13,6 +13,8 @@ from pandas_datareader.data import (
 )
 from pandas_datareader.exceptions import UnstableAPIWarning
 
+pytestmark = pytest.mark.xfail(reason="Changes in API need fixes")
+
 
 class TestIEX:
     @classmethod
