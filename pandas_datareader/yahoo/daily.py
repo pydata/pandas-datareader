@@ -1,6 +1,7 @@
 import json
 import re
 import time
+import datetime
 
 from pandas import DataFrame, date_range, isnull, notnull, to_datetime
 
@@ -121,7 +122,8 @@ class YahooDailyReader(_DailyBaseReader):
     def _get_params(self, symbol):
         # This needed because yahoo returns data shifted by 4 hours ago.
         four_hours_in_seconds = 14400
-        unix_start = int(time.mktime(self.start.timetuple()))
+        unix_zero = datetime.datetime(1970, 1, 1, 8)
+        unix_start = int((self.start - unix_zero).total_seconds())
         unix_start += four_hours_in_seconds
         day_end = self.end.replace(hour=23, minute=59, second=59)
         unix_end = int(time.mktime(day_end.timetuple()))
