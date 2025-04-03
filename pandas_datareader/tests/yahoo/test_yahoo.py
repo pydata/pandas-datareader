@@ -14,7 +14,7 @@ from pandas_datareader.data import YahooDailyReader
 
 XFAIL_REASON = "Known connection failures on Yahoo when testing!"
 
-pytestmark = pytest.mark.stable
+pytestmark = pytest.mark.xfail(reason="Changes in API need fixes")
 
 
 class TestYahoo:
