@@ -116,7 +116,7 @@ class AVTimeSeriesReader(AlphaVantage):
         data = data[::-1]
         start_str = self.start.strftime("%Y-%m-%d")
         end_str = self.end.strftime("%Y-%m-%d")
-        data = data.loc[start_str:end_str]
+        data = data.loc[end_str:start_str]
         if data.empty:
             raise ValueError("Please input a valid date range")
         else:
