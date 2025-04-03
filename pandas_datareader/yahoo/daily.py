@@ -2,7 +2,7 @@ import json
 import re
 import time
 
-from pandas import DataFrame, isnull, notnull, to_datetime
+from pandas import DataFrame, date_range, isnull, notnull, to_datetime
 
 from pandas_datareader._utils import RemoteDataError
 from pandas_datareader.base import _DailyBaseReader
@@ -155,6 +155,15 @@ class YahooDailyReader(_DailyBaseReader):
 
         # price data
         prices = DataFrame(data["prices"])
+        if len(prices) == 0:
+            freq = self.interval[1].upper()
+            if freq == 'W':
+                freq += '-MON'
+            dates = date_range(self.start, self.end, freq=freq)
+            prices = DataFrame(index=dates,
+                                  columns=['High', 'Low', 'Open', 'Close', 'Volume', 'Adj Close'])
+            return prices
+        
         prices.columns = [col.capitalize() for col in prices.columns]
         prices["Date"] = to_datetime(to_datetime(prices["Date"], unit="s").dt.date)
 
