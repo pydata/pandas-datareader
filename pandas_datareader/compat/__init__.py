@@ -2,6 +2,11 @@ from io import StringIO
 import sys
 from urllib.error import HTTPError
 
+try:  # Python <3.13 compatibility
+    from packaging.version import Version as LooseVersion
+except Exception:  # pragma: no cover - fallback for very old installs
+    from distutils.version import LooseVersion
+
 from pandas.api.types import is_list_like, is_number
 from pandas.io import common as com
 from pandas.testing import assert_frame_equal

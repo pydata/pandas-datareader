@@ -10,3 +10,4 @@ pytest-xdist
 pytest-cov
 wrapt
 flake8-pyproject
+packaging
