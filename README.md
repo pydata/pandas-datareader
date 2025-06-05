@@ -41,6 +41,7 @@ Using pandas datareader requires the following packages:
 -   pandas>=1.5.3
 -   lxml
 -   requests>=2.19.0
+-   distutils (not included in standard library of Python 3.12 and above it, which can be solved by installing `setuptools`)
 
 Building the documentation additionally requires:
 
