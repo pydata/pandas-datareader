@@ -7,7 +7,7 @@ pandas.
 [![image](https://codecov.io/gh/pydata/pandas-datareader/branch/master/graph/badge.svg)](https://codecov.io/gh/pydata/pandas-datareader)
 [![image](https://readthedocs.org/projects/pandas-datareader/badge/?version=latest)](https://pandas-datareader.readthedocs.io/en/latest/)
 [![image](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![License](https://img.shields.io/pypi/l/pandas-datareader)](https://pypi.org/project/pandas-datareader/)
+[![License](https://img.shields.io/pypi/l/pandas-datareader)](https://github.com/pydata/pandas-datareader/blob/main/LICENSE.md)
 
 ## Installation
 
@@ -74,3 +74,4 @@ git clone https://github.com/pydata/pandas-datareader.git
 cd pandas-datareader
 python setup.py install
 ```
+
