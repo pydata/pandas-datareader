@@ -1,5 +1,5 @@
 - [ ] closes #xxxx
 - [ ] tests added / passed
-- [ ] passes `git diff upstream/master -u -- "*.py" | flake8 --diff`
+- [ ] passes `flake8 $(git diff --name-only origin/main -- '*.py')`
 - [ ] passes `black --check pandas_datareader`
 - [ ] added entry to docs/source/whatsnew/vLATEST.txt
