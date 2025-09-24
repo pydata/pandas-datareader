@@ -1,0 +1,4 @@
+Bug Fixes
+~~~~~~~~~
+
+- Fixed FamaFrench reader to handle updated format
