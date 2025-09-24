@@ -72,5 +72,5 @@ or
 ``` shell
 git clone https://github.com/pydata/pandas-datareader.git
 cd pandas-datareader
-python setup.py install
+python install -e .
 ```
