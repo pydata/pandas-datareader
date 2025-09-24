@@ -101,6 +101,7 @@ class FamaFrenchReader(_BaseReader):
 
         doc_chunks, tables = [], []
         data = self._read_zipfile(url)
+        data = re.sub(r"\r(?!\n)", "\r\n", data)  # turn lone CR into CRLF
 
         for chunk in data.split(2 * "\r\n"):
             if len(chunk) < 800:
@@ -114,7 +115,11 @@ class FamaFrenchReader(_BaseReader):
             start = 0 if not match else match.start()
 
             df = read_csv(StringIO("Date" + src[start:]), **params)
-            if df.index.min() > 190000:
+            if df.index.min() > 19000000:
+                df.index = to_datetime(df.index.astype(str), format="%Y%m%d").to_period(
+                    freq="D"
+                )
+            elif df.index.min() > 190000:
                 df.index = to_datetime(df.index.astype(str), format="%Y%m").to_period(
                     freq="M"
                 )
