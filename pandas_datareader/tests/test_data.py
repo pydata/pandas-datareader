@@ -38,9 +38,9 @@ class TestDeprecateKwarg:
     def test_deprecated_kwarg_warns(self):
         with pytest.warns(FutureWarning, match="access_key"):
             with pytest.raises(NotImplementedError):
-                # The call will fail with NotImplementedError (unknown source)
-                # after the kwarg renaming logic runs — that's fine.
-                DataReader("AAPL", "yahoo", access_key="dummy")
+                # Use an unknown source so the call fails cleanly with
+                # NotImplementedError after the kwarg renaming logic runs.
+                DataReader("AAPL", "unknown-source", access_key="dummy")
 
     def test_deprecated_kwarg_forwards_value(self):
         # When access_key is passed, it should be forwarded as api_key.
