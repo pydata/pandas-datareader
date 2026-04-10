@@ -2,6 +2,20 @@ import os
 
 import pytest
 
+collect_ignore_glob = [
+    "pandas_datareader/tests/yahoo/*.py",
+    "pandas_datareader/tests/av/*.py",
+    "pandas_datareader/tests/test_iex*.py",
+    "pandas_datareader/tests/test_stooq.py",
+    "pandas_datareader/tests/test_quandl.py",
+    "pandas_datareader/tests/test_moex.py",
+    "pandas_datareader/tests/test_naver.py",
+    "pandas_datareader/tests/test_tiingo.py",
+    "pandas_datareader/tests/test_nasdaq.py",
+    "pandas_datareader/tests/test_enigma.py",
+    "pandas_datareader/tests/test_tsp.py",
+]
+
 
 def pytest_addoption(parser):
     parser.addoption("--only-stable", action="store_true", help="run only stable tests")
