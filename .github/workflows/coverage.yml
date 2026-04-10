@@ -1,0 +1,76 @@
+name: Test Coverage
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "27 3 * * 0"
+
+jobs:
+  coverage:
+    name: pytest (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python-version: "3.9"
+            pandas: "1.5.3"
+            numpy: "1.23.4"
+          - python-version: "3.10"
+            pandas: "2.0.3"
+            numpy: "1.24.4"
+          - python-version: "3.11"
+            pandas: "2.1.4"
+            numpy: "1.26.4"
+          - python-version: "3.12"
+          - python-version: "3.13"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools
+          python -m pip install -r requirements.txt
+          python -m pip install -r requirements-dev.txt
+          if [ -n "${{ matrix.numpy }}" ]; then
+            python -m pip install numpy==${{ matrix.numpy }}
+          fi
+          if [ -n "${{ matrix.pandas }}" ]; then
+            python -m pip install pandas==${{ matrix.pandas }}
+          fi
+
+      - name: Install package
+        run: python -m pip install -e . -vv
+
+      - name: List installed packages
+        run: python -m pip list
+
+      - name: Run tests with coverage
+        env:
+          PYTHONHASHSEED: "12345678"
+        run: |
+          pytest \
+            --junitxml=junit/test-results.xml \
+            -n 2 \
+            --durations=25 \
+            --cov-config .coveragerc \
+            --cov=pandas_datareader \
+            --cov-report xml:coverage.xml \
+            --cov-report term \
+            pandas_datareader/tests
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.xml
+          fail_ci_if_error: false
