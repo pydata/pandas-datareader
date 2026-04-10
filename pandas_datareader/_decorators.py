@@ -9,10 +9,13 @@ def deprecate_kwarg(old_arg_name, new_arg_name):
             if old_arg_name in kwargs:
                 if new_arg_name in kwargs:
                     raise TypeError(
-                        f"Can only specify '{old_arg_name}' or '{new_arg_name}', not both."
+                        f"Can only specify {old_arg_name!r} or {new_arg_name!r}, not both."
                     )
                 warnings.warn(
-                    f"the {old_arg_name} keyword is deprecated, use {new_arg_name} instead.",
+                    (
+                        f"the {old_arg_name!r} keyword is deprecated, "
+                        f"use {new_arg_name!r} instead."
+                    ),
                     FutureWarning,
                     stacklevel=2,
                 )
