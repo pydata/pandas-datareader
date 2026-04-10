@@ -1,7 +1,6 @@
 # pandas-datareader
 
-Up to date remote data access for pandas, works for multiple versions of
-pandas.
+Macroeconomic and factor-oriented remote data access for pandas.
 
 [![image](https://img.shields.io/pypi/v/pandas-datareader.svg)](https://pypi.python.org/pypi/pandas-datareader/)
 [![image](https://codecov.io/gh/pydata/pandas-datareader/branch/master/graph/badge.svg)](https://codecov.io/gh/pydata/pandas-datareader)
@@ -23,6 +22,10 @@ pip install pandas-datareader
 import pandas_datareader as pdr
 pdr.get_data_fred('GS10')
 ```
+
+The public API is focused on macroeconomic, policy, and factor-style data
+sources such as FRED, Fama/French, Bank of Canada, World Bank, OECD,
+Eurostat, and the new `pandas_datareader.macro` interface.
 
 ## Documentation
 
