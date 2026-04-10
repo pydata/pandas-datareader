@@ -30,6 +30,14 @@ from .data import (
     get_summary_iex,
     get_tops_iex,
 )
+from .macro import (
+    EurostatClient,
+    MacroResult,
+    OECDClient,
+    describe_macro_dataset,
+    read_macro,
+    search_macro_datasets,
+)
 
 PKG = os.path.dirname(__file__)
 
@@ -61,6 +69,12 @@ __all__ = [
     "get_data_tiingo",
     "get_iex_data_tiingo",
     "get_data_alphavantage",
+    "MacroResult",
+    "OECDClient",
+    "EurostatClient",
+    "read_macro",
+    "search_macro_datasets",
+    "describe_macro_dataset",
     "test",
 ]
 

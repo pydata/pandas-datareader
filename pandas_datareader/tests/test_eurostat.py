@@ -5,8 +5,6 @@ import pytest
 
 from pandas_datareader import data as web
 
-pytestmark = pytest.mark.xfail(reason="Changes in API need fixes")
-
 
 class TestEurostat:
     def test_get_ert_h_eur_a(self):
@@ -34,6 +32,7 @@ class TestEurostat:
         expected = pd.DataFrame(values, index=exp_idx, columns=exp_col)
         tm.assert_frame_equal(df_currency, expected)
 
+    @pytest.mark.xfail(reason="Provider series definitions changed")
     def test_get_sts_cobp_a(self):
         # Building permits - annual data (2010 = 100)
         df = web.DataReader(
@@ -43,7 +42,7 @@ class TestEurostat:
             end=pd.Timestamp("2013-01-01"),
         )
 
-        idx = pd.date_range("2000-01-01", "2013-01-01", freq="AS", name="TIME_PERIOD")
+        idx = pd.date_range("2000-01-01", "2013-01-01", freq="YS", name="TIME_PERIOD")
         ne_name = (
             "Building permits - m2 of useful floor area",
             "Index, 2010=100",
@@ -103,6 +102,7 @@ class TestEurostat:
             result = df[expected.name]
             tm.assert_series_equal(result, expected)
 
+    @pytest.mark.xfail(reason="Provider labels and band definitions changed")
     def test_get_nrg_pc_202(self):
         # see gh-149
 
@@ -144,6 +144,7 @@ class TestEurostat:
 
         tm.assert_series_equal(df[name], exp)
 
+    @pytest.mark.xfail(reason="Provider query-size behavior changed")
     def test_get_prc_hicp_manr_exceeds_limit(self):
         # see gh-149
         msg = "Query size exceeds maximum limit"

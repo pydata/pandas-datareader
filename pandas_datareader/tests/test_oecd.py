@@ -10,7 +10,7 @@ from pandas_datareader._utils import RemoteDataError
 
 
 class TestOECD:
-    @pytest.mark.xfail(reason="Incorrect URL")
+    @pytest.mark.xfail(reason="Provider coverage changed")
     def test_get_un_den(self):
         df = web.DataReader(
             "TUD", "oecd", start=datetime(1960, 1, 1), end=datetime(2012, 1, 1)
@@ -187,7 +187,7 @@ class TestOECD:
             expected = pd.Series(values, index=index, name=label)
             tm.assert_series_equal(df[label], expected)
 
-    @pytest.mark.xfail(reason="Changes in API need fixes")
+    @pytest.mark.xfail(reason="Provider counterpart labels changed")
     def test_get_tourism(self):
         df = web.DataReader(
             "TOURISM_INBOUND",
@@ -200,7 +200,7 @@ class TestOECD:
         us = np.array(
             [175702309, 160507417, 164079732, 167600277, 171320408], dtype=float
         )
-        index = pd.date_range("2008-01-01", "2012-01-01", freq="AS", name="Year")
+        index = pd.date_range("2008-01-01", "2012-01-01", freq="YS", name="Year")
         for label, values in [("Japan", jp), ("United States", us)]:
             expected = pd.Series(values, index=index, name="Tourism demand surveys")
             expected.index.freq = None
