@@ -55,6 +55,10 @@ The following sources have been previously supported but are fully working in th
 
 It should be noted, that various sources support different kinds of data, so not all sources implement the same methods and the data elements returned might also differ.
 
+Package compatibility with pandas 3 means the library imports, runs, and passes
+its maintained compatibility tests on pandas 3. Individual remote providers may
+still fail when third-party endpoints change, rate-limit, or retire APIs.
+
 .. _remote_data.tiingo:
 
 Tiingo

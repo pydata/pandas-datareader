@@ -6,8 +6,7 @@ Module contains tools for collecting data from various remote sources
 
 import warnings
 
-from pandas.util._decorators import deprecate_kwarg
-
+from pandas_datareader._decorators import deprecate_kwarg
 from pandas_datareader.av.forex import AVForexReader
 from pandas_datareader.av.quotes import AVQuotesReader
 from pandas_datareader.av.sector import AVSectorPerformanceReader

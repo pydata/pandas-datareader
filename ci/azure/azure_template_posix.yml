@@ -28,10 +28,12 @@ jobs:
         python.version: '3.11'
         PANDAS: 2.1.4
         NUMPY: 1.26.4
-      python312_latest:
+      python312_pandas3:
         python.version: '3.12'
-      python313_latest:
+        PANDAS: 3.0.2
+      python313_pandas3:
         python.version: '3.13'
+        PANDAS: 3.0.2
 
   steps:
   - task: UsePythonVersion@0
@@ -54,6 +56,10 @@ jobs:
   - script: |
       python -m pip install -e . -vv
     displayName: 'Install'
+
+  - script: |
+      python -c "import pandas, pandas_datareader; print(pandas.__version__)"
+    displayName: 'Smoke import package'
 
   - script: python -m pip list
     displayName: 'List Configuration (PyPI)'

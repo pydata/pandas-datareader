@@ -67,7 +67,7 @@ or
 
    git clone https://github.com/pydata/pandas-datareader.git
    cd pandas-datareader
-   python setup.py install
+   python -m pip install -e .
 
 `Development documentation <https://pydata.github.io/pandas-datareader/devel/>`__
 is available for the latest changes in master.
