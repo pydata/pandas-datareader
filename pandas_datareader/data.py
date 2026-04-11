@@ -31,10 +31,6 @@ def get_data_famafrench(*args, **kwargs):
     return FamaFrenchReader(*args, **kwargs).read()
 
 
-def get_data_yahoo(*args, **kwargs):
-    return YahooDailyReader(*args, **kwargs).read()
-
-
 def get_data_econdb(*args, **kwargs):
     return EcondbReader(*args, **kwargs).read()
 
@@ -53,16 +49,16 @@ def DataReader(
     """
     Imports data from a number of online sources.
 
-    Currently supports Google Finance, St. Louis FED (FRED),
-    and Kenneth French's data library, among others.
+    Currently supports macroeconomic, central-bank, and factor-oriented
+    data sources.
 
     Parameters
     ----------
     name : str or list of strs
-        the name of the dataset. Some data sources (IEX, fred) will
+        the name of the dataset. Some data sources (fred) will
         accept a list of names.
     data_source: {str, None}
-        the data source ("iex", "fred", "ff")
+        the data source ("fred", "famafrench", "oecd", "eurostat", "econdb")
     start : string, int, date, datetime, Timestamp
         left boundary for range (defaults to 1/1/2010)
     end : string, int, date, datetime, Timestamp
@@ -79,16 +75,6 @@ def DataReader(
 
     Examples
     ----------
-    # Data from Google Finance
-    aapl = DataReader("AAPL", "iex")
-
-    # Price and volume data from IEX
-    tops = DataReader(["GS", "AAPL"], "iex-tops")
-    # Top of book executions from IEX
-    gs = DataReader("GS", "iex-last")
-    # Real-time depth of book data from IEX
-    gs = DataReader("GS", "iex-book")
-
     # Data from FRED
     vix = DataReader("VIXCLS", "fred")
 

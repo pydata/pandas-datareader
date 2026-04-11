@@ -661,7 +661,14 @@ class WorldBankReader(_BaseReader):
             out = reduce(lambda x, y: x.merge(y, how="outer"), data)
             out = out.drop("iso_code", axis=1)
             out = out.set_index(["country", "year"])
-            out = out.apply(pd.to_numeric, errors="ignore")
+            out = out.apply(pd.to_numeric, errors="coerce")
+            string_dtype = pd.StringDtype(na_value=np.nan)
+            out.index = out.index.set_levels(
+                [
+                    pd.Index(out.index.levels[0], dtype=string_dtype, name="country"),
+                    pd.Index(out.index.levels[1], dtype=string_dtype, name="year"),
+                ]
+            )
 
             return out
         else:

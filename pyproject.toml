@@ -61,9 +61,7 @@ addopts = "-ra -q"
 testpaths = ["tests", "pandas_datareader/tests"]
 markers = [
     "stable: mark a test as applying to a stable reader",
-    "requires_api_key: mark a test as requiring an API key",
-    "alpha_vantage: mark a test of the AlphaVantage reader",
-    "quandl: mark a test of the Quandl reader"
+    "requires_api_key: mark a test as requiring an API key"
     ]
 filterwarnings =[
     "ignore:`np.bool` is a deprecated alias:DeprecationWarning:pandas.core.indexes",
