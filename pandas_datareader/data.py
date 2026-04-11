@@ -153,6 +153,7 @@ def DataReader(
             retry_count=retry_count,
             pause=pause,
             session=session,
+            api_key=api_key,
         ).read()
 
     msg = "data_source=%r is not implemented" % data_source
