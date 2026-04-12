@@ -110,10 +110,15 @@ Econdb
 `Econdb <https://www.econdb.com/>`__ aggregates macroeconomic data from many
 official providers.
 
+The current API requires authentication. Provide a token either through the
+``api_key`` argument, the ``ECONDB_API_KEY`` environment variable, or an
+explicit ``token=...`` query parameter.
+
 .. code-block:: ipython
 
    In [1]: import pandas_datareader as pdr
-   In [2]: pdr.get_data_econdb("ticker=RGDPUS").head()
+   In [2]: import os
+   In [3]: pdr.get_data_econdb("ticker=RGDPUS", api_key=os.getenv("ECONDB_API_KEY")).head()
 
 
 .. _remote_data.oecd:

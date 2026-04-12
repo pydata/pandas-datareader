@@ -246,7 +246,7 @@ class TestWB:
             assert sorted(result.columns) == sorted(exp_col)
             assert len(result) > 10000
 
-    @pytest.mark.xfail(reason="World Bank API changed, no data returned")
+    @pytest.mark.xfail(reason="World Bank indicator retired or no longer returns data")
     def test_wdi_download_monthly(self):
         expected = {
             "COPPER": {
