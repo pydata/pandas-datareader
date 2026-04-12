@@ -3,6 +3,8 @@ import pandas as pd
 from pandas import testing as tm
 
 from pandas_datareader import data as web
+from pandas_datareader._testing import skip_on_exception
+from pandas_datareader._utils import RemoteDataError
 
 
 class TestEurostat:
@@ -141,6 +143,7 @@ class TestEurostat:
 
         tm.assert_series_equal(df[name], exp)
 
+    @skip_on_exception(RemoteDataError)
     def test_get_prc_hicp_manr_large_query(self):
         df = web.DataReader(
             "prc_hicp_manr",
