@@ -129,7 +129,7 @@ jobs:
 
       - name: Upload test results
         if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: test-results-${{ matrix.name }}
           path: junit/test-results.xml
@@ -137,7 +137,7 @@ jobs:
 
       - name: Upload coverage artifact
         if: ${{ always() && env.COVERAGE == 'true' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-${{ matrix.name }}
           path: coverage.xml
