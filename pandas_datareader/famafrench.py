@@ -112,8 +112,8 @@ class FamaFrenchReader(_BaseReader):
         for i, src in enumerate(tables):
             match = re.search(r"^\s*,", src, re.M)  # the table starts there
             start = 0 if not match else match.start()
-
-            df = read_csv(StringIO("Date" + src[start:]), **params)
+            table = src[start:].lstrip("\r\n")
+            df = read_csv(StringIO("Date" + table), **params)
             if df.index.min() > 190000:
                 df.index = to_datetime(df.index.astype(str), format="%Y%m").to_period(
                     freq="M"

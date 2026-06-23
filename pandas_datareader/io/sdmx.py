@@ -3,6 +3,7 @@ from io import BytesIO
 import time
 import zipfile
 
+import numpy as np
 import pandas as pd
 
 from pandas_datareader.compat import HTTPError
@@ -146,8 +147,9 @@ def _parse_observations(observations):
     results = []
     for observation in observations:
         obsdimension = _get_child(observation, _OBSDIMENSION)
-        obsvalue = _get_child(observation, _OBSVALUE)
-        results.append((obsdimension.get("value"), obsvalue.get("value")))
+        obsvalue = observation.find(_OBSVALUE)
+        value = obsvalue.get("value") if obsvalue is not None else np.nan
+        results.append((obsdimension.get("value"), value))
     # return list of key/value tuple, eg: [(key, value), ...]
     return results
 
@@ -208,16 +210,23 @@ def _read_sdmx_dsd(path_or_buf):
 
     code_results = {}
     for codelist in codes:
-        # codelist_id = codelist.get('id')
+        codelist_id = codelist.get("id")
         codelist_name = _get_english_name(codelist)
         mapper = {}
         for code in codelist.iter(_CODE):
             code_id = code.get("id")
             name = _get_english_name(code)
             mapper[code_id] = name
-        # codeobj = SDMXCode(id=codelist_id, name=codelist_name, mapper=mapper)
-        # code_results[codelist_id] = codeobj
+        code_results[codelist_id] = mapper
         code_results[codelist_name] = mapper
+
+    for dim in datastructures.iter(_STRUCTURE + "Dimension"):
+        enum_ref = dim.find(f".//{_STRUCTURE}Enumeration/Ref")
+        if enum_ref is None:
+            continue
+        codelist_id = enum_ref.get("id")
+        if codelist_id in code_results:
+            code_results[dim.get("id")] = code_results[codelist_id]
 
     times = list(datastructures.iter(_TIMEDIMENSION))
     times = [t.get("id") for t in times]

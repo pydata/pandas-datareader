@@ -165,8 +165,86 @@ def test_quartervalue(dirpath):
             "2011-07-01",
             "2011-10-01",
         ],
-        dtype="datetime64[ns]",
         name="Period",
         freq=None,
     )
     tm.assert_index_equal(result.index, expected)
+
+
+def test_read_jsdmx_v2():
+    payload = {
+        "meta": {},
+        "errors": [],
+        "data": {
+            "dataSets": [
+                {
+                    "series": {
+                        "0:0:0": {"observations": {"0": [1.5], "1": [2.5]}},
+                        "1:0:0": {"observations": {"0": [3.5], "1": [4.5]}},
+                    }
+                }
+            ],
+            "structures": [
+                {
+                    "dimensions": {
+                        "series": [
+                            {
+                                "id": "REF_AREA",
+                                "name": "Reference area",
+                                "values": [
+                                    {"id": "AUS", "name": "Australia"},
+                                    {"id": "USA", "name": "United States"},
+                                ],
+                            },
+                            {
+                                "id": "MEASURE",
+                                "name": "Measure",
+                                "values": [
+                                    {"id": "TUD", "name": "Trade union density"}
+                                ],
+                            },
+                            {
+                                "id": "UNIT_MEASURE",
+                                "name": "Unit of measure",
+                                "values": [
+                                    {
+                                        "id": "PT_SAL",
+                                        "name": "Percentage of employees",
+                                    }
+                                ],
+                            },
+                        ],
+                        "observation": [
+                            {
+                                "id": "TIME_PERIOD",
+                                "name": "Time period",
+                                "values": [
+                                    {"id": "2010", "name": "2010"},
+                                    {"id": "2011", "name": "2011"},
+                                ],
+                            }
+                        ],
+                    }
+                }
+            ],
+        },
+    }
+
+    result = read_jsdmx(payload)
+
+    expected_columns = pd.MultiIndex.from_product(
+        [
+            ["Australia", "United States"],
+            ["Trade union density"],
+            ["Percentage of employees"],
+        ],
+        names=["Reference area", "Measure", "Unit of measure"],
+    )
+    expected_index = pd.DatetimeIndex(["2010-01-01", "2011-01-01"], name="Time period")
+    expected = pd.DataFrame(
+        [[1.5, 3.5], [2.5, 4.5]],
+        index=expected_index,
+        columns=expected_columns,
+    )
+
+    tm.assert_frame_equal(result, expected)

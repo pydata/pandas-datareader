@@ -27,22 +27,20 @@ def _sanitize_dates(start, end):
     end : str, int, date, datetime, Timestamp
         Desired end date
     """
-    if is_number(start):
-        # regard int as year
-        start = dt.datetime(start, 1, 1)
-    start = to_datetime(start)
-
-    if is_number(end):
-        end = dt.datetime(end, 1, 1)
-    end = to_datetime(end)
-
     if start is None:
         # default to 5 years before today
         today = dt.date.today()
         start = today - dt.timedelta(days=365 * 5)
+    elif is_number(start):
+        # regard int as year
+        start = dt.datetime(start, 1, 1)
+
     if end is None:
         # default to today
         end = dt.date.today()
+    elif is_number(end):
+        end = dt.datetime(end, 1, 1)
+
     try:
         start = to_datetime(start)
         end = to_datetime(end)

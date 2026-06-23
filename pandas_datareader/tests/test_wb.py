@@ -6,6 +6,8 @@ from pandas import testing as tm
 import pytest
 import requests
 
+from pandas_datareader._testing import skip_on_exception
+from pandas_datareader._utils import RemoteDataError
 from pandas_datareader.wb import (
     WorldBankReader,
     download,
@@ -246,31 +248,30 @@ class TestWB:
             assert sorted(result.columns) == sorted(exp_col)
             assert len(result) > 10000
 
-    @pytest.mark.xfail(reason="World Bank API changed, no data returned")
     def test_wdi_download_monthly(self):
         expected = {
-            "COPPER": {
-                ("World", "2012M01"): 8040.47,
-                ("World", "2011M12"): 7565.48,
-                ("World", "2011M11"): 7581.02,
-                ("World", "2011M10"): 7394.19,
-                ("World", "2011M09"): 8300.14,
-                ("World", "2011M08"): 9000.76,
-                ("World", "2011M07"): 9650.46,
-                ("World", "2011M06"): 9066.85,
-                ("World", "2011M05"): 8959.90,
-                ("World", "2011M04"): 9492.79,
-                ("World", "2011M03"): 9503.36,
-                ("World", "2011M02"): 9867.60,
-                ("World", "2011M01"): 9555.70,
+            "CPTOTNSXN": {
+                ("United States", "2012M01"): 104.604799,
+                ("United States", "2011M12"): 104.146534,
+                ("United States", "2011M11"): 104.404048,
+                ("United States", "2011M10"): 104.492194,
+                ("United States", "2011M09"): 104.708174,
+                ("United States", "2011M08"): 104.549419,
+                ("United States", "2011M07"): 104.261908,
+                ("United States", "2011M06"): 104.169609,
+                ("United States", "2011M05"): 103.992895,
+                ("United States", "2011M04"): 103.911308,
+                ("United States", "2011M03"): 103.763840,
+                ("United States", "2011M02"): 103.769067,
+                ("United States", "2011M01"): 103.644756,
             }
         }
         expected = pd.DataFrame(expected)
         # Round, to ignore revisions to data.
         expected = np.round(expected, decimals=-3)
         expected = expected.sort_index()
-        cntry_codes = "ALL"
-        inds = "COPPER"
+        cntry_codes = "US"
+        inds = "CPTOTNSXN"
         result = download(
             country=cntry_codes,
             indicator=inds,
@@ -292,6 +293,7 @@ class TestWB:
         result = np.round(result, decimals=-3)
         tm.assert_frame_equal(result, expected)
 
+    @skip_on_exception(RemoteDataError)
     def test_wdi_download_quarterly(self):
         code = "DT.DOD.PUBS.CD.US"
         expected = {

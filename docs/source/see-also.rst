@@ -1,40 +1,27 @@
 Other Data Sources
 ------------------
-Web interfaces are constantly evolving and so there is constant
-evolution in this space.  There are a number of noteworthy Python
-packages that integrate into the PyData ecosystem that are
-more narrowly focused than pandas-datareader.
+The maintained public surface is focused on macroeconomic, policy,
+central-bank, and factor-style data.
 
+OECD SDMX
+=========
+The `OECD SDMX API <https://sdmx.oecd.org/public/rest/>`__ is the
+authoritative source for OECD structure and data endpoints.
 
-Alpha Vantage
+Eurostat SDMX
 =============
-`Alpha Vantage <https://www.alphavantage.co>`__ provides real time and
-historical equity data.  Users are required to get a free API key before
-using the API. `Documentation <https://www.alphavantage.co/documentation>`__
-is available.
+The `Eurostat SDMX 2.1 API <https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/>`__
+is the authoritative source for Eurostat dataflow, structure, and data
+queries.
 
-A `python package <https://github.com/RomelTorres/alpha_vantage>`__
-simplifying access is available on github.
-
-Tiingo
-======
-`Tiingo <https://www.tiingo.com>`__ aims to make high-end financial tools
-accessible investors. The `API is documented <https://api.tiingo.com>`__.
-Users are required to get a free API key before using the API.
-
-A `python package <https://github.com/hydrosquall/tiingo-python>`__
-simplifying access is available on github.
-
-Barchart
-========
-Barchart is a data provider covering a wide range of financial data.  The
-`free API <https://www.barchart.com/ondemand/free-market-data-api>`__
-provides up to two years of historical data.
-
-A `python package <https://github.com/femtotrader/barchart-ondemand-client-python>`__
-simplifying access is available on github.
+World Bank
+==========
+The `World Bank indicator API <https://api.worldbank.org/>`__ remains useful
+for direct indicator discovery and download outside the helper functions
+documented in this project.
 
 List of Other Sources
 =====================
 `Awesome Quant <https://github.com/wilsonfreitas/awesome-quant#data-sources>`__
-maintains a large list of packages designed to provide access to financial data.
+maintains a large list of packages designed to provide access to data sources
+across the broader Python data ecosystem.

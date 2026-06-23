@@ -1,0 +1,14 @@
+.. _whatsnew_0110:
+
+v0.11.0 (TBD)
+-------------
+
+Highlights include:
+
+- Restored import and runtime compatibility with pandas 3 by removing the
+  dependency on pandas internal decorator APIs.
+- Fixed default date sanitization on pandas 3, where ``to_datetime(None)``
+  now yields ``NaT`` instead of preserving ``None``.
+- Added import smoke coverage and explicit pandas 3 CI lanes.
+- Clarified that pandas compatibility does not imply every remote provider is
+  currently healthy; some readers remain subject to upstream API drift.

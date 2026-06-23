@@ -110,7 +110,10 @@ class TestFamaFrench:
             columns=["Mkt-RF", "SMB", "HML", "RF"],
         )
         received = results[0]
-        np.testing.assert_allclose(received, exp)
+        # The Ken French library is periodically regenerated from newer CRSP
+        # vintages, which can shift historical values slightly without
+        # changing the structure of the dataset.
+        np.testing.assert_allclose(received, exp, rtol=0, atol=0.2)
         tm.assert_index_equal(received.index, exp.index)
         tm.assert_index_equal(received.columns, exp.columns)
 

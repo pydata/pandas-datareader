@@ -40,18 +40,48 @@ def read_jsdmx(path_or_buf):
     else:
         data = json.loads(jdata, object_pairs_hook=OrderedDict)
 
-    structure = data["structure"]
-    index = _parse_dimensions(structure["dimensions"]["observation"])
-    columns = _parse_dimensions(structure["dimensions"]["series"])
+    if "structure" in data:
+        structure = data["structure"]
+        index = _parse_dimensions(structure["dimensions"]["observation"])
+        columns = _parse_dimensions(structure["dimensions"]["series"])
 
-    dataset = data["dataSets"]
-    if len(dataset) != 1:
-        raise ValueError("length of 'dataSets' must be 1")
-    dataset = dataset[0]
-    values = _parse_values(dataset, index=index, columns=columns)
+        dataset = data["dataSets"]
+        if len(dataset) != 1:
+            raise ValueError("length of 'dataSets' must be 1")
+        dataset = dataset[0]
+        values = _parse_values(dataset, index=index, columns=columns)
+    elif "data" in data and "structures" in data["data"]:
+        structure = data["data"]["structures"][0]
+        observation_dims = _normalize_v2_dimensions(
+            structure["dimensions"]["observation"]
+        )
+        series_dims = _normalize_v2_dimensions(structure["dimensions"]["series"])
+        index = _parse_dimensions(observation_dims)
+        columns = _parse_dimensions(series_dims)
+
+        dataset = data["data"]["dataSets"]
+        if len(dataset) != 1:
+            raise ValueError("length of 'dataSets' must be 1")
+        dataset = dataset[0]
+        values = _parse_values(dataset, index=index, columns=columns)
+    else:
+        raise ValueError("Unsupported SDMX-JSON payload structure")
 
     df = pd.DataFrame(values, columns=columns, index=index)
     return df
+
+
+def _normalize_v2_dimensions(dimensions):
+    normalized = []
+    for dim in dimensions:
+        item = {
+            "name": dim["name"],
+            "values": [{"name": value["name"]} for value in dim["values"]],
+        }
+        if dim.get("id") == "TIME_PERIOD":
+            item["role"] = "TIME_PERIOD"
+        normalized.append(item)
+    return normalized
 
 
 def _get_indexer(index):
