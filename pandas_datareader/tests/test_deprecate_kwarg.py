@@ -6,8 +6,11 @@ pandas.util._decorators, which is being removed in pandas 3.0.
 Fix: vendor the implementation in pandas_datareader.compat so there is no
 dependency on a private pandas API.
 """
+
 import warnings
+
 import pytest
+
 from pandas_datareader.compat import deprecate_kwarg
 
 
@@ -95,14 +98,12 @@ class TestDeprecateKwarg:
         import ast
         import pathlib
 
-        data_src = (
-            pathlib.Path(__file__).parent.parent / "data.py"
-        ).read_text()
+        data_src = (pathlib.Path(__file__).parent.parent / "data.py").read_text()
         tree = ast.parse(data_src)
 
         for node in ast.walk(tree):
             if isinstance(node, (ast.Import, ast.ImportFrom)):
                 src = ast.unparse(node)
-                assert "pandas.util._decorators" not in src, (
-                    f"data.py still imports from private pandas API: {src}"
-                )
+                assert (
+                    "pandas.util._decorators" not in src
+                ), f"data.py still imports from private pandas API: {src}"
