@@ -49,7 +49,8 @@ class TestDeprecateKwarg:
             return new
 
         with pytest.raises(TypeError, match="Can only specify"):
-            f(old="a", new="b")
+            with pytest.warns(FutureWarning, match="the 'old' keyword"):
+                f(old="a", new="b")
 
     def test_mapping_dict_translates_value(self):
         @deprecate_kwarg("old", "new", mapping={"yes": True, "no": False})
