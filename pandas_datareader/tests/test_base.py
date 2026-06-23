@@ -32,6 +32,28 @@ class TestBaseReader:
         b = base._BaseReader([])
         assert b.default_start_date == dt.date.today() - dt.timedelta(days=365 * 5)
 
+    def test_get_response_retries_request_exception(self, monkeypatch):
+        class DummyResponse:
+            status_code = requests.codes.ok
+            encoding = "utf-8"
+            text = ""
+
+        reader = base._BaseReader([], retry_count=1, pause=0)
+        calls = {"count": 0}
+
+        def flaky_get(*args, **kwargs):
+            calls["count"] += 1
+            if calls["count"] == 1:
+                raise requests.exceptions.SSLError("temporary ssl failure")
+            return DummyResponse()
+
+        monkeypatch.setattr(reader.session, "get", flaky_get)
+
+        response = reader._get_response("https://example.com")
+
+        assert response.status_code == requests.codes.ok
+        assert calls["count"] == 2
+
 
 class TestDailyBaseReader:
     def test_get_params(self):

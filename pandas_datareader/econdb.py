@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 
 from pandas_datareader.base import _BaseReader
@@ -49,6 +51,7 @@ class EcondbReader(_BaseReader):
         pause=0.1,
         session=None,
         freq=None,
+        api_key=None,
     ):
         super().__init__(
             symbols=symbols,
@@ -60,6 +63,7 @@ class EcondbReader(_BaseReader):
             freq=freq,
         )
         params = dict(s.split("=") for s in self.symbols.split("&"))
+        self.api_key = params.get("token") or api_key or os.getenv("ECONDB_API_KEY")
         if "from" in params and not start:
             self.start = pd.to_datetime(params["from"], format="%Y-%m-%d")
         if "to" in params and not end:
@@ -71,13 +75,26 @@ class EcondbReader(_BaseReader):
         if not isinstance(self.symbols, str):
             raise ValueError("data name must be string")
 
-        return "{}?{}&format=json&page_size=500&expand=both".format(
-            self._URL, self.symbols
-        )
+        query = self.symbols
+        if "token=" not in query:
+            if not self.api_key:
+                raise ValueError(
+                    "The Econdb API key must be provided either through "
+                    "the api_key variable, the ECONDB_API_KEY environment "
+                    "variable, or a token=... query parameter."
+                )
+            query = f"{query}&token={self.api_key}"
+
+        return "{}?{}&format=json&page_size=500&expand=both".format(self._URL, query)
 
     def read(self):
         """read one data from specified URL"""
-        results = self.session.get(self.url).json()["results"]
+        payload = self.session.get(self.url).json()
+        if "results" not in payload:
+            if "detail" in payload:
+                raise ValueError(str(payload["detail"]))
+            raise ValueError("Unexpected Econdb response format.")
+        results = payload["results"]
         df = pd.DataFrame({"dates": []}).set_index("dates")
 
         if self._show == "labels":

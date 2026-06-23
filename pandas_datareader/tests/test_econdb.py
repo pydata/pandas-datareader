@@ -1,10 +1,17 @@
+import os
+
 import numpy as np
 import pandas as pd
 import pytest
 
 from pandas_datareader import data as web
 
-pytestmark = pytest.mark.xfail(reason="Changes in API need fixes")
+TEST_API_KEY = os.getenv("ECONDB_API_KEY")
+
+pytestmark = [
+    pytest.mark.requires_api_key,
+    pytest.mark.skipif(not TEST_API_KEY, reason="ECONDB_API_KEY not set"),
+]
 
 
 def assert_equal(x, y):

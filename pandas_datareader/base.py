@@ -145,10 +145,17 @@ class _BaseReader:
         headers = headers or self.headers
         pause = self.pause
         last_response_text = ""
+        last_exception = None
         for _ in range(self.retry_count + 1):
-            response = self.session.get(
-                url, params=params, headers=headers, timeout=self.timeout
-            )
+            try:
+                response = self.session.get(
+                    url, params=params, headers=headers, timeout=self.timeout
+                )
+            except requests.exceptions.RequestException as exc:
+                last_exception = exc
+                time.sleep(pause)
+                pause *= self.pause_multiplier
+                continue
             if response.status_code == requests.codes.ok:
                 return response
 
@@ -171,6 +178,8 @@ class _BaseReader:
         msg = f"Unable to read URL: {url}"
         if last_response_text:
             msg += f"\nResponse Text:\n{last_response_text}"
+        if last_exception is not None:
+            msg += f"\nException:\n{last_exception}"
 
         raise RemoteDataError(msg)
 
