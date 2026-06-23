@@ -1,14 +1,131 @@
 .. _whatsnew_0110:
 
-v0.11.0 (TBD)
--------------
+v0.11.0 (June 2026)
+-------------------
 
 Highlights include:
 
 - Restored import and runtime compatibility with pandas 3 by removing the
   dependency on pandas internal decorator APIs.
+- Vendored ``deprecate_kwarg`` to remove dependency on the private
+  ``pandas.util._decorators`` module.
 - Fixed default date sanitization on pandas 3, where ``to_datetime(None)``
   now yields ``NaT`` instead of preserving ``None``.
+- Added a new high-level ``pandas_datareader.macro`` API providing unified
+  access to FRED, Eurostat, and OECD macro datasets via ``read_macro``,
+  ``search_macro_datasets``, and ``describe_macro_dataset``.
+- Narrowed the default public API surface to focus on macro and widely-used
+  data sources; securities-related readers that relied on defunct or broken
+  upstream APIs have been removed.
 - Added import smoke coverage and explicit pandas 3 CI lanes.
-- Clarified that pandas compatibility does not imply every remote provider is
-  currently healthy; some readers remain subject to upstream API drift.
+
+.. contents:: What's new in v0.11.0
+    :local:
+    :backlinks: none
+
+
+.. _whatsnew_0110.new_features:
+
+New Features
+~~~~~~~~~~~~
+
+- Added a ``pandas_datareader.macro`` sub-package exposing a modern API for
+  macro data retrieval:
+
+  - ``read_macro`` — fetch one or more macro series in a single call.
+  - ``search_macro_datasets`` — search across available FRED, Eurostat, and
+    OECD datasets by keyword.
+  - ``describe_macro_dataset`` — return metadata for a named dataset.
+  - ``EurostatClient`` and ``OECDClient`` — low-level client classes for
+    direct provider access.
+  - ``MacroResult`` — typed container returned by ``read_macro``.
+
+- Added a functional interface to the EconDB reader (``get_data_econdb``) and
+  made its keyword arguments explicit.
+
+
+.. _whatsnew_0110.api_breaking:
+
+Backwards Incompatible API Changes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Removed the following securities-related readers that depended on defunct or
+  heavily broken upstream APIs: AlphaVantage, Enigma, IEX, Morningstar, Naver,
+  Nasdaq Trader symbols, Quandl, Stooq, Tiingo, and Yahoo Finance (including
+  options and components helpers). The corresponding top-level helper functions
+  (e.g. ``get_data_yahoo``, ``get_data_quandl``, ``Options``) are no longer
+  exported from ``pandas_datareader``.
+- The ``versioneer``-generated ``_version.py`` has been replaced with a static
+  ``__version__`` attribute. The ``get_versions()`` function is no longer
+  available.
+- Minimum supported Python version is now 3.8.
+
+
+.. _whatsnew_0110.enhancements:
+
+Enhancements
+~~~~~~~~~~~~
+
+- EconDB reader documentation has been updated and improved.
+- Upgraded codebase to Python 3.8 syntax (f-strings, ``walrus`` operator,
+  type hints).
+- Modernised project configuration (``pyproject.toml``, Black formatting).
+- Added Windows CI coverage.
+
+
+.. _whatsnew_0110.bug_fixes:
+
+Bug Fixes
+~~~~~~~~~
+
+- Vendored ``deprecate_kwarg`` to remove the dependency on the private
+  ``pandas.util._decorators`` module, restoring compatibility with pandas 3
+  (:issue:`972`, :issue:`1005`).
+- Fixed FamaFrench reader to correctly parse the updated file format returned
+  by the Kenneth French data library (:issue:`1007`, :issue:`1008`).
+- Fixed FamaFrench reader to replace the deprecated ``date_parser`` argument
+  with the modern ``date_format`` approach (:issue:`972`, :issue:`1013`).
+- Restored pandas 3 compatibility by fixing ``to_datetime(None)`` handling
+  in ``_sanitize_dates`` so that ``None`` start/end dates are resolved before
+  the ``to_datetime`` call rather than being passed as-is (:issue:`1011`).
+- Fixed MOEX reader ``DataFrame.append`` error caused by its removal in
+  pandas 2.0; replaced with ``pd.concat`` (:issue:`973`).
+- Fixed ``pd.concat`` call that was passing the objs list as a positional
+  argument when only keyword arguments are accepted in newer pandas versions
+  (:issue:`967`).
+- Fixed ``read_csv`` calls that passed ``sep`` as a positional argument to
+  comply with newer pandas versions (:issue:`968`).
+- Replaced deprecated ``distutils.version.LooseVersion`` with
+  ``packaging.version.Version`` (:issue:`928`).
+- Fixed missing ``version.parse`` import in compatibility shim (:issue:`928`).
+- Fixed various macro readers (FRED, EconDB, Eurostat, OECD) to work with
+  current upstream APIs.
+- Fixed ``BUG: Correct concat`` in base reader logic.
+
+
+Contributors
+~~~~~~~~~~~~
+Thanks to all of the contributors for the 0.11.0 release (based on git log):
+
+- Aniket Patil
+- Charles Burkland
+- Eric Zhang (FLIER001)
+- FidoDido1982
+- Igor Molnar
+- Jaypatel1511
+- Kasra Bigdeli
+- Kevin Sheppard
+- MBounouar
+- Noah Stoffman
+- Olexandr88
+- Radon23
+- Sugato Ray
+- Zhehao Zhang
+- agcr
+- captnTardigrade
+- hnishi
+- mg-karamaan
+- 沈国权
+
+These lists of names are automatically generated based on git log, and may not
+be complete.
