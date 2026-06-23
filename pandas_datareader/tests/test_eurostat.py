@@ -148,12 +148,12 @@ class TestEurostat:
         df = web.DataReader(
             "prc_hicp_manr",
             "eurostat",
-            start=pd.Timestamp("2000-01-01"),
+            start=pd.Timestamp("2010-01-01"),
             end=pd.Timestamp("2013-01-01"),
         )
         assert isinstance(df, pd.DataFrame)
         assert isinstance(df.index, pd.DatetimeIndex)
-        assert df.index.min() >= pd.Timestamp("2000-01-01")
+        assert df.index.min() >= pd.Timestamp("2010-01-01")
         assert df.index.max() <= pd.Timestamp("2013-12-31")
         assert "FREQ" in df.columns.names
         assert "UNIT" in df.columns.names

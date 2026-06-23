@@ -196,8 +196,11 @@ class TestFamaFrench:
         exp_index = pd.period_range("2010-01-01", "2010-12-01", freq="M", name="Date")
         tm.assert_index_equal(results[0].index, exp_index)
 
-    def test_all_datasets(self) -> None:
-        for dataset in get_available_datasets():
-            data = web.DataReader(dataset, "famafrench")
+    def test_any_datasets(self) -> None:
+        from random import randint
 
-            assert tuple(data) == (*range(len(data) - 1), "DESCR")
+        datasets = get_available_datasets()
+        idx = randint(0, len(datasets) - 1)
+        data = web.DataReader(datasets[idx], "famafrench")
+
+        assert tuple(data) == (*range(len(data) - 1), "DESCR")

@@ -121,8 +121,8 @@ jobs:
             marker_opts=(-m "${PYTEST_PATTERN}")
           fi
 
-          echo pytest "${marker_opts[@]}" --junitxml=junit/test-results.xml -n 2 --durations=25 "${coverage_opts[@]}" pandas_datareader/tests
-          pytest "${marker_opts[@]}" --junitxml=junit/test-results.xml -n 2 --durations=25 "${coverage_opts[@]}" pandas_datareader/tests
+          echo pytest -vv "${marker_opts[@]}" --junitxml=junit/test-results.xml --durations=25 "${coverage_opts[@]}" pandas_datareader/tests
+          pytest  -vv "${marker_opts[@]}" --junitxml=junit/test-results.xml --durations=25 "${coverage_opts[@]}" pandas_datareader/tests
 
       - name: Upload test results
         if: ${{ always() }}
