@@ -18,7 +18,7 @@ Highlights include:
 Enhancements
 ~~~~~~~~~~~~
 
-- ``DataReader`` now supports Quandl, see :ref:`here<remote_data.quandl>` (:issue:`361`).
+- ``DataReader`` now supports Quandl, see :ref:`here<remote_data.removed>` (:issue:`361`).
 
 .. _whatsnew_050.api_breaking:
 

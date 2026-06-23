@@ -1,0 +1,140 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "27 3 * * 0"
+  workflow_dispatch:
+
+env:
+  PYTHONHASHSEED: "12345678"
+  COVERAGE: "true"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Linux Python 3.11 pandas 2.1
+            os: ubuntu-latest
+            python-version: "3.11"
+            pandas: "2.1.4"
+            numpy: "1.26.4"
+          - name: Linux Python 3.13 pandas 2.3
+            os: ubuntu-latest
+            python-version: "3.13"
+            pandas: "2.3.3"
+            numpy: ""
+          - name: Linux Python 3.14 pandas latest
+            os: ubuntu-latest
+            python-version: "3.14"
+            pandas: ""
+            numpy: ""
+          - name: Windows Python 3.11 pandas 2.1
+            os: windows-latest
+            python-version: "3.11"
+            pandas: "2.1.4"
+            numpy: "1.26.4"
+          - name: Windows Python 3.14 pandas latest
+            os: windows-latest
+            python-version: "3.14"
+            pandas: ""
+            numpy: ""
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools
+          python -m pip install -r requirements.txt
+          python -m pip install -r requirements-dev.txt
+
+      - name: Pin NumPy
+        if: ${{ matrix.numpy != '' }}
+        run: python -m pip install numpy==${{ matrix.numpy }}
+
+      - name: Pin pandas
+        if: ${{ matrix.pandas != '' }}
+        run: python -m pip install pandas==${{ matrix.pandas }}
+
+      - name: Install package
+        run: python -m pip install -e . -vv
+
+      - name: Smoke import package
+        run: python -c "import pandas, pandas_datareader; print(pandas.__version__)"
+
+      - name: List configuration (PyPI)
+        run: python -m pip list
+
+      - name: Check style and formatting
+        run: |
+          black --check pandas_datareader
+          isort --check pandas_datareader
+          flake8 pandas_datareader
+
+      - name: Check ruff
+        if: ${{ runner.os == 'Linux' }}
+        run: ruff check pandas_datareader
+
+      - name: Run tests
+        run: |
+          echo "Testing editable install"
+
+          coverage_opts=()
+          if [[ "${COVERAGE}" == "true" ]]; then
+            coverage_opts=(
+              --cov-config .coveragerc
+              --cov=pandas_datareader
+              --cov-report xml:coverage.xml
+              --cov-report term
+            )
+          fi
+
+          marker_opts=()
+          if [[ -n "${PYTEST_PATTERN:-}" ]]; then
+            marker_opts=(-m "${PYTEST_PATTERN}")
+          fi
+
+          echo pytest "${marker_opts[@]}" --junitxml=junit/test-results.xml -n 2 --durations=25 "${coverage_opts[@]}" pandas_datareader/tests
+          pytest "${marker_opts[@]}" --junitxml=junit/test-results.xml -n 2 --durations=25 "${coverage_opts[@]}" pandas_datareader/tests
+
+      - name: Upload test results
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.name }}
+          path: junit/test-results.xml
+          if-no-files-found: ignore
+
+      - name: Upload coverage artifact
+        if: ${{ always() && env.COVERAGE == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ matrix.name }}
+          path: coverage.xml
+          if-no-files-found: ignore
