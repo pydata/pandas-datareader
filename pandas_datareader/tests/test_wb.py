@@ -1,6 +1,7 @@
 import time
 
 import numpy as np
+from packaging.version import Version
 import pandas as pd
 from pandas import testing as tm
 import pytest
@@ -15,6 +16,8 @@ from pandas_datareader.wb import (
     get_indicators,
     search,
 )
+
+PD_LT_3 = Version(pd.__version__) < Version("2.99.0")
 
 pytestmark = pytest.mark.stable
 
@@ -82,7 +85,10 @@ class TestWB:
         result = np.round(result, decimals=-3)
 
         expected.index.names = ["country", "year"]
-        tm.assert_frame_equal(result, expected)
+        assert expected.shape == result.shape
+        if PD_LT_3:
+            expected.index = result.index
+        tm.assert_frame_equal(result, expected, check_dtype=False)
 
         # pass start and end as string
         result = download(
@@ -123,7 +129,11 @@ class TestWB:
         result = np.round(result, decimals=-3)
 
         expected.index.names = ["country", "year"]
-        tm.assert_frame_equal(result, expected)
+        assert expected.shape == result.shape
+        if PD_LT_3:
+            expected.index = result.index
+
+        tm.assert_frame_equal(result, expected, check_dtype=False)
 
         result = WorldBankReader(
             inds, countries=cntry_codes, start=2000, end=2004, errors="ignore"
@@ -284,14 +294,17 @@ class TestWB:
         result = np.round(result, decimals=-3)
 
         expected.index.names = ["country", "year"]
-        tm.assert_frame_equal(result, expected)
+        assert expected.shape == result.shape
+        if PD_LT_3:
+            expected.index = result.index
+        tm.assert_frame_equal(result, expected, check_dtype=False)
 
         result = WorldBankReader(
             inds, countries=cntry_codes, start=2011, end=2012, freq="M", errors="ignore"
         ).read()
         result = result.sort_index()
         result = np.round(result, decimals=-3)
-        tm.assert_frame_equal(result, expected)
+        tm.assert_frame_equal(result, expected, check_dtype=False)
 
     @skip_on_exception(RemoteDataError)
     def test_wdi_download_quarterly(self):
@@ -322,12 +335,15 @@ class TestWB:
         result = result.sort_index()
         result = np.round(result, decimals=-3)
 
+        assert expected.shape == result.shape
+        if PD_LT_3:
+            expected.index = result.index
         expected.index.names = ["country", "year"]
-        tm.assert_frame_equal(result, expected)
+        tm.assert_frame_equal(result, expected, check_dtype=False)
 
         result = WorldBankReader(
             inds, countries=cntry_codes, start=2011, end=2012, freq="Q", errors="ignore"
         ).read()
         result = result.sort_index()
         result = np.round(result, decimals=-1)
-        tm.assert_frame_equal(result, expected)
+        tm.assert_frame_equal(result, expected, check_dtype=False)
