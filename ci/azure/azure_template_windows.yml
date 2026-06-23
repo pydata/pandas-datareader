@@ -15,23 +15,12 @@ jobs:
     vmImage: ${{ parameters.vmImage }}
   strategy:
     matrix:
-      python39_legecy:
-        python.version: '3.9'
-        PANDAS: 1.5.3
-        NUMPY: 1.23.4
-      python310_recent:
-        python.version: '3.10'
-        NUMPY: 1.24.4
       python311_latest:
         python.version: '3.11'
         PANDAS: 2.1.4
         NUMPY: 1.26.4
-      python312_pandas3:
-        python.version: '3.12'
-        PANDAS: 3.0.2
-      python313_pandas3:
-        python.version: '3.13'
-        PANDAS: 3.0.2
+      python314_pandas3:
+        python.version: '3.14'
 
   steps:
   - task: UsePythonVersion@0

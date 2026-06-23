@@ -1,12 +1,13 @@
-black==25.1.0
-isort>=5.12.0
+black
+isort
 flake8-bugbear
 coverage
 codecov
 coveralls
 flake8
-pytest>=7.3.0,<8
+pytest>=9,<10
 pytest-xdist
 pytest-cov
 wrapt
 flake8-pyproject
+ruff
