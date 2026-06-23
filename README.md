@@ -2,10 +2,11 @@
 
 Macroeconomic and factor-oriented remote data access for pandas.
 
-[![image](https://img.shields.io/pypi/v/pandas-datareader.svg)](https://pypi.python.org/pypi/pandas-datareader/)
-[![image](https://codecov.io/gh/pydata/pandas-datareader/branch/master/graph/badge.svg)](https://codecov.io/gh/pydata/pandas-datareader)
-[![image](https://readthedocs.org/projects/pandas-datareader/badge/?version=latest)](https://pandas-datareader.readthedocs.io/en/latest/)
-[![image](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![CI Testing](https://github.com/pydata/pandas-datareader/actions/workflows/ci.yml/badge.svg)](https://github.com/pydata/pandas-datareader/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/pandas-datareader.svg)](https://pypi.python.org/pypi/pandas-datareader/)
+[![Codecov](https://codecov.io/gh/pydata/pandas-datareader/branch/master/graph/badge.svg)](https://codecov.io/gh/pydata/pandas-datareader)
+[![RTD](https://readthedocs.org/projects/pandas-datareader/badge/?version=latest)](https://pandas-datareader.readthedocs.io/en/latest/)
+[![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![License](https://img.shields.io/pypi/l/pandas-datareader)](https://github.com/pydata/pandas-datareader/blob/main/LICENSE.md)
 
 ## Installation
