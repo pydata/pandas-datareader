@@ -662,7 +662,10 @@ class WorldBankReader(_BaseReader):
             out = out.drop("iso_code", axis=1)
             out = out.set_index(["country", "year"])
             out = out.apply(pd.to_numeric, errors="coerce")
-            string_dtype = pd.StringDtype(na_value=np.nan)
+            try:
+                string_dtype = pd.StringDtype(na_value=np.nan)
+            except TypeError:
+                string_dtype = pd.StringDtype()
             out.index = out.index.set_levels(
                 [
                     pd.Index(out.index.levels[0], dtype=string_dtype, name="country"),
