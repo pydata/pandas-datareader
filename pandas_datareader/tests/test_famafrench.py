@@ -10,7 +10,7 @@ pytestmark = pytest.mark.stable
 
 
 class TestFamaFrench:
-    def test_get_data(self):
+    def test_get_data_sample(self):
         keys = [
             "F-F_Research_Data_Factors",
             "F-F_ST_Reversal_Factor",
@@ -50,50 +50,50 @@ class TestFamaFrench:
         exp = pd.DataFrame(
             {
                 "Mkt-RF": [
-                    -3.36,
-                    3.4,
-                    6.31,
-                    2.0,
-                    -7.89,
-                    -5.57,
-                    6.93,
-                    -4.77,
-                    9.54,
-                    3.88,
-                    0.6,
+                    -3.35,
+                    3.39,
+                    6.30,
+                    1.99,
+                    -7.90,
+                    -5.56,
+                    6.92,
+                    -4.78,
+                    9.55,
+                    3.87,
+                    0.59,
                     6.82,
                 ],
                 "SMB": [
-                    0.4,
-                    1.19,
-                    1.48,
-                    4.87,
-                    0.09,
-                    -1.81,
-                    0.2,
-                    -3.0,
-                    3.96,
-                    1.13,
-                    3.76,
-                    0.73,
+                    0.43,
+                    1.18,
+                    1.46,
+                    4.84,
+                    0.13,
+                    -1.79,
+                    0.22,
+                    -3.01,
+                    3.82,
+                    1.08,
+                    3.67,
+                    0.72,
                 ],
                 "HML": [
-                    0.43,
-                    3.22,
-                    2.21,
-                    2.89,
-                    -2.44,
-                    -4.7,
-                    -0.31,
-                    -1.9,
-                    -3.16,
-                    -2.42,
-                    -0.96,
-                    3.69,
+                    0.33,
+                    3.18,
+                    2.19,
+                    2.96,
+                    -2.48,
+                    -4.73,
+                    -0.50,
+                    -1.73,
+                    -3.02,
+                    -2.46,
+                    -0.90,
+                    3.56,
                 ],
                 "RF": [
-                    0.0,
-                    0.0,
+                    0.00,
+                    0.00,
                     0.01,
                     0.01,
                     0.01,
@@ -195,3 +195,9 @@ class TestFamaFrench:
 
         exp_index = pd.period_range("2010-01-01", "2010-12-01", freq="M", name="Date")
         tm.assert_index_equal(results[0].index, exp_index)
+
+    def test_all_datasets(self) -> None:
+        for dataset in get_available_datasets():
+            data = web.DataReader(dataset, "famafrench")
+
+            assert tuple(data) == (*range(len(data) - 1), "DESCR")
