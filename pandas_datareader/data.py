@@ -6,13 +6,8 @@ Module contains tools for collecting data from various remote sources
 
 import warnings
 
-from pandas_datareader.compat import deprecate_kwarg
-
-from pandas_datareader.av.forex import AVForexReader
-from pandas_datareader.av.quotes import AVQuotesReader
-from pandas_datareader.av.sector import AVSectorPerformanceReader
-from pandas_datareader.av.time_series import AVTimeSeriesReader
 from pandas_datareader.bankofcanada import BankOfCanadaReader
+from pandas_datareader.compat import deprecate_kwarg
 from pandas_datareader.econdb import EcondbReader
 from pandas_datareader.eurostat import EurostatReader
 from pandas_datareader.exceptions import DEP_ERROR_MSG, ImmediateDeprecationError

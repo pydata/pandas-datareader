@@ -85,7 +85,7 @@ class EcondbReader(_BaseReader):
                 )
             query = f"{query}&token={self.api_key}"
 
-        return "{}?{}&format=json&page_size=500&expand=both".format(self._URL, query)
+        return f"{self._URL}?{query}&format=json&page_size=500&expand=both"
 
     def read(self):
         """read one data from specified URL"""

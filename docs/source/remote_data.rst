@@ -174,3 +174,19 @@ downloads.
    In [1]: from pandas_datareader import wb
    In [2]: wb.search("gdp.*capita.*constant").head()
    In [3]: wb.get_countries().head()
+
+
+.. _remote_data.removed:
+
+Readers Removed
+===============
+
+.. warning:: Reader Removed
+
+    Readers that are no longer maintained or have been removed from the public API include:
+
+    - Enigma
+    - Nasdaq
+    - AlphaVantage
+    - Thrift Savings Plan
+    - Quandl

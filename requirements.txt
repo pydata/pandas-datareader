@@ -1,4 +1,4 @@
 lxml
-pandas>=1.5.3
+pandas>=2.1.4
 requests>=2.19.0
 setuptools
