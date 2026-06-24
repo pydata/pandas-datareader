@@ -23,6 +23,7 @@ class OECDReader(_BaseReader):
     def _read_lines(self, out):
         """read one data from specified URL"""
         df = read_jsdmx(out)
+        df = df.dropna(how="all", axis=1)
         try:
             idx_name = df.index.name  # hack for pandas 0.16.2
             df.index = pd.to_datetime(df.index, errors="ignore")

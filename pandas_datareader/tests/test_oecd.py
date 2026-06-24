@@ -1,15 +1,12 @@
 from datetime import datetime
 
 import numpy as np
-from packaging.version import Version
 import pandas as pd
 from pandas import testing as tm
 import pytest
 
 from pandas_datareader import data as web
 from pandas_datareader._utils import RemoteDataError
-
-PD_LT_3 = Version(pd.__version__) < Version("2.99.0")
 
 
 class TestOECD:
@@ -36,7 +33,6 @@ class TestOECD:
         else:
             raise AssertionError("United States data is missing in the OECD dataset.")
 
-    @pytest.mark.skipif(PD_LT_3, reason="JSON transformation fails for pandas<3")
     def test_get_tourism(self):
         df = web.DataReader(
             "TOURISM_INBOUND",
