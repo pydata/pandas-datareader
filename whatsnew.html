@@ -1,443 +1,560 @@
 
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" data-content_root="./" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>What’s New &#8212; pandas-datareader v0.10.0 documentation</title>
-    
-  <link href="_static/css/theme.css" rel="stylesheet" />
-  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+    <title>What’s New &#8212; pandas-datareader 0.11.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
 
-    
-      
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
-    
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/basic.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
+    <script src="_static/documentation_options.js?v=1a9b1e2b"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'whatsnew';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Yahoo Finance" href="readers/yahoo.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en" />
+    <link rel="prev" title="World Bank" href="readers/world-bank.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.11.0" />
+  
     
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-    
-    <div class="container-fluid" id="banner"></div>
-
-    
-    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
-
-  <div id="navbar-start">
-    
-    
-
-<a class="navbar-brand" href="index.html">
-  <img src="_static/pandas-datareader-plain.svg" class="logo" alt="logo">
-</a>
-
-
-    
-  </div>
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
 
   
-  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
-    <div id="navbar-center" class="mr-auto">
-      
-      <div class="navbar-center-item">
-        <ul id="navbar-main-elements" class="navbar-nav">
-    <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="remote_data.html">
-  Remote Data Access
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="cache.html">
-  Caching queries
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="see-also.html">
-  Other Data Sources
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="readers/index.html">
-  Data Readers
- </a>
-</li>
-
-<li class="toctree-l1 current active nav-item">
- <a class="current reference internal nav-link" href="#">
-  What’s New
- </a>
-</li>
-
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
     
-</ul>
-      </div>
-      
-    </div>
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
 
-    <div id="navbar-end">
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
       
-      <div class="navbar-end-item">
-        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
-        <li class="nav-item">
-          <a class="nav-link" href="https://github.com/pydata/pandas-datareader" rel="noopener" target="_blank" title="GitHub">
-            <span><i class="fab fa-github-square"></i></span>
-            <label class="sr-only">GitHub</label>
-          </a>
-        </li>
-      </ul>
-      </div>
-      
-    </div>
+    
+    
+    <img src="_static/pandas-datareader-plain.svg" class="logo__image only-light" alt="pandas-datareader"/>
+    <img src="_static/pandas-datareader-plain-dark.svg" class="logo__image only-dark pst-js-only" alt="pandas-datareader"/>
+  
+  
+</a></div>
+    
   </div>
-</div>
-    </nav>
+  
+  <div class="col-lg-9 navbar-header-items">
     
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="remote_data.html">
+    Remote Data Access
+  </a>
+</li>
 
-    <div class="container-xl">
-      <div class="row">
-          
-            
-            <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="readers/yahoo.html"
-                        title="previous chapter">Yahoo Finance</a></p>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="cache.html">
+    Caching queries
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="see-also.html">
+    Other Data Sources
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="readers/index.html">
+    Data Readers
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    What’s New
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
     </div>
-</div>
-<script>$('#searchbox').show(0);</script>
-            </div>
-            
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
           
 
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
           
-          <div class="d-none d-xl-block col-xl-2 bd-toc">
-            
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/pydata/pandas-datareader" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="remote_data.html">
+    Remote Data Access
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="cache.html">
+    Caching queries
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="see-also.html">
+    Other Data Sources
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="readers/index.html">
+    Data Readers
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    What’s New
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/pydata/pandas-datareader" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
               
-              <div class="toc-item">
-                
-<div class="tocsection onthispage pt-5 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
 
-<nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#v0-10-0-july-11-2021">
-   v0.10.0 (July 11, 2021)
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#bug-fixes">
-     Bug Fixes
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#contributors">
-     Contributors
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#v0-9-1-july-26-2020">
-   v0.9.1 (July 26, 2020)
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#enhancements">
-     Enhancements
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-091-bug-fixes">
-     Bug Fixes
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id2">
-     Contributors
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#v0-9-0-july-10-2020">
-   v0.9.0 (July 10, 2020)
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-090-enhancements">
-     Enhancements
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#backwards-incompatible-api-changes">
-     Backwards incompatible API changes
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-090-bug-fixes">
-     Bug Fixes
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id5">
-     Contributors
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#v0-8-0-september-22-2019">
-   v0.8.0 (September 22, 2019)
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-080-enhancements">
-     Enhancements
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-080-api-breaking">
-     Backwards incompatible API changes
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-080-bug-fixes">
-     Bug Fixes
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id9">
-     Contributors
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#v0-7-0-september-11-2018">
-   v0.7.0 (September 11, 2018)
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-070-enhancements">
-     Enhancements
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-070-api-breaking">
-     Backwards incompatible API changes
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-070-bug-fixes">
-     Bug Fixes
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#v0-6-0-january-24-2018">
-   v0.6.0 (January 24, 2018)
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-060-enhancements">
-     Enhancements
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-060-api-breaking">
-     Backwards incompatible API changes
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-060-bug-fixes">
-     Bug Fixes
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#other-changes">
-     Other Changes
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#v0-5-0-july-25-2017">
-   v0.5.0 (July 25, 2017)
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-050-enhancements">
-     Enhancements
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-050-api-breaking">
-     Backwards incompatible API changes
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-050-bug-fixes">
-     Bug Fixes
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#v0-4-0-may-15-2017">
-   v0.4.0 (May 15, 2017)
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-040-enhancements">
-     Enhancements
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-040-api-breaking">
-     Backwards incompatible API changes
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#v0-3-0-january-14-2017">
-   v0.3.0 (January 14, 2017)
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#new-features">
-     New features
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#other-enhancements">
-       Other enhancements
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
       </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-030-bug-fixes">
-     Bug Fixes
-    </a>
-   </li>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">What’s New</span></li>
   </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#v0-2-1-november-26-2015">
-   v0.2.1 (November 26, 2015)
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-021-enhancements">
-     New features
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-021-api-breaking">
-     Backwards incompatible API changes
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#v0-2-0-october-9-2015">
-   v0.2.0 (October 9, 2015)
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-020-enhancements">
-     New features
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-020-api-breaking">
-     Backwards incompatible API changes
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whatsnew-020-bug-fixes">
-     Bug Fixes
-    </a>
-   </li>
-  </ul>
- </li>
-</ul>
-
 </nav>
-              </div>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
               
-              <div class="toc-item">
+              
+              
                 
-              </div>
-              
-            
-          </div>
-          
-
-          
-          
-            
-          
-          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
-              
-              <div>
-                
-  <div class="section" id="what-s-new">
-<span id="whatsnew"></span><h1>What’s New<a class="headerlink" href="#what-s-new" title="Permalink to this headline">¶</a></h1>
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="what-s-new">
+<span id="whatsnew"></span><h1>What’s New<a class="headerlink" href="#what-s-new" title="Link to this heading">#</a></h1>
 <p>These are new features and improvements of note in each release.</p>
-<div class="section" id="v0-10-0-july-11-2021">
-<span id="whatsnew-0100"></span><h2>v0.10.0 (July 11, 2021)<a class="headerlink" href="#v0-10-0-july-11-2021" title="Permalink to this headline">¶</a></h2>
+<section id="v0-11-0-june-2026">
+<span id="whatsnew-0110"></span><h2>v0.11.0 (June 2026)<a class="headerlink" href="#v0-11-0-june-2026" title="Link to this heading">#</a></h2>
 <p>Highlights include:</p>
-<div class="section" id="bug-fixes">
-<h3>Bug Fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Restored import and runtime compatibility with pandas 3 by removing the
+dependency on pandas internal decorator APIs.</p></li>
+<li><p>Vendored <code class="docutils literal notranslate"><span class="pre">deprecate_kwarg</span></code> to remove dependency on the private
+<code class="docutils literal notranslate"><span class="pre">pandas.util._decorators</span></code> module.</p></li>
+<li><p>Fixed default date sanitization on pandas 3, where <code class="docutils literal notranslate"><span class="pre">to_datetime(None)</span></code>
+now yields <code class="docutils literal notranslate"><span class="pre">NaT</span></code> instead of preserving <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p>Added a new high-level <code class="docutils literal notranslate"><span class="pre">pandas_datareader.macro</span></code> API providing unified
+access to FRED, Eurostat, and OECD macro datasets via <code class="docutils literal notranslate"><span class="pre">read_macro</span></code>,
+<code class="docutils literal notranslate"><span class="pre">search_macro_datasets</span></code>, and <code class="docutils literal notranslate"><span class="pre">describe_macro_dataset</span></code>.</p></li>
+<li><p>Narrowed the default public API surface to focus on macro and widely-used
+data sources; securities-related readers that relied on defunct or broken
+upstream APIs have been removed.</p></li>
+<li><p>Added import smoke coverage and explicit pandas 3 CI lanes.</p></li>
+</ul>
+<nav class="contents local" id="what-s-new-in-v0-11-0">
+<p class="topic-title">What’s new in v0.11.0</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#new-features" id="id32">New Features</a></p></li>
+<li><p><a class="reference internal" href="#backwards-incompatible-api-changes" id="id33">Backwards Incompatible API Changes</a></p></li>
+<li><p><a class="reference internal" href="#enhancements" id="id34">Enhancements</a></p></li>
+<li><p><a class="reference internal" href="#bug-fixes" id="id35">Bug Fixes</a></p></li>
+<li><p><a class="reference internal" href="#contributors" id="id36">Contributors</a></p></li>
+</ul>
+</nav>
+<section id="new-features">
+<span id="whatsnew-0110-new-features"></span><h3>New Features<a class="headerlink" href="#new-features" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Added a <code class="docutils literal notranslate"><span class="pre">pandas_datareader.macro</span></code> sub-package exposing a modern API for
+macro data retrieval:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">read_macro</span></code> — fetch one or more macro series in a single call.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">search_macro_datasets</span></code> — search across available FRED, Eurostat, and
+OECD datasets by keyword.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">describe_macro_dataset</span></code> — return metadata for a named dataset.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EurostatClient</span></code> and <code class="docutils literal notranslate"><span class="pre">OECDClient</span></code> — low-level client classes for
+direct provider access.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MacroResult</span></code> — typed container returned by <code class="docutils literal notranslate"><span class="pre">read_macro</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Added a functional interface to the EconDB reader (<code class="docutils literal notranslate"><span class="pre">get_data_econdb</span></code>) and
+made its keyword arguments explicit.</p></li>
+</ul>
+</section>
+<section id="backwards-incompatible-api-changes">
+<span id="whatsnew-0110-api-breaking"></span><h3>Backwards Incompatible API Changes<a class="headerlink" href="#backwards-incompatible-api-changes" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Removed the following securities-related readers that depended on defunct or
+heavily broken upstream APIs: AlphaVantage, Enigma, IEX, Morningstar, Naver,
+Nasdaq Trader symbols, Quandl, Stooq, Tiingo, and Yahoo Finance (including
+options and components helpers). The corresponding top-level helper functions
+(e.g. <code class="docutils literal notranslate"><span class="pre">get_data_yahoo</span></code>, <code class="docutils literal notranslate"><span class="pre">get_data_quandl</span></code>, <code class="docutils literal notranslate"><span class="pre">Options</span></code>) are no longer
+exported from <code class="docutils literal notranslate"><span class="pre">pandas_datareader</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">versioneer</span></code>-generated <code class="docutils literal notranslate"><span class="pre">_version.py</span></code> has been replaced with a static
+<code class="docutils literal notranslate"><span class="pre">__version__</span></code> attribute. The <code class="docutils literal notranslate"><span class="pre">get_versions()</span></code> function is no longer
+available.</p></li>
+<li><p>Minimum supported Python version is now 3.8.</p></li>
+</ul>
+</section>
+<section id="enhancements">
+<span id="whatsnew-0110-enhancements"></span><h3>Enhancements<a class="headerlink" href="#enhancements" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>EconDB reader documentation has been updated and improved.</p></li>
+<li><p>Upgraded codebase to Python 3.8 syntax (f-strings, <code class="docutils literal notranslate"><span class="pre">walrus</span></code> operator,
+type hints).</p></li>
+<li><p>Modernised project configuration (<code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>, Black formatting).</p></li>
+<li><p>Added Windows CI coverage.</p></li>
+</ul>
+</section>
+<section id="bug-fixes">
+<span id="whatsnew-0110-bug-fixes"></span><h3>Bug Fixes<a class="headerlink" href="#bug-fixes" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Vendored <code class="docutils literal notranslate"><span class="pre">deprecate_kwarg</span></code> to remove the dependency on the private
+<code class="docutils literal notranslate"><span class="pre">pandas.util._decorators</span></code> module, restoring compatibility with pandas 3
+(<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/972">GH 972</a>, <a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/1005">GH 1005</a>).</p></li>
+<li><p>Fixed FamaFrench reader to correctly parse the updated file format returned
+by the Kenneth French data library (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/1007">GH 1007</a>, <a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/1008">GH 1008</a>).</p></li>
+<li><p>Fixed FamaFrench reader to replace the deprecated <code class="docutils literal notranslate"><span class="pre">date_parser</span></code> argument
+with the modern <code class="docutils literal notranslate"><span class="pre">date_format</span></code> approach (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/972">GH 972</a>, <a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/1013">GH 1013</a>).</p></li>
+<li><p>Restored pandas 3 compatibility by fixing <code class="docutils literal notranslate"><span class="pre">to_datetime(None)</span></code> handling
+in <code class="docutils literal notranslate"><span class="pre">_sanitize_dates</span></code> so that <code class="docutils literal notranslate"><span class="pre">None</span></code> start/end dates are resolved before
+the <code class="docutils literal notranslate"><span class="pre">to_datetime</span></code> call rather than being passed as-is (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/1011">GH 1011</a>).</p></li>
+<li><p>Fixed MOEX reader <code class="docutils literal notranslate"><span class="pre">DataFrame.append</span></code> error caused by its removal in
+pandas 2.0; replaced with <code class="docutils literal notranslate"><span class="pre">pd.concat</span></code> (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/973">GH 973</a>).</p></li>
+<li><p>Fixed <code class="docutils literal notranslate"><span class="pre">pd.concat</span></code> call that was passing the objs list as a positional
+argument when only keyword arguments are accepted in newer pandas versions
+(<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/967">GH 967</a>).</p></li>
+<li><p>Fixed <code class="docutils literal notranslate"><span class="pre">read_csv</span></code> calls that passed <code class="docutils literal notranslate"><span class="pre">sep</span></code> as a positional argument to
+comply with newer pandas versions (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/968">GH 968</a>).</p></li>
+<li><p>Replaced deprecated <code class="docutils literal notranslate"><span class="pre">distutils.version.LooseVersion</span></code> with
+<code class="docutils literal notranslate"><span class="pre">packaging.version.Version</span></code> (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/928">GH 928</a>).</p></li>
+<li><p>Fixed missing <code class="docutils literal notranslate"><span class="pre">version.parse</span></code> import in compatibility shim (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/928">GH 928</a>).</p></li>
+<li><p>Fixed various macro readers (FRED, EconDB, Eurostat, OECD) to work with
+current upstream APIs.</p></li>
+<li><p>Fixed <code class="docutils literal notranslate"><span class="pre">BUG:</span> <span class="pre">Correct</span> <span class="pre">concat</span></code> in base reader logic.</p></li>
+</ul>
+</section>
+<section id="contributors">
+<h3>Contributors<a class="headerlink" href="#contributors" title="Link to this heading">#</a></h3>
+<p>Thanks to all of the contributors for the 0.11.0 release (based on git log):</p>
+<ul class="simple">
+<li><p>Aniket Patil</p></li>
+<li><p>Charles Burkland</p></li>
+<li><p>Eric Zhang (FLIER001)</p></li>
+<li><p>FidoDido1982</p></li>
+<li><p>Igor Molnar</p></li>
+<li><p>Jaypatel1511</p></li>
+<li><p>Kasra Bigdeli</p></li>
+<li><p>Kevin Sheppard</p></li>
+<li><p>MBounouar</p></li>
+<li><p>Noah Stoffman</p></li>
+<li><p>Olexandr88</p></li>
+<li><p>Radon23</p></li>
+<li><p>Sugato Ray</p></li>
+<li><p>Zhehao Zhang</p></li>
+<li><p>agcr</p></li>
+<li><p>captnTardigrade</p></li>
+<li><p>hnishi</p></li>
+<li><p>mg-karamaan</p></li>
+<li><p>沈国权</p></li>
+</ul>
+<p>These lists of names are automatically generated based on git log, and may not
+be complete.</p>
+</section>
+</section>
+<section id="v0-10-0-july-11-2021">
+<span id="whatsnew-0100"></span><h2>v0.10.0 (July 11, 2021)<a class="headerlink" href="#v0-10-0-july-11-2021" title="Link to this heading">#</a></h2>
+<p>Highlights include:</p>
+<section id="id1">
+<h3>Bug Fixes<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Fixed Yahoo readers which now require headers</p></li>
 <li><p>Fixed other reader</p></li>
 <li><p>Improved compatibility with pandas</p></li>
 </ul>
-</div>
-<div class="section" id="contributors">
-<h3>Contributors<a class="headerlink" href="#contributors" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id2">
+<h3>Contributors<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <p>Thanks to all of the contributors for the 0.10.0 release (based on git log):</p>
 <ul class="simple">
 <li><p>Igor Molnar</p></li>
@@ -453,70 +570,70 @@
 </ul>
 <p>These lists of names are automatically generated based on git log, and may not
 be complete.</p>
-</div>
-</div>
-<div class="section" id="v0-9-1-july-26-2020">
-<span id="whatsnew-091"></span><h2>v0.9.1 (July 26, 2020)<a class="headerlink" href="#v0-9-1-july-26-2020" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="v0-9-1-july-26-2020">
+<span id="whatsnew-091"></span><h2>v0.9.1 (July 26, 2020)<a class="headerlink" href="#v0-9-1-july-26-2020" title="Link to this heading">#</a></h2>
 <p>Highlights include:</p>
-<div class="contents local topic" id="what-s-new-in-v0-9-1">
+<nav class="contents local" id="what-s-new-in-v0-9-1">
 <p class="topic-title">What’s new in v0.9.1</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#enhancements" id="id27">Enhancements</a></p></li>
-<li><p><a class="reference internal" href="#whatsnew-091-bug-fixes" id="id28">Bug Fixes</a></p></li>
-<li><p><a class="reference internal" href="#id2" id="id29">Contributors</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-091-enhancements" id="id37">Enhancements</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-091-bug-fixes" id="id38">Bug Fixes</a></p></li>
+<li><p><a class="reference internal" href="#id5" id="id39">Contributors</a></p></li>
 </ul>
-</div>
-<div class="section" id="enhancements">
-<span id="whatsnew-091-enhancements"></span><h3>Enhancements<a class="headerlink" href="#enhancements" title="Permalink to this headline">¶</a></h3>
+</nav>
+<section id="whatsnew-091-enhancements">
+<span id="id3"></span><h3>Enhancements<a class="headerlink" href="#whatsnew-091-enhancements" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>MOEX now returns data only from primary trading boards for
-each ticker (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/811">GH811</a>, <a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/748">GH748</a>)</p></li>
+each ticker (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/811">GH 811</a>, <a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/748">GH 748</a>)</p></li>
 <li><p>Added read_all_boards() method for MOEX that returns data
 from every trading board (ver. 0.9.0 behaviour)</p></li>
 <li><p>Docs for MOEX reedited</p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-091-bug-fixes">
-<span id="id1"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-091-bug-fixes" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="whatsnew-091-bug-fixes">
+<span id="id4"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-091-bug-fixes" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Fixed broken links on the github ussies on “What’s New” docs pages</p></li>
 </ul>
-</div>
-<div class="section" id="id2">
-<h3>Contributors<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id5">
+<h3>Contributors<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Dmitry Alekseev</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="v0-9-0-july-10-2020">
-<h2>v0.9.0 (July 10, 2020)<a class="headerlink" href="#v0-9-0-july-10-2020" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="v0-9-0-july-10-2020">
+<h2>v0.9.0 (July 10, 2020)<a class="headerlink" href="#v0-9-0-july-10-2020" title="Link to this heading">#</a></h2>
 <p>Highlights include:</p>
-<div class="contents local topic" id="what-s-new-in-v0-9-0">
+<nav class="contents local" id="what-s-new-in-v0-9-0">
 <p class="topic-title">What’s new in v0.9.0</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#whatsnew-090-enhancements" id="id30">Enhancements</a></p></li>
-<li><p><a class="reference internal" href="#backwards-incompatible-api-changes" id="id31">Backwards incompatible API changes</a></p></li>
-<li><p><a class="reference internal" href="#whatsnew-090-bug-fixes" id="id32">Bug Fixes</a></p></li>
-<li><p><a class="reference internal" href="#id5" id="id33">Contributors</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-090-enhancements" id="id40">Enhancements</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-090-api-breaking" id="id41">Backwards incompatible API changes</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-090-bug-fixes" id="id42">Bug Fixes</a></p></li>
+<li><p><a class="reference internal" href="#id9" id="id43">Contributors</a></p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-090-enhancements">
-<span id="id3"></span><h3>Enhancements<a class="headerlink" href="#whatsnew-090-enhancements" title="Permalink to this headline">¶</a></h3>
+</nav>
+<section id="whatsnew-090-enhancements">
+<span id="id6"></span><h3>Enhancements<a class="headerlink" href="#whatsnew-090-enhancements" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Added a timeout parameter to prevent infinite hangs (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/790">GH790</a>)</p></li>
-<li><p>Added AlphaVantage endpoint to get historical currency exchange rates (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/764">GH764</a>)</p></li>
-<li><p>Improved logging when rate limited (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/745">GH745</a>)</p></li>
-<li><p>Added daily historical data from Naver Finance (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/722">GH722</a>)</p></li>
+<li><p>Added a timeout parameter to prevent infinite hangs (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/790">GH 790</a>)</p></li>
+<li><p>Added AlphaVantage endpoint to get historical currency exchange rates (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/764">GH 764</a>)</p></li>
+<li><p>Improved logging when rate limited (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/745">GH 745</a>)</p></li>
+<li><p>Added daily historical data from Naver Finance (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/722">GH 722</a>)</p></li>
 <li><p>Added the method <code class="docutils literal notranslate"><span class="pre">test</span></code> to the package to simplify running tests from an
 installation using</p></li>
 </ul>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python -c <span class="s2">&quot;import pandas_datareader; pandas_datareader.test()&quot;</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import pandas_datareader; pandas_datareader.test()&quot;</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="backwards-incompatible-api-changes">
-<span id="whatsnew-090-api-breaking"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#backwards-incompatible-api-changes" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="whatsnew-090-api-breaking">
+<span id="id7"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-090-api-breaking" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Dropped support for Python 2.7. The minimum python version is now Python 3.6.</p></li>
 <li><p>Removed Robinhood which no longer exists</p></li>
@@ -524,22 +641,22 @@ installation using</p></li>
 <li><p>Immediately deprecated Enigma which has substantially changed their business model and API</p></li>
 <li><p>Immediately deprecated old symbol names for TSP to reflect the new website API</p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-090-bug-fixes">
-<span id="id4"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-090-bug-fixes" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="whatsnew-090-bug-fixes">
+<span id="id8"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-090-bug-fixes" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Fix Yahoo Splits for change in format (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/756">GH756</a>)</p></li>
-<li><p>Fixed reading bond yields from Stooq (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/752">GH752</a>)</p></li>
-<li><p>Update TSP web scraper to new site (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/740">GH740</a>)</p></li>
-<li><p>Fixed EconDB reader to use session (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/737">GH737</a>)</p></li>
-<li><p>Fix reading futures data from Stooq (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/718">GH718</a>)</p></li>
-<li><p>Correct NASDAQ symbols fields link (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/715">GH715</a>)</p></li>
-<li><p>Fix Yahoo! actions bug due to change in split format (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/755">GH755</a>)</p></li>
-<li><p>Fix FutureWarning from pandas import (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/762">GH762</a>)</p></li>
+<li><p>Fix Yahoo Splits for change in format (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/756">GH 756</a>)</p></li>
+<li><p>Fixed reading bond yields from Stooq (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/752">GH 752</a>)</p></li>
+<li><p>Update TSP web scraper to new site (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/740">GH 740</a>)</p></li>
+<li><p>Fixed EconDB reader to use session (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/737">GH 737</a>)</p></li>
+<li><p>Fix reading futures data from Stooq (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/718">GH 718</a>)</p></li>
+<li><p>Correct NASDAQ symbols fields link (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/715">GH 715</a>)</p></li>
+<li><p>Fix Yahoo! actions bug due to change in split format (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/755">GH 755</a>)</p></li>
+<li><p>Fix FutureWarning from pandas import (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/762">GH 762</a>)</p></li>
 </ul>
-</div>
-<div class="section" id="id5">
-<h3>Contributors<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id9">
+<h3>Contributors<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Spencer Adams</p></li>
 <li><p>Jesse Aldridge</p></li>
@@ -554,44 +671,44 @@ installation using</p></li>
 <li><p>David Stephens</p></li>
 <li><p>Eldon Allred</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="v0-8-0-september-22-2019">
-<span id="whatsnew-080"></span><h2>v0.8.0 (September 22, 2019)<a class="headerlink" href="#v0-8-0-september-22-2019" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="v0-8-0-september-22-2019">
+<span id="whatsnew-080"></span><h2>v0.8.0 (September 22, 2019)<a class="headerlink" href="#v0-8-0-september-22-2019" title="Link to this heading">#</a></h2>
 <p>Highlights include:</p>
 <ul class="simple">
 <li><p>A new connector for Econdb was introduced.  Econdb provides
 aggregated economic data from 90+ official statistical agencies
-(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/615">GH615</a>)</p></li>
+(<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/615">GH 615</a>)</p></li>
 <li><p>Migrated IEX readers to <a class="reference external" href="https://iexcloud.io">IEX Cloud</a>. All
-readers now require an API token (<code class="docutils literal notranslate"><span class="pre">IEX_API_KEY</span></code>) (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/638">GH638</a>)</p></li>
+readers now require an API token (<code class="docutils literal notranslate"><span class="pre">IEX_API_KEY</span></code>) (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/638">GH 638</a>)</p></li>
 <li><p>Removal of Google Finance and Morningstar, which were deprecated in 0.7.0</p></li>
 <li><p>Immediate deprecation of Robinhood for quotes and historical data. Robinhood
 ended support for these endpoints in 1/2019</p></li>
 </ul>
-<div class="contents local topic" id="what-s-new-in-v0-8-0">
+<nav class="contents local" id="what-s-new-in-v0-8-0">
 <p class="topic-title">What’s new in v0.8.0</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#whatsnew-080-enhancements" id="id34">Enhancements</a></p></li>
-<li><p><a class="reference internal" href="#whatsnew-080-api-breaking" id="id35">Backwards incompatible API changes</a></p></li>
-<li><p><a class="reference internal" href="#whatsnew-080-bug-fixes" id="id36">Bug Fixes</a></p></li>
-<li><p><a class="reference internal" href="#id9" id="id37">Contributors</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-080-enhancements" id="id44">Enhancements</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-080-api-breaking" id="id45">Backwards incompatible API changes</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-080-bug-fixes" id="id46">Bug Fixes</a></p></li>
+<li><p><a class="reference internal" href="#id13" id="id47">Contributors</a></p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-080-enhancements">
-<span id="id6"></span><h3>Enhancements<a class="headerlink" href="#whatsnew-080-enhancements" title="Permalink to this headline">¶</a></h3>
+</nav>
+<section id="whatsnew-080-enhancements">
+<span id="id10"></span><h3>Enhancements<a class="headerlink" href="#whatsnew-080-enhancements" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Added Tiingo IEX Historical reader. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/619">GH619</a>)</p></li>
-<li><p>Added support for Alpha Vantage intraday time series prices (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/631">GH631</a>)</p></li>
+<li><p>Added Tiingo IEX Historical reader. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/619">GH 619</a>)</p></li>
+<li><p>Added support for Alpha Vantage intraday time series prices (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/631">GH 631</a>)</p></li>
 <li><p>Up to 15 years of historical prices from IEX with new platform, IEX Cloud</p></li>
-<li><p>Added testing on Python 3.7 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/667">GH667</a>)</p></li>
-<li><p>Allow IEX to read less than 1 year of data (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/649">GH649</a>)</p></li>
-<li><p>Allow data download from Poland using stooq (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/597">GH597</a>)</p></li>
+<li><p>Added testing on Python 3.7 (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/667">GH 667</a>)</p></li>
+<li><p>Allow IEX to read less than 1 year of data (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/649">GH 649</a>)</p></li>
+<li><p>Allow data download from Poland using stooq (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/597">GH 597</a>)</p></li>
 <li><p>All time series readers now use a rolling default starting date (most are 5 years before the current date. Intraday readers are 3-5 days from the current date)</p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-080-api-breaking">
-<span id="id7"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-080-api-breaking" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="whatsnew-080-api-breaking">
+<span id="id11"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-080-api-breaking" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Immediate deprecation of Robinhood for quotes and historical data. Robinhood
 ended support for these endpoints in 1/2019. The Robinhood quotes and daily
@@ -599,29 +716,29 @@ readers will raise an <code class="docutils literal notranslate"><span class="pr
 <li><p>Usage of all IEX readers requires an IEX Cloud API token, which can
 be passed as a parameter or stored in the environment variable
 <code class="docutils literal notranslate"><span class="pre">IEX_API_TOKEN</span></code></p></li>
-<li><p>Deprecated <code class="docutils literal notranslate"><span class="pre">access_key</span></code> in favor of <code class="docutils literal notranslate"><span class="pre">api_key</span></code> in <code class="docutils literal notranslate"><span class="pre">DataReader</span></code>. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/693">GH693</a>)</p></li>
+<li><p>Deprecated <code class="docutils literal notranslate"><span class="pre">access_key</span></code> in favor of <code class="docutils literal notranslate"><span class="pre">api_key</span></code> in <code class="docutils literal notranslate"><span class="pre">DataReader</span></code>. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/693">GH 693</a>)</p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-080-bug-fixes">
-<span id="id8"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-080-bug-fixes" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="whatsnew-080-bug-fixes">
+<span id="id12"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-080-bug-fixes" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Fix Yahoo! actions issue where dividends are adjusted twice as a result of a
-change to the Yahoo! API. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/583">GH583</a>)</p></li>
+change to the Yahoo! API. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/583">GH 583</a>)</p></li>
 <li><p>Fix AlphaVantage time series data ordering after provider switch to
-descending order (maintains ascending order for consistency). (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/662">GH662</a>)</p></li>
+descending order (maintains ascending order for consistency). (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/662">GH 662</a>)</p></li>
 <li><p>Refactored compatibility library to be independent of pandas version.</p></li>
-<li><p>Fixed quarter value handling in JSDMX and OECD. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/685">GH685</a>)</p></li>
+<li><p>Fixed quarter value handling in JSDMX and OECD. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/685">GH 685</a>)</p></li>
 <li><p>Fixed a bug in <code class="docutils literal notranslate"><span class="pre">base</span></code> so that the reader does not error when response.encoding
-is <code class="docutils literal notranslate"><span class="pre">None</span></code>. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/674">GH674</a>)</p></li>
-<li><p>Correct EcondbReader’s API URL format. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/670">GH670</a>)</p></li>
-<li><p>Fix eurostat URL. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/669">GH669</a>)</p></li>
-<li><p>Adjust Alphavantage time series reader to account for descending ordering. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/666">GH666</a>)</p></li>
-<li><p>Fix bug in downloading index historical constituents. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/591">GH591</a>)</p></li>
-<li><p>Fix a bug that occurs when an endpoint returns has no data for a date range. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/640">GH640</a>)</p></li>
+is <code class="docutils literal notranslate"><span class="pre">None</span></code>. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/674">GH 674</a>)</p></li>
+<li><p>Correct EcondbReader’s API URL format. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/670">GH 670</a>)</p></li>
+<li><p>Fix eurostat URL. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/669">GH 669</a>)</p></li>
+<li><p>Adjust Alphavantage time series reader to account for descending ordering. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/666">GH 666</a>)</p></li>
+<li><p>Fix bug in downloading index historical constituents. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/591">GH 591</a>)</p></li>
+<li><p>Fix a bug that occurs when an endpoint returns has no data for a date range. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/640">GH 640</a>)</p></li>
 </ul>
-</div>
-<div class="section" id="id9">
-<h3>Contributors<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id13">
+<h3>Contributors<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Peiji Chen</p></li>
 <li><p>EconDB</p></li>
@@ -637,10 +754,10 @@ is <code class="docutils literal notranslate"><span class="pre">None</span></cod
 <li><p>Tony Shouse</p></li>
 <li><p>David Stephens</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="v0-7-0-september-11-2018">
-<span id="whatsnew-070"></span><h2>v0.7.0 (September 11, 2018)<a class="headerlink" href="#v0-7-0-september-11-2018" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="v0-7-0-september-11-2018">
+<span id="whatsnew-070"></span><h2>v0.7.0 (September 11, 2018)<a class="headerlink" href="#v0-7-0-september-11-2018" title="Link to this heading">#</a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Google finance and Morningstar for historical price data have been immediately deprecated.</p>
@@ -650,30 +767,30 @@ is <code class="docutils literal notranslate"><span class="pre">None</span></cod
 <li><p>Immediate deprecation of Google finance and Morningstar for historical price data, as these API endpoints are no longer supported by their respective providers. Alternate methods are welcome via pull requests, as PDR would like to restore these features.</p></li>
 <li><p>Removal of EDGAR, which was deprecated in v0.6.0.</p></li>
 </ul>
-<div class="contents local topic" id="what-s-new-in-v0-7-0">
+<nav class="contents local" id="what-s-new-in-v0-7-0">
 <p class="topic-title">What’s new in v0.7.0</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#whatsnew-070-enhancements" id="id38">Enhancements</a></p></li>
-<li><p><a class="reference internal" href="#whatsnew-070-api-breaking" id="id39">Backwards incompatible API changes</a></p></li>
-<li><p><a class="reference internal" href="#whatsnew-070-bug-fixes" id="id40">Bug Fixes</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-070-enhancements" id="id48">Enhancements</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-070-api-breaking" id="id49">Backwards incompatible API changes</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-070-bug-fixes" id="id50">Bug Fixes</a></p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-070-enhancements">
-<span id="id10"></span><h3>Enhancements<a class="headerlink" href="#whatsnew-070-enhancements" title="Permalink to this headline">¶</a></h3>
+</nav>
+<section id="whatsnew-070-enhancements">
+<span id="id14"></span><h3>Enhancements<a class="headerlink" href="#whatsnew-070-enhancements" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>A new data connector for data provided by
 <a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> was
 introduced to obtain Foreign Exchange (FX) data.
-(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH389</a>)</p></li>
+(<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH 389</a>)</p></li>
 <li><p>A new data connector for data provided by
 <a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> was
 introduced to obtain historical time series data.
-(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH389</a>)</p></li>
+(<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH 389</a>)</p></li>
 <li><dl class="simple">
 <dt>A new data connector for data provided by</dt><dd><p><a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> was
 introduced to obtain sector performance data, accessed through the
 top-level function <code class="docutils literal notranslate"><span class="pre">get_sector_performance_av</span></code>.
-(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH389</a>)</p>
+(<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH 389</a>)</p>
 </dd>
 </dl>
 </li>
@@ -681,45 +798,45 @@ top-level function <code class="docutils literal notranslate"><span class="pre">
 <a class="reference external" href="https://www.alphavantage.co/documentation">Alpha Vantage</a> was
 introduced to obtain real-time Batch Stock Quotes through the
 top-level function <code class="docutils literal notranslate"><span class="pre">get_quote_av</span></code>.
-(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH389</a>)</p></li>
+(<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/389">GH 389</a>)</p></li>
 <li><p>MOEX data connector now supports multiple symbols in constructor.
-(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/562">GH562</a>)</p></li>
+(<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/562">GH 562</a>)</p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-070-api-breaking">
-<span id="id11"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-070-api-breaking" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="whatsnew-070-api-breaking">
+<span id="id15"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-070-api-breaking" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Deprecation of Google finance daily reader.  Google retired the remaining financial data end point in June 2018.  It is not possible to reliably retrieve historical price data without this endpoint. The Google daily reader will raise an <cite>ImmediateDeprecationError</cite> when called.</p></li>
 <li><p>Deprecation of Morningstar daily reader. Morningstar ended support for the historical price data endpoint in July 2018. It is not possible to retrieve historical price data without this endpoint. The Morningstar daily reader will raise an <cite>ImmediateDeprecationError</cite> when called.</p></li>
 <li><p>When requesting multiple symbols from a DailyReader (ex: google, yahoo, IEX)
 a MultiIndex DataFrame is now returned.  Previously Panel or dict of DataFrames
-were returned. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/297">GH297</a>).</p></li>
+were returned. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/297">GH 297</a>).</p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-070-bug-fixes">
-<span id="id12"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-070-bug-fixes" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="whatsnew-070-bug-fixes">
+<span id="id16"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-070-bug-fixes" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Fixed import of pandas.compat (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/657">GH657</a>)</p></li>
+<li><p>Fixed import of pandas.compat (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/657">GH 657</a>)</p></li>
 <li><p>Added support for passing the API KEY to QuandlReader either directly or by
-setting the environmental variable QUANDL_API_KEY (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/485">GH485</a>).</p></li>
-<li><p>Added support for optionally passing a custom base_url to the EnigmaReader  (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/499">GH499</a>).</p></li>
-<li><p>Fix Yahoo! price data (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/498">GH498</a>).</p></li>
+setting the environmental variable QUANDL_API_KEY (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/485">GH 485</a>).</p></li>
+<li><p>Added support for optionally passing a custom base_url to the EnigmaReader  (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/499">GH 499</a>).</p></li>
+<li><p>Fix Yahoo! price data (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/498">GH 498</a>).</p></li>
 <li><p>Added back support for Yahoo! price, dividends, and splits data for stocks
-and currency pairs (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/487">GH487</a>).</p></li>
-<li><p>Add <cite>is_list_like</cite> to compatibility layer to avoid failure on pandas &gt;= 0.23 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/520">GH520</a>).</p></li>
-<li><p>Fixed Yahoo! time offset (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/487">GH487</a>).</p></li>
-<li><p>Fix Yahoo! quote reader (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/540">GH540</a>).</p></li>
-<li><p>Remove import of deprecated <cite>tm.get_data_path</cite> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/566">GH566</a>)</p></li>
+and currency pairs (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/487">GH 487</a>).</p></li>
+<li><p>Add <cite>is_list_like</cite> to compatibility layer to avoid failure on pandas &gt;= 0.23 (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/520">GH 520</a>).</p></li>
+<li><p>Fixed Yahoo! time offset (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/487">GH 487</a>).</p></li>
+<li><p>Fix Yahoo! quote reader (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/540">GH 540</a>).</p></li>
+<li><p>Remove import of deprecated <cite>tm.get_data_path</cite> (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/566">GH 566</a>)</p></li>
 <li><p>Allow full usage of stooq url parameters.</p></li>
 <li><p>Removed unused requests-file and requests-ftp dependencies.</p></li>
 <li><p>Fix Yahoo! actions issue where the default reporting adjusts dividends. The unadjusted
 dividends may lack precision due to accumulated numerical error when converting adjusted
-to the original dividend amount. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/495">GH495</a>)</p></li>
+to the original dividend amount. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/495">GH 495</a>)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="v0-6-0-january-24-2018">
-<span id="whatsnew-060"></span><h2>v0.6.0 (January 24, 2018)<a class="headerlink" href="#v0-6-0-january-24-2018" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="v0-6-0-january-24-2018">
+<span id="whatsnew-060"></span><h2>v0.6.0 (January 24, 2018)<a class="headerlink" href="#v0-6-0-january-24-2018" title="Link to this heading">#</a></h2>
 <p>This is a major release from 0.5.0. We recommend that all users upgrade.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -741,58 +858,58 @@ have been removed.  PDR would like to restore these features, and pull
 requests are welcome.</p></li>
 <li><p>A new connector for Tiingo was introduced.  Tiingo provides
 historical end-of-day data for a large set of equities, ETFs and mutual
-funds. Free registration is required to get an API key (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/478">GH478</a>).</p></li>
+funds. Free registration is required to get an API key (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/478">GH 478</a>).</p></li>
 <li><p>A new connector for Robinhood was introduced.  This provides
 up to 1 year of historical end-of-day data. It also provides near
-real-time quotes.  (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/477">GH477</a>).</p></li>
+real-time quotes.  (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/477">GH 477</a>).</p></li>
 <li><p>A new connector for Morningstar Open, High, Low, Close and Volume was
-introduced (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/467">GH467</a>)</p></li>
-<li><p>A new connector for IEX daily price data was introduced (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/465">GH465</a>).</p></li>
+introduced (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/467">GH 467</a>)</p></li>
+<li><p>A new connector for IEX daily price data was introduced (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/465">GH 465</a>).</p></li>
 <li><p>A new connector for IEX the majority of the IEX API was introduced
-(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/446">GH446</a>).</p></li>
+(<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/446">GH 446</a>).</p></li>
 <li><p>A new data connector for stock index data provided by Stooq was
-introduced (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/447">GH447</a>).</p></li>
+introduced (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/447">GH 447</a>).</p></li>
 <li><p>A new data connector for data provided by the Bank of Canada was
-introduced (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/440">GH440</a>).</p></li>
+introduced (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/440">GH 440</a>).</p></li>
 <li><p>A new data connector for data provided by Moscow Exchange (MOEX)
-introduced (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/381">GH381</a>).</p></li>
+introduced (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/381">GH 381</a>).</p></li>
 </ul>
-<div class="contents local topic" id="what-s-new-in-v0-6-0">
+<nav class="contents local" id="what-s-new-in-v0-6-0">
 <p class="topic-title">What’s new in v0.6.0</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#whatsnew-060-enhancements" id="id41">Enhancements</a></p></li>
-<li><p><a class="reference internal" href="#whatsnew-060-api-breaking" id="id42">Backwards incompatible API changes</a></p></li>
-<li><p><a class="reference internal" href="#whatsnew-060-bug-fixes" id="id43">Bug Fixes</a></p></li>
-<li><p><a class="reference internal" href="#other-changes" id="id44">Other Changes</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-060-enhancements" id="id51">Enhancements</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-060-api-breaking" id="id52">Backwards incompatible API changes</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-060-bug-fixes" id="id53">Bug Fixes</a></p></li>
+<li><p><a class="reference internal" href="#other-changes" id="id54">Other Changes</a></p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-060-enhancements">
-<span id="id13"></span><h3>Enhancements<a class="headerlink" href="#whatsnew-060-enhancements" title="Permalink to this headline">¶</a></h3>
+</nav>
+<section id="whatsnew-060-enhancements">
+<span id="id17"></span><h3>Enhancements<a class="headerlink" href="#whatsnew-060-enhancements" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>A new data connector for data provided by the
 <a class="reference external" href="https://www.bankofcanada.ca/rates/">Bank of Canada</a> was introduced.
-(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/440">GH440</a>)</p></li>
+(<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/440">GH 440</a>)</p></li>
 <li><p>A new data connector for stock index data provided by
-<a class="reference external" href="https://stooq.com">Stooq</a> was introduced. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/447">GH447</a>)</p></li>
+<a class="reference external" href="https://stooq.com">Stooq</a> was introduced. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/447">GH 447</a>)</p></li>
 <li><p>A new connector for IEX the majority of the
 <a class="reference external" href="https://iextrading.com/developer/docs/">IEX API</a>  was introduced
-(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/446">GH446</a>).</p></li>
+(<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/446">GH 446</a>).</p></li>
 <li><p>A new connector for
 <a class="reference external" href="https://iextrading.com/developer/docs/">IEX daily price data</a>  was
-introduced (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/465">GH465</a>).</p></li>
+introduced (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/465">GH 465</a>).</p></li>
 <li><p>A new data connector for stock pricing data provided by
-<a class="reference external" href="http://www.morningstar.com">Morningstar</a> was introduced. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/467">GH467</a>)</p></li>
+<a class="reference external" href="http://www.morningstar.com">Morningstar</a> was introduced. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/467">GH 467</a>)</p></li>
 <li><p>A new data connector for stock pricing data provided by
-<a class="reference external" href="https://www.robinhood.com">Robinhood</a> was introduced. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/477">GH477</a>)</p></li>
+<a class="reference external" href="https://www.robinhood.com">Robinhood</a> was introduced. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/477">GH 477</a>)</p></li>
 <li><p>A new data connector for stock pricing data provided by
-<a class="reference external" href="https://api.tiingo.com/docs">Tiingo</a> was introduced. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/478">GH478</a>)</p></li>
+<a class="reference external" href="https://api.tiingo.com/docs">Tiingo</a> was introduced. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/478">GH 478</a>)</p></li>
 <li><p>A new data connector for data provided by
 <a class="reference external" href="https://iss.moex.com/iss/reference/?lang=en">Moscow Exchange</a>
-was introduced. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/381">GH381</a>).</p></li>
+was introduced. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/381">GH 381</a>).</p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-060-api-breaking">
-<span id="id14"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-060-api-breaking" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="whatsnew-060-api-breaking">
+<span id="id18"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-060-api-breaking" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Deprecation of Yahoo readers.  Yahoo! retired the financial data end points in
 late 2017.  It is not possible to reliably retrieve data from Yahoo! without
@@ -807,232 +924,379 @@ unreliable.  It many call it works.  However it also regularly fails,
 especially when used for bulk downloading. Google may be removed in the
 future.</p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-060-bug-fixes">
-<span id="id15"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-060-bug-fixes" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="whatsnew-060-bug-fixes">
+<span id="id19"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-060-bug-fixes" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p><cite>freq</cite> parameter was added to the WorldBank connector to address a limitation (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/198">GH198</a>, <a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/449">GH449</a>).</p></li>
-<li><p>The Enigma data connector was updated to the latest API (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/380">GH380</a>).</p></li>
-<li><p>The Google finance endpoint was updated to the latest value (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/404">GH404</a>).</p></li>
-<li><p>Tne end point for FRED was updated to the latest values (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/436">GH436</a>).</p></li>
-<li><p>Tne end point for WorldBank was updated to the latest values (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/456">GH456</a>).</p></li>
+<li><p><cite>freq</cite> parameter was added to the WorldBank connector to address a limitation (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/198">GH 198</a>, <a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/449">GH 449</a>).</p></li>
+<li><p>The Enigma data connector was updated to the latest API (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/380">GH 380</a>).</p></li>
+<li><p>The Google finance endpoint was updated to the latest value (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/404">GH 404</a>).</p></li>
+<li><p>Tne end point for FRED was updated to the latest values (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/436">GH 436</a>).</p></li>
+<li><p>Tne end point for WorldBank was updated to the latest values (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/456">GH 456</a>).</p></li>
 </ul>
-</div>
-<div class="section" id="other-changes">
-<h3>Other Changes<a class="headerlink" href="#other-changes" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="other-changes">
+<h3>Other Changes<a class="headerlink" href="#other-changes" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>The minimum tested pandas version was increased to 0.19.2 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/441">GH441</a>).</p></li>
-<li><p>Added versioneer to simplifying release (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/442">GH442</a>).</p></li>
-<li><p>Added doctr to automatically build docs for gh-pages (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/459">GH459</a>).</p></li>
+<li><p>The minimum tested pandas version was increased to 0.19.2 (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/441">GH 441</a>).</p></li>
+<li><p>Added versioneer to simplifying release (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/442">GH 442</a>).</p></li>
+<li><p>Added doctr to automatically build docs for gh-pages (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/459">GH 459</a>).</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="v0-5-0-july-25-2017">
-<span id="whatsnew-050"></span><h2>v0.5.0 (July 25, 2017)<a class="headerlink" href="#v0-5-0-july-25-2017" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="v0-5-0-july-25-2017">
+<span id="whatsnew-050"></span><h2>v0.5.0 (July 25, 2017)<a class="headerlink" href="#v0-5-0-july-25-2017" title="Link to this heading">#</a></h2>
 <p>This is a major release from 0.4.0. We recommend that all users upgrade.</p>
 <p>Highlights include:</p>
 <ul class="simple">
-<li><p>Compat with the new Yahoo iCharts API. Yahoo removed the older API, this release restores ability to download from Yahoo. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/315">GH315</a>)</p></li>
+<li><p>Compat with the new Yahoo iCharts API. Yahoo removed the older API, this release restores ability to download from Yahoo. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/315">GH 315</a>)</p></li>
 </ul>
-<div class="contents local topic" id="what-s-new-in-v0-5-0">
+<nav class="contents local" id="what-s-new-in-v0-5-0">
 <p class="topic-title">What’s new in v0.5.0</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#whatsnew-050-enhancements" id="id45">Enhancements</a></p></li>
-<li><p><a class="reference internal" href="#whatsnew-050-api-breaking" id="id46">Backwards incompatible API changes</a></p></li>
-<li><p><a class="reference internal" href="#whatsnew-050-bug-fixes" id="id47">Bug Fixes</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-050-enhancements" id="id55">Enhancements</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-050-api-breaking" id="id56">Backwards incompatible API changes</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-050-bug-fixes" id="id57">Bug Fixes</a></p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-050-enhancements">
-<span id="id16"></span><h3>Enhancements<a class="headerlink" href="#whatsnew-050-enhancements" title="Permalink to this headline">¶</a></h3>
+</nav>
+<section id="whatsnew-050-enhancements">
+<span id="id20"></span><h3>Enhancements<a class="headerlink" href="#whatsnew-050-enhancements" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports Quandl, see <a class="reference internal" href="remote_data.html#remote-data-quandl"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/361">GH361</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports Quandl, see <a class="reference internal" href="remote_data.html#remote-data-removed"><span class="std std-ref">here</span></a> (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/361">GH 361</a>).</p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-050-api-breaking">
-<span id="id17"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-050-api-breaking" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="whatsnew-050-api-breaking">
+<span id="id21"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-050-api-breaking" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Removed Oanda as it became subscription only (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/296">GH296</a>).</p></li>
+<li><p>Removed Oanda as it became subscription only (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/296">GH 296</a>).</p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-050-bug-fixes">
-<span id="id18"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-050-bug-fixes" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="whatsnew-050-bug-fixes">
+<span id="id22"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-050-bug-fixes" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>web sessions are closed properly at the end of use (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/355">GH355</a>)</p></li>
-<li><p>Handle commas in large price quotes (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/345">GH345</a>)</p></li>
-<li><p>Test suite fixes for test_get_options_data (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/352">GH352</a>)</p></li>
-<li><p>Test suite fixes for test_wdi_download (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/350">GH350</a>)</p></li>
-<li><p>avoid monkey patching requests.Session (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/301">GH301</a>)</p></li>
-<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">get_data_yahoo()</span></code> now treats <code class="docutils literal notranslate"><span class="pre">'null'</span></code> strings as missing values  (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/342">GH342</a>)</p></li>
+<li><p>web sessions are closed properly at the end of use (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/355">GH 355</a>)</p></li>
+<li><p>Handle commas in large price quotes (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/345">GH 345</a>)</p></li>
+<li><p>Test suite fixes for test_get_options_data (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/352">GH 352</a>)</p></li>
+<li><p>Test suite fixes for test_wdi_download (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/350">GH 350</a>)</p></li>
+<li><p>avoid monkey patching requests.Session (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/301">GH 301</a>)</p></li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">get_data_yahoo()</span></code> now treats <code class="docutils literal notranslate"><span class="pre">'null'</span></code> strings as missing values  (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/342">GH 342</a>)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="v0-4-0-may-15-2017">
-<span id="whatsnew-040"></span><h2>v0.4.0 (May 15, 2017)<a class="headerlink" href="#v0-4-0-may-15-2017" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="v0-4-0-may-15-2017">
+<span id="whatsnew-040"></span><h2>v0.4.0 (May 15, 2017)<a class="headerlink" href="#v0-4-0-may-15-2017" title="Link to this heading">#</a></h2>
 <p>This is a major release from 0.3.0 and includes compat with pandas 0.20.1, and some backwards incompatible API changes.</p>
 <p>Highlights include:</p>
-<div class="contents local topic" id="what-s-new-in-v0-4-0">
+<nav class="contents local" id="what-s-new-in-v0-4-0">
 <p class="topic-title">What’s new in v0.4.0</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#whatsnew-040-enhancements" id="id48">Enhancements</a></p></li>
-<li><p><a class="reference internal" href="#whatsnew-040-api-breaking" id="id49">Backwards incompatible API changes</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-040-enhancements" id="id58">Enhancements</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-040-api-breaking" id="id59">Backwards incompatible API changes</a></p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-040-enhancements">
-<span id="id19"></span><h3>Enhancements<a class="headerlink" href="#whatsnew-040-enhancements" title="Permalink to this headline">¶</a></h3>
+</nav>
+<section id="whatsnew-040-enhancements">
+<span id="id23"></span><h3>Enhancements<a class="headerlink" href="#whatsnew-040-enhancements" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Compat with pandas 0.20.1 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/304">GH304</a>, <a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/320">GH320</a>)</p></li>
-<li><p>Switched test framework to use <code class="docutils literal notranslate"><span class="pre">pytest</span></code> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/310">GH310</a>, <a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/312">GH312</a>)</p></li>
+<li><p>Compat with pandas 0.20.1 (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/304">GH 304</a>, <a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/320">GH 320</a>)</p></li>
+<li><p>Switched test framework to use <code class="docutils literal notranslate"><span class="pre">pytest</span></code> (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/310">GH 310</a>, <a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/312">GH 312</a>)</p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-040-api-breaking">
-<span id="id20"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-040-api-breaking" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="whatsnew-040-api-breaking">
+<span id="id24"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-040-api-breaking" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Support has been dropped for Python 2.6 and 3.4 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/313">GH313</a>)</p></li>
-<li><p>Support has been dropped for <cite>pandas</cite> versions before 0.17.0 (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/313">GH313</a>)</p></li>
+<li><p>Support has been dropped for Python 2.6 and 3.4 (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/313">GH 313</a>)</p></li>
+<li><p>Support has been dropped for <cite>pandas</cite> versions before 0.17.0 (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/313">GH 313</a>)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="v0-3-0-january-14-2017">
-<span id="whatsnew-030"></span><h2>v0.3.0 (January 14, 2017)<a class="headerlink" href="#v0-3-0-january-14-2017" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="v0-3-0-january-14-2017">
+<span id="whatsnew-030"></span><h2>v0.3.0 (January 14, 2017)<a class="headerlink" href="#v0-3-0-january-14-2017" title="Link to this heading">#</a></h2>
 <p>This is a major release from 0.2.1 and includes new features and a number of bug fixes.</p>
 <p>Highlights include:</p>
-<div class="contents local topic" id="what-s-new-in-v0-3-0">
+<nav class="contents local" id="what-s-new-in-v0-3-0">
 <p class="topic-title">What’s new in v0.3.0</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#new-features" id="id50">New features</a></p>
+<li><p><a class="reference internal" href="#whatsnew-030-enhancements" id="id60">New features</a></p>
 <ul>
-<li><p><a class="reference internal" href="#other-enhancements" id="id51">Other enhancements</a></p></li>
+<li><p><a class="reference internal" href="#other-enhancements" id="id61">Other enhancements</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#whatsnew-030-bug-fixes" id="id52">Bug Fixes</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-030-bug-fixes" id="id62">Bug Fixes</a></p></li>
 </ul>
-</div>
-<div class="section" id="new-features">
-<span id="whatsnew-030-enhancements"></span><h3>New features<a class="headerlink" href="#new-features" title="Permalink to this headline">¶</a></h3>
+</nav>
+<section id="whatsnew-030-enhancements">
+<span id="id25"></span><h3>New features<a class="headerlink" href="#whatsnew-030-enhancements" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports dividend only pulls from Yahoo! Finance (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/138">GH138</a>).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports downloading mutual fund prices from the Thrift Savings Plan, see <a class="reference internal" href="remote_data.html#remote-data-tsp"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/157">GH157</a>).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports Google options data source (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/148">GH148</a>).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports Google quotes (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/188">GH188</a>).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports Enigma dataset.  see <a class="reference internal" href="remote_data.html#remote-data-enigma"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/245">GH245</a>).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports downloading a full list of NASDAQ listed symbols.  see <a class="reference internal" href="remote_data.html#remote-data-nasdaq-symbols"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/254">GH254</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports dividend only pulls from Yahoo! Finance (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/138">GH 138</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports downloading mutual fund prices from the Thrift Savings Plan, see <a class="reference internal" href="remote_data.html#remote-data-removed"><span class="std std-ref">here</span></a> (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/157">GH 157</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports Google options data source (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/148">GH 148</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports Google quotes (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/188">GH 188</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports Enigma dataset.  see <a class="reference internal" href="remote_data.html#remote-data-removed"><span class="std std-ref">here</span></a> (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/245">GH 245</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports downloading a full list of NASDAQ listed symbols.  see <a class="reference internal" href="remote_data.html#remote-data-removed"><span class="std std-ref">here</span></a> (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/254">GH 254</a>).</p></li>
 </ul>
-<div class="section" id="other-enhancements">
-<h4>Other enhancements<a class="headerlink" href="#other-enhancements" title="Permalink to this headline">¶</a></h4>
+<section id="other-enhancements">
+<h4>Other enhancements<a class="headerlink" href="#other-enhancements" title="Link to this heading">#</a></h4>
 <ul class="simple">
-<li><p>Eurostat reader now supports larger data returned from API via zip format. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/205">GH205</a>)</p></li>
+<li><p>Eurostat reader now supports larger data returned from API via zip format. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/205">GH 205</a>)</p></li>
 <li><p>Added support for Python 3.6.</p></li>
 <li><p>Added support for pandas 19.2</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="whatsnew-030-bug-fixes">
-<span id="id21"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-030-bug-fixes" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="whatsnew-030-bug-fixes">
+<span id="id26"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-030-bug-fixes" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Fixed bug that caused <code class="docutils literal notranslate"><span class="pre">DataReader</span></code> to fail if company name has a comma. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/85">GH85</a>).</p></li>
-<li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">YahooOptions</span></code> caused as a result of change in yahoo website format. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/244">GH244</a>).</p></li>
+<li><p>Fixed bug that caused <code class="docutils literal notranslate"><span class="pre">DataReader</span></code> to fail if company name has a comma. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/85">GH 85</a>).</p></li>
+<li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">YahooOptions</span></code> caused as a result of change in yahoo website format. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/244">GH 244</a>).</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="v0-2-1-november-26-2015">
-<span id="whatsnew-021"></span><h2>v0.2.1 (November 26, 2015)<a class="headerlink" href="#v0-2-1-november-26-2015" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="v0-2-1-november-26-2015">
+<span id="whatsnew-021"></span><h2>v0.2.1 (November 26, 2015)<a class="headerlink" href="#v0-2-1-november-26-2015" title="Link to this heading">#</a></h2>
 <p>This is a minor release from 0.2.0 and includes new features and bug fixes.</p>
 <p>Highlights include:</p>
-<div class="contents local topic" id="what-s-new-in-v0-2-1">
+<nav class="contents local" id="what-s-new-in-v0-2-1">
 <p class="topic-title">What’s new in v0.2.1</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#whatsnew-021-enhancements" id="id53">New features</a></p></li>
-<li><p><a class="reference internal" href="#whatsnew-021-api-breaking" id="id54">Backwards incompatible API changes</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-021-enhancements" id="id63">New features</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-021-api-breaking" id="id64">Backwards incompatible API changes</a></p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-021-enhancements">
-<span id="id22"></span><h3>New features<a class="headerlink" href="#whatsnew-021-enhancements" title="Permalink to this headline">¶</a></h3>
+</nav>
+<section id="whatsnew-021-enhancements">
+<span id="id27"></span><h3>New features<a class="headerlink" href="#whatsnew-021-enhancements" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports Eurostat data sources, see <a class="reference internal" href="remote_data.html#remote-data-eurostat"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/101">GH101</a>).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Options</span></code> downloading is approximately 4x faster as a result of a rewrite of the parsing function. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/122">GH122</a>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> and <code class="docutils literal notranslate"><span class="pre">Options</span></code> now support caching, see <a class="reference internal" href="cache.html#cache"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/110">GH110</a>),(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/116">GH116</a>),(<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/121">GH121</a>), (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/122">GH122</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports Eurostat data sources, see <a class="reference internal" href="remote_data.html#remote-data-eurostat"><span class="std std-ref">here</span></a> (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/101">GH 101</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Options</span></code> downloading is approximately 4x faster as a result of a rewrite of the parsing function. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/122">GH 122</a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> and <code class="docutils literal notranslate"><span class="pre">Options</span></code> now support caching, see <a class="reference internal" href="cache.html#cache"><span class="std std-ref">here</span></a> (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/110">GH 110</a>),(<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/116">GH 116</a>),(<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/121">GH 121</a>), (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/122">GH 122</a>).</p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-021-api-breaking">
-<span id="id23"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-021-api-breaking" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="whatsnew-021-api-breaking">
+<span id="id28"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-021-api-breaking" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Options</span></code> columns <code class="docutils literal notranslate"><span class="pre">PctChg</span></code> and <code class="docutils literal notranslate"><span class="pre">IV</span></code> (Implied Volatility) are now type float
-rather than string. (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/122">GH122</a>)</p></li>
+rather than string. (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/122">GH 122</a>)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="v0-2-0-october-9-2015">
-<span id="whatsnew-020"></span><h2>v0.2.0 (October 9, 2015)<a class="headerlink" href="#v0-2-0-october-9-2015" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="v0-2-0-october-9-2015">
+<span id="whatsnew-020"></span><h2>v0.2.0 (October 9, 2015)<a class="headerlink" href="#v0-2-0-october-9-2015" title="Link to this heading">#</a></h2>
 <p>This is a major release from 0.1.1 and includes new features and a number of bug fixes.</p>
 <p>Highlights include:</p>
-<div class="contents local topic" id="what-s-new-in-v0-2-0">
+<nav class="contents local" id="what-s-new-in-v0-2-0">
 <p class="topic-title">What’s new in v0.2.0</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#whatsnew-020-enhancements" id="id55">New features</a></p></li>
-<li><p><a class="reference internal" href="#whatsnew-020-api-breaking" id="id56">Backwards incompatible API changes</a></p></li>
-<li><p><a class="reference internal" href="#whatsnew-020-bug-fixes" id="id57">Bug Fixes</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-020-enhancements" id="id65">New features</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-020-api-breaking" id="id66">Backwards incompatible API changes</a></p></li>
+<li><p><a class="reference internal" href="#whatsnew-020-bug-fixes" id="id67">Bug Fixes</a></p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-020-enhancements">
-<span id="id24"></span><h3>New features<a class="headerlink" href="#whatsnew-020-enhancements" title="Permalink to this headline">¶</a></h3>
+</nav>
+<section id="whatsnew-020-enhancements">
+<span id="id29"></span><h3>New features<a class="headerlink" href="#whatsnew-020-enhancements" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Added latitude and longitude to output of wb.get_countries (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/47">GH47</a>).</p></li>
-<li><p>Extended DataReader to fetch dividends and stock splits from Yahoo (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/45">GH45</a>).</p></li>
-<li><p>Added get_available_datasets to famafrench (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/56">GH56</a>).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports OECD data sources, see <a class="reference internal" href="remote_data.html#remote-data-oecd"><span class="std std-ref">here</span></a> (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/101">GH101</a>).</p></li>
+<li><p>Added latitude and longitude to output of wb.get_countries (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/47">GH 47</a>).</p></li>
+<li><p>Extended DataReader to fetch dividends and stock splits from Yahoo (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/45">GH 45</a>).</p></li>
+<li><p>Added get_available_datasets to famafrench (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/56">GH 56</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DataReader</span></code> now supports OECD data sources, see <a class="reference internal" href="remote_data.html#remote-data-oecd"><span class="std std-ref">here</span></a> (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/101">GH 101</a>).</p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-020-api-breaking">
-<span id="id25"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-020-api-breaking" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="whatsnew-020-api-breaking">
+<span id="id30"></span><h3>Backwards incompatible API changes<a class="headerlink" href="#whatsnew-020-api-breaking" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Fama French indexes are not Pandas.PeriodIndex for annual and monthly data, and
-pandas.DatetimeIndex otherwise (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/56">GH56</a>).</p></li>
+pandas.DatetimeIndex otherwise (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/56">GH 56</a>).</p></li>
 </ul>
-</div>
-<div class="section" id="whatsnew-020-bug-fixes">
-<span id="id26"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-020-bug-fixes" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="whatsnew-020-bug-fixes">
+<span id="id31"></span><h3>Bug Fixes<a class="headerlink" href="#whatsnew-020-bug-fixes" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Update Fama-French URL (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/53">GH53</a>)</p></li>
-<li><p>Fixed bug where get_quote_yahoo would fail if a company name had a comma (<a class="reference external" href="https://github.com/pydata/pandas-datareader/issues/85">GH85</a>)</p></li>
+<li><p>Update Fama-French URL (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/53">GH 53</a>)</p></li>
+<li><p>Fixed bug where get_quote_yahoo would fail if a company name had a comma (<a class="extlink-issue reference external" href="https://github.com/pydata/pandas-datareader/issues/85">GH 85</a>)</p></li>
 </ul>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
-              </div>
+                </article>
               
               
-              <div class='prev-next-bottom'>
-                
-    <a class='left-prev' id="prev-link" href="readers/yahoo.html" title="previous page">Yahoo Finance</a>
-
-              </div>
               
-          </main>
-          
-
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="readers/world-bank.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">World Bank</p>
       </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-11-0-june-2026">v0.11.0 (June 2026)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#new-features">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#backwards-incompatible-api-changes">Backwards Incompatible API Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enhancements">Enhancements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bug-fixes">Bug Fixes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contributors">Contributors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-10-0-july-11-2021">v0.10.0 (July 11, 2021)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Bug Fixes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Contributors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-9-1-july-26-2020">v0.9.1 (July 26, 2020)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-091-enhancements">Enhancements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-091-bug-fixes">Bug Fixes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Contributors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-9-0-july-10-2020">v0.9.0 (July 10, 2020)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-090-enhancements">Enhancements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-090-api-breaking">Backwards incompatible API changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-090-bug-fixes">Bug Fixes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Contributors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-8-0-september-22-2019">v0.8.0 (September 22, 2019)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-080-enhancements">Enhancements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-080-api-breaking">Backwards incompatible API changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-080-bug-fixes">Bug Fixes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">Contributors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-7-0-september-11-2018">v0.7.0 (September 11, 2018)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-070-enhancements">Enhancements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-070-api-breaking">Backwards incompatible API changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-070-bug-fixes">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-6-0-january-24-2018">v0.6.0 (January 24, 2018)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-060-enhancements">Enhancements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-060-api-breaking">Backwards incompatible API changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-060-bug-fixes">Bug Fixes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#other-changes">Other Changes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-5-0-july-25-2017">v0.5.0 (July 25, 2017)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-050-enhancements">Enhancements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-050-api-breaking">Backwards incompatible API changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-050-bug-fixes">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-4-0-may-15-2017">v0.4.0 (May 15, 2017)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-040-enhancements">Enhancements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-040-api-breaking">Backwards incompatible API changes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-3-0-january-14-2017">v0.3.0 (January 14, 2017)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-030-enhancements">New features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#other-enhancements">Other enhancements</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-030-bug-fixes">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-2-1-november-26-2015">v0.2.1 (November 26, 2015)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-021-enhancements">New features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-021-api-breaking">Backwards incompatible API changes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-2-0-october-9-2015">v0.2.0 (October 9, 2015)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-020-enhancements">New features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-020-api-breaking">Backwards incompatible API changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#whatsnew-020-bug-fixes">Bug Fixes</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/whatsnew.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, The PyData Development Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
     </div>
   
-  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+</p></div>
+      
+    </div>
+  
+</div>
 
-  <footer class="footer mt-5 mt-md-0">
-  <div class="container">
-    
-    <div class="footer-item">
-      <p class="copyright">
-    &copy; Copyright 2020, The PyData Development Team.<br/>
-</p>
-    </div>
-    
-    <div class="footer-item">
-      <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
-</p>
-    </div>
-    
-  </div>
-</footer>
+  </footer>
   </body>
 </html>

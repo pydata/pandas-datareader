@@ -21,25 +21,24 @@ Making the same request repeatedly can use a lot of bandwidth, slow down your
 code and may result in your IP being banned.
 
 ``pandas-datareader`` allows you to cache queries using ``requests_cache`` by
-passing a ``requests_cache.Session`` to ``DataReader`` or ``Options`` using the
+passing a ``requests_cache.Session`` to ``DataReader`` using the
 ``session`` parameter.
 
-Below is an example with Yahoo! Finance. The session parameter is implemented for all datareaders.
+Below is an example with FRED. The session parameter is implemented for the
+maintained public data readers.
 
 .. ipython:: python
     :okexcept:
 
     import pandas_datareader.data as web
-    from pandas_datareader.yahoo.headers import DEFAULT_HEADERS
     import datetime
     import requests_cache
     expire_after = datetime.timedelta(days=3)
     session = requests_cache.CachedSession(cache_name='cache', backend='sqlite', expire_after=expire_after)
-    session.headers = DEFAULT_HEADERS
     start = datetime.datetime(2010, 1, 1)
     end = datetime.datetime(2013, 1, 27)
-    f = web.DataReader("F", 'yahoo', start, end, session=session)
-    f.loc['2010-01-04']
+    f = web.DataReader("VIXCLS", 'fred', start, end, session=session)
+    f.head()
 
 A `SQLite <https://www.sqlite.org/>`_ file named ``cache.sqlite`` will be created in the working
 directory, storing the request until the expiry date.
