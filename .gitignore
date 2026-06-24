@@ -15,3 +15,5 @@ env/
 .vscode/
 *.diff
 pandas_datareader/_version.py
+**/*.sqlite
+docs/source/_version.txt
