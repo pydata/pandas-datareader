@@ -189,4 +189,5 @@ Readers Removed
     - Nasdaq
     - AlphaVantage
     - Thrift Savings Plan
+    - Stooq (now requires an API key, see https://stooq.com/q/d/?s=spy.us&get_apikey)
     - Quandl
