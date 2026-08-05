@@ -54,6 +54,7 @@ def _sanitize_dates(start, end):
 def _init_session(session):
     if session is None:
         session = requests.Session()
+        session.headers.update({'User-Agent': 'Firefox'})
         # do not set requests max_retries here to support arbitrary pause
     else:
         if not isinstance(session, requests.Session):
