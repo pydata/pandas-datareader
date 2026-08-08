@@ -12,6 +12,7 @@ from pandas_datareader.econdb import EcondbReader
 from pandas_datareader.eurostat import EurostatReader
 from pandas_datareader.exceptions import DEP_ERROR_MSG, ImmediateDeprecationError
 from pandas_datareader.famafrench import FamaFrenchReader
+from pandas_datareader.famafrench_in import FamaFrenchIndiaReader
 from pandas_datareader.fred import FredReader
 from pandas_datareader.oecd import OECDReader
 
@@ -83,11 +84,15 @@ def DataReader(
     ff = DataReader("F-F_Research_Data_Factors_weekly", "famafrench")
     ff = DataReader("6_Portfolios_2x3", "famafrench")
     ff = DataReader("F-F_ST_Reversal_Factor", "famafrench")
+
+    # Data from Fama/French for Indian markets
+    ff = DataReader("2025-12_FourFactors_and_Market_Returns_Daily", "famafrench_in")
     """
     expected_source = [
         "bankofcanada",
         "fred",
         "famafrench",
+        "famafrench_in",
         "oecd",
         "eurostat",
         "econdb",
@@ -126,7 +131,15 @@ def DataReader(
             pause=pause,
             session=session,
         ).read()
-
+    if data_source == "famafrench_in":
+        return FamaFrenchIndiaReader(
+            symbols=name,
+            start=start,
+            end=end,
+            retry_count=retry_count,
+            pause=pause,
+            session=session,
+        ).read()
     if data_source == "oecd":
         return OECDReader(
             symbols=name,
