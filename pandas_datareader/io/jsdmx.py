@@ -140,7 +140,7 @@ def _parse_dimensions(dimensions):
         names.append(key["name"])
     midx = pd.MultiIndex.from_product(arrays, names=names)
     if len(arrays) == 1 and isinstance(midx, pd.MultiIndex):
-        # Fix for pandas >= 0.21
-        midx = midx.levels[0]
+        # Preserve the payload order rather than the sorted level labels.
+        midx = midx.get_level_values(0)
 
     return midx
