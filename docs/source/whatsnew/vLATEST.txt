@@ -2,3 +2,5 @@ Bug Fixes
 ~~~~~~~~~
 
 - Fixed FamaFrench reader to handle updated format
+- Fixed SDMX-JSON parsing to preserve single-dimension label order, preventing
+  observations from being assigned to the wrong dates or series (:issue:`837`).

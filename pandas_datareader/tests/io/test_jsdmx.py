@@ -12,6 +12,47 @@ from pandas_datareader.io import read_jsdmx
 pytestmark = pytest.mark.stable
 
 
+@pytest.mark.parametrize("version", [1, 2])
+@pytest.mark.parametrize("years", [["1999", "2000", "2001"], ["2001", "1999", "2000"]])
+@pytest.mark.parametrize("areas", [["Alpha", "Zulu"], ["Zulu", "Alpha"]])
+def test_single_dimensions_preserve_payload_order(version, years, areas):
+    dimensions = {
+        "observation": [
+            {
+                "id": "TIME_PERIOD",
+                "name": "Year",
+                "role": "TIME_PERIOD",
+                "values": [{"name": year} for year in years],
+            }
+        ],
+        "series": [{"name": "Area", "values": [{"name": area} for area in areas]}],
+    }
+    dataset = {
+        "series": {
+            "0": {"observations": {"0": [10.0], "1": [20.0], "2": [30.0]}},
+            "1": {"observations": {"0": [40.0], "2": [60.0]}},
+        }
+    }
+    if version == 1:
+        payload = {"structure": {"dimensions": dimensions}, "dataSets": [dataset]}
+    else:
+        payload = {
+            "data": {
+                "structures": [{"dimensions": dimensions}],
+                "dataSets": [dataset],
+            }
+        }
+
+    result = read_jsdmx(payload)
+
+    expected = pd.DataFrame(
+        [[10.0, 40.0], [20.0, np.nan], [30.0, 60.0]],
+        index=pd.DatetimeIndex(years, name="Year"),
+        columns=pd.Index(areas, name="Area"),
+    )
+    tm.assert_frame_equal(result, expected)
+
+
 @pytest.fixture
 def dirpath(datapath):
     return datapath("io", "data")
@@ -76,7 +117,8 @@ def test_land_use(dirpath):
     # OECD -> Environment -> Resources Land Use
     result = read_jsdmx(os.path.join(dirpath, "jsdmx", "land_use.json"))
     assert isinstance(result, pd.DataFrame)
-    result = result.loc["2010":"2011"]
+    # Observations 30 and 31 in the fixture correspond to 1985 and 1986.
+    result = result.loc[pd.DatetimeIndex(["1985", "1986"], name="Year")]
 
     cols = [
         "Arable land and permanent crops",
@@ -93,7 +135,7 @@ def test_land_use(dirpath):
     exp_col = pd.MultiIndex.from_product(
         [["Japan", "United States"], cols], names=["Country", "Variable"]
     )
-    exp_idx = pd.DatetimeIndex(["2010", "2011"], name="Year")
+    exp_idx = pd.DatetimeIndex(["1985", "1986"], name="Year")
     values = [
         [
             53790.0,
