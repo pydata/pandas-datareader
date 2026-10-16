@@ -2,3 +2,4 @@ Bug Fixes
 ~~~~~~~~~
 
 - Fixed FamaFrench reader to handle updated format
+- Fixed EconDB reader crashing with pandas 3 by dropping the removed `errors="ignore"` argument to `to_datetime`
