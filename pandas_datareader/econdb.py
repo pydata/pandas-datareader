@@ -127,7 +127,11 @@ class EcondbReader(_BaseReader):
             else:
                 df = series
         if df.shape[0] > 0:
-            df.index = pd.to_datetime(df.index, errors="ignore")
+            try:
+                df.index = pd.to_datetime(df.index)
+            except (ValueError, TypeError):
+                # keep the raw labels if they are not dates
+                pass
         df.index.name = "TIME_PERIOD"
         df = df.truncate(self.start, self.end)
         return df
