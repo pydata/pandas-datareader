@@ -7,6 +7,8 @@ from .data import (
     get_data_econdb,
     get_data_famafrench,
     get_data_fred,
+    get_data_fxmacrodata,
+    get_data_fxmacrodata_calendar,
 )
 from .macro import (
     EurostatClient,
@@ -23,6 +25,8 @@ __all__ = [
     "__version__",
     "get_data_econdb",
     "get_data_famafrench",
+    "get_data_fxmacrodata",
+    "get_data_fxmacrodata_calendar",
     "get_data_fred",
     "DataReader",
     "MacroResult",
