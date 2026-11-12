@@ -2,3 +2,4 @@ Bug Fixes
 ~~~~~~~~~
 
 - Fixed FamaFrench reader to handle updated format
+- Fixed FRED reader to accept generators and other one-shot symbol iterators.
