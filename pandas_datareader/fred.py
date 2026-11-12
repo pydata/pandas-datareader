@@ -32,7 +32,7 @@ class FredReader(_BaseReader):
         if not is_list_like(self.symbols):
             names = [self.symbols]
         else:
-            names = self.symbols
+            names = list(self.symbols)
 
         urls = [f"{self.url}?id={n}" for n in names]
 
