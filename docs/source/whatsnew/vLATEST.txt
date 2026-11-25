@@ -2,3 +2,8 @@ Bug Fixes
 ~~~~~~~~~
 
 - Fixed FamaFrench reader to handle updated format
+
+Documentation
+~~~~~~~~~~~~~
+
+- Updated the installation requirements in the README to match the package metadata.
