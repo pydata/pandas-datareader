@@ -40,12 +40,12 @@ for the latest changes in master.
 
 ### Requirements
 
-Using pandas datareader requires the following packages:
+pandas-datareader requires Python 3.11 or later and the following packages:
 
--   pandas>=1.5.3
+-   pandas>=2.1.4
 -   lxml
 -   requests>=2.19.0
--   distutils (not included in standard library of Python 3.12 and above it, which can be solved by installing `setuptools`)
+-   setuptools
 
 Building the documentation additionally requires:
 
